@@ -1,0 +1,50 @@
+{
+
+  "gameID": "example",
+  "gameName": "Example Game",
+
+  "cues": [
+
+    {
+      "id": "gameFolder/soundFile",
+      "fileExtension": "ogg",
+
+      "duration": 0.5,
+
+      "name": "person - cue - part",
+
+
+
+      "canAlterPitch": false,
+      "canAlterDuration": false,
+
+      "introSound": "gameFolder/otherSound",
+
+      "baseBpm": 105,
+
+      "loops": false
+    }
+
+  ],
+
+  "patterns": [
+
+    {
+      "id": "example_pattern",
+      "name": "Pattern 1",
+
+      "isStretchable": false,
+
+      "cues": [
+        {
+          "id": "gameFolder/soundFile",
+          "beat": 0.0,
+
+          "duration": 1.0,
+          "semitone": 2
+        }
+      ]
+    }
+
+  ]
+}
