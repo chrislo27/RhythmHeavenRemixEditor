@@ -32,6 +32,7 @@ public class GameObject {
 
 		public String id;
 		public String name;
+		public String[] deprecatedIDs;
 
 		public boolean isStretchable = false;
 
