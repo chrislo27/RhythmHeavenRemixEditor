@@ -1,0 +1,103 @@
+{
+  "gameID": "bouncyRoad",
+  "gameName": "Bouncy Road",
+  "cues": [
+    {
+      "id": "bouncyRoad/tink",
+      "duration": 0.25,
+      "name": "tink",
+      "canAlterPitch": true
+    },
+    {
+      "id": "bouncyRoad/cymbal",
+      "duration": 0.25,
+      "name": "cymbal",
+      "canAlterPitch": true
+    },
+    {
+      "id": "bouncyRoad/spySnort",
+      "duration": 0.25,
+      "name": "snort",
+      "canAlterPitch": true
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bouncyRoad_17bounces",
+      "name": "17 bounces",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 0
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 0.25
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 0.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 0.75
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 1
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 1.25
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 1.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 1.75
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 2
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 2.25
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 2.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 2.75
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 3
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 3.25
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 3.5,
+          "semitone": -4
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 3.75,
+          "semitone": 3
+        },
+        {
+          "id": "bouncyRoad/cymbal",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}
