@@ -14,7 +14,7 @@
 
       "duration": 0.5, // the duration in beats for this cue - use up to 6 digits (one-third is 0.333333)
 
-      "name": "person - cue name - cue", // human-readable name, ex: gramps - let's sit down - sit
+      "name": "person - cue - part", // human-readable name, ex: gramps - let's sit down - sit
 
       // OPTIONAL fields below
 
