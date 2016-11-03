@@ -1,0 +1,40 @@
+{
+  // example data.json
+  // this is an invalid file because it has comments, indicated by the two slashes at the start
+
+  "gameID": "example", // spaceDance, spaceball, catchyTune, etc
+  "gameName": "Example Game", // human-readable name
+
+  "cues": [ // JSON array of cue objects
+
+    {
+      "id": "gameFolder/soundFile", // where the editor will find the sound file
+      "fileExtension": "ogg", // OPTIONAL - defaults to ogg
+      // this is only a safeguard in case I implement other formats for some reason
+
+      "duration": 0.5, // the duration in beats for this cue - use up to 6 digits (one-third is 0.333333)
+
+      "name": "person - cue name - cue", // human-readable name, ex: gramps - let's sit down - sit
+
+      "canAlterPitch": false, // if the pitch can be edited (Launch Party, Built to Scale DS, etc.) - default false
+      "canAlterDuration": false, // if you can stretch/shrink this cue (Moai Doo-Wop, Glee Club, etc.) - default false
+      // note that this will set loops to true (unless loops is set manually)
+
+      "introSound": "gameFolder/otherSound", // the sound ID used for stuff like Moai Doo-Wop - the "d" sound for ooo
+      // note that this sound will automatically be hidden
+
+      "baseBpm": 105, // used for Fillbots and Screwbot Factory - the original BPM of the filling/whirring sound
+      // note that if this is present, canAlterPitch will always be set to false
+
+      "loops": false, // if the sound loops if the clip is shorter than the cue duration
+      // this overrides canAlterDuration's setting
+    }
+
+  ],
+
+  "patterns": [ // JSON array of pattern objects
+    // NOTE: this must be present even if patterns aren't used (an empty array [] will work)
+
+
+  ]
+}
