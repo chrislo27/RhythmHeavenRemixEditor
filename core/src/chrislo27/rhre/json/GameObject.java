@@ -14,6 +14,8 @@ public class GameObject {
 		public String id;
 		public String fileExtension = "ogg";
 
+		public String[] deprecatedIDs;
+
 		public String name;
 
 		public float duration = 0.5f;
@@ -32,7 +34,6 @@ public class GameObject {
 
 		public String id;
 		public String name;
-		public String[] deprecatedIDs;
 
 		public boolean isStretchable = false;
 
