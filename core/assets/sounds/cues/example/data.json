@@ -12,6 +12,9 @@
       "fileExtension": "ogg", // OPTIONAL - defaults to ogg
       // this is only a safeguard in case I implement other formats for some reason
 
+      "deprecatedIDs": [], // OPTIONAL
+      // used internally in case an ID changes for some reason
+
       "duration": 0.5, // the duration in beats for this cue - use up to 6 digits (one-third is 0.333333)
 
       "name": "person - cue - part", // human-readable name, ex: gramps - let's sit down - sit
