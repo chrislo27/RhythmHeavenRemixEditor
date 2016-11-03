@@ -1,0 +1,50 @@
+{
+  "gameID": "builtToScaleDS",
+  "gameName": "Built to Scale (DS)",
+  "cues": [
+    {
+      "id": "builtToScaleDS/c",
+      "duration": 0.25,
+      "name": "note",
+      "canAlterPitch": true
+    },
+    {
+      "id": "builtToScaleDS/pew",
+      "duration": 0.25,
+      "name": "launch"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "builtToScaleDS_widget",
+      "name": "widget",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "builtToScaleDS/c",
+          "beat": 0
+        },
+        {
+          "id": "builtToScaleDS/c",
+          "beat": 1,
+          "semitone": 2
+        },
+        {
+          "id": "builtToScaleDS/c",
+          "beat": 2,
+          "semitone": 4
+        },
+        {
+          "id": "builtToScaleDS/c",
+          "beat": 3,
+          "semitone": 5
+        },
+        {
+          "id": "builtToScaleDS/c",
+          "beat": 4,
+          "semitone": 7
+        }
+        ]
+    }
+    ]
+}
