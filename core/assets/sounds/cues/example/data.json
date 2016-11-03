@@ -16,6 +16,8 @@
 
       "name": "person - cue name - cue", // human-readable name, ex: gramps - let's sit down - sit
 
+      // OPTIONAL fields below
+
       "canAlterPitch": false, // if the pitch can be edited (Launch Party, Built to Scale DS, etc.) - default false
       "canAlterDuration": false, // if you can stretch/shrink this cue (Moai Doo-Wop, Glee Club, etc.) - default false
       // note that this will set loops to true (unless loops is set manually)
@@ -26,7 +28,7 @@
       "baseBpm": 105, // used for Fillbots and Screwbot Factory - the original BPM of the filling/whirring sound
       // note that if this is present, canAlterPitch will always be set to false
 
-      "loops": false, // if the sound loops if the clip is shorter than the cue duration
+      "loops": false // if the sound loops if the clip is shorter than the cue duration
       // this overrides canAlterDuration's setting
     }
 
@@ -35,6 +37,25 @@
   "patterns": [ // JSON array of pattern objects
     // NOTE: this must be present even if patterns aren't used (an empty array [] will work)
 
+    {
+      "id": "example_pattern", // usually gameID_<name>
+      "name": "Pattern 1", // human-readable name
+
+      "isStretchable": false, // OPTIONAL if the pattern can be stretched
+      // used for stuff like Bouncy Road, Clappy Trio
+      // this is automatically true if any of the cues has canAlterDuration set to true
+
+      "cues": [
+        {
+          "id": "gameFolder/soundFile", // the sound ID
+          "beat": 0.0, // the beat, where 0.0 is the start of the pattern (it's relative)
+
+          "duration": 1.0, // OPTIONAL - the duration (used for cues with canAlterDuration)
+          "semitone": 2 // OPTIONAL - the semitone difference - positive is higher, negative is lower
+          // used for stuff like Bouncy Road where the last two notes change (but are the same sound file)
+        }
+      ]
+    }
 
   ]
 }
