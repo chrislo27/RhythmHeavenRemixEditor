@@ -1,0 +1,32 @@
+{
+  "gameID": "cannery",
+  "gameName": "Cannery",
+  "cues": [
+    {
+      "id": "cannery/ding",
+      "duration": 1,
+      "name": "tink"
+    },
+    {
+      "id": "cannery/steam",
+      "duration": 1,
+      "name": "steam"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "cannery_can",
+      "name": "can",
+      "cues": [
+        {
+          "id": "cannery/ding",
+          "beat": 0
+        },
+        {
+          "id": "cannery/can",
+          "beat": 1
+        }
+        ]
+    }
+    ]
+}
