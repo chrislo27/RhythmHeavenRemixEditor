@@ -4,13 +4,14 @@ import chrislo27.rhre.json.GameObject;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.util.BiObjectMap;
 
 public class Transformation {
 
 	public BiObjectMap<String, Cue> cues = new BiObjectMap<>();
-	private Gson gson = new Gson();
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	public Transformation() {
 		doThing();
