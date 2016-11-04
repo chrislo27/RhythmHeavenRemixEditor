@@ -23,8 +23,8 @@
   ],
   "patterns": [
     {
-      "id": "bouncyRoad_17bounces",
-      "name": "17 bounces",
+      "id": "bouncyRoad_15bounces",
+      "name": "15 bounces",
       "isStretchable": true,
       "cues": [
         {
@@ -77,25 +77,17 @@
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 3
-        },
-        {
-          "id": "bouncyRoad/tink",
-          "beat": 3.25
-        },
-        {
-          "id": "bouncyRoad/tink",
-          "beat": 3.5,
+          "beat": 3,
           "semitone": -4
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 3.75,
+          "beat": 3.25,
           "semitone": 3
         },
         {
           "id": "bouncyRoad/cymbal",
-          "beat": 4
+          "beat": 3.5
         }
       ]
     }
