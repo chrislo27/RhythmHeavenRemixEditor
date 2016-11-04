@@ -1,0 +1,27 @@
+{
+  "gameID": "workingDough",
+  "gameName": "Working Dough",
+  "cues": [
+    {
+      "id": "workingDough/leftSmall",
+      "duration": 0.25,
+      "name": "left - small"
+    },
+    {
+      "id": "workingDough/leftBig",
+      "duration": 0.25,
+      "name": "left - big"
+    },
+    {
+      "id": "workingDough/rightSmall",
+      "duration": 0.25,
+      "name": "right - small"
+    },
+    {
+      "id": "workingDough/rightBig",
+      "duration": 0.25,
+      "name": "right - big"
+    }
+  ],
+  "patterns": []
+}
