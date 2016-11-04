@@ -1,0 +1,106 @@
+{
+  "gameID": "munchyMonk",
+  "gameName": "Munchy Monk",
+  "cues": [
+    {
+      "id": "munchyMonk/gulp",
+      "duration": 1,
+      "name": "gulp"
+    },
+    {
+      "id": "munchyMonk/one",
+      "duration": 1,
+      "name": "one"
+    },
+    {
+      "id": "munchyMonk/try",
+      "duration": 0.5,
+      "name": "two - try"
+    },
+    {
+      "id": "munchyMonk/try",
+      "duration": 0.5,
+      "name": "two - two!"
+    },
+    {
+      "id": "munchyMonk/three",
+      "duration": 1,
+      "name": "three - three"
+    },
+    {
+      "id": "munchyMonk/gulp3-1",
+      "duration": 1,
+      "name": "three - go - 1"
+    },
+    {
+      "id": "munchyMonk/gulp3-2",
+      "duration": 1,
+      "name": "three - go - 2"
+    },
+    {
+      "id": "munchyMonk/gulp3-3",
+      "duration": 1,
+      "name": "three - go - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "munchyMonk_one",
+      "name": "one",
+      "cues": [
+        {
+          "id": "munchyMonk/one",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonk/gulp",
+          "beat": 1
+        }
+        ]
+    },
+    {
+      "id": "munchyMonk_trytwo",
+      "name": "try two",
+      "cues": [
+        {
+          "id": "munchyMonk/try",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonk/two",
+          "beat": 0.5
+        },
+        {
+          "id": "munchyMonk/gulp",
+          "beat": 1.5
+        },
+        {
+          "id": "munchyMonk/gulp",
+          "beat": 0.5
+        }
+        ]
+    },
+    {
+      "id": "munchyMonk_three",
+      "name": "three",
+      "cues": [
+        {
+          "id": "munchyMonk/three",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonk/gulp3-1",
+          "beat": 1
+        },
+        {
+          "id": "munchyMonk/gulp3-2",
+          "beat": 2
+        },
+        {
+          "id": "munchyMonk/gulp3-3",
+          "beat": 3
+        }
+        ]
+    }
+    ]
+}
