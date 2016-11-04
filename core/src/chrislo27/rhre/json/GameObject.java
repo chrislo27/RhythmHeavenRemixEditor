@@ -25,7 +25,7 @@ public class GameObject {
 
 		public String introSound = null;
 
-		public float baseBpm = 120;
+		public float baseBpm = 0;
 
 		public boolean loops = false;
 	}
