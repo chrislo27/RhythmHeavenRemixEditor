@@ -1,0 +1,27 @@
+{
+  "gameID": "shootEmUp",
+  "gameName": "Shoot-'em-Up",
+  "cues": [
+    {
+      "id": "shootEmUp/spawn",
+      "duration": 0.5,
+      "name": "spawn"
+    },
+    {
+      "id": "shootEmUp/shoot",
+      "duration": 0.5,
+      "name": "shoot"
+    },
+    {
+      "id": "shootEmUp/commStart",
+      "duration": 0.5,
+      "name": "comms start"
+    },
+    {
+      "id": "shootEmUp/shoot",
+      "duration": 0.5,
+      "name": "comms end"
+    }
+  ],
+  "patterns": []
+}

@@ -1,0 +1,17 @@
+{
+  "gameID": "wizardWaltz",
+  "gameName": "Wizard Waltz",
+  "cues": [
+    {
+      "id": "wizardWaltz/plant",
+      "duration": 0.5,
+      "name": "plant"
+    },
+    {
+      "id": "wizardWaltz/grow",
+      "duration": 0.5,
+      "name": "grow"
+    }
+  ],
+  "patterns": []
+}
