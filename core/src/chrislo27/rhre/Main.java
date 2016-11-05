@@ -26,7 +26,7 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public Screen getScreenToSwitchToAfterLoadingAssets() {
-		return ScreenRegistry.get("mainMenu");
+		return ScreenRegistry.get("editor");
 	}
 
 	@Override
