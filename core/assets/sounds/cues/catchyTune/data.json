@@ -1,0 +1,67 @@
+{
+  "gameID": "catchyTune",
+  "gameName": "Catchy Tune",
+  "cues": [
+    {
+      "id": "catchyTune/clap",
+      "duration": 1,
+      "name": "clap"
+    },
+    {
+      "id": "catchyTune/orange",
+      "duration": 1,
+      "name": "orange"
+    },
+    {
+      "id": "catchyTune/melon",
+      "duration": 2,
+      "name": "pineapple"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "catchyTune_orange",
+      "name": "orange",
+      "cues": [
+       {
+        "id": "catchyTune/orange",
+        "beat": 0.0
+       },
+       {
+        "id": "catchyTune/orange",
+        "beat": 1.0
+       },
+       {
+        "id": "catchyTune/orange",
+        "beat": 2.0
+       },
+       {
+        "id": "catchyTune/clap",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "catchyTune_pineapple",
+      "name": "pineapple",
+      "cues": [
+       {
+        "id": "catchyTune/melon",
+        "beat": 0.0
+       },
+       {
+        "id": "catchyTune/melon",
+        "beat": 2.0
+       },
+       {
+        "id": "catchyTune/melon",
+        "beat": 4.0
+       },
+       {
+        "id": "catchyTune/melon",
+        "beat": 6.0
+       }
+      ]
+    }
+  ]
+}
