@@ -1,6 +1,7 @@
 package chrislo27.rhre;
 
 import chrislo27.rhre.init.DefAssetLoader;
+import chrislo27.rhre.registry.GameRegistry;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,16 +45,16 @@ public class Main extends ionium.templates.Main {
 		AssetRegistry.instance().addAssetLoader(new DefAssetLoader());
 
 		DebugSetting.showFPS = false;
-
-		new Transformation();
 	}
 
 	@Override
 	public void prepareStates() {
 		super.prepareStates();
 
-		ScreenRegistry reg = ScreenRegistry.instance();
+		GameRegistry.instance();
+		AssetRegistry.instance().addAssetLoader(GameRegistry.instance().getAssetLoader());
 
+		ScreenRegistry reg = ScreenRegistry.instance();
 	}
 
 	@Override
