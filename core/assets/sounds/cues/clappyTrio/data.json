@@ -1,0 +1,60 @@
+{
+  "gameID": "clappyTrio",
+  "gameName": "Clappy Trio",
+  "cues": [
+    {
+      "id": "clappyTrio/clap",
+      "duration": 0.25,
+      "name": "clap"
+    },
+    {
+      "id": "clappyTrio/ready",
+      "duration": 0.25,
+      "name": "ready"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "clappyTrio_triotiming",
+      "name": "trio timing!",
+      "isStretchable": true,
+      "cues": [
+       {
+        "id": "clappyTrio/clap",
+        "beat": 0.0
+       },
+       {
+        "id": "clappyTrio/clap",
+        "beat": 2.0
+       },
+       {
+        "id": "clappyTrio/clap",
+        "beat": 4.0
+       }
+      ]
+    },
+    {
+      "id": "clappyTrio_fouronthefloor",
+      "name": "four on the floor!",
+      "isStretchable": true,
+      "cues": [
+       {
+        "id": "clappyTrio/clap",
+        "beat": 0.0
+       },
+       {
+        "id": "clappyTrio/clap",
+        "beat": 1.0
+       },
+       {
+        "id": "clappyTrio/clap",
+        "beat": 2.0
+       },
+       {
+        "id": "clappyTrio/clap",
+        "beat": 3.0
+       }
+      ]
+    }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+  "gameID": "ninjaBodyguard",
+  "gameName": "Ninja Bodyguard",
+  "cues": [
+    {
+      "id": "ninjaBodyguard/shoot",
+      "duration": 0.25,
+      "name": "shoot"
+    },
+    {
+      "id": "ninjaBodyguard/cut",
+      "duration": 0.25,
+      "name": "cut"
+    }
+  ],
+  "patterns": []
+}
