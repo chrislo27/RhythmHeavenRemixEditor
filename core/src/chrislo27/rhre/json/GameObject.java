@@ -4,6 +4,7 @@ public class GameObject {
 
 	public String gameID;
 	public String gameName;
+	public String series;
 
 	public SoundObject[] cues;
 

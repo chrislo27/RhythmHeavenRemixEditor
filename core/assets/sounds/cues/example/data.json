@@ -7,6 +7,7 @@
   "series": "tengoku", // the game series this is from
   // can be tengoku, ds, fever, megamix
   // if a game is present in megamix and its original game, use the original game
+  // this field is optional for non-canon games
 
   "cues": [ // JSON array of cue objects
 

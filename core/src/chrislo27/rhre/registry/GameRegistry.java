@@ -14,10 +14,7 @@ import ionium.registry.handler.IAssetLoader;
 import ionium.util.AssetMap;
 import ionium.util.BiObjectMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameRegistry {
@@ -72,7 +69,8 @@ public class GameRegistry {
 				patterns.add(p);
 			}
 
-			game = new Game(gameObj.gameID, gameObj.gameName, soundCues, patterns);
+			game = new Game(gameObj.gameID, gameObj.gameName, soundCues, patterns,
+					gameObj.series == null ? Series.UNKNOWN : Series.valueOf(gameObj.series.toUpperCase(Locale.ROOT)));
 
 			Main.logger.info("Loaded " + game.component1() + " with " + game.component3().size() + " cues and " +
 					game.component4().size() + " patterns");
