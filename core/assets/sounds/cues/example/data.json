@@ -4,6 +4,9 @@
 
   "gameID": "example", // spaceDance, spaceball, catchyTune, etc
   "gameName": "Example Game", // human-readable name
+  "series": "tengoku", // the game series this is from
+  // can be tengoku, ds, fever, megamix
+  // if a game is present in megamix and its original game, use the original game
 
   "cues": [ // JSON array of cue objects
 
