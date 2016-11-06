@@ -1,0 +1,65 @@
+{
+  "gameID": "cropStomp",
+  "gameName": "cropStomp",
+  "cues": [
+    {
+      "id": "cropStomp/walk",
+      "duration": 1,
+      "name": "walk"
+    },
+    {
+      "id": "cropStomp/stomp",
+      "duration": 0.5,
+      "name": "stomp"
+    },
+    {
+      "id": "cropStomp/pick1",
+      "duration": 0.5,
+      "name": "pick - 1"
+    },
+    {
+      "id": "cropStomp/pick2",
+      "duration": 0.5,
+      "name": "pick - 2"
+    },
+    {
+      "id": "cropStomp/molefling",
+      "duration": 0.5,
+      "name": "mole"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "cropStomp_pick",
+      "name": "pick",
+      "cues": [
+       {
+        "id": "cropStomp/stomp",
+        "beat": 0.0
+       },
+       {
+        "id": "cropStomp/pick1",
+        "beat": 0.5
+       },
+       {
+        "id": "cropStomp/pick2",
+        "beat": 1
+       }
+      ]
+    },
+    {
+      "id": "cropStomp_mole",
+      "name": "mole",
+      "cues": [
+       {
+        "id": "cropStomp/stomp",
+        "beat": 0.0
+       },
+       {
+        "id": "cropStomp/mole",
+        "beat": 0.5
+       }
+      ]
+    }
+  ]
+}
