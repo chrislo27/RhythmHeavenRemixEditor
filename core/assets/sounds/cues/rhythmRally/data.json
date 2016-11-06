@@ -1,0 +1,142 @@
+{
+  "gameID": "rhythmRally",
+  "gameName": "Rhythm Rally",
+  "cues": [
+    {
+      "id": "rhythmRally/whistle",
+      "duration": 1,
+      "name": "whistle"
+    },
+    {
+      "id": "rhythmRally/hit1",
+      "duration": 0.5,
+      "name": "bounce - opponent"
+    },
+    {
+      "id": "rhythmRally/hit2",
+      "duration": 0.5,
+      "name": "bounce - table"
+    },
+    {
+      "id": "rhythmRally/hit3",
+      "duration": 0.5,
+      "name": "bounce - player"
+    },
+    {
+      "id": "rhythmRally/tonk",
+      "duration": 0.5,
+      "name": "tonk"
+    },
+    {
+      "id": "rhythmRally/tink",
+      "duration": 0.5,
+      "name": "tink"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "rhythmrally_slowrally",
+      "name": "slow rally",
+      "cues": [
+       {
+        "id": "rhythmRally/hit1",
+        "beat": 0.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 2.0
+       },
+       {
+        "id": "rhythmRally/hit3",
+        "beat": 4.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 6.0
+       }
+      ]
+    },
+    {
+      "id": "rhythmrally_normalrally",
+      "name": "normal rally",
+      "cues": [
+       {
+        "id": "rhythmRally/hit1",
+        "beat": 0.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 1.0
+       },
+       {
+        "id": "rhythmRally/hit3",
+        "beat": 2.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "rhythmrally_fastrally",
+      "name": "fast rally",
+      "cues": [
+       {
+        "id": "rhythmRally/hit1",
+        "beat": 0.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 0.5
+       },
+       {
+        "id": "rhythmRally/hit3",
+        "beat": 1.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "rhythmrally_turborally",
+      "name": "turbo rally",
+      "cues": [
+       {
+        "id": "rhythmRally/hit1",
+        "beat": 0.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 0.5
+       },
+       {
+        "id": "rhythmRally/hit3",
+        "beat": 1.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 1.5
+       },
+       {
+        "id": "rhythmRally/hit1",
+        "beat": 2.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 2.5
+       },
+       {
+        "id": "rhythmRally/hit3",
+        "beat": 3.0
+       },
+       {
+        "id": "rhythmRally/hit2",
+        "beat": 3.5
+       }
+      ]
+    }
+  ]
+}
