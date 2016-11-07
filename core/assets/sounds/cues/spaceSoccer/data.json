@@ -76,6 +76,28 @@
       ]
     },
     {
+      "id": "spaceSoccer_keepup",
+      "name": "keep-up",
+      "cues": [
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 0.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 1.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 2.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
       "id": "spaceSoccer_highkicktoe",
       "name": "high kick-toe!",
       "cues": [
