@@ -30,6 +30,28 @@
   ],
   "patterns": [
     {
+      "id": "cropStomp_walk",
+      "name": "walk",
+      "cues": [
+       {
+        "id": "cropStomp/walk",
+        "beat": 0.0
+       },
+       {
+        "id": "cropStomp/walk",
+        "beat": 1.0
+       },
+       {
+        "id": "cropStomp/walk",
+        "beat": 2.0
+       },
+       {
+        "id": "cropStomp/walk",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
       "id": "cropStomp_pick",
       "name": "pick",
       "cues": [
