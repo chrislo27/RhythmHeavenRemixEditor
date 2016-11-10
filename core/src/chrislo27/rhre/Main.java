@@ -76,17 +76,6 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	protected void postRender() {
-		batch.begin();
-
-		fontBordered.getData().setScale(0.75f);
-		fontBordered.setColor(1, 1, 1, 1);
-		fontBordered.draw(batch, "ALL VISUALS SUBJECT TO CHANGE\nTHIS IS AN IN-DEVELOPMENT BUILD", 6,
-				Gdx.graphics.getHeight() - 8);
-		fontBordered.setColor(1, 1, 1, 1);
-		fontBordered.getData().setScale(1);
-
-		batch.end();
-
 		super.postRender();
 	}
 
