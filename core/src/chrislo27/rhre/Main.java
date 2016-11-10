@@ -1,8 +1,12 @@
 package chrislo27.rhre;
 
 import chrislo27.rhre.init.DefAssetLoader;
+import chrislo27.rhre.palette.AbstractPalette;
+import chrislo27.rhre.palette.DarkPalette;
+import chrislo27.rhre.palette.LightPalette;
 import chrislo27.rhre.registry.GameRegistry;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +23,8 @@ public class Main extends ionium.templates.Main {
 	public BitmapFont biggerFontBordered;
 	public BitmapFont font;
 	public BitmapFont fontBordered;
+
+	public AbstractPalette palette = new LightPalette();
 
 	public Main(Logger l) {
 		super(l);
@@ -55,6 +61,7 @@ public class Main extends ionium.templates.Main {
 		AssetRegistry.instance().addAssetLoader(GameRegistry.instance().getAssetLoader());
 
 		ScreenRegistry reg = ScreenRegistry.instance();
+		reg.add("editor", new EditorScreen(this));
 	}
 
 	@Override
@@ -71,11 +78,12 @@ public class Main extends ionium.templates.Main {
 	protected void postRender() {
 		batch.begin();
 
+		fontBordered.getData().setScale(0.75f);
 		fontBordered.setColor(1, 1, 1, 1);
-		fontBordered.draw(batch, "ALL VISUALS SUBJECT TO CHANGE", 8, Gdx.graphics.getHeight() - 8);
-		fontBordered.draw(batch, "THIS IS AN EARLY-STAGE DEV BUILD", 8,
-				Gdx.graphics.getHeight() - 8 - font.getLineHeight());
+		fontBordered.draw(batch, "ALL VISUALS SUBJECT TO CHANGE\nTHIS IS AN IN-DEVELOPMENT BUILD", 6,
+				Gdx.graphics.getHeight() - 8);
 		fontBordered.setColor(1, 1, 1, 1);
+		fontBordered.getData().setScale(1);
 
 		batch.end();
 
@@ -95,6 +103,14 @@ public class Main extends ionium.templates.Main {
 	@Override
 	public void inputUpdate() {
 		super.inputUpdate();
+
+		if (DebugSetting.debug && Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+			if (palette instanceof LightPalette) {
+				palette = new DarkPalette();
+			} else {
+				palette = new LightPalette();
+			}
+		}
 	}
 
 	@Override
