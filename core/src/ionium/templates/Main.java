@@ -366,7 +366,7 @@ public abstract class Main extends Game {
 		debugStrings.clear();
 
 		if (persistentDebugStrings.size == 0) {
-			String keysInfo = (" | Re-init I18N: " + Keys.toString(DebugSetting.REINIT_LOCALIZATION_KEY)) +
+			String keysInfo = ("Re-init I18N: " + Keys.toString(DebugSetting.REINIT_LOCALIZATION_KEY)) +
 					" | Tick percentages: " + Keys.toString(DebugSetting.TICK_PERCENTAGE_KEY);
 
 			persistentDebugStrings.add("Debug info: " + Keys.toString(DebugSetting.DEBUG_KEY));
