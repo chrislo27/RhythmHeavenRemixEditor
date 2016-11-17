@@ -1,6 +1,7 @@
 {
   "gameID": "spaceSoccer",
   "gameName": "Space Soccer",
+  "series": "ds",
   "cues": [
     {
       "id": "spaceSoccer/kick",
