@@ -31,6 +31,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public Editor(Main m) {
 		this.main = m;
 		camera.setToOrtho(false, 1280, 720);
+		camera.position.x = 0.333f * camera.viewportWidth;
 
 		remix = new Remix();
 	}
@@ -63,10 +64,13 @@ public class Editor extends InputAdapter implements Disposable {
 						camera.viewportWidth, 2);
 			}
 
-			batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b, batch.getColor().a * 0.5f);
-			for (float x = camera.position.x - camera.viewportWidth * 0.5f;
-				 x < camera.position.x + camera.viewportWidth * 0.5f; x += Entity.PX_WIDTH) {
-				Main.fillRect(batch, x, yOffset, 2, TRACK_COUNT * Entity.PX_HEIGHT);
+			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
+				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
+				batch.setColor(main.palette.getStaffLine());
+				batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
+						batch.getColor().a * (x == 0 ? 1f : (x < 0 ? 0.25f : 0.5f)));
+
+				Main.fillRect(batch, x * Entity.PX_WIDTH, yOffset, 2, TRACK_COUNT * Entity.PX_HEIGHT);
 			}
 
 			batch.setColor(1, 1, 1, 1);
