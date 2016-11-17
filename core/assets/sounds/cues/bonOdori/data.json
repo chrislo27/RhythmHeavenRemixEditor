@@ -1,7 +1,7 @@
 {
   "gameID": "bonOdori",
   "gameName": "Bon Odori",
-  "series": "tengoku"
+  "series": "tengoku",
   "cues": [
     {
       "id": "bonOdori/dondo1",
