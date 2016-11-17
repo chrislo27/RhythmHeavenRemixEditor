@@ -1,6 +1,7 @@
 {
   "gameID": "catchyTune",
   "gameName": "Catchy Tune",
+  "series": "megamix",
   "cues": [
     {
       "id": "catchyTune/clap",
