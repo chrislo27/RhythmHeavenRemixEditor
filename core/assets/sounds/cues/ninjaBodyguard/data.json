@@ -1,7 +1,7 @@
 {
   "gameID": "ninjaBodyguard",
   "gameName": "Ninja Bodyguard",
-  "series": "tengoku"
+  "series": "tengoku",
   "cues": [
     {
       "id": "ninjaBodyguard/shoot",
