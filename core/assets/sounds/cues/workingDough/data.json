@@ -1,6 +1,7 @@
 {
   "gameID": "workingDough",
   "gameName": "Working Dough",
+  "series": "fever",
   "cues": [
     {
       "id": "workingDough/leftSmall",
