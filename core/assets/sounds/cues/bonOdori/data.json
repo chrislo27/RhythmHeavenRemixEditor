@@ -1,0 +1,42 @@
+{
+  "gameID": "bonOdori",
+  "gameName": "Bon Odori",
+  "cues": [
+    {
+      "id": "bonOdori/dondo1",
+      "duration": 0.333333,
+      "name": "don1"
+    },
+    {
+      "id": "bonOdori/dondo2",
+      "duration": 0.333333,
+      "name": "don2"
+    },
+    {
+      "id": "bonOdori/dondon1",
+      "duration": 0.333333,
+      "name": "don3"
+    },
+    {
+      "id": "bonOdori/dondon2",
+      "duration": 0.333333,
+      "name": "don4"
+    },
+    {
+      "id": "bonOdori/pan",
+      "duration": 0.333333,
+      "name": "pan1"
+    },
+    {
+      "id": "bonOdori/panpan1",
+      "duration": 0.333333,
+      "name": "pan2"
+    },
+    {
+      "id": "bonOdori/panpan2",
+      "duration": 0.333333,
+      "name": "pan3"
+    }
+  ],
+  "patterns": []
+}
