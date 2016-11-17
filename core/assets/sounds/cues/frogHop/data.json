@@ -1,6 +1,7 @@
 {
   "gameID": "frogHop",
   "gameName": "Frog Hop",
+  "series": "ds",
   "cues": [
     {
       "id": "frogHop/one",
