@@ -1,0 +1,38 @@
+{
+  "gameID": "countIn",
+  "gameName": "Count-In",
+  "cues": [
+    {
+      "id": "countIn/one",
+      "duration": 1,
+      "name": "one"
+    },
+    {
+      "id": "countIn/two",
+      "duration": 1,
+      "name": "two"
+    },
+    {
+      "id": "countIn/three",
+      "duration": 1,
+      "name": "three"
+    },
+    {
+      "id": "countIn/four",
+      "duration": 1,
+      "name": "four"
+    },
+    {
+      "id": "countIn/and",
+      "duration": 0.5,
+      "name": "and"
+    },
+    {
+      "id": "countIn/silence",
+      "duration": 1,
+      "canAlterDuration": true,
+      "name": "and"
+    }
+  ],
+  "patterns": []
+}
