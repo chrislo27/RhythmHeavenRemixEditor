@@ -1,6 +1,7 @@
 {
   "gameID": "rhythmRally",
   "gameName": "Rhythm Rally",
+  "series": "ds"
   "cues": [
     {
       "id": "rhythmRally/whistle",
