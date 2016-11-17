@@ -1,6 +1,7 @@
 {
   "gameID": "munchyMonk",
   "gameName": "Munchy Monk",
+  "series": "ds",
   "cues": [
     {
       "id": "munchyMonk/gulp",
