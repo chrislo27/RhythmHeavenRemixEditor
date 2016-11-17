@@ -1,6 +1,7 @@
 {
   "gameID": "moaiDooWop",
   "gameName": "Moai Doo-Wop",
+  "series": "ds",
   "cues": [
     {
       "id": "moaiDooWop/stoneGrind",
