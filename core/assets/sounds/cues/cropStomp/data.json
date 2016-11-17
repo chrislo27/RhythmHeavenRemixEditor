@@ -1,6 +1,7 @@
 {
   "gameID": "cropStomp",
   "gameName": "cropStomp",
+  "series": "ds",
   "cues": [
     {
       "id": "cropStomp/walk",
