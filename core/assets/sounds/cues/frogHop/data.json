@@ -1,0 +1,219 @@
+{
+  "gameID": "frogHop",
+  "gameName": "Frog Hop",
+  "cues": [
+    {
+      "id": "frogHop/one",
+      "duration": 1,
+      "name": "countin - 1"
+    },
+    {
+      "id": "frogHop/two",
+      "duration": 1,
+      "name": "countin - 2"
+    },
+    {
+      "id": "frogHop/three",
+      "duration": 1,
+      "name": "countin - 3"
+    },
+    {
+      "id": "frogHop/four",
+      "duration": 1,
+      "name": "countin - 4"
+    },
+    {
+      "id": "frogHop/shake",
+      "duration": 1,
+      "name": "shake"
+    },
+    {
+      "id": "frogHop/yahoo1",
+      "duration": 0.5,
+      "name": "yahoo - lead - ya-"
+    },
+    {
+      "id": "frogHop/yahoo2",
+      "duration": 0.5,
+      "name": "yahoo - lead - -hoo!"
+    },
+    {
+      "id": "frogHop/yahoo3",
+      "duration": 0.5,
+      "name": "yahoo - backup - ya-"
+    },
+    {
+      "id": "frogHop/yahoo4",
+      "duration": 0.5,
+      "name": "yahoo - backup - -hoo!"
+    },
+    {
+      "id": "frogHop/yeah1",
+      "duration": 0.5,
+      "name": "yeah yeah yeah - lead - yeah"
+    },
+    {
+      "id": "frogHop/yeah2",
+      "duration": 0.5,
+      "name": "yeah yeah yeah - backup - yeah"
+    },
+    {
+      "id": "frogHop/spinitboys1",
+      "duration": 0.5,
+      "name": "spin it boys - lead - spin"
+    },
+    {
+      "id": "frogHop/spinitboys2",
+      "duration": 0.5,
+      "name": "spin it boys - lead - it"
+    },
+    {
+      "id": "frogHop/spinitboys3",
+      "duration": 0.5,
+      "name": "spin it boys - lead - boys"
+    },
+    {
+      "id": "frogHop/spinitboys4",
+      "duration": 0.5,
+      "name": "spin it boys - backup - spin"
+    },
+    {
+      "id": "frogHop/spinitboys5",
+      "duration": 0.5,
+      "name": "spin it boys - backup - it"
+    },
+    {
+      "id": "frogHop/spinitboys6",
+      "duration": 0.5,
+      "name": "spin it boys - backup - boys"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "frogHop_countin",
+      "name": "countin",
+      "cues": [
+       {
+        "id": "frogHop/one",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/two",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/three",
+        "beat": 2.0
+       },
+       {
+        "id": "frogHop/four",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "frogHop_shake",
+      "name": "shake",
+      "cues": [
+       {
+        "id": "frogHop/shake",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/shake",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/shake",
+        "beat": 2.0
+       },
+       {
+        "id": "frogHop/shake",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "frogHop_yahoo",
+      "name": "yahoo",
+      "cues": [
+       {
+        "id": "frogHop/yahoo1",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/yahoo2",
+        "beat": 0.5
+       },
+       {
+        "id": "frogHop/yahoo3",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/yahoo4",
+        "beat": 1.5
+       }
+      ]
+    },
+    {
+      "id": "frogHop_yeahyeahyeah",
+      "name": "yeah yeah yeah",
+      "cues": [
+       {
+        "id": "frogHop/yeah1",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/yeah1",
+        "beat": 0.5
+       },
+       {
+        "id": "frogHop/yeah1",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/yeah2",
+        "beat": 2.0
+       },
+       {
+        "id": "frogHop/yeah2",
+        "beat": 2.5
+       },
+       {
+        "id": "frogHop/yeah2",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "frogHop_spinitboys",
+      "name": "spin it boys",
+      "cues": [
+       {
+        "id": "frogHop/spinitboys1",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/spinitboys2",
+        "beat": 0.5
+       },
+       {
+        "id": "frogHop/spinitboys3",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/spinitboys4",
+        "beat": 2.0
+       },
+       {
+        "id": "frogHop/spinitboys5",
+        "beat": 2.5
+       },
+       {
+        "id": "frogHop/spinitboys6",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}
