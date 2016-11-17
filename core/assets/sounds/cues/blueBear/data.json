@@ -1,6 +1,7 @@
 {
   "gameID": "blueBear",
   "gameName": "blueBear",
+  "series": "megamix",
   "cues": [
     {
       "id": "blueBear/donutOut",
