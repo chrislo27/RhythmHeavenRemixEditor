@@ -16,8 +16,6 @@ public class EditorScreen extends Updateable<Main> {
 
 	public EditorScreen(Main m) {
 		super(m);
-
-		editor = new Editor(main);
 	}
 
 	@Override
@@ -51,6 +49,9 @@ public class EditorScreen extends Updateable<Main> {
 
 	@Override
 	public void show() {
+		if (editor == null)
+			editor = new Editor(main);
+
 		if (stageSetup == null) {
 			stageSetup = new EditorStageSetup(this);
 			stage = stageSetup.getStage();

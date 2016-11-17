@@ -12,7 +12,6 @@ import com.google.gson.GsonBuilder;
 import ionium.animation.Animation;
 import ionium.registry.handler.IAssetLoader;
 import ionium.util.AssetMap;
-import ionium.util.BiObjectMap;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ import java.util.stream.Collectors;
 public class GameRegistry {
 
 	private static GameRegistry instance;
-	public final BiObjectMap<String, Game> games = new BiObjectMap<>();
+	public final Map<String, Game> games = new LinkedHashMap<>();
 	private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 	private GameRegistry() {
@@ -33,6 +32,10 @@ public class GameRegistry {
 		}
 
 		return instance;
+	}
+
+	public Game get(String id) {
+		return games.get(id);
 	}
 
 	private void init() {
@@ -72,13 +75,13 @@ public class GameRegistry {
 			game = new Game(gameObj.gameID, gameObj.gameName, soundCues, patterns,
 					gameObj.series == null ? Series.UNKNOWN : Series.valueOf(gameObj.series.toUpperCase(Locale.ROOT)));
 
-			Main.logger.info("Loaded " + game.component1() + " with " + game.component3().size() + " cues and " +
-					game.component4().size() + " patterns");
+			Main.logger.info("Loaded " + game.getId() + " with " + game.getSoundCues().size() + " cues and " +
+					game.getPatterns().size() + " patterns");
 
-			this.games.put(game.component1(), game);
+			this.games.put(game.getId(), game);
 		}
 
-		Main.logger.info("Loaded " + this.games.getAllValues().size + " games, took " +
+		Main.logger.info("Loaded " + this.games.size() + " games, took " +
 				((System.nanoTime() - startTime) / 1_000_000.0) + " ms");
 	}
 
@@ -94,10 +97,8 @@ public class GameRegistry {
 
 		@Override
 		public void addManagedAssets(AssetManager manager) {
-			GameRegistry.instance().games.getAllValues().forEach(g -> g.component3().forEach(sc -> manager.load
-					(AssetMap
-							.add("soundCue_" + sc.component1(), "sounds/cues/" + sc.component1() + "." + sc.component2
-									()),
+			GameRegistry.instance().games.values().forEach(g -> g.component3().forEach(sc -> manager.load(AssetMap
+							.add("soundCue_" + sc.getId(), "sounds/cues/" + sc.getId() + "." + sc.getFileExtension()),
 					Sound.class)));
 		}
 
