@@ -1,6 +1,7 @@
 {
   "gameID": "shootEmUp",
   "gameName": "Shoot-'em-Up",
+  "series": "ds",
   "cues": [
     {
       "id": "shootEmUp/spawn",
