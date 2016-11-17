@@ -1,6 +1,7 @@
 {
   "gameID": "microRow",
   "gameName": "Micro-Row",
+  "series": "fever",
   "cues": [
     {
       "id": "microRow/go",
