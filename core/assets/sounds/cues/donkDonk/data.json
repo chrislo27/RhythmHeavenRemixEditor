@@ -1,6 +1,7 @@
 {
   "gameID": "donkDonk",
   "gameName": "Donk-Donk",
+  "series": "fever"
   "cues": [
     {
       "id": "donkDonk/donk1",
