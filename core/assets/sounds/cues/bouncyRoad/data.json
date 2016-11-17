@@ -1,6 +1,7 @@
 {
   "gameID": "bouncyRoad",
   "gameName": "Bouncy Road",
+  "series": "tengoku",
   "cues": [
     {
       "id": "bouncyRoad/tink",
