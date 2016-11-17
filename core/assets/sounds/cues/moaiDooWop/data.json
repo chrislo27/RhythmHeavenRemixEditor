@@ -1,0 +1,53 @@
+{
+  "gameID": "moaiDooWop",
+  "gameName": "Moai Doo-Wop",
+  "cues": [
+    {
+      "id": "moaiDooWop/stoneGrind",
+      "duration": 1
+    },
+    {
+      "id": "moaiDooWop/d1",
+      "duration": 0.000001
+    },
+    {
+      "id": "moaiDooWop/ooo1",
+      "duration": 1,
+      "name": "left - doo",
+      "canAlterDuration": true,
+      "introSound": "moaiDooWop/d1"
+    },
+    {
+      "id": "moaiDooWop/wop1",
+      "duration": 0.5,
+      "name": "left - wop"
+    },
+    {
+      "id": "moaiDooWop/pah1",
+      "duration": 0.5,
+      "name": "left - pah"
+    },
+    {
+      "id": "moaiDooWop/d2",
+      "duration": 0.000001
+    },
+    {
+      "id": "moaiDooWop/ooo2",
+      "duration": 1,
+      "name": "right - doo",
+      "canAlterDuration": true,
+      "introSound": "moaiDooWop/d2"
+    },
+    {
+      "id": "moaiDooWop/wop2",
+      "duration": 0.5,
+      "name": "right - wop"
+    },
+    {
+      "id": "moaiDooWop/pah2",
+      "duration": 0.5,
+      "name": "right - pah"
+    }
+  ],
+  "patterns": []
+}
