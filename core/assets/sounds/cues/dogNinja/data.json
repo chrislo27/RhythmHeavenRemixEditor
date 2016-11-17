@@ -1,6 +1,7 @@
 {
   "gameID": "dogNinja",
   "gameName": "Dog Ninja",
+  "series": "ds",
   "cues": [
     {
       "id": "dogNinja/fruit1",
