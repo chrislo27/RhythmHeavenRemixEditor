@@ -1,6 +1,7 @@
 {
   "gameID": "clappyTrio",
   "gameName": "Clappy Trio",
+  "series": "tengoku"
   "cues": [
     {
       "id": "clappyTrio/clap",
