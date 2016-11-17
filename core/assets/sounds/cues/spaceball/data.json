@@ -1,6 +1,7 @@
 {
   "gameID": "spaceball",
   "gameName": "spaceball",
+  "series": "tengoku",
   "cues": [
     {
       "id": "spaceball/shoot",
