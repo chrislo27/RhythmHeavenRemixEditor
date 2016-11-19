@@ -40,7 +40,7 @@
         },
         {
           "id": "doubleDate/kick",
-          "beat": 2
+          "beat": 1
         }
         ]
     },
@@ -54,11 +54,11 @@
         },
         {
           "id": "doubleDate/basketballBounce",
-          "beat": 1.666666
+          "beat": 0.75
         },
         {
           "id": "doubleDate/kick",
-          "beat": 2
+          "beat": 1
         }
       ]
     },
