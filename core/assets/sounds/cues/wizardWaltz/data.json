@@ -1,6 +1,7 @@
 {
   "gameID": "wizardWaltz",
   "gameName": "Wizard Waltz",
+  "series": "tengoku",
   "cues": [
     {
       "id": "wizardWaltz/plant",

@@ -1,0 +1,66 @@
+{
+  "gameID": "exhibitionMatch",
+  "gameName": "Exhibition Match",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "exhibitionMatch/stance",
+      "duration": 1,
+      "name": "stance"
+    },
+    {
+      "id": "exhibitionMatch/throw",
+      "duration": 1,
+      "name": "throw"
+    },
+    {
+      "id": "exhibitionMatch/hit",
+      "duration": 1,
+      "name": "hit"
+    },
+    {
+      "id": "exhibitionMatch/hitHomerun",
+      "duration": 4,
+      "name": "stance",
+      "baseBpm": 120
+    }
+  ],
+  "patterns": [
+    {
+      "id": "exhibitionMatch_pitch",
+      "name": "pitch",
+      "cues": [
+       {
+        "id": "exhibitionMatch/stance",
+        "beat": 0.0
+       },
+       {
+        "id": "exhibitionMatch/throw",
+        "beat": 3.0
+       },
+       {
+        "id": "exhibitionMatch/hit",
+        "beat": 7.0
+       }
+      ]
+    },
+    {
+      "id": "exhibitionMatch_homerun",
+      "name": "home run",
+      "cues": [
+       {
+        "id": "exhibitionMatch/stance",
+        "beat": 0.0
+       },
+       {
+        "id": "exhibitionMatch/throw",
+        "beat": 3.0
+       },
+       {
+        "id": "exhibitionMatch/hitHomerun",
+        "beat": 7.0
+       }
+      ]
+    }
+  ]
+}

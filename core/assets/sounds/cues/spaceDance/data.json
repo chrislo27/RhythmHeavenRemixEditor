@@ -1,6 +1,7 @@
 {
   "gameID": "spaceDance",
   "gameName": "Space Dance",
+  "series": "tengoku",
   "cues": [
     {
       "id": "spaceDance/turn1",

@@ -1,0 +1,102 @@
+{
+  "gameID": "microRow",
+  "gameName": "Micro-Row",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "microRow/go",
+      "duration": 0.5,
+      "name": "go"
+    },
+    {
+      "id": "microRow/ding",
+      "duration": 1,
+      "name": "ding"
+    },
+    {
+      "id": "microRow/triple1",
+      "duration": 1,
+      "name": "triple - 1"
+    },
+    {
+      "id": "microRow/triple2",
+      "duration": 1,
+      "name": "triple - 2"
+    },
+    {
+      "id": "microRow/triple3",
+      "duration": 1,
+      "name": "triple - 3"
+    },
+    {
+      "id": "microRow/dash1",
+      "duration": 0.5,
+      "name": "double - 1"
+    },
+    {
+      "id": "microRow/dash2",
+      "duration": 0.5,
+      "name": "double - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "microRow/go",
+      "name": "go",
+      "cues": [
+       {
+        "id": "microRow/go",
+        "beat": 0.0
+       },
+       {
+        "id": "microRow/go",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "microRow/triple",
+      "name": "triple",
+      "cues": [
+       {
+        "id": "microRow/ding",
+        "beat": 0.0
+       },
+       {
+        "id": "microRow/triple1",
+        "beat": 1.0
+       },
+       {
+        "id": "microRow/triple2",
+        "beat": 2.0
+       },
+       {
+        "id": "microRow/triple3",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "microRow/triple",
+      "name": "triple",
+      "cues": [
+       {
+        "id": "microRow/dash1",
+        "beat": 0.0
+       },
+       {
+        "id": "microRow/dash2",
+        "beat": 0.5
+       },
+       {
+        "id": "microRow/triple2",
+        "beat": 1.5
+       },
+       {
+        "id": "microRow/triple3",
+        "beat": 2
+       }
+      ]
+    }
+  ]
+}

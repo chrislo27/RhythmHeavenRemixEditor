@@ -1,6 +1,7 @@
 {
   "gameID": "blueBirds",
   "gameName": "Blue Birds",
+  "series": "ds",
   "cues": [
     {
       "id": "blueBirds/peckyourbeak1",

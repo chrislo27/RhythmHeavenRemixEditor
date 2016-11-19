@@ -1,6 +1,7 @@
 {
   "gameID": "spaceSoccer",
   "gameName": "Space Soccer",
+  "series": "ds",
   "cues": [
     {
       "id": "spaceSoccer/kick",
@@ -72,6 +73,28 @@
        {
         "id": "spaceSoccer/dispense5",
         "beat": 2
+       }
+      ]
+    },
+    {
+      "id": "spaceSoccer_keepup",
+      "name": "keep-up",
+      "cues": [
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 0.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 1.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 2.0
+       },
+       {
+        "id": "spaceSoccer/kick",
+        "beat": 3.0
        }
       ]
     },
