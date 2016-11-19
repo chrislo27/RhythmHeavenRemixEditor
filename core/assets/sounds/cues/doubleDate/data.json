@@ -1,0 +1,84 @@
+{
+  "gameID": "doubleDate",
+  "gameName": "Double Date",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "doubleDate/kick",
+      "duration": 1,
+      "name": "kick"
+    },
+    {
+      "id": "doubleDate/soccerBounce",
+      "duration": 1,
+      "name": "soccerball"
+    },
+    {
+      "id": "doubleDate/basketballBounce",
+      "duration": 0.333333,
+      "name": "basketball"
+    },
+    {
+      "id": "doubleDate/footballBounce",
+      "duration": 0.75,
+      "name": "football - bounce"
+    },
+    {
+      "id": "doubleDate/footballBounce",
+      "duration": 0.5,
+      "name": "football - kick"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "doubleDate_soccerball",
+      "name": "soccerball",
+      "cues": [
+        {
+          "id": "doubleDate/soccerBounce",
+          "beat": 0
+        },
+        {
+          "id": "doubleDate/kick",
+          "beat": 2
+        }
+        ]
+    },
+    {
+      "id": "doubleDate_basketball",
+      "name": "basketball",
+      "cues": [
+        {
+          "id": "doubleDate/basketballBounce",
+          "beat": 0
+        },
+        {
+          "id": "doubleDate/basketballBounce",
+          "beat": 1.666666
+        },
+        {
+          "id": "doubleDate/kick",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "doubleDate_football",
+      "name": "football",
+      "cues": [
+        {
+          "id": "doubleDate/footballBounce",
+          "beat": 0
+        },
+        {
+          "id": "doubleDate/footballBounce",
+          "beat": 0.75
+        },
+        {
+          "id": "doubleDate/footballKick",
+          "beat": 1.5
+        }
+      ]
+    }
+  ]
+}
