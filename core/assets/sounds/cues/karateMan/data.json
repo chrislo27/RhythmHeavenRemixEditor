@@ -1,0 +1,314 @@
+{
+  "gameID": "karateMan",
+  "gameName": "Karate Man",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "karateMan/potout",
+      "duration": 1,
+      "name": "pot - out"
+    },
+    {
+      "id": "karateMan/offbeatpotout",
+      "duration": 1,
+      "name": "pot - offbeat out"
+    },
+    {
+      "id": "karateMan/pothit",
+      "duration": 1,
+      "name": "pot - hit"
+    },
+    {
+      "id": "karateMan/roasterZoom",
+      "duration": 0.5,
+      "name": "roaster - zoom"
+    },
+    {
+      "id": "karateMan/roasterHit",
+      "duration": 1,
+      "name": "roaster - hit"
+    },
+    {
+      "id": "karateMan/hit3cue1",
+      "duration": 0.5,
+      "name": "hit"
+    },
+    {
+      "id": "karateMan/hit3cue2",
+      "duration": 0.5,
+      "name": "3!"
+    },
+    {
+      "id": "karateMan/hit4",
+      "duration": 0.5,
+      "name": "4!"
+    },
+    {
+      "id": "karateMan/rock",
+      "duration": 1,
+      "name": "rock - hit"
+    },
+    {
+      "id": "karateMan/bulbout",
+      "duration": 1,
+      "name": "lightbulb - out"
+    },
+    {
+      "id": "karateMan/bulbhit",
+      "duration": 1,
+      "name": "lightbulb - hit"
+    },
+    {
+      "id": "karateMan/barrelout",
+      "duration": 1,
+      "name": "barrel - out"
+    },
+    {
+      "id": "karateMan/punchkick1",
+      "duration": 0.75,
+      "name": "kick - punch"
+    },
+    {
+      "id": "karateMan/punchkick2",
+      "duration": 0.75,
+      "name": "kick - kick!"
+    },
+    {
+      "id": "karateMan/punchy1",
+      "duration": 0.25,
+      "name": "combo - 1"
+    },
+    {
+      "id": "karateMan/punchy2",
+      "duration": 0.25,
+      "name": "combo - 2"
+    },
+    {
+      "id": "karateMan/punchy3",
+      "duration": 0.25,
+      "name": "combo - 3"
+    },
+    {
+      "id": "karateMan/punchy4",
+      "duration": 0.25,
+      "name": "combo - 4"
+    },
+    {
+      "id": "karateMan/ko",
+      "duration": 0.5,
+      "name": "combo - 5"
+    },
+    {
+      "id": "karateMan/pow",
+      "duration": 1.5,
+      "name": "combo - 6"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "karateMan_pot",
+      "name": "pot",
+      "cues": [
+        {
+          "id": "karateMan/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 1
+        }
+        ]
+    },
+    {
+      "id": "karateMan_offbeatpot",
+      "name": "offbeat pot",
+      "cues": [
+        {
+          "id": "karateMan/offbeatpotout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 1
+        }
+        ]
+    },
+    {
+      "id": "karateMan_roaster",
+      "name": "roaster",
+      "cues": [
+        {
+          "id": "karateMan/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/roasterZoom",
+          "beat": 0.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 1
+        }
+        ]
+    },
+    {
+      "id": "karateMan_hit3",
+      "name": "hit 3!",
+      "cues": [
+        {
+          "id": "karateMan/hit3cue1",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/hit3cue2",
+          "beat": 0.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 1.5
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/rock",
+          "beat": 4.5
+        }
+        ]
+    },
+    {
+      "id": "karateMan_hit4",
+      "name": "hit 4!",
+      "cues": [
+        {
+          "id": "karateMan/hit3cue1",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/hit4",
+          "beat": 0.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 1.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/pothit",
+          "beat": 4.5
+        },
+        {
+          "id": "karateMan/potout",
+          "beat": 4.5,
+          "track": 1
+        },
+        {
+          "id": "karateMan/rock",
+          "beat": 5.5
+        }
+        ]
+    },
+    {
+      "id": "karateMan_kick",
+      "name": "kick",
+      "cues": [
+        {
+          "id": "karateMan/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateMan/barrelout",
+          "beat": 2
+        },
+        {
+          "id": "karateMan/punchkick1",
+          "beat": 3
+        },
+        {
+          "id": "karateMan/punchkick2",
+          "beat": 3.75
+        }
+        ]
+    },
+    {
+      "id": "karateMan_combo",
+      "name": "combo",
+      "cues": [
+        {
+          "id": "karateMan/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateMan/barrelout",
+          "beat": 2
+        },
+        {
+          "id": "karateMan/punchy1",
+          "beat": 3
+        },
+        {
+          "id": "karateMan/punchy2",
+          "beat": 3.25
+        },
+        {
+          "id": "karateMan/punchy3",
+          "beat": 3.5
+        },
+        {
+          "id": "karateMan/punchy4",
+          "beat": 3.75
+        },
+        {
+          "id": "karateMan/ko",
+          "beat": 4
+        },
+        {
+          "id": "karateMan/pow",
+          "beat": 4.5
+        }
+        ]
+    }
+    ]
+}
