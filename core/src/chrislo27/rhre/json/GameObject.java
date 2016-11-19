@@ -44,6 +44,7 @@ public class GameObject {
 
 			public String id;
 			public float beat;
+			public int track;
 
 			public float duration;
 

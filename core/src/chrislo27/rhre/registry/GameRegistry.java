@@ -65,7 +65,7 @@ public class GameRegistry {
 				List<Pattern.PatternCue> patternCues = new ArrayList<>();
 
 				for (GameObject.PatternObject.CueObject pc : po.cues) {
-					patternCues.add(new Pattern.PatternCue(pc.id, pc.beat, pc.duration, pc.semitone));
+					patternCues.add(new Pattern.PatternCue(pc.id, pc.beat, pc.track, pc.duration, pc.semitone));
 				}
 
 				p = new Pattern(po.id, po.name, po.isStretchable, patternCues);
