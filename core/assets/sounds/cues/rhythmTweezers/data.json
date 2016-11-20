@@ -1,0 +1,38 @@
+{
+  "gameID": "rhythmTweezers",
+  "gameName": "Rhythm Tweezers",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "rhythmTweezers/appear",
+      "duration": 0.25,
+      "name": "hair - appear"
+    },
+    {
+      "id": "rhythmTweezers/longAppear",
+      "duration": 1,
+      "name": "long hair - appear"
+    },
+    {
+      "id": "rhythmTweezers/pluck",
+      "duration": 0.25,
+      "name": "hair - pluck"
+    },
+    {
+      "id": "rhythmTweezers/gr",
+      "duration": 0.000001
+    },
+    {
+      "id": "rhythmTweezers/aaa",
+      "duration": 0.5,
+      "introSound": "rhythmTweezers/gr",
+      "name": "long hair - pluck - 1"
+    },
+    {
+      "id": "rhythmTweezers/b",
+      "duration": 0.25,
+      "name": "long hair - pluck - 2"
+    }
+  ],
+  "patterns": []
+}
