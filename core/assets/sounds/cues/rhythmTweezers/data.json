@@ -32,6 +32,11 @@
       "id": "rhythmTweezers/b",
       "duration": 0.25,
       "name": "long hair - pluck - 2"
+    },
+    {
+      "id": "rhythmTweezers/cashier",
+      "duration": 1,
+      "name": "cashier"
     }
   ],
   "patterns": []
