@@ -1,0 +1,186 @@
+{
+  "gameID": "fillbots",
+  "gameName": "Fillbots",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "fillbots/mediumFall",
+      "duration": 1,
+      "name": "medium - fall"
+    },
+    {
+      "id": "fillbots/mediumFill",
+      "duration": 3,
+      "name": "medium - fill"
+    },
+    {
+      "id": "fillbots/mediumFinish1",
+      "duration": 0.5,
+      "name": "medium - detach - 1"
+    },
+    {
+      "id": "fillbots/mediumFinish2",
+      "duration": 0.5,
+      "name": "medium - detach - 2"
+    },
+    {
+      "id": "fillbots/mediumFinish3",
+      "duration": 0.5,
+      "name": "medium - detach - 3"
+    },
+    {
+      "id": "fillbots/bigFall",
+      "duration": 1,
+      "name": "big - fall"
+    },
+    {
+      "id": "fillbots/bigFill",
+      "duration": 3,
+      "name": "big - fill"
+    },
+    {
+      "id": "fillbots/bigFinish1",
+      "duration": 0.5,
+      "name": "big - detach - 1"
+    },
+    {
+      "id": "fillbots/bigFinish2",
+      "duration": 0.5,
+      "name": "big - detach - 2"
+    },
+    {
+      "id": "fillbots/bigFinish3",
+      "duration": 0.5,
+      "name": "big - detach - 3"
+    },
+    {
+      "id": "fillbots/bigFall",
+      "duration": 1,
+      "name": "big - fall"
+    },
+    {
+      "id": "fillbots/bigFill",
+      "duration": 3,
+      "name": "big - fill"
+    },
+    {
+      "id": "fillbots/bigFinish1",
+      "duration": 0.5,
+      "name": "big - detach - 1"
+    },
+    {
+      "id": "fillbots/bigFinish2",
+      "duration": 0.5,
+      "name": "big - detach - 2"
+    },
+    {
+      "id": "fillbots/bigFinish3",
+      "duration": 0.5,
+      "name": "big - detach - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "fillbots_roboM",
+      "name": "robo M",
+      "cues": [
+        {
+          "id": "fillbots/mediumFall",
+          "beat": 0
+        },
+        {
+          "id": "fillbots/mediumFall",
+          "beat": 1
+        },
+        {
+          "id": "fillbots/mediumFall",
+          "beat": 2
+        },
+        {
+          "id": "fillbots/mediumFill",
+          "beat": 4
+        },
+        {
+          "id": "fillbots/mediumFinish1",
+          "beat": 7
+        },
+        {
+          "id": "fillbots/mediumFinish2",
+          "beat": 7.5
+        },
+        {
+          "id": "fillbots/mediumFinish3",
+          "beat": 8
+        }
+      ]
+    },
+    {
+      "id": "fillbots_roboL",
+      "name": "robo L",
+      "cues": [
+        {
+          "id": "fillbots/bigFall",
+          "beat": 0
+        },
+        {
+          "id": "fillbots/bigFall",
+          "beat": 1
+        },
+        {
+          "id": "fillbots/bigFall",
+          "beat": 2
+        },
+        {
+          "id": "fillbots/bigFill",
+          "beat": 4
+        },
+        {
+          "id": "fillbots/bigFinish1",
+          "beat": 12
+        },
+        {
+          "id": "fillbots/bigFinish2",
+          "beat": 12.5
+        },
+        {
+          "id": "fillbots/bigFinish3",
+          "beat": 13
+        }
+      ]
+    },
+    {
+      "id": "fillbots_roboS",
+      "name": "robo S",
+      "cues": [
+        {
+          "id": "fillbots/smallFall",
+          "beat": 0
+        },
+        {
+          "id": "fillbots/smallFall",
+          "beat": 1
+        },
+        {
+          "id": "fillbots/smallFall",
+          "beat": 2
+        },
+        {
+          "id": "fillbots/smallFill",
+          "beat": 4
+        },
+        {
+          "id": "fillbots/smallFinish1",
+          "beat": 5
+        },
+        {
+          "id": "fillbots/smallFinish2",
+          "beat": 5.5
+        },
+        {
+          "id": "fillbots/smallFinish3",
+          "beat": 6
+        }
+      ]
+    }
+  ]
+}
