@@ -1,0 +1,637 @@
+{
+  "gameID": "ringside",
+  "gameName": "Ringside",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "ringside/wubba1-1",
+      "duration": 0.25,
+      "name": "is that true? - A - 1"
+    },
+    {
+      "id": "ringside/wubba2-1",
+      "duration": 0.25,
+      "name": "is that true? - B - 1"
+    },
+    {
+      "id": "ringside/wubba3-1",
+      "duration": 0.25,
+      "name": "is that true? - C - 1"
+    },
+    {
+      "id": "ringside/wubba1-2",
+      "duration": 0.25,
+      "name": "is that true? - A - 2"
+    },
+    {
+      "id": "ringside/wubba2-2",
+      "duration": 0.25,
+      "name": "is that true? - B - 2"
+    },
+    {
+      "id": "ringside/wubba3-2",
+      "duration": 0.25,
+      "name": "is that true? - C - 2"
+    },
+    {
+      "id": "ringside/dubba1-1",
+      "duration": 0.25,
+      "name": "is that true? - A - 3"
+    },
+    {
+      "id": "ringside/dubba2-1",
+      "duration": 0.25,
+      "name": "is that true? - B - 3"
+    },
+    {
+      "id": "ringside/dubba3-1",
+      "duration": 0.25,
+      "name": "is that true? - C - 3"
+    },
+    {
+      "id": "ringside/dubba1-2",
+      "duration": 0.25,
+      "name": "is that true? - A - 4"
+    },
+    {
+      "id": "ringside/dubba2-2",
+      "duration": 0.25,
+      "name": "is that true? - B - 4"
+    },
+    {
+      "id": "ringside/dubba3-2",
+      "duration": 0.25,
+      "name": "is that true? - C - 4"
+    },
+    {
+      "id": "ringside/dubba1-3",
+      "duration": 0.25,
+      "name": "is that true? - A - 5"
+    },
+    {
+      "id": "ringside/dubba2-3",
+      "duration": 0.25,
+      "name": "is that true? - B - 5"
+    },
+    {
+      "id": "ringside/dubba3-3",
+      "duration": 0.25,
+      "name": "is that true? - C - 5"
+    },
+    {
+      "id": "ringside/dubba1-4",
+      "duration": 0.25,
+      "name": "is that true? - A - 6"
+    },
+    {
+      "id": "ringside/dubba2-4",
+      "duration": 0.25,
+      "name": "is that true? - B - 6"
+    },
+    {
+      "id": "ringside/dubba3-4",
+      "duration": 0.25,
+      "name": "is that true? - C - 6"
+    },
+    {
+      "id": "ringside/that1",
+      "duration": 0.5,
+      "name": "is that true? - A - 7"
+    },
+    {
+      "id": "ringside/that2",
+      "duration": 0.5,
+      "name": "is that true? - B - 7"
+    },
+    {
+      "id": "ringside/that3",
+      "duration": 0.5,
+      "name": "is that true? - C - 7"
+    },
+    {
+      "id": "ringside/true1",
+      "duration": 1,
+      "name": "is that true? - A - 8"
+    },
+    {
+      "id": "ringside/true2",
+      "duration": 1,
+      "name": "is that true? - B - 8"
+    },
+    {
+      "id": "ringside/true3",
+      "duration": 1,
+      "name": "is that true? - C - 8"
+    },
+    {
+      "id": "ringside/true3",
+      "duration": 1,
+      "name": "is that true? - C - 8"
+    },
+    {
+      "id": "ringside/ye",
+      "duration": 1,
+      "name": "is that true? - ye"
+    },
+    {
+      "id": "ringside/woah1",
+      "duration": 0.75,
+      "name": "you go big guy - A - 1"
+    },
+    {
+      "id": "ringside/woah2",
+      "duration": 0.75,
+      "name": "you go big guy - B - 1"
+    },
+    {
+      "id": "ringside/woah3",
+      "duration": 0.75,
+      "name": "you go big guy - C - 1"
+    },
+    {
+      "id": "ringside/you1",
+      "duration": 0.25,
+      "name": "you go big guy - A - 2"
+    },
+    {
+      "id": "ringside/you2",
+      "duration": 0.25,
+      "name": "you go big guy - B - 2"
+    },
+    {
+      "id": "ringside/you3",
+      "duration": 0.25,
+      "name": "you go big guy - C - 2"
+    },
+    {
+      "id": "ringside/go1",
+      "duration": 0.5,
+      "name": "you go big guy - A - 3"
+    },
+    {
+      "id": "ringside/go2",
+      "duration": 0.5,
+      "name": "you go big guy - B - 3"
+    },
+    {
+      "id": "ringside/go3",
+      "duration": 0.5,
+      "name": "you go big guy - C - 3"
+    },
+    {
+      "id": "ringside/big1",
+      "duration": 0.5,
+      "name": "you go big guy - A - 4"
+    },
+    {
+      "id": "ringside/big2",
+      "duration": 0.5,
+      "name": "you go big guy - B - 4"
+    },
+    {
+      "id": "ringside/big3",
+      "duration": 0.5,
+      "name": "you go big guy - C - 4"
+    },
+    {
+      "id": "ringside/guy1",
+      "duration": 0.5,
+      "name": "you go big guy - A - 5"
+    },
+    {
+      "id": "ringside/guy2",
+      "duration": 0.5,
+      "name": "you go big guy - B - 5"
+    },
+    {
+      "id": "ringside/guy3",
+      "duration": 0.5,
+      "name": "you go big guy - C - 5"
+    },
+    {
+      "id": "ringside/muscles1",
+      "duration": 0.5,
+      "name": "you go big guy - muscles - 1"
+    },
+    {
+      "id": "ringside/muscles",
+      "duration": 0.5,
+      "name": "you go big guy - muscles - 2"
+    },
+    {
+      "id": "ringside/poseAnd",
+      "duration": 0.5,
+      "name": "pose for the fans - and"
+    },
+    {
+      "id": "ringside/pose1",
+      "duration": 0.5,
+      "name": "pose for the fans - A - 1"
+    },
+    {
+      "id": "ringside/pose2",
+      "duration": 0.5,
+      "name": "pose for the fans - B - 1"
+    },
+    {
+      "id": "ringside/pose3",
+      "duration": 0.5,
+      "name": "pose for the fans - C - 1"
+    },
+    {
+      "id": "ringside/for1",
+      "duration": 0.25,
+      "name": "pose for the fans - A - 2"
+    },
+    {
+      "id": "ringside/for2",
+      "duration": 0.25,
+      "name": "pose for the fans - B - 2"
+    },
+    {
+      "id": "ringside/for3",
+      "duration": 0.25,
+      "name": "pose for the fans - C - 2"
+    },
+    {
+      "id": "ringside/the1",
+      "duration": 0.25,
+      "name": "pose for the fans - A - 3"
+    },
+    {
+      "id": "ringside/the2",
+      "duration": 0.25,
+      "name": "pose for the fans - B - 3"
+    },
+    {
+      "id": "ringside/the3",
+      "duration": 0.25,
+      "name": "pose for the fans - C - 3"
+    },
+    {
+      "id": "ringside/fans1",
+      "duration": 1,
+      "name": "pose for the fans - A - 4"
+    },
+    {
+      "id": "ringside/fans2",
+      "duration": 1,
+      "name": "pose for the fans - B - 4"
+    },
+    {
+      "id": "ringside/fans3",
+      "duration": 1,
+      "name": "pose for the fans - C - 4"
+    },
+    {
+      "id": "ringside/yell1",
+      "duration": 1,
+      "name": "pose for the fans - A - RAGH"
+    },
+    {
+      "id": "ringside/yell2",
+      "duration": 1,
+      "name": "pose for the fans - B - RAGH"
+    },
+    {
+      "id": "ringside/yell3",
+      "duration": 1,
+      "name": "pose for the fans - C - RAGH"
+    },
+    {
+      "id": "ringside/camera1",
+      "duration": 1,
+      "name": "pose for the fans - A - camera"
+    },
+    {
+      "id": "ringside/camera2",
+      "duration": 1,
+      "name": "pose for the fans - B - camera"
+    },
+    {
+      "id": "ringside/camera3",
+      "duration": 1,
+      "name": "pose for the fans - C - camera"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "ringside_isThatTrueA",
+      "name": "is that true? - A",
+      "cues": [
+        {
+          "id": "ringside/wubba1-1",
+          "beat": 0
+        },
+        {
+          "id": "ringside/wubba1-2",
+          "beat": 0.25
+        },
+        {
+          "id": "ringside/dubba1-1",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/dubba1-2",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/dubba1-3",
+          "beat": 1
+        },
+        {
+          "id": "ringside/dubba1-4",
+          "beat": 1.25
+        },
+        {
+          "id": "ringside/that1",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/true1",
+          "beat": 2
+        },
+        {
+          "id": "ringside/ye",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_isThatTrueB",
+      "name": "is that true? - B",
+      "cues": [
+        {
+          "id": "ringside/wubba2-1",
+          "beat": 0
+        },
+        {
+          "id": "ringside/wubba2-2",
+          "beat": 0.25
+        },
+        {
+          "id": "ringside/dubba2-1",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/dubba2-2",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/dubba2-3",
+          "beat": 1
+        },
+        {
+          "id": "ringside/dubba2-4",
+          "beat": 1.25
+        },
+        {
+          "id": "ringside/that2",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/true2",
+          "beat": 2
+        },
+        {
+          "id": "ringside/ye",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_isThatTrueC",
+      "name": "is that true? - C",
+      "cues": [
+        {
+          "id": "ringside/wubba3-1",
+          "beat": 0
+        },
+        {
+          "id": "ringside/wubba3-2",
+          "beat": 0.25
+        },
+        {
+          "id": "ringside/dubba3-1",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/dubba3-2",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/dubba3-3",
+          "beat": 1
+        },
+        {
+          "id": "ringside/dubba3-4",
+          "beat": 1.25
+        },
+        {
+          "id": "ringside/that3",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/true3",
+          "beat": 2
+        },
+        {
+          "id": "ringside/ye",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_youGoBigGuyA",
+      "name": "you go big guy - A",
+      "cues": [
+        {
+          "id": "ringside/whoa1",
+          "beat": 0
+        },
+        {
+          "id": "ringside/you1",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/go1",
+          "beat": 1
+        },
+        {
+          "id": "ringside/big1",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/guy1",
+          "beat": 2
+        },
+        {
+          "id": "ringside/muscles1",
+          "beat": 2.5
+        },
+        {
+          "id": "ringside/muscles2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_youGoBigGuyB",
+      "name": "you go big guy - B",
+      "cues": [
+        {
+          "id": "ringside/whoa2",
+          "beat": 0
+        },
+        {
+          "id": "ringside/you2",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/go2",
+          "beat": 1
+        },
+        {
+          "id": "ringside/big2",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/guy2",
+          "beat": 2
+        },
+        {
+          "id": "ringside/muscles1",
+          "beat": 2.5
+        },
+        {
+          "id": "ringside/muscles2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_youGoBigGuyC",
+      "name": "you go big guy - C",
+      "cues": [
+        {
+          "id": "ringside/whoa3",
+          "beat": 0
+        },
+        {
+          "id": "ringside/you3",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/go3",
+          "beat": 1
+        },
+        {
+          "id": "ringside/big3",
+          "beat": 1.5
+        },
+        {
+          "id": "ringside/guy3",
+          "beat": 2
+        },
+        {
+          "id": "ringside/muscles1",
+          "beat": 2.5
+        },
+        {
+          "id": "ringside/muscles2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_poseForTheFansA",
+      "name": "pose for the fans - A",
+      "cues": [
+        {
+          "id": "ringside/pose1",
+          "beat": 0
+        },
+        {
+          "id": "ringside/for1",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/the1",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/fans1",
+          "beat": 1
+        },
+        {
+          "id": "ringside/yell1",
+          "beat": 2
+        },
+        {
+          "id": "ringside/camera1",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_poseForTheFansB",
+      "name": "pose for the fans - B",
+      "cues": [
+        {
+          "id": "ringside/pose2",
+          "beat": 0
+        },
+        {
+          "id": "ringside/for2",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/the2",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/fans2",
+          "beat": 1
+        },
+        {
+          "id": "ringside/yell2",
+          "beat": 2
+        },
+        {
+          "id": "ringside/camera2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "ringside_poseForTheFansC",
+      "name": "pose for the fans - C",
+      "cues": [
+        {
+          "id": "ringside/pose3",
+          "beat": 0
+        },
+        {
+          "id": "ringside/for3",
+          "beat": 0.5
+        },
+        {
+          "id": "ringside/the3",
+          "beat": 0.75
+        },
+        {
+          "id": "ringside/fans3",
+          "beat": 1
+        },
+        {
+          "id": "ringside/yell3",
+          "beat": 2
+        },
+        {
+          "id": "ringside/camera3",
+          "beat": 3
+        }
+      ]
+    }
+  ]
+}
