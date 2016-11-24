@@ -20,17 +20,19 @@ public abstract class Entity {
 		this.remix = remix;
 	}
 
-	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch);
+	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
-	protected final void renderRect(SpriteBatch batch, EntityColors palette) {
-		renderRect(batch, palette.getBg(), palette.getOutline());
+	protected final void renderRect(SpriteBatch batch, EntityColors palette, EntityColors selPal, boolean selected) {
+		renderRect(batch, palette.getBg(), palette.getOutline(), selPal.getBg(), selPal.getOutline(), selected);
 	}
 
-	protected final void renderRect(SpriteBatch batch, Color bg, Color outline) {
-		batch.setColor(bg);
+	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selBg, Color selOutline,
+									boolean selected) {
+		batch.setColor(selected ? selBg : bg);
+
 		Main.fillRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT);
-		batch.setColor(outline);
+		batch.setColor(selected ? selOutline : outline);
 		Main.drawRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT, 4);
 
