@@ -10,6 +10,7 @@ import java.util.List;
 public class Remix {
 
 	public final List<Entity> entities = new ArrayList<>();
+	public final List<Entity> selection = new ArrayList<>();
 
 	public Remix() {
 		entities.add(new SoundEntity(this, GameRegistry.instance().get("tapTrial").getCue("ook"), 0, 0));

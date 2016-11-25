@@ -26,7 +26,7 @@ public class SoundEntity extends Entity {
 	@Override
 	public void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected) {
 		renderRect(batch, !cue.getCanAlterDuration() ? palette.getSoundCue() : palette.getStretchableSoundCue(),
-				palette.getSelectionFill(), selected);
+				palette.getSelectionTint(), selected);
 
 		main.font.getData().setScale(0.5f);
 		main.font.setColor(0, 0, 0, 1);

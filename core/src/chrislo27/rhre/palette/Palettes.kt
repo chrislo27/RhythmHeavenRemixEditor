@@ -14,7 +14,9 @@ abstract class AbstractPalette {
 	abstract val pattern: EntityColors
 	abstract val stretchablePattern: EntityColors
 
-	open val selectionFill: EntityColors = EntityColors(Color(0.1f, 0.75f, 0.75f, 0.333f), Color(0.1f, 0.85f, 0.85f, 1f))
+	open val selectionTint: Color = Color(0f, 0.75f, 0.75f, 1f)
+	open val selectionFill: Color = Color(0.1f, 0.75f, 0.75f, 0.333f)
+	open val selectionBorder: Color = Color(0.1f, 0.85f, 0.85f, 1f)
 
 }
 

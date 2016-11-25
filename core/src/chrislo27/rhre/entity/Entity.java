@@ -12,7 +12,8 @@ public abstract class Entity {
 
 	public static final int PX_HEIGHT = 48;
 	public static final int PX_WIDTH = PX_HEIGHT * 4;
-
+	private static final Color tmp = new Color();
+	private static final Color tmp2 = new Color();
 	public final Rectangle bounds = new Rectangle();
 	public final Remix remix;
 
@@ -22,17 +23,21 @@ public abstract class Entity {
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
-	protected final void renderRect(SpriteBatch batch, EntityColors palette, EntityColors selPal, boolean selected) {
-		renderRect(batch, palette.getBg(), palette.getOutline(), selPal.getBg(), selPal.getOutline(), selected);
+	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected) {
+		renderRect(batch, palette.getBg(), palette.getOutline(), selectionTint, selected);
 	}
 
-	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selBg, Color selOutline,
-									boolean selected) {
-		batch.setColor(selected ? selBg : bg);
+	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selectionTint, boolean
+			selected) {
+		batch.setColor(selected
+				? tmp
+				.set(bg.r * (1 + selectionTint.r), bg.g * (1 + selectionTint.g), bg.b * (1 + selectionTint.b), bg.a)
+				: bg);
 
 		Main.fillRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT);
-		batch.setColor(selected ? selOutline : outline);
+		batch.setColor(selected ? tmp.set(outline.r * (1 + selectionTint.r), outline.g * (1 + selectionTint.g),
+				outline.b * (1 + selectionTint.b), outline.a) : outline);
 		Main.drawRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT, 4);
 
