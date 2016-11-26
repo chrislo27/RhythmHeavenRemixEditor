@@ -183,7 +183,9 @@ public class Editor extends InputAdapter implements Disposable {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
 			if (selectionOrigin != null) {
 				camera.unproject(vec3Tmp.set(screenX, screenY, 0));
-				Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y, vec3Tmp.x, vec3Tmp.y);
+				Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y, vec3Tmp.x -
+						selectionOrigin.x,
+						vec3Tmp.y - selectionOrigin.y);
 
 				MathHelper.normalizeRectangle(selection);
 
