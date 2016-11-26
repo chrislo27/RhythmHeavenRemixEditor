@@ -11,8 +11,10 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import ionium.util.MathHelper;
 
 public class Editor extends InputAdapter implements Disposable {
 
@@ -28,13 +30,14 @@ public class Editor extends InputAdapter implements Disposable {
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
-
+	private final Vector3 vec3Tmp = new Vector3();
+	private final Vector3 vec3Tmp2 = new Vector3();
 	private Remix remix;
-
 	/**
 	 * null = not selecting
 	 */
 	private Vector2 selectionOrigin = null;
+	private Vector3 cameraPickVec3 = new Vector3();
 
 	public Editor(Main m) {
 		this.main = m;
@@ -42,6 +45,19 @@ public class Editor extends InputAdapter implements Disposable {
 		camera.position.x = 0.333f * camera.viewportWidth;
 
 		remix = new Remix();
+	}
+
+	public Entity getEntityAtPoint(float x, float y) {
+		camera.unproject(cameraPickVec3.set(x, y, 0));
+
+		return remix.entities.stream()
+				.filter(e -> e.bounds.contains(cameraPickVec3.x / Entity.PX_WIDTH, cameraPickVec3.y / Entity
+						.PX_HEIGHT))
+				.findFirst().orElse(null);
+	}
+
+	public Entity getEntityAtMouse() {
+		return getEntityAtPoint(Gdx.input.getX(), Gdx.input.getY());
 	}
 
 	public void render(SpriteBatch batch) {
@@ -96,6 +112,19 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(1, 1, 1, 1);
 		}
 
+		// selection rect
+		if (selectionOrigin != null) {
+			camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+			batch.setColor(main.palette.getSelectionFill());
+			Main.fillRect(batch, selectionOrigin.x, selectionOrigin.y, vec3Tmp.x - selectionOrigin.x,
+					vec3Tmp.y - selectionOrigin.y);
+			batch.setColor(main.palette.getSelectionBorder());
+			Main.drawRect(batch, selectionOrigin.x, selectionOrigin.y, vec3Tmp.x - selectionOrigin.x,
+					vec3Tmp.y - selectionOrigin.y, 4);
+			batch.setColor(1, 1, 1, 1);
+		}
+
 		batch.end();
 
 		// ------------------------------------------------------------------------------------------------------------
@@ -132,6 +161,44 @@ public class Editor extends InputAdapter implements Disposable {
 		if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
 		}
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		if (button == Input.Buttons.LEFT && pointer == 0) {
+			Entity possible = getEntityAtPoint(screenX, screenY);
+			camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
+
+			if (possible == null) {
+				// start selection
+				selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		if (button == Input.Buttons.LEFT && pointer == 0) {
+			if (selectionOrigin != null) {
+				camera.unproject(vec3Tmp.set(screenX, screenY, 0));
+				Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y, vec3Tmp.x, vec3Tmp.y);
+
+				MathHelper.normalizeRectangle(selection);
+
+				// TODO hold shift for OR select
+				remix.selection.clear();
+				remix.entities.stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
+						.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
+								selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)))
+						.forEachOrdered(remix.selection::add);
+
+				selectionOrigin = null;
+			}
+		}
+
+		return false;
 	}
 
 	@Override
