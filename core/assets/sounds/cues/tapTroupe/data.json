@@ -1,0 +1,215 @@
+{
+  "gameID": "tapTroupe",
+  "gameName": "Tap Troupe",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "tapTroupe/step1",
+      "duration": 1,
+      "name": "step - 1"
+    },
+    {
+      "id": "tapTroupe/step2",
+      "duration": 1,
+      "name": "step - 2"
+    },
+    {
+      "id": "tapTroupe/ready1",
+      "duration": 1,
+      "name": "read-"
+    },
+    {
+      "id": "tapTroupe/ready2",
+      "duration": 1,
+      "name": "-y!"
+    },
+    {
+      "id": "tapTroupe/and",
+      "duration": 0.5,
+      "name": "and"
+    },
+    {
+      "id": "tapTroupe/bombom1",
+      "duration": 0.75,
+      "name": "bom - 1"
+    },
+    {
+      "id": "tapTroupe/bombom2",
+      "duration": 0.75,
+      "name": "bom - 2"
+    },
+    {
+      "id": "tapTroupe/taptaptap1",
+      "duration": 0.75,
+      "name": "tap - 1"
+    },
+    {
+      "id": "tapTroupe/taptaptap2",
+      "duration": 0.75,
+      "name": "tap - 2"
+    },
+    {
+      "id": "tapTroupe/taptaptap3",
+      "duration": 1,
+      "name": "tap - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "tapTroupe_step",
+      "name": "step",
+      "cues": [
+        {
+          "id": "tapTroupe/step1",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupe/step2",
+          "beat": 1
+        },
+        {
+          "id": "tapTroupe/step1",
+          "beat": 2
+        },
+        {
+          "id": "tapTroupe/step2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "tapTroupe_tap0bom",
+      "name": "tap - 0 boms",
+      "cues": [
+        {
+          "id": "tapTroupe/ready1",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupe/ready2",
+          "beat": 1
+        },
+        {
+          "id": "tapTroupe/and",
+          "beat": 2
+        },
+        {
+          "id": "tapTroupe/taptaptap1",
+          "beat": 2.5
+        },
+        {
+          "id": "tapTroupe/taptaptap2",
+          "beat": 3.25
+        },
+        {
+          "id": "tapTroupe/taptaptap3",
+          "beat": 4
+        }
+      ]
+    },
+    {
+      "id": "tapTroupe_tap3boms",
+      "name": "tap - 3 boms",
+      "cues": [
+        {
+          "id": "tapTroupe/ready1",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupe/ready2",
+          "beat": 1
+        },
+        {
+          "id": "tapTroupe/and",
+          "beat": 2
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 2.5
+        },
+        {
+          "id": "tapTroupe/bombom2",
+          "beat": 3.25
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 4
+        },
+        {
+          "id": "tapTroupe/taptaptap1",
+          "beat": 4.75
+        },
+        {
+          "id": "tapTroupe/taptaptap2",
+          "beat": 5.5
+        },
+        {
+          "id": "tapTroupe/taptaptap3",
+          "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "tapTroupe_tap8boms",
+      "name": "tap - 8 boms",
+      "cues": [
+        {
+          "id": "tapTroupe/ready1",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupe/ready2",
+          "beat": 1
+        },
+        {
+          "id": "tapTroupe/and",
+          "beat": 2
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 2.5
+        },
+        {
+          "id": "tapTroupe/bombom2",
+          "beat": 3.25
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 4
+        },
+        {
+          "id": "tapTroupe/bombom2",
+          "beat": 4.75
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 5.5
+        },
+        {
+          "id": "tapTroupe/bombom2",
+          "beat": 6.25
+        },
+        {
+          "id": "tapTroupe/bombom1",
+          "beat": 7
+        },
+        {
+          "id": "tapTroupe/bombom2",
+          "beat": 7.75
+        },
+        {
+          "id": "tapTroupe/taptaptap1",
+          "beat": 8.5
+        },
+        {
+          "id": "tapTroupe/taptaptap2",
+          "beat": 9.25
+        },
+        {
+          "id": "tapTroupe/taptaptap3",
+          "beat": 10
+        }
+      ]
+    }
+  ]
+}

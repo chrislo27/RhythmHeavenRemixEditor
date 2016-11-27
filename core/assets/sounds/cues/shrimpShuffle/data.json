@@ -1,0 +1,265 @@
+{
+  "gameID": "shrimpShuffle",
+  "gameName": "Shrimp Shuffle",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "shrimpShuffle/to",
+      "duration": 0.5,
+      "name": "together - to"
+    },
+    {
+      "id": "shrimpShuffle/ge",
+      "duration": 0.5,
+      "name": "together - ge"
+    },
+    {
+      "id": "shrimpShuffle/ther",
+      "duration": 0.5,
+      "name": "together - ther"
+    },
+    {
+      "id": "shrimpShuffle/one1",
+      "duration": 1,
+      "name": "1 - first"
+    },
+    {
+      "id": "shrimpShuffle/two1",
+      "duration": 1,
+      "name": "2 - first"
+    },
+    {
+      "id": "shrimpShuffle/three1",
+      "duration": 1,
+      "name": "3 - first"
+    },
+    {
+      "id": "shrimpShuffle/three2",
+      "duration": 1,
+      "name": "1 - second"
+    },
+    {
+      "id": "shrimpShuffle/two2",
+      "duration": 1,
+      "name": "2 - second"
+    },
+    {
+      "id": "shrimpShuffle/one2",
+      "duration": 1,
+      "name": "3 - second"
+    },
+    {
+      "id": "shrimpShuffle/ah",
+      "duration": 0.5,
+      "name": "pause - 1"
+    },
+    {
+      "id": "shrimpShuffle/wa",
+      "duration": 0.5,
+      "name": "pause - 2"
+    },
+    {
+      "id": "shrimpShuffle/ha",
+      "duration": 0.5,
+      "name": "pause - 3"
+    },
+    {
+      "id": "shrimpShuffle/uhn",
+      "duration": 1,
+      "name": "pause - 4"
+    },
+    {
+      "id": "shrimpShuffle/a",
+      "duration": 1,
+      "name": "a"
+    },
+    {
+      "id": "shrimpShuffle/b",
+      "duration": 1,
+      "name": "b"
+    },
+    {
+      "id": "shrimpShuffle/c",
+      "duration": 1,
+      "name": "c"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "shrimpShuffle_together",
+      "name": "together",
+      "cues": [
+        {
+          "id": "shrimpShuffle/to",
+          "beat": 0
+        },
+        {
+          "id": "shrimpShuffle/ge",
+          "beat": 0.5
+        },
+        {
+          "id": "shrimpShuffle/ther",
+          "beat": 1
+        },
+        {
+          "id": "shrimpShuffle/one1",
+          "beat": 1.5
+        },
+        {
+          "id": "shrimpShuffle/two1",
+          "beat": 2.5
+        },
+        {
+          "id": "shrimpShuffle/three1",
+          "beat": 3.5
+        },
+        {
+          "id": "shrimpShuffle/three2",
+          "beat": 5
+        },
+        {
+          "id": "shrimpShuffle/two2",
+          "beat": 6
+        },
+        {
+          "id": "shrimpShuffle/one2",
+          "beat": 7.5
+        }
+      ]
+    },
+    {
+      "id": "shrimpShuffle_ABC",
+      "name": "ABC",
+      "cues": [
+        {
+          "id": "shrimpShuffle/to",
+          "beat": 0
+        },
+        {
+          "id": "shrimpShuffle/ge",
+          "beat": 0.5
+        },
+        {
+          "id": "shrimpShuffle/ther",
+          "beat": 1
+        },
+        {
+          "id": "shrimpShuffle/one1",
+          "beat": 1.5
+        },
+        {
+          "id": "shrimpShuffle/two1",
+          "beat": 2.5
+        },
+        {
+          "id": "shrimpShuffle/three1",
+          "beat": 3.5
+        },
+        {
+          "id": "shrimpShuffle/a",
+          "beat": 5
+        },
+        {
+          "id": "shrimpShuffle/b",
+          "beat": 6
+        },
+        {
+          "id": "shrimpShuffle/c",
+          "beat": 7.5
+        }
+      ]
+    },
+    {
+      "id": "shrimpShuffle_paused",
+      "name": "paused",
+      "cues": [
+        {
+          "id": "shrimpShuffle/ah",
+          "beat": 0
+        },
+        {
+          "id": "shrimpShuffle/wa",
+          "beat": 0.5
+        },
+        {
+          "id": "shrimpShuffle/ha",
+          "beat": 1
+        },
+        {
+          "id": "shrimpShuffle/uhn",
+          "beat": 1.5
+        },
+        {
+          "id": "shrimpShuffle/one1",
+          "beat": 2.5
+        },
+        {
+          "id": "shrimpShuffle/two1",
+          "beat": 3.5
+        },
+        {
+          "id": "shrimpShuffle/three1",
+          "beat": 4.5
+        },
+        {
+          "id": "shrimpShuffle/three2",
+          "beat": 6
+        },
+        {
+          "id": "shrimpShuffle/two2",
+          "beat": 7
+        },
+        {
+          "id": "shrimpShuffle/one2",
+          "beat": 8.5
+        }
+      ]
+    },
+    {
+      "id": "shrimpShuffle_pausedABC",
+      "name": "paused ABC",
+      "cues": [
+        {
+          "id": "shrimpShuffle/ah",
+          "beat": 0
+        },
+        {
+          "id": "shrimpShuffle/wa",
+          "beat": 0.5
+        },
+        {
+          "id": "shrimpShuffle/ha",
+          "beat": 1
+        },
+        {
+          "id": "shrimpShuffle/uhn",
+          "beat": 1.5
+        },
+        {
+          "id": "shrimpShuffle/one1",
+          "beat": 2.5
+        },
+        {
+          "id": "shrimpShuffle/two1",
+          "beat": 3.5
+        },
+        {
+          "id": "shrimpShuffle/three1",
+          "beat": 4.5
+        },
+        {
+          "id": "shrimpShuffle/a",
+          "beat": 6
+        },
+        {
+          "id": "shrimpShuffle/b",
+          "beat": 7
+        },
+        {
+          "id": "shrimpShuffle/c",
+          "beat": 8.5
+        }
+      ]
+    }
+  ]
+}
