@@ -9,12 +9,16 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import ionium.util.MathHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Editor extends InputAdapter implements Disposable {
 
@@ -32,11 +36,13 @@ public class Editor extends InputAdapter implements Disposable {
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
+	public float snappingInterval = 0.25f;
 	private Remix remix;
 	/**
 	 * null = not selecting
 	 */
 	private Vector2 selectionOrigin = null;
+	private SelectionGroup selectionGroup = null;
 	private Vector3 cameraPickVec3 = new Vector3();
 
 	public Editor(Main m) {
@@ -87,12 +93,16 @@ public class Editor extends InputAdapter implements Disposable {
 
 			final float yOffset = -1;
 
+			// horizontal
 			batch.setColor(main.palette.getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i * Entity.PX_HEIGHT,
 						camera.viewportWidth, 2);
 			}
 
+			// vertical
+			final int beatInside = ((int) (camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
+					Entity.PX_WIDTH));
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
 				batch.setColor(main.palette.getStaffLine());
@@ -100,8 +110,23 @@ public class Editor extends InputAdapter implements Disposable {
 						batch.getColor().a * (x == 0 ? 1f : (x < 0 ? 0.25f : 0.5f)));
 
 				Main.fillRect(batch, x * Entity.PX_WIDTH, yOffset, 2, TRACK_COUNT * Entity.PX_HEIGHT);
+
+				if (selectionGroup != null && beatInside == x) {
+					final int numOfLines = ((int) (1 / snappingInterval));
+					for (int i = 0; i < numOfLines; i++) {
+						float a = 0.75f;
+
+						batch.setColor(main.palette.getStaffLine());
+						batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
+								batch.getColor().a * a);
+
+						Main.fillRect(batch, (x + (snappingInterval * i)) * Entity.PX_WIDTH, yOffset, 1,
+								TRACK_COUNT * Entity.PX_HEIGHT);
+					}
+				}
 			}
 
+			// beat numbers
 			main.font.setColor(main.palette.getStaffLine());
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
@@ -161,6 +186,38 @@ public class Editor extends InputAdapter implements Disposable {
 		if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 			camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
 		}
+
+		if (selectionGroup != null) {
+			camera.update();
+
+			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			vec3Tmp2.x /= Entity.PX_WIDTH;
+			vec3Tmp2.y /= Entity.PX_HEIGHT;
+
+			// change "origin" entity
+			Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
+			rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
+			rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
+
+			// TODO snap on X levels
+			rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
+
+			// snap on Y
+			rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
+
+			// change others relative to the origin, using the others' positions as a guideline
+			{
+				for (int i = 0; i < selectionGroup.getList().size(); i++) {
+					Entity e = selectionGroup.getList().get(i);
+
+					if (e == selectionGroup.getEntityClickedOn())
+						continue;
+
+					e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
+							rect.y + selectionGroup.getRelativePositions().get(i).y);
+				}
+			}
+		}
 	}
 
 	@Override
@@ -169,9 +226,18 @@ public class Editor extends InputAdapter implements Disposable {
 			Entity possible = getEntityAtPoint(screenX, screenY);
 			camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
 
-			if (possible == null) {
+			if (possible == null || !remix.selection.contains(possible)) {
 				// start selection
 				selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
+			} else if (remix.selection.contains(possible)) {
+				// begin move
+				final List<Vector2> oldPos = new ArrayList<>();
+
+				remix.selection.stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+
+				selectionGroup = new SelectionGroup(remix.selection, oldPos, possible,
+						new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
+								cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y));
 			}
 		}
 
@@ -182,6 +248,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
 			if (selectionOrigin != null) {
+				// put selected entities into the selection list
 				camera.unproject(vec3Tmp.set(screenX, screenY, 0));
 				Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y, vec3Tmp.x -
 						selectionOrigin.x,
@@ -189,13 +256,23 @@ public class Editor extends InputAdapter implements Disposable {
 
 				MathHelper.normalizeRectangle(selection);
 
-				// TODO hold shift for OR select
-				remix.selection.clear();
+				boolean shouldAdd =
+						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
+								.SHIFT_RIGHT);
+				if (!shouldAdd)
+					remix.selection.clear();
 				remix.entities.stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
 						.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
-								selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)))
-						.forEachOrdered(remix.selection::add);
+								selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)) &&
+						(!shouldAdd || !remix.selection.contains(e))).forEachOrdered(remix.selection::add);
 
+				selectionOrigin = null;
+				selectionGroup = null;
+			} else if (selectionGroup != null) {
+				// move the selection group to the new place, or snap back
+				// TODO collision detection, reject if collided
+
+				selectionGroup = null;
 				selectionOrigin = null;
 			}
 		}
