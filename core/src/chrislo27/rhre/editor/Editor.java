@@ -198,10 +198,31 @@ public class Editor extends InputAdapter implements Disposable {
 			// button bar on top
 			Main.fillRect(batch, 0, Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT, Gdx.graphics.getWidth(),
 					EditorStageSetup.BAR_HEIGHT);
+			// series buttons
+			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values().length * GAME_ICON_SIZE,
+					OVERVIEW_HEIGHT);
+			for (int i = 0; i < Series.values().length; i++) {
+				batch.setColor(0.65f, 0.65f, 0.65f, 1);
+				Main.drawRect(batch, i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
+						OVERVIEW_HEIGHT, 1);
+
+				if (Series.values()[i] == currentSeries) {
+					batch.setColor(1, 1, 1, 1);
+					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
+							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+				}
+			}
 			batch.setColor(1, 1, 1, 1);
 			main.font.setColor(1, 1, 1, 1);
 			main.font.getData().setScale(0.5f);
 			main.font.draw(batch, status == null ? "" : status, 2, 2 + main.font.getCapHeight());
+
+			// series buttons
+			for (int i = 0; i < Series.values().length; i++) {
+				main.font.draw(batch, Series.values()[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
+						0, Align.center, false);
+			}
 			main.font.getData().setScale(1);
 		}
 
@@ -285,12 +306,19 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
-			if (screenY >= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
-				List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-				int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
+				if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
+					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
-				if (icon < list.size() && icon >= 0) {
-					scrolls.get(currentSeries).setGame(icon);
+					if (icon < list.size() && icon >= 0) {
+						scrolls.get(currentSeries).setGame(icon);
+					}
+				} else {
+					int i = Gdx.input.getX() / GAME_ICON_SIZE;
+					if (i < Series.values().length) {
+						currentSeries = Series.values()[i];
+					}
 				}
 			} else {
 
