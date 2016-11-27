@@ -39,8 +39,8 @@ public class SoundEntity extends Entity {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onStart(float delta) {
+		super.onStart(delta);
 
 		if (cue.getIntroSoundObj() != null)
 			cue.getIntroSoundObj().play();
@@ -52,8 +52,8 @@ public class SoundEntity extends Entity {
 	}
 
 	@Override
-	public void onEnd() {
-		super.onEnd();
+	public void onEnd(float delta) {
+		super.onEnd(delta);
 
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
 			if (cue.getIntroSoundObj() != null)

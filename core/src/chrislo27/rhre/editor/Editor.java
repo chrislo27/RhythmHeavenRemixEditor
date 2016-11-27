@@ -12,6 +12,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -165,6 +166,23 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 
 			batch.setColor(1, 1, 1, 1);
+
+			if (selectionGroup != null &&
+					camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0)).y <= Entity.PX_HEIGHT) {
+				float a = MathUtils.clamp(1.0f - (vec3Tmp.y / Entity.PX_HEIGHT), 0f, 1f);
+
+				batch.setColor(1, 0, 0, 0.25f * a);
+				Main.fillRect(batch, (camera.position.x - camera.viewportWidth * 0.5f), 0, camera.viewportWidth,
+						-camera.viewportHeight);
+				batch.setColor(1, 1, 1, 1);
+
+				main.biggerFont.getData().setScale(0.5f);
+				main.biggerFont.setColor(0.75f, 0.5f, 0.5f, 0.6f * a);
+				main.biggerFont.draw(batch, Localization.get("editor.delete"), camera.position.x,
+						-main.biggerFont.getCapHeight(), 0, Align.center, false);
+				main.biggerFont.getData().setScale(1);
+				main.biggerFont.setColor(1, 1, 1, 1);
+			}
 		}
 
 		// selection rect
