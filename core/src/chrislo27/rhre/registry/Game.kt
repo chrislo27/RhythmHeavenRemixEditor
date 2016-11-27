@@ -13,8 +13,9 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 	}
 }
 
-enum class Series(val shorthand: String) {
+enum class Series(val shorthand: String, val properName: String) {
 
-	UNKNOWN("Misc."), TENGOKU("TG"), DS("DS"), FEVER("FV"), MEGAMIX("MM");
+	UNKNOWN("Misc.", "Misc."), TENGOKU("TG", "Rhythm Tengoku"), DS("DS", "Rhythm Heaven"),
+	FEVER("FV", "Rhythm Heaven Fever"), MEGAMIX("MM", "Rhythm Heaven Megamix");
 
 }

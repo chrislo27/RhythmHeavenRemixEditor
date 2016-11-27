@@ -258,6 +258,10 @@ public class Editor extends InputAdapter implements Disposable {
 			camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
 		}
 
+		if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
+			camera.position.x = 0;
+		}
+
 		if (selectionGroup != null) {
 			camera.update();
 
@@ -289,17 +293,26 @@ public class Editor extends InputAdapter implements Disposable {
 							rect.y + selectionGroup.getRelativePositions().get(i).y);
 				}
 			}
-		}
+		} else {
+			status = Localization.get("editor.currentGame") + " " +
+					GameRegistry.instance().gamesBySeries.get(currentSeries).get(scrolls.get(currentSeries).getGame())
+							.getName();
 
-		if (Gdx.input.getY() >= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
-				Gdx.input.getX() <= GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
-			List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-			int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
+				if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT &&
+						Gdx.input.getX() <= GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
+					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
-			if (icon < list.size() && icon >= 0)
-				status = Localization.get("editor.currentSelection") + " " +
-						list.get(scrolls.get(currentSeries).getGame()).getName() + " - " +
-						Localization.get("editor.lookingAt", list.get(icon).getName());
+					if (icon < list.size() && icon >= 0)
+						status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
+				} else {
+					int i = Gdx.input.getX() / GAME_ICON_SIZE;
+					if (i < Series.values().length) {
+						status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
+					}
+				}
+			}
 		}
 	}
 

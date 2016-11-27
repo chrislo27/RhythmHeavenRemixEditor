@@ -37,4 +37,29 @@ public class SoundEntity extends Entity {
 				bounds.getWidth() * PX_WIDTH - 8, Align.right, true);
 		main.font.getData().setScale(1);
 	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		if (cue.getIntroSoundObj() != null)
+			cue.getIntroSoundObj().play();
+		if (cue.getCanAlterDuration() || cue.getLoops()) {
+			cue.getIntroSoundObj().loop();
+		} else {
+			cue.getIntroSoundObj().play();
+		}
+	}
+
+	@Override
+	public void onEnd() {
+		super.onEnd();
+
+		if (cue.getCanAlterDuration() || cue.getLoops()) {
+			if (cue.getIntroSoundObj() != null)
+				cue.getIntroSoundObj().stop();
+		}
+		cue.getSoundObj().stop();
+
+	}
 }
