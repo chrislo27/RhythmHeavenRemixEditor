@@ -79,12 +79,23 @@ public class Editor extends InputAdapter implements Disposable {
 		batch.begin();
 
 		// don't replace with foreach call b/c of performance
-		Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
-				(camera.position.y - camera.viewportHeight * 0.5f) / Entity.PX_HEIGHT,
-				(camera.viewportWidth) / Entity.PX_WIDTH, (camera.viewportHeight) / Entity.PX_HEIGHT);
-		for (Entity e : remix.entities) {
-			if (e.bounds.overlaps(Rectangle.tmp)) {
-				e.render(main, main.palette, batch, remix.selection.contains(e));
+		{
+			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
+					(camera.position.y - camera.viewportHeight * 0.5f) / Entity.PX_HEIGHT,
+					(camera.viewportWidth) / Entity.PX_WIDTH, (camera.viewportHeight) / Entity.PX_HEIGHT);
+			for (Entity e : remix.entities) {
+				if (selectionGroup != null && selectionGroup.getList().contains(e))
+					continue;
+				if (e.bounds.overlaps(Rectangle.tmp)) {
+					e.render(main, main.palette, batch, remix.selection.contains(e));
+				}
+			}
+			if (selectionGroup != null) {
+				for (Entity e : selectionGroup.getList()) {
+					if (e.bounds.overlaps(Rectangle.tmp)) {
+						e.render(main, main.palette, batch, remix.selection.contains(e));
+					}
+				}
 			}
 		}
 
@@ -271,7 +282,18 @@ public class Editor extends InputAdapter implements Disposable {
 				selectionGroup = null;
 			} else if (selectionGroup != null) {
 				// move the selection group to the new place, or snap back
-				// TODO collision detection, reject if collided
+
+				boolean collisionFree = remix.entities.stream().filter(e -> !selectionGroup.getList().contains(e))
+						.allMatch(e -> selectionGroup.getList().stream().noneMatch(e2 -> e.bounds.overlaps
+								(e2.bounds)));
+
+				if (!collisionFree) {
+					for (int i = 0; i < selectionGroup.getList().size(); i++) {
+						Entity e = selectionGroup.getList().get(i);
+
+						e.bounds.setPosition(selectionGroup.getOldPositions().get(i));
+					}
+				}
 
 				selectionGroup = null;
 				selectionOrigin = null;
