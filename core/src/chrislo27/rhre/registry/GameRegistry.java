@@ -14,13 +14,7 @@ import ionium.animation.Animation;
 import ionium.registry.handler.IAssetLoader;
 import ionium.util.AssetMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameRegistry {
@@ -45,6 +39,10 @@ public class GameRegistry {
 
 	public Game get(String id) {
 		return games.get(id);
+	}
+
+	public SoundCue getCue(String id) {
+		return games.values().stream().map(g -> g.getCue(id)).filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
 	private void init() {
