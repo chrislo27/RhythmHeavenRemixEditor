@@ -56,6 +56,7 @@ public class GameRegistry {
 		Map<Series, Integer> numberPerSeries = new HashMap<>();
 
 		for (String gameDef : games) {
+			Main.logger.info("Loading " + gameDef);
 			FileHandle gameFh = Gdx.files.internal("sounds/cues/" + gameDef + "/data.json");
 			GameObject gameObj = gson.fromJson(gameFh.readString("UTF-8"), GameObject.class);
 
@@ -64,10 +65,11 @@ public class GameRegistry {
 			List<SoundCue> soundCues = new ArrayList<>();
 
 			for (GameObject.SoundObject so : gameObj.cues) {
-				soundCues.add(new SoundCue(so.id, so.fileExtension, so.name, so.deprecatedIDs == null
-						? new ArrayList<>()
-						: Arrays.stream(so.deprecatedIDs).collect(Collectors.toList()), so.duration, so.canAlterPitch,
-						so.canAlterDuration, so.introSound, so.baseBpm, so.loops));
+				soundCues.add(new SoundCue(so.id, so.fileExtension, so.name == null ? so.id : so.name,
+						so.deprecatedIDs == null
+								? new ArrayList<>()
+								: Arrays.stream(so.deprecatedIDs).collect(Collectors.toList()), so.duration,
+						so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm, so.loops));
 			}
 
 			for (GameObject.PatternObject po : gameObj.patterns) {
