@@ -83,7 +83,7 @@
     {
       "id": "launchParty/grayEnd",
       "duration": 1,
-      "name": "green - launch",
+      "name": "gray - launch",
       "canAlterPitch": true,
       "fileExtension": "wav"
     }
