@@ -1,7 +1,8 @@
 package chrislo27.rhre.registry
 
 
-data class Game(val id: String, val name: String, val soundCues: List<SoundCue>, val patterns: List<Pattern>, val series: Series) {
+data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
+				val patterns: List<Pattern>, val series: Series, val icon: String?) {
 
 	fun getPattern(id: String): Pattern? {
 		return patterns.find { it.id == "${this.id}_$id" }
