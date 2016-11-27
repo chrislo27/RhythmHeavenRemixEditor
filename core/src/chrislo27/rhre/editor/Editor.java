@@ -12,7 +12,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -275,7 +274,8 @@ public class Editor extends InputAdapter implements Disposable {
 			rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
 
 			// snap on Y
-			rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
+//			rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
+			rect.y = Math.round(rect.y);
 
 			// change others relative to the origin, using the others' positions as a guideline
 			{
@@ -371,15 +371,23 @@ public class Editor extends InputAdapter implements Disposable {
 			} else if (selectionGroup != null) {
 				// move the selection group to the new place, or snap back
 
-				boolean collisionFree = remix.entities.stream().filter(e -> !selectionGroup.getList().contains(e))
-						.allMatch(e -> selectionGroup.getList().stream().noneMatch(e2 -> e.bounds.overlaps
-								(e2.bounds)));
+				boolean collisionFree = selectionGroup.getList().stream().allMatch(
+						e -> remix.entities.stream().filter(e2 -> !selectionGroup.getList().contains(e2))
+								.noneMatch(e2 -> e2.bounds.overlaps(e.bounds)) &&
+								(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
 
 				if (!collisionFree) {
-					for (int i = 0; i < selectionGroup.getList().size(); i++) {
-						Entity e = selectionGroup.getList().get(i);
+					boolean delete = selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
 
-						e.bounds.setPosition(selectionGroup.getOldPositions().get(i));
+					if (delete) {
+						remix.selection.clear();
+						remix.entities.removeIf(e -> e.bounds.y < 0);
+					} else {
+						for (int i = 0; i < selectionGroup.getList().size(); i++) {
+							Entity e = selectionGroup.getList().get(i);
+
+							e.bounds.setPosition(selectionGroup.getOldPositions().get(i));
+						}
 					}
 				}
 
