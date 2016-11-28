@@ -1,8 +1,6 @@
 package chrislo27.rhre.track
 
 import chrislo27.rhre.entity.Entity
-import chrislo27.rhre.entity.SoundEntity
-import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
 
 class Remix {
@@ -15,8 +13,7 @@ class Remix {
 	var music: Music? = null
 
 	init {
-		entities.add(SoundEntity(this, GameRegistry.instance().get("tapTrial").getCue("ook"), 0f, 0))
-		entities.add(SoundEntity(this, GameRegistry.instance().get("tapTrial").getCue("tap"), 1f, 0))
+
 	}
 
 	fun setPlayingState(ps: PlayingState) {
