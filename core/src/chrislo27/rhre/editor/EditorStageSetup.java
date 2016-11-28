@@ -23,6 +23,8 @@ public class EditorStageSetup {
 
 	private void create() {
 		stage = new Stage();
+
+//		stage.addActor()
 	}
 
 	public Stage getStage() {

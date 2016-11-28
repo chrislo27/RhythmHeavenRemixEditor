@@ -82,7 +82,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public Entity getEntityAtPoint(float x, float y) {
 		camera.unproject(cameraPickVec3.set(x, y, 0));
 
-		return remix.entities.stream()
+		return remix.getEntities().stream()
 				.filter(e -> e.bounds.contains(cameraPickVec3.x / Entity.PX_WIDTH, cameraPickVec3.y / Entity
 						.PX_HEIGHT))
 				.findFirst().orElse(null);
@@ -132,17 +132,17 @@ public class Editor extends InputAdapter implements Disposable {
 			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
 					(camera.position.y - camera.viewportHeight * 0.5f) / Entity.PX_HEIGHT,
 					(camera.viewportWidth) / Entity.PX_WIDTH, (camera.viewportHeight) / Entity.PX_HEIGHT);
-			for (Entity e : remix.entities) {
+			for (Entity e : remix.getEntities()) {
 				if (selectionGroup != null && selectionGroup.getList().contains(e))
 					continue;
 				if (e.bounds.overlaps(Rectangle.tmp)) {
-					e.render(main, main.palette, batch, remix.selection.contains(e));
+					e.render(main, main.palette, batch, remix.getSelection().contains(e));
 				}
 			}
 			if (selectionGroup != null) {
 				for (Entity e : selectionGroup.getList()) {
 					if (e.bounds.overlaps(Rectangle.tmp)) {
-						e.render(main, main.palette, batch, remix.selection.contains(e));
+						e.render(main, main.palette, batch, remix.getSelection().contains(e));
 					}
 				}
 			}
@@ -403,7 +403,7 @@ public class Editor extends InputAdapter implements Disposable {
 			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
 					// drag new pattern
-					remix.selection.clear();
+					remix.getSelection().clear();
 					selectionGroup = null;
 
 					Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
@@ -414,12 +414,12 @@ public class Editor extends InputAdapter implements Disposable {
 							game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId()))
 									.findFirst().orElse(null), 0, 0) : new PatternEntity(this.remix, p);
 
-					remix.entities.add(en);
-					remix.selection.add(en);
+					remix.getEntities().add(en);
+					remix.getSelection().add(en);
 
 					final List<Vector2> oldPos = new ArrayList<>();
-					remix.selection.stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
-					selectionGroup = new SelectionGroup(remix.selection, oldPos, remix.selection.get(0),
+					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
 							new Vector2(0, 0), true);
 				} else {
 					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
@@ -440,16 +440,16 @@ public class Editor extends InputAdapter implements Disposable {
 				Entity possible = getEntityAtPoint(screenX, screenY);
 				camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
 
-				if (possible == null || !remix.selection.contains(possible)) {
+				if (possible == null || !remix.getSelection().contains(possible)) {
 					// start selection
 					selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
-				} else if (remix.selection.contains(possible)) {
+				} else if (remix.getSelection().contains(possible)) {
 					// begin move
 					final List<Vector2> oldPos = new ArrayList<>();
 
-					remix.selection.stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
 
-					selectionGroup = new SelectionGroup(remix.selection, oldPos, possible,
+					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
 							new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
 									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
 				}
@@ -476,11 +476,11 @@ public class Editor extends InputAdapter implements Disposable {
 						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
 								.SHIFT_RIGHT);
 				if (!shouldAdd)
-					remix.selection.clear();
-				remix.entities.stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
+					remix.getSelection().clear();
+				remix.getEntities().stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
 						.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
 								selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)) &&
-						(!shouldAdd || !remix.selection.contains(e))).forEachOrdered(remix.selection::add);
+						(!shouldAdd || !remix.getSelection().contains(e))).forEachOrdered(remix.getSelection()::add);
 
 				selectionOrigin = null;
 				selectionGroup = null;
@@ -488,7 +488,7 @@ public class Editor extends InputAdapter implements Disposable {
 				// move the selection group to the new place, or snap back
 
 				boolean collisionFree = selectionGroup.getList().stream().allMatch(
-						e -> remix.entities.stream().filter(e2 -> !selectionGroup.getList().contains(e2))
+						e -> remix.getEntities().stream().filter(e2 -> !selectionGroup.getList().contains(e2))
 								.noneMatch(e2 -> e2.bounds.overlaps(e.bounds)) &&
 								(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
 
@@ -497,8 +497,8 @@ public class Editor extends InputAdapter implements Disposable {
 							selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
 
 					if (delete) {
-						remix.entities.removeAll(selectionGroup.getList());
-						remix.selection.clear();
+						remix.getEntities().removeAll(selectionGroup.getList());
+						remix.getSelection().clear();
 					} else {
 						for (int i = 0; i < selectionGroup.getList().size(); i++) {
 							Entity e = selectionGroup.getList().get(i);
