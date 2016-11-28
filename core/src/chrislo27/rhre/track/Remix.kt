@@ -40,12 +40,14 @@ class Remix {
 			}
 			PlayingState.STOPPED -> {
 				// reset playback completion
-				entities.forEach { it.playbackCompletion = PlaybackCompletion.WAITING }
+				entities.forEach(Entity::reset)
 			}
 		}
 	}
 
 	fun getPlayingState(): PlayingState = playingState
+
+	fun getBeat(): Float = beat
 
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING)

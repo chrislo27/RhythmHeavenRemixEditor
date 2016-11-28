@@ -24,6 +24,10 @@ public abstract class Entity {
 		this.remix = remix;
 	}
 
+	public void reset() {
+		playbackCompletion = PlaybackCompletion.WAITING;
+	}
+
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
 	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected,
