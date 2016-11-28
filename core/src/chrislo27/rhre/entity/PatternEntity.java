@@ -6,6 +6,7 @@ import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.SoundCue;
+import chrislo27.rhre.track.PlaybackCompletion;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
@@ -85,6 +86,12 @@ public class PatternEntity extends Entity {
 	}
 
 	@Override
+	public void reset() {
+		super.reset();
+		internal.forEach(Entity::reset);
+	}
+
+	@Override
 	public void onStart(float delta) {
 		super.onStart(delta);
 	}
@@ -99,5 +106,25 @@ public class PatternEntity extends Entity {
 	@Override
 	public void onWhile(float delta) {
 		super.onWhile(delta);
+
+		for (Entity e : internal) {
+			if (e.playbackCompletion == PlaybackCompletion.FINISHED) continue;
+
+			if (remix.getBeat() >= this.bounds.x + e.bounds.x) {
+				if (e.playbackCompletion == PlaybackCompletion.WAITING) {
+					e.onStart(delta);
+					e.playbackCompletion = PlaybackCompletion.STARTED;
+				}
+
+				if (e.playbackCompletion == PlaybackCompletion.STARTED) {
+					e.onWhile(delta);
+
+					if (remix.getBeat() >= this.bounds.x + e.bounds.x + e.bounds.width) {
+						e.onEnd(delta);
+						e.playbackCompletion = PlaybackCompletion.FINISHED;
+					}
+				}
+			}
+		}
 	}
 }
