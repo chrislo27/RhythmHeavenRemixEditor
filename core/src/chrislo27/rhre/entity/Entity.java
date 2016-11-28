@@ -3,6 +3,7 @@ package chrislo27.rhre.entity;
 import chrislo27.rhre.Main;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.palette.EntityColors;
+import chrislo27.rhre.track.PlaybackCompletion;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,8 @@ public abstract class Entity {
 	private static final Color tmp2 = new Color();
 	public final Rectangle bounds = new Rectangle();
 	public final Remix remix;
+
+	public PlaybackCompletion playbackCompletion = PlaybackCompletion.WAITING;
 
 	public Entity(Remix remix) {
 		this.remix = remix;
