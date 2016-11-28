@@ -20,29 +20,29 @@ abstract class AbstractPalette {
 
 }
 
-class LightPalette : AbstractPalette() {
+open class LightPalette : AbstractPalette() {
 
 	override val editorBg = Color(0.925f, 0.925f, 0.925f, 1f)
 	override val staffLine = Color(0.1f, 0.1f, 0.1f, 0.85f)
 
-	override val soundCue: EntityColors = EntityColors(Color(0.75f, 0.75f, 0.75f, 1f))
-	override val stretchableSoundCue: EntityColors = EntityColors(Color(1f, 0.75f, 0.75f, 1f))
-	override val bpmSoundCue: EntityColors = EntityColors(Color(0.75f, 1f, 0.75f, 1f))
-	override val pattern: EntityColors = EntityColors(Color(0.75f, 0.75f, 1f, 1f))
-	override val stretchablePattern: EntityColors = EntityColors(Color(1f, 0.75f, 1f, 1f))
+	override val soundCue: EntityColors = EntityColors(Color(0.85f, 0.85f, 0.85f, 1f))
+	override val stretchableSoundCue: EntityColors = EntityColors(Color(1f, 0.85f, 0.85f, 1f))
+	override val bpmSoundCue: EntityColors = EntityColors(Color(0.85f, 1f, 0.85f, 1f))
+	override val pattern: EntityColors = EntityColors(Color(0.85f, 0.85f, 1f, 1f))
+	override val stretchablePattern: EntityColors = EntityColors(Color(1f, 0.85f, 1f, 1f))
 
 }
 
-class DarkPalette : AbstractPalette() {
+open class DarkPalette : AbstractPalette() {
 
 	override val editorBg = Color(0.15f, 0.15f, 0.15f, 1f)
 	override val staffLine = Color(0.95f, 0.95f, 0.95f, 0.85f)
 
-	override val soundCue: EntityColors = EntityColors(Color(0.5f, 0.5f, 0.5f, 1f))
-	override val stretchableSoundCue: EntityColors = EntityColors(Color(0.75f, 0.5f, 0.5f, 1f))
-	override val bpmSoundCue: EntityColors = EntityColors(Color(0.5f, 0.75f, 0.5f, 1f))
-	override val pattern: EntityColors = EntityColors(Color(0.5f, 0.5f, 0.75f, 1f))
-	override val stretchablePattern: EntityColors = EntityColors(Color(0.75f, 0.5f, 0.75f, 1f))
+	override val soundCue: EntityColors = EntityColors(Color(0.65f, 0.65f, 0.65f, 1f))
+	override val stretchableSoundCue: EntityColors = EntityColors(Color(0.75f, 0.65f, 0.65f, 1f))
+	override val bpmSoundCue: EntityColors = EntityColors(Color(0.65f, 0.75f, 0.65f, 1f))
+	override val pattern: EntityColors = EntityColors(Color(0.75f, 0.75f, 0.9f, 1f))
+	override val stretchablePattern: EntityColors = EntityColors(Color(0.75f, 0.65f, 0.75f, 1f))
 
 }
 

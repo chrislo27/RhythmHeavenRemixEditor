@@ -23,12 +23,13 @@ public abstract class Entity {
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
-	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected) {
-		renderRect(batch, palette.getBg(), palette.getOutline(), selectionTint, selected);
+	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected,
+									Rectangle bounds) {
+		renderRect(batch, palette.getBg(), palette.getOutline(), selectionTint, selected, bounds);
 	}
 
-	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selectionTint, boolean
-			selected) {
+	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selectionTint, boolean selected,
+									Rectangle bounds) {
 		batch.setColor(selected
 				? tmp
 				.set(bg.r * (1 + selectionTint.r), bg.g * (1 + selectionTint.g), bg.b * (1 + selectionTint.b), bg.a)

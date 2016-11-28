@@ -94,10 +94,10 @@ public class Main extends ionium.templates.Main {
 		super.inputUpdate();
 
 		if (DebugSetting.debug && Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			if (palette instanceof LightPalette) {
-				palette = new DarkPalette();
-			} else {
+			if (palette instanceof DarkPalette) {
 				palette = new LightPalette();
+			} else {
+				palette = new DarkPalette();
 			}
 		}
 	}

@@ -45,6 +45,12 @@ public class GameRegistry {
 		return games.values().stream().map(g -> g.getCue(id)).filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
+	public SoundCue getCueRaw(String id) {
+		return games.values().stream()
+				.map(g -> g.getSoundCues().stream().filter(it -> it.getId().equals(id)).findFirst().orElse(null))
+				.filter(Objects::nonNull).findFirst().orElse(null);
+	}
+
 	private void init() {
 		final long startTime = System.nanoTime();
 
@@ -78,9 +84,20 @@ public class GameRegistry {
 					patternCues.add(new Pattern.PatternCue(pc.id, pc.beat, pc.track, pc.duration, pc.semitone));
 				}
 
-				p = new Pattern(po.id, po.name, po.isStretchable, patternCues);
+				p = new Pattern(po.id, po.name, po.isStretchable, patternCues, false);
 				patterns.add(p);
 			}
+
+			soundCues.stream().filter(sc -> soundCues.stream().noneMatch(
+					sc2 -> sc == sc2 && sc2.getIntroSound() != null && sc2.getIntroSound().equals(sc.getId())))
+					.forEach(sc -> {
+						List<Pattern.PatternCue> l = new ArrayList<>();
+
+						l.add(new Pattern.PatternCue(sc.getId(), 0, 0, sc.getDuration(), 0));
+
+						patterns.add(new Pattern(sc.getId() + "_AUTO-GENERATED", "cue: " + sc.getName(),
+								sc.getCanAlterDuration(), l, true));
+					});
 
 			FileHandle iconFh = Gdx.files.internal("sounds/cues/" + gameDef + "/icon.png");
 

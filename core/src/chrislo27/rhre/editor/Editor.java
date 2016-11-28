@@ -2,8 +2,11 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.entity.Entity;
+import chrislo27.rhre.entity.PatternEntity;
+import chrislo27.rhre.entity.SoundEntity;
 import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
+import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.Gdx;
@@ -12,6 +15,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +25,7 @@ import com.badlogic.gdx.utils.Disposable;
 import ionium.registry.AssetRegistry;
 import ionium.util.MathHelper;
 import ionium.util.i18n.Localization;
+import ionium.util.render.StencilMaskUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,6 +46,7 @@ public class Editor extends InputAdapter implements Disposable {
 			32;
 	public static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
+	private static final int PATTERNS_ABOVE_BELOW = 2;
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
@@ -94,9 +100,33 @@ public class Editor extends InputAdapter implements Disposable {
 		camera.position.y = (camera.viewportHeight * 0.5f) - STAFF_START_Y;
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		// entities
+
 		batch.begin();
 
+		final float yOffset = -1;
+
+		// beat lines
+		{
+			batch.setColor(1, 1, 1, 1);
+
+			// horizontal
+			batch.setColor(main.palette.getStaffLine());
+			for (int i = 0; i < TRACK_COUNT + 1; i++) {
+				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i * Entity.PX_HEIGHT,
+						camera.viewportWidth, 2);
+			}
+
+
+			// beat numbers
+			main.font.setColor(main.palette.getStaffLine());
+			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
+				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
+				main.font.draw(batch, x + "", x * Entity.PX_WIDTH,
+						TRACK_COUNT * Entity.PX_HEIGHT + main.font.getCapHeight() + 4, 0, Align.center, false);
+			}
+		}
+
+		// entities
 		// don't replace with foreach call b/c of performance
 		{
 			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
@@ -118,19 +148,8 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		// staff lines
+		// vertical beat line
 		{
-			batch.setColor(1, 1, 1, 1);
-
-			final float yOffset = -1;
-
-			// horizontal
-			batch.setColor(main.palette.getStaffLine());
-			for (int i = 0; i < TRACK_COUNT + 1; i++) {
-				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i * Entity.PX_HEIGHT,
-						camera.viewportWidth, 2);
-			}
-
 			// vertical
 			final int beatInside = ((int) (camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
 					Entity.PX_WIDTH));
@@ -156,15 +175,10 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				}
 			}
+		}
 
-			// beat numbers
-			main.font.setColor(main.palette.getStaffLine());
-			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
-				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.font.draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.font.getCapHeight() + 4, 0, Align.center, false);
-			}
-
+		// delete area
+		{
 			batch.setColor(1, 1, 1, 1);
 
 			if (selectionGroup != null &&
@@ -261,6 +275,53 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
+		// pattern list
+		{
+			batch.setColor(1, 1, 1, 1);
+			Main.fillRect(batch, Gdx.graphics.getWidth() * 0.5f, MESSAGE_BAR_HEIGHT, 1, PICKER_HEIGHT);
+
+			batch.end();
+			StencilMaskUtil.prepareMask();
+			main.shapes.setProjectionMatrix(main.camera.combined);
+			main.shapes.begin(ShapeRenderer.ShapeType.Filled);
+			main.shapes
+					.rect(Gdx.graphics.getWidth() * 0.5f, MESSAGE_BAR_HEIGHT, Gdx.graphics.getWidth(), PICKER_HEIGHT);
+			main.shapes.end();
+
+			batch.begin();
+			StencilMaskUtil.useMask();
+
+			main.fontBordered.setColor(1, 1, 1, 1);
+			Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+					.get(scrolls.get(currentSeries).getGame());
+
+			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f;
+
+			for (int i = Math.max(0, scrolls.get(currentSeries).getPattern() - PATTERNS_ABOVE_BELOW), first = scrolls
+					.get(currentSeries).getPattern();
+				 i < Math.min(game.getPatterns().size(), first + PATTERNS_ABOVE_BELOW + 900); i++) {
+				Pattern p = game.getPatterns().get(i);
+
+				main.fontBordered.setColor(1, 1, 1, 1);
+				if (p.getAutoGenerated()) {
+					main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
+				}
+				if (i == first) {
+					main.fontBordered.setColor(0.65f, 1, 1, 1);
+
+					main.fontBordered.draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
+				}
+
+				main.fontBordered.draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
+						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), 0, Align.left, false);
+			}
+
+			main.fontBordered.setColor(1, 1, 1, 1);
+
+			batch.flush();
+			StencilMaskUtil.resetMask();
+		}
+
 		batch.end();
 	}
 
@@ -292,7 +353,6 @@ public class Editor extends InputAdapter implements Disposable {
 			rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
 			rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
 
-			// TODO snap on X levels
 			rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
 
 			// snap on Y
@@ -317,13 +377,16 @@ public class Editor extends InputAdapter implements Disposable {
 							.getName();
 
 			if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
-				if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT &&
-						Gdx.input.getX() <= GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
-					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+				if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+					if (Gdx.input.getX() <= GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
+						List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+						int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
-					if (icon < list.size() && icon >= 0)
-						status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
+						if (icon < list.size() && icon >= 0)
+							status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
+					} else if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
+						status += " - " + Localization.get("editor.scrollPatterns");
+					}
 				} else {
 					int i = Gdx.input.getX() / GAME_ICON_SIZE;
 					if (i < Series.values().length) {
@@ -337,22 +400,43 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
-			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
-				if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
+			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
+				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
+					// drag new pattern
+					remix.selection.clear();
+					selectionGroup = null;
+
+					Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+							.get(scrolls.get(currentSeries).getGame());
+					Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
+
+					Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
+							game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId()))
+									.findFirst().orElse(null), 0, 0) : new PatternEntity(this.remix, p);
+
+					remix.entities.add(en);
+					remix.selection.add(en);
+
+					final List<Vector2> oldPos = new ArrayList<>();
+					remix.selection.stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+					selectionGroup = new SelectionGroup(remix.selection, oldPos, remix.selection.get(0),
+							new Vector2(0, 0), true);
+				} else {
 					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
 					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
 					if (icon < list.size() && icon >= 0) {
 						scrolls.get(currentSeries).setGame(icon);
-					}
-				} else {
-					int i = Gdx.input.getX() / GAME_ICON_SIZE;
-					if (i < Series.values().length) {
-						currentSeries = Series.values()[i];
+						scrolls.get(currentSeries).setPattern(0);
 					}
 				}
+			} else if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) &&
+					screenX <= Series.values().length * GAME_ICON_SIZE) {
+				int i = Gdx.input.getX() / GAME_ICON_SIZE;
+				if (i < Series.values().length) {
+					currentSeries = Series.values()[i];
+				}
 			} else {
-
 				Entity possible = getEntityAtPoint(screenX, screenY);
 				camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
 
@@ -367,10 +451,11 @@ public class Editor extends InputAdapter implements Disposable {
 
 					selectionGroup = new SelectionGroup(remix.selection, oldPos, possible,
 							new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
-									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y));
+									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
 				}
 			}
 		}
+
 
 		return false;
 	}
@@ -408,11 +493,12 @@ public class Editor extends InputAdapter implements Disposable {
 								(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
 
 				if (!collisionFree) {
-					boolean delete = selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
+					boolean delete = selectionGroup.getDeleteInstead() ||
+							selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
 
 					if (delete) {
+						remix.entities.removeAll(selectionGroup.getList());
 						remix.selection.clear();
-						remix.entities.removeIf(e -> e.bounds.y < 0);
 					} else {
 						for (int i = 0; i < selectionGroup.getList().size(); i++) {
 							Entity e = selectionGroup.getList().get(i);
@@ -427,6 +513,21 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f &&
+				Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+			List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+					.get(scrolls.get(currentSeries).getGame()).getPatterns();
+
+			scrolls.get(currentSeries)
+					.setPattern(MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
+
+			return true;
+		}
 		return false;
 	}
 

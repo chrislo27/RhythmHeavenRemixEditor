@@ -3,12 +3,13 @@ package chrislo27.rhre.editor
 import chrislo27.rhre.entity.Entity
 import com.badlogic.gdx.math.Vector2
 
-data class SelectionGroup(val list: List<Entity>, val oldPositions: List<Vector2>, val entityClickedOn: Entity, val offset: Vector2) {
+data class SelectionGroup(val list: List<Entity>, val oldPositions: List<Vector2>,
+						  val entityClickedOn: Entity, val offset: Vector2, val deleteInstead: Boolean) {
 
 	val relativePositions: List<Vector2> by lazy {
 		val returning: MutableList<Vector2> = mutableListOf()
 
-		list.forEachIndexed {i, e ->
+		list.forEachIndexed { i, e ->
 			if (e === entityClickedOn) {
 
 			}

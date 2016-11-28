@@ -1,11 +1,13 @@
 package chrislo27.rhre.entity;
 
 import chrislo27.rhre.Main;
+import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
 
 public class SoundEntity extends Entity {
@@ -26,7 +28,14 @@ public class SoundEntity extends Entity {
 	@Override
 	public void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected) {
 		renderRect(batch, !cue.getCanAlterDuration() ? palette.getSoundCue() : palette.getStretchableSoundCue(),
-				palette.getSelectionTint(), selected);
+				palette.getSelectionTint(), selected, bounds);
+
+		batch.setColor(1, 1, 1, 0.25f);
+		batch.draw(AssetRegistry.getTexture("gameIcon_" + cue.getId().substring(0, cue.getId().indexOf('/'))),
+				bounds.getX() * PX_WIDTH + Editor.GAME_ICON_PADDING,
+				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) -
+						Editor.GAME_ICON_SIZE * 0.5f, Editor.GAME_ICON_SIZE, Editor.GAME_ICON_SIZE);
+		batch.setColor(1, 1, 1, 1);
 
 		main.font.getData().setScale(0.5f);
 		main.font.setColor(0, 0, 0, 1);
