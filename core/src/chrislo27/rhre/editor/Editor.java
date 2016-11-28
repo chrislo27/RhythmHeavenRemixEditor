@@ -295,7 +295,7 @@ public class Editor extends InputAdapter implements Disposable {
 			Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
 					.get(scrolls.get(currentSeries).getGame());
 
-			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f;
+			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.fontBordered.getCapHeight() * 0.5f;
 
 			for (int i = Math.max(0, scrolls.get(currentSeries).getPattern() - PATTERNS_ABOVE_BELOW), first = scrolls
 					.get(currentSeries).getPattern();
