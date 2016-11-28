@@ -2,7 +2,8 @@ package chrislo27.rhre.track
 
 import java.util.*
 
-data class TempoChange constructor (val beat: Float, val tempo: Float, private val tc: TempoChanges) {
+data class TempoChange constructor (val beat: Float, val tempo: Float, private val tc: TempoChanges,
+									val unremoveable: Boolean = false) {
 
 	val seconds: Float by lazy {
 		if (tc.getCount() == 0)
@@ -20,11 +21,12 @@ class TempoChanges(defTempo: Float) {
 	private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap<Float, TempoChange>()
 
 	init {
-		add(TempoChange(0f, defTempo, this))
+		add(TempoChange(0f, defTempo, this, unremoveable = true))
 	}
 
 	fun remove(tc: TempoChange) {
 		if (getCount() <= 1) return
+		if (tc.unremoveable) return
 
 		beatMap.remove(tc.beat)
 		secondsMap.remove(tc.seconds)
