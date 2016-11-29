@@ -29,7 +29,7 @@ public class PatternEntity extends Entity {
 		pattern.getCues().forEach(pc -> {
 			SoundCue sc = GameRegistry.instance().getCueRaw(pc.getId());
 
-			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
+//			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
 			internal.add(new SoundEntity(remix, sc, pc.getBeat(), pc.getTrack(), sc.getDuration(), pc.getSemitone()));
 		});
