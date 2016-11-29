@@ -7,69 +7,59 @@
       "id": "launchParty/redStart",
       "duration": 1,
       "name": "red - start",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/redMiddle",
       "duration": 1,
       "name": "red - middle",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/redEnd",
       "duration": 1,
       "name": "red - launch",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/blueStart",
       "duration": 0.666666,
       "name": "blue - start",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/blueMiddle",
       "duration": 0.333333,
       "name": "blue - middle",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/blueEnd",
       "duration": 1,
       "name": "blue - launch",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/greenStart",
       "duration": 1,
       "name": "green - start",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/greenMiddle",
       "duration": 0.166666,
       "name": "green - middle",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/greenEnd",
       "duration": 1,
       "name": "green - launch",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/grayStart",
       "duration": 2,
-      "fileExtension": "wav"
     },
     {
       "id": "launchParty/grayLoop",
@@ -77,15 +67,13 @@
       "name": "gray - start",
       "introSound": "launchParty/grayStart",
       "loops": true,
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     },
     {
       "id": "launchParty/grayEnd",
       "duration": 1,
       "name": "gray - launch",
-      "canAlterPitch": true,
-      "fileExtension": "wav"
+      "canAlterPitch": true
     }
   ],
   "patterns": [
