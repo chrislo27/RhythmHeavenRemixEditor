@@ -5,7 +5,8 @@
   "cues": [
     {
       "id": "moaiDooWop/stoneGrind",
-      "duration": 1
+      "duration": 1,
+      "name": "switch"
     },
     {
       "id": "moaiDooWop/d1",
