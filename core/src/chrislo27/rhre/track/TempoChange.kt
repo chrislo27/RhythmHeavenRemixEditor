@@ -75,6 +75,10 @@ class TempoChanges(defTempo: Float) {
 		return tc.beat + BpmUtils.secondsToBeats(seconds - tc.seconds, tc.tempo)
 	}
 
+	fun beatCity(): String {
+		return "bad"
+	}
+
 }
 
 object BpmUtils {
