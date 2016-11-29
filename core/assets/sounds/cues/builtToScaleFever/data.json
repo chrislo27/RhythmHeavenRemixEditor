@@ -34,5 +34,99 @@
       "name": "shoot"
     }
   ],
-  "patterns": []
+  "patterns": [
+    {
+      "id": "builtToScaleFever_7bounces",
+      "name": "8 bounces",
+      "cues": [
+        {
+          "id": "builtToScaleFever/3",
+          "beat": 1
+        },
+        {
+          "id": "builtToScaleFever/2",
+          "beat": 2
+        },
+        {
+          "id": "builtToScaleFever/1",
+          "beat": 3
+        },
+        {
+          "id": "builtToScaleFever/2",
+          "beat": 4
+        },
+        {
+          "id": "builtToScaleFever/3",
+          "beat": 5
+        },
+        {
+          "id": "builtToScaleFever/4",
+          "beat": 6
+        },
+        {
+          "id": "builtToScaleFever/prepare",
+          "beat": 6,
+          "track": 1
+        },
+        {
+          "id": "builtToScaleFever/shoot",
+          "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "builtToScaleFever_5bounces",
+      "name": "5 bounces",
+      "cues": [
+        {
+          "id": "builtToScaleFever/1",
+          "beat": 0
+        },
+        {
+          "id": "builtToScaleFever/2",
+          "beat": 1
+        },
+        {
+          "id": "builtToScaleFever/3",
+          "beat": 2
+        },
+        {
+          "id": "builtToScaleFever/4",
+          "beat": 3
+        },
+        {
+          "id": "builtToScaleFever/prepare",
+          "beat": 3,
+          "track": 1
+        },
+        {
+          "id": "builtToScaleFever/shoot",
+          "beat": 4
+        }
+      ]
+    },
+    {
+      "id": "builtToScaleFever_3bounces",
+      "name": "3 bounces",
+      "cues": [
+        {
+          "id": "builtToScaleFever/1",
+          "beat": 0
+        },
+        {
+          "id": "builtToScaleFever/2",
+          "beat": 1
+        },
+        {
+          "id": "builtToScaleFever/prepare",
+          "beat": 1,
+          "track": 1
+        },
+        {
+          "id": "builtToScaleFever/shoot",
+          "beat": 2
+        }
+      ]
+    }
+  ]
 }
