@@ -17,8 +17,8 @@ data class TempoChange constructor (val beat: Float, val tempo: Float, private v
 
 class TempoChanges(defTempo: Float) {
 
-	private val beatMap: NavigableMap<Float, TempoChange> = TreeMap<Float, TempoChange>()
-	private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap<Float, TempoChange>()
+	private val beatMap: NavigableMap<Float, TempoChange> = TreeMap()
+	private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap()
 
 	init {
 		add(TempoChange(0f, defTempo, this, unremoveable = true))
@@ -30,11 +30,31 @@ class TempoChanges(defTempo: Float) {
 
 		beatMap.remove(tc.beat)
 		secondsMap.remove(tc.seconds)
+
+		update()
 	}
 
 	fun add(tc: TempoChange) {
 		beatMap.put(tc.beat, tc)
 		secondsMap.put(tc.seconds, tc)
+
+		update()
+	}
+
+	private fun update() {
+		val oldBeats: MutableList<TempoChange> = mutableListOf()
+
+		beatMap.entries.forEach { oldBeats.add(it.value) }
+
+		beatMap.clear()
+		secondsMap.clear()
+
+		oldBeats.forEach {
+			val tc = TempoChange(it.beat, it.tempo, this, it.unremoveable)
+
+			beatMap.put(tc.beat, tc)
+			secondsMap.put(tc.seconds, tc)
+		}
 	}
 
 	fun getCount(): Int = Math.min(beatMap.size, secondsMap.size)
