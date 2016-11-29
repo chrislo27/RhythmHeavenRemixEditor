@@ -1,0 +1,166 @@
+{
+  "gameID": "fanClub",
+  "gameName": "Fan Club",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "fanClub/singerYeah1",
+      "duration": 1,
+      "name": "singer - yeah - 1"
+    },
+    {
+      "id": "fanClub/singerYeah2",
+      "duration": 1,
+      "name": "singer - yeah - 2"
+    },
+    {
+      "id": "fanClub/singerYeah3",
+      "duration": 1,
+      "name": "singer - yeah - 3"
+    },
+    {
+      "id": "fanClub/audienceYeah",
+      "duration": 1,
+      "name": "audience - yeah"
+    },
+    {
+      "id": "fanClub/singerISuppose1",
+      "duration": 0.5,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClub/singerISuppose2",
+      "duration": 0.5,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClub/singerISuppose3",
+      "duration": 1,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClub/audienceISuppose1",
+      "duration": 1.5,
+      "name": "audience - i suppose - 1"
+    },
+    {
+      "id": "fanClub/audienceISuppose2",
+      "duration": 0.5,
+      "name": "audience - i suppose - 2"
+    },
+    {
+      "id": "fanClub/audienceISuppose3",
+      "duration": 1,
+      "name": "audience - i suppose - 3"
+    },
+    {
+      "id": "fanClub/audienceISuppose4",
+      "duration": 1,
+      "name": "audience - i suppose - 4"
+    },
+    {
+      "id": "fanClub/ohh1",
+      "duration": 2.5,
+      "baseBPM": 143,
+      "name": "ohh - 1"
+    },
+    {
+      "id": "fanClub/ohh2",
+      "duration": 0.5,
+      "name": "ohh - 2"
+    },
+    {
+      "id": "fanClub/ohh3",
+      "duration": 1,
+      "name": "ohh - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "fanClub_yeahYeahYeah",
+      "name": "yeah yeah yeah!",
+      "cues": [
+        {
+          "id": "fanClub/singerYeah1",
+          "beat": 0
+        },
+        {
+          "id": "fanClub/singerYeah2",
+          "beat": 1
+        },
+        {
+          "id": "fanClub/singerYeah3",
+          "beat": 2
+        },
+        {
+          "id": "fanClub/audienceYeah",
+          "beat": 4
+        },
+        {
+          "id": "fanClub/audienceYeah",
+          "beat": 5
+        },
+        {
+          "id": "fanClub/audienceYeah",
+          "beat": 6
+        },
+        {
+          "id": "fanClub/audienceYeah",
+          "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "fanClub_iSuppose",
+      "name": "i suppose!",
+      "cues": [
+        {
+          "id": "fanClub/singerISuppose1",
+          "beat": 0
+        },
+        {
+          "id": "fanClub/singerISuppose2",
+          "beat": 0.5
+        },
+        {
+          "id": "fanClub/singerISuppose3",
+          "beat": 1
+        },
+        {
+          "id": "fanClub/audienceISuppose1",
+          "beat": 2
+        },
+        {
+          "id": "fanClub/audienceISuppose2",
+          "beat": 3.5
+        },
+        {
+          "id": "fanClub/audienceISuppose3",
+          "beat": 4
+        },
+        {
+          "id": "fanClub/audienceISuppose4",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "fanClub_ohh",
+      "name": "ohh",
+      "cues": [
+        {
+          "id": "fanClub/ohh1",
+          "beat": 0
+        },
+        {
+          "id": "fanClub/ohh2",
+          "beat": 2.5
+        },
+        {
+          "id": "fanClub/ohh3",
+          "beat": 3
+        }
+      ]
+    }
+  ]
+}
