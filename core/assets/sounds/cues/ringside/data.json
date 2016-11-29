@@ -124,11 +124,6 @@
       "name": "is that true? - C - 8"
     },
     {
-      "id": "ringside/true3",
-      "duration": 1,
-      "name": "is that true? - C - 8"
-    },
-    {
       "id": "ringside/ye",
       "duration": 1,
       "name": "is that true? - ye"
@@ -446,7 +441,7 @@
       "name": "you go big guy - A",
       "cues": [
         {
-          "id": "ringside/whoa1",
+          "id": "ringside/woah1",
           "beat": 0
         },
         {
@@ -480,7 +475,7 @@
       "name": "you go big guy - B",
       "cues": [
         {
-          "id": "ringside/whoa2",
+          "id": "ringside/woah2",
           "beat": 0
         },
         {
@@ -514,7 +509,7 @@
       "name": "you go big guy - C",
       "cues": [
         {
-          "id": "ringside/whoa3",
+          "id": "ringside/woah3",
           "beat": 0
         },
         {
