@@ -31,7 +31,7 @@ public class PatternEntity extends Entity {
 
 			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
-			internal.add(new SoundEntity(remix, sc, pc.getBeat(), pc.getTrack(), sc.getDuration()));
+			internal.add(new SoundEntity(remix, sc, pc.getBeat(), pc.getTrack(), sc.getDuration(), pc.getSemitone()));
 		});
 
 		if (internal.size() == 0)

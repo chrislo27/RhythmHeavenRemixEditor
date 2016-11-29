@@ -1,6 +1,9 @@
 package chrislo27.rhre.track
 
+import com.badlogic.gdx.utils.IntMap
+import ionium.util.Utils
 import java.util.*
+
 
 data class TempoChange constructor (val beat: Float, val tempo: Float, private val tc: TempoChanges,
 									val unremoveable: Boolean = false) {
@@ -85,4 +88,47 @@ object BpmUtils {
 	fun beatsToSeconds(beat: Float, bpm: Float): Float = beat / (bpm / 60)
 
 	fun secondsToBeats(seconds: Float, bpm: Float): Float = seconds * (bpm / 60)
+}
+
+object Semitones {
+
+	val SEMITONES_IN_OCTAVE = 12
+	val SEMITONE_VALUE = 1f / SEMITONES_IN_OCTAVE
+	private val cachedPitches = IntMap<Float>()
+
+	fun getSemitoneName(semitone: Int): String {
+		var thing: String
+
+		when (Math.abs(Math.floorMod(semitone, SEMITONES_IN_OCTAVE))) {
+			0 -> thing = "C"
+			1 -> thing = "C#"
+			2 -> thing = "D"
+			3 -> thing = "D#"
+			4 -> thing = "E"
+			5 -> thing = "F"
+			6 -> thing = "F#"
+			7 -> thing = "G"
+			8 -> thing = "G#"
+			9 -> thing = "A"
+			10 -> thing = "A#"
+			11 -> thing = "B"
+			else -> thing = "N/A"
+		}
+
+		if (semitone >= 12 || semitone <= -1) {
+			thing += Utils.repeat(if (semitone > 0) "+" else "-",
+								  Math.abs(Math.floorDiv(semitone, SEMITONES_IN_OCTAVE)))
+		}
+
+		return thing
+	}
+
+	fun getALPitch(semitone: Int): Float {
+		if (cachedPitches.get(semitone) == null) {
+			cachedPitches.put(semitone, Math.pow(2.0, (semitone * SEMITONE_VALUE).toDouble()).toFloat())
+		}
+
+		return cachedPitches.get(semitone)
+	}
+
 }

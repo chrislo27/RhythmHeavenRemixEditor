@@ -5,6 +5,7 @@ import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
+import chrislo27.rhre.track.Semitones;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
@@ -13,16 +14,17 @@ import ionium.util.Utils;
 public class SoundEntity extends Entity {
 
 	public final SoundCue cue;
+	public volatile int semitone;
 
-	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration) {
+	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
 		this.cue = cue;
+		this.semitone = semitone;
 
 		this.bounds.set(beat, level, duration, 1);
 	}
-
-	public SoundEntity(Remix remix, SoundCue cue, float beat, int level) {
-		this(remix, cue, beat, level, cue.getDuration());
+	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, int semitone) {
+		this(remix, cue, beat, level, cue.getDuration(), semitone);
 	}
 
 	@Override
@@ -33,8 +35,8 @@ public class SoundEntity extends Entity {
 		batch.setColor(1, 1, 1, 0.25f);
 		batch.draw(AssetRegistry.getTexture("gameIcon_" + cue.getId().substring(0, cue.getId().indexOf('/'))),
 				bounds.getX() * PX_WIDTH + Editor.GAME_ICON_PADDING,
-				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) -
-						Editor.GAME_ICON_SIZE * 0.5f, Editor.GAME_ICON_SIZE, Editor.GAME_ICON_SIZE);
+				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) - Editor.GAME_ICON_SIZE * 0.5f,
+				Editor.GAME_ICON_SIZE, Editor.GAME_ICON_SIZE);
 		batch.setColor(1, 1, 1, 1);
 
 		main.font.getData().setScale(0.5f);
@@ -51,12 +53,13 @@ public class SoundEntity extends Entity {
 	public void onStart(float delta) {
 		super.onStart(delta);
 
-		if (cue.getIntroSoundObj() != null)
-			cue.getIntroSoundObj().play();
+		if (cue.getIntroSoundObj() != null) {
+			cue.getIntroSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
+		}
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
-			cue.getSoundObj().loop();
+			cue.getSoundObj().loop(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
 		} else {
-			cue.getSoundObj().play();
+			cue.getSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
 		}
 	}
 

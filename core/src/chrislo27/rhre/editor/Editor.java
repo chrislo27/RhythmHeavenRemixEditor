@@ -419,7 +419,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 					Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
 							game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId()))
-									.findFirst().orElse(null), 0, 0) : new PatternEntity(this.remix, p);
+									.findFirst().orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
 
 					remix.getEntities().add(en);
 					remix.getSelection().add(en);
