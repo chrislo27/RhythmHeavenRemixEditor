@@ -41,6 +41,9 @@ class Remix {
 			PlayingState.STOPPED -> {
 				// reset playback completion
 				entities.forEach(Entity::reset)
+
+				// FIXME
+				beat = 0f
 			}
 		}
 	}

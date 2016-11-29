@@ -8,6 +8,7 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
+import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -326,7 +327,7 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void renderUpdate() {
-
+		remix.update(Gdx.graphics.getDeltaTime());
 	}
 
 	public void inputUpdate() {
@@ -339,6 +340,12 @@ public class Editor extends InputAdapter implements Disposable {
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
 			camera.position.x = 0;
+		}
+
+		// FIXME
+		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+			remix.setPlayingState(
+					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
 		}
 
 		if (selectionGroup != null) {
@@ -418,7 +425,8 @@ public class Editor extends InputAdapter implements Disposable {
 					remix.getSelection().add(en);
 
 					final List<Vector2> oldPos = new ArrayList<>();
-					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y))
+							.forEachOrdered(oldPos::add);
 					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
 							new Vector2(0, 0), true);
 				} else {
@@ -447,7 +455,8 @@ public class Editor extends InputAdapter implements Disposable {
 					// begin move
 					final List<Vector2> oldPos = new ArrayList<>();
 
-					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y)).forEachOrdered(oldPos::add);
+					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y))
+							.forEachOrdered(oldPos::add);
 
 					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
 							new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,

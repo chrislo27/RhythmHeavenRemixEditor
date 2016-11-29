@@ -54,9 +54,9 @@ public class SoundEntity extends Entity {
 		if (cue.getIntroSoundObj() != null)
 			cue.getIntroSoundObj().play();
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
-			cue.getIntroSoundObj().loop();
+			cue.getSoundObj().loop();
 		} else {
-			cue.getIntroSoundObj().play();
+			cue.getSoundObj().play();
 		}
 	}
 
@@ -67,8 +67,8 @@ public class SoundEntity extends Entity {
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
 			if (cue.getIntroSoundObj() != null)
 				cue.getIntroSoundObj().stop();
+			cue.getSoundObj().stop();
 		}
-		cue.getSoundObj().stop();
 
 	}
 }
