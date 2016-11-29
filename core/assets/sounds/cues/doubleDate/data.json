@@ -24,7 +24,7 @@
       "name": "football - bounce"
     },
     {
-      "id": "doubleDate/footballBounce",
+      "id": "doubleDate/footballKick",
       "duration": 0.5,
       "name": "football - kick"
     }
@@ -32,7 +32,7 @@
   "patterns": [
     {
       "id": "doubleDate_soccerball",
-      "name": "soccerball",
+      "name": "soccer ball",
       "cues": [
         {
           "id": "doubleDate/soccerBounce",

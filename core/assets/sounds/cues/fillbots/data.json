@@ -35,7 +35,7 @@
     },
     {
       "id": "fillbots/bigFill",
-      "duration": 3,
+      "duration": 7,
       "name": "big - fill"
     },
     {
@@ -54,29 +54,29 @@
       "name": "big - detach - 3"
     },
     {
-      "id": "fillbots/bigFall",
+      "id": "fillbots/smallFall",
       "duration": 1,
-      "name": "big - fall"
+      "name": "small - fall"
     },
     {
-      "id": "fillbots/bigFill",
-      "duration": 3,
-      "name": "big - fill"
+      "id": "fillbots/smallFill",
+      "duration": 1,
+      "name": "small - fill"
     },
     {
-      "id": "fillbots/bigFinish1",
+      "id": "fillbots/smallFinish1",
       "duration": 0.5,
-      "name": "big - detach - 1"
+      "name": "small - detach - 1"
     },
     {
-      "id": "fillbots/bigFinish2",
+      "id": "fillbots/smallFinish2",
       "duration": 0.5,
-      "name": "big - detach - 2"
+      "name": "small - detach - 2"
     },
     {
-      "id": "fillbots/bigFinish3",
+      "id": "fillbots/smallFinish3",
       "duration": 0.5,
-      "name": "big - detach - 3"
+      "name": "small - detach - 3"
     }
   ],
   "patterns": [
