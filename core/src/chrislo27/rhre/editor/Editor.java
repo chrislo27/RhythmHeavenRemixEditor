@@ -37,17 +37,17 @@ import java.util.Map;
 
 public class Editor extends InputAdapter implements Disposable {
 
-	public static final int MESSAGE_BAR_HEIGHT = 12;
-	public static final int GAME_TAB_HEIGHT = 24;
+	private static final int MESSAGE_BAR_HEIGHT = 12;
+	private static final int GAME_TAB_HEIGHT = 24;
 	public static final int GAME_ICON_SIZE = 32;
 	public static final int GAME_ICON_PADDING = 8;
 	public static final int ICON_COUNT_X = 15;
 	public static final int ICON_COUNT_Y = 4;
-	public static final int PICKER_HEIGHT = ICON_COUNT_Y * (GAME_ICON_PADDING + GAME_ICON_SIZE) + GAME_ICON_PADDING;
-	public static final int OVERVIEW_HEIGHT = 32;
-	public static final int STAFF_START_Y = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT +
+	private static final int PICKER_HEIGHT = ICON_COUNT_Y * (GAME_ICON_PADDING + GAME_ICON_SIZE) + GAME_ICON_PADDING;
+	private static final int OVERVIEW_HEIGHT = 32;
+	private static final int STAFF_START_Y = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT +
 			32;
-	public static final int TRACK_COUNT = 5;
+	private static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
@@ -514,8 +514,6 @@ public class Editor extends InputAdapter implements Disposable {
 									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
 
 					// stretch code
-					boolean isStretching = false;
-
 					if (remix.getSelection().size() <= 1 && possible.isStretchable()) {
 						cameraPickVec3.x /= Entity.PX_WIDTH;
 						cameraPickVec3.y /= Entity.PX_HEIGHT;
@@ -523,7 +521,6 @@ public class Editor extends InputAdapter implements Disposable {
 								cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
 								(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
 										cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
-							isStretching = true;
 							this.isStretching = (cameraPickVec3.x >= possible.bounds.x &&
 									cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ? 1 : 2;
 						}
