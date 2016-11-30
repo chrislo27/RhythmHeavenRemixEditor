@@ -94,8 +94,10 @@ object Semitones {
 
 	const val SEMITONES_IN_OCTAVE = 12
 	const val SEMITONE_VALUE = 1f / SEMITONES_IN_OCTAVE
+
 	private val cachedPitches = IntMap<Float>()
 
+	@JvmStatic
 	fun getSemitoneName(semitone: Int): String {
 		var thing: String
 
@@ -123,6 +125,7 @@ object Semitones {
 		return thing
 	}
 
+	@JvmStatic
 	fun getALPitch(semitone: Int): Float {
 		if (cachedPitches.get(semitone) == null) {
 			cachedPitches.put(semitone, Math.pow(2.0, (semitone * SEMITONE_VALUE).toDouble()).toFloat())

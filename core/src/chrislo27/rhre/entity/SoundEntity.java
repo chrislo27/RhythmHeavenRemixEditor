@@ -77,12 +77,12 @@ public class SoundEntity extends Entity {
 		super.onStart(delta);
 
 		if (cue.getIntroSoundObj() != null) {
-			cue.getIntroSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
+			cue.getIntroSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.getALPitch(semitone) : 1, 0);
 		}
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
-			cue.getSoundObj().loop(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
+			cue.getSoundObj().loop(1, !cue.getCanAlterPitch() ? 1 : Semitones.getALPitch(semitone), 0);
 		} else {
-			cue.getSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.INSTANCE.getALPitch(semitone) : 1, 0);
+			cue.getSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.getALPitch(semitone) : 1, 0);
 		}
 	}
 
