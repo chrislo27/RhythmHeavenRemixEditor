@@ -8,6 +8,8 @@ import chrislo27.rhre.registry.GameRegistry;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -25,6 +27,8 @@ public class Main extends ionium.templates.Main {
 	public BitmapFont fontBordered;
 
 	public AbstractPalette palette = new LightPalette();
+
+	public Cursor horizontalResize;
 
 	public Main(Logger l) {
 		super(l);
@@ -51,6 +55,9 @@ public class Main extends ionium.templates.Main {
 		AssetRegistry.instance().addAssetLoader(new DefAssetLoader());
 
 		DebugSetting.showFPS = false;
+
+		horizontalResize = Gdx.graphics.newCursor(
+				new Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8);
 	}
 
 	@Override

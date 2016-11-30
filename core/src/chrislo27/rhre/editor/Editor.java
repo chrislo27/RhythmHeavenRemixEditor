@@ -13,6 +13,7 @@ import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -48,13 +49,14 @@ public class Editor extends InputAdapter implements Disposable {
 	public static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
+	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
 	// TODO add button for this - 1/4, 1/6, 1/8
-	public float snappingInterval = 0.25f;
+	public float snappingInterval = 0.125f;
 	public String status;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
@@ -68,6 +70,8 @@ public class Editor extends InputAdapter implements Disposable {
 	 */
 	private SelectionGroup selectionGroup = null;
 	private Vector3 cameraPickVec3 = new Vector3();
+	private boolean isCursorStretching = false;
+	private int isStretching = 0;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -348,6 +352,29 @@ public class Editor extends InputAdapter implements Disposable {
 					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
 		}
 
+		// cursor only
+		Entity possible = getEntityAtMouse();
+
+		boolean isAbleToStretch = false;
+
+		if (possible != null && remix.getSelection().size() <= 1 && possible.isStretchable()) {
+			cameraPickVec3.x /= Entity.PX_WIDTH;
+			cameraPickVec3.y /= Entity.PX_HEIGHT;
+			if ((cameraPickVec3.x >= possible.bounds.x && cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
+					(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
+							cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
+				isAbleToStretch = true;
+			}
+		}
+
+		if ((this.isStretching > 0 || isAbleToStretch) && !isCursorStretching) {
+			isCursorStretching = true;
+			Gdx.graphics.setCursor(main.horizontalResize);
+		} else if ((isStretching <= 0 && !isAbleToStretch) && isCursorStretching) {
+			isCursorStretching = false;
+			Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+		}
+
 		if (selectionGroup != null) {
 			camera.update();
 
@@ -355,27 +382,47 @@ public class Editor extends InputAdapter implements Disposable {
 			vec3Tmp2.x /= Entity.PX_WIDTH;
 			vec3Tmp2.y /= Entity.PX_HEIGHT;
 
-			// change "origin" entity
-			Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
-			rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
-			rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
+			if (isStretching > 0) {
+				Entity e = selectionGroup.getList().get(0);
+				// stretch
+				if (isStretching == 1) {
+					float rightSideX = (selectionGroup.getOldPositions().get(0).x +
+							selectionGroup.getOldPositions().get(0).width);
 
-			rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
+					e.bounds.x = vec3Tmp2.x;
+					e.bounds.x = Math
+							.min(MathHelper.snapToNearest(e.bounds.x, snappingInterval), rightSideX -
+									snappingInterval);
+					e.bounds.width = (selectionGroup.getOldPositions().get(0).x +
+							selectionGroup.getOldPositions().get(0).width) - e.bounds.x;
+				} else if (isStretching == 2) {
+					e.bounds.width = vec3Tmp2.x - selectionGroup.getOldPositions().get(0).x;
+					e.bounds.width = Math
+							.max(MathHelper.snapToNearest(e.bounds.width, snappingInterval), snappingInterval);
+				}
+			} else {
+				// change "origin" entity
+				Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
+				rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
+				rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
 
-			// snap on Y
-//			rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
-			rect.y = Math.round(rect.y);
+				rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
 
-			// change others relative to the origin, using the others' positions as a guideline
-			{
-				for (int i = 0; i < selectionGroup.getList().size(); i++) {
-					Entity e = selectionGroup.getList().get(i);
+				// snap on Y
+//				rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
+				rect.y = Math.round(rect.y);
 
-					if (e == selectionGroup.getEntityClickedOn())
-						continue;
+				// change others relative to the origin, using the others' positions as a guideline
+				{
+					for (int i = 0; i < selectionGroup.getList().size(); i++) {
+						Entity e = selectionGroup.getList().get(i);
 
-					e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
-							rect.y + selectionGroup.getRelativePositions().get(i).y);
+						if (e == selectionGroup.getEntityClickedOn())
+							continue;
+
+						e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
+								rect.y + selectionGroup.getRelativePositions().get(i).y);
+					}
 				}
 			}
 		} else {
@@ -424,8 +471,9 @@ public class Editor extends InputAdapter implements Disposable {
 					remix.getEntities().add(en);
 					remix.getSelection().add(en);
 
-					final List<Vector2> oldPos = new ArrayList<>();
-					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y))
+					final List<Rectangle> oldPos = new ArrayList<>();
+					remix.getSelection().stream()
+							.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 							.forEachOrdered(oldPos::add);
 					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
 							new Vector2(0, 0), true);
@@ -453,14 +501,30 @@ public class Editor extends InputAdapter implements Disposable {
 					selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
 				} else if (remix.getSelection().contains(possible)) {
 					// begin move
-					final List<Vector2> oldPos = new ArrayList<>();
+					final List<Rectangle> oldPos = new ArrayList<>();
 
-					remix.getSelection().stream().map(e -> new Vector2(e.bounds.x, e.bounds.y))
+					remix.getSelection().stream().map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 							.forEachOrdered(oldPos::add);
 
 					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
 							new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
 									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
+
+					// stretch code
+					boolean isStretching = false;
+
+					if (remix.getSelection().size() <= 1 && possible.isStretchable()) {
+						cameraPickVec3.x /= Entity.PX_WIDTH;
+						cameraPickVec3.y /= Entity.PX_HEIGHT;
+						if ((cameraPickVec3.x >= possible.bounds.x &&
+								cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
+								(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
+										cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
+							isStretching = true;
+							this.isStretching = (cameraPickVec3.x >= possible.bounds.x &&
+									cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ? 1 : 2;
+						}
+					}
 				}
 			}
 		}
@@ -512,14 +576,23 @@ public class Editor extends InputAdapter implements Disposable {
 						for (int i = 0; i < selectionGroup.getList().size(); i++) {
 							Entity e = selectionGroup.getList().get(i);
 
-							e.bounds.setPosition(selectionGroup.getOldPositions().get(i));
+							e.bounds.set(selectionGroup.getOldPositions().get(i).getX(),
+									selectionGroup.getOldPositions().get(i).getY(),
+									selectionGroup.getOldPositions().get(i).getWidth(),
+									selectionGroup.getOldPositions().get(i).getHeight());
 						}
+					}
+				} else {
+					if (isStretching > 0) {
+						selectionGroup.getList().get(0).onLengthChange();
 					}
 				}
 
 				selectionGroup = null;
 				selectionOrigin = null;
 			}
+
+			isStretching = 0;
 		}
 
 		return false;

@@ -28,6 +28,11 @@ public class SoundEntity extends Entity {
 	}
 
 	@Override
+	public boolean isStretchable() {
+		return cue.getCanAlterDuration();
+	}
+
+	@Override
 	public void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected) {
 		renderRect(batch, !cue.getCanAlterDuration() ? palette.getSoundCue() : palette.getStretchableSoundCue(),
 				palette.getSelectionTint(), selected, bounds);

@@ -28,6 +28,12 @@ public abstract class Entity {
 		playbackCompletion = PlaybackCompletion.WAITING;
 	}
 
+	public void onLengthChange() {
+
+	}
+
+	public abstract boolean isStretchable();
+
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
 	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected,

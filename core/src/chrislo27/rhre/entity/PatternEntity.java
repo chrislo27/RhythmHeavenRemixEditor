@@ -9,6 +9,7 @@ import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.PlaybackCompletion;
 import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
@@ -20,6 +21,8 @@ public class PatternEntity extends Entity {
 
 	public final List<SoundEntity> internal;
 	public final Pattern pattern;
+	private final List<Vector2> originalBounds;
+	private final float originalWidth;
 
 	public PatternEntity(Remix remix, Pattern p) {
 		super(remix);
@@ -49,6 +52,33 @@ public class PatternEntity extends Entity {
 		}
 		this.bounds.height = highest.bounds.y + highest.bounds.height;
 		this.bounds.width = furthest.bounds.x + furthest.bounds.width;
+		this.originalWidth = this.bounds.width;
+
+		this.originalBounds = new ArrayList<>();
+		internal.forEach(se -> originalBounds.add(new Vector2(se.bounds.getX(), se.bounds.getWidth())));
+	}
+
+	@Override
+	public void onLengthChange() {
+		super.onLengthChange();
+
+		for (int i = 0; i < internal.size(); i++) {
+			SoundEntity se = internal.get(i);
+			Vector2 originalData = originalBounds.get(i);
+
+			final float ratioX = originalData.x / originalWidth;
+			se.bounds.x = ratioX * this.bounds.width;
+
+			if (se.cue.getCanAlterDuration()) {
+				final float ratioW = originalData.y / originalWidth;
+				se.bounds.width = ratioW * this.bounds.width;
+			}
+		}
+	}
+
+	@Override
+	public boolean isStretchable() {
+		return pattern.isStretchable();
 	}
 
 	@Override
@@ -110,7 +140,8 @@ public class PatternEntity extends Entity {
 		super.onWhile(delta);
 
 		for (Entity e : internal) {
-			if (e.playbackCompletion == PlaybackCompletion.FINISHED) continue;
+			if (e.playbackCompletion == PlaybackCompletion.FINISHED)
+				continue;
 
 			if (remix.getBeat() >= this.bounds.x + e.bounds.x) {
 				if (e.playbackCompletion == PlaybackCompletion.WAITING) {

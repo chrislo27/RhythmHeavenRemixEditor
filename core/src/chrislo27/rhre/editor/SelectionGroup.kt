@@ -1,9 +1,10 @@
 package chrislo27.rhre.editor
 
 import chrislo27.rhre.entity.Entity
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
-data class SelectionGroup(val list: List<Entity>, val oldPositions: List<Vector2>,
+data class SelectionGroup(val list: List<Entity>, val oldPositions: List<Rectangle>,
 						  val entityClickedOn: Entity, val offset: Vector2, val deleteInstead: Boolean) {
 
 	val relativePositions: List<Vector2> by lazy {
