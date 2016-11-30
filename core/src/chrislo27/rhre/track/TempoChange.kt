@@ -92,8 +92,8 @@ object BpmUtils {
 
 object Semitones {
 
-	val SEMITONES_IN_OCTAVE = 12
-	val SEMITONE_VALUE = 1f / SEMITONES_IN_OCTAVE
+	const val SEMITONES_IN_OCTAVE = 12
+	const val SEMITONE_VALUE = 1f / SEMITONES_IN_OCTAVE
 	private val cachedPitches = IntMap<Float>()
 
 	fun getSemitoneName(semitone: Int): String {

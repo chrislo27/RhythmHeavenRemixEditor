@@ -28,11 +28,17 @@ public abstract class Entity {
 		playbackCompletion = PlaybackCompletion.WAITING;
 	}
 
-	public void onLengthChange() {
+	public void onLengthChange(float old) {
+
+	}
+
+	public void adjustPitch(int semitoneChange, int min, int max){
 
 	}
 
 	public abstract boolean isStretchable();
+
+	public abstract boolean isRepitchable();
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 

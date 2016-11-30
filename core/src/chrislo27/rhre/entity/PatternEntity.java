@@ -8,6 +8,7 @@ import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.PlaybackCompletion;
 import chrislo27.rhre.track.Remix;
+import chrislo27.rhre.track.Semitones;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
@@ -22,7 +23,10 @@ public class PatternEntity extends Entity {
 	public final List<SoundEntity> internal;
 	public final Pattern pattern;
 	private final List<Vector2> originalBounds;
+	private final List<Integer> originalSemitones;
 	private final float originalWidth;
+	private volatile int semitone;
+	private final boolean repitchable;
 
 	public PatternEntity(Remix remix, Pattern p) {
 		super(remix);
@@ -56,11 +60,16 @@ public class PatternEntity extends Entity {
 
 		this.originalBounds = new ArrayList<>();
 		internal.forEach(se -> originalBounds.add(new Vector2(se.bounds.getX(), se.bounds.getWidth())));
+
+		this.originalSemitones = new ArrayList<>();
+		internal.forEach(se -> originalSemitones.add(se.semitone));
+
+		repitchable = internal.stream().anyMatch(se -> se.cue.getCanAlterPitch());
 	}
 
 	@Override
-	public void onLengthChange() {
-		super.onLengthChange();
+	public void onLengthChange(float old) {
+		super.onLengthChange(old);
 
 		for (int i = 0; i < internal.size(); i++) {
 			SoundEntity se = internal.get(i);
@@ -77,8 +86,37 @@ public class PatternEntity extends Entity {
 	}
 
 	@Override
+	public void adjustPitch(int semitoneChange, int min, int max) {
+		int[] original = new int[internal.size()];
+		int originalSt = semitone;
+		for (int i = 0; i < internal.size(); i++) {
+			original[i] = internal.get(i).semitone;
+		}
+
+		semitone += semitoneChange;
+
+		for (SoundEntity se : internal) {
+			se.semitone += semitoneChange;
+
+			if (se.semitone < min || se.semitone > max) {
+				for (int i = 0; i < internal.size(); i++) {
+					internal.get(i).semitone = original[i];
+				}
+				semitone = originalSt;
+
+				break;
+			}
+		}
+	}
+
+	@Override
 	public boolean isStretchable() {
 		return pattern.isStretchable();
+	}
+
+	@Override
+	public boolean isRepitchable() {
+		return repitchable;
 	}
 
 	@Override
@@ -110,10 +148,15 @@ public class PatternEntity extends Entity {
 		main.font.getData().setScale(0.5f);
 		main.font.setColor(0, 0, 0, 1);
 		String name = pattern.getName();
-		float height = Utils.getHeight(main.font, name);
+		float targetWidth = bounds.getWidth() * PX_WIDTH - 8;
+		float height = Utils.getHeightWithWrapping(main.font, name, targetWidth);
 		main.font.draw(batch, name, bounds.getX() * PX_WIDTH,
-				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f,
-				bounds.getWidth() * PX_WIDTH - 8, Align.right, true);
+				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f, targetWidth,
+				Align.right, true);
+		if (isRepitchable()) {
+			main.font.draw(batch, Semitones.INSTANCE.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
+					bounds.getY() * PX_HEIGHT + main.font.getCapHeight() + 4);
+		}
 		main.font.getData().setScale(1);
 	}
 

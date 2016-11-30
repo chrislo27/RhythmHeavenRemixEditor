@@ -7,6 +7,7 @@ import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
@@ -23,6 +24,7 @@ public class SoundEntity extends Entity {
 
 		this.bounds.set(beat, level, duration, 1);
 	}
+
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, int semitone) {
 		this(remix, cue, beat, level, cue.getDuration(), semitone);
 	}
@@ -30,6 +32,16 @@ public class SoundEntity extends Entity {
 	@Override
 	public boolean isStretchable() {
 		return cue.getCanAlterDuration();
+	}
+
+	@Override
+	public boolean isRepitchable() {
+		return cue.getCanAlterPitch();
+	}
+
+	@Override
+	public void adjustPitch(int semitoneChange, int min, int max) {
+		semitone = MathUtils.clamp(semitone + semitoneChange, min, max);
 	}
 
 	@Override
@@ -47,10 +59,16 @@ public class SoundEntity extends Entity {
 		main.font.getData().setScale(0.5f);
 		main.font.setColor(0, 0, 0, 1);
 		String name = cue.getName();
-		float height = Utils.getHeight(main.font, name);
+		float targetWidth = bounds.getWidth() * PX_WIDTH - 8;
+		float height = Utils.getHeightWithWrapping(main.font, name, targetWidth);
 		main.font.draw(batch, name, bounds.getX() * PX_WIDTH,
-				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f,
-				bounds.getWidth() * PX_WIDTH - 8, Align.right, true);
+				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f, targetWidth,
+				Align.right, true);
+
+		if (cue.getCanAlterPitch()) {
+			main.font.draw(batch, Semitones.INSTANCE.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
+					bounds.getY() * PX_HEIGHT + main.font.getCapHeight() + 4);
+		}
 		main.font.getData().setScale(1);
 	}
 

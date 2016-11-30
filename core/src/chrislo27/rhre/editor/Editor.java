@@ -10,6 +10,7 @@ import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
+import chrislo27.rhre.track.Semitones;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -50,6 +51,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
+	private static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
@@ -503,7 +505,8 @@ public class Editor extends InputAdapter implements Disposable {
 					// begin move
 					final List<Rectangle> oldPos = new ArrayList<>();
 
-					remix.getSelection().stream().map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+					remix.getSelection().stream()
+							.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 							.forEachOrdered(oldPos::add);
 
 					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
@@ -584,7 +587,7 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				} else {
 					if (isStretching > 0) {
-						selectionGroup.getList().get(0).onLengthChange();
+						selectionGroup.getList().get(0).onLengthChange(selectionGroup.getOldPositions().get(0).width);
 					}
 				}
 
@@ -600,15 +603,20 @@ public class Editor extends InputAdapter implements Disposable {
 
 	@Override
 	public boolean scrolled(int amount) {
-		if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f &&
-				Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
-			List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
-					.get(scrolls.get(currentSeries).getGame()).getPatterns();
+		if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+			if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
+				List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+						.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
-			scrolls.get(currentSeries)
-					.setPattern(MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
-
-			return true;
+				scrolls.get(currentSeries).setPattern(
+						MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
+				return true;
+			}
+		} else {
+			if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
+				remix.getSelection().forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
+				return true;
+			}
 		}
 		return false;
 	}
