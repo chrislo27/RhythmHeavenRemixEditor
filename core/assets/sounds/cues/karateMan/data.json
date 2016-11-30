@@ -19,11 +19,6 @@
       "name": "pot - hit"
     },
     {
-      "id": "karateMan/roasterZoom",
-      "duration": 0.5,
-      "name": "roaster - zoom"
-    },
-    {
       "id": "karateMan/roasterHit",
       "duration": 1,
       "name": "roaster - hit"
@@ -140,11 +135,6 @@
         {
           "id": "karateMan/potout",
           "beat": 0
-        },
-        {
-          "id": "karateMan/roasterZoom",
-          "beat": 0.5,
-          "track": 1
         },
         {
           "id": "karateMan/roasterHit",
