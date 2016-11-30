@@ -173,7 +173,10 @@ public class PatternEntity extends Entity {
 	public void onEnd(float delta) {
 		super.onEnd(delta);
 
-		internal.forEach(se -> se.onEnd(delta));
+		internal.forEach(se -> {
+			se.onEnd(delta);
+			se.playbackCompletion = PlaybackCompletion.FINISHED;
+		});
 	}
 
 	@Override
