@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import ionium.registry.AssetRegistry;
 import ionium.registry.ScreenRegistry;
@@ -84,6 +85,14 @@ public class Main extends ionium.templates.Main {
 	@Override
 	protected void postRender() {
 		super.postRender();
+
+		batch.begin();
+		fontBordered.setColor(1, 1, 1, 1);
+		fontBordered.getData().setScale(0.5f);
+		fontBordered.draw(batch, version, Gdx.graphics.getWidth() - 4, fontBordered.getCapHeight() + 2, 0, Align.right,
+				false);
+		fontBordered.getData().setScale(1);
+		batch.end();
 	}
 
 	@Override
