@@ -19,9 +19,10 @@
       "name": "pot - hit"
     },
     {
-      "id": "karateMan/roasterHit",
+      "id": "karateMan/KarateRoaster",
       "duration": 1,
-      "name": "roaster - hit"
+      "name": "roaster - hit",
+      "fileExtension": "wav"
     },
     {
       "id": "karateMan/hit3cue1",
