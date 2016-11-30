@@ -66,7 +66,7 @@ public class SoundEntity extends Entity {
 				Align.right, true);
 
 		if (cue.getCanAlterPitch()) {
-			main.font.draw(batch, Semitones.INSTANCE.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
+			main.font.draw(batch, Semitones.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
 					bounds.getY() * PX_HEIGHT + main.font.getCapHeight() + 4);
 		}
 		main.font.getData().setScale(1);
