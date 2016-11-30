@@ -25,8 +25,8 @@ public class PatternEntity extends Entity {
 	private final List<Vector2> originalBounds;
 	private final List<Integer> originalSemitones;
 	private final float originalWidth;
-	private volatile int semitone;
 	private final boolean repitchable;
+	private volatile int semitone;
 
 	public PatternEntity(Remix remix, Pattern p) {
 		super(remix);
@@ -78,10 +78,8 @@ public class PatternEntity extends Entity {
 			final float ratioX = originalData.x / originalWidth;
 			se.bounds.x = ratioX * this.bounds.width;
 
-			if (se.cue.getCanAlterDuration()) {
-				final float ratioW = originalData.y / originalWidth;
-				se.bounds.width = ratioW * this.bounds.width;
-			}
+			final float ratioW = originalData.y / originalWidth;
+			se.bounds.width = ratioW * this.bounds.width;
 		}
 	}
 
