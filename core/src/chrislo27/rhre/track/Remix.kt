@@ -44,6 +44,7 @@ class Remix {
 				entities.forEach(Entity::reset)
 
 				beat = playbackStart
+				entities.filter { it.bounds.x + it.bounds.width <= beat }.forEach { it.playbackCompletion = PlaybackCompletion.FINISHED }
 			}
 		}
 	}

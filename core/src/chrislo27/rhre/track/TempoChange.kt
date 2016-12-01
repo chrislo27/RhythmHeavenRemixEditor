@@ -55,6 +55,8 @@ class TempoChanges(val defTempo: Float = 120f) {
 	fun getBeatMap() = beatMap
 	fun getSecondsMap() = secondsMap
 
+	fun getTempoAt(beat: Float): Float = getTempoChangeFromBeat(beat)?.tempo ?: defTempo
+
 	fun getTempoChangeFromBeat(beat: Float): TempoChange? = beatMap.lowerEntry(beat)?.value
 
 	fun getTempoChangeFromSecond(second: Float): TempoChange? = secondsMap.lowerEntry(second)?.value

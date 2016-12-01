@@ -19,8 +19,9 @@ abstract class AbstractPalette {
 	open val selectionBorder: Color = Color(0.1f, 0.85f, 0.85f, 1f)
 
 	open val beatTracker: Color = Color(0f, 0.9f, 0f, 1f)
-	open val bpmTracker: Color = Color(0f, 0f, 0.9f, 1f)
+	open val bpmTracker: Color = Color(0.4f, 0.4f, 0.9f, 1f)
 	open val musicStartTracker: Color = Color(0.9f, 0f, 0f, 1f)
+	open val bpmTrackerSelected: Color by lazy { brighten(Color(bpmTracker), 0.5f) }
 
 }
 

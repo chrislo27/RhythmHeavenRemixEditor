@@ -28,6 +28,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import ionium.registry.AssetRegistry;
 import ionium.util.MathHelper;
+import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
 
@@ -61,6 +62,7 @@ public class Editor extends InputAdapter implements Disposable {
 	// TODO add button for this - 1/4, 1/6, 1/8
 	public float snappingInterval = 0.125f;
 	public String status;
+	public Tool currentTool = Tool.NORMAL;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
 	private Remix remix;
@@ -75,6 +77,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private Vector3 cameraPickVec3 = new Vector3();
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
+
+	private TempoChange selectedTempoChange;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -216,19 +220,21 @@ public class Editor extends InputAdapter implements Disposable {
 
 			// tempo changes
 			{
-				batch.setColor(main.palette.getBeatTracker());
 				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
+					batch.setColor(main.palette.getBpmTracker());
+					if (tc == selectedTempoChange) {
+						batch.setColor(main.palette.getBpmTrackerSelected());
+					}
+
 					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
 							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
-				}
-				batch.setColor(1, 1, 1, 1);
 
-				main.fontBordered.setColor(main.palette.getBpmTracker());
-				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
-					main.fontBordered.draw(batch, Localization.get("editor.bpmTracker", (int) tc.getTempo()),
+					main.fontBordered.setColor(batch.getColor());
+					main.fontBordered.draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
 							tc.getBeat() * Entity.PX_WIDTH + 4, -Entity.PX_HEIGHT + main.fontBordered.getCapHeight());
 				}
 				main.fontBordered.setColor(1, 1, 1, 1);
+				batch.setColor(1, 1, 1, 1);
 			}
 
 			// playing
@@ -348,6 +354,31 @@ public class Editor extends InputAdapter implements Disposable {
 			main.font.getData().setScale(1);
 		}
 
+		// tool icons
+		{
+			batch.setColor(0, 0, 0, 0.5f);
+			Main.fillRect(batch, Gdx.graphics.getWidth(), PICKER_HEIGHT + MESSAGE_BAR_HEIGHT,
+					-Tool.values().length * GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+			final float start = Gdx.graphics.getWidth() - Tool.values().length * GAME_ICON_SIZE;
+			for (int i = 0; i < Tool.values().length; i++) {
+				batch.setColor(0.65f, 0.65f, 0.65f, 1);
+				Main.drawRect(batch, start + i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
+						OVERVIEW_HEIGHT, 1);
+				batch.setColor(1, 1, 1, 1);
+
+				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values()[i].name()), start + i *
+								GAME_ICON_SIZE,
+						PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+
+				if (Tool.values()[i] == currentTool) {
+					batch.setColor(1, 1, 1, 1);
+					batch.draw(AssetRegistry.getTexture("icon_selector_fever"), start + i * GAME_ICON_SIZE,
+							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+				}
+			}
+			batch.setColor(1, 1, 1, 1);
+		}
+
 		// picker icons
 		{
 			for (int i = 0, count = 0; i < GameRegistry.instance().gamesBySeries.get(currentSeries).size(); i++) {
@@ -449,125 +480,163 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		// trackers
-		{
-			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			vec3Tmp2.x /= Entity.PX_WIDTH;
-			vec3Tmp2.y /= Entity.PX_HEIGHT;
+		if (currentTool == Tool.NORMAL) {
+			// trackers
+			{
+				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+				vec3Tmp2.x /= Entity.PX_WIDTH;
+				vec3Tmp2.y /= Entity.PX_HEIGHT;
 
-			final boolean shift =
-					Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+				final boolean shift =
+						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
+								.SHIFT_RIGHT);
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-				remix.setPlaybackStart(vec3Tmp2.x);
-				if (!shift) {
-					remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
+				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+					remix.setPlaybackStart(vec3Tmp2.x);
+					if (!shift) {
+						remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
+					}
 				}
-			}
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
-				remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
-				if (!shift) {
-					remix.setMusicStartTime(MathHelper
-							.snapToNearest(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x), snappingInterval));
-				}
-			}
-		}
-
-		// cursor only
-		Entity possible = getEntityAtMouse();
-
-		boolean isAbleToStretch = false;
-
-		if (possible != null && remix.getSelection().size() <= 1 && possible.isStretchable()) {
-			cameraPickVec3.x /= Entity.PX_WIDTH;
-			cameraPickVec3.y /= Entity.PX_HEIGHT;
-			if ((cameraPickVec3.x >= possible.bounds.x && cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
-					(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
-							cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
-				isAbleToStretch = true;
-			}
-		}
-
-		if ((this.isStretching > 0 || isAbleToStretch) && !isCursorStretching) {
-			isCursorStretching = true;
-			Gdx.graphics.setCursor(main.horizontalResize);
-		} else if ((isStretching <= 0 && !isAbleToStretch) && isCursorStretching) {
-			isCursorStretching = false;
-			Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
-		}
-
-		if (selectionGroup != null) {
-			camera.update();
-
-			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			vec3Tmp2.x /= Entity.PX_WIDTH;
-			vec3Tmp2.y /= Entity.PX_HEIGHT;
-
-			if (isStretching > 0) {
-				Entity e = selectionGroup.getList().get(0);
-				// stretch
-				if (isStretching == 1) {
-					float rightSideX = (selectionGroup.getOldPositions().get(0).x +
-							selectionGroup.getOldPositions().get(0).width);
-
-					e.bounds.x = vec3Tmp2.x;
-					e.bounds.x = Math
-							.min(MathHelper.snapToNearest(e.bounds.x, snappingInterval), rightSideX -
-									snappingInterval);
-					e.bounds.width = (selectionGroup.getOldPositions().get(0).x +
-							selectionGroup.getOldPositions().get(0).width) - e.bounds.x;
-				} else if (isStretching == 2) {
-					e.bounds.width = vec3Tmp2.x - selectionGroup.getOldPositions().get(0).x;
-					e.bounds.width = Math
-							.max(MathHelper.snapToNearest(e.bounds.width, snappingInterval), snappingInterval);
-				}
-			} else {
-				// change "origin" entity
-				Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
-				rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
-				rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
-
-				rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
-
-				// snap on Y
-//				rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
-				rect.y = Math.round(rect.y);
-
-				// change others relative to the origin, using the others' positions as a guideline
-				{
-					for (int i = 0; i < selectionGroup.getList().size(); i++) {
-						Entity e = selectionGroup.getList().get(i);
-
-						if (e == selectionGroup.getEntityClickedOn())
-							continue;
-
-						e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
-								rect.y + selectionGroup.getRelativePositions().get(i).y);
+				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
+					if (!shift) {
+						remix.setMusicStartTime(remix.getTempoChanges()
+								.beatsToSeconds(MathHelper.snapToNearest(vec3Tmp2.x, snappingInterval)));
 					}
 				}
 			}
-		} else {
-			status = Localization.get("editor.currentGame") + " " +
-					GameRegistry.instance().gamesBySeries.get(currentSeries).get(scrolls.get(currentSeries).getGame())
-							.getName();
 
-			if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
-				if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
-					if (Gdx.input.getX() <= GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
-						List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-						int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+			// cursor only
+			Entity possible = getEntityAtMouse();
 
-						if (icon < list.size() && icon >= 0)
-							status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
-					} else if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
-						status += " - " + Localization.get("editor.scrollPatterns");
+			boolean isAbleToStretch = false;
+
+			if (possible != null && remix.getSelection().size() <= 1 && possible.isStretchable()) {
+				cameraPickVec3.x /= Entity.PX_WIDTH;
+				cameraPickVec3.y /= Entity.PX_HEIGHT;
+				if ((cameraPickVec3.x >= possible.bounds.x &&
+						cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
+						(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
+								cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
+					isAbleToStretch = true;
+				}
+			}
+
+			if ((this.isStretching > 0 || isAbleToStretch) && !isCursorStretching) {
+				isCursorStretching = true;
+				Gdx.graphics.setCursor(main.horizontalResize);
+			} else if ((isStretching <= 0 && !isAbleToStretch) && isCursorStretching) {
+				isCursorStretching = false;
+				Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+			}
+
+			if (selectionGroup != null) {
+				camera.update();
+
+				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+				vec3Tmp2.x /= Entity.PX_WIDTH;
+				vec3Tmp2.y /= Entity.PX_HEIGHT;
+
+				if (isStretching > 0) {
+					Entity e = selectionGroup.getList().get(0);
+					// stretch
+					if (isStretching == 1) {
+						float rightSideX = (selectionGroup.getOldPositions().get(0).x +
+								selectionGroup.getOldPositions().get(0).width);
+
+						e.bounds.x = vec3Tmp2.x;
+						e.bounds.x = Math.min(MathHelper.snapToNearest(e.bounds.x, snappingInterval),
+								rightSideX - snappingInterval);
+						e.bounds.width = (selectionGroup.getOldPositions().get(0).x +
+								selectionGroup.getOldPositions().get(0).width) - e.bounds.x;
+					} else if (isStretching == 2) {
+						e.bounds.width = vec3Tmp2.x - selectionGroup.getOldPositions().get(0).x;
+						e.bounds.width = Math
+								.max(MathHelper.snapToNearest(e.bounds.width, snappingInterval), snappingInterval);
 					}
 				} else {
-					int i = Gdx.input.getX() / GAME_ICON_SIZE;
-					if (i < Series.values().length) {
-						status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
+					// change "origin" entity
+					Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
+					rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
+					rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
+
+					rect.x = MathHelper.snapToNearest(rect.x, snappingInterval);
+
+					// snap on Y
+//				rect.y = MathUtils.clamp(Math.round(rect.y), 0, TRACK_COUNT - 1);
+					rect.y = Math.round(rect.y);
+
+					// change others relative to the origin, using the others' positions as a guideline
+					{
+						for (int i = 0; i < selectionGroup.getList().size(); i++) {
+							Entity e = selectionGroup.getList().get(i);
+
+							if (e == selectionGroup.getEntityClickedOn())
+								continue;
+
+							e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
+									rect.y + selectionGroup.getRelativePositions().get(i).y);
+						}
 					}
+				}
+			} else {
+				status = Localization.get("editor.currentGame") + " " +
+						GameRegistry.instance().gamesBySeries.get(currentSeries)
+								.get(scrolls.get(currentSeries).getGame()).getName();
+
+				if (Gdx.graphics.getHeight() - Gdx.input.getY() <=
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
+					if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+						if (Gdx.input.getX() <=
+								GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
+							List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+							int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+
+							if (icon < list.size() && icon >= 0)
+								status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
+						} else if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
+							status += " - " + Localization.get("editor.scrollPatterns");
+						}
+					} else {
+						int i = Gdx.input.getX() / GAME_ICON_SIZE;
+						if (i < Series.values().length) {
+							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
+						}
+					}
+				}
+			}
+		} else if (currentTool == Tool.BPM) {
+			status = Localization.get("editor.bpmToolStatus");
+
+			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			vec3Tmp2.x /= Entity.PX_WIDTH;
+			vec3Tmp2.y /= Entity.PX_HEIGHT;
+
+			selectedTempoChange = null;
+			for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
+				if (MathUtils.isEqual(tc.getBeat(), vec3Tmp2.x, snappingInterval / 2)) {
+					selectedTempoChange = tc;
+					break;
+				}
+			}
+
+			float beatPos = MathHelper.snapToNearest(vec3Tmp2.x, snappingInterval);
+
+			if (selectedTempoChange == null) {
+				if (Utils.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
+							remix.getTempoChanges());
+
+					remix.getTempoChanges().add(tc);
+				}
+			} else if (selectedTempoChange != null) {
+				if (Utils.isButtonJustPressed(Input.Buttons.LEFT)) {
+
+				}
+
+				if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
+					remix.getTempoChanges().remove(selectedTempoChange);
 				}
 			}
 		}
@@ -578,28 +647,32 @@ public class Editor extends InputAdapter implements Disposable {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
 			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
-					// drag new pattern
-					remix.getSelection().clear();
-					selectionGroup = null;
+					if (currentTool == Tool.NORMAL) {
+						// drag new pattern
+						remix.getSelection().clear();
+						selectionGroup = null;
 
-					Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
-							.get(scrolls.get(currentSeries).getGame());
-					Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
+						Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+								.get(scrolls.get(currentSeries).getGame());
+						Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
 
-					Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
-							game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId()))
-									.findFirst().orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
+						Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
+								game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId
+										()))
+										.findFirst().orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
 
-					remix.getEntities().add(en);
-					remix.getSelection().add(en);
+						remix.getEntities().add(en);
+						remix.getSelection().add(en);
 
-					final List<Rectangle> oldPos = new ArrayList<>();
-					remix.getSelection().stream()
-							.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
-							.forEachOrdered(oldPos::add);
-					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
-							new Vector2(0, 0), true);
+						final List<Rectangle> oldPos = new ArrayList<>();
+						remix.getSelection().stream()
+								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+								.forEachOrdered(oldPos::add);
+						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
+								new Vector2(0, 0), true);
+					}
 				} else {
+					// game picker
 					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
 					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
 
@@ -608,47 +681,63 @@ public class Editor extends InputAdapter implements Disposable {
 						scrolls.get(currentSeries).setPattern(0);
 					}
 				}
-			} else if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) &&
-					screenX <= Series.values().length * GAME_ICON_SIZE) {
-				int i = Gdx.input.getX() / GAME_ICON_SIZE;
-				if (i < Series.values().length) {
-					currentSeries = Series.values()[i];
+			} else if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
+				// series
+				if (screenX <= Series.values().length * GAME_ICON_SIZE) {
+					int i = Gdx.input.getX() / GAME_ICON_SIZE;
+					if (i < Series.values().length) {
+						currentSeries = Series.values()[i];
+					}
+				}
+
+				// tools
+				if (screenX >= Gdx.graphics.getWidth() - Tool.values().length * GAME_ICON_SIZE) {
+					Tool[] tools = Tool.values();
+					int icon = tools.length - 1 - (Gdx.graphics.getWidth() - Gdx.input.getX()) / GAME_ICON_SIZE;
+
+					if (icon < tools.length && icon >= 0) {
+						currentTool = tools[icon];
+					}
 				}
 			} else {
-				Entity possible = getEntityAtPoint(screenX, screenY);
-				camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
+				if (currentTool == Tool.NORMAL) {
+					Entity possible = getEntityAtPoint(screenX, screenY);
+					camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
 
-				if (possible == null || !remix.getSelection().contains(possible)) {
-					// start selection
-					selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
-				} else if (remix.getSelection().contains(possible)) {
-					// begin move
-					final List<Rectangle> oldPos = new ArrayList<>();
+					if (possible == null || !remix.getSelection().contains(possible)) {
+						// start selection
+						selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
+					} else if (remix.getSelection().contains(possible)) {
+						// begin move
+						final List<Rectangle> oldPos = new ArrayList<>();
 
-					remix.getSelection().stream()
-							.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
-							.forEachOrdered(oldPos::add);
+						remix.getSelection().stream()
+								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+								.forEachOrdered(oldPos::add);
 
-					selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
-							new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
-									cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
+						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
+								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
+										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
 
-					// stretch code
-					if (remix.getSelection().size() <= 1 && possible.isStretchable()) {
-						cameraPickVec3.x /= Entity.PX_WIDTH;
-						cameraPickVec3.y /= Entity.PX_HEIGHT;
-						if ((cameraPickVec3.x >= possible.bounds.x &&
-								cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
-								(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
-										cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
-							this.isStretching = (cameraPickVec3.x >= possible.bounds.x &&
-									cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ? 1 : 2;
+						// stretch code
+						if (remix.getSelection().size() <= 1 && possible.isStretchable()) {
+							cameraPickVec3.x /= Entity.PX_WIDTH;
+							cameraPickVec3.y /= Entity.PX_HEIGHT;
+							if ((cameraPickVec3.x >= possible.bounds.x &&
+									cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
+									(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width -
+											STRETCHABLE_AREA &&
+											cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
+								this.isStretching = (cameraPickVec3.x >= possible.bounds.x &&
+										cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ? 1 : 2;
+							}
 						}
 					}
+				} else if (currentTool == Tool.BPM) {
+
 				}
 			}
 		}
-
 
 		return false;
 	}
@@ -656,63 +745,67 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT && pointer == 0) {
-			if (selectionOrigin != null) {
-				// put selected entities into the selection list
-				camera.unproject(vec3Tmp.set(screenX, screenY, 0));
-				Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y, vec3Tmp.x -
-						selectionOrigin.x,
-						vec3Tmp.y - selectionOrigin.y);
+			if (currentTool == Tool.NORMAL) {
+				if (selectionOrigin != null) {
+					// put selected entities into the selection list
+					camera.unproject(vec3Tmp.set(screenX, screenY, 0));
+					Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y,
+							vec3Tmp.x - selectionOrigin.x, vec3Tmp.y - selectionOrigin.y);
 
-				MathHelper.normalizeRectangle(selection);
+					MathHelper.normalizeRectangle(selection);
 
-				boolean shouldAdd =
-						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
-								.SHIFT_RIGHT);
-				if (!shouldAdd)
-					remix.getSelection().clear();
-				remix.getEntities().stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
-						.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
-								selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)) &&
-						(!shouldAdd || !remix.getSelection().contains(e))).forEachOrdered(remix.getSelection()::add);
-
-				selectionOrigin = null;
-				selectionGroup = null;
-			} else if (selectionGroup != null) {
-				// move the selection group to the new place, or snap back
-
-				boolean collisionFree = selectionGroup.getList().stream().allMatch(
-						e -> remix.getEntities().stream().filter(e2 -> !selectionGroup.getList().contains(e2))
-								.noneMatch(e2 -> e2.bounds.overlaps(e.bounds)) &&
-								(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
-
-				if (!collisionFree) {
-					boolean delete = selectionGroup.getDeleteInstead() ||
-							selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
-
-					if (delete) {
-						remix.getEntities().removeAll(selectionGroup.getList());
+					boolean shouldAdd = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+							Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+					if (!shouldAdd)
 						remix.getSelection().clear();
-					} else {
-						for (int i = 0; i < selectionGroup.getList().size(); i++) {
-							Entity e = selectionGroup.getList().get(i);
+					remix.getEntities().stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
+							.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
+									selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)) &&
+							(!shouldAdd || !remix.getSelection().contains(e)))
+							.forEachOrdered(remix.getSelection()::add);
 
-							e.bounds.set(selectionGroup.getOldPositions().get(i).getX(),
-									selectionGroup.getOldPositions().get(i).getY(),
-									selectionGroup.getOldPositions().get(i).getWidth(),
-									selectionGroup.getOldPositions().get(i).getHeight());
+					selectionOrigin = null;
+					selectionGroup = null;
+				} else if (selectionGroup != null) {
+					// move the selection group to the new place, or snap back
+
+					boolean collisionFree = selectionGroup.getList().stream().allMatch(
+							e -> remix.getEntities().stream().filter(e2 -> !selectionGroup.getList().contains(e2))
+									.noneMatch(e2 -> e2.bounds.overlaps(e.bounds)) &&
+									(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
+
+					if (!collisionFree) {
+						boolean delete = selectionGroup.getDeleteInstead() ||
+								selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
+
+						if (delete) {
+							remix.getEntities().removeAll(selectionGroup.getList());
+							remix.getSelection().clear();
+						} else {
+							for (int i = 0; i < selectionGroup.getList().size(); i++) {
+								Entity e = selectionGroup.getList().get(i);
+
+								e.bounds.set(selectionGroup.getOldPositions().get(i).getX(),
+										selectionGroup.getOldPositions().get(i).getY(),
+										selectionGroup.getOldPositions().get(i).getWidth(),
+										selectionGroup.getOldPositions().get(i).getHeight());
+							}
+						}
+					} else {
+						if (isStretching > 0) {
+							selectionGroup.getList().get(0)
+									.onLengthChange(selectionGroup.getOldPositions().get(0).width);
 						}
 					}
-				} else {
-					if (isStretching > 0) {
-						selectionGroup.getList().get(0).onLengthChange(selectionGroup.getOldPositions().get(0).width);
-					}
+
+					selectionGroup = null;
+					selectionOrigin = null;
 				}
 
-				selectionGroup = null;
-				selectionOrigin = null;
-			}
+				isStretching = 0;
+			} else if (currentTool == Tool.BPM) {
 
-			isStretching = 0;
+			}
 		}
 
 		return false;
@@ -730,9 +823,25 @@ public class Editor extends InputAdapter implements Disposable {
 				return true;
 			}
 		} else {
-			if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
-				remix.getSelection().forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
-				return true;
+			if (currentTool == Tool.NORMAL) {
+				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
+					remix.getSelection().forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
+					return true;
+				}
+			} else if (currentTool == Tool.BPM) {
+				if (selectedTempoChange != null) {
+					float newTempo = MathUtils.clamp((int) selectedTempoChange.getTempo() + -amount, 30, 240);
+
+					if (selectedTempoChange.getTempo() != newTempo) {
+						TempoChange tc = new TempoChange(selectedTempoChange.getBeat(), newTempo,
+								remix.getTempoChanges());
+
+						remix.getTempoChanges().remove(selectedTempoChange);
+						selectedTempoChange = null;
+
+						remix.getTempoChanges().add(tc);
+					}
+				}
 			}
 		}
 		return false;
@@ -756,4 +865,9 @@ public class Editor extends InputAdapter implements Disposable {
 				(-(y - (ICON_START_Y + GAME_ICON_SIZE + GAME_ICON_PADDING)) / (GAME_ICON_PADDING + GAME_ICON_SIZE)) *
 						ICON_COUNT_X;
 	}
+
+	public enum Tool {
+		NORMAL, BPM;
+	}
+
 }
