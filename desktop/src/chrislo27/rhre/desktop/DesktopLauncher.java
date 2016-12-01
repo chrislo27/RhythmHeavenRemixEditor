@@ -11,6 +11,8 @@ public class DesktopLauncher {
 	private static Logger logger;
 
 	public static void main(String[] args) {
+		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true");
+
 		ArgumentInferredLwjglAppConfig config = new ArgumentInferredLwjglAppConfig(args);
 		config.title = "";
 		config.width = GlobalVariables.defaultWidth;
