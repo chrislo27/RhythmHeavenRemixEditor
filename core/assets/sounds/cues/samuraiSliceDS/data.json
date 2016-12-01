@@ -1,0 +1,105 @@
+{
+  "gameID": "samuraiSliceDS",
+  "gameName": "Samurai Slice (DS)",
+  "series": "ds",
+  "type": "side",
+  "cues": [
+    {
+      "id": "samuraiSliceDS/throw",
+      "duration": 1,
+      "name": "throw"
+    },
+    {
+      "id": "samuraiSliceDS/see-saw",
+      "duration": 1,
+      "name": "see-saw"
+    },
+    {
+      "id": "samuraiSliceDS/sliceA",
+      "duration": 1,
+      "name": "sliceA"
+    },
+    {
+      "id": "samuraiSliceDS/sliceB",
+      "duration": 1,
+      "name": "sliceB"
+    },
+    {
+      "id": "samuraiSliceDS/catch",
+      "duration": 1,
+      "name": "catch"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "samuraiSliceDS_watermelon",
+      "name": "watermelon",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0
+        },
+        {
+          "id": "samuraiSliceDS/see-saw",
+          "beat": 2
+        },
+        {
+          "id": "samuraiSliceDS/sliceA",
+          "beat": 4
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "samuraiSliceDS_fish",
+      "name": "fish",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0
+        },
+        {
+          "id": "samuraiSliceDS/see-saw",
+          "beat": 2
+        },
+        {
+          "id": "samuraiSliceDS/see-saw",
+          "beat": 4
+        },
+        {
+          "id": "samuraiSliceDS/sliceA",
+          "beat": 6
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "samuraiSliceDS_demon",
+      "name": "demon",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0
+        },
+        {
+          "id": "samuraiSliceDS/see-saw",
+          "beat": 2
+        },
+        {
+          "id": "samuraiSliceDS/sliceB",
+          "beat": 6
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 7
+        }
+      ]
+    }
+  ]
+}
