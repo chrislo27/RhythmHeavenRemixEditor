@@ -116,8 +116,6 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// beat lines
 		{
-			batch.setColor(1, 1, 1, 1);
-
 			// horizontal
 			batch.setColor(main.palette.getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
@@ -125,14 +123,7 @@ public class Editor extends InputAdapter implements Disposable {
 						camera.viewportWidth, 2);
 			}
 
-
-			// beat numbers
-			main.font.setColor(main.palette.getStaffLine());
-			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
-				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.font.draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.font.getCapHeight() + 4, 0, Align.center, false);
-			}
+			batch.setColor(1, 1, 1, 1);
 		}
 
 		// entities
@@ -190,15 +181,22 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			// music start
 			{
+				float musicToBeats = remix.getTempoChanges().secondsToBeats(remix.getMusicStartTime());
+
 				batch.setColor(main.palette.getMusicStartTracker());
-				Main.fillRect(batch, remix.getMusicStartTime() * Entity.PX_WIDTH, 0, 2,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				Main.fillRect(batch, musicToBeats * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
 				batch.setColor(1, 1, 1, 1);
 
 				main.fontBordered.setColor(main.palette.getMusicStartTracker());
 				main.fontBordered.draw(batch,
 						Localization.get("editor.musicStartTracker", String.format("%.3f", remix.getMusicStartTime())),
-						remix.getMusicStartTime() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+						musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				main.fontBordered.getData().setScale(0.5f);
+				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerSec",
+						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
+								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.fontBordered.getLineHeight());
+				main.fontBordered.getData().setScale(1);
 				main.fontBordered.setColor(1, 1, 1, 1);
 			}
 
@@ -213,6 +211,23 @@ public class Editor extends InputAdapter implements Disposable {
 				main.fontBordered.draw(batch, Localization
 								.get("editor.playbackStartTracker", String.format("%.3f", remix.getPlaybackStart())),
 						remix.getPlaybackStart() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				main.fontBordered.setColor(1, 1, 1, 1);
+			}
+
+			// tempo changes
+			{
+				batch.setColor(main.palette.getBeatTracker());
+				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
+					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
+							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
+				}
+				batch.setColor(1, 1, 1, 1);
+
+				main.fontBordered.setColor(main.palette.getBpmTracker());
+				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
+					main.fontBordered.draw(batch, Localization.get("editor.bpmTracker", (int) tc.getTempo()),
+							tc.getBeat() * Entity.PX_WIDTH + 4, -Entity.PX_HEIGHT + main.fontBordered.getCapHeight());
+				}
 				main.fontBordered.setColor(1, 1, 1, 1);
 			}
 
@@ -240,6 +255,16 @@ public class Editor extends InputAdapter implements Disposable {
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.fontBordered.getLineHeight() * 3);
 				main.fontBordered.getData().setScale(1);
 				main.fontBordered.setColor(1, 1, 1, 1);
+			}
+		}
+
+		// beat numbers
+		{
+			main.font.setColor(main.palette.getStaffLine());
+			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
+				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
+				main.font.draw(batch, x + "", x * Entity.PX_WIDTH,
+						TRACK_COUNT * Entity.PX_HEIGHT + main.font.getCapHeight() + 4, 0, Align.center, false);
 			}
 		}
 
@@ -396,21 +421,57 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void inputUpdate() {
-		if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-			camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-			camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
-		}
-
-		if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
-			camera.position.x = 0;
-		}
-
 		// FIXME
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			remix.setPlayingState(
 					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
+		}
+
+		if (remix.getPlayingState() != PlayingState.STOPPED) {
+			if (isCursorStretching) {
+				isCursorStretching = false;
+				Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+			}
+			return;
+		}
+
+		// camera
+		{
+			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
+			}
+
+			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
+				camera.position.x = 0;
+			}
+		}
+
+		// trackers
+		{
+			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			vec3Tmp2.x /= Entity.PX_WIDTH;
+			vec3Tmp2.y /= Entity.PX_HEIGHT;
+
+			final boolean shift =
+					Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
+
+			if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+				remix.setPlaybackStart(vec3Tmp2.x);
+				if (!shift) {
+					remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
+				}
+			}
+
+			if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+				remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
+				if (!shift) {
+					remix.setMusicStartTime(MathHelper
+							.snapToNearest(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x), snappingInterval));
+				}
+			}
 		}
 
 		// cursor only
