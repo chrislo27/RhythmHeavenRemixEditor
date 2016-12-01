@@ -11,6 +11,7 @@ import chrislo27.rhre.registry.Series;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
+import chrislo27.rhre.track.TempoChange;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -37,16 +38,16 @@ import java.util.Map;
 
 public class Editor extends InputAdapter implements Disposable {
 
-	private static final int MESSAGE_BAR_HEIGHT = 12;
-	private static final int GAME_TAB_HEIGHT = 24;
 	public static final int GAME_ICON_SIZE = 32;
 	public static final int GAME_ICON_PADDING = 8;
 	public static final int ICON_COUNT_X = 15;
 	public static final int ICON_COUNT_Y = 4;
+	private static final int MESSAGE_BAR_HEIGHT = 12;
+	private static final int GAME_TAB_HEIGHT = 24;
 	private static final int PICKER_HEIGHT = ICON_COUNT_Y * (GAME_ICON_PADDING + GAME_ICON_SIZE) + GAME_ICON_PADDING;
 	private static final int OVERVIEW_HEIGHT = 32;
-	private static final int STAFF_START_Y = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT +
-			32;
+	private static final int STAFF_START_Y =
+			MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT + 32;
 	private static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
@@ -110,6 +111,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		batch.begin();
 
+		final float beatInSeconds = remix.getTempoChanges().beatsToSeconds(remix.getBeat());
 		final float yOffset = -1;
 
 		// beat lines
@@ -181,6 +183,63 @@ public class Editor extends InputAdapter implements Disposable {
 								TRACK_COUNT * Entity.PX_HEIGHT);
 					}
 				}
+			}
+		}
+
+		// trackers
+		{
+			// music start
+			{
+				batch.setColor(main.palette.getMusicStartTracker());
+				Main.fillRect(batch, remix.getMusicStartTime() * Entity.PX_WIDTH, 0, 2,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				batch.setColor(1, 1, 1, 1);
+
+				main.fontBordered.setColor(main.palette.getMusicStartTracker());
+				main.fontBordered.draw(batch,
+						Localization.get("editor.musicStartTracker", String.format("%.3f", remix.getMusicStartTime())),
+						remix.getMusicStartTime() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				main.fontBordered.setColor(1, 1, 1, 1);
+			}
+
+			// playback start
+			{
+				batch.setColor(main.palette.getBeatTracker());
+				Main.fillRect(batch, remix.getPlaybackStart() * Entity.PX_WIDTH, 0, 2,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				batch.setColor(1, 1, 1, 1);
+
+				main.fontBordered.setColor(main.palette.getBeatTracker());
+				main.fontBordered.draw(batch, Localization
+								.get("editor.playbackStartTracker", String.format("%.3f", remix.getPlaybackStart())),
+						remix.getPlaybackStart() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				main.fontBordered.setColor(1, 1, 1, 1);
+			}
+
+			// playing
+			if (remix.getPlayingState() != PlayingState.STOPPED) {
+				batch.setColor(main.palette.getBeatTracker());
+				Main.fillRect(batch, remix.getBeat() * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				batch.setColor(1, 1, 1, 1);
+
+				TempoChange tc = remix.getTempoChanges().getTempoChangeFromBeat(remix.getBeat());
+				float currentBpm = tc == null ? remix.getTempoChanges().getDefTempo() : tc.getTempo();
+
+				main.fontBordered.setColor(main.palette.getBeatTracker());
+				main.fontBordered
+						.draw(batch, Localization.get("editor.beatTrackerBeat", String.format("%.3f", remix.getBeat
+										())),
+								remix.getBeat() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				main.fontBordered.getData().setScale(0.5f);
+				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerSec",
+						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
+								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.fontBordered.getLineHeight() * 2);
+				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerBpm", (int) currentBpm),
+						remix.getBeat() * Entity.PX_WIDTH + 4,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.fontBordered.getLineHeight() * 3);
+				main.fontBordered.getData().setScale(1);
+				main.fontBordered.setColor(1, 1, 1, 1);
 			}
 		}
 

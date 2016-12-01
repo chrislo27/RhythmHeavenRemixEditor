@@ -5,32 +5,22 @@ import ionium.util.Utils
 import java.util.*
 
 
-data class TempoChange constructor (val beat: Float, val tempo: Float, private val tc: TempoChanges,
-									val unremoveable: Boolean = false) {
+data class TempoChange constructor(val beat: Float, val tempo: Float, private val tc: TempoChanges) {
 
-	val seconds: Float by lazy {
-		if (tc.getCount() == 0)
-			0f
-		else {
-			tc.beatsToSeconds(beat)
-		}
-	}
+	val seconds: Float = tc.beatsToSeconds(beat)
 
 }
 
-class TempoChanges(defTempo: Float) {
+class TempoChanges(val defTempo: Float = 120f) {
 
 	private val beatMap: NavigableMap<Float, TempoChange> = TreeMap()
 	private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap()
 
 	init {
-		add(TempoChange(0f, defTempo, this, unremoveable = true))
+
 	}
 
 	fun remove(tc: TempoChange) {
-		if (getCount() <= 1) return
-		if (tc.unremoveable) return
-
 		beatMap.remove(tc.beat)
 		secondsMap.remove(tc.seconds)
 
@@ -44,7 +34,7 @@ class TempoChanges(defTempo: Float) {
 		update()
 	}
 
-	private fun update() {
+	fun update() {
 		val oldBeats: MutableList<TempoChange> = mutableListOf()
 
 		beatMap.entries.forEach { oldBeats.add(it.value) }
@@ -53,7 +43,7 @@ class TempoChanges(defTempo: Float) {
 		secondsMap.clear()
 
 		oldBeats.forEach {
-			val tc = TempoChange(it.beat, it.tempo, this, it.unremoveable)
+			val tc = TempoChange(it.beat, it.tempo, this)
 
 			beatMap.put(tc.beat, tc)
 			secondsMap.put(tc.seconds, tc)
@@ -62,24 +52,20 @@ class TempoChanges(defTempo: Float) {
 
 	fun getCount(): Int = Math.min(beatMap.size, secondsMap.size)
 
-	fun getTempoChangeFromBeat(beat: Float): TempoChange = beatMap.lowerEntry(beat)?.value ?: beatMap.firstEntry()!!.value
+	fun getTempoChangeFromBeat(beat: Float): TempoChange? = beatMap.lowerEntry(beat)?.value
 
-	fun getTempoChangeFromSecond(second: Float): TempoChange = secondsMap.lowerEntry(second)?.value ?: secondsMap.firstEntry()!!.value
+	fun getTempoChangeFromSecond(second: Float): TempoChange? = secondsMap.lowerEntry(second)?.value
 
 	fun beatsToSeconds(beat: Float): Float {
-		val tc: TempoChange = getTempoChangeFromBeat(beat)
+		val tc: TempoChange = getTempoChangeFromBeat(beat) ?: return BpmUtils.beatsToSeconds(beat, defTempo)
 
 		return tc.seconds + BpmUtils.beatsToSeconds(beat - tc.beat, tc.tempo)
 	}
 
 	fun secondsToBeats(seconds: Float): Float {
-		val tc: TempoChange = getTempoChangeFromSecond(seconds)
+		val tc: TempoChange = getTempoChangeFromSecond(seconds) ?: return BpmUtils.secondsToBeats(seconds, defTempo)
 
 		return tc.beat + BpmUtils.secondsToBeats(seconds - tc.seconds, tc.tempo)
-	}
-
-	fun beatCity(): String {
-		return "bad"
 	}
 
 }

@@ -14,7 +14,8 @@ class Remix {
 	var music: Music? = null
 
 	private var beat: Float = 0f
-	private var musicStartTime: Float = 0f
+	var musicStartTime: Float = 0f
+	var playbackStart: Float = 0f
 
 	init {
 
@@ -42,8 +43,7 @@ class Remix {
 				// reset playback completion
 				entities.forEach(Entity::reset)
 
-				// FIXME
-				beat = 0f
+				beat = playbackStart
 			}
 		}
 	}

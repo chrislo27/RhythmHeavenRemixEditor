@@ -18,6 +18,10 @@ abstract class AbstractPalette {
 	open val selectionFill: Color = Color(0.1f, 0.75f, 0.75f, 0.333f)
 	open val selectionBorder: Color = Color(0.1f, 0.85f, 0.85f, 1f)
 
+	open val beatTracker: Color = Color(0f, 0.9f, 0f, 1f)
+	open val bpmTracker: Color = Color(0f, 0f, 0.9f, 1f)
+	open val musicStartTracker: Color = Color(0.9f, 0f, 0f, 1f)
+
 }
 
 open class LightPalette : AbstractPalette() {
