@@ -333,12 +333,6 @@ public class Editor extends InputAdapter implements Disposable {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
 						OVERVIEW_HEIGHT, 1);
-
-				if (Series.values()[i] == currentSeries) {
-					batch.setColor(1, 1, 1, 1);
-					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
-							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
-				}
 			}
 			batch.setColor(1, 1, 1, 1);
 			main.font.setColor(1, 1, 1, 1);
@@ -347,9 +341,20 @@ public class Editor extends InputAdapter implements Disposable {
 
 			// series buttons
 			for (int i = 0; i < Series.values().length; i++) {
-				main.font.draw(batch, Series.values()[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
-						0, Align.center, false);
+//				main.font.draw(batch, Series.values()[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
+//						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
+//						0, Align.center, false);
+
+				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values()[i].name()),
+						i * GAME_ICON_SIZE,
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT,
+						GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+
+				if (Series.values()[i] == currentSeries) {
+					batch.setColor(1, 1, 1, 1);
+					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
+							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+				}
 			}
 			main.font.getData().setScale(1);
 		}

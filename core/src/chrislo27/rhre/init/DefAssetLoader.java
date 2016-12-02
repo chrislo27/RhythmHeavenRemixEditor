@@ -1,6 +1,7 @@
 package chrislo27.rhre.init;
 
 import chrislo27.rhre.editor.Editor;
+import chrislo27.rhre.registry.Series;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import ionium.animation.Animation;
@@ -16,8 +17,13 @@ public class DefAssetLoader implements IAssetLoader {
 		manager.load(AssetMap.add("icon_selector_tengoku", "images/selector/tengoku.png"), Texture.class);
 		manager.load(AssetMap.add("icon_selector_ds", "images/selector/ds.png"), Texture.class);
 
-		for (Editor.Tool t : Editor.Tool.values())
+		for (Editor.Tool t : Editor.Tool.values()) {
 			manager.load(AssetMap.add("tool_icon_" + t.name(), "images/tool/" + t.name() + ".png"), Texture.class);
+		}
+
+		for (Series s : Series.values()) {
+			manager.load(AssetMap.add("series_icon_" + s.name(), "images/series/" + s.name() + ".png"), Texture.class);
+		}
 	}
 
 	@Override
