@@ -639,6 +639,27 @@ public class Editor extends InputAdapter implements Disposable {
 					remix.getTempoChanges().remove(selectedTempoChange);
 				}
 			}
+		} else if (currentTool == Tool.SPLIT_PATTERN) {
+			status = Localization.get("editor.splitPatternToolStatus");
+
+			if (Utils.isButtonJustPressed(Input.Buttons.LEFT)) {
+				Entity e = getEntityAtMouse();
+
+				if (e instanceof PatternEntity) {
+					PatternEntity pe = (PatternEntity) e;
+
+					pe.internal.forEach(se -> {
+						se.bounds.x += pe.bounds.x;
+						se.bounds.y += pe.bounds.y;
+
+						remix.getEntities().add(se);
+					});
+
+					remix.getEntities().remove(pe);
+					selectionGroup = null;
+					remix.getSelection().clear();
+				}
+			}
 		}
 	}
 
@@ -867,7 +888,7 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public enum Tool {
-		NORMAL, BPM;
+		NORMAL, BPM, SPLIT_PATTERN
 	}
 
 }
