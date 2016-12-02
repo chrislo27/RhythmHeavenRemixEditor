@@ -1,8 +1,7 @@
 {
   "gameID": "samuraiSliceDS",
   "gameName": "Samurai Slice (DS)",
-  "series": "ds",
-  "type": "side",
+  "series": "side",
   "cues": [
     {
       "id": "samuraiSliceDS/throw",
