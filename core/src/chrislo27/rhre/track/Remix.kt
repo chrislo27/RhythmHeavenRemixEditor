@@ -22,12 +22,20 @@ class Remix {
 	}
 
 	fun setPlayingState(ps: PlayingState): Unit {
+		fun resetEntitiesAndTracker(): Unit {
+			// reset playback completion
+			entities.forEach(Entity::reset)
+			beat = playbackStart
+			entities.filter { it.bounds.x + it.bounds.width <= beat }.forEach { it.playbackCompletion = PlaybackCompletion.FINISHED }
+		}
+
 		when (playingState) {
 			PlayingState.PLAYING -> {
 			}
 			PlayingState.PAUSED -> {
 			}
 			PlayingState.STOPPED -> {
+				resetEntitiesAndTracker()
 			}
 		}
 
@@ -40,11 +48,7 @@ class Remix {
 			PlayingState.PAUSED -> {
 			}
 			PlayingState.STOPPED -> {
-				// reset playback completion
-				entities.forEach(Entity::reset)
-
-				beat = playbackStart
-				entities.filter { it.bounds.x + it.bounds.width <= beat }.forEach { it.playbackCompletion = PlaybackCompletion.FINISHED }
+				resetEntitiesAndTracker()
 			}
 		}
 	}

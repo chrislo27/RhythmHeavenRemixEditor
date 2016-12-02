@@ -624,7 +624,8 @@ public class Editor extends InputAdapter implements Disposable {
 			float beatPos = MathHelper.snapToNearest(vec3Tmp2.x, snappingInterval);
 
 			if (selectedTempoChange == null) {
-				if (Utils.isButtonJustPressed(Input.Buttons.MIDDLE)) {
+				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && Gdx.graphics.getHeight() - Gdx.input.getY() >
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 
@@ -851,7 +852,9 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 			} else if (currentTool == Tool.BPM) {
 				if (selectedTempoChange != null) {
-					float newTempo = MathUtils.clamp((int) selectedTempoChange.getTempo() + -amount, 30, 240);
+					float newTempo = MathUtils.clamp((int) selectedTempoChange.getTempo() + -amount *
+							(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1), 30, 240);
 
 					if (selectedTempoChange.getTempo() != newTempo) {
 						TempoChange tc = new TempoChange(selectedTempoChange.getBeat(), newTempo,
