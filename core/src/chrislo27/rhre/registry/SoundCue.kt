@@ -1,5 +1,6 @@
 package chrislo27.rhre.registry
 
+import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
 
@@ -15,6 +16,19 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 	fun getIntroSoundObj(): Sound? {
 		if (introSound == null) return null
 		return AssetRegistry.getSound("soundCue_$introSound")
+	}
+
+	fun getPitch(semitone: Int, bpm: Float): Float {
+		var result = 1f
+
+		if (canAlterPitch)
+			result = Semitones.getALPitch(semitone)
+
+		if (baseBpm > 0) {
+			result *= bpm / baseBpm
+		}
+
+		return result
 	}
 
 }

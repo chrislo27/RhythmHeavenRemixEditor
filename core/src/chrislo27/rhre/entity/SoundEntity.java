@@ -76,13 +76,15 @@ public class SoundEntity extends Entity {
 	public void onStart(float delta) {
 		super.onStart(delta);
 
+		final float bpm = remix.getTempoChanges().getTempoAt(remix.getBeat());
+
 		if (cue.getIntroSoundObj() != null) {
-			cue.getIntroSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.getALPitch(semitone) : 1, 0);
+			cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
-			cue.getSoundObj().loop(1, !cue.getCanAlterPitch() ? 1 : Semitones.getALPitch(semitone), 0);
+			cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
-			cue.getSoundObj().play(1, cue.getCanAlterPitch() ? Semitones.getALPitch(semitone) : 1, 0);
+			cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
 	}
 
