@@ -91,28 +91,6 @@
   ],
   "patterns": [
     {
-      "id": "frogHop_countin",
-      "name": "countin",
-      "cues": [
-       {
-        "id": "frogHop/one",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/two",
-        "beat": 1.0
-       },
-       {
-        "id": "frogHop/three",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/four",
-        "beat": 3.0
-       }
-      ]
-    },
-    {
       "id": "frogHop_shake",
       "name": "shake",
       "cues": [
@@ -215,6 +193,42 @@
         "beat": 3.0
        }
       ]
-    }
+    },
+    {
+      "id": "frogHop_2BeatCountIn",
+      "name": "2-beat count-in",
+      "cues": [
+       {
+        "id": "frogHop/three",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/four",
+        "beat": 1.0
+       }
+      ]
+    },
+    {
+      "id": "frogHop_4BeatCountIn",
+      "name": "4-beat count-in",
+      "cues": [
+       {
+        "id": "frogHop/one",
+        "beat": 0.0
+       },
+       {
+        "id": "frogHop/two",
+        "beat": 1.0
+       },
+       {
+        "id": "frogHop/three",
+        "beat": 2.0
+       },
+       {
+        "id": "frogHop/four",
+        "beat": 3.0
+       }
+      ]
+    },
   ]
 }
