@@ -37,7 +37,7 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public Screen getScreenToSwitchToAfterLoadingAssets() {
-		return ScreenRegistry.get("editor");
+		return ScreenRegistry.get("tapalong");
 	}
 
 	@Override
@@ -70,6 +70,7 @@ public class Main extends ionium.templates.Main {
 
 		ScreenRegistry reg = ScreenRegistry.instance();
 		reg.add("editor", new EditorScreen(this));
+		reg.add("tapalong", new TapalongScreen(this));
 	}
 
 	@Override

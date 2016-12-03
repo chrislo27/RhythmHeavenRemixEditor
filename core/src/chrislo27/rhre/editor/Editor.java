@@ -27,6 +27,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
 import ionium.registry.AssetRegistry;
+import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
 import ionium.util.Utils;
 import ionium.util.i18n.Localization;
@@ -345,10 +346,8 @@ public class Editor extends InputAdapter implements Disposable {
 //						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
 //						0, Align.center, false);
 
-				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values()[i].name()),
-						i * GAME_ICON_SIZE,
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT,
-						GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values()[i].name()), i * GAME_ICON_SIZE,
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
 				if (Series.values()[i] == currentSeries) {
 					batch.setColor(1, 1, 1, 1);
@@ -461,6 +460,10 @@ public class Editor extends InputAdapter implements Disposable {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			remix.setPlayingState(
 					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
+		}
+
+		if (DebugSetting.debug) {
+
 		}
 
 		if (remix.getPlayingState() != PlayingState.STOPPED) {
@@ -609,6 +612,18 @@ public class Editor extends InputAdapter implements Disposable {
 							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
 						}
 					}
+				} else {
+
+				}
+			}
+
+			if (selectionGroup != null && selectionGroup.getList().size() == 1 && isStretching > 0) {
+				if (selectionGroup.getList().get(0).isStretchable()) {
+					status = Localization.get("editor.stretchStatus2") + " " +
+							selectionGroup.getOldPositions().get(0).width;
+					status += " | ";
+					status += Localization.get("editor.stretchStatus1") + " " +
+							selectionGroup.getList().get(0).bounds.width;
 				}
 			}
 		} else if (currentTool == Tool.BPM) {
@@ -873,6 +888,18 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+
+		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
+			int index = keycode - Input.Keys.NUM_1;
+
+			if (index < Tool.values().length) currentTool = Tool.values()[index];
+		}
+
 		return false;
 	}
 

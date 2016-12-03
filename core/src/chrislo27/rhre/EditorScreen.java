@@ -12,7 +12,7 @@ public class EditorScreen extends Updateable<Main> {
 
 	public Editor editor;
 	private EditorStageSetup stageSetup;
-	private Stage stage;
+	public Stage stage;
 
 	public EditorScreen(Main m) {
 		super(m);
@@ -91,6 +91,6 @@ public class EditorScreen extends Updateable<Main> {
 
 	@Override
 	public void dispose() {
-		editor.dispose();
+		if (editor != null) editor.dispose();
 	}
 }

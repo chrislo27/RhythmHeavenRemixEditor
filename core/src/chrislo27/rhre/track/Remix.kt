@@ -56,10 +56,7 @@ class Remix {
 		// change to
 		when (ps) {
 			PlayingState.PLAYING -> {
-				var length = Float.MIN_VALUE
-				entities.forEach { length = Math.max(length, it.bounds.x + it.bounds.width) }
-
-				endTime = length
+				endTime = entities.fold(Float.MIN_VALUE, {value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width)})
 			}
 			PlayingState.PAUSED -> {
 			}

@@ -152,7 +152,7 @@ public class PatternEntity extends Entity {
 				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f, targetWidth,
 				Align.right, true);
 		if (isRepitchable()) {
-			main.font.draw(batch, Semitones.INSTANCE.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
+			main.font.draw(batch, Semitones.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
 					bounds.getY() * PX_HEIGHT + main.font.getCapHeight() + 4);
 		}
 		main.font.getData().setScale(1);
