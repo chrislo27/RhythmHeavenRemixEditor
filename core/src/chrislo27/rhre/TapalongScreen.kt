@@ -54,6 +54,10 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 			timeBetween.add(System.currentTimeMillis())
 			lastTapTime = System.currentTimeMillis()
 
+			if (timeBetween.size > MAX_SAMPLES) {
+				timeBetween.removeAt(0)
+			}
+
 			calcAvg()
 		}
 
