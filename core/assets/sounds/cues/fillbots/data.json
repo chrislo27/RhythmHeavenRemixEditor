@@ -139,15 +139,15 @@
         },
         {
           "id": "fillbots/bigFinish1",
-          "beat": 12
+          "beat": 11
         },
         {
           "id": "fillbots/bigFinish2",
-          "beat": 12.5
+          "beat": 11.5
         },
         {
           "id": "fillbots/bigFinish3",
-          "beat": 13
+          "beat": 12
         }
       ]
     },
