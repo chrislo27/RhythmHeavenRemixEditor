@@ -60,8 +60,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
-	// TODO add button for this - 1/4, 1/6, 1/8
-	public float snappingInterval = 0.125f;
+	public float snappingInterval = 0.25f;
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
 	private Map<Series, Scroll> scrolls = new HashMap<>();

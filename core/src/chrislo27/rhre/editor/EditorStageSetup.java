@@ -2,10 +2,13 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.EditorScreen;
 import chrislo27.rhre.Main;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.stage.Stage;
 import ionium.stage.ui.ImageButton;
+import ionium.stage.ui.LocalizationStrategy;
+import ionium.stage.ui.TextButton;
 import ionium.stage.ui.skin.Palette;
 import ionium.stage.ui.skin.Palettes;
 
@@ -27,7 +30,7 @@ public class EditorStageSetup {
 	}
 
 	private void create() {
-		final Palette palette = Palettes.getIoniumDefault(main.fontBordered, main.font);
+		final Palette palette = Palettes.getIoniumDefault(main.font, main.font);
 		stage = new Stage();
 
 		{
@@ -43,9 +46,25 @@ public class EditorStageSetup {
 			stage.addActor(playRemix);
 
 			playRemix.align(Align.topLeft).setScreenOffset(0.5f, 0)
-					.setPixelOffset(-PADDING - BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(-BUTTON_HEIGHT / 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 
 			playRemix.getColor().set(0, 0.5f, 0.055f, 1);
+		}
+		{
+			ImageButton pauseRemix = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "pause")) {
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+				}
+
+			};
+
+			pauseRemix.getColor().set(0.75f, 0.75f, 0.25f, 1);
+			stage.addActor(pauseRemix).align(Align.topLeft).setScreenOffset(0.5f, 0)
+					.setPixelOffset(-BUTTON_HEIGHT / 2 - PADDING - BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 		{
 			ImageButton stopRemix = new ImageButton(stage, palette,
@@ -62,7 +81,58 @@ public class EditorStageSetup {
 
 			stopRemix.getColor().set(242 / 255f, 0.0525f, 0.0525f, 1);
 			stage.addActor(stopRemix).align(Align.topLeft).setScreenOffset(0.5f, 0)
-					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(BUTTON_HEIGHT / 2 + PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton interval = new TextButton(stage, palette, "") {
+
+				private int interval = 0;
+				private final int[] intervals = { 4, 6, 8 };
+
+				{
+					updateIntervalText();
+				}
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					interval++;
+
+					if (interval >= intervals.length) {
+						interval = 0;
+					}
+
+					screen.editor.snappingInterval = 1f / intervals[interval];
+
+					updateIntervalText();
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
+				}
+
+				private void updateIntervalText() {
+					setLocalizationKey("Snap: 1/" + intervals[interval]);
+				}
+
+			};
+
+			interval.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null) return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(interval).align(Align.topRight)
+					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 	}
 
