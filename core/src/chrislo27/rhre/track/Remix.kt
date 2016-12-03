@@ -1,6 +1,7 @@
 package chrislo27.rhre.track
 
 import chrislo27.rhre.entity.Entity
+import chrislo27.rhre.entity.PatternEntity
 import com.badlogic.gdx.audio.Music
 
 class Remix {
@@ -16,6 +17,7 @@ class Remix {
 	private var beat: Float = 0f
 	var musicStartTime: Float = 0f
 	var playbackStart: Float = 0f
+	private var endTime: Float = 0f
 
 	init {
 
@@ -26,7 +28,17 @@ class Remix {
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
-			entities.filter { it.bounds.x + it.bounds.width <= beat }.forEach { it.playbackCompletion = PlaybackCompletion.FINISHED }
+			entities.forEach {
+				if (it is PatternEntity) {
+					it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
+						inter.playbackCompletion = PlaybackCompletion.FINISHED
+						inter.onEnd(0f)
+					}
+				} else if (it.bounds.x + it.bounds.width < beat) {
+					it.playbackCompletion = PlaybackCompletion.FINISHED
+					it.onEnd(0f)
+				}
+			}
 		}
 
 		when (playingState) {
@@ -44,6 +56,10 @@ class Remix {
 		// change to
 		when (ps) {
 			PlayingState.PLAYING -> {
+				var length = Float.MIN_VALUE
+				entities.forEach { length = Math.max(length, it.bounds.x + it.bounds.width) }
+
+				endTime = length
 			}
 			PlayingState.PAUSED -> {
 			}
@@ -97,6 +113,9 @@ class Remix {
 				}
 			}
 		}
+
+		if (beat >= endTime)
+			setPlayingState(PlayingState.STOPPED)
 	}
 
 }
