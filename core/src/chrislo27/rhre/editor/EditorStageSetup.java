@@ -2,6 +2,8 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.EditorScreen;
 import chrislo27.rhre.Main;
+import chrislo27.rhre.track.PlayingState;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
@@ -40,7 +42,7 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-
+					screen.editor.remix.setPlayingState(PlayingState.PLAYING);
 				}
 			};
 			stage.addActor(playRemix);
@@ -58,13 +60,16 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
+					if (screen.editor.remix.getPlayingState() == PlayingState.PLAYING)
+						screen.editor.remix.setPlayingState(PlayingState.PAUSED);
 				}
 
 			};
 
 			pauseRemix.getColor().set(0.75f, 0.75f, 0.25f, 1);
 			stage.addActor(pauseRemix).align(Align.topLeft).setScreenOffset(0.5f, 0)
-					.setPixelOffset(-BUTTON_HEIGHT / 2 - PADDING - BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(-BUTTON_HEIGHT / 2 - PADDING - BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT,
+							BUTTON_HEIGHT);
 		}
 		{
 			ImageButton stopRemix = new ImageButton(stage, palette,
@@ -74,7 +79,7 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-
+					screen.editor.remix.setPlayingState(PlayingState.STOPPED);
 				}
 
 			};
@@ -85,10 +90,31 @@ public class EditorStageSetup {
 		}
 
 		{
+			ImageButton exitGame = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "no")) {
+
+				Runnable exitRun = () -> Gdx.app.exit();
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					if (screen.editor.remix.getPlayingState() != PlayingState.STOPPED)
+						return;
+				}
+
+			};
+
+			exitGame.getColor().set(0.85f, 0.25f, 0.25f, 1);
+			stage.addActor(exitGame).align(Align.topRight)
+					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton interval = new TextButton(stage, palette, "") {
 
+				private final int[] intervals = {4, 6, 8};
 				private int interval = 0;
-				private final int[] intervals = { 4, 6, 8 };
 
 				{
 					updateIntervalText();
@@ -124,7 +150,8 @@ public class EditorStageSetup {
 
 				@Override
 				public String get(String key, Object... objects) {
-					if (key == null) return "";
+					if (key == null)
+						return "";
 
 					return key;
 				}
