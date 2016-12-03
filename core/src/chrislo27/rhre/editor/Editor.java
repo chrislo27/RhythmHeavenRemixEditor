@@ -60,12 +60,12 @@ public class Editor extends InputAdapter implements Disposable {
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
-	public float snappingInterval = 0.25f;
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
+	float snappingInterval;
+	Remix remix;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
-	private Remix remix;
 	/**
 	 * null = not selecting
 	 */
@@ -89,6 +89,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		for (Series s : Series.values())
 			scrolls.put(s, new Scroll(0, 0));
+		snappingInterval = 0.25f;
 	}
 
 	public Entity getEntityAtPoint(float x, float y) {
@@ -476,10 +477,14 @@ public class Editor extends InputAdapter implements Disposable {
 		// camera
 		{
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
+				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
+						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1);
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime();
+				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
+						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1);
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
@@ -873,7 +878,7 @@ public class Editor extends InputAdapter implements Disposable {
 				if (selectedTempoChange != null) {
 					float newTempo = MathUtils.clamp((int) selectedTempoChange.getTempo() + -amount *
 							(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1), 30, 240);
+									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1), 30, 480);
 
 					if (selectedTempoChange.getTempo() != newTempo) {
 						TempoChange tc = new TempoChange(selectedTempoChange.getBeat(), newTempo,
@@ -896,7 +901,8 @@ public class Editor extends InputAdapter implements Disposable {
 		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
 			int index = keycode - Input.Keys.NUM_1;
 
-			if (index < Tool.values().length) currentTool = Tool.values()[index];
+			if (index < Tool.values().length)
+				currentTool = Tool.values()[index];
 		}
 
 		return false;
