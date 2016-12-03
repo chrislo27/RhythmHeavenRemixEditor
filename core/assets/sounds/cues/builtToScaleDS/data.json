@@ -44,6 +44,10 @@
           "id": "builtToScaleDS/c",
           "beat": 4,
           "semitone": 7
+        },
+        {
+          "id": "builtToScaleDS/pew",
+          "beat": 4
         }
         ]
     }

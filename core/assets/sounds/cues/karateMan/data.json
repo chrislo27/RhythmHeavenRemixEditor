@@ -19,6 +19,11 @@
       "name": "pot - hit"
     },
     {
+      "id": "karateMan/soccerHit",
+      "duration": 1,
+      "name": "soccer ball - hit"
+    },
+    {
       "id": "karateMan/KarateRoaster",
       "duration": 1,
       "name": "roaster - hit",
@@ -125,6 +130,20 @@
         },
         {
           "id": "karateMan/pothit",
+          "beat": 1
+        }
+        ]
+    },
+    {
+      "id": "karateMan_soccer ball",
+      "name": "soccer ball",
+      "cues": [
+        {
+          "id": "karateMan/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/soccerHit",
           "beat": 1
         }
         ]
