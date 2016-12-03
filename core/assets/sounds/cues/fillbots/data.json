@@ -12,7 +12,7 @@
       "id": "fillbots/mediumFill",
       "duration": 3,
       "name": "medium - fill",
-      "baseBpm:" 104
+      "baseBpm": 104
     },
     {
       "id": "fillbots/mediumFinish1",
@@ -38,7 +38,7 @@
       "id": "fillbots/bigFill",
       "duration": 7,
       "name": "big - fill",
-      "baseBpm:" 104
+      "baseBpm": 104
     },
     {
       "id": "fillbots/bigFinish1",
@@ -64,7 +64,7 @@
       "id": "fillbots/smallFill",
       "duration": 1,
       "name": "small - fill",
-      "baseBpm:" 104
+      "baseBpm": 104
     },
     {
       "id": "fillbots/smallFinish1",
