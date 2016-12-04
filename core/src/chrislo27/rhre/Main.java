@@ -71,6 +71,7 @@ public class Main extends ionium.templates.Main {
 		ScreenRegistry reg = ScreenRegistry.instance();
 		reg.add("editor", new EditorScreen(this));
 		reg.add("tapalong", new TapalongScreen(this));
+		reg.add("info", new InfoScreen(this));
 	}
 
 	@Override

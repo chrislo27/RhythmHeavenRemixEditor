@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
+import ionium.registry.ScreenRegistry;
 import ionium.stage.Stage;
 import ionium.stage.ui.ImageButton;
 import ionium.stage.ui.LocalizationStrategy;
@@ -106,7 +107,34 @@ public class EditorStageSetup {
 			};
 
 			exitGame.getColor().set(0.85f, 0.25f, 0.25f, 1);
-			stage.addActor(exitGame).align(Align.topRight)
+			exitGame.align(Align.topRight)
+					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+//			stage.addActor(exitGame);
+		}
+
+		{
+			TextButton info = new TextButton(stage, palette, "i"){
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("info"));
+				}
+			};
+
+			info.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null)
+						return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(info).align(Align.topRight)
 					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
@@ -160,6 +188,7 @@ public class EditorStageSetup {
 
 			stage.addActor(interval).align(Align.topRight)
 					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+
 		}
 	}
 
