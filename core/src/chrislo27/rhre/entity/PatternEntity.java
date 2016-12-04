@@ -108,6 +108,17 @@ public class PatternEntity extends Entity {
 	}
 
 	@Override
+	public PatternEntity copy() {
+		PatternEntity pe = new PatternEntity(this.remix, pattern);
+
+		pe.bounds.set(this.bounds);
+		pe.semitone = semitone;
+		pe.internal.forEach(se -> se.semitone += pe.semitone);
+
+		return pe;
+	}
+
+	@Override
 	public boolean isStretchable() {
 		return pattern.isStretchable();
 	}

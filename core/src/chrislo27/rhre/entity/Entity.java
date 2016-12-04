@@ -36,6 +36,8 @@ public abstract class Entity {
 
 	}
 
+	public abstract Entity copy();
+
 	public abstract boolean isStretchable();
 
 	public abstract boolean isRepitchable();

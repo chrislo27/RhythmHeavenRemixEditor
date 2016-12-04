@@ -94,10 +94,11 @@ public class Editor extends InputAdapter implements Disposable {
 
 	public Entity getEntityAtPoint(float x, float y) {
 		camera.unproject(cameraPickVec3.set(x, y, 0));
+		cameraPickVec3.x /= Entity.PX_WIDTH;
+		cameraPickVec3.y /= Entity.PX_HEIGHT;
 
 		return remix.getEntities().stream()
-				.filter(e -> e.bounds.contains(cameraPickVec3.x / Entity.PX_WIDTH, cameraPickVec3.y / Entity
-						.PX_HEIGHT))
+				.filter(e -> e.bounds.contains(cameraPickVec3.x, cameraPickVec3.y))
 				.findFirst().orElse(null);
 	}
 
@@ -755,6 +756,25 @@ public class Editor extends InputAdapter implements Disposable {
 						selectionOrigin = new Vector2(cameraPickVec3.x, cameraPickVec3.y);
 					} else if (remix.getSelection().contains(possible)) {
 						// begin move
+						final boolean isCopying = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) ||
+								Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT);
+
+						if (isCopying) {
+							final List<Entity> newSel = new ArrayList<>();
+							final Entity finalPos = possible;
+							remix.getSelection().stream().filter(it -> it != finalPos).map(Entity::copy)
+									.forEach(newSel::add);
+
+							possible = possible.copy();
+							newSel.add(possible);
+
+							remix.getSelection().clear();
+							remix.getEntities().addAll(newSel);
+							remix.getSelection().addAll(newSel);
+
+							Main.logger.debug("copied " + newSel.size());
+						}
+
 						final List<Rectangle> oldPos = new ArrayList<>();
 
 						remix.getSelection().stream()
@@ -763,10 +783,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
 								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
-										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), false);
+										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), isCopying);
 
 						// stretch code
-						if (remix.getSelection().size() <= 1 && possible.isStretchable()) {
+						if (remix.getSelection().size() <= 1 && possible.isStretchable() && !isCopying) {
 							cameraPickVec3.x /= Entity.PX_WIDTH;
 							cameraPickVec3.y /= Entity.PX_HEIGHT;
 							if ((cameraPickVec3.x >= possible.bounds.x &&
@@ -831,10 +851,7 @@ public class Editor extends InputAdapter implements Disposable {
 							for (int i = 0; i < selectionGroup.getList().size(); i++) {
 								Entity e = selectionGroup.getList().get(i);
 
-								e.bounds.set(selectionGroup.getOldPositions().get(i).getX(),
-										selectionGroup.getOldPositions().get(i).getY(),
-										selectionGroup.getOldPositions().get(i).getWidth(),
-										selectionGroup.getOldPositions().get(i).getHeight());
+								e.bounds.set(selectionGroup.getOldPositions().get(i));
 							}
 						}
 					} else {
