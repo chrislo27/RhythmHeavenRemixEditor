@@ -526,8 +526,6 @@ public class Editor extends InputAdapter implements Disposable {
 			boolean isAbleToStretch = false;
 
 			if (possible != null && remix.getSelection().size() <= 1 && possible.isStretchable()) {
-				cameraPickVec3.x /= Entity.PX_WIDTH;
-				cameraPickVec3.y /= Entity.PX_HEIGHT;
 				if ((cameraPickVec3.x >= possible.bounds.x &&
 						cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
 						(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
@@ -771,8 +769,6 @@ public class Editor extends InputAdapter implements Disposable {
 							remix.getSelection().clear();
 							remix.getEntities().addAll(newSel);
 							remix.getSelection().addAll(newSel);
-
-							Main.logger.debug("copied " + newSel.size());
 						}
 
 						final List<Rectangle> oldPos = new ArrayList<>();
