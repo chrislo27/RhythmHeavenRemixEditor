@@ -51,6 +51,23 @@ open class DarkPalette : AbstractPalette() {
 
 }
 
+open class HotDogPalette : AbstractPalette() {
+	override val editorBg: Color = Color(1f, 1f, 0f, 1f).brighten(0.1f)
+		
+	override val staffLine: Color = Color(0f, 0f, 0f, 1f)
+		
+	override val soundCue: EntityColors = EntityColors(Color(1f, 0f, 0f, 1f))
+		
+	override val stretchableSoundCue: EntityColors = EntityColors(Color(1f, 0f, 0f, 1f))
+		
+	override val bpmSoundCue: EntityColors = EntityColors(Color(1f, 0f, 0f, 1f))
+		
+	override val pattern: EntityColors = EntityColors(Color(1f, 0f, 0f, 1f))
+		
+	override val stretchablePattern: EntityColors = EntityColors(Color(1f, 0f, 0f, 1f))
+
+}
+
 data class EntityColors(val bg: Color, val outline: Color) {
 
 	constructor(bg: Color) : this(bg, brighten(bg, -0.25f))
@@ -62,4 +79,11 @@ private fun brighten(color: Color, amt: Float): Color {
 				 MathUtils.clamp(color.g + amt, 0f, 1f),
 				 MathUtils.clamp(color.b + amt, 0f, 1f),
 				 color.a)
+}
+
+@JvmName("extensionBrighten")
+fun com.badlogic.gdx.graphics.Color.brighten(amt: Float): Color {
+	val c = chrislo27.rhre.palette.brighten(this, amt)
+
+	return this.set(c)
 }
