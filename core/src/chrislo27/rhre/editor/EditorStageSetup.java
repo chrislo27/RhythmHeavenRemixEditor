@@ -107,13 +107,12 @@ public class EditorStageSetup {
 			};
 
 			exitGame.getColor().set(0.85f, 0.25f, 0.25f, 1);
-			exitGame.align(Align.topRight)
-					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			exitGame.align(Align.topRight).setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 //			stage.addActor(exitGame);
 		}
 
 		{
-			TextButton info = new TextButton(stage, palette, "i"){
+			TextButton info = new TextButton(stage, palette, "i") {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
@@ -134,8 +133,7 @@ public class EditorStageSetup {
 
 			});
 
-			stage.addActor(info).align(Align.topRight)
-					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
@@ -165,7 +163,9 @@ public class EditorStageSetup {
 
 				@Override
 				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
 				}
 
 				private void updateIntervalText() {
@@ -187,7 +187,45 @@ public class EditorStageSetup {
 			});
 
 			stage.addActor(interval).align(Align.topRight)
-					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+
+		}
+
+		{
+			TextButton metronome = new TextButton(stage, palette, "Metronome: Off") {
+
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					screen.editor.remix.setTickEachBeat(!screen.editor.remix.getTickEachBeat());
+					setLocalizationKey("Metronome: " + (screen.editor.remix.getTickEachBeat() ? "On" : "Off"));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+			metronome.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null)
+						return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(metronome).align(Align.topRight)
+					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 4,
+							BUTTON_HEIGHT);
 
 		}
 	}

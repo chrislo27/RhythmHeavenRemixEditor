@@ -2,6 +2,7 @@ package chrislo27.rhre.track
 
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
+import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
 
 class Remix {
@@ -19,6 +20,8 @@ class Remix {
 	var playbackStart: Float = 0f
 	private var endTime: Float = 0f
 	private var startTime: Float = 0f
+	var tickEachBeat = false
+	private var lastTickBeat = 0
 
 	init {
 
@@ -29,6 +32,7 @@ class Remix {
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
+			lastTickBeat = Int.MIN_VALUE
 			entities.forEach {
 				if (it is PatternEntity) {
 					it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
@@ -121,6 +125,11 @@ class Remix {
 					}
 				}
 			}
+		}
+
+		if (beat.toInt() > lastTickBeat) {
+			lastTickBeat = beat.toInt()
+			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play()
 		}
 
 		if (beat >= endTime)
