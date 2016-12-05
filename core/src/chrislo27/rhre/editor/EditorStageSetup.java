@@ -228,6 +228,41 @@ public class EditorStageSetup {
 							BUTTON_HEIGHT);
 
 		}
+
+		{
+			TextButton music = new TextButton(stage, palette, "Music") {
+
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("music"));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
+				}
+			};
+
+			music.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null)
+						return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(music).align(Align.topRight)
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 4,
+							BUTTON_HEIGHT);
+
+		}
 	}
 
 	public Stage getStage() {
