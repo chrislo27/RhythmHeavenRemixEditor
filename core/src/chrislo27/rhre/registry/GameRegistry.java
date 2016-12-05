@@ -52,6 +52,16 @@ public class GameRegistry {
 				.filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
+	public Pattern getPattern(String id) {
+		return gameList.stream().map(g -> g.getPattern(id)).filter(Objects::nonNull).findFirst().orElse(null);
+	}
+
+	public Pattern getPatternRaw(String id) {
+		return gameList.stream()
+				.map(g -> g.getPatterns().stream().filter(it -> it.getId().equals(id)).findFirst().orElse(null))
+				.filter(Objects::nonNull).findFirst().orElse(null);
+	}
+
 	private void init() {
 		final long startTime = System.nanoTime();
 

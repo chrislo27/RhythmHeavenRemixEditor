@@ -40,6 +40,16 @@ public class SoundEntity extends Entity {
 	}
 
 	@Override
+	public String getID() {
+		return cue.getId();
+	}
+
+	@Override
+	public int getSemitone() {
+		return semitone;
+	}
+
+	@Override
 	public void adjustPitch(int semitoneChange, int min, int max) {
 		semitone = MathUtils.clamp(semitone + semitoneChange, min, max);
 	}

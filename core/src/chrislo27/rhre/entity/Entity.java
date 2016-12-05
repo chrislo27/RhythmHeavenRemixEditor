@@ -42,6 +42,10 @@ public abstract class Entity {
 
 	public abstract boolean isRepitchable();
 
+	public abstract String getID();
+
+	public abstract int getSemitone();
+
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
 	public final void setBatchColorFromState(SpriteBatch batch, Color c, Color selectionTint,

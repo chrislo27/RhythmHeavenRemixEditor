@@ -64,7 +64,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
 	float snappingInterval;
-	Remix remix;
+	public Remix remix;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
 	/**
@@ -517,7 +517,7 @@ public class Editor extends InputAdapter implements Disposable {
 							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
 						float percent = (Gdx.input.getX() - startX) / mapWidth;
 						percent *= duration;
-						camera.position.x = (percent + remix.getStartTime()) * Entity.PX_WIDTH;
+						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
 					}
 				}
 			}

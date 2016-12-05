@@ -1,19 +1,30 @@
 package chrislo27.rhre.track
 
+import chrislo27.rhre.Main
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
+import chrislo27.rhre.entity.SoundEntity
+import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.utils.Disposable
 
 class Remix {
 
 	val entities: MutableList<Entity> = mutableListOf()
 	val selection: List<Entity> = mutableListOf()
-	val tempoChanges: TempoChanges = TempoChanges(120f)
+	var tempoChanges: TempoChanges = TempoChanges(120f)
+	private set
 
 	private var playingState = PlayingState.STOPPED
 	@Volatile
-	var music: Music? = null
+	var music: MusicData? = null
+		set(value) {
+			music?.dispose()
+
+			field = value
+		}
 
 	private var beat: Float = 0f
 	var musicStartTime: Float = 0f
@@ -26,13 +37,72 @@ class Remix {
 			lastTickBeat = beat.toInt()
 		}
 	private var lastTickBeat = Int.MIN_VALUE
+	private var musicPlayed = false
 
 	init {
 
 	}
 
+	companion object {
+		fun writeToObject(remix: Remix): RemixObject {
+			with (remix) {
+				val obj = RemixObject()
+
+				obj.version = Main.version
+				obj.entities = arrayListOf()
+
+				entities.forEach {
+					val o: RemixObject.EntityObject = RemixObject.EntityObject()
+					o.id = it.id
+					o.beat = it.bounds.x
+					o.level = it.bounds.y.toInt()
+					o.width = it.bounds.width
+					o.isPattern = it is PatternEntity
+					o.semitone = it.semitone
+
+					obj.entities.add(o)
+				}
+
+				return obj
+			}
+		}
+
+		fun readFromObject(obj: RemixObject): Remix {
+			val remix: Remix = Remix()
+
+			remix.entities.clear()
+			obj.entities?.forEach {
+				val e: Entity
+
+				if (it.isPattern) {
+					e = PatternEntity(remix, GameRegistry.instance().getPatternRaw(it.id))
+
+					e.bounds.x = it.beat
+					e.bounds.y = it.level.toFloat()
+					e.bounds.width = it.width
+					e.onLengthChange(it.width)
+					e.adjustPitch(it.semitone, -128, 128)
+				} else {
+					if (it.width == 0f) {
+						e = SoundEntity(remix, GameRegistry.instance().getCueRaw(it.id), it.beat, it.level,
+										it.semitone)
+					} else {
+						e = SoundEntity(remix, GameRegistry.instance().getCueRaw(it.id), it.beat, it.level, it.width,
+										it.semitone)
+					}
+				}
+
+				remix.entities.add(e)
+			}
+
+			return remix
+		}
+	}
+
 	fun setPlayingState(ps: PlayingState): Unit {
 		fun resetEntitiesAndTracker(): Unit {
+			musicPlayed = false
+			music?.music?.stop()
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
@@ -68,6 +138,7 @@ class Remix {
 				updateDuration()
 			}
 			PlayingState.PAUSED -> {
+				music?.music?.pause()
 			}
 			PlayingState.STOPPED -> {
 				resetEntitiesAndTracker()
@@ -94,6 +165,12 @@ class Remix {
 		if (playingState != PlayingState.PLAYING)
 			return@update
 
+		if (music != null && (!music!!.music.isPlaying || !musicPlayed) && beat >= tempoChanges.secondsToBeats(musicStartTime)) {
+			music!!.music.play()
+			music!!.music.position = tempoChanges.beatsToSeconds(beat) - musicStartTime;
+			musicPlayed = true
+		}
+
 		// we rely on music being our timekeeper,
 		// but delta time is required since music position only updates so frequently
 		// if the internal beat is more than the music reported time, set it to the music time
@@ -101,11 +178,11 @@ class Remix {
 
 		val musicInBeats: Float =
 				if (music != null)
-					tempoChanges.secondsToBeats(music!!.position + musicStartTime)
+					tempoChanges.secondsToBeats(music!!.music.position + musicStartTime)
 				else
 					beat
 
-		if (music != null && music!!.isPlaying && beat >= musicInBeats) {
+		if (music != null && music!!.music.isPlaying && beat >= musicInBeats) {
 			beat = musicInBeats
 		} else {
 			beat = tempoChanges.secondsToBeats(tempoChanges.beatsToSeconds(beat) + delta)
@@ -148,4 +225,10 @@ enum class PlayingState {
 
 enum class PlaybackCompletion {
 	WAITING, STARTED, FINISHED;
+}
+
+data class MusicData(val music: Music, val file: FileHandle) : Disposable {
+	override fun dispose() {
+		music.dispose()
+	}
 }

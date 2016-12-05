@@ -114,6 +114,7 @@ public class PatternEntity extends Entity {
 		pe.bounds.set(this.bounds);
 		pe.semitone = semitone;
 		pe.internal.forEach(se -> se.semitone += pe.semitone);
+		pe.onLengthChange(pe.bounds.width);
 
 		return pe;
 	}
@@ -126,6 +127,16 @@ public class PatternEntity extends Entity {
 	@Override
 	public boolean isRepitchable() {
 		return repitchable;
+	}
+
+	@Override
+	public String getID() {
+		return pattern.getId();
+	}
+
+	@Override
+	public int getSemitone() {
+		return semitone;
 	}
 
 	@Override
