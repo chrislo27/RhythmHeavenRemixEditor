@@ -15,6 +15,7 @@ import chrislo27.rhre.track.TempoChange;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -97,8 +98,7 @@ public class Editor extends InputAdapter implements Disposable {
 		cameraPickVec3.x /= Entity.PX_WIDTH;
 		cameraPickVec3.y /= Entity.PX_HEIGHT;
 
-		return remix.getEntities().stream()
-				.filter(e -> e.bounds.contains(cameraPickVec3.x, cameraPickVec3.y))
+		return remix.getEntities().stream().filter(e -> e.bounds.contains(cameraPickVec3.x, cameraPickVec3.y))
 				.findFirst().orElse(null);
 	}
 
@@ -449,11 +449,88 @@ public class Editor extends InputAdapter implements Disposable {
 			StencilMaskUtil.resetMask();
 		}
 
+		// minimap
+		{
+			final float startX = Series.values().length * GAME_ICON_SIZE;
+			final float startY = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT;
+			final float mapWidth = Gdx.graphics.getWidth() - startX - Tool.values().length * GAME_ICON_SIZE;
+			final float ENTITY_WIDTH = remix.getDuration() == 0 ? mapWidth : mapWidth / remix.getDuration();
+			final float ENTITY_HEIGHT = (OVERVIEW_HEIGHT / TRACK_COUNT);
+
+			batch.setColor(0, 0, 0, 0.5f);
+			Main.fillRect(batch, startX, startY, mapWidth, OVERVIEW_HEIGHT);
+
+			batch.end();
+			StencilMaskUtil.prepareMask();
+			main.shapes.setProjectionMatrix(main.camera.combined);
+			main.shapes.begin(ShapeRenderer.ShapeType.Filled);
+			main.shapes.rect(startX, startY, mapWidth, OVERVIEW_HEIGHT);
+			main.shapes.end();
+
+			batch.begin();
+			StencilMaskUtil.useMask();
+
+			for (int i = 0; i < TRACK_COUNT + 1; i++) {
+				Main.fillRect(batch, startX, startY + i * ENTITY_HEIGHT, mapWidth, 1);
+			}
+
+			batch.setColor(1, 1, 1, 1);
+
+			for (Entity e : remix.getEntities()) {
+				Color c = main.palette.getSoundCue().getBg();
+				if (e.isStretchable())
+					main.palette.getStretchableSoundCue().getBg();
+				if (e instanceof PatternEntity) {
+					c = main.palette.getPattern().getBg();
+
+					if (e.isStretchable())
+						c = main.palette.getStretchablePattern().getBg();
+				}
+
+				float x = (remix.getStartTime() < 0 ? (e.bounds.x - remix.getStartTime()) : e.bounds.x) * ENTITY_WIDTH;
+
+				e.setBatchColorFromState(batch, c, main.palette.getSelectionTint(), remix.getSelection().contains(e));
+				Main.fillRect(batch, startX + x, startY + e.bounds.y * ENTITY_HEIGHT, e.bounds.width * ENTITY_WIDTH,
+						ENTITY_HEIGHT);
+			}
+
+			batch.setColor(1, 1, 1, 1);
+
+			float camX = (remix.getStartTime() < 0
+					? camera.position.x - remix.getStartTime() * Entity.PX_WIDTH
+					: camera.position.x) / Entity.PX_WIDTH * ENTITY_WIDTH;
+			float camW = camera.viewportWidth / Entity.PX_WIDTH * ENTITY_WIDTH;
+
+			Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
+
+			batch.flush();
+			StencilMaskUtil.resetMask();
+
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && remix.getDuration() > 0) {
+				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
+					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
+							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
+						float percent = (Gdx.input.getX() - startX) / mapWidth;
+						percent *= remix.getDuration();
+						camera.position.x = (percent + remix.getStartTime()) * Entity.PX_WIDTH;
+					}
+				}
+			}
+		}
+
 		batch.end();
 	}
 
 	public void renderUpdate() {
 		remix.update(Gdx.graphics.getDeltaTime());
+
+		if (remix.getPlayingState() == PlayingState.PLAYING) {
+			if (camera.position.x + camera.viewportWidth * 0.5f < remix.getBeat() * Entity.PX_WIDTH) {
+				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.5f;
+			} else if (remix.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.5f) {
+				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.25f;
+			}
+		}
 	}
 
 	public void inputUpdate() {
@@ -648,7 +725,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (selectedTempoChange == null) {
 				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && Gdx.graphics.getHeight() - Gdx.input.getY() >
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
+						Gdx.input.getY() > EditorStageSetup.BAR_HEIGHT) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 
@@ -777,8 +855,9 @@ public class Editor extends InputAdapter implements Disposable {
 								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 								.forEachOrdered(oldPos::add);
 
-						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
-								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
+						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible, isCopying
+								? new Vector2(Math.min(0.25f, possible.bounds.width / 2), 0.5f)
+								: new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
 										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), isCopying);
 
 						// stretch code
@@ -865,6 +944,10 @@ public class Editor extends InputAdapter implements Disposable {
 			} else if (currentTool == Tool.BPM) {
 
 			}
+
+			remix.updateDuration();
+
+			return true;
 		}
 
 		return false;

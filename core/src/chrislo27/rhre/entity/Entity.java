@@ -44,6 +44,14 @@ public abstract class Entity {
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
+	public final void setBatchColorFromState(SpriteBatch batch, Color c, Color selectionTint,
+											 boolean selected) {
+		batch.setColor(selected
+				? tmp
+				.set(c.r * (1 + selectionTint.r), c.g * (1 + selectionTint.g), c.b * (1 + selectionTint.b), c.a)
+				: c);
+	}
+
 	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected,
 									Rectangle bounds) {
 		renderRect(batch, palette.getBg(), palette.getOutline(), selectionTint, selected, bounds);
@@ -51,15 +59,11 @@ public abstract class Entity {
 
 	protected final void renderRect(SpriteBatch batch, Color bg, Color outline, Color selectionTint, boolean selected,
 									Rectangle bounds) {
-		batch.setColor(selected
-				? tmp
-				.set(bg.r * (1 + selectionTint.r), bg.g * (1 + selectionTint.g), bg.b * (1 + selectionTint.b), bg.a)
-				: bg);
+		setBatchColorFromState(batch, bg, selectionTint, selected);
 
 		Main.fillRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT);
-		batch.setColor(selected ? tmp.set(outline.r * (1 + selectionTint.r), outline.g * (1 + selectionTint.g),
-				outline.b * (1 + selectionTint.b), outline.a) : outline);
+		setBatchColorFromState(batch, outline, selectionTint, selected);
 		Main.drawRect(batch, bounds.getX() * PX_WIDTH, bounds.getY() * PX_HEIGHT, bounds.getWidth() * PX_WIDTH,
 				bounds.getHeight() * PX_HEIGHT, 4);
 

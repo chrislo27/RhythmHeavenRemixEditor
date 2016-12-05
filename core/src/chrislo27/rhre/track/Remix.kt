@@ -18,6 +18,7 @@ class Remix {
 	var musicStartTime: Float = 0f
 	var playbackStart: Float = 0f
 	private var endTime: Float = 0f
+	private var startTime: Float = 0f
 
 	init {
 
@@ -56,7 +57,7 @@ class Remix {
 		// change to
 		when (ps) {
 			PlayingState.PLAYING -> {
-				endTime = entities.fold(Float.MIN_VALUE, {value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width)})
+				updateDuration()
 			}
 			PlayingState.PAUSED -> {
 			}
@@ -65,6 +66,17 @@ class Remix {
 			}
 		}
 	}
+
+	fun updateDuration() {
+		endTime = entities.fold(Float.MIN_VALUE,
+								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
+		startTime = entities.fold(Float.MAX_VALUE,
+								{ value, entity -> Math.min(value, entity.bounds.x) })
+	}
+
+	fun getEndTime() = endTime
+	fun getStartTime() = startTime
+	fun getDuration() = endTime - startTime
 
 	fun getPlayingState(): PlayingState = playingState
 
