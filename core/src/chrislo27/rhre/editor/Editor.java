@@ -470,6 +470,7 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.begin();
 			StencilMaskUtil.useMask();
 
+			batch.setColor(main.palette.getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, startX, startY + i * ENTITY_HEIGHT, mapWidth, 1);
 			}
