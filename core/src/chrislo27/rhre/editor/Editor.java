@@ -474,6 +474,7 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(main.palette.getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, startX, startY + i * ENTITY_HEIGHT, mapWidth, 1);
+
 			}
 
 			batch.setColor(1, 1, 1, 1);
@@ -503,7 +504,8 @@ public class Editor extends InputAdapter implements Disposable {
 					: camera.position.x) / Entity.PX_WIDTH * ENTITY_WIDTH;
 			float camW = camera.viewportWidth / Entity.PX_WIDTH * ENTITY_WIDTH;
 
-			Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
+			if (duration > 0)
+				Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
 
 			batch.flush();
 			StencilMaskUtil.resetMask();
