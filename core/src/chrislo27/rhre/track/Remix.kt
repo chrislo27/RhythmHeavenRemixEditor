@@ -21,7 +21,11 @@ class Remix {
 	private var endTime: Float = 0f
 	private var startTime: Float = 0f
 	var tickEachBeat = false
-	private var lastTickBeat = 0
+		set(value) {
+			field = value
+			lastTickBeat = beat.toInt()
+		}
+	private var lastTickBeat = Int.MIN_VALUE
 
 	init {
 
@@ -75,7 +79,7 @@ class Remix {
 		endTime = entities.fold(Float.MIN_VALUE,
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
 		startTime = entities.fold(Float.MAX_VALUE,
-								{ value, entity -> Math.min(value, entity.bounds.x) })
+								  { value, entity -> Math.min(value, entity.bounds.x) })
 	}
 
 	fun getEndTime() = endTime
@@ -127,9 +131,9 @@ class Remix {
 			}
 		}
 
-		if (beat.toInt() > lastTickBeat) {
+		if (tickEachBeat && beat.toInt() > lastTickBeat) {
 			lastTickBeat = beat.toInt()
-			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play()
+			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
 		}
 
 		if (beat >= endTime)

@@ -510,7 +510,8 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.flush();
 			StencilMaskUtil.resetMask();
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0) {
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0 && selectionOrigin == null &&
+					selectionGroup == null) {
 				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
 					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
 							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
