@@ -453,8 +453,9 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			final float startX = Series.values().length * GAME_ICON_SIZE;
 			final float startY = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT;
-			final float mapWidth = Gdx.graphics.getWidth() - startX - Tool.values().length * GAME_ICON_SIZE;
-			final float ENTITY_WIDTH = remix.getDuration() == 0 ? mapWidth : mapWidth / remix.getDuration();
+			final float mapWidth = Gdx.graphics.getWidth() - (startX + Tool.values().length * GAME_ICON_SIZE);
+			final float duration = Math.max(remix.getDuration(), remix.getEndTime());
+			final float ENTITY_WIDTH = duration == 0 ? mapWidth : mapWidth / duration;
 			final float ENTITY_HEIGHT = (OVERVIEW_HEIGHT / TRACK_COUNT);
 
 			batch.setColor(0, 0, 0, 0.5f);
@@ -507,12 +508,12 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.flush();
 			StencilMaskUtil.resetMask();
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && remix.getDuration() > 0) {
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0) {
 				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
 					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
 							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
 						float percent = (Gdx.input.getX() - startX) / mapWidth;
-						percent *= remix.getDuration();
+						percent *= duration;
 						camera.position.x = (percent + remix.getStartTime()) * Entity.PX_WIDTH;
 					}
 				}
