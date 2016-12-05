@@ -3,6 +3,11 @@
   "gameName": "Count-Ins",
   "cues": [
     {
+      "id": "countIn/cowbell",
+      "duration": 1,
+      "name": "cowbells"
+    },
+    {
       "id": "countIn/one",
       "duration": 1,
       "name": "one"
@@ -97,6 +102,58 @@
         },
         {
         "id": "countIn/four",
+        "beat": 7
+        }
+      ]
+    },
+    {
+    "id": "countin_4BeatCountInCowbell",
+    "name": "4-beat count-in (cowbell)",
+    "cues": [
+        {
+        "id": "countIn/cowbell",
+        "beat": 0
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 1
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 2
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 3
+        }
+      ]
+    },
+    {
+    "id": "countin_8BeatCountInCowbell",
+    "name": "8-beat count-in (cowbell)",
+    "cues": [
+        {
+        "id": "countIn/cowbell",
+        "beat": 0
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 2
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 4
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 5
+        },
+        {
+        "id": "countIn/cowbell",
+        "beat": 6
+        },
+        {
+        "id": "countIn/cowbell",
         "beat": 7
         }
       ]
