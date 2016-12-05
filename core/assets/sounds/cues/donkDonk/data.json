@@ -24,11 +24,6 @@
       "name": "donk-dwonk - 2"
     },
     {
-      "id": "donkDonk/dwonk2",
-      "duration": 1.333333,
-      "name": "donk-dwonk - 2"
-    },
-    {
       "id": "donkDonk/deetdeetduh1",
       "duration": 1.333333,
       "name": "deet-deet-duh - 1"
@@ -78,7 +73,7 @@
     {
       "id": "donkDonk_donkdonk",
       "name": "donk-donk",
-      "cues": [
+2      "cues": [
        {
         "id": "donkDonk/donk1",
         "beat": 0.0
@@ -136,6 +131,37 @@
        {
         "id": "donkDonk/deetdeetdoot3",
         "beat": 2.666666
+       }
+      ]
+    },
+    {
+      "id": "donkDonk_toastsaot",
+      "name": "[#FF0000]D[][#FFA500]W[][#FFFF00]O[][#00FF00]N[][#0000FF]K[][#FF00FF]![]",
+      "cues": [
+       {
+        "id": "donkDonk/dwonk2",
+        "beat": 0.0,
+        "track": 0
+       },
+       {
+        "id": "donkDonk/dwonk2",
+        "beat": 0.0,
+        "track": 1
+       },
+       {
+        "id": "donkDonk/dwonk2",
+        "beat": 0.0,
+        "track": 2
+       },
+       {
+        "id": "donkDonk/dwonk2",
+        "beat": 0.0,
+        "track": 3
+       },
+       {
+        "id": "donkDonk/dwonk2",
+        "beat": 0.0,
+        "track": 4
        }
       ]
     }
