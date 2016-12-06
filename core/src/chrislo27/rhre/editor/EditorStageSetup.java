@@ -2,13 +2,18 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.EditorScreen;
 import chrislo27.rhre.Main;
+import chrislo27.rhre.json.PaletteObject;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.palette.DarkPalette;
 import chrislo27.rhre.palette.LightPalette;
+import chrislo27.rhre.palette.PaletteUtils;
 import chrislo27.rhre.track.PlayingState;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Align;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.registry.ScreenRegistry;
 import ionium.stage.Stage;
@@ -20,6 +25,7 @@ import ionium.stage.ui.skin.Palettes;
 import ionium.util.i18n.Localization;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EditorStageSetup {
@@ -199,7 +205,8 @@ public class EditorStageSetup {
 					super.onClickAction(x, y);
 
 					screen.editor.remix.setTickEachBeat(!screen.editor.remix.getTickEachBeat());
-					setLocalizationKey("editor.button.metronome." + (screen.editor.remix.getTickEachBeat() ? "on" : "off"));
+					setLocalizationKey(
+							"editor.button.metronome." + (screen.editor.remix.getTickEachBeat() ? "on" : "off"));
 				}
 
 				@Override
@@ -289,21 +296,68 @@ public class EditorStageSetup {
 
 		{
 			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
-				private final List<Class<? extends AbstractPalette>> palettes = new ArrayList<>();
+				private final List<AbstractPalette> palettes = new ArrayList<>();
 
 				private int num = 0;
 
 				{
-					palettes.add(DarkPalette.class);
-					palettes.add(LightPalette.class);
+					palettes.add(new DarkPalette());
+					palettes.add(new LightPalette());
+
+					final FileHandle folder = Gdx.files.local("palettes/");
+					if (!folder.exists()) {
+						folder.mkdirs();
+
+						FileHandle example = folder.child("example.json");
+
+						PaletteObject po = new PaletteObject() {
+
+							{
+								LightPalette lp = new LightPalette();
+
+								editorBg = PaletteUtils.toHex(lp.getEditorBg());
+								staffLine = PaletteUtils.toHex(lp.getStaffLine());
+
+								soundCue = PaletteUtils.toHex(lp.getSoundCue().getBg());
+								stretchableSoundCue = PaletteUtils.toHex(lp.getStretchableSoundCue().getBg());
+								patternCue = PaletteUtils.toHex(lp.getPattern().getBg());
+								stretchablePatternCue = PaletteUtils.toHex(lp.getStretchablePattern().getBg());
+
+								selectionCueTint = PaletteUtils.toHex(lp.getSelectionTint());
+
+								selectionBg = PaletteUtils.toHex(lp.getSelectionFill());
+								selectionBorder = PaletteUtils.toHex(lp.getSelectionBorder());
+
+								beatTracker = PaletteUtils.toHex(lp.getBeatTracker());
+								bpmTracker = PaletteUtils.toHex(lp.getBpmTracker());
+								musicStartTracker = PaletteUtils.toHex(lp.getMusicStartTracker());
+							}
+
+						};
+
+						example.writeString(
+								new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class), false,
+								"UTF-8");
+					}
+
+					if (folder.exists() && folder.isDirectory()) {
+						final FileHandle[] list = folder.list((dir, name) -> !name.equals("example.json"));
+						Main.logger.info("Found " + list.length + " palette files");
+
+						final Gson gson = new GsonBuilder().create();
+						Arrays.stream(list).forEach(fh -> {
+							Main.logger.info("Loading palette " + fh.name());
+
+							palettes.add(PaletteUtils
+									.getPaletteFromObject(gson.fromJson(fh.readString("UTF-8"), PaletteObject.class)));
+
+							Main.logger.info("Loaded palette " + fh.name());
+						});
+					}
 				}
 
 				private void cycle() {
-					try {
-						main.palette = palettes.get(num).newInstance();
-					} catch (InstantiationException | IllegalAccessException e) {
-						e.printStackTrace();
-					}
+					main.palette = palettes.get(num);
 
 					num++;
 					if (num >= palettes.size())

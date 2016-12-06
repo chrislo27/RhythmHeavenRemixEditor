@@ -68,3 +68,4 @@ build/
 ## OS Specific
 .DS_Store
 Thumbs.db
+/core/assets/palettes/

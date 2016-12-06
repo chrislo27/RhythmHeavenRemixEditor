@@ -51,7 +51,7 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public void create() {
-		Main.version = "v2.0.0-alpha_RC2";
+		Main.version = "v2.0.0-alpha_RC3";
 		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version" +
 				".txt";
 
