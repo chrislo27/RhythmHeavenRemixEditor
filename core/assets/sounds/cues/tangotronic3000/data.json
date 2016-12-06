@@ -1,7 +1,7 @@
 {
   "gameID": "tangotronic3000",
   "gameName": "Tangotronic 3000",
-  "series": "Megamix",
+  "series": "megamix",
   "cues": [
     {
       "id": "tangotronic3000/whistle1",
@@ -99,15 +99,15 @@
     "name": "3-step colgada",
     "cues": [
         {
-        "id": "tangotronic3000/tok",
+        "id": "tangotronic3000/tock",
         "beat": 0
         },
         {
-        "id": "tangotronic3000/tok",
+        "id": "tangotronic3000/tock",
         "beat": 0.5
         },
         {
-        "id": "tangotronic3000/tok",
+        "id": "tangotronic3000/tock",
         "beat": 1
         },
         {
