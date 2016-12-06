@@ -206,6 +206,8 @@ class Remix {
 			musicPlayed = true
 		}
 
+		val lastBpm: Float = tempoChanges.getTempoAt(beat)
+
 		// we rely on music being our timekeeper,
 		// but delta time is required since music position only updates so frequently
 		// if the internal beat is more than the music reported time, set it to the music time
@@ -246,6 +248,10 @@ class Remix {
 		if (tickEachBeat && beat.toInt() > lastTickBeat) {
 			lastTickBeat = beat.toInt()
 			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
+		}
+
+		if (tempoChanges.getTempoAt(beat) != lastBpm) {
+//			Gdx.app.postRunnable(AudioChangePitch(music!!.music))
 		}
 
 		if (beat >= endTime)
