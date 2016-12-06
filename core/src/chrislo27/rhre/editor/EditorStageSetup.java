@@ -27,6 +27,7 @@ import ionium.util.i18n.Localization;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class EditorStageSetup {
 
@@ -343,7 +344,8 @@ public class EditorStageSetup {
 					}
 
 					if (folder.exists() && folder.isDirectory()) {
-						final FileHandle[] list = folder.list((dir, name) -> !name.equals("example.json"));
+						final FileHandle[] list = folder.list((dir, name) -> !name.equals("example.json") && name.toLowerCase(
+								Locale.ROOT).endsWith(".json"));
 						Main.logger.info("Found " + list.length + " palette files");
 
 						final Gson gson = new GsonBuilder().create();
