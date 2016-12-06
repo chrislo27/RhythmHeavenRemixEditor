@@ -1,0 +1,73 @@
+{
+	"gameID": "tongueLashing",
+	"gameName": "Tongue Lashing",
+	"series": "megamix",
+	"cues": [
+		{
+			"id": "tongueLashing/gulp",
+			"duration": 0.5,
+			"name": "gulp",
+			"canAlterPitch": true
+		},
+		{
+			"id": "tongueLashing/three",
+			"duration": 0.5,
+			"name": "yellow bug - appear"
+		},
+		{
+			"id": "tongueLashing/whip",
+			"duration": 0.5,
+			"name": "whip lash"
+		}
+	],
+	"patterns": [
+		{
+			"id": "yellow_bug_f",
+			"name": "final yellow bug",
+			"cues": [
+				{
+					"id": "tongueLashing/three",
+					"beat": 0.0,
+					"track": 0
+				},
+				{
+					"id": "tongueLashing/whip",
+					"beat": 2.0,
+					"track": 0
+				},
+				{
+					"id": "tongueLashing/gulp",
+					"beat": 2.5,
+					"track": 0,
+					"semitone": 4
+				},
+				{
+					"id": "tongueLashing/gulp",
+					"beat": 3.0,
+					"track": 0
+				}
+			]
+		},
+		{
+			"id": "yellow_bug_p",
+			"name": "cut-off yellow bug",
+			"cues": [
+				{
+					"id": "tongueLashing/three",
+					"beat": 0.0,
+					"track": 0
+				},
+				{
+					"id": "tongueLashing/whip",
+					"beat": 2.0,
+					"track": 0
+				},
+				{
+					"id": "tongueLashing/gulp",
+					"beat": 2.5,
+					"track": 0
+				}
+			]
+		}
+	]
+}
