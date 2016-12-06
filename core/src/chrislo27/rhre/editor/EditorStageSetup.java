@@ -2,6 +2,9 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.EditorScreen;
 import chrislo27.rhre.Main;
+import chrislo27.rhre.palette.AbstractPalette;
+import chrislo27.rhre.palette.DarkPalette;
+import chrislo27.rhre.palette.LightPalette;
 import chrislo27.rhre.track.PlayingState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +17,10 @@ import ionium.stage.ui.LocalizationStrategy;
 import ionium.stage.ui.TextButton;
 import ionium.stage.ui.skin.Palette;
 import ionium.stage.ui.skin.Palettes;
+import ionium.util.i18n.Localization;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EditorStageSetup {
 
@@ -137,13 +144,23 @@ public class EditorStageSetup {
 		}
 
 		{
-			TextButton interval = new TextButton(stage, palette, "") {
+			TextButton interval = new TextButton(stage, palette, "editor.button.snap") {
 
 				private final int[] intervals = {4, 6, 8, 12, 24};
 				private int interval = 0;
 
 				{
-					updateIntervalText();
+					setI10NStrategy(new LocalizationStrategy() {
+
+						@Override
+						public String get(String key, Object... objects) {
+							if (key == null)
+								return "";
+
+							return Localization.get(key, "1/" + intervals[interval]);
+						}
+
+					});
 				}
 
 				@Override
@@ -157,8 +174,6 @@ public class EditorStageSetup {
 					}
 
 					screen.editor.snappingInterval = 1f / intervals[interval];
-
-					updateIntervalText();
 				}
 
 				@Override
@@ -168,23 +183,7 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(1);
 				}
 
-				private void updateIntervalText() {
-					setLocalizationKey("Snap: 1/" + intervals[interval]);
-				}
-
 			};
-
-			interval.setI10NStrategy(new LocalizationStrategy() {
-
-				@Override
-				public String get(String key, Object... objects) {
-					if (key == null)
-						return "";
-
-					return key;
-				}
-
-			});
 
 			stage.addActor(interval).align(Align.topRight)
 					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
@@ -192,7 +191,7 @@ public class EditorStageSetup {
 		}
 
 		{
-			TextButton metronome = new TextButton(stage, palette, "Metronome: Off") {
+			TextButton metronome = new TextButton(stage, palette, "editor.button.metronome.off") {
 
 
 				@Override
@@ -200,7 +199,7 @@ public class EditorStageSetup {
 					super.onClickAction(x, y);
 
 					screen.editor.remix.setTickEachBeat(!screen.editor.remix.getTickEachBeat());
-					setLocalizationKey("Metronome: " + (screen.editor.remix.getTickEachBeat() ? "On" : "Off"));
+					setLocalizationKey("editor.button.metronome." + (screen.editor.remix.getTickEachBeat() ? "on" : "off"));
 				}
 
 				@Override
@@ -210,18 +209,6 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(1);
 				}
 			};
-
-			metronome.setI10NStrategy(new LocalizationStrategy() {
-
-				@Override
-				public String get(String key, Object... objects) {
-					if (key == null)
-						return "";
-
-					return key;
-				}
-
-			});
 
 			stage.addActor(metronome).align(Align.topRight)
 					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 4,
@@ -230,7 +217,7 @@ public class EditorStageSetup {
 		}
 
 		{
-			TextButton music = new TextButton(stage, palette, "Music") {
+			TextButton music = new TextButton(stage, palette, "editor.button.music") {
 
 
 				@Override
@@ -245,18 +232,6 @@ public class EditorStageSetup {
 					super.render(batch, alpha);
 				}
 			};
-
-			music.setI10NStrategy(new LocalizationStrategy() {
-
-				@Override
-				public String get(String key, Object... objects) {
-					if (key == null)
-						return "";
-
-					return key;
-				}
-
-			});
 
 			stage.addActor(music).align(Align.topRight)
 					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 4,
@@ -310,6 +285,48 @@ public class EditorStageSetup {
 			saveButton.getColor().set(0.25f, 0.25f, 0.25f, 1);
 			stage.addActor(saveButton).align(Align.topLeft)
 					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
+				private final List<Class<? extends AbstractPalette>> palettes = new ArrayList<>();
+
+				private int num = 0;
+
+				{
+					palettes.add(DarkPalette.class);
+					palettes.add(LightPalette.class);
+				}
+
+				private void cycle() {
+					try {
+						main.palette = palettes.get(num).newInstance();
+					} catch (InstantiationException | IllegalAccessException e) {
+						e.printStackTrace();
+					}
+
+					num++;
+					if (num >= palettes.size())
+						num = 0;
+				}
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					cycle();
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+			stage.addActor(paletteSwap).align(Align.topLeft)
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 	}
 
