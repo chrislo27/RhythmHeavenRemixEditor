@@ -105,10 +105,16 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 
 	override fun show() {
 		reset()
+
+		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
+		es.editor.remix.music?.music?.isLooping = true
+		es.editor.remix.music?.music?.play()
 	}
 
 	override fun hide() {
-
+		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
+		es.editor.remix.music?.music?.isLooping = false
+		es.editor.remix.music?.music?.stop()
 	}
 
 	override fun pause() {
