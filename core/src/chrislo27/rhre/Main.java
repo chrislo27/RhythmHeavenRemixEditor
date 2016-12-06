@@ -16,9 +16,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import ionium.registry.AssetRegistry;
+import ionium.registry.GlobalVariables;
 import ionium.registry.ScreenRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.Logger;
+import ionium.util.i18n.Localization;
 
 public class Main extends ionium.templates.Main {
 
@@ -30,6 +32,8 @@ public class Main extends ionium.templates.Main {
 	public AbstractPalette palette = new LightPalette();
 
 	public Cursor horizontalResize;
+
+	private volatile int newVersionAvailable = -1;
 
 	public Main(Logger l) {
 		super(l);
@@ -47,7 +51,9 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public void create() {
-		Main.version = "v2.0.0-alpha_RC1";
+		Main.version = "v2.0.0-alpha_RC2";
+		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version" +
+				".txt";
 
 		super.create();
 
@@ -57,8 +63,8 @@ public class Main extends ionium.templates.Main {
 
 		DebugSetting.showFPS = false;
 
-		horizontalResize = Gdx.graphics.newCursor(
-				new Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8);
+		horizontalResize = Gdx.graphics
+				.newCursor(new Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8);
 	}
 
 	@Override
@@ -92,11 +98,20 @@ public class Main extends ionium.templates.Main {
 	protected void postRender() {
 		super.postRender();
 
+		if (newVersionAvailable == -1 && Main.githubVersion != null) {
+			if (!Main.githubVersion.equals(Main.version)) {
+				newVersionAvailable = 1;
+			} else {
+				newVersionAvailable = 0;
+			}
+		}
+
 		batch.begin();
 		fontBordered.setColor(1, 1, 1, 1);
 		fontBordered.getData().setScale(0.5f);
-		fontBordered.draw(batch, version, Gdx.graphics.getWidth() - 4, fontBordered.getCapHeight() + 2, 0, Align.right,
-				false);
+		fontBordered.draw(batch, newVersionAvailable == 1
+				? Localization.get("versionAvailable", Main.githubVersion, Main.version)
+				: version, Gdx.graphics.getWidth() - 4, fontBordered.getCapHeight() + 2, 0, Align.right, false);
 		fontBordered.getData().setScale(1);
 		batch.end();
 	}
