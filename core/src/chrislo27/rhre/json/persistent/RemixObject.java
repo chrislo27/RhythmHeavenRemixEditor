@@ -8,8 +8,11 @@ public class RemixObject {
 	public List<EntityObject> entities;
 
 	public float playbackStart;
+	public float musicVolume = 1f;
 	public float musicStartTime;
 	public List<BpmTrackerObject> bpmChanges;
+
+	public String author;
 
 	public static class EntityObject {
 
