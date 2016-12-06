@@ -47,7 +47,7 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public void create() {
-		Main.version = "v2.0.0-alpha";
+		Main.version = "v2.0.0-alpha_RC1";
 
 		super.create();
 
