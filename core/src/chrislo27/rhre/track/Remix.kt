@@ -8,6 +8,7 @@ import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Disposable
 
 class Remix {
@@ -15,7 +16,7 @@ class Remix {
 	val entities: MutableList<Entity> = mutableListOf()
 	val selection: List<Entity> = mutableListOf()
 	var tempoChanges: TempoChanges = TempoChanges(120f)
-	private set
+		private set
 
 	private var playingState = PlayingState.STOPPED
 	@Volatile
@@ -24,7 +25,15 @@ class Remix {
 			music?.dispose()
 
 			field = value
+
+			field?.music?.volume = musicVolume
 		}
+	@Volatile
+	var musicVolume: Float = 1f
+	set(value) {
+		field = MathUtils.clamp(value, 0f, 1f)
+		music?.music?.volume = field
+	}
 
 	private var beat: Float = 0f
 	var musicStartTime: Float = 0f
@@ -45,13 +54,14 @@ class Remix {
 
 	companion object {
 		fun writeToObject(remix: Remix): RemixObject {
-			with (remix) {
+			with(remix) {
 				val obj = RemixObject()
 
 				obj.version = Main.version
 
 				obj.musicStartTime = musicStartTime
 				obj.playbackStart = playbackStart
+				obj.musicVolume = musicVolume
 
 				obj.entities = arrayListOf()
 				entities.forEach {
@@ -85,6 +95,7 @@ class Remix {
 
 			remix.playbackStart = obj.playbackStart
 			remix.musicStartTime = obj.musicStartTime
+			remix.musicVolume = obj.musicVolume
 
 			remix.entities.clear()
 			obj.entities?.forEach {
@@ -188,7 +199,8 @@ class Remix {
 		if (playingState != PlayingState.PLAYING)
 			return@update
 
-		if (music != null && (!music!!.music.isPlaying || !musicPlayed) && beat >= tempoChanges.secondsToBeats(musicStartTime)) {
+		if (music != null && (!music!!.music.isPlaying || !musicPlayed) && beat >= tempoChanges.secondsToBeats(
+				musicStartTime)) {
 			music!!.music.play()
 			music!!.music.position = tempoChanges.beatsToSeconds(beat) - musicStartTime;
 			musicPlayed = true
@@ -251,6 +263,7 @@ enum class PlaybackCompletion {
 }
 
 data class MusicData(val music: Music, val file: FileHandle) : Disposable {
+
 	override fun dispose() {
 		music.dispose()
 	}

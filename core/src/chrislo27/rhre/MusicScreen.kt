@@ -4,8 +4,12 @@ import chrislo27.rhre.track.MusicData
 import chrislo27.rhre.util.FileChooser
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
@@ -15,7 +19,25 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-class MusicScreen(m: Main) : Updateable<Main>(m) {
+class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
+	override fun scrolled(amount: Int): Boolean {
+		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
+
+		if (es.editor.remix?.music != null) {
+			val music: Music = es.editor.remix?.music?.music!!
+
+			var vol: Int = (music.volume * 100).toInt()
+
+			vol += -amount * if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
+					Input.Keys.CONTROL_RIGHT)) 5 else 1
+
+			vol = MathUtils.clamp(vol, 0, 100)
+
+			music.volume = vol / 100f
+		}
+
+		return false
+	}
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
@@ -55,8 +77,17 @@ class MusicScreen(m: Main) : Updateable<Main>(m) {
 					   Gdx.graphics.width * 0.05f,
 					   Gdx.graphics.height * 0.525f)
 
+		if (es.editor.remix?.music != null) {
+			val music: Music = es.editor.remix?.music?.music!!
+
+			val vol: Int = (music.volume * 100).toInt()
+
+			main.font.draw(main.batch, Localization.get("musicScreen.volume", "$vol"), Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.485f)
+		}
+
 		main.font.draw(main.batch, Localization.get("musicScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 4)
+					   main.font.capHeight * 6)
 
 		main.batch.end()
 	}
@@ -118,6 +149,9 @@ class MusicScreen(m: Main) : Updateable<Main>(m) {
 
 	override fun show() {
 		showPicker()
+
+		Gdx.input.inputProcessor = InputMultiplexer()
+		(Gdx.input.inputProcessor as InputMultiplexer).addProcessor(this)
 	}
 
 	override fun hide() {
@@ -134,5 +168,33 @@ class MusicScreen(m: Main) : Updateable<Main>(m) {
 
 	override fun dispose() {
 
+	}
+
+	override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+		return false
+	}
+
+	override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+		return false
+	}
+
+	override fun keyTyped(character: Char): Boolean {
+		return false
+	}
+
+	override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+		return false
+	}
+
+	override fun keyUp(keycode: Int): Boolean {
+		return false
+	}
+
+	override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+		return false
+	}
+
+	override fun keyDown(keycode: Int): Boolean {
+		return false
 	}
 }
