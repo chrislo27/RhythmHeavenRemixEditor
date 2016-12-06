@@ -20,6 +20,11 @@ class TempoChanges(val defTempo: Float = 120f) {
 
 	}
 
+	fun clear() {
+		beatMap.clear()
+		secondsMap.clear()
+	}
+
 	fun remove(tc: TempoChange) {
 		beatMap.remove(tc.beat)
 		secondsMap.remove(tc.seconds)

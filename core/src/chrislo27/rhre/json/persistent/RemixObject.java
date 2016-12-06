@@ -7,6 +7,10 @@ public class RemixObject {
 	public String version;
 	public List<EntityObject> entities;
 
+	public float playbackStart;
+	public float musicStartTime;
+	public List<BpmTrackerObject> bpmChanges;
+
 	public static class EntityObject {
 
 		public String id;
@@ -17,6 +21,13 @@ public class RemixObject {
 		public boolean isPattern;
 		public float width;
 		public int semitone;
+
+	}
+
+	public static class BpmTrackerObject {
+
+		public float beat;
+		public float tempo;
 
 	}
 

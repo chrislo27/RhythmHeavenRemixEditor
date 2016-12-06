@@ -73,6 +73,9 @@ public class Main extends ionium.templates.Main {
 		reg.add("tapalong", new TapalongScreen(this));
 		reg.add("info", new InfoScreen(this));
 		reg.add("music", new MusicScreen(this));
+		reg.add("load", new LoadScreen(this));
+		reg.add("save", new SaveScreen(this));
+		reg.add("new", new NewScreen(this));
 	}
 
 	@Override

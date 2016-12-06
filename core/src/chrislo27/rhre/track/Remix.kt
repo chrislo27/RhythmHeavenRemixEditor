@@ -49,8 +49,11 @@ class Remix {
 				val obj = RemixObject()
 
 				obj.version = Main.version
-				obj.entities = arrayListOf()
 
+				obj.musicStartTime = musicStartTime
+				obj.playbackStart = playbackStart
+
+				obj.entities = arrayListOf()
 				entities.forEach {
 					val o: RemixObject.EntityObject = RemixObject.EntityObject()
 					o.id = it.id
@@ -63,12 +66,25 @@ class Remix {
 					obj.entities.add(o)
 				}
 
+				obj.bpmChanges = arrayListOf()
+				tempoChanges.getBeatMap().forEach {
+					val o: RemixObject.BpmTrackerObject = RemixObject.BpmTrackerObject()
+
+					o.beat = it.value.beat
+					o.tempo = it.value.tempo
+
+					obj.bpmChanges.add(o)
+				}
+
 				return obj
 			}
 		}
 
 		fun readFromObject(obj: RemixObject): Remix {
 			val remix: Remix = Remix()
+
+			remix.playbackStart = obj.playbackStart
+			remix.musicStartTime = obj.musicStartTime
 
 			remix.entities.clear()
 			obj.entities?.forEach {
@@ -93,6 +109,13 @@ class Remix {
 				}
 
 				remix.entities.add(e)
+			}
+
+			remix.tempoChanges.clear()
+			obj.bpmChanges?.forEach {
+				val tc: TempoChange = TempoChange(it.beat, it.tempo, remix.tempoChanges)
+
+				remix.tempoChanges.add(tc)
 			}
 
 			return remix

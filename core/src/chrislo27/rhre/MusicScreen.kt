@@ -26,7 +26,6 @@ class MusicScreen(m: Main) : Updateable<Main>(m) {
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
 			dialogTitle = "Select a music file"
-			addChoosableFileFilter(fileFilter)
 			setFileFilter(fileFilter)
 		}
 	}
@@ -76,6 +75,8 @@ class MusicScreen(m: Main) : Updateable<Main>(m) {
 
 	private fun closePicker() {
 		picker.isVisible = false
+		currentThread?.interrupt()
+		currentThread = null
 	}
 
 	private fun showPicker() {

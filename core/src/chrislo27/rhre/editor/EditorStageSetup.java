@@ -263,6 +263,54 @@ public class EditorStageSetup {
 							BUTTON_HEIGHT);
 
 		}
+
+		{
+			ImageButton newButton = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "newFile")) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("new"));
+				}
+			};
+
+			newButton.getColor().set(0.25f, 0.25f, 0.25f, 1);
+			stage.addActor(newButton).align(Align.topLeft)
+					.setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			ImageButton openButton = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "openFile")) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("load"));
+				}
+			};
+
+			openButton.getColor().set(0.25f, 0.25f, 0.25f, 1);
+			stage.addActor(openButton).align(Align.topLeft)
+					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			ImageButton saveButton = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "saveFile")) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("save"));
+				}
+			};
+
+			saveButton.getColor().set(0.25f, 0.25f, 0.25f, 1);
+			stage.addActor(saveButton).align(Align.topLeft)
+					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
 	}
 
 	public Stage getStage() {
