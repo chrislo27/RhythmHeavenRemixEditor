@@ -153,6 +153,10 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 
 	override fun hide() {
 		closePicker()
+
+		if (Gdx.input.inputProcessor is InputMultiplexer) {
+			(Gdx.input.inputProcessor as InputMultiplexer).removeProcessor(this as InputProcessor)
+		}
 	}
 
 	override fun pause() {
