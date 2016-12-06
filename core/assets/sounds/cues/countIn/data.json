@@ -36,7 +36,7 @@
       "id": "countIn/silence",
       "duration": 1,
       "canAlterDuration": true,
-      "name": "and"
+      "name": "silence"
     }
   ],
   "patterns": [

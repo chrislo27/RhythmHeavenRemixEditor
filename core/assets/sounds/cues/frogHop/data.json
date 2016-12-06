@@ -121,8 +121,18 @@
         "beat": 0.0
        },
        {
+        "id": "frogHop/shake",
+        "beat": 0.0,
+        "track": 0
+       },
+       {
         "id": "frogHop/yahoo2",
         "beat": 0.5
+       },
+       {
+        "id": "frogHop/shake",
+        "beat": 1.0,
+        "track": 0
        },
        {
         "id": "frogHop/yahoo3",
@@ -143,12 +153,22 @@
         "beat": 0.0
        },
        {
+        "id": "frogHop/shake",
+        "beat": 0.0,
+        "track": 1
+       },
+       {
         "id": "frogHop/yeah1",
         "beat": 0.5
        },
        {
         "id": "frogHop/yeah1",
         "beat": 1.0
+       },
+        {
+        "id": "frogHop/shake",
+        "beat": 1.0,
+        "track": 1
        },
        {
         "id": "frogHop/yeah2",
@@ -171,6 +191,11 @@
        {
         "id": "frogHop/spinitboys1",
         "beat": 0.0
+       },
+       {
+        "id": "frogHop/shake",
+        "beat": 0.0,
+        "track": 1
        },
        {
         "id": "frogHop/spinitboys2",
