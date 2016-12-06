@@ -104,7 +104,7 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun show() {
-
+		reset()
 	}
 
 	override fun hide() {
