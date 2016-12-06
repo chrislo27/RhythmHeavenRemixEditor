@@ -63,8 +63,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Vector3 vec3Tmp2 = new Vector3();
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
-	float snappingInterval;
 	public Remix remix;
+	float snappingInterval;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
 	/**
@@ -539,7 +539,6 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void inputUpdate() {
-		// FIXME
 		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 			remix.setPlayingState(
 					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
@@ -676,6 +675,8 @@ public class Editor extends InputAdapter implements Disposable {
 						}
 					}
 				}
+
+
 			} else {
 				status = Localization.get("editor.currentGame") + " " +
 						GameRegistry.instance().gamesBySeries.get(currentSeries)
@@ -702,6 +703,14 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				} else {
 
+				}
+
+				if (remix.getSelection().size() > 0) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(
+							Input.Keys.BACKSPACE)) {
+						remix.getEntities().removeAll(remix.getSelection());
+						remix.getSelection().clear();
+					}
 				}
 			}
 
