@@ -572,6 +572,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
 				camera.position.x = 0;
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
+				remix.updateDuration();
+				camera.position.x = remix.getEndTime() * Entity.PX_WIDTH;
 			}
 		}
 
