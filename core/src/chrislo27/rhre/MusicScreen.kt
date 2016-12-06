@@ -33,7 +33,8 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 
 			vol = MathUtils.clamp(vol, 0, 100)
 
-			music.volume = vol / 100f
+			es.editor.remix.musicVolume = vol / 100f
+			music.volume = es.editor.remix.musicVolume
 		}
 
 		return false
@@ -77,14 +78,10 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 					   Gdx.graphics.width * 0.05f,
 					   Gdx.graphics.height * 0.525f)
 
-		if (es.editor.remix?.music != null) {
-			val music: Music = es.editor.remix?.music?.music!!
-
-			val vol: Int = (music.volume * 100).toInt()
-
-			main.font.draw(main.batch, Localization.get("musicScreen.volume", "$vol"), Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.485f)
-		}
+		main.font.draw(main.batch,
+					   Localization.get("musicScreen.volume", "${(es.editor.remix.musicVolume * 100).toInt()}"),
+					   Gdx.graphics.width * 0.05f,
+					   Gdx.graphics.height * 0.485f)
 
 		main.font.draw(main.batch, Localization.get("musicScreen.return"), Gdx.graphics.width * 0.05f,
 					   main.font.capHeight * 6)
