@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -55,7 +56,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 							   "saveScreen.current") + " " + (picker.selectedFile?.path ?: Localization.get(
 							   "saveScreen.noSave")),
 					   Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.525f)
+					   Gdx.graphics.height * 0.525f, Gdx.graphics.width * 0.9f, Align.left, true)
 
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
 					   main.font.capHeight * 4)
@@ -165,6 +166,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 	private var currentThread: Thread? = null
 
+	@Volatile
+	private var remixObj: RemixObject? = null
+
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -181,15 +185,28 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-//		main.font.draw(main.batch,
-//					   Localization.get(
-//							   "saveScreen.current") + " " + (picker.selectedFile?.path ?: Localization.get(
-//							   "saveScreen.noSave")),
-//					   Gdx.graphics.width * 0.05f,
-//					   Gdx.graphics.height * 0.525f)
+		if (remixObj != null) {
+			main.font.draw(main.batch, Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
+														"${remixObj!!.bpmChanges.size}"), Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.75f, Gdx.graphics.width * 0.9f,
+						   Align.left, true)
 
+			if (remixObj!!.version != Main.version) {
+				main.font.draw(main.batch,
+							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!", Main.version),
+							   Gdx.graphics.width * 0.05f,
+							   Gdx.graphics.height * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   Gdx.graphics.width * 0.9f,
+							   Align.left, true)
+			}
+
+			main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
+						   Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f)
+		}
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 4)
+					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f)
+
 		main.font.draw(main.batch, Localization.get("loadScreen.return"), Gdx.graphics.width * 0.05f,
 					   main.font.capHeight * 2)
 
@@ -199,6 +216,13 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+			if (remixObj != null) {
+				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
+				es.editor.remix = Remix.readFromObject(remixObj!!)
+
+				main.screen = ScreenRegistry.get("editor")
+			}
 		}
 	}
 
@@ -206,6 +230,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		picker.isVisible = false
 		currentThread?.interrupt()
 		currentThread = null
+		remixObj = null
 	}
 
 	private fun showPicker() {
@@ -220,15 +245,15 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 					JFileChooser.APPROVE_OPTION -> {
 						val gson: Gson = GsonBuilder().create()
 						val handle = FileHandle(picker.selectedFile)
-						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 						val obj: RemixObject = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 
-						es.editor.remix = Remix.readFromObject(obj)
+						remixObj = obj
+					}
+					else -> {
+						main.screen = ScreenRegistry.get("editor")
 					}
 				}
-
-				main.screen = ScreenRegistry.get("editor")
 			}
 		}
 
@@ -292,9 +317,9 @@ class NewScreen(m: Main) : Updateable<Main>(m) {
 		main.font.setColor(1f, 1f, 1f, 1f)
 
 		main.font.draw(main.batch, Localization.get("newScreen.confirm"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.5f + main.font.capHeight * 0.5f)
+					   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f)
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.4f + main.font.capHeight * 0.5f)
+					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f)
 		main.font.draw(main.batch, Localization.get("newScreen.return"), Gdx.graphics.width * 0.05f,
 					   main.font.capHeight * 2)
 
