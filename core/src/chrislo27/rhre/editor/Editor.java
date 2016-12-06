@@ -280,9 +280,9 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			batch.setColor(1, 1, 1, 1);
 
-			if (selectionGroup != null &&
-					camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0)).y <= Entity.PX_HEIGHT) {
-				float a = MathUtils.clamp(1.0f - (vec3Tmp.y / Entity.PX_HEIGHT), 0f, 1f);
+			if (selectionGroup != null) {
+				camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+				float a = MathUtils.clamp(1.0f - (vec3Tmp.y / Entity.PX_HEIGHT), 0.5f, 1f);
 
 				batch.setColor(1, 0, 0, 0.25f * a);
 				Main.fillRect(batch, (camera.position.x - camera.viewportWidth * 0.5f), 0, camera.viewportWidth,
