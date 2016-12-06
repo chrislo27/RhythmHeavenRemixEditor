@@ -328,6 +328,28 @@ public class EditorStageSetup {
 			stage.addActor(paletteSwap).align(Align.topLeft)
 					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
+
+		{
+			TextButton tapalong = new TextButton(stage, palette, "editor.button.tapalong") {
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("tapalong"));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+			stage.addActor(tapalong).align(Align.topLeft)
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+		}
 	}
 
 	public Stage getStage() {
