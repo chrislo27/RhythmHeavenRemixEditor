@@ -89,7 +89,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
 						if (picker.selectedFile.extension != "rhre2") {
-							picker.selectedFile = File(picker.selectedFile.absolutePath + ".rhre2")
+							picker.selectedFile = File(picker.selectedFile.canonicalPath + ".rhre2")
 						}
 
 						val handle = FileHandle(picker.selectedFile)
