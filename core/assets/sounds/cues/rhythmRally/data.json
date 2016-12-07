@@ -36,7 +36,7 @@
   ],
   "patterns": [
     {
-      "id": "rhythmrally_slowrally",
+      "id": "rhythmRally_slowrally",
       "name": "slow rally",
       "cues": [
        {
@@ -58,7 +58,7 @@
       ]
     },
     {
-      "id": "rhythmrally_normalrally",
+      "id": "rhythmRally_normalrally",
       "name": "normal rally",
       "cues": [
        {
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "id": "rhythmrally_fastrally",
+      "id": "rhythmRally_fastrally",
       "name": "fast rally",
       "cues": [
        {
@@ -114,7 +114,7 @@
       ]
     },
     {
-      "id": "rhythmrally_turborally",
+      "id": "rhythmRally_turborally",
       "name": "turbo rally",
       "cues": [
        {
