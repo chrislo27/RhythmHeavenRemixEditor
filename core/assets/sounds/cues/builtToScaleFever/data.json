@@ -41,36 +41,36 @@
       "cues": [
         {
           "id": "builtToScaleFever/3",
+          "beat": 0
+        },
+        {
+          "id": "builtToScaleFever/2",
           "beat": 1
         },
         {
-          "id": "builtToScaleFever/2",
+          "id": "builtToScaleFever/1",
           "beat": 2
         },
         {
-          "id": "builtToScaleFever/1",
+          "id": "builtToScaleFever/2",
           "beat": 3
         },
         {
-          "id": "builtToScaleFever/2",
+          "id": "builtToScaleFever/3",
           "beat": 4
         },
         {
-          "id": "builtToScaleFever/3",
+          "id": "builtToScaleFever/4",
           "beat": 5
         },
         {
-          "id": "builtToScaleFever/4",
-          "beat": 6
-        },
-        {
           "id": "builtToScaleFever/prepare",
-          "beat": 6,
+          "beat": 5,
           "track": 1
         },
         {
           "id": "builtToScaleFever/shoot",
-          "beat": 7
+          "beat": 6
         }
       ]
     },
