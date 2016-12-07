@@ -159,7 +159,7 @@ public class PatternEntity extends Entity {
 
 		batch.setColor(1, 1, 1, 0.25f);
 		batch.draw(AssetRegistry.getTexture(
-				"gameIcon_" + pattern.getId().substring(0, pattern.getId().indexOf('/'))),
+				"gameIcon_" + pattern.getId().substring(0, pattern.getId().indexOf('_'))),
 				bounds.getX() * PX_WIDTH + Editor.GAME_ICON_PADDING,
 				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) - Editor.GAME_ICON_SIZE * 0.5f,
 				Editor.GAME_ICON_SIZE, Editor.GAME_ICON_SIZE);
