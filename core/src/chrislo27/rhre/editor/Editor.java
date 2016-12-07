@@ -706,8 +706,8 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 
 				if (remix.getSelection().size() > 0) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(
-							Input.Keys.BACKSPACE)) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
+							Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
 						remix.getEntities().removeAll(remix.getSelection());
 						remix.getSelection().clear();
 					}
@@ -872,9 +872,8 @@ public class Editor extends InputAdapter implements Disposable {
 								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 								.forEachOrdered(oldPos::add);
 
-						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible, isCopying
-								? new Vector2(Math.min(0.25f, possible.bounds.width / 2), 0.5f)
-								: new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
+						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
+								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
 										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), isCopying);
 
 						// stretch code
