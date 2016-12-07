@@ -511,7 +511,7 @@ public class Editor extends InputAdapter implements Disposable {
 			StencilMaskUtil.resetMask();
 
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0 && selectionOrigin == null &&
-					selectionGroup == null) {
+					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
 				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
 					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
 							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
@@ -784,7 +784,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT && pointer == 0) {
+		if (button == Input.Buttons.LEFT && pointer == 0 && remix.getPlayingState() == PlayingState.STOPPED) {
 			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
 					if (currentTool == Tool.NORMAL) {
