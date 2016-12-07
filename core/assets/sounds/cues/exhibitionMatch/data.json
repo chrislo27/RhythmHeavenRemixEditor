@@ -36,11 +36,11 @@
        },
        {
         "id": "exhibitionMatch/throw",
-        "beat": 3.0
+        "beat": 2.0
        },
        {
         "id": "exhibitionMatch/hit",
-        "beat": 7.0
+        "beat": 6.0
        }
       ]
     },
@@ -54,11 +54,11 @@
        },
        {
         "id": "exhibitionMatch/throw",
-        "beat": 3.0
+        "beat": 2.0
        },
        {
         "id": "exhibitionMatch/hitHomerun",
-        "beat": 7.0
+        "beat": 6.0
        }
       ]
     }
