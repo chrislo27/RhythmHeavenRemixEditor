@@ -171,7 +171,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	private var remixObj: RemixObject? = null
 
 	@Volatile
-	private var missingContent = false
+	private var missingContent: String = ""
 
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
@@ -205,9 +205,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 							   Align.left, true)
 			}
 
-			if (missingContent) {
+			if (!missingContent.isEmpty()) {
 				main.font.draw(main.batch,
-							   Localization.get("loadScreen.missingContent"),
+							   Localization.get("loadScreen.missingContent", missingContent),
 							   Gdx.graphics.width * 0.05f,
 							   Gdx.graphics.height * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
 							   Gdx.graphics.width * 0.9f,
@@ -230,7 +230,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && !missingContent) {
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && missingContent.isEmpty()) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 				es.editor.remix = Remix.readFromObject(remixObj!!)
@@ -245,7 +245,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		currentThread?.interrupt()
 		currentThread = null
 		remixObj = null
-		missingContent = false
+		missingContent = ""
 	}
 
 	private fun showPicker() {
@@ -265,13 +265,13 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 						remixObj = obj
 
-						missingContent = obj.entities.any { entity ->
+						missingContent = obj.entities.filter { entity ->
 							if (entity.isPattern) {
 								GameRegistry.instance().gameList.none { it.patterns.any { it.id == entity.id } }
 							} else {
 								GameRegistry.instance().gameList.none { it.soundCues.any { it.id == entity.id } }
 							}
-						}
+						}.map {it.id}.joinToString(separator = ", ", transform = {"[LIGHT_GRAY]$it[]"})
 					}
 					else -> {
 						main.screen = ScreenRegistry.get("editor")
