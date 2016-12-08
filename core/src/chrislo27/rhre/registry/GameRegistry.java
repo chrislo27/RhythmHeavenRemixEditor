@@ -42,23 +42,15 @@ public class GameRegistry {
 		return games.get(id);
 	}
 
-	public SoundCue getCue(String id) {
-		return gameList.stream().map(g -> g.getCue(id)).filter(Objects::nonNull).findFirst().orElse(null);
-	}
-
 	public SoundCue getCueRaw(String id) {
-		return gameList.stream()
-				.map(g -> g.getSoundCues().stream().filter(it -> it.getId().equals(id)).findFirst().orElse(null))
+		return gameList.stream().map(g -> g.getSoundCues().stream()
+				.filter(it -> it.getId().equals(id) || it.getDeprecated().contains(id)).findFirst().orElse(null))
 				.filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
-	public Pattern getPattern(String id) {
-		return gameList.stream().map(g -> g.getPattern(id)).filter(Objects::nonNull).findFirst().orElse(null);
-	}
-
 	public Pattern getPatternRaw(String id) {
-		return gameList.stream()
-				.map(g -> g.getPatterns().stream().filter(it -> it.getId().equals(id)).findFirst().orElse(null))
+		return gameList.stream().map(g -> g.getPatterns().stream()
+				.filter(it -> it.getId().equals(id) || it.getDeprecated().contains(id)).findFirst().orElse(null))
 				.filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
@@ -95,7 +87,9 @@ public class GameRegistry {
 					patternCues.add(new Pattern.PatternCue(pc.id, pc.beat, pc.track, pc.duration, pc.semitone));
 				}
 
-				p = new Pattern(po.id, po.name, po.isStretchable, patternCues, false);
+				p = new Pattern(po.id, po.name, po.isStretchable, patternCues, false, po.deprecatedIDs == null
+						? new ArrayList<>()
+						: Arrays.stream(po.deprecatedIDs).collect(Collectors.toList()));
 				patterns.add(p);
 			}
 
@@ -107,7 +101,7 @@ public class GameRegistry {
 						l.add(new Pattern.PatternCue(sc.getId(), 0, 0, sc.getDuration(), 0));
 
 						patterns.add(new Pattern(sc.getId() + "_AUTO-GENERATED", "cue: " + sc.getName(),
-								sc.getCanAlterDuration(), l, true));
+								sc.getCanAlterDuration(), l, true, new ArrayList<>()));
 					});
 
 			FileHandle iconFh = Gdx.files.internal("sounds/cues/" + gameDef + "/icon.png");

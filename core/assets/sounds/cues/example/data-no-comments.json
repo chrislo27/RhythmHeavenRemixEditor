@@ -34,6 +34,8 @@
       "id": "example_pattern",
       "name": "Pattern 1",
 
+      "deprecatedIDs": [],
+
       "isStretchable": false,
 
       "cues": [

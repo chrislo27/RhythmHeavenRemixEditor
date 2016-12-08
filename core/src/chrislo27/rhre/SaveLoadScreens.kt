@@ -267,9 +267,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 						missingContent = obj.entities.filter { entity ->
 							if (entity.isPattern) {
-								GameRegistry.instance().gameList.none { it.patterns.any { it.id == entity.id } }
+								GameRegistry.instance().getPatternRaw(entity.id) == null
 							} else {
-								GameRegistry.instance().gameList.none { it.soundCues.any { it.id == entity.id } }
+								GameRegistry.instance().getCueRaw(entity.id) == null
 							}
 						}.map {it.id}.joinToString(separator = ", ", transform = {"[LIGHT_GRAY]$it[]"})
 					}

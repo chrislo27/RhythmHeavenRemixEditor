@@ -38,6 +38,7 @@
     {
       "id": "rhythmRally_slowrally",
       "name": "slow rally",
+      "deprecatedIDs": ["rhythmrally_slowrally"],
       "cues": [
        {
         "id": "rhythmRally/hit1",
@@ -60,6 +61,7 @@
     {
       "id": "rhythmRally_normalrally",
       "name": "normal rally",
+      "deprecatedIDs": ["rhythmrally_normalrally"],
       "cues": [
        {
         "id": "rhythmRally/hit1",
@@ -82,6 +84,7 @@
     {
       "id": "rhythmRally_fastrally",
       "name": "fast rally",
+      "deprecatedIDs": ["rhythmrally_fastrally"],
       "cues": [
        {
         "id": "rhythmRally/tonk",
@@ -116,6 +119,7 @@
     {
       "id": "rhythmRally_turborally",
       "name": "turbo rally",
+      "deprecatedIDs": ["rhythmrally_turborally"],
       "cues": [
        {
         "id": "rhythmRally/tonk",
