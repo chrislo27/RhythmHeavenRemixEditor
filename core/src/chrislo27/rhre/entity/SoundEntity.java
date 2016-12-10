@@ -17,6 +17,9 @@ public class SoundEntity extends Entity {
 	public final SoundCue cue;
 	public volatile int semitone;
 
+	private volatile long soundId;
+	private volatile long introSoundId;
+
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
 		this.cue = cue;
@@ -94,12 +97,12 @@ public class SoundEntity extends Entity {
 		final float bpm = remix.getTempoChanges().getTempoAt(remix.getBeat());
 
 		if (cue.getIntroSoundObj() != null) {
-			cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
+			introSoundId = cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
-			cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
+			soundId = cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
-			cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
+			soundId = cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
 	}
 
@@ -109,8 +112,8 @@ public class SoundEntity extends Entity {
 
 		if (cue.getCanAlterDuration() || cue.getLoops()) {
 			if (cue.getIntroSoundObj() != null)
-				cue.getIntroSoundObj().stop();
-			cue.getSoundObj().stop();
+				cue.getIntroSoundObj().stop(introSoundId);
+			cue.getSoundObj().stop(soundId);
 		}
 
 	}

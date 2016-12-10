@@ -511,7 +511,7 @@ public class Editor extends InputAdapter implements Disposable {
 			StencilMaskUtil.resetMask();
 
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0 && selectionOrigin == null &&
-					selectionGroup == null) {
+					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
 				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
 					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
 							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
@@ -706,8 +706,8 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 
 				if (remix.getSelection().size() > 0) {
-					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(
-							Input.Keys.BACKSPACE)) {
+					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
+							Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
 						remix.getEntities().removeAll(remix.getSelection());
 						remix.getSelection().clear();
 					}
@@ -784,7 +784,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT && pointer == 0) {
+		if (button == Input.Buttons.LEFT && pointer == 0 && remix.getPlayingState() == PlayingState.STOPPED) {
 			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
 					if (currentTool == Tool.NORMAL) {
@@ -872,9 +872,8 @@ public class Editor extends InputAdapter implements Disposable {
 								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
 								.forEachOrdered(oldPos::add);
 
-						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible, isCopying
-								? new Vector2(Math.min(0.25f, possible.bounds.width / 2), 0.5f)
-								: new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
+						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
+								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
 										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), isCopying);
 
 						// stretch code

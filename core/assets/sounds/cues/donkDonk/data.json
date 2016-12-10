@@ -5,62 +5,62 @@
   "cues": [
     {
       "id": "donkDonk/donk1",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "donk-donk - 1"
     },
     {
       "id": "donkDonk/donk2",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "donk-donk - 2"
     },
     {
       "id": "donkDonk/dwonk1",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "donk-dwonk - 1"
     },
     {
       "id": "donkDonk/dwonk2",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "donk-dwonk - 2"
     },
     {
       "id": "donkDonk/deetdeetduh1",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-duh - 1"
     },
     {
       "id": "donkDonk/deetdeetduh2",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-duh - 2"
     },
     {
       "id": "donkDonk/deetdeetduh3",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-duh - 3"
     },
     {
       "id": "donkDonk/deetdeetdoot1",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-doot - 1"
     },
     {
       "id": "donkDonk/deetdeetdoot2",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-doot - 2"
     },
     {
       "id": "donkDonk/deetdeetdoot3",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-doot - 3"
     },
     {
       "id": "donkDonk/deetdeetduh1",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-duh - 1"
     },
     {
       "id": "donkDonk/deetdeetduh2",
-      "duration": 1.333333,
+      "duration": 0.666666,
       "name": "deet-deet-duh - 2"
     },
     {
@@ -80,7 +80,7 @@
        },
        {
         "id": "donkDonk/donk2",
-        "beat": 1.333333
+        "beat": 0.666666
        }
       ]
     },
@@ -94,7 +94,7 @@
        },
        {
         "id": "donkDonk/dwonk2",
-        "beat": 1.333333
+        "beat": 0.666666
        }
       ]
     },
@@ -108,11 +108,11 @@
        },
        {
         "id": "donkDonk/deetdeetduh2",
-        "beat": 1.333333
+        "beat": 0.666666
        },
        {
         "id": "donkDonk/deetdeetduh3",
-        "beat": 2.666666
+        "beat": 1.333333
        }
       ]
     },
@@ -126,11 +126,11 @@
        },
        {
         "id": "donkDonk/deetdeetdoot2",
-        "beat": 1.333333
+        "beat": 0.666666
        },
        {
         "id": "donkDonk/deetdeetdoot3",
-        "beat": 2.666666
+        "beat": 1.333333
        }
       ]
     },

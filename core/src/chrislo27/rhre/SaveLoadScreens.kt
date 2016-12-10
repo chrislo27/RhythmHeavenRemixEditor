@@ -1,6 +1,7 @@
 package chrislo27.rhre
 
 import chrislo27.rhre.json.persistent.RemixObject
+import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.FileChooser
 import com.badlogic.gdx.Gdx
@@ -169,6 +170,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	@Volatile
 	private var remixObj: RemixObject? = null
 
+	@Volatile
+	private var missingContent: String = ""
+
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -193,19 +197,29 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 			if (remixObj!!.version != Main.version) {
 				main.font.draw(main.batch,
-							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!", Main.version),
+							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
+												Main.version),
 							   Gdx.graphics.width * 0.05f,
 							   Gdx.graphics.height * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
 							   Gdx.graphics.width * 0.9f,
 							   Align.left, true)
 			}
 
-			main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
-						   Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f)
+			if (!missingContent.isEmpty()) {
+				main.font.draw(main.batch,
+							   Localization.get("loadScreen.missingContent", missingContent),
+							   Gdx.graphics.width * 0.05f,
+							   Gdx.graphics.height * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   Gdx.graphics.width * 0.9f,
+							   Align.left, true)
+			} else {
+				main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
+							   Gdx.graphics.width * 0.05f,
+							   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
+			}
 		}
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f)
+					   Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f)
 
 		main.font.draw(main.batch, Localization.get("loadScreen.return"), Gdx.graphics.width * 0.05f,
 					   main.font.capHeight * 2)
@@ -216,7 +230,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && missingContent.isEmpty()) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 				es.editor.remix = Remix.readFromObject(remixObj!!)
@@ -231,6 +245,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		currentThread?.interrupt()
 		currentThread = null
 		remixObj = null
+		missingContent = ""
 	}
 
 	private fun showPicker() {
@@ -249,6 +264,14 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 						val obj: RemixObject = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 
 						remixObj = obj
+
+						missingContent = obj.entities.filter { entity ->
+							if (entity.isPattern) {
+								GameRegistry.instance().getPatternRaw(entity.id) == null
+							} else {
+								GameRegistry.instance().getCueRaw(entity.id) == null
+							}
+						}.map {it.id}.joinToString(separator = ", ", transform = {"[LIGHT_GRAY]$it[]"})
 					}
 					else -> {
 						main.screen = ScreenRegistry.get("editor")

@@ -48,6 +48,9 @@
       "id": "example_pattern", // usually gameID_<name>
       "name": "Pattern 1", // human-readable name
 
+      "deprecatedIDs": [], // OPTIONAL
+      // used internally in case an ID changes for some reason
+
       "isStretchable": false, // OPTIONAL if the pattern can be stretched
       // used for stuff like Bouncy Road, Clappy Trio
       // this is automatically true if any of the cues has canAlterDuration set to true

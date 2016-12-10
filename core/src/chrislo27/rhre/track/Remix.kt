@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Disposable
+import ionium.registry.AssetRegistry
 
 class Remix {
 
@@ -170,12 +171,15 @@ class Remix {
 		when (ps) {
 			PlayingState.PLAYING -> {
 				updateDuration()
+				AssetRegistry.instance().resumeAllSound()
 			}
 			PlayingState.PAUSED -> {
 				music?.music?.pause()
+				AssetRegistry.instance().pauseAllSound()
 			}
 			PlayingState.STOPPED -> {
 				resetEntitiesAndTracker()
+				AssetRegistry.instance().stopAllSound()
 			}
 		}
 	}

@@ -32,3 +32,9 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 	}
 
 }
+
+val SoundCue.canAlterPitch: Boolean
+	get() {
+		if (baseBpm > 0) return false
+		return canAlterPitch
+	}

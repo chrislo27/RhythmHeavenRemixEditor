@@ -40,12 +40,12 @@
     },
     {
       "id": "fanClub/audienceISuppose1",
-      "duration": 1.5,
+      "duration": 1.25,
       "name": "audience - i suppose - 1"
     },
     {
       "id": "fanClub/audienceISuppose2",
-      "duration": 0.5,
+      "duration": 0.75,
       "name": "audience - i suppose - 2"
     },
     {
@@ -132,7 +132,7 @@
         },
         {
           "id": "fanClub/audienceISuppose2",
-          "beat": 3.5
+          "beat": 3.25
         },
         {
           "id": "fanClub/audienceISuppose3",

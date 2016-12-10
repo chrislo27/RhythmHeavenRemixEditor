@@ -19,7 +19,7 @@
       "name": "comms start"
     },
     {
-      "id": "shootEmUp/shoot",
+      "id": "shootEmUp/commEnd",
       "duration": 0.5,
       "name": "comms end"
     }
