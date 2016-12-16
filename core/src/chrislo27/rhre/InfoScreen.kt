@@ -34,7 +34,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 
 		main.font.draw(main.batch, Localization.get("info.credits"),
 					   Gdx.graphics.width * 0.025f,
-					   Gdx.graphics.height * 0.5f + height * 0.5f, Gdx.graphics.width * 0.45f, Align.center, true)
+					   Gdx.graphics.height * 0.5f + height * 0.5f, Gdx.graphics.width * 0.45f, Align.left, true)
 
 		val stats: String = Localization.get("info.stats", "${GameRegistry.instance().gameList.size}", "$patternCount",
 											 "$soundCueCount")
