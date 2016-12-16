@@ -4,15 +4,14 @@
   "series": "megamix",
   "cues": [
     {
-      "id": "tongueLashing/gulp",
-      "duration": 0.5,
-      "name": "gulp",
-      "canAlterPitch": true
-    },
-    {
       "id": "tongueLashing/three",
       "duration": 0.5,
       "name": "yellow bug - appear"
+    },
+    {
+      "id": "tongueLashing/red",
+      "duration": 0.5,
+      "name": "red bug - appear"
     },
     {
       "id": "tongueLashing/whip",
@@ -20,9 +19,14 @@
       "name": "whip lash"
     },
     {
-      "id": "tongueLashing/red",
+      "id": "tongueLashing/gulp4",
       "duration": 0.5,
-      "name": "red bug - appear"
+      "name": "gulp - 1"
+    },
+    {
+      "id": "tongueLashing/gulp",
+      "duration": 0.5,
+      "name": "gulp - 2"
     },
     {
       "id": "tongueLashing/swallow",
@@ -46,10 +50,9 @@
           "track": 0
         },
         {
-          "id": "tongueLashing/gulp",
+          "id": "tongueLashing/gulp4",
           "beat": 2.5,
-          "track": 0,
-          "semitone": 4
+          "track": 0
         },
         {
           "id": "tongueLashing/gulp",
@@ -104,10 +107,9 @@
           "track": 0
         },
         {
-          "id": "tongueLashing/gulp",
+          "id": "tongueLashing/gulp4",
           "beat": 3.5,
-          "track": 0,
-          "semitone": 4
+          "track": 0
         },
         {
           "id": "tongueLashing/gulp",
