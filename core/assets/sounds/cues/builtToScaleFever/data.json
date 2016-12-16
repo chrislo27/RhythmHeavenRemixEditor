@@ -64,13 +64,17 @@
           "beat": 5
         },
         {
+          "id": "builtToScaleFever/3",
+          "beat": 6
+        },
+        {
           "id": "builtToScaleFever/prepare",
-          "beat": 5,
+          "beat": 6,
           "track": 1
         },
         {
           "id": "builtToScaleFever/shoot",
-          "beat": 6
+          "beat": 7
         }
       ]
     },
