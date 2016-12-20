@@ -12,8 +12,7 @@ typos may be better for me than an issue. This is all subjective but you should 
 ## Issues
 If there is a problem with a feature please tell me, just please make sure to follow the [template](ISSUE_TEMPLATE.md)
 in order to allow me to more easily identify the issue and fix it. Questions and suggestions are also welcome to be
-posted as an issue, however I'd rather talk about it in a better medium than Github issues so I would prefer if you talk
-to me about it on the [Discord4J server](https://discord.gg/NxGAeCY) (don't worry, I won't bite).
+posted as an issue.
 
 ## Pull Requests
 So, you are thinking about sending a pull request, awesome! Before starting on your pull request, you should read up on
@@ -23,7 +22,7 @@ request:
 1. All your code will be subject to the project's licence.
 2. You cannot modify this project's style (i.e. indentation style, bracket style, naming, etc). I'll understand if you
 do this by accident, but I'll expect you to fix it before I merge the pull request.
-3. Your JSON formatting must be correct and valid.
+3. Your JSON formatting must be correct (fit the rest of the project's style) and valid.
 
 ## Credit
 I won't ever take complete credit for something I didn't do or something someone helped me with. I will always credit you in the editor (visible by going to the info screen).
