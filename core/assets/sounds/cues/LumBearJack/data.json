@@ -55,82 +55,75 @@
    }
 ],	
 "patterns" : [
-	{
-	"id": "lumBearJack_single",
+{
+        "id": "lumBearJack_single",
 	"name": "single",
-	"cues": [
-	   {
-        "id": "lumBearJack/nyah",
-        "beat": 0
-       },
-	   
-	   {
-	    "id": "lumBearJack/pose",
-        "beat": 1
-       },
-	   
-	   {
+        "cues": [
+	    {
+             "id": "lumBearJack/nyah",
+             "beat": 0
+            },	   
+            {
+	     "id": "lumBearJack/pose",
+             "beat": 1
+            },	   
+            {
 	    "id": "lumBearJack/singleHit",
-        "beat": 2
-       },
-]
-	}
-		
-	{
+            "beat": 2
+            }
+               ]
+},		
+{
 	"id": "lumBearJack_double",
 	"name": "double",
 	"cues": [
-	   {
-        "id": "lumBearJack/nyah",
-        "beat": 0
-       },
-	   
-	   {
-	    "id": "lumBearJack/pose",
-        "beat": 1
-       },
-	   
-	   {
-	    "id": "lumBearJack/double1",
-        "beat": 2
-       },
-	   
-	   {
-	    "id": "lumBearJack/double2",
-	    "beat": 3
-	   }
-	]
-		}
-		
-			{
+            {
+             "id": "lumBearJack/nyah",
+             "beat": 0
+            },	   
+	    {
+	     "id": "lumBearJack/pose",
+             "beat": 1
+            },	   
+	    {
+	     "id": "lumBearJack/double1",
+             "beat": 2
+            },	   
+	    {
+	     "id": "lumBearJack/double2",
+	     "beat": 3
+	    }
+	        ]
+},		
+{
 	"id": "lumBearJack_big",
 	"name": "big",
 	"cues": [
-	 {
-        "id": "lumBearJack/nyah",
-        "beat": 0
-       },	   
+	   {
+            "id": "lumBearJack/nyah",
+            "beat": 0
+           },	   
 	   {
 	    "id": "lumBearJack/bigPose",
-        "beat": 1
-       },	   
+            "beat": 1
+           },	   
 	   {
-	    "id": "lumBearJack/big1",
-        "beat": 2
-       },
-	   {
-	    "id": "lumBearJack/big2",
-        "beat": 3
-       },
-	   {
-	    "id": "lumBearJack/big3",
-        "beat": 4
-       },
-	   {
-	    "id": "lumBearJack/bigHitted",
-        "beat": 5
-        }
-	  ]
-    }
+	      "id": "lumBearJack/big1",
+              "beat": 2
+            },
+	    {
+	     "id": "lumBearJack/big2",
+             "beat": 3
+            },
+	    {
+	     "id": "lumBearJack/big3",
+             "beat": 4
+            },
+	    {
+	     "id": "lumBearJack/bigHitted",
+             "beat": 5
+            }
+	         ]
+     }
   ]
 }
