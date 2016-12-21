@@ -2,66 +2,58 @@
   "gameID": "lumBearJack",
   "gameName": "LumBEARjack",
   "series": "megamix",
-   "cues": [
+  "cues": [
    {  
-   "id" : "lumBearJack/Nyah"
-   "duration": 1
-   "name": "Nyah"
-   },
-   
-      {  
-   "id" : "lumBearJack/Pose"
-   "duration": 1
-   "name": "Pose"
-   },
-   
-      {  
-   "id" : "lumBearJack/SingleHit"
-   "duration": 1
-   "name": "Single hit"
-   },
-   
-      {  
-   "id" : "lumBearJack/Double1"
-   "duration": 1
-   "name": "Double 1"
-   },
-   
-      {  
-   "id" : "lumBearJack/Double2"
-   "duration": 1
-   "name": "Double 2"
-   },
-   
-      {  
-   "id" : "lumBearJack/BigPose"
-   "duration": 1
-   "name": "Big Pose"
-   },
-   
-      {  
-   "id" : "lumBearJack/Big1"
-   "duration": 1
-   "name": "Big 1"
-   },
-   
-      {  
-   "id" : "lumBearJack/Big2"
-   "duration": 1
-   "name": "Big 2"
-   },
-   
-      {  
-   "id" : "lumBearJack/Big3"
-   "duration": 1
-   "name": "Big 3"
-   },
-      {  
-   "id" : "lumBearJack/BigHitted"
-   "duration": 1.5
-   "name": "Big Hit"
+     "id" : "lumBearJack/nyah"
+     "duration": 1
+     "name": "nyah"
+   },   
+   {  
+     "id" : "lumBearJack/pose"
+     "duration": 1
+     "name": "pose"
+   },   
+   {  
+     "id" : "lumBearJack/singleHit"
+     "duration": 1
+     "name": "pingle hit"
+   },   
+   {  
+     "id" : "lumBearJack/double1"
+     "duration": 1
+     "name": "double 1"
+   },   
+   {  
+     "id" : "lumBearJack/double2"
+     "duration": 1
+     "name": "double 2"
+   },   
+   {  
+     "id" : "lumBearJack/bigPose"
+     "duration": 1
+     "name": "big pose"
+   },   
+   {  
+     "id" : "lumBearJack/big1"
+     "duration": 1
+     "name": "big 1"
+   },   
+   {  
+     "id" : "lumBearJack/big2"
+     "duration": 1
+     "name": "big 2"
+   },   
+   {  
+     "id" : "lumBearJack/big3"
+     "duration": 1
+     "name": "big 3"
+   },	   
+   {  
+     "id" : "lumBearJack/bigHitted"
+     "duration": 1.5
+     "name": "big hit"
    }
-	],
+],
 	
 	
 	
@@ -89,7 +81,7 @@
 		
 		{
 	"id": "lumBearJack_Double"
-	"name": "Double"
+	"name": "double"
 	"cues": [
 	 {
         "id": "lumBearJack/Nyah",
