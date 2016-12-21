@@ -4,54 +4,54 @@
   "series": "megamix",
   "cues": [
    {  
-     "id" : "lumBearJack/nyah"
-     "duration": 1
-     "name": "nyah"
+     "id" : "lumBearJack/nyah",
+     "duration": 1,
+     "name": "nyah",
    },   
    {  
-     "id" : "lumBearJack/pose"
-     "duration": 1
-     "name": "pose"
+     "id" : "lumBearJack/pose",
+     "duration": 1,
+     "name": "pose",
    },   
    {  
-     "id" : "lumBearJack/singleHit"
-     "duration": 1
-     "name": "pingle hit"
+     "id" : "lumBearJack/singleHit",
+     "duration": 1,
+     "name": "pingle hit",
    },   
    {  
-     "id" : "lumBearJack/double1"
-     "duration": 1
-     "name": "double 1"
+     "id" : "lumBearJack/double1",
+     "duration": 1,
+     "name": "double 1",
    },   
    {  
-     "id" : "lumBearJack/double2"
-     "duration": 1
-     "name": "double 2"
+     "id" : "lumBearJack/double2",
+     "duration": 1,
+     "name": "double 2",
    },   
    {  
-     "id" : "lumBearJack/bigPose"
-     "duration": 1
-     "name": "big pose"
+     "id" : "lumBearJack/bigPose",
+     "duration": 1,
+     "name": "big pose",
    },   
    {  
-     "id" : "lumBearJack/big1"
-     "duration": 1
-     "name": "big 1"
+     "id" : "lumBearJack/big1",
+     "duration": 1,
+     "name": "big 1",
    },   
    {  
-     "id" : "lumBearJack/big2"
-     "duration": 1
-     "name": "big 2"
+     "id" : "lumBearJack/big2",
+     "duration": 1,
+     "name": "big 2",
    },   
    {  
-     "id" : "lumBearJack/big3"
-     "duration": 1
-     "name": "big 3"
+     "id" : "lumBearJack/big3",
+     "duration": 1,
+     "name": "big 3",
    },	   
    {  
-     "id" : "lumBearJack/bigHitted"
-     "duration": 1.5
-     "name": "big hit"
+     "id" : "lumBearJack/bigHitted",
+     "duration": 1.5,
+     "name": "big hit",
    }
 ],
 	
