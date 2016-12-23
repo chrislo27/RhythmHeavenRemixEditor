@@ -135,7 +135,7 @@ public class GameRegistry {
 				customFolder.mkdirs();
 
 			{
-				FileHandle notice = customFolder.child("README.txt");
+				FileHandle notice = customFolder.child("README_SFX.txt");
 				notice.writeString(CustomSoundUtil.getActualCustomSoundNotice(), false, "UTF-8");
 			}
 
