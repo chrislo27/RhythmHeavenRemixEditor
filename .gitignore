@@ -69,3 +69,4 @@ build/
 .DS_Store
 Thumbs.db
 /core/assets/palettes/
+/core/assets/customSounds/

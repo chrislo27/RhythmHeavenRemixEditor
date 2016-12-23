@@ -826,7 +826,9 @@ public class Editor extends InputAdapter implements Disposable {
 				if (screenX <= Series.values().length * GAME_ICON_SIZE) {
 					int i = Gdx.input.getX() / GAME_ICON_SIZE;
 					if (i < Series.values().length) {
-						currentSeries = Series.values()[i];
+						if (GameRegistry.instance().gamesBySeries.get(Series.values()[i]) != null &&
+								GameRegistry.instance().gamesBySeries.get(Series.values()[i]).size() > 0)
+							currentSeries = Series.values()[i];
 					}
 				}
 

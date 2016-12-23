@@ -3,6 +3,7 @@ package chrislo27.rhre.registry;
 import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.json.GameObject;
+import chrislo27.rhre.util.CustomSoundUtil;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
@@ -14,6 +15,7 @@ import ionium.animation.Animation;
 import ionium.registry.handler.IAssetLoader;
 import ionium.util.AssetMap;
 
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -76,7 +78,7 @@ public class GameRegistry {
 						so.deprecatedIDs == null
 								? new ArrayList<>()
 								: Arrays.stream(so.deprecatedIDs).collect(Collectors.toList()), so.duration,
-						so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm, so.loops));
+						so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm, so.loops, null));
 			}
 
 			for (GameObject.PatternObject po : gameObj.patterns) {
@@ -108,7 +110,7 @@ public class GameRegistry {
 
 			game = new Game(gameObj.gameID, gameObj.gameName, soundCues, patterns,
 					gameObj.series == null ? Series.UNKNOWN : Series.valueOf(gameObj.series.toUpperCase(Locale.ROOT)),
-					iconFh.exists() ? ("sounds/cues/" + gameDef + "/icon.png") : null);
+					iconFh.exists() ? ("sounds/cues/" + gameDef + "/icon.png") : null, false);
 
 			if (!iconFh.exists())
 				Main.logger.warn(game.getId() + " is missing icon.png");
@@ -124,6 +126,72 @@ public class GameRegistry {
 			}
 			this.gameList.add(game);
 			numberPerSeries.put(game.getSeries(), numberPerSeries.getOrDefault(game.getSeries(), 0) + 1);
+		}
+
+		// custom sfx
+		{
+			FileHandle customFolder = Gdx.files.local("customSounds/");
+			if (!customFolder.exists())
+				customFolder.mkdirs();
+
+			{
+				FileHandle notice = customFolder.child("README.txt");
+				notice.writeString(CustomSoundUtil.getActualCustomSoundNotice(), false, "UTF-8");
+			}
+
+			Arrays.stream(customFolder.list(File::isDirectory)).forEach(fh -> {
+				Main.logger.info("Loading custom folder " + fh.name());
+
+				FileHandle[] list = fh.list((File dir, String name) -> {
+					String suffix = name.lastIndexOf('.') == -1
+							? (name + name.hashCode())
+							: name.substring(name.lastIndexOf('.'));
+					return (suffix.equalsIgnoreCase(".ogg") || suffix.equalsIgnoreCase(".mp3") ||
+							suffix.equalsIgnoreCase(".wav"));
+				});
+
+				if (list.length == 0) {
+					Main.logger.info("No sounds found, skipping");
+					return;
+				}
+
+				Game game;
+				List<Pattern> patterns = new ArrayList<>();
+				List<SoundCue> soundCues = new ArrayList<>();
+				FileHandle icon = fh.child("icon.png");
+
+				Arrays.stream(list).forEach(soundFh -> soundCues
+						.add(new SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(),
+								soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(), new ArrayList<>(),
+								CustomSoundUtil.DURATION, true, true, null, 0, false, customFolder.path() + "/")));
+
+				soundCues.forEach(sc -> {
+					List<Pattern.PatternCue> l = new ArrayList<>();
+
+					l.add(new Pattern.PatternCue(sc.getId(), 0, 0, sc.getDuration(), 0));
+
+					patterns.add(
+							new Pattern(sc.getId() + "_AUTO-GENERATED", "cue: " + sc.getName().replace("custom:\n",
+									""),
+									sc.getCanAlterDuration(), l, true, new ArrayList<>()));
+				});
+
+				game = new Game(fh.nameWithoutExtension(), fh.nameWithoutExtension(), soundCues, patterns,
+						Series.CUSTOM, (icon.exists() ? icon.path() : null), true);
+
+				Main.logger.info("Finished loading custom folder " + fh.name() + " with " + soundCues.size() + " " +
+						"cues");
+
+				this.games.put(game.getId(), game);
+				{
+					List<Game> seriesList = this.gamesBySeries.getOrDefault(game.getSeries(), new ArrayList<>());
+					seriesList.add(game);
+					this.gamesBySeries.put(game.getSeries(), seriesList);
+				}
+				this.gameList.add(game);
+				numberPerSeries.put(game.getSeries(), numberPerSeries.getOrDefault(game.getSeries(), 0) + 1);
+
+			});
 		}
 
 		// warnings
@@ -166,12 +234,14 @@ public class GameRegistry {
 		public void addManagedAssets(AssetManager manager) {
 			GameRegistry.instance().games.values().forEach(g -> g.getSoundCues().forEach(sc -> {
 				manager.load(AssetMap.add("soundCue_" + sc.getId(),
-						"sounds/cues/" + sc.getId() + "." + sc.getFileExtension()), Sound.class);
+						(sc.getSoundFolder() == null ? "sounds/cues/" : sc.getSoundFolder()) + sc.getId() + "." +
+								sc.getFileExtension()), Sound.class);
 			}));
 			GameRegistry.instance().games.values().forEach(g -> manager.load(AssetMap.add("gameIcon_" + g.getId(),
 					g.getIcon() == null
 							? ("images/missing_game_icon.png")
-							: ("sounds/cues/" + g.getId() + "/icon.png")), Texture.class));
+							: (g.getIconIsRawPath() ? g.getIcon() : ("sounds/cues/" + g.getId() + "/icon.png"))),
+					Texture.class));
 		}
 
 		@Override
