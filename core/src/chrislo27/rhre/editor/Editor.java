@@ -437,6 +437,11 @@ public class Editor extends InputAdapter implements Disposable {
 					main.fontBordered.setColor(0.65f, 1, 1, 1);
 
 					main.fontBordered.draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
+
+					main.fontBordered.draw(batch, "^", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+							middle + PICKER_HEIGHT * 0.5f - main.fontBordered.getCapHeight());
+					main.fontBordered.draw(batch, "v", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+							middle - PICKER_HEIGHT * 0.5f + 12);
 				}
 
 				main.fontBordered.draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
@@ -788,28 +793,44 @@ public class Editor extends InputAdapter implements Disposable {
 			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
 					if (currentTool == Tool.NORMAL) {
-						// drag new pattern
-						remix.getSelection().clear();
-						selectionGroup = null;
+						if (screenX >= Gdx.graphics.getWidth() * 0.525f) {
+							// drag new pattern
+							remix.getSelection().clear();
+							selectionGroup = null;
 
-						Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
-								.get(scrolls.get(currentSeries).getGame());
-						Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
+							Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+									.get(scrolls.get(currentSeries).getGame());
+							Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
 
-						Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
-								game.getSoundCues().stream().filter(it -> it.getId().equals(p.getCues().get(0).getId
-										()))
-										.findFirst().orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
+							Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
+									game.getSoundCues().stream()
+											.filter(it -> it.getId().equals(p.getCues().get(0).getId())).findFirst()
+											.orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
 
-						remix.getEntities().add(en);
-						remix.getSelection().add(en);
+							remix.getEntities().add(en);
+							remix.getSelection().add(en);
 
-						final List<Rectangle> oldPos = new ArrayList<>();
-						remix.getSelection().stream()
-								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
-								.forEachOrdered(oldPos::add);
-						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, remix.getSelection().get(0),
-								new Vector2(0, 0), true);
+							final List<Rectangle> oldPos = new ArrayList<>();
+							remix.getSelection().stream()
+									.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+									.forEachOrdered(oldPos::add);
+							selectionGroup = new SelectionGroup(remix.getSelection(), oldPos,
+									remix.getSelection().get(0), new Vector2(0, 0), true);
+						} else {
+							int dir;
+							if (Gdx.graphics.getHeight() - screenY > MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f) {
+								dir = -1;
+							} else {
+								dir = 1;
+							}
+
+							List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+									.get(scrolls.get(currentSeries).getGame()).getPatterns();
+
+							scrolls.get(currentSeries).setPattern(
+									MathUtils.clamp(scrolls.get(currentSeries).getPattern() + dir, 0, list.size() -
+											1));
+						}
 					}
 				} else {
 					// game picker
