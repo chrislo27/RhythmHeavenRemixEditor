@@ -339,14 +339,14 @@ public class EditorStageSetup {
 							};
 
 							example.writeString(
-									new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class), false,
-									"UTF-8");
+									new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class),
+									false, "UTF-8");
 						}
 					}
 
 					if (folder.exists() && folder.isDirectory()) {
-						final FileHandle[] list = folder.list((dir, name) -> !name.equals("example.json") && name.toLowerCase(
-								Locale.ROOT).endsWith(".json"));
+						final FileHandle[] list = folder.list((dir, name) -> !name.equals("example.json") &&
+								name.toLowerCase(Locale.ROOT).endsWith(".json"));
 						Main.logger.info("Found " + list.length + " palette files");
 
 						final Gson gson = new GsonBuilder().create();
@@ -408,6 +408,30 @@ public class EditorStageSetup {
 
 			stage.addActor(tapalong).align(Align.topLeft)
 					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton inspections = new TextButton(stage, palette, "editor.button.inspections.on") {
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setInspectionsEnabled(!main.getInspectionsEnabled());
+					setLocalizationKey(
+							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+			stage.addActor(inspections).align(Align.topLeft)
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 
 		{
