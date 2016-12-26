@@ -78,7 +78,8 @@ public class GameRegistry {
 						so.deprecatedIDs == null
 								? new ArrayList<>()
 								: Arrays.stream(so.deprecatedIDs).collect(Collectors.toList()), so.duration,
-						so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm, so.loops, null));
+						so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm,
+						so.loops == null ? so.canAlterDuration : ((boolean) so.loops), null));
 			}
 
 			for (GameObject.PatternObject po : gameObj.patterns) {
@@ -160,10 +161,12 @@ public class GameRegistry {
 				List<SoundCue> soundCues = new ArrayList<>();
 				FileHandle icon = fh.child("icon.png");
 
-				Arrays.stream(list).forEach(soundFh -> soundCues
-						.add(new SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(),
-								soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(), new ArrayList<>(),
-								CustomSoundUtil.DURATION, true, true, null, 0, false, customFolder.path() + "/")));
+				Arrays.stream(list).forEach(soundFh -> {
+					SoundCue sc = new SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(),
+							soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(), new ArrayList<>(),
+							CustomSoundUtil.DURATION, true, true, null, 0, false, customFolder.path() + "/");
+					soundCues.add(sc);
+				});
 
 				soundCues.forEach(sc -> {
 					List<Pattern.PatternCue> l = new ArrayList<>();

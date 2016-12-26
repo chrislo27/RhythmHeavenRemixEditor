@@ -28,7 +28,7 @@ public class GameObject {
 
 		public float baseBpm = 0;
 
-		public boolean loops = canAlterDuration;
+		public Boolean loops = null;
 	}
 
 	public static class PatternObject {
