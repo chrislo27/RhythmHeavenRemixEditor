@@ -5,6 +5,8 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
 				val iconIsRawPath: Boolean = false) {
 
+	fun isCustom() = series == Series.CUSTOM
+
 	fun getPattern(id: String): Pattern? {
 		return patterns.find { it.id == "${this.id}_$id" }
 	}

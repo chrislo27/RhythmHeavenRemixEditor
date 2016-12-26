@@ -51,7 +51,7 @@ public class Main extends ionium.templates.Main {
 
 	@Override
 	public void create() {
-		Main.version = "v2.1.0";
+		Main.version = "v2.2.0";
 		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version" +
 				".txt";
 
@@ -82,6 +82,7 @@ public class Main extends ionium.templates.Main {
 		reg.add("load", new LoadScreen(this));
 		reg.add("save", new SaveScreen(this));
 		reg.add("new", new NewScreen(this));
+		reg.add("soundboard", new SoundboardScreen(this));
 	}
 
 	@Override
