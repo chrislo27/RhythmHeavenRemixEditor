@@ -6,6 +6,8 @@ import chrislo27.rhre.track.Remix
 class Inspections(val remix: Remix) {
 
 	val inspections: MutableList<InspectionType> = mutableListOf()
+	var lastRefreshDuration: Double = 0.0
+		private set
 
 	/**
 	 * @return millisecond duration to inspect
@@ -26,7 +28,10 @@ class Inspections(val remix: Remix) {
 					}
 				}
 
-		return (System.nanoTime() - nanoTime) / 1000000.0
+		synchronized(lastRefreshDuration) {
+			lastRefreshDuration = (System.nanoTime() - nanoTime) / 1000000.0
+			return lastRefreshDuration
+		}
 	}
 
 }
