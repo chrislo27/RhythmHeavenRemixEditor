@@ -413,11 +413,17 @@ public class EditorStageSetup {
 		{
 			TextButton inspections = new TextButton(stage, palette, "editor.button.inspections.on") {
 
+				{
+					setLocalizationKey(
+							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+				}
+
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
 					main.setInspectionsEnabled(!main.getInspectionsEnabled());
+					main.getPreferences().flush();
 					setLocalizationKey(
 							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
 				}
@@ -432,6 +438,36 @@ public class EditorStageSetup {
 
 			stage.addActor(inspections).align(Align.topLeft)
 					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton helpTips = new TextButton(stage, palette, "editor.button.helpTips.on") {
+
+				{
+					setLocalizationKey(
+							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+				}
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setHelpTipsEnabled(!main.getHelpTipsEnabled());
+					main.getPreferences().flush();
+					setLocalizationKey(
+							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+//			stage.addActor(helpTips).align(Align.topLeft)
+//					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 13, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 
 		{
