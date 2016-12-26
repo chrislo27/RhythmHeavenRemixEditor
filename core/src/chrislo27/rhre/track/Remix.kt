@@ -1,6 +1,5 @@
 package chrislo27.rhre.track
 
-import chrislo27.rhre.Main
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
@@ -58,7 +57,7 @@ class Remix {
 			with(remix) {
 				val obj = RemixObject()
 
-				obj.version = Main.version
+				obj.version = ionium.templates.Main.version
 
 				obj.musicStartTime = musicStartTime
 				obj.playbackStart = playbackStart

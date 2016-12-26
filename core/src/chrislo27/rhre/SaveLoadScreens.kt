@@ -195,10 +195,10 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 						   Gdx.graphics.height * 0.75f, Gdx.graphics.width * 0.9f,
 						   Align.left, true)
 
-			if (remixObj!!.version != Main.version) {
+			if (remixObj!!.version != ionium.templates.Main.version) {
 				main.font.draw(main.batch,
 							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
-												Main.version),
+												ionium.templates.Main.version),
 							   Gdx.graphics.width * 0.05f,
 							   Gdx.graphics.height * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
 							   Gdx.graphics.width * 0.9f,

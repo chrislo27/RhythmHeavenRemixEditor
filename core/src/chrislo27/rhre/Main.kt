@@ -42,6 +42,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	@Volatile private var newVersionAvailable = -1
 
+	var helpTipsEnabled: Boolean = true
+	var inspectionsEnabled: Boolean = true
+
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return ScreenRegistry.get("editor")
 	}
@@ -52,7 +55,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	override fun create() {
 		ionium.templates.Main.version = "v2.1.1"
-		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version" + ".txt"
+		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version.txt"
 
 		super.create()
 
@@ -66,6 +69,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
 
 		preferences = Gdx.app.getPreferences("RHRE2")
+		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
+		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
 	}
 
 	override fun prepareStates() {
@@ -184,5 +189,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		biggerFontBordered.dispose()
 		font.dispose()
 		fontBordered.dispose()
+		preferences.flush()
 	}
 }

@@ -26,8 +26,8 @@ class SoundboardScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 			main.batch.setColor(0.25f, 0.25f, 0.25f, 0.5f)
 			if (isPressed())
 				main.batch.setColor(0.25f, 0.5f, 0.5f, 0.5f)
-			Main.fillRect(main.batch, x, y, width, height)
-			Main.drawRect(main.batch, x, y, width, height, 0.05f)
+			ionium.templates.Main.fillRect(main.batch, x, y, width, height)
+			ionium.templates.Main.drawRect(main.batch, x, y, width, height, 0.05f)
 
 			main.font.draw(main.batch, keyString, x + 0.15f,
 						   y + height - 0.15f)
