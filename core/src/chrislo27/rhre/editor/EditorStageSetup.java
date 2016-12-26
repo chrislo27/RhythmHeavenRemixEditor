@@ -48,7 +48,7 @@ public class EditorStageSetup {
 	}
 
 	private void create() {
-		final Palette palette = Palettes.getIoniumDefault(main.font, main.font);
+		final Palette palette = Palettes.getIoniumDefault(main.getFont(), main.getFont());
 		stage = new Stage();
 
 		{
@@ -362,7 +362,7 @@ public class EditorStageSetup {
 				}
 
 				private void cycle() {
-					main.palette = palettes.get(num);
+					main.setPalette(palettes.get(num));
 
 					num++;
 					if (num >= palettes.size())

@@ -107,7 +107,7 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void render(SpriteBatch batch) {
-		Gdx.gl.glClearColor(main.palette.getEditorBg().r, main.palette.getEditorBg().g, main.palette.getEditorBg().b,
+		Gdx.gl.glClearColor(main.getPalette().getEditorBg().r, main.getPalette().getEditorBg().g, main.getPalette().getEditorBg().b,
 				1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -123,7 +123,7 @@ public class Editor extends InputAdapter implements Disposable {
 		// beat lines
 		{
 			// horizontal
-			batch.setColor(main.palette.getStaffLine());
+			batch.setColor(main.getPalette().getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i * Entity.PX_HEIGHT,
 						camera.viewportWidth, 2);
@@ -142,13 +142,13 @@ public class Editor extends InputAdapter implements Disposable {
 				if (selectionGroup != null && selectionGroup.getList().contains(e))
 					continue;
 				if (e.bounds.overlaps(Rectangle.tmp)) {
-					e.render(main, main.palette, batch, remix.getSelection().contains(e));
+					e.render(main, main.getPalette(), batch, remix.getSelection().contains(e));
 				}
 			}
 			if (selectionGroup != null) {
 				for (Entity e : selectionGroup.getList()) {
 					if (e.bounds.overlaps(Rectangle.tmp)) {
-						e.render(main, main.palette, batch, remix.getSelection().contains(e));
+						e.render(main, main.getPalette(), batch, remix.getSelection().contains(e));
 					}
 				}
 			}
@@ -161,7 +161,7 @@ public class Editor extends InputAdapter implements Disposable {
 					Entity.PX_WIDTH));
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				batch.setColor(main.palette.getStaffLine());
+				batch.setColor(main.getPalette().getStaffLine());
 				batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
 						batch.getColor().a * (x == 0 ? 1f : (x < 0 ? 0.25f : 0.5f)));
 
@@ -172,7 +172,7 @@ public class Editor extends InputAdapter implements Disposable {
 					for (int i = 0; i < numOfLines; i++) {
 						float a = 0.75f;
 
-						batch.setColor(main.palette.getStaffLine());
+						batch.setColor(main.getPalette().getStaffLine());
 						batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
 								batch.getColor().a * a);
 
@@ -189,90 +189,90 @@ public class Editor extends InputAdapter implements Disposable {
 			{
 				float musicToBeats = remix.getTempoChanges().secondsToBeats(remix.getMusicStartTime());
 
-				batch.setColor(main.palette.getMusicStartTracker());
+				batch.setColor(main.getPalette().getMusicStartTracker());
 				Main.fillRect(batch, musicToBeats * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
 				batch.setColor(1, 1, 1, 1);
 
-				main.fontBordered.setColor(main.palette.getMusicStartTracker());
-				main.fontBordered.draw(batch,
+				main.getFontBordered().setColor(main.getPalette().getMusicStartTracker());
+				main.getFontBordered().draw(batch,
 						Localization.get("editor.musicStartTracker", String.format("%.3f", remix.getMusicStartTime())),
 						musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
-				main.fontBordered.getData().setScale(0.5f);
-				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerSec",
+				main.getFontBordered().getData().setScale(0.5f);
+				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
 								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.fontBordered.getLineHeight());
-				main.fontBordered.getData().setScale(1);
-				main.fontBordered.setColor(1, 1, 1, 1);
+						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
+				main.getFontBordered().getData().setScale(1);
+				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 
 			// playback start
 			{
-				batch.setColor(main.palette.getBeatTracker());
+				batch.setColor(main.getPalette().getBeatTracker());
 				Main.fillRect(batch, remix.getPlaybackStart() * Entity.PX_WIDTH, 0, 2,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2));
 				batch.setColor(1, 1, 1, 1);
 
-				main.fontBordered.setColor(main.palette.getBeatTracker());
-				main.fontBordered.draw(batch, Localization
+				main.getFontBordered().setColor(main.getPalette().getBeatTracker());
+				main.getFontBordered().draw(batch, Localization
 								.get("editor.playbackStartTracker", String.format("%.3f", remix.getPlaybackStart())),
 						remix.getPlaybackStart() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
-				main.fontBordered.setColor(1, 1, 1, 1);
+				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 
 			// tempo changes
 			{
 				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
-					batch.setColor(main.palette.getBpmTracker());
+					batch.setColor(main.getPalette().getBpmTracker());
 					if (tc == selectedTempoChange) {
-						batch.setColor(main.palette.getBpmTrackerSelected());
+						batch.setColor(main.getPalette().getBpmTrackerSelected());
 					}
 
 					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
 							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
 
-					main.fontBordered.setColor(batch.getColor());
-					main.fontBordered.draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
-							tc.getBeat() * Entity.PX_WIDTH + 4, -Entity.PX_HEIGHT + main.fontBordered.getCapHeight());
+					main.getFontBordered().setColor(batch.getColor());
+					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
+							tc.getBeat() * Entity.PX_WIDTH + 4, -Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
 				}
-				main.fontBordered.setColor(1, 1, 1, 1);
+				main.getFontBordered().setColor(1, 1, 1, 1);
 				batch.setColor(1, 1, 1, 1);
 			}
 
 			// playing
 			if (remix.getPlayingState() != PlayingState.STOPPED) {
-				batch.setColor(main.palette.getBeatTracker());
+				batch.setColor(main.getPalette().getBeatTracker());
 				Main.fillRect(batch, remix.getBeat() * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
 				batch.setColor(1, 1, 1, 1);
 
 				TempoChange tc = remix.getTempoChanges().getTempoChangeFromBeat(remix.getBeat());
 				float currentBpm = tc == null ? remix.getTempoChanges().getDefTempo() : tc.getTempo();
 
-				main.fontBordered.setColor(main.palette.getBeatTracker());
-				main.fontBordered
+				main.getFontBordered().setColor(main.getPalette().getBeatTracker());
+				main.getFontBordered()
 						.draw(batch, Localization.get("editor.beatTrackerBeat", String.format("%.3f", remix.getBeat
 										())),
 								remix.getBeat() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
-				main.fontBordered.getData().setScale(0.5f);
-				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerSec",
+				main.getFontBordered().getData().setScale(0.5f);
+				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
 								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.fontBordered.getLineHeight() * 2);
-				main.fontBordered.draw(batch, Localization.get("editor.beatTrackerBpm", (int) currentBpm),
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
+				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerBpm", (int) currentBpm),
 						remix.getBeat() * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.fontBordered.getLineHeight() * 3);
-				main.fontBordered.getData().setScale(1);
-				main.fontBordered.setColor(1, 1, 1, 1);
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
+				main.getFontBordered().getData().setScale(1);
+				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 		}
 
 		// beat numbers
 		{
-			main.font.setColor(main.palette.getStaffLine());
+			main.getFont().setColor(main.getPalette().getStaffLine());
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.font.draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.font.getCapHeight() + 4, 0, Align.center, false);
+				main.getFont().draw(batch, x + "", x * Entity.PX_WIDTH,
+						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, 0, Align.center, false);
 			}
 		}
 
@@ -289,12 +289,12 @@ public class Editor extends InputAdapter implements Disposable {
 						-camera.viewportHeight);
 				batch.setColor(1, 1, 1, 1);
 
-				main.biggerFont.getData().setScale(0.5f);
-				main.biggerFont.setColor(0.75f, 0.5f, 0.5f, 0.6f * a);
-				main.biggerFont.draw(batch, Localization.get("editor.delete"), camera.position.x,
-						-main.biggerFont.getCapHeight(), 0, Align.center, false);
-				main.biggerFont.getData().setScale(1);
-				main.biggerFont.setColor(1, 1, 1, 1);
+				main.getBiggerFont().getData().setScale(0.5f);
+				main.getBiggerFont().setColor(0.75f, 0.5f, 0.5f, 0.6f * a);
+				main.getBiggerFont().draw(batch, Localization.get("editor.delete"), camera.position.x,
+						-main.getBiggerFont().getCapHeight(), 0, Align.center, false);
+				main.getBiggerFont().getData().setScale(1);
+				main.getBiggerFont().setColor(1, 1, 1, 1);
 			}
 		}
 
@@ -302,10 +302,10 @@ public class Editor extends InputAdapter implements Disposable {
 		if (selectionOrigin != null) {
 			camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
-			batch.setColor(main.palette.getSelectionFill());
+			batch.setColor(main.getPalette().getSelectionFill());
 			Main.fillRect(batch, selectionOrigin.x, selectionOrigin.y, vec3Tmp.x - selectionOrigin.x,
 					vec3Tmp.y - selectionOrigin.y);
-			batch.setColor(main.palette.getSelectionBorder());
+			batch.setColor(main.getPalette().getSelectionBorder());
 			Main.drawRect(batch, selectionOrigin.x, selectionOrigin.y, vec3Tmp.x - selectionOrigin.x,
 					vec3Tmp.y - selectionOrigin.y, 4);
 			batch.setColor(1, 1, 1, 1);
@@ -337,9 +337,9 @@ public class Editor extends InputAdapter implements Disposable {
 						OVERVIEW_HEIGHT, 1);
 			}
 			batch.setColor(1, 1, 1, 1);
-			main.font.setColor(1, 1, 1, 1);
-			main.font.getData().setScale(0.5f);
-			main.font.draw(batch, status == null ? "" : status, 2, 2 + main.font.getCapHeight());
+			main.getFont().setColor(1, 1, 1, 1);
+			main.getFont().getData().setScale(0.5f);
+			main.getFont().draw(batch, status == null ? "" : status, 2, 2 + main.getFont().getCapHeight());
 
 			// series buttons
 			for (int i = 0; i < Series.values().length; i++) {
@@ -356,7 +356,7 @@ public class Editor extends InputAdapter implements Disposable {
 							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 				}
 			}
-			main.font.getData().setScale(1);
+			main.getFont().getData().setScale(1);
 		}
 
 		// tool icons
@@ -418,49 +418,49 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.begin();
 			StencilMaskUtil.useMask();
 
-			main.fontBordered.setColor(1, 1, 1, 1);
+			main.getFontBordered().setColor(1, 1, 1, 1);
 			Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
 					.get(scrolls.get(currentSeries).getGame());
 
-			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.fontBordered.getCapHeight() * 0.5f;
+			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.getFontBordered().getCapHeight() * 0.5f;
 
 			for (int i = Math.max(0, scrolls.get(currentSeries).getPattern() - PATTERNS_ABOVE_BELOW), first = scrolls
 					.get(currentSeries).getPattern();
 				 i < Math.min(game.getPatterns().size(), first + PATTERNS_ABOVE_BELOW + 900); i++) {
 				Pattern p = game.getPatterns().get(i);
 
-				main.fontBordered.setColor(1, 1, 1, 1);
+				main.getFontBordered().setColor(1, 1, 1, 1);
 				if (p.getAutoGenerated()) {
-					main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
+					main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
 				}
 				if (i == first) {
-					main.fontBordered.setColor(0.65f, 1, 1, 1);
+					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
-					main.fontBordered.draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
+					main.getFontBordered().draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
 
 					List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
 							.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
 					if (scrolls.get(currentSeries).getPattern() == 0)
-						main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
-					main.fontBordered.draw(batch, "^", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
-							middle + PICKER_HEIGHT * 0.5f - main.fontBordered.getCapHeight());
+						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
+					main.getFontBordered().draw(batch, "^", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+							middle + PICKER_HEIGHT * 0.5f - main.getFontBordered().getCapHeight());
 
-					main.fontBordered.setColor(0.65f, 1, 1, 1);
+					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
 					if (scrolls.get(currentSeries).getPattern() == list.size() - 1)
-						main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
-					main.fontBordered.draw(batch, "v", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
+					main.getFontBordered().draw(batch, "v", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
 							middle - PICKER_HEIGHT * 0.5f + 12);
 
-					main.fontBordered.setColor(0.65f, 1, 1, 1);
+					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 				}
 
-				main.fontBordered.draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
+				main.getFontBordered().draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
 						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), 0, Align.left, false);
 			}
 
-			main.fontBordered.setColor(1, 1, 1, 1);
+			main.getFontBordered().setColor(1, 1, 1, 1);
 
 			batch.flush();
 			StencilMaskUtil.resetMask();
@@ -488,7 +488,7 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.begin();
 			StencilMaskUtil.useMask();
 
-			batch.setColor(main.palette.getStaffLine());
+			batch.setColor(main.getPalette().getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, startX, startY + i * ENTITY_HEIGHT, mapWidth, 1);
 
@@ -497,19 +497,19 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(1, 1, 1, 1);
 
 			for (Entity e : remix.getEntities()) {
-				Color c = main.palette.getSoundCue().getBg();
+				Color c = main.getPalette().getSoundCue().getBg();
 				if (e.isStretchable())
-					main.palette.getStretchableSoundCue().getBg();
+					main.getPalette().getStretchableSoundCue().getBg();
 				if (e instanceof PatternEntity) {
-					c = main.palette.getPattern().getBg();
+					c = main.getPalette().getPattern().getBg();
 
 					if (e.isStretchable())
-						c = main.palette.getStretchablePattern().getBg();
+						c = main.getPalette().getStretchablePattern().getBg();
 				}
 
 				float x = (remix.getStartTime() < 0 ? (e.bounds.x - remix.getStartTime()) : e.bounds.x) * ENTITY_WIDTH;
 
-				e.setBatchColorFromState(batch, c, main.palette.getSelectionTint(), remix.getSelection().contains(e));
+				e.setBatchColorFromState(batch, c, main.getPalette().getSelectionTint(), remix.getSelection().contains(e));
 				Main.fillRect(batch, startX + x, startY + e.bounds.y * ENTITY_HEIGHT, e.bounds.width * ENTITY_WIDTH,
 						ENTITY_HEIGHT);
 			}
@@ -637,7 +637,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if ((this.isStretching > 0 || isAbleToStretch) && !isCursorStretching) {
 				isCursorStretching = true;
-				Gdx.graphics.setCursor(main.horizontalResize);
+				Gdx.graphics.setCursor(main.getHorizontalResize());
 			} else if ((isStretching <= 0 && !isAbleToStretch) && isCursorStretching) {
 				isCursorStretching = false;
 				Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);

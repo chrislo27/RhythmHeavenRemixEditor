@@ -74,20 +74,20 @@ public class SoundEntity extends Entity {
 				Editor.GAME_ICON_SIZE, Editor.GAME_ICON_SIZE);
 		batch.setColor(1, 1, 1, 1);
 
-		main.font.getData().setScale(0.5f);
-		main.font.setColor(0, 0, 0, 1);
+		main.getFont().getData().setScale(0.5f);
+		main.getFont().setColor(0, 0, 0, 1);
 		String name = cue.getName();
 		float targetWidth = bounds.getWidth() * PX_WIDTH - 8;
-		float height = Utils.getHeightWithWrapping(main.font, name, targetWidth);
-		main.font.draw(batch, name, bounds.getX() * PX_WIDTH,
+		float height = Utils.getHeightWithWrapping(main.getFont(), name, targetWidth);
+		main.getFont().draw(batch, name, bounds.getX() * PX_WIDTH,
 				bounds.getY() * PX_HEIGHT + (bounds.getHeight() * PX_HEIGHT * 0.5f) + height * 0.5f, targetWidth,
 				Align.right, true);
 
 		if (cue.getCanAlterPitch()) {
-			main.font.draw(batch, Semitones.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
-					bounds.getY() * PX_HEIGHT + main.font.getCapHeight() + 4);
+			main.getFont().draw(batch, Semitones.getSemitoneName(semitone), bounds.getX() * PX_WIDTH + 4,
+					bounds.getY() * PX_HEIGHT + main.getFont().getCapHeight() + 4);
 		}
-		main.font.getData().setScale(1);
+		main.getFont().getData().setScale(1);
 	}
 
 	@Override
