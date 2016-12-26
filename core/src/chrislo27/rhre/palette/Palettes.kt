@@ -75,31 +75,41 @@ object PaletteUtils {
 
 	@JvmStatic
 	fun getPaletteFromObject(obj: PaletteObject?): CustomPalette {
-		fun String.convertToColor(): Color {
+		fun String.convertToColor(originalAlpha: Float): Color {
 			val hex = this
 
 			if (!hex.startsWith("#") || hex.length != 7)
 				throw IllegalArgumentException("Color value must be in the form #FFFFFF (hex)")
 
-			return Color.valueOf(hex.substring(1) + "FF")
+			val c = Color.valueOf(hex.substring(1) + "FF")
+			c.a = originalAlpha
+			return c
 		}
 
 		return object : CustomPalette() {
-			override val editorBg: Color = obj?.editorBg?.convertToColor() ?: super.editorBg
-			override val staffLine: Color = obj?.staffLine?.convertToColor() ?: super.staffLine
-			override val soundCue: EntityColors = EntityColors(obj?.soundCue?.convertToColor() ?: super.soundCue.bg)
+			override val editorBg: Color = obj?.editorBg?.convertToColor(super.editorBg.a) ?: super.editorBg
+			override val staffLine: Color = obj?.staffLine?.convertToColor(super.staffLine.a) ?: super.staffLine
+			override val soundCue: EntityColors = EntityColors(
+					obj?.soundCue?.convertToColor(super.soundCue.bg.a) ?: super.soundCue.bg)
 			override val stretchableSoundCue: EntityColors = EntityColors(
-					obj?.stretchableSoundCue?.convertToColor() ?: super.stretchableSoundCue.bg)
-			override val pattern: EntityColors = EntityColors(obj?.patternCue?.convertToColor() ?: super.pattern.bg)
+					obj?.stretchableSoundCue?.convertToColor(
+							super.stretchableSoundCue.bg.a) ?: super.stretchableSoundCue.bg)
+			override val pattern: EntityColors = EntityColors(
+					obj?.patternCue?.convertToColor(super.pattern.bg.a) ?: super.pattern.bg)
 			override val stretchablePattern: EntityColors = EntityColors(
-					obj?.stretchablePatternCue?.convertToColor() ?: super.stretchablePattern.bg)
+					obj?.stretchablePatternCue?.convertToColor(
+							super.stretchablePattern.bg.a) ?: super.stretchablePattern.bg)
 
-			override val selectionTint: Color = obj?.selectionCueTint?.convertToColor() ?: super.selectionTint
-			override val selectionFill: Color = obj?.selectionBg?.convertToColor() ?: super.selectionFill
-			override val selectionBorder: Color = obj?.selectionBorder?.convertToColor() ?: super.selectionBorder
-			override val beatTracker: Color = obj?.beatTracker?.convertToColor() ?: super.beatTracker
-			override val bpmTracker: Color = obj?.bpmTracker?.convertToColor() ?: super.bpmTracker
-			override val musicStartTracker: Color = obj?.musicStartTracker?.convertToColor() ?: super.musicStartTracker
+			override val selectionTint: Color = obj?.selectionCueTint?.convertToColor(
+					super.selectionTint.a) ?: super.selectionTint
+			override val selectionFill: Color = obj?.selectionBg?.convertToColor(
+					super.selectionFill.a) ?: super.selectionFill
+			override val selectionBorder: Color = obj?.selectionBorder?.convertToColor(
+					super.selectionBorder.a) ?: super.selectionBorder
+			override val beatTracker: Color = obj?.beatTracker?.convertToColor(super.beatTracker.a) ?: super.beatTracker
+			override val bpmTracker: Color = obj?.bpmTracker?.convertToColor(super.bpmTracker.a) ?: super.bpmTracker
+			override val musicStartTracker: Color = obj?.musicStartTracker?.convertToColor(
+					super.musicStartTracker.a) ?: super.musicStartTracker
 		}
 	}
 }
