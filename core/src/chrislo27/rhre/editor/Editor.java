@@ -438,10 +438,22 @@ public class Editor extends InputAdapter implements Disposable {
 
 					main.fontBordered.draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
 
+					List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+							.get(scrolls.get(currentSeries).getGame()).getPatterns();
+
+					if (scrolls.get(currentSeries).getPattern() == 0)
+						main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
 					main.fontBordered.draw(batch, "^", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
 							middle + PICKER_HEIGHT * 0.5f - main.fontBordered.getCapHeight());
+
+					main.fontBordered.setColor(0.65f, 1, 1, 1);
+
+					if (scrolls.get(currentSeries).getPattern() == list.size() - 1)
+						main.fontBordered.setColor(0.75f, 0.75f, 0.75f, 1);
 					main.fontBordered.draw(batch, "v", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
 							middle - PICKER_HEIGHT * 0.5f + 12);
+
+					main.fontBordered.setColor(0.65f, 1, 1, 1);
 				}
 
 				main.fontBordered.draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
