@@ -99,7 +99,7 @@ public class SoundEntity extends Entity {
 		if (cue.getIntroSoundObj() != null) {
 			introSoundId = cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
-		if (cue.getCanAlterDuration() || cue.getLoops()) {
+		if ((cue.getCanAlterDuration() && cue.getLoops()) || cue.getLoops()) {
 			soundId = cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
 			soundId = cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
