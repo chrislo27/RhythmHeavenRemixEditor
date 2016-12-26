@@ -13,6 +13,10 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 	class InspNotOffbeat(beat: Float, entity: Entity) : InspectionType(beat, entity, "notOffbeat")
 	class InspMissing(beat: Float, entity: Entity, val needs: String, val needsAt: Float) :
 			InspectionType(beat, entity, "missing", *arrayOf(entity.name, needs, needsAt.toString()))
+	class InspMissingBefore(beat: Float, entity: Entity, val needs: String) :
+			InspectionType(beat, entity, "missingBefore", *arrayOf(entity.name, needs))
+	class InspMissingAfter(beat: Float, entity: Entity, val needs: String) :
+			InspectionType(beat, entity, "missingAfter", *arrayOf(entity.name, needs))
 
 	// inspect funcs
 
@@ -53,6 +57,50 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 
 				return@run needsID
 			}, target.bounds.x + offset)
+
+			return null
+		}
+	}
+
+	class InspFuncMissingBefore(val needsID: String) : InspectionFunction {
+		override fun inspect(target: Entity, remix: Remix): InspectionType? {
+			remix.entities.find {
+				it !== target && MathUtils.isEqual(target.bounds.x, it.bounds.x + it.bounds.width) && it.id == needsID
+			} ?: return InspMissingBefore(target.bounds.x, target, needsID.run {
+				val pattern = GameRegistry.instance().getPatternRaw(needsID)
+				if (pattern != null) {
+					return@run pattern.name
+				}
+
+				val sound = GameRegistry.instance().getCueRaw(needsID)
+				if (sound != null) {
+					return@run sound.name
+				}
+
+				return@run needsID
+			})
+
+			return null
+		}
+	}
+
+	class InspFuncMissingAfter(val needsID: String) : InspectionFunction {
+		override fun inspect(target: Entity, remix: Remix): InspectionType? {
+			remix.entities.find {
+				it !== target && MathUtils.isEqual(target.bounds.x + target.bounds.width, it.bounds.x) && it.id == needsID
+			} ?: return InspMissingAfter(target.bounds.x + target.bounds.width, target, needsID.run {
+				val pattern = GameRegistry.instance().getPatternRaw(needsID)
+				if (pattern != null) {
+					return@run pattern.name
+				}
+
+				val sound = GameRegistry.instance().getCueRaw(needsID)
+				if (sound != null) {
+					return@run sound.name
+				}
+
+				return@run needsID
+			})
 
 			return null
 		}
