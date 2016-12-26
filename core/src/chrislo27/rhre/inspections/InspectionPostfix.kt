@@ -14,6 +14,10 @@ object InspectionPostfix {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
+		registry.get("exhibitionMatch")?.patterns?.forEach {
+			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		}
+
 		registry.getCueRaw("frogHop/shake")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getCueRaw("frogHop/one")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getCueRaw("frogHop/two")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
