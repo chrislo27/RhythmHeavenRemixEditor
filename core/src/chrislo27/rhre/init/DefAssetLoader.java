@@ -16,6 +16,7 @@ public class DefAssetLoader implements IAssetLoader {
 		manager.load(AssetMap.add("icon_selector_fever", "images/selector/fever.png"), Texture.class);
 		manager.load(AssetMap.add("icon_selector_tengoku", "images/selector/tengoku.png"), Texture.class);
 		manager.load(AssetMap.add("icon_selector_ds", "images/selector/ds.png"), Texture.class);
+		manager.load(AssetMap.add("inspectionIcon", "images/inspection.png"), Texture.class);
 
 		for (Editor.Tool t : Editor.Tool.values()) {
 			manager.load(AssetMap.add("tool_icon_" + t.name(), "images/tool/" + t.name() + ".png"), Texture.class);

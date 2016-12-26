@@ -2,6 +2,7 @@ package chrislo27.rhre.entity;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
+import chrislo27.rhre.inspections.InspectionFunction;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
@@ -105,6 +106,16 @@ public class PatternEntity extends Entity {
 				break;
 			}
 		}
+	}
+
+	@Override
+	public String getName() {
+		return pattern.getName();
+	}
+
+	@Override
+	public List<InspectionFunction> getInspectionFunctions() {
+		return pattern.getInspectionFunctions();
 	}
 
 	@Override

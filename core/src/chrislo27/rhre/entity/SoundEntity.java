@@ -2,6 +2,7 @@ package chrislo27.rhre.entity;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
+import chrislo27.rhre.inspections.InspectionFunction;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
@@ -11,6 +12,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
+
+import java.util.List;
 
 public class SoundEntity extends Entity {
 
@@ -55,6 +58,16 @@ public class SoundEntity extends Entity {
 	@Override
 	public void adjustPitch(int semitoneChange, int min, int max) {
 		semitone = MathUtils.clamp(semitone + semitoneChange, min, max);
+	}
+
+	@Override
+	public String getName() {
+		return cue.getName();
+	}
+
+	@Override
+	public List<InspectionFunction> getInspectionFunctions() {
+		return cue.getInspectionFunctions();
 	}
 
 	@Override

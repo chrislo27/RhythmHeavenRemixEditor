@@ -3,6 +3,7 @@ package chrislo27.rhre.track
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
+import chrislo27.rhre.inspections.Inspections
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
@@ -48,8 +49,10 @@ class Remix {
 	private var lastTickBeat = Int.MIN_VALUE
 	private var musicPlayed = false
 
-	init {
+	val inspections: Inspections
 
+	init {
+		inspections = Inspections(this)
 	}
 
 	companion object {
@@ -128,6 +131,8 @@ class Remix {
 
 				remix.tempoChanges.add(tc)
 			}
+
+			remix.inspections.refresh()
 
 			return remix
 		}

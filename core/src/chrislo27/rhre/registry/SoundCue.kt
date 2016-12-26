@@ -1,5 +1,6 @@
 package chrislo27.rhre.registry
 
+import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
@@ -9,6 +10,8 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 					val canAlterPitch: Boolean = false, val canAlterDuration: Boolean = false,
 					val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
 					val soundFolder: String? = null) {
+
+	var inspectionFunctions: List<InspectionFunction> = listOf()
 
 	fun getSoundObj(): Sound {
 		return AssetRegistry.getSound("soundCue_$id")

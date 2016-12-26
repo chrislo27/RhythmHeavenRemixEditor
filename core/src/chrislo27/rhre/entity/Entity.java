@@ -1,6 +1,7 @@
 package chrislo27.rhre.entity;
 
 import chrislo27.rhre.Main;
+import chrislo27.rhre.inspections.InspectionFunction;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.palette.EntityColors;
 import chrislo27.rhre.track.PlaybackCompletion;
@@ -8,6 +9,8 @@ import chrislo27.rhre.track.Remix;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+
+import java.util.List;
 
 public abstract class Entity {
 
@@ -35,6 +38,10 @@ public abstract class Entity {
 	public void adjustPitch(int semitoneChange, int min, int max){
 
 	}
+
+	public abstract String getName();
+
+	public abstract List<InspectionFunction> getInspectionFunctions();
 
 	public abstract Entity copy();
 

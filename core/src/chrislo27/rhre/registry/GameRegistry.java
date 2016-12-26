@@ -2,6 +2,7 @@ package chrislo27.rhre.registry;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
+import chrislo27.rhre.inspections.InspectionPostfix;
 import chrislo27.rhre.json.GameObject;
 import chrislo27.rhre.util.CustomSoundUtil;
 import com.badlogic.gdx.Gdx;
@@ -196,6 +197,8 @@ public class GameRegistry {
 
 			});
 		}
+
+		InspectionPostfix.applyInspectionFunctions();
 
 		// warnings
 		final AtomicInteger warningCount = new AtomicInteger();

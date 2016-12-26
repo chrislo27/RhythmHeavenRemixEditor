@@ -4,6 +4,7 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.PatternEntity;
 import chrislo27.rhre.entity.SoundEntity;
+import chrislo27.rhre.inspections.InspectionType;
 import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
@@ -19,6 +20,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -61,6 +63,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
+	private final List<InspectionType> highlightedInspections = new ArrayList<>();
+	private final GlyphLayout glyphLayout = new GlyphLayout();
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
 	public Remix remix;
@@ -78,7 +82,6 @@ public class Editor extends InputAdapter implements Disposable {
 	private Vector3 cameraPickVec3 = new Vector3();
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
-
 	private TempoChange selectedTempoChange;
 
 	public Editor(Main m) {
@@ -107,8 +110,8 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void render(SpriteBatch batch) {
-		Gdx.gl.glClearColor(main.getPalette().getEditorBg().r, main.getPalette().getEditorBg().g, main.getPalette().getEditorBg().b,
-				1);
+		Gdx.gl.glClearColor(main.getPalette().getEditorBg().r, main.getPalette().getEditorBg().g,
+				main.getPalette().getEditorBg().b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		camera.position.y = (camera.viewportHeight * 0.5f) - STAFF_START_Y;
@@ -223,6 +226,10 @@ public class Editor extends InputAdapter implements Disposable {
 			// tempo changes
 			{
 				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
+					if (tc.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.75f ||
+							tc.getBeat() * Entity.PX_WIDTH > camera.position.x + camera.viewportWidth * 0.75f)
+						continue;
+
 					batch.setColor(main.getPalette().getBpmTracker());
 					if (tc == selectedTempoChange) {
 						batch.setColor(main.getPalette().getBpmTrackerSelected());
@@ -233,7 +240,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 					main.getFontBordered().setColor(batch.getColor());
 					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
-							tc.getBeat() * Entity.PX_WIDTH + 4, -Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
+							tc.getBeat() * Entity.PX_WIDTH + 4,
+							-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
 				}
 				main.getFontBordered().setColor(1, 1, 1, 1);
 				batch.setColor(1, 1, 1, 1);
@@ -263,6 +271,31 @@ public class Editor extends InputAdapter implements Disposable {
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
+			}
+		}
+
+		// inspections
+		if (main.getInspectionsEnabled()) {
+			highlightedInspections.clear();
+			camera.unproject(cameraPickVec3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+
+			for (InspectionType inspection : remix.getInspections().getInspections()) {
+				if (inspection.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.75f ||
+						inspection.getBeat() * Entity.PX_WIDTH > camera.position.x + camera.viewportWidth * 0.75f)
+					continue;
+
+				batch.setColor(1, 0, 0, 1);
+				Main.fillRect(batch, inspection.getBeat() * Entity.PX_WIDTH, 0, 2,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f));
+				batch.setColor(1, 1, 1, 1);
+				batch.draw(AssetRegistry.getTexture("inspectionIcon"), inspection.getBeat() * Entity.PX_WIDTH - 7,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f), 16, 16);
+
+				if (MathHelper.intersects(cameraPickVec3.x, cameraPickVec3.y, 0, 0,
+						inspection.getBeat() * Entity.PX_WIDTH - 10, Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f) - 2, 20,
+						20)) {
+					highlightedInspections.add(inspection);
+				}
 			}
 		}
 
@@ -359,6 +392,40 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().getData().setScale(1);
 		}
 
+		// inspections
+		if (main.getInspectionsEnabled() && highlightedInspections.size() > 0) {
+			main.getFont().getData().setScale(0.5f);
+			float offsetY = 0;
+			for (int i = 0; i < highlightedInspections.size(); i++) {
+				InspectionType inspection = highlightedInspections.get(i);
+
+				main.getFont().setColor(1, 1, 1, 1);
+				glyphLayout
+						.setText(main.getFont(), inspection.getProperInfo(), main.getFont().getColor(), 256, Align
+										.left,
+								true);
+
+				batch.setColor(0, 0, 0, 0.5f);
+				float bgHeight = glyphLayout.height + main.getFont().getLineHeight() + main.getFont().getCapHeight();
+				Main.fillRect(batch, Gdx.graphics.getWidth(),
+						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
+						-bgHeight);
+//				Main.drawRect(batch, Gdx.graphics.getWidth(),
+//						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
+//						-bgHeight, 1);
+
+				main.getFont().draw(batch, inspection.getProperName(), Gdx.graphics.getWidth() - glyphLayout.width - 8,
+						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY - 4, 256, Align.left, true);
+				main.getFont().draw(batch, inspection.getProperInfo(), Gdx.graphics.getWidth() - glyphLayout.width - 8,
+						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY - 4 -
+								main.getFont().getLineHeight(), 256, Align.left, true);
+
+				offsetY += bgHeight;
+			}
+
+			main.getFont().getData().setScale(0.5f);
+		}
+
 		// tool icons
 		{
 			batch.setColor(0, 0, 0, 0.5f);
@@ -436,7 +503,8 @@ public class Editor extends InputAdapter implements Disposable {
 				if (i == first) {
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
-					main.getFontBordered().draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING, middle);
+					main.getFontBordered().draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+							middle);
 
 					List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
 							.get(scrolls.get(currentSeries).getGame()).getPatterns();
@@ -509,9 +577,19 @@ public class Editor extends InputAdapter implements Disposable {
 
 				float x = (remix.getStartTime() < 0 ? (e.bounds.x - remix.getStartTime()) : e.bounds.x) * ENTITY_WIDTH;
 
-				e.setBatchColorFromState(batch, c, main.getPalette().getSelectionTint(), remix.getSelection().contains(e));
+				e.setBatchColorFromState(batch, c, main.getPalette().getSelectionTint(),
+						remix.getSelection().contains(e));
 				Main.fillRect(batch, startX + x, startY + e.bounds.y * ENTITY_HEIGHT, e.bounds.width * ENTITY_WIDTH,
 						ENTITY_HEIGHT);
+			}
+
+			batch.setColor(1, 0, 0, 1);
+
+			// inspections
+			if (main.getInspectionsEnabled()) {
+				for (InspectionType inspect : remix.getInspections().getInspections()) {
+					Main.fillRect(batch, startX + inspect.getBeat() * ENTITY_WIDTH, startY, 1, OVERVIEW_HEIGHT);
+				}
 			}
 
 			batch.setColor(1, 1, 1, 1);
@@ -997,6 +1075,7 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 
 			remix.updateDuration();
+			remix.getInspections().refresh();
 
 			return true;
 		}
