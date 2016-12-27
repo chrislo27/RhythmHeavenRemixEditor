@@ -25,6 +25,8 @@ public class DefAssetLoader implements IAssetLoader {
 		for (Series s : Series.values()) {
 			manager.load(AssetMap.add("series_icon_" + s.name(), "images/series/" + s.name() + ".png"), Texture.class);
 		}
+
+		manager.load(AssetMap.add("ptr_whole", "images/ptr/full.png"), Texture.class);
 	}
 
 	@Override
