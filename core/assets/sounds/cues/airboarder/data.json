@@ -1,0 +1,95 @@
+{
+  "gameID": "airboarder",
+  "gameName": "Airboarder",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "airboarder/hup",
+      "duration": 0.5,
+      "name": "ready"
+    },
+    {
+      "id": "airboarder/crouch",
+      "duration": 0.5,
+      "name": "crouch"
+    },
+    {
+      "id": "airboarder/glow",
+      "duration": 0.5,
+      "name": "glow"
+    },
+    {
+      "id": "airboarder/jump",
+      "duration": 0.5,
+      "name": "jump"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "airboarder_crouch",
+      "name": "crouch",
+      "cues": [
+        {
+          "id": "airboarder/hup",
+          "beat": 0
+        },
+        {
+          "id": "airboarder/crouch",
+          "beat": 0.5
+        },
+        {
+          "id": "airboarder/crouch",
+          "beat": 1
+        },
+        {
+          "id": "airboarder/crouch",
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "airboarder_chargeCrouch",
+      "name": "charge crouch",
+      "cues": [
+        {
+          "id": "airboarder/hup",
+          "beat": 0
+        },
+        {
+          "id": "airboarder/glow",
+          "beat": 0.5
+        },
+        {
+          "id": "airboarder/glow",
+          "beat": 1
+        },
+        {
+          "id": "airboarder/glow",
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "airboarder_jump",
+      "name": "jump",
+      "cues": [
+        {
+          "id": "airboarder/hup",
+          "beat": 0
+        },
+        {
+          "id": "airboarder/jump",
+          "beat": 0.5
+        },
+        {
+          "id": "airboarder/jump",
+          "beat": 1
+        },
+        {
+          "id": "airboarder/jump",
+          "beat": 1.5
+        }
+      ]
+    }
+  ]
+}

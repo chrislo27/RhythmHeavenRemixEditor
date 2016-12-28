@@ -20,8 +20,9 @@
     },
     {
       "id": "sickBeats/whoosh",
-      "duration": 0.5,
-      "name": "dash"
+      "duration": 0.1875,
+      "name": "dash",
+      "fileExtension": "wav"
     }
   ],
   "patterns": [
@@ -49,19 +50,19 @@
         },
         {
         "id": "sickBeats/whoosh",
-        "beat": 0.5
+        "beat": 0.1875
         },
         {
         "id": "sickBeats/whoosh",
-        "beat": 1
+        "beat": 0.375
         },
         {
         "id": "sickBeats/appear",
-        "beat": 3
+        "beat": 2.375
         },
         {
         "id": "sickBeats/stab",
-        "beat": 4
+        "beat": 3.375
         }
       ]
     },
@@ -97,23 +98,23 @@
         },
         {
         "id": "sickBeats/whoosh",
-        "beat": 0.5
+        "beat": 0.1875
         },
         {
         "id": "sickBeats/appear",
-        "beat": 2.5
+        "beat": 1.1875
         },
         {
         "id": "sickBeats/resist",
-        "beat": 3.5
+        "beat": 2.1875
         },
         {
         "id": "sickBeats/appear",
-        "beat": 4.5
+        "beat": 3.1875
         },
         {
         "id": "sickBeats/stab",
-        "beat": 5.5
+        "beat": 4.1875
         }
       ]
     },
