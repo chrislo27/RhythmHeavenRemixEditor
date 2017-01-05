@@ -1,0 +1,87 @@
+{
+  "gameID": "forkLifter",
+  "gameName": "Fork Lifter",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "forkLifter/flickPrepare",
+      "duration": 0.5,
+      "name": "pea - prepare flick"
+    },
+    {
+      "id": "forkLifter/flick",
+      "duration": 0.5,
+      "name": "pea - flick"
+    },
+    {
+      "id": "forkLifter/zoom",
+      "duration": 0.5,
+      "name": "pea - zoom"
+    },
+    {
+      "id": "forkLifter/stab",
+      "duration": 0.5,
+      "name": "pea - stab"
+    },
+    {
+      "id": "forkLifter/gulp",
+      "duration": 1.0,
+      "name": "gulp"
+    },
+    {
+      "id": "forkLifter/sigh",
+      "duration": 2.0,
+      "name": "sigh"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "forkLifter_onePea",
+      "name": "single pea",
+      "cues": [
+       {
+        "id": "forkLifter/flick",
+        "beat": 0.0
+       },
+	   {
+        "id": "forkLifter/zoom",
+        "beat": 1.5
+       },
+       {
+        "id": "forkLifter/stab",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "forkLifter_twoPeas",
+      "name": "two peas",
+      "cues": [
+       {
+        "id": "forkLifter/flick",
+        "beat": 0.0
+       },
+	   {
+        "id": "forkLifter/flick",
+        "beat": 1.0
+       },
+	   {
+        "id": "forkLifter/zoom",
+        "beat": 1.5
+       },
+       {
+        "id": "forkLifter/stab",
+        "beat": 2.0
+       },
+	   {
+        "id": "forkLifter/zoom",
+        "beat": 2.5
+       },
+       {
+        "id": "forkLifter/stab",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "gameID": "mrUpbeat",
+  "gameName": "Mr Upbeat",
+  "series": "side",
+  "cues": [
+    {
+      "id": "mrUpbeat/bip",
+      "duration": 0.5,
+      "name": "count in - bip"
+    },
+    {
+      "id": "mrUpbeat/metroL",
+      "duration": 0.5,
+      "name": "metronome - left"
+    },
+    {
+      "id": "mrUpbeat/metroR",
+      "duration": 0.5,
+      "name": "metronome - right"
+    },
+    {
+      "id": "upbeat/step",
+      "duration": 0.5,
+      "name": "upbeat - step"
+    },
+    {
+      "id": "mrUpbeat/applause",
+      "duration": 0.5,
+      "name": "applause"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "mrUpbeat_countIn",
+      "name": "count in",
+      "cues": [
+       {
+        "id": "upbeat/bip",
+        "beat": 0.0
+       },
+       {
+        "id": "upbeat/bip",
+        "beat": 1.0
+       },
+	   {
+        "id": "upbeat/bip",
+        "beat": 2.0
+       },
+       {
+        "id": "upbeat/bip",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "mrUpbeat_pattern",
+      "name": "stepping",
+      "cues": [
+       {
+        "id": "mrUpbeat/metroR",
+        "beat": 0.0
+       },
+       {
+        "id": "mrUpbeat/step",
+        "beat": 0.5
+       },
+	   {
+        "id": "mrUpbeat/metroL",
+        "beat": 1.0
+       },
+       {
+        "id": "mrUpbeat/step",
+        "beat": 1.5
+       },
+	   {
+        "id": "mrUpbeat/metroR",
+        "beat": 2.0
+       },
+       {
+        "id": "mrUpbeat/step",
+        "beat": 2.5
+       },
+	   {
+        "id": "mrUpbeat/metroL",
+        "beat": 3.0
+       },
+       {
+        "id": "mrUapbeat/step",
+        "beat": 3.5
+       }
+      ]
+    }
+  ]
+}

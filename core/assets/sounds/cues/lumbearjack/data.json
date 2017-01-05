@@ -1,0 +1,144 @@
+{
+  "gameID": "lumbearjack",
+  "gameName": "LumBEARjack",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "lumbearjack/small1",
+      "duration": 1.0,
+      "name": "log - small - 1"
+    },
+    {
+      "id": "lumbearjack/small2",
+      "duration": 1.5,
+      "name": "log - small - 2"
+    },
+    {
+      "id": "lumbearjack/medium1",
+      "duration": 1.0,
+      "name": "log - medium - 1"
+    },
+    {
+      "id": "lumbearjack/medium2",
+      "duration": 1.0,
+      "name": "log - medium - 2"
+    },
+    {
+      "id": "lumbearjack/medium3",
+      "duration": 1.0,
+      "name": "log - medium - 3"
+    },
+    {
+      "id": "lumbearjack/large1",
+      "duration": 1.0,
+      "name": "log - large - 1"
+    },
+	{
+      "id": "lumbearjack/large2",
+      "duration": 1.0,
+      "name": "log - large - 2"
+    },
+    {
+      "id": "lumbearjack/large3",
+      "duration": 1.0,
+      "name": "log - large - 3"
+    },
+	{
+      "id": "lumbearjack/large4",
+      "duration": 1.0,
+      "name": "log - large - 4"
+    },
+	{
+      "id": "lumbearjack/large5",
+      "duration": 2.0,
+      "name": "log - large - 5"
+    },
+	{
+      "id": "lumbearjack/nya",
+      "duration": 1.0,
+      "name": "cat - nya"
+    },
+	{
+      "id": "lumbearjack/huh",
+      "duration": 0.5,
+      "name": "bear - huh"
+    },
+	{
+      "id": "lumbearjack/sigh",
+      "duration": 3.0,
+      "name": "bear - sigh"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "lumbearjack_small",
+      "name": "small log",
+      "cues": [
+       {
+        "id": "lumbearjack/nya",
+        "beat": 0.0
+       },
+       {
+        "id": "lumbearjack/small1",
+        "beat": 1.0
+       },
+	   {
+        "id": "lumbearjack/small2",
+        "beat": 2.0
+       }
+      ]
+    },
+	{
+      "id": "lumbearjack_medium",
+      "name": "medium log",
+      "cues": [
+       {
+        "id": "lumbearjack/nya",
+        "beat": 0.0
+       },
+       {
+        "id": "lumbearjack/medium1",
+        "beat": 1.0
+       },
+	   {
+        "id": "lumbearjack/medium2",
+        "beat": 2.0
+       },
+	   {
+        "id": "lumbearjack/medium3",
+        "beat": 3.0
+       }
+      ]
+    },
+	{
+      "id": "lumbearjack_large",
+      "name": "large log",
+      "cues": [
+       {
+        "id": "lumbearjack/nya",
+        "beat": 0.0
+       },
+       {
+        "id": "lumbearjack/large1",
+        "beat": 1.0
+       },
+	   {
+        "id": "lumbearjack/large2",
+        "beat": 2.0
+       },
+	   {
+        "id": "lumbearjack/large3",
+        "beat": 3.0
+       },
+	   {
+        "id": "lumbearjack/large4",
+        "beat": 4.0
+       },
+	   {
+        "id": "lumbearjack/large5",
+        "beat": 5.0
+       }
+      ]
+    }
+  ]
+}
