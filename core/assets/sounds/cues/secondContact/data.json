@@ -1,0 +1,58 @@
+{
+  "gameID": "secondContact",
+  "gameName": "Second Contact",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "secondContact/passover",
+      "duration": 0.5,
+      "name": "turn passover"
+    },
+    {
+      "id": "secondContact/success",
+      "duration": 0.5,
+      "name": "turn success"
+    },
+	{
+      "id": "secondContact/alien1",
+      "duration": 0.5,
+      "name": "alien - 1"
+    },
+	{
+      "id": "secondContact/alien2",
+      "duration": 0.5,
+      "name": "alien - 2"
+    },
+	{
+      "id": "secondContact/farmer1",
+      "duration": 0.5,
+      "name": "farmer - 1"
+    },
+	{
+      "id": "secondContact/farmer2",
+      "duration": 0.5,
+      "name": "farmer - 2"
+    },
+	{
+      "id": "secondContact/farmer3",
+      "duration": 0.5,
+      "name": "farmer - 3"
+    },
+	{
+      "id": "secondContact/reporter1",
+      "duration": 0.5,
+      "name": "reporter - 1"
+    },
+	{
+      "id": "secondContact/reporter2",
+      "duration": 0.5,
+      "name": "reporter - 2"
+    },
+	{
+      "id": "secondContact/reporter3",
+      "duration": 0.5,
+      "name": "reporter - 3"
+    }
+  ],
+  "patterns": []
+}

@@ -1,0 +1,107 @@
+{
+  "gameID": "packingPests",
+  "gameName": "Packing Pests",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "packingPests/candy1",
+      "duration": 0.5,
+      "name": "candy - throw"
+    },
+    {
+      "id": "packingPests/candy2",
+      "duration": 0.5,
+      "name": "candy - grab"
+    },
+    {
+      "id": "packingPests/doubleup1",
+      "duration": 0.45833,
+      "name": "double-"
+    },
+    {
+      "id": "packingPests/doubleup2",
+      "duration": 0.25,
+      "name": "-up"
+    },
+    {
+      "id": "packingPests/spider1",
+      "duration": 0.5,
+      "name": "spider - throw"
+    },
+    {
+      "id": "packingPests/spider2",
+      "duration": 0.5,
+      "name": "spider - slap"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "packingPests_pattern",
+      "name": "pattern",
+      "cues": [
+       {
+        "id": "packingPests/candy1",
+        "beat": 0.0
+       },
+       {
+        "id": "packingPests/candy2",
+        "beat": 1.0
+       },
+	   {
+        "id": "packingPests/spider1",
+        "beat": 2.0
+       },
+       {
+        "id": "packingPests/spider2",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "packingPests_double",
+      "name": "double-up",
+      "cues": [
+       {
+        "id": "packingPests/candy1",
+        "beat": 0.0,
+		"track": 0
+       },
+	   {
+	    "id": "packingPests/doubleup1",
+        "beat": 0.0,
+		"track": 1
+	   },
+	   {
+	    "id": "packingPests/doubleup2",
+        "beat": 0.45833,
+		"track": 1
+	   },
+       {
+        "id": "packingPests/candy2",
+        "beat": 1.0,
+		"track": 0
+       },
+	   {
+        "id": "packingPests/spider1",
+        "beat": 1.5,
+		"track": 0
+       },
+       {
+        "id": "packingPests/spider2",
+        "beat": 2.5,
+		"track": 0
+       },
+	   {
+        "id": "packingPests/spider1",
+        "beat": 2.5,
+		"track": 1
+       },
+	   {
+        "id": "packingPests/spider2",
+        "beat": 3.5,
+		"track": 1
+       }
+      ]
+    }
+  ]
+}
