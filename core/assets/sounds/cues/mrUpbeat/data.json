@@ -19,7 +19,7 @@
       "name": "metronome - right"
     },
     {
-      "id": "upbeat/step",
+      "id": "mrUpbeat/step",
       "duration": 0.5,
       "name": "upbeat - step"
     },
@@ -35,19 +35,19 @@
       "name": "count in",
       "cues": [
        {
-        "id": "upbeat/bip",
+        "id": "mrUpbeat/bip",
         "beat": 0.0
        },
        {
-        "id": "upbeat/bip",
+        "id": "mrUpbeat/bip",
         "beat": 1.0
        },
 	   {
-        "id": "upbeat/bip",
+        "id": "mrUpbeat/bip",
         "beat": 2.0
        },
        {
-        "id": "upbeat/bip",
+        "id": "mrUpbeat/bip",
         "beat": 3.0
        }
       ]
