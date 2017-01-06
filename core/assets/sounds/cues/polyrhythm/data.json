@@ -1,0 +1,28 @@
+{
+  "gameID": "polyrhythm",
+  "gameName": "Polyrhythm",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "polyrhythm/side_a",
+      "duration": 0.5,
+      "name": "a side"
+    },
+    {
+      "id": "polyrhythm/side_d",
+      "duration": 0.5,
+      "name": "directional pad side"
+    },
+	{
+      "id": "polyrhythm/enter",
+      "duration": 0.5,
+      "name": "cilinder - entering"
+    },
+	{
+      "id": "polyrhythm/land",
+      "duration": 0.5,
+      "name": "cilinder - landing"
+    }
+  ],
+  "patterns": []
+}
