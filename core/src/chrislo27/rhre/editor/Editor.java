@@ -405,6 +405,13 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFontBordered().getData().setScale(1f);
 		}
 
+		main.getFontBordered().getData().setScale(0.75f);
+//			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
+		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
+				Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight());
+		main.getFontBordered().setColor(1, 1, 1, 1);
+		main.getFontBordered().getData().setScale(1f);
+
 		if (main.getInspectionsEnabled() && highlightedInspections.size() > 0) {
 			main.getFont().getData().setScale(0.5f);
 			float offsetY = 0;
@@ -679,7 +686,7 @@ public class Editor extends InputAdapter implements Disposable {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
 				camera.position.x = 0;
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
-				remix.updateDuration();
+				remix.updateDurationAndCurrentGame();
 				camera.position.x = remix.getEndTime() * Entity.PX_WIDTH;
 			}
 		}
@@ -1086,7 +1093,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 			}
 
-			remix.updateDuration();
+			remix.updateDurationAndCurrentGame();
 			remix.getInspections().refresh();
 
 			return true;

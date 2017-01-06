@@ -4,6 +4,8 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.inspections.InspectionFunction;
 import chrislo27.rhre.palette.AbstractPalette;
+import chrislo27.rhre.registry.Game;
+import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
@@ -15,13 +17,14 @@ import ionium.util.Utils;
 
 import java.util.List;
 
-public class SoundEntity extends Entity {
+public class SoundEntity extends Entity implements HasGame {
 
 	public final SoundCue cue;
 	public volatile int semitone;
 
 	private volatile long soundId;
 	private volatile long introSoundId;
+	private final Game game;
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
@@ -29,6 +32,8 @@ public class SoundEntity extends Entity {
 		this.semitone = semitone;
 
 		this.bounds.set(beat, level, duration, 1);
+
+		game = GameRegistry.instance().get(cue.getId().substring(0, cue.getId().indexOf('/')));
 	}
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, int semitone) {
@@ -129,5 +134,10 @@ public class SoundEntity extends Entity {
 			cue.getSoundObj().stop(soundId);
 		}
 
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
 	}
 }

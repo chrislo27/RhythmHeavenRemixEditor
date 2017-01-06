@@ -1,10 +1,12 @@
 package chrislo27.rhre.track
 
 import chrislo27.rhre.entity.Entity
+import chrislo27.rhre.entity.HasGame
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
 import chrislo27.rhre.inspections.Inspections
 import chrislo27.rhre.json.persistent.RemixObject
+import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
@@ -31,10 +33,10 @@ class Remix {
 		}
 	@Volatile
 	var musicVolume: Float = 1f
-	set(value) {
-		field = MathUtils.clamp(value, 0f, 1f)
-		music?.music?.volume = field
-	}
+		set(value) {
+			field = MathUtils.clamp(value, 0f, 1f)
+			music?.music?.volume = field
+		}
 
 	private var beat: Float = 0f
 	var musicStartTime: Float = 0f
@@ -48,6 +50,8 @@ class Remix {
 		}
 	private var lastTickBeat = Int.MIN_VALUE
 	private var musicPlayed = false
+	var currentGame: Game? = null
+		private set
 
 	val inspections: Inspections
 
@@ -157,6 +161,7 @@ class Remix {
 					it.onEnd(0f)
 				}
 			}
+			currentGame = null
 		}
 
 		when (playingState) {
@@ -174,7 +179,7 @@ class Remix {
 		// change to
 		when (ps) {
 			PlayingState.PLAYING -> {
-				updateDuration()
+				updateDurationAndCurrentGame()
 				AssetRegistry.instance().resumeAllSound()
 			}
 			PlayingState.PAUSED -> {
@@ -188,7 +193,7 @@ class Remix {
 		}
 	}
 
-	fun updateDuration() {
+	fun updateDurationAndCurrentGame() {
 		endTime = entities.fold(Float.MIN_VALUE,
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
 		startTime = entities.fold(Float.MAX_VALUE,
@@ -260,6 +265,27 @@ class Remix {
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm) {
 //			Gdx.app.postRunnable(AudioChangePitch(music!!.music))
+		}
+
+		val filtered = entities.filter { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame }
+		val anyDiffer = filtered.any {
+			it as HasGame
+
+			if (it.game.id == "countIn") return@any false
+
+			return@any it.game != currentGame
+		}
+
+		if (anyDiffer) {
+			val atLeastOne = filtered.any {
+				it as HasGame
+				return@any it.game == currentGame
+			}
+
+			if (!atLeastOne) {
+				currentGame = (entities
+						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && it.game.id != "countIn" } as HasGame?)?.game
+			}
 		}
 
 		if (beat >= endTime)

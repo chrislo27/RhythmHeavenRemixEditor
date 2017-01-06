@@ -4,6 +4,7 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.inspections.InspectionFunction;
 import chrislo27.rhre.palette.AbstractPalette;
+import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.SoundCue;
@@ -19,7 +20,7 @@ import ionium.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatternEntity extends Entity {
+public class PatternEntity extends Entity implements HasGame {
 
 	public final List<SoundEntity> internal;
 	public final Pattern pattern;
@@ -28,6 +29,7 @@ public class PatternEntity extends Entity {
 	private final float originalWidth;
 	private final boolean repitchable;
 	private volatile int semitone;
+	private final Game game;
 
 	public PatternEntity(Remix remix, Pattern p) {
 		super(remix);
@@ -66,6 +68,8 @@ public class PatternEntity extends Entity {
 		internal.forEach(se -> originalSemitones.add(se.semitone));
 
 		repitchable = internal.stream().anyMatch(se -> se.cue.getCanAlterPitch());
+		String id = pattern.getCues().get(0).getId();
+		game = GameRegistry.instance().get(id.substring(0, id.indexOf('/')));
 	}
 
 	@Override
@@ -236,5 +240,10 @@ public class PatternEntity extends Entity {
 				}
 			}
 		}
+	}
+
+	@Override
+	public Game getGame() {
+		return game;
 	}
 }

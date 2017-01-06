@@ -1,6 +1,7 @@
 package chrislo27.rhre
 
 import chrislo27.rhre.init.DefAssetLoader
+import chrislo27.rhre.init.VisualAssetLoader
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
@@ -62,6 +63,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
 
 		AssetRegistry.instance().addAssetLoader(DefAssetLoader())
+		AssetRegistry.instance().addAssetLoader(VisualAssetLoader())
 
 		DebugSetting.showFPS = false
 
