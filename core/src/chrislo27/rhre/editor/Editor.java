@@ -13,6 +13,8 @@ import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
 import chrislo27.rhre.track.TempoChange;
+import chrislo27.rhre.visual.Renderer;
+import chrislo27.rhre.visual.VisualRegistry;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -61,6 +63,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
+	private final OrthographicCamera rendererCamera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final List<InspectionType> highlightedInspections = new ArrayList<>();
@@ -88,6 +91,8 @@ public class Editor extends InputAdapter implements Disposable {
 		this.main = m;
 		camera.setToOrtho(false, 1280, 720);
 		camera.position.x = 0.333f * camera.viewportWidth;
+
+		rendererCamera.setToOrtho(false, 400, 240);
 
 		remix = new Remix();
 
@@ -635,6 +640,21 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				}
 			}
+		}
+
+		// FIXME renderer
+		if (DebugSetting.debug && remix.getCurrentGame() != null) {
+			rendererCamera.update();
+			batch.setProjectionMatrix(rendererCamera.combined);
+
+			Renderer renderer = VisualRegistry.INSTANCE.getMap().get(remix.getCurrentGame().getId());
+			Gdx.gl.glClearColor(0, 0, 0, 1);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			if (renderer != null) {
+				renderer.render(batch, remix);
+			}
+
+			batch.setProjectionMatrix(main.camera.combined);
 		}
 
 		batch.end();
