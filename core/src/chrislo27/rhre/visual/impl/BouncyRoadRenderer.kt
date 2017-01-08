@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import ionium.registry.AssetRegistry
 
@@ -38,28 +39,35 @@ class BouncyRoadRenderer : Renderer() {
 	}
 
 	val entities: MutableList<Object> = mutableListOf()
+	val bouncers: MutableList<Bouncer> = mutableListOf()
 	val topOfBouncer = 48
 
 	init {
 		prepare()
 	}
 
+//	fun getBounce(): Float {
+//		return MathUtils.sin()
+//	}
+
 	fun prepare() {
-		entities.add(Bouncer(0, -23f, 222f))
-		entities.add(Bouncer(0, 80f, 218f))
-		entities.add(Bouncer(0, 80f + 64f, 213f))
-		entities.add(Bouncer(0, 80f + 64f + 56f, 207f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f, 200f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f, 192f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28, 180f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24, 164f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8, 150f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5, 132f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32, 118f))
-		entities.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48, 104f))
-		entities.add(Bouncer(2, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48 - 72, 92f))
-		entities.add(Bouncer(1, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48 - 72 - 104, 84f))
-		entities.add(Bouncer(0, -28f, 76f))
+		bouncers.add(Bouncer(0, -23f, 222f))
+		bouncers.add(Bouncer(0, 80f, 218f))
+		bouncers.add(Bouncer(0, 80f + 64f, 213f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f, 207f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f, 200f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f, 192f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28, 180f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24, 164f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8, 150f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5, 132f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32, 118f))
+		bouncers.add(Bouncer(0, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48, 104f))
+		bouncers.add(Bouncer(2, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48 - 72, 92f))
+		bouncers.add(Bouncer(1, 80f + 64f + 56f + 48f + 32f + 28 + 24 + 8 - 5 - 32 - 48 - 72 - 104, 84f))
+		bouncers.add(Bouncer(0, -28f, 76f))
+		entities.addAll(bouncers)
+		Interpolation.bounce
 	}
 
 	override fun onEnd(remix: Remix) {
