@@ -1,0 +1,46 @@
+{
+  "gameID": "frogPrincess",
+  "gameName": "Frog Princess",
+  "series": "side",
+  "cues": [
+    {
+      "id": "frogPrincess/donk",
+      "duration": 0.5,
+      "name": "donk"
+    },
+    {
+      "id": "frogPrincess/prepare",
+      "duration": 1.0,
+      "name": "prepare"
+    },
+    {
+      "id": "frogPrincess/jump",
+      "duration": 1.0,
+      "name": "jump"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "frogPrincess_jump",
+      "name": "jump",
+      "cues": [
+       {
+        "id": "frogPrincess/donk",
+        "beat": 0.0
+       },
+       {
+        "id": "frogPrincess/donk",
+        "beat": 1.0
+       },
+	   {
+        "id": "frogPrincess/prepare",
+        "beat": 2.0
+       },
+       {
+        "id": "frogPrincess/jump",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}
