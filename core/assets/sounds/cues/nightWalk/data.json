@@ -1,0 +1,104 @@
+{
+  "gameID": "nightWalk",
+  "gameName": "Night Walk",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "nightWalk/walk1",
+      "duration": 0.5,
+      "name": "walk - 1"
+    },
+    {
+      "id": "nightWalk/walk2",
+      "duration": 0.5,
+      "name": "walk - 2"
+    },
+    {
+      "id": "nightWalk/jump1",
+      "duration": 1.0,
+      "name": "jump - 1"
+    },
+    {
+      "id": "nightWalk/jump2",
+      "duration": 1.0,
+      "name": "jump - 2"
+    },
+    {
+      "id": "nightWalk/disappear",
+      "duration": 1.0,
+      "name": "box disappear"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "nightWalk_walk",
+      "name": "walking",
+      "cues": [
+       {
+        "id": "nightWalk/walk1",
+        "beat": 0.0
+       },
+       {
+        "id": "nightWalk/walk2",
+        "beat": 0.5
+       },
+	   {
+        "id": "nightWalk/walk1",
+        "beat": 1.0
+       },
+       {
+        "id": "nightWalk/walk2",
+        "beat": 1.5
+       }
+      ]
+    },
+    {
+      "id": "nightWalk_jump",
+      "name": "jumping",
+      "cues": [
+       {
+        "id": "nightWalk/jump1",
+        "beat": 0.0
+       },
+       {
+        "id": "nightWalk/jump2",
+        "beat": 1.0
+       },
+	   {
+        "id": "nightWalk/jump1",
+        "beat": 2.0
+       },
+       {
+        "id": "nightWalk/jump2",
+        "beat": 3.0
+       }
+      ]
+    },
+	{
+      "id": "nightWalk_disappear",
+      "name": "boxes disappearing",
+      "cues": [
+       {
+        "id": "nightWalk/disappear",
+        "beat": 0.0
+       },
+       {
+        "id": "nightWalk/disappear",
+        "beat": 1.0
+       },
+	   {
+        "id": "nightWalk/disappear",
+        "beat": 2.0
+       },
+	   {
+        "id": "nightWalk/disappear",
+        "beat": 3.0
+       },
+	   {
+        "id": "nightWalk/disappear",
+        "beat": 4.0
+       }
+      ]
+    }
+  ]
+}

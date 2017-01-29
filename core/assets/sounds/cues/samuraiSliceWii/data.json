@@ -1,0 +1,273 @@
+{
+  "gameID": "samuraiSliceWii",
+  "gameName": "Samurai Slice (Wii)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "samuraiSliceWii/slice",
+      "duration": 0.5,
+      "name": "samurai - slice"
+    },
+    {
+      "id": "samuraiSliceWii/sliceDouble",
+      "duration": 0.5,
+      "name": "samurai - second slice"
+    },
+    {
+      "id": "samuraiSliceWii/demonSmall1",
+      "duration": 0.5,
+      "name": "demon - small - 1"
+    },
+    {
+      "id": "samuraiSliceWii/demonSmall2",
+      "duration": 0.5,
+      "name": "demon - small - 2"
+    },
+    {
+      "id": "samuraiSliceWii/demonSmall3",
+      "duration": 0.5,
+      "name": "demon - small - 3"
+    },
+    {
+      "id": "samuraiSliceWii/demonMedium1",
+      "duration": 0.5,
+      "name": "demon - medium - 1"
+    },
+    {
+      "id": "samuraiSliceWii/demonMedium2",
+      "duration": 0.5,
+      "name": "demon - medium - 2"
+    },
+    {
+      "id": "samuraiSliceWii/demonMedium3",
+      "duration": 0.5,
+      "name": "demon - medium - 3"
+    },
+	{
+      "id": "samuraiSliceWii/demonBig1",
+      "duration": 0.5,
+      "name": "demon - big - 1"
+    },
+    {
+      "id": "samuraiSliceWii/demonBig2",
+      "duration": 0.5,
+      "name": "demon - big - 2"
+    },
+    {
+      "id": "samuraiSliceWii/demonBig3",
+      "duration": 0.5,
+      "name": "demon - big - 3"
+    },
+	{
+      "id": "samuraiSliceWii/demonHuge1",
+      "duration": 0.5,
+      "name": "demon - huge - 1"
+    },
+    {
+      "id": "samuraiSliceWii/demonHuge2",
+      "duration": 0.5,
+      "name": "demon - huge - 2"
+    },
+    {
+      "id": "samuraiSliceWii/demonHuge3",
+      "duration": 0.5,
+      "name": "demon - huge - 3"
+    },
+	{
+      "id": "samuraiSliceWii/horde1",
+      "duration": 0.33333,
+      "name": "demon - horde - 1"
+    },
+	{
+      "id": "samuraiSliceWii/horde2",
+      "duration": 0.33333,
+      "name": "demon - horde - 2"
+    },
+	{
+      "id": "samuraiSliceWii/horde3",
+      "duration": 0.33333,
+      "name": "demon - horde - 3"
+    },
+	{
+      "id": "samuraiSliceWii/horde4",
+      "duration": 0.33333,
+      "name": "demon - horde - 4"
+    },
+	{
+      "id": "samuraiSliceWii/whirl1",
+      "duration": 1.0,
+      "name": "samurai - whirl - 1"
+    },
+	{
+      "id": "samuraiSliceWii/whirl2",
+      "duration": 1.0,
+      "name": "samurai - whirl - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "samuraiSliceWii_demonSmall",
+      "name": "small demon",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/demonSmall1",
+        "beat": 0.0
+       },
+       {
+        "id": "samuraiSliceWii/demonSmall2",
+        "beat": 0.5
+       },
+	   {
+        "id": "samuraiSliceWii/demonSmall3",
+        "beat": 1.0
+       },
+       {
+        "id": "samuraiSliceWii/slice",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "samuraiSliceWii_doubleDemonSmall",
+      "name": "double small demon",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/demonSmall1",
+        "beat": 0.0,
+		"track": 0
+       },
+	   {
+	    "id": "samuraiSliceWii/demonSmall2",
+        "beat": 0.5,
+		"track": 0
+	   },
+	   {
+	    "id": "samuraiSliceWii/demonSmall3",
+        "beat": 1.0,
+		"track": 0
+	   },
+	   {
+        "id": "samuraiSliceWii/demonSmall1",
+        "beat": 1.0,
+		"track": 1
+       },
+	   {
+	    "id": "samuraiSliceWii/demonSmall2",
+        "beat": 1.5,
+		"track": 1
+	   },
+	   {
+	    "id": "samuraiSliceWii/demonSmall3",
+        "beat": 2.0,
+		"track": 1
+	   },
+       {
+        "id": "samuraiSliceWii/slice",
+        "beat": 2.0,
+		"track": 0
+       },
+	   {
+        "id": "samuraiSliceWii/sliceDouble",
+        "beat": 3.0,
+		"track": 1
+       }
+      ]
+    },
+	{
+      "id": "samuraiSliceWii_demonMedium",
+      "name": "medium demon",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/demonMedium1",
+        "beat": 0.0
+       },
+       {
+        "id": "samuraiSliceWii/demonMedium2",
+        "beat": 0.5
+       },
+	   {
+        "id": "samuraiSliceWii/demonMedium3",
+        "beat": 1.0
+       },
+       {
+        "id": "samuraiSliceWii/slice",
+        "beat": 2.0
+       }
+      ]
+    },
+	{
+      "id": "samuraiSliceWii_demonBig",
+      "name": "big demon",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/demonBig1",
+        "beat": 0.0
+       },
+       {
+        "id": "samuraiSliceWii/demonBig2",
+        "beat": 0.5
+       },
+	   {
+        "id": "samuraiSliceWii/demonBig3",
+        "beat": 1.0
+       },
+       {
+        "id": "samuraiSliceWii/slice",
+        "beat": 2.0
+       }
+      ]
+    },
+	{
+      "id": "samuraiSliceWii_demonHuge",
+      "name": "huge demon",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/demonHuge1",
+        "beat": 0.0
+       },
+       {
+        "id": "samuraiSliceWii/demonHuge2",
+        "beat": 0.5
+       },
+	   {
+        "id": "samuraiSliceWii/demonHuge3",
+        "beat": 1.0
+       },
+       {
+        "id": "samuraiSliceWii/slice",
+        "beat": 2.0
+       }
+      ]
+    },
+	{
+      "id": "samuraiSliceWii_demonHorde",
+      "name": "horde of demons",
+      "cues": [
+       {
+        "id": "samuraiSliceWii/horde1",
+        "beat": 0.0
+       },
+       {
+        "id": "samuraiSliceWii/horde2",
+        "beat": 0.33333
+       },
+	   {
+        "id": "samuraiSliceWii/horde3",
+        "beat": 0.66666
+       },
+	   {
+        "id": "samuraiSliceWii/horde4",
+        "beat": 1.0
+       },
+       {
+        "id": "samuraiSliceWii/whirl1",
+        "beat": 2.0
+       },
+	   {
+        "id": "samuraiSliceWii/whirl2",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}
