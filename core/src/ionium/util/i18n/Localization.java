@@ -70,14 +70,16 @@ public class Localization {
 	}
 
 	public void nextLanguage(int advance) {
-		if (advance == 0) return;
+		if (advance == 0) {
+			return;
+		}
 
 		int currentIndex = 0;
 
 		for (int i = 0; i < bundles.size; i++) {
 			if (bundles.get(i) == selectedBundle) {
 				currentIndex = i;
-				return;
+				break;
 			}
 		}
 
