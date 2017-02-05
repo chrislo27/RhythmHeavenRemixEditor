@@ -39,8 +39,8 @@ object InspectionPostfix {
 		registry.getPatternRaw("karateMan_soccer ball")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncNotOnbeat())
 		registry.getPatternRaw("karateMan_roaster")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_hit3")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_hit4")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPatternRaw("karateMan_hit3")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPatternRaw("karateMan_hit4")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
 		registry.getPatternRaw("karateMan_kick")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getPatternRaw("karateMan_combo")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getPatternRaw("karateMan_offbeatpot")?.inspectionFunctions = listOf(
