@@ -65,7 +65,7 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 	class InspFuncMissingBefore(val needsID: String) : InspectionFunction {
 		override fun inspect(target: Entity, remix: Remix): InspectionType? {
 			remix.entities.find {
-				it !== target && MathUtils.isEqual(target.bounds.x, it.bounds.x + it.bounds.width) && it.id == needsID
+				it !== target && MathUtils.isEqual(target.bounds.x, it.bounds.x + it.bounds.width, 0.01f) && it.id == needsID
 			} ?: return InspMissingBefore(target.bounds.x, target, needsID.run {
 				val pattern = GameRegistry.instance().getPatternRaw(needsID)
 				if (pattern != null) {
@@ -87,7 +87,7 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 	class InspFuncMissingAfter(val needsID: String) : InspectionFunction {
 		override fun inspect(target: Entity, remix: Remix): InspectionType? {
 			remix.entities.find {
-				it !== target && MathUtils.isEqual(target.bounds.x + target.bounds.width, it.bounds.x) && it.id == needsID
+				it !== target && MathUtils.isEqual(target.bounds.x + target.bounds.width, it.bounds.x, 0.01f) && it.id == needsID
 			} ?: return InspMissingAfter(target.bounds.x + target.bounds.width, target, needsID.run {
 				val pattern = GameRegistry.instance().getPatternRaw(needsID)
 				if (pattern != null) {
