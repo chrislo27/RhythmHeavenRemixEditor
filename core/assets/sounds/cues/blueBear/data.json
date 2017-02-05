@@ -7,25 +7,25 @@
       "id": "blueBear/donutOut",
       "duration": 1,
       "name": "donut - out",
-      "fileFormat": "wav"
+      "fileExtension": "wav"
     },
     {
       "id": "blueBear/donutChomp",
       "duration": 1,
       "name": "donut - chomp",
-      "fileFormat": "wav"
+      "fileExtension": "wav"
     },
     {
       "id": "blueBear/cakeOut",
       "duration": 2,
       "name": "cake - out",
-      "fileFormat": "wav"
+      "fileExtension": "wav"
     },
     {
       "id": "blueBear/cakeChomp",
       "duration": 1,
       "name": "cake - chomp",
-      "fileFormat": "wav"
+      "fileExtension": "wav"
     }
   ],
   "patterns": [
