@@ -57,7 +57,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.2.3"
+		ionium.templates.Main.version = "v2.2.4"
 		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version.txt"
 
 		super.create()

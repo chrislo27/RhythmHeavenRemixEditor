@@ -213,10 +213,12 @@ class Remix {
 		if (playingState != PlayingState.PLAYING)
 			return@update
 
-		if (music != null && (!music!!.music.isPlaying || !musicPlayed) && beat >= tempoChanges.secondsToBeats(
+		if (music != null && (!musicPlayed || !music!!.music.isPlaying) && beat >= tempoChanges.secondsToBeats(
 				musicStartTime)) {
+			val newPosition = tempoChanges.beatsToSeconds(beat) - musicStartTime
+
 			music!!.music.play()
-			music!!.music.position = tempoChanges.beatsToSeconds(beat) - musicStartTime;
+			music!!.music.position = newPosition
 			musicPlayed = true
 		}
 
