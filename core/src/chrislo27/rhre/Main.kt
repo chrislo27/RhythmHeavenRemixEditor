@@ -23,6 +23,8 @@ import ionium.registry.ScreenRegistry
 import ionium.util.DebugSetting
 import ionium.util.Logger
 import ionium.util.i18n.Localization
+import ionium.util.i18n.NamedLocale
+import java.util.*
 
 class Main(l: Logger) : ionium.templates.Main(l) {
 
@@ -73,6 +75,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		preferences = Gdx.app.getPreferences("RHRE2")
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
+
+		Localization.instance().addBundle(NamedLocale("Français", Locale("fr")))
 	}
 
 	override fun prepareStates() {

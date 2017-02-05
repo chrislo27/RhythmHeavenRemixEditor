@@ -27,6 +27,8 @@ public class DefAssetLoader implements IAssetLoader {
 		}
 
 		manager.load(AssetMap.add("ptr_whole", "images/ptr/full.png"), Texture.class);
+
+		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture.class);
 	}
 
 	@Override
