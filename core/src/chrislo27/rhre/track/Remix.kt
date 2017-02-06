@@ -137,6 +137,7 @@ class Remix {
 				remix.tempoChanges.add(tc)
 			}
 
+			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
 
 			return remix
