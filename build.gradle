@@ -53,6 +53,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.google.code.gson:gson:2.7"
+        compile "com.mashape.unirest:unirest-java:1.4.9"
     }
 }
 
