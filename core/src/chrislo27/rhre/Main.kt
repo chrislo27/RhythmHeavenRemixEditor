@@ -79,6 +79,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		AnalyticsHandler.addShutdownHook()
 	}
 
+	override fun setScreen(scr: Screen?) {
+		super.setScreen(scr)
+		AnalyticsHandler.screen(scr)
+	}
+
 	override fun prepareStates() {
 		super.prepareStates()
 
