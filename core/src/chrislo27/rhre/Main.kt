@@ -7,6 +7,8 @@ import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
 import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.version.VersionChecker
+import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
@@ -18,6 +20,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
+import com.mashape.unirest.http.Unirest
 import ionium.registry.AssetRegistry
 import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
@@ -42,13 +45,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	lateinit var horizontalResize: Cursor
 		private set
 
-	@Volatile private var newVersionAvailable = -1
-
 	var helpTipsEnabled: Boolean = true
 	var inspectionsEnabled: Boolean = true
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
-		return ScreenRegistry.get("editor")
+		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
+			ScreenRegistry.get("version")
+		else
+			ScreenRegistry.get("editor")
 	}
 
 	override fun getAssetLoadingScreenToUse(): Screen {
@@ -57,7 +61,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	override fun create() {
 		ionium.templates.Main.version = "v2.2.4"
-		GlobalVariables.versionUrl = "https://raw.githubusercontent.com/chrislo27/VersionPlace/master/RHRE-version.txt"
+		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
+		VersionChecker
 
 		super.create()
 
@@ -99,6 +104,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("save", SaveScreen(this))
 		reg.add("new", NewScreen(this))
 		reg.add("soundboard", SoundboardScreen(this))
+		reg.add("version", VersionScreen(this))
 	}
 
 	override fun preRender() {
@@ -112,21 +118,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun postRender() {
 		super.postRender()
 
-		if (newVersionAvailable == -1 && ionium.templates.Main.githubVersion != null) {
-			if (ionium.templates.Main.githubVersion != ionium.templates.Main.version) {
-				newVersionAvailable = 1
-			} else {
-				newVersionAvailable = 0
-			}
-		}
-
 		batch.begin()
 		fontBordered.setColor(1f, 1f, 1f, 1f)
 		fontBordered.data.setScale(0.5f)
-		fontBordered.draw(batch, if (newVersionAvailable == 1)
+		val str = if (VersionChecker.versionState == VersionState.AVAILABLE)
 			Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
 		else
-			ionium.templates.Main.version, (Gdx.graphics.width - 4).toFloat(), fontBordered.capHeight + 2, 0f,
+			ionium.templates.Main.version
+		fontBordered.draw(batch, str, (Gdx.graphics.width - 4).toFloat(), fontBordered.capHeight + 2, 0f,
 						  Align.right, false)
 		fontBordered.data.setScale(1f)
 		batch.end()
@@ -201,5 +200,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		font.dispose()
 		fontBordered.dispose()
 		preferences.flush()
+		Unirest.shutdown()
 	}
 }

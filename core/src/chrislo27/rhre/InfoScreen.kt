@@ -2,6 +2,8 @@ package chrislo27.rhre
 
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.version.VersionChecker
+import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
@@ -90,6 +92,13 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 			}
 		}
 
+		if (VersionChecker.versionState != VersionState.GETTING
+				&& VersionChecker.versionState != VersionState.FAILED) {
+			main.font.draw(main.batch, Localization.get("info.version"),
+						   Gdx.graphics.width * 0.025f,
+						   main.font.capHeight * 2 + main.font.lineHeight, Gdx.graphics.width * 0.95f, Align.center,
+						   true)
+		}
 		main.font.draw(main.batch, Localization.get("info.back"),
 					   Gdx.graphics.width * 0.025f,
 					   main.font.capHeight * 2, Gdx.graphics.width * 0.95f, Align.center, true)
@@ -98,7 +107,12 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun renderUpdate() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) main.screen = ScreenRegistry.get("editor")
+		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+			main.screen = ScreenRegistry.get("editor")
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.V) && VersionChecker.versionState != VersionState.GETTING
+				&& VersionChecker.versionState != VersionState.FAILED) {
+			main.screen = ScreenRegistry.get("version")
+		}
 	}
 
 	override fun tickUpdate() {
