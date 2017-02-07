@@ -1,5 +1,6 @@
 package chrislo27.rhre
 
+import chrislo27.rhre.analytics.AnalyticsHandler
 import chrislo27.rhre.init.DefAssetLoader
 import chrislo27.rhre.init.VisualAssetLoader
 import chrislo27.rhre.palette.AbstractPalette
@@ -17,15 +18,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.mashape.unirest.http.Unirest
 import ionium.registry.AssetRegistry
 import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
 import ionium.util.DebugSetting
 import ionium.util.Logger
 import ionium.util.i18n.Localization
-import ionium.util.i18n.NamedLocale
-import java.util.*
 
 class Main(l: Logger) : ionium.templates.Main(l) {
 
@@ -40,7 +38,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	var palette: AbstractPalette = LightPalette()
 	lateinit var preferences: Preferences
-	private set
+		private set
 	lateinit var horizontalResize: Cursor
 		private set
 
@@ -77,7 +75,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
 
-		Localization.instance().addBundle(NamedLocale("Français", Locale("fr")))
+		AnalyticsHandler.init(preferences)
+		AnalyticsHandler.addShutdownHook()
 	}
 
 	override fun prepareStates() {
@@ -197,6 +196,5 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		font.dispose()
 		fontBordered.dispose()
 		preferences.flush()
-		Unirest.shutdown()
 	}
 }
