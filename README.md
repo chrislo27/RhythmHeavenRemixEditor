@@ -1,7 +1,7 @@
 # Rhythm Heaven Remix Editor 2
 RHRE 2 - Rhythm Heaven Remix Editor 2 - An audio remix editor for the Rhythm Heaven series
 
-The only Rhythm Heaven remix editor featuring drag-and-drop cues, intuitive design, and graphical customization. 
+The only Rhythm Heaven remix editor featuring drag-and-drop cues with a heavy emphasis on keyboard shortcuts, clean material design, and graphical customization.
 
 Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor2/releases). Read the README included in the download.
 
@@ -9,7 +9,7 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 
 ## Screenshots
 
-#### Intuitive design
+#### Intuitive design - cues and patterns are placed on a music-staff track
 
 ![Intuitive design screenshot](http://i.imgur.com/ubAZTAX.png "Intuitive design")
 
