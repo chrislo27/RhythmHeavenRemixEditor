@@ -17,8 +17,13 @@ import kotlin.concurrent.thread
 
 object AnalyticsHandler {
 
-	val analytics: Analytics = Analytics.builder("DFuo21VuGjo4E3UQcEndex4CpCUblmxF")
-			.flushInterval(2, TimeUnit.SECONDS).build()
+	var enabled = true
+
+	val analytics: Analytics = Analytics.builder("DFuo21VuGjo4E3UQcEndex4CpCUblmxF").messageInterceptor { m ->
+		if (!enabled)
+			return@messageInterceptor null
+		return@messageInterceptor m
+	}.flushInterval(2, TimeUnit.SECONDS).build()
 	var uuid: UUID? = null
 		private set
 	val anonymousUUID: UUID = UUID.randomUUID()
@@ -26,6 +31,8 @@ object AnalyticsHandler {
 		private set
 
 	fun init(prefs: Preferences) {
+		enabled = prefs.getBoolean("enableAnalytics")
+
 		if (prefs.contains("analyticsUUID")) {
 			val u = prefs.getString("analyticsUUID", "") ?: ""
 
