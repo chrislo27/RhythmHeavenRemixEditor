@@ -40,7 +40,8 @@ object AnalyticsHandler {
 			analytics.enqueue(IdentifyMessage.builder().userId(uuid!!.toString().toLowerCase(Locale.ROOT)).anonymousId(
 					anonymousUUID).context(mapOf<String, String>(
 					"os" to System.getProperty("os.name"),
-					"cores" to Runtime.getRuntime().availableProcessors().toString()
+					"cores" to Runtime.getRuntime().availableProcessors().toString(),
+					"ip" to (ip ?: "undetermined")
 																)))
 		}
 
@@ -58,7 +59,6 @@ object AnalyticsHandler {
 		return TrackMessage.builder(event).userId(uuid!!.toString().toLowerCase(Locale.ROOT)).anonymousId(
 				anonymousUUID).context(
 				mapOf("editorVersion" to Main.version,
-					  "ip" to (ip ?: "undetermined"),
 					  "memoryUsage" to (((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1024).toString()
 							  + " KB / " + (Runtime.getRuntime().totalMemory() / 1024).toString() + " KB")))
 	}
