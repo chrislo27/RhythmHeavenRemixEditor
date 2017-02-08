@@ -238,7 +238,9 @@ public class EditorStageSetup {
 
 				@Override
 				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
 				}
 			};
 
