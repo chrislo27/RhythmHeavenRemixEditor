@@ -36,7 +36,8 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 					   Gdx.graphics.width * 0.05f, Gdx.graphics.height * 0.75f)
 		main.font.draw(main.batch, Localization.get("versionScreen.coolInfo",
 													((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
-													VersionChecker.releaseObject!!.assets!!.first().download_count)
+													VersionChecker.releaseObject!!.assets!!.first().download_count,
+													VersionChecker.releaseObject!!.published_at!!.substringBefore("T"))
 				.format("%.3f"),
 					   Gdx.graphics.width * 0.05f, Gdx.graphics.height * 0.75f - main.font.lineHeight)
 
