@@ -8,17 +8,19 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 **Requires Java 8 and a graphics card that supports OpenGL 2.0+!**
 
 ## Screenshots
-Intuitive design
+
+#### Intuitive design
+
 ![Intuitive design screenshot](http://i.imgur.com/ubAZTAX.png "Intuitive design")
 
-Different palettes to suit your time of day, mood, or preferences
+#### Different palettes to suit your time of day, mood, or preferences
+
 ![Different palettes screenshot](http://i.imgur.com/7VdVYre.png "Customizable palettes")
 
-Inspections for common mistakes keep a remix high-quality
+#### Inspections for common mistakes keep a remix high-quality
+
 ![Inspections screenshot](http://i.imgur.com/stRbcqg.png "Inspections tell you what's wrong beforehand")
 
-Includes a way to find the BPM (tempo) of a song -- without leaving the editor
-![Tapalong screen](http://i.imgur.com/hat3adJ.png "Tap to the rhythm")
+#### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
-Community powered -- add your own games using a simple JSON file database
-![Pull requests screenshot](http://i.imgur.com/qkRibJm.png "Pull requests")
+![Tapalong screen](http://i.imgur.com/hat3adJ.png "Tap to the rhythm")
