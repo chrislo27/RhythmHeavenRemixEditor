@@ -390,7 +390,7 @@
       "name": "[#FFFF00]kii[]-yan super to [#FF0000]aka[]-chan",
       "cues": [
         {
-          "id": "tossBoys/superYellow",
+          "id": "tossBoys/superYellowStart",
           "beat": 0
         },
         {
@@ -406,7 +406,7 @@
           "beat": 1.5
         },
         {
-          "id": "tossBoys/superYellowHit",
+          "id": "tossBoys/superYellowFinish",
           "beat": 2
         }
       ]
@@ -416,7 +416,7 @@
       "name": "[#FFFF00]kii[]-yan super to [#70B5FF]ao[]-kun",
       "cues": [
         {
-          "id": "tossBoys/superYellow",
+          "id": "tossBoys/superYellowStart",
           "beat": 0
         },
         {
@@ -428,7 +428,7 @@
           "beat": 1.5
         },
         {
-          "id": "tossBoys/superYellowHit",
+          "id": "tossBoys/superYellowFinish",
           "beat": 2
         }
       ]
