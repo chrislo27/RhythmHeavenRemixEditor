@@ -65,7 +65,7 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.V) && VersionChecker.versionState != VersionState.GETTING
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && VersionChecker.versionState != VersionState.GETTING
 				&& VersionChecker.versionState != VersionState.FAILED) {
 			Gdx.net.openURI(VersionChecker.releaseObject!!.html_url)
 		}
