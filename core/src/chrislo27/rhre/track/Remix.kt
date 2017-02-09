@@ -11,7 +11,6 @@ import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.visual.VisualRegistry
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Disposable
 import ionium.registry.AssetRegistry
 
@@ -35,15 +34,17 @@ class Remix {
 	@Volatile
 	var musicVolume: Float = 1f
 		set(value) {
-			field = MathUtils.clamp(value, 0f, 1f)
+			field = value.coerceIn(0.0f..1.0f)
 			music?.music?.volume = field
 		}
 
 	private var beat: Float = 0f
 	var musicStartTime: Float = 0f
 	var playbackStart: Float = 0f
-	private var endTime: Float = 0f
-	private var startTime: Float = 0f
+	var endTime: Float = 0f
+		private set
+	var startTime: Float = 0f
+		private set
 	var tickEachBeat = false
 		set(value) {
 			field = value
@@ -54,11 +55,7 @@ class Remix {
 	var currentGame: Game? = null
 		private set
 
-	val inspections: Inspections
-
-	init {
-		inspections = Inspections(this)
-	}
+	val inspections: Inspections = Inspections(this)
 
 	companion object {
 		fun writeToObject(remix: Remix): RemixObject {
@@ -202,8 +199,6 @@ class Remix {
 								  { value, entity -> Math.min(value, entity.bounds.x) })
 	}
 
-	fun getEndTime() = endTime
-	fun getStartTime() = startTime
 	fun getDuration() = endTime - startTime
 
 	fun getPlayingState(): PlayingState = playingState
