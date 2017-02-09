@@ -1,6 +1,5 @@
 package chrislo27.rhre
 
-import chrislo27.rhre.analytics.AnalyticsHandler
 import chrislo27.rhre.init.DefAssetLoader
 import chrislo27.rhre.init.VisualAssetLoader
 import chrislo27.rhre.palette.AbstractPalette
@@ -79,14 +78,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		preferences = Gdx.app.getPreferences("RHRE2")
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
-
-		AnalyticsHandler.init(preferences)
-		AnalyticsHandler.addShutdownHook()
 	}
 
 	override fun setScreen(scr: Screen?) {
 		super.setScreen(scr)
-		AnalyticsHandler.screen(scr)
 	}
 
 	override fun prepareStates() {

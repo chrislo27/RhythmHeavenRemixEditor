@@ -1,6 +1,5 @@
 package chrislo27.rhre
 
-import chrislo27.rhre.analytics.AnalyticsHandler
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.version.VersionChecker
@@ -93,11 +92,6 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 			}
 		}
 
-		main.font.draw(main.batch, Localization.get("info.analytics", AnalyticsHandler.enabled),
-					   Gdx.graphics.width * 0.025f,
-					   main.font.capHeight * 2 + main.font.lineHeight * 2, Gdx.graphics.width * 0.95f, Align.center,
-					   true)
-
 		if (VersionChecker.versionState != VersionState.GETTING
 				&& VersionChecker.versionState != VersionState.FAILED) {
 			main.font.draw(main.batch, Localization.get("info.version"),
@@ -122,10 +116,6 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 					&& VersionChecker.versionState != VersionState.FAILED) {
 				main.screen = ScreenRegistry.get("version")
 			}
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			AnalyticsHandler.enabled = !AnalyticsHandler.enabled
-			main.preferences.putBoolean("enableAnalytics", AnalyticsHandler.enabled)
-			main.preferences.flush()
 		}
 	}
 
