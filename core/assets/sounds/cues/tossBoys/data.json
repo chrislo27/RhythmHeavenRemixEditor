@@ -228,7 +228,7 @@
           "beat": 0.5
         },
         {
-          "id": "tossBoys/blueRed2",
+          "id": "tossBoys/blueRed3",
           "beat": 1
         }
       ]
@@ -292,7 +292,7 @@
           "beat": 1
         },
         {
-          "id": "tossBoys/superRedA1",
+          "id": "tossBoys/superRedA2",
           "beat": 1.5
         },
         {
@@ -300,11 +300,11 @@
           "beat": 2
         },
         {
-          "id": "tossBoys/superRedB1",
+          "id": "tossBoys/superRedB2",
           "beat": 2.25
         },
         {
-          "id": "tossBoys/superRedB1",
+          "id": "tossBoys/superRedB3",
           "beat": 2.5
         },
         {
@@ -312,7 +312,7 @@
           "beat": 3
         },
         {
-          "id": "tossBoys/superRedA1",
+          "id": "tossBoys/superRedA2",
           "beat": 3.5
         },
         {
@@ -320,11 +320,11 @@
           "beat": 4
         },
         {
-          "id": "tossBoys/superRedB1",
+          "id": "tossBoys/superRedB2",
           "beat": 4.25
         },
         {
-          "id": "tossBoys/superRedB1",
+          "id": "tossBoys/superRedB3",
           "beat": 4.5
         }
       ]
