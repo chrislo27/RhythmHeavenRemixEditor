@@ -26,9 +26,10 @@ public class DesktopLauncher {
 
 		config.inferFromArguments();
 
+		config.addIcon("images/icon/icon128.png", Files.FileType.Internal);
+		config.addIcon("images/icon/icon64.png", Files.FileType.Internal);
 		config.addIcon("images/icon/icon32.png", Files.FileType.Internal);
 		config.addIcon("images/icon/icon16.png", Files.FileType.Internal);
-		config.addIcon("images/icon/icon128.png", Files.FileType.Internal);
 
 		logger = new Logger("", com.badlogic.gdx.utils.Logger.DEBUG);
 		new GameLwjglApp(new Main(logger), config, logger);
