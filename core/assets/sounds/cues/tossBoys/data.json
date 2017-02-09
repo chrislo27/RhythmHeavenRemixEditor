@@ -1,0 +1,437 @@
+{
+  "gameID": "tossBoys",
+  "gameName": "Toss Boys",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "tossBoys/start",
+      "duration": 2,
+      "name": "start",
+      "fileExtension": "wav"
+    },
+    {
+      "id": "tossBoys/redBlue1",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoys/redBlue2",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoys/redYellow1",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoys/redYellow2",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoys/blueRed1",
+      "duration": 0.5,
+      "name": "[#70B5FF]ao[]-kun - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoys/blueRed2",
+      "duration": 0.5,
+      "name": "[#70B5FF]ao[]-kun - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoys/blueRed3",
+      "duration": 1,
+      "name": "[#70B5FF]ao[]-kun - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoys/blueYellow1",
+      "duration": 1,
+      "name": "[#70B5FF]ao[]-kun - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoys/blueYellow2",
+      "duration": 1,
+      "name": "[#70B5FF]ao[]-kun - [#FFFF00]kii[]-yan - 2"
+    },
+    {
+      "id": "tossBoys/yellowRed1",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoys/yellowRed2",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoys/yellowRed3",
+      "duration": 1,
+      "name": "[#FFFF00]kii[]-yan - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoys/yellowBlue1",
+      "duration": 1,
+      "name": "[#FFFF00]kii[]-yan - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoys/yellowBlue2",
+      "duration": 1,
+      "name": "[#FFFF00]kii[]-yan - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoys/stop",
+      "duration": 2,
+      "name": "[#FFFF00]kii[]-yan - stop",
+      "fileExtension": "wav"
+    },
+    {
+      "id": "tossBoys/superRed",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan super - start"
+    },
+    {
+      "id": "tossBoys/superRedA1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoys/superRedA2",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoys/superRedB1",
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoys/superRedB2",
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoys/superRedB3",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoys/superBlue",
+      "duration": 1,
+      "name": "[#70B5FF]ao[]-kun super - start"
+    },
+    {
+      "id": "tossBoys/superBlueHit",
+      "duration": 0.5,
+      "name": "[#70B5FF]ao[]-kun super - hit"
+    },
+    {
+      "id": "tossBoys/superBlueRed1",
+      "duration": 0.25,
+      "name": "[#70B5FF]ao[]-kun super - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoys/superBlueRed2",
+      "duration": 0.25,
+      "name": "[#70B5FF]ao[]-kun super - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoys/superBlueRed3",
+      "duration": 1.5,
+      "name": "[#70B5FF]ao[]-kun super - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoys/superBlueYellow1",
+      "duration": 0.5,
+      "name": "[#70B5FF]ao[]-kun super - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoys/superBlueYellow2",
+      "duration": 1.5,
+      "name": "[#70B5FF]ao[]-kun super - [#FFFF00]kii[]-yan - 2"
+    },
+    {
+      "id": "tossBoys/superYellow",
+      "duration": 1,
+      "name": "[#FFFF00]kii[]-yan super - start"
+    },
+    {
+      "id": "tossBoys/superYellowRed1",
+      "duration": 0.25,
+      "name": "[#FFFF00]kii[]-yan super - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoys/superYellowRed2",
+      "duration": 0.25,
+      "name": "[#FFFF00]kii[]-yan super - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoys/superYellowRed3",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan super - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoys/superYellowBlue1",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan super - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoys/superYellowBlue2",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan super - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoys/superYellowFinish",
+      "duration": 1,
+      "name": "[#FFFF00]kii[]-yan super - finish"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "tossBoys_akachanToAokun",
+      "name": "[#FF0000]aka[]-chan to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoys/redBlue1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/redBlue2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_akachanToKiiyan",
+      "name": "[#FF0000]aka[]-chan to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoys/redYellow1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/redYellow2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_aokunToAkachan",
+      "name": "[#70B5FF]ao[]-kun to [#FF0000]aka[]-chan",
+      "cues": [
+        {
+          "id": "tossBoys/blueRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/blueRed2",
+          "beat": 0.5
+        },
+        {
+          "id": "tossBoys/blueRed2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_aokunToKiiyan",
+      "name": "[#70B5FF]ao[]-kun to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoys/blueYellow1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/blueYellow2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_kiiyanToAkachan",
+      "name": "[#FFFF00]kii[]-yan to [#FF0000]aka[]-chan",
+      "cues": [
+        {
+          "id": "tossBoys/yellowRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/yellowRed2",
+          "beat": 0.5
+        },
+        {
+          "id": "tossBoys/yellowRed3",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_kiiyanToAokun",
+      "name": "[#FFFF00]kii[]-yan to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoys/yellowBlue1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/yellowBlue2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_akachanSuper",
+      "name": "[#FF0000]aka[]-chan super",
+      "cues": [
+        {
+          "id": "tossBoys/superRed",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superRedA1",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superRedA1",
+          "beat": 1.5
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 2
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 2.25
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 2.5
+        },
+        {
+          "id": "tossBoys/superRedA1",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superRedA1",
+          "beat": 3.5
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 4.25
+        },
+        {
+          "id": "tossBoys/superRedB1",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_aokunSuper",
+      "name": "[#70B5FF]ao[]-kun super to [#FF0000]aka[]-chan",
+      "cues": [
+        {
+          "id": "tossBoys/superBlue",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superBlueHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superBlueHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superBlueRed1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superBlueRed2",
+          "beat": 4.25
+        },
+        {
+          "id": "tossBoys/superBlueRed3",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_aokunSuper",
+      "name": "[#70B5FF]ao[]-kun super to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoys/superBlue",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superBlueHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superBlueHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superBlueYellow1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superBlueYellow2",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_kiiyanSuper",
+      "name": "[#FFFF00]kii[]-yan super to [#FF0000]aka[]-chan",
+      "cues": [
+        {
+          "id": "tossBoys/superYellow",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superYellowRed1",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superYellowRed2",
+          "beat": 1.25
+        },
+        {
+          "id": "tossBoys/superYellowRed3",
+          "beat": 1.5
+        },
+        {
+          "id": "tossBoys/superYellowHit",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_kiiyanSuper",
+      "name": "[#FFFF00]kii[]-yan super to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoys/superYellow",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superYellowBlue1",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superYellowBlue2",
+          "beat": 1.5
+        },
+        {
+          "id": "tossBoys/superYellowHit",
+          "beat": 2
+        }
+      ]
+    }
+  ]
+}
