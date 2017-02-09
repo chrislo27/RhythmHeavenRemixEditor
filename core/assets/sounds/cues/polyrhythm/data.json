@@ -11,17 +11,17 @@
     {
       "id": "polyrhythm/side_d",
       "duration": 0.5,
-      "name": "directional pad side"
+      "name": "+ side"
     },
 	{
       "id": "polyrhythm/enter",
       "duration": 0.5,
-      "name": "cilinder - entering"
+      "name": "cylinder - entering"
     },
 	{
       "id": "polyrhythm/land",
       "duration": 0.5,
-      "name": "cilinder - landing"
+      "name": "cylinder - landing"
     }
   ],
   "patterns": []
