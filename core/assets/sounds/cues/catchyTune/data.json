@@ -4,62 +4,124 @@
   "series": "megamix",
   "cues": [
     {
-      "id": "catchyTune/clap",
+      "id": "catchyTune/leftCatch",
       "duration": 1,
-      "name": "clap"
+      "name": "left - catch",
+      "deprecatedIDs": ["catchyTune/clap"]
     },
     {
-      "id": "catchyTune/orange",
+      "id": "catchyTune/leftOrange",
       "duration": 1,
-      "name": "orange"
+      "name": "left - orange",
+      "deprecatedIDs": ["catchyTune/orange"]
     },
     {
-      "id": "catchyTune/melon",
+      "id": "catchyTune/leftPineapple",
       "duration": 2,
-      "name": "pineapple"
+      "name": "left - pineapple",
+      "deprecatedIDs": ["catchyTune/melon"]
+    },
+    {
+      "id": "catchyTune/rightCatch",
+      "duration": 1,
+      "name": "right - catch"
+    },
+    {
+      "id": "catchyTune/leftOrange",
+      "duration": 1,
+      "name": "left - orange"
+    },
+    {
+      "id": "catchyTune/leftPineapple",
+      "duration": 2,
+      "name": "left - pineapple"
     }
   ],
   "patterns": [
     {
-      "id": "catchyTune_orange",
-      "name": "orange",
+      "id": "catchyTune_leftOrange",
+      "name": "left - orange",
       "cues": [
        {
-        "id": "catchyTune/orange",
+        "id": "catchyTune/leftOrange",
         "beat": 0.0
        },
        {
-        "id": "catchyTune/orange",
+        "id": "catchyTune/leftOrange",
         "beat": 1.0
        },
        {
-        "id": "catchyTune/orange",
+        "id": "catchyTune/leftOrange",
         "beat": 2.0
        },
        {
-        "id": "catchyTune/clap",
+        "id": "catchyTune/leftCatch",
         "beat": 3.0
        }
       ]
     },
     {
-      "id": "catchyTune_pineapple",
-      "name": "pineapple",
+      "id": "catchyTune_rightOrange",
+      "name": "right - orange",
       "cues": [
        {
-        "id": "catchyTune/melon",
+        "id": "catchyTune/rightOrange",
         "beat": 0.0
        },
        {
-        "id": "catchyTune/melon",
+        "id": "catchyTune/rightOrange",
+        "beat": 1.0
+       },
+       {
+        "id": "catchyTune/rightOrange",
         "beat": 2.0
        },
        {
-        "id": "catchyTune/melon",
+        "id": "catchyTune/rightCatch",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "catchyTune_leftPineapple",
+      "name": "left - pineapple",
+      "cues": [
+       {
+        "id": "catchyTune/leftPineapple",
+        "beat": 0.0
+       },
+       {
+        "id": "catchyTune/leftPineapple",
+        "beat": 2.0
+       },
+       {
+        "id": "catchyTune/leftPineapple",
         "beat": 4.0
        },
        {
-        "id": "catchyTune/clap",
+        "id": "catchyTune/leftCatch",
+        "beat": 6.0
+       }
+      ]
+    },
+    {
+      "id": "catchyTune_rightPineapple",
+      "name": "right - pineapple",
+      "cues": [
+       {
+        "id": "catchyTune/rightPineapple",
+        "beat": 0.0
+       },
+       {
+        "id": "catchyTune/rightPineapple",
+        "beat": 2.0
+       },
+       {
+        "id": "catchyTune/rightPineapple",
+        "beat": 4.0
+       },
+       {
+        "id": "catchyTune/rightCatch",
         "beat": 6.0
        }
       ]
