@@ -234,7 +234,7 @@ public class GameRegistry implements Disposable {
 	@Override
 	public void dispose() {
 		GameRegistry.instance().games.values().forEach(g -> g.getSoundCues().forEach(sc -> {
-			sc.getAlMusic().dispose();
+//			sc.getAlMusic().dispose();
 		}));
 	}
 
@@ -251,7 +251,7 @@ public class GameRegistry implements Disposable {
 						sc.getFileExtension();
 				manager.load(AssetMap.add("soundCue_" + sc.getId(),
 						path), Sound.class);
-				sc.loadALMusic(path);
+//				sc.loadALMusic(path);
 			}));
 			GameRegistry.instance().games.values().forEach(g -> manager.load(AssetMap.add("gameIcon_" + g.getId(),
 					g.getIcon() == null
