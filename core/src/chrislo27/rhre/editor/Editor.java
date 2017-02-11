@@ -4,6 +4,7 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.PatternEntity;
 import chrislo27.rhre.entity.SoundEntity;
+import chrislo27.rhre.export.ExportJob;
 import chrislo27.rhre.inspections.InspectionType;
 import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
@@ -679,7 +680,11 @@ public class Editor extends InputAdapter implements Disposable {
 		}
 
 		if (DebugSetting.debug) {
-
+			if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+				long time = System.nanoTime();
+				System.out.println(((System.nanoTime() - time) / 1_000_000_000d) + " s: " +
+						new ExportJob(this.remix, Gdx.files.local("test.pcm")).processJob());
+			}
 		}
 
 		if (remix.getPlayingState() != PlayingState.STOPPED) {

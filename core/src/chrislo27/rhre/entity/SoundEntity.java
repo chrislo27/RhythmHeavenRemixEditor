@@ -14,17 +14,18 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class SoundEntity extends Entity implements HasGame {
+public class SoundEntity extends Entity implements HasGame, SoundCueActionProvider {
 
 	public final SoundCue cue;
+	private final Game game;
 	public volatile int semitone;
-
 	private volatile long soundId;
 	private volatile long introSoundId;
-	private final Game game;
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
@@ -139,5 +140,17 @@ public class SoundEntity extends Entity implements HasGame {
 	@Override
 	public Game getGame() {
 		return game;
+	}
+
+	@NotNull
+	@Override
+	public List<SoundCueAction> provide() {
+		List<SoundCueAction> list = new ArrayList<>();
+
+		float startTime = remix.getTempoChanges().beatsToSeconds(this.bounds.x);
+		list.add(new SoundCueAction(cue, startTime,
+				remix.getTempoChanges().beatsToSeconds(this.bounds.x + this.bounds.width) - startTime));
+
+		return list;
 	}
 }
