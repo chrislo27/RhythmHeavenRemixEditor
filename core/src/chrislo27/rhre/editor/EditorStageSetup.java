@@ -12,6 +12,7 @@ import chrislo27.rhre.track.PlayingState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -25,10 +26,13 @@ import ionium.stage.ui.skin.Palette;
 import ionium.stage.ui.skin.Palettes;
 import ionium.util.i18n.Localization;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EditorStageSetup {
 
@@ -299,6 +303,51 @@ public class EditorStageSetup {
 		}
 
 		{
+			File file = System.getProperty("os.name").startsWith("Windows") ? new File(
+					"C:\\Program Files (x86)\\Audacity\\audacity.exe") : null;
+
+			ImageButton audacity = new ImageButton(stage, palette,
+					new TextureRegion(AssetRegistry.getTexture("ui_audacity"))) {
+				AtomicBoolean isRunning = new AtomicBoolean(false);
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					if (!isRunning.get() && file != null && file.exists()) {
+						isRunning.set(true);
+
+						Thread thread = new Thread(() -> {
+							Process process = null;
+							try {
+								process = Runtime.getRuntime()
+										.exec("C:\\Program Files (x86)\\Audacity\\audacity" + ".exe");
+
+								process.waitFor();
+							} catch (IOException | InterruptedException e) {
+								e.printStackTrace();
+							} finally {
+								if (process != null)
+									process.destroy();
+								isRunning.set(false);
+							}
+						});
+						thread.setDaemon(true);
+						thread.start();
+					}
+				}
+			};
+
+			stage.addActor(audacity);
+
+			audacity.setEnabled(file != null && file.exists());
+
+			audacity.align(Align.topLeft)
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT,
+							BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
 				private final List<AbstractPalette> palettes = new ArrayList<>();
 
@@ -387,7 +436,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(paletteSwap).align(Align.topLeft)
-					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 4, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
@@ -409,15 +458,14 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(tapalong).align(Align.topLeft)
-					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
 			TextButton inspections = new TextButton(stage, palette, "editor.button.inspections.on") {
 
 				{
-					setLocalizationKey(
-							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -426,8 +474,7 @@ public class EditorStageSetup {
 
 					main.setInspectionsEnabled(!main.getInspectionsEnabled());
 					main.getPreferences().flush();
-					setLocalizationKey(
-							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -439,15 +486,14 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(inspections).align(Align.topLeft)
-					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 
 		{
 			TextButton helpTips = new TextButton(stage, palette, "editor.button.helpTips.on") {
 
 				{
-					setLocalizationKey(
-							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -456,8 +502,7 @@ public class EditorStageSetup {
 
 					main.setHelpTipsEnabled(!main.getHelpTipsEnabled());
 					main.getPreferences().flush();
-					setLocalizationKey(
-							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
 				}
 
 				@Override
