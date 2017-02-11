@@ -7,7 +7,7 @@ import ionium.registry.AssetRegistry
 
 data class SoundCue(val id: String, val fileExtension: String = "ogg", val name: String,
 					val deprecated: List<String> = mutableListOf(), val duration: Float,
-					val canAlterPitch: Boolean = false, val canAlterDuration: Boolean = false,
+					val canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
 					val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
 					val soundFolder: String? = null) {
 
@@ -21,6 +21,10 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 		if (introSound == null) return null
 		return AssetRegistry.getSound("soundCue_$introSound")
 	}
+
+	fun shouldBeStopped() = canAlterDuration || loops
+
+	fun shouldBeLooped() = (canAlterDuration && loops) || loops
 
 	fun getPitch(semitone: Int, bpm: Float): Float {
 		var result = 1f

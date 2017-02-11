@@ -117,7 +117,7 @@ public class SoundEntity extends Entity implements HasGame {
 		if (cue.getIntroSoundObj() != null) {
 			introSoundId = cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
 		}
-		if ((cue.getCanAlterDuration() && cue.getLoops()) || cue.getLoops()) {
+		if (cue.shouldBeLooped()) {
 			soundId = cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
 			soundId = cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
@@ -128,7 +128,7 @@ public class SoundEntity extends Entity implements HasGame {
 	public void onEnd(float delta) {
 		super.onEnd(delta);
 
-		if (cue.getCanAlterDuration() || cue.getLoops()) {
+		if (cue.shouldBeStopped()) {
 			if (cue.getIntroSoundObj() != null)
 				cue.getIntroSoundObj().stop(introSoundId);
 			cue.getSoundObj().stop(soundId);
