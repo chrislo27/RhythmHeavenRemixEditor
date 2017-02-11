@@ -47,7 +47,7 @@ object InspectionPostfix {
 				InspectionType.InspFuncNotOffbeat())
 
 		registry.get("microRow")?.patterns?.forEach {
-			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+			it.inspectionFunctions = if (it.id != "microRow_double") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
 		registry.getCueRaw("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
