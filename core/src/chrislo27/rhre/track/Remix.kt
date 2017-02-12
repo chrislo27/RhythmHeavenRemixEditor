@@ -94,6 +94,11 @@ class Remix {
 				}
 
 				obj.metadata = metadata ?: RemixObject.MetadataObject()
+				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry.instance()["countIn"]}
+						.map {
+							it as HasGame
+							return@map it.game.name
+						}.distinct().sorted().joinToString(", ")
 
 				return obj
 			}
@@ -138,7 +143,7 @@ class Remix {
 				remix.tempoChanges.add(tc)
 			}
 
-			remix.metadata = obj.metadata
+			remix.metadata = obj.metadata ?: RemixObject.MetadataObject()
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
