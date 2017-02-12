@@ -27,7 +27,6 @@ import ionium.stage.ui.skin.Palettes;
 import ionium.util.i18n.Localization;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -324,7 +323,7 @@ public class EditorStageSetup {
 										.exec("C:\\Program Files (x86)\\Audacity\\audacity" + ".exe");
 
 								process.waitFor();
-							} catch (IOException | InterruptedException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
 							} finally {
 								if (process != null)
@@ -335,6 +334,11 @@ public class EditorStageSetup {
 						thread.setDaemon(true);
 						thread.start();
 					}
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
 				}
 			};
 
