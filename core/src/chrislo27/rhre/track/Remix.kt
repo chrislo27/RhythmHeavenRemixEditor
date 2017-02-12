@@ -57,6 +57,8 @@ class Remix {
 
 	val inspections: Inspections = Inspections(this)
 
+	var metadata: RemixObject.MetadataObject? = RemixObject.MetadataObject()
+
 	companion object {
 		fun writeToObject(remix: Remix): RemixObject {
 			with(remix) {
@@ -90,6 +92,8 @@ class Remix {
 
 					obj.bpmChanges.add(o)
 				}
+
+				obj.metadata = metadata ?: RemixObject.MetadataObject()
 
 				return obj
 			}
@@ -133,6 +137,8 @@ class Remix {
 
 				remix.tempoChanges.add(tc)
 			}
+
+			remix.metadata = obj.metadata
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
