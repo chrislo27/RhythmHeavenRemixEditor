@@ -83,6 +83,8 @@ object InspectionPostfix {
 
 		registry.getPatternRaw("lockstep_onbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getPatternRaw("lockstep_offbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPatternRaw("lockstep_onToOff")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPatternRaw("lockstep_offToOn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
 
 	}
 }
