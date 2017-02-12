@@ -47,7 +47,11 @@ object InspectionPostfix {
 				InspectionType.InspFuncNotOffbeat())
 
 		registry.get("microRow")?.patterns?.forEach {
-			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+			it.inspectionFunctions = if (it.id != "microRow_double") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
+		}
+
+		registry.get("munchyMonk")?.patterns?.forEach {
+			it.inspectionFunctions = if (it.id != "munchyMonk_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
 		registry.getCueRaw("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
@@ -79,6 +83,8 @@ object InspectionPostfix {
 
 		registry.getPatternRaw("lockstep_onbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getPatternRaw("lockstep_offbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPatternRaw("lockstep_onToOff")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPatternRaw("lockstep_offToOn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 
 	}
 }

@@ -195,6 +195,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		font.dispose()
 		fontBordered.dispose()
 		preferences.flush()
+		GameRegistry.instance().dispose()
 		Unirest.shutdown()
 	}
 }

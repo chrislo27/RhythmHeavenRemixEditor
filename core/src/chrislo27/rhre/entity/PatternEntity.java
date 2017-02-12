@@ -16,11 +16,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import ionium.registry.AssetRegistry;
 import ionium.util.Utils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatternEntity extends Entity implements HasGame {
+public class PatternEntity extends Entity implements HasGame, SoundCueActionProvider {
 
 	public final List<SoundEntity> internal;
 	public final Pattern pattern;
@@ -28,8 +29,8 @@ public class PatternEntity extends Entity implements HasGame {
 	private final List<Integer> originalSemitones;
 	private final float originalWidth;
 	private final boolean repitchable;
-	private volatile int semitone;
 	private final Game game;
+	private volatile int semitone;
 
 	public PatternEntity(Remix remix, Pattern p) {
 		super(remix);
@@ -245,5 +246,20 @@ public class PatternEntity extends Entity implements HasGame {
 	@Override
 	public Game getGame() {
 		return game;
+	}
+
+	@NotNull
+	@Override
+	public List<SoundCueAction> provide() {
+		List<SoundCueAction> list = new ArrayList<>();
+
+		internal.forEach(se -> {
+			float startTime = remix.getTempoChanges().beatsToSeconds(this.bounds.x + se.bounds.x);
+			list.add(new SoundCueAction(se.cue, startTime,
+					remix.getTempoChanges().beatsToSeconds(this.bounds.x + se.bounds.x + se.bounds.width) -
+							startTime));
+		});
+
+		return list;
 	}
 }

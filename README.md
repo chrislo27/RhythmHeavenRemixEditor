@@ -9,13 +9,10 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 
 ## Screenshots
 
-#### Intuitive design - cues and patterns are placed on a music-staff track
+#### Intuitive design - cues and patterns are placed on a music-staff track with different palettes to suit your time of day, mood, or preferences
 
-![Intuitive design screenshot](http://i.imgur.com/ubAZTAX.png "Intuitive design")
-
-#### Different palettes to suit your time of day, mood, or preferences
-
-![Different palettes screenshot](http://i.imgur.com/7VdVYre.png "Customizable palettes")
+(left half is default light palette, right half is default dark palette)
+![Different palettes half screenshot](http://i.imgur.com/E6S4P7j.png "Customizable palettes with intuitive design")
 
 #### Inspections for common mistakes keep a remix high-quality
 

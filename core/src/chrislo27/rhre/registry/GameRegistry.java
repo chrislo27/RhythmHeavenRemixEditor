@@ -10,6 +10,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Disposable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.animation.Animation;
@@ -21,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class GameRegistry {
+public class GameRegistry implements Disposable {
 
 	private static GameRegistry instance;
 	public final Map<String, Game> games = new LinkedHashMap<>();
@@ -230,6 +231,13 @@ public class GameRegistry {
 		return new CueAssetLoader();
 	}
 
+	@Override
+	public void dispose() {
+		GameRegistry.instance().games.values().forEach(g -> g.getSoundCues().forEach(sc -> {
+//			sc.getAlMusic().dispose();
+		}));
+	}
+
 	public static class CueAssetLoader implements IAssetLoader {
 
 		private CueAssetLoader() {
@@ -239,9 +247,11 @@ public class GameRegistry {
 		@Override
 		public void addManagedAssets(AssetManager manager) {
 			GameRegistry.instance().games.values().forEach(g -> g.getSoundCues().forEach(sc -> {
+				String path = (sc.getSoundFolder() == null ? "sounds/cues/" : sc.getSoundFolder()) + sc.getId() + "." +
+						sc.getFileExtension();
 				manager.load(AssetMap.add("soundCue_" + sc.getId(),
-						(sc.getSoundFolder() == null ? "sounds/cues/" : sc.getSoundFolder()) + sc.getId() + "." +
-								sc.getFileExtension()), Sound.class);
+						path), Sound.class);
+//				sc.loadALMusic(path);
 			}));
 			GameRegistry.instance().games.values().forEach(g -> manager.load(AssetMap.add("gameIcon_" + g.getId(),
 					g.getIcon() == null

@@ -27,14 +27,14 @@
       "name": "right - catch"
     },
     {
-      "id": "catchyTune/leftOrange",
+      "id": "catchyTune/rightOrange",
       "duration": 1,
-      "name": "left - orange"
+      "name": "right - orange"
     },
     {
-      "id": "catchyTune/leftPineapple",
+      "id": "catchyTune/rightPineapple",
       "duration": 2,
-      "name": "left - pineapple"
+      "name": "right - pineapple"
     }
   ],
   "patterns": [

@@ -32,7 +32,7 @@ object VersionChecker {
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
-			versionState = if (isSame) VersionState.UP_TO_DATE else VersionState.AVAILABLE
+			versionState = if (isSame || Main.version.endsWith("-SNAPSHOT")) VersionState.UP_TO_DATE else VersionState.AVAILABLE
 
 			Main.logger.info(
 					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: ${Main.githubVersion}")

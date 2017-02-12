@@ -12,7 +12,7 @@ public class RemixObject {
 	public float musicStartTime;
 	public List<BpmTrackerObject> bpmChanges;
 
-	public String author;
+	public MetadataObject metadata = new MetadataObject();
 
 	public static class EntityObject {
 
@@ -31,6 +31,14 @@ public class RemixObject {
 
 		public float beat;
 		public float tempo;
+
+	}
+
+	public static class MetadataObject {
+
+		public String author;
+		public String description;
+		public String gamesUsed;
 
 	}
 

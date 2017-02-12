@@ -9,9 +9,12 @@ import chrislo27.rhre.palette.DarkPalette;
 import chrislo27.rhre.palette.LightPalette;
 import chrislo27.rhre.palette.PaletteUtils;
 import chrislo27.rhre.track.PlayingState;
+import chrislo27.rhre.util.FileChooser;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -23,12 +26,17 @@ import ionium.stage.ui.LocalizationStrategy;
 import ionium.stage.ui.TextButton;
 import ionium.stage.ui.skin.Palette;
 import ionium.stage.ui.skin.Palettes;
+import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 
+import javax.swing.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class EditorStageSetup {
 
@@ -299,6 +307,115 @@ public class EditorStageSetup {
 		}
 
 		{
+			final boolean isMac = System.getProperty("os.name").startsWith("Mac");
+			final AtomicReference<String> pathToApp = new AtomicReference<>(main.getPreferences()
+					.getString("audacityLocation", System.getProperty("os.name").startsWith("Windows")
+							? "C:\\Program Files (x86)\\Audacity\\audacity.exe"
+							: null));
+			final AtomicReference<File> file = new AtomicReference<>(
+					pathToApp.get() == null ? null : new File(pathToApp.get()));
+
+			ImageButton audacity = new ImageButton(stage, palette,
+					new TextureRegion(AssetRegistry.getTexture("ui_audacity"))) {
+				AtomicBoolean isRunning = new AtomicBoolean(false);
+				AtomicBoolean shouldCheckVisibility = new AtomicBoolean(true);
+
+				FileChooser chooser = new FileChooser() {
+					{
+						this.setFileSelectionMode(JFileChooser.FILES_ONLY);
+						this.setDialogTitle("Select your Audacity application");
+					}
+				};
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					if (!isRunning.get() && file.get() != null && file.get().exists() && file.get().isFile()) {
+						isRunning.set(true);
+
+						Thread thread = new Thread(() -> {
+							Process process = null;
+							try {
+								process = Runtime.getRuntime().exec((isMac ? "open " : "") + pathToApp);
+
+								process.waitFor();
+							} catch (Exception e) {
+								e.printStackTrace();
+							} finally {
+								if (process != null)
+									process.destroy();
+								isRunning.set(false);
+							}
+						});
+						thread.setDaemon(true);
+						thread.start();
+					}
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
+
+					if (shouldCheckVisibility.get()) {
+						shouldCheckVisibility.set(false);
+						setEnabled(file.get() != null && file.get().exists());
+					}
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.button.audacity");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.5f);
+						Main.fillRect(batch, this.getX() - PADDING, this.getY() - (PADDING * 3) - height,
+								width + PADDING * 2, height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX(), this.getY() - PADDING * 2);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+
+						if (!isRunning.get() && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+							isRunning.set(true);
+
+							Thread thread = new Thread(() -> {
+								try {
+									chooser.setCurrentDirectory(file.get() == null || !file.get().exists()
+											? new File(System.getProperty("user.home"), "Desktop")
+											: file.get());
+									chooser.setVisible(true);
+									int result = chooser.showDialog(null, "Select");
+
+									if (result == JFileChooser.APPROVE_OPTION) {
+										file.set(chooser.getSelectedFile());
+										pathToApp.set(file.get().getAbsolutePath());
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								} finally {
+									main.getPreferences().putString("audacityLocation",
+											file.get() == null ? null : file.get().getAbsolutePath());
+									main.getPreferences().flush();
+
+									shouldCheckVisibility.set(true);
+									isRunning.set(false);
+								}
+							});
+							thread.setDaemon(true);
+							thread.start();
+						}
+					}
+				}
+			};
+
+			stage.addActor(audacity);
+
+			audacity.align(Align.topLeft)
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
 				private final List<AbstractPalette> palettes = new ArrayList<>();
 
@@ -387,7 +504,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(paletteSwap).align(Align.topLeft)
-					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 4, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
@@ -409,15 +526,14 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(tapalong).align(Align.topLeft)
-					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
 			TextButton inspections = new TextButton(stage, palette, "editor.button.inspections.on") {
 
 				{
-					setLocalizationKey(
-							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -426,8 +542,7 @@ public class EditorStageSetup {
 
 					main.setInspectionsEnabled(!main.getInspectionsEnabled());
 					main.getPreferences().flush();
-					setLocalizationKey(
-							"editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.inspections." + (main.getInspectionsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -439,15 +554,14 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(inspections).align(Align.topLeft)
-					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 
 		{
 			TextButton helpTips = new TextButton(stage, palette, "editor.button.helpTips.on") {
 
 				{
-					setLocalizationKey(
-							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
 				}
 
 				@Override
@@ -456,8 +570,7 @@ public class EditorStageSetup {
 
 					main.setHelpTipsEnabled(!main.getHelpTipsEnabled());
 					main.getPreferences().flush();
-					setLocalizationKey(
-							"editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
+					setLocalizationKey("editor.button.helpTips." + (main.getHelpTipsEnabled() ? "on" : "off"));
 				}
 
 				@Override
