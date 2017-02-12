@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
 import ionium.util.i18n.Localization
+import java.time.format.DateTimeFormatter
 
 
 class VersionScreen(m: Main) : Updateable<Main>(m) {
@@ -43,6 +44,8 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 		}
 	}
 
+	private val formatter = DateTimeFormatter.ofPattern("MMM'.' d',' yyyy hh:mm a")
+
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -67,7 +70,7 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 		main.font.draw(main.batch, Localization.get("versionScreen.coolInfo",
 													((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
 													VersionChecker.releaseObject!!.assets!!.first().download_count,
-													VersionChecker.releaseObject!!.published_at!!.substringBefore("T"))
+													VersionChecker.releaseObject!!.publishedTime!!.format(formatter))
 				.format("%.3f"),
 					   Gdx.graphics.width * 0.05f, Gdx.graphics.height * 0.75f - main.font.lineHeight)
 

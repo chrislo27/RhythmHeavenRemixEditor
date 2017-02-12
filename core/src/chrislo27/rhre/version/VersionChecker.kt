@@ -4,6 +4,10 @@ import com.google.gson.Gson
 import com.mashape.unirest.http.Unirest
 import com.mashape.unirest.http.exceptions.UnirestException
 import ionium.templates.Main
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 import kotlin.concurrent.thread
 
 
@@ -32,9 +36,16 @@ object VersionChecker {
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
-			versionState = if (isSame || Main.version.endsWith("-SNAPSHOT")) VersionState.UP_TO_DATE else VersionState.AVAILABLE
+			versionState = if (isSame || Main.version.endsWith(
+					"-SNAPSHOT")) VersionState.UP_TO_DATE else VersionState.AVAILABLE
 
 			release.bodyLines = release.body?.lines() ?: listOf("")
+			if (release.published_at != null) {
+				release.publishedTime = ZonedDateTime.parse(release.published_at,
+															DateTimeFormatter.ISO_DATE_TIME)
+						.withZoneSameInstant(ZoneId.systemDefault())
+						.toLocalDateTime()
+			}
 
 			Main.logger.info(
 					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: ${Main.githubVersion}")
@@ -66,6 +77,9 @@ class ReleaseObject {
 
 	@Transient
 	lateinit var bodyLines: List<String>
+
+	@Transient
+	var publishedTime: LocalDateTime? = null
 
 	class AssetObject {
 
