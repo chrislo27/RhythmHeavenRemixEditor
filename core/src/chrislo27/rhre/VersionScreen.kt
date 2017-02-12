@@ -5,6 +5,7 @@ import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
@@ -13,6 +14,10 @@ import ionium.util.i18n.Localization
 
 
 class VersionScreen(m: Main) : Updateable<Main>(m) {
+
+	private val titlesAvailable: Int = 3
+	private var titleType: Int = 0
+
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -22,7 +27,7 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.data.setScale(0.75f)
 		main.biggerFont.draw(main.batch,
-							 Localization.get("versionScreen.title"),
+							 Localization.get("versionScreen.title$titleType"),
 							 Gdx.graphics.width * 0.05f,
 							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
 		main.biggerFont.data.setScale(1f)
@@ -81,6 +86,7 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun show() {
+		titleType = MathUtils.random(0, titlesAvailable - 1)
 	}
 
 	override fun hide() {
