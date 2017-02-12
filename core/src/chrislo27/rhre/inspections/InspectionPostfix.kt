@@ -50,6 +50,10 @@ object InspectionPostfix {
 			it.inspectionFunctions = if (it.id != "microRow_double") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
+		registry.get("munchyMonk")?.patterns?.forEach {
+			it.inspectionFunctions = if (it.id != "munchyMonk_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
+		}
+
 		registry.getCueRaw("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingAfter("moaiDooWop/wop1"))
 		registry.getCueRaw("moaiDooWop/wop1")?.inspectionFunctions = listOf(
