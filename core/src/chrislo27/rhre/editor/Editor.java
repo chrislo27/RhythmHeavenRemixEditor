@@ -716,7 +716,7 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		if (currentTool == Tool.NORMAL) {
+		if (currentTool == Tool.NORMAL && Gdx.input.getY() > EditorStageSetup.BAR_HEIGHT) {
 			// trackers
 			{
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
