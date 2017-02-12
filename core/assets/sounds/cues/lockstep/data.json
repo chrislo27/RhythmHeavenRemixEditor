@@ -134,7 +134,7 @@
       ]
     },
     {
-      "id": "lockstep_onToOff",
+      "id": "lockstep_offToOn",
       "name": "off to on",
       "cues": [
         {
