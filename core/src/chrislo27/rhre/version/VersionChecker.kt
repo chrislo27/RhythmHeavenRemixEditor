@@ -34,6 +34,8 @@ object VersionChecker {
 			val isSame: Boolean = release.tag_name == Main.version
 			versionState = if (isSame || Main.version.endsWith("-SNAPSHOT")) VersionState.UP_TO_DATE else VersionState.AVAILABLE
 
+			release.bodyLines = release.body?.lines() ?: listOf("")
+
 			Main.logger.info(
 					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: ${Main.githubVersion}")
 		} catch (e: UnirestException) {
@@ -61,6 +63,9 @@ class ReleaseObject {
 	var body: String? = null
 	var published_at: String? = null
 	var assets: List<AssetObject>? = null
+
+	@Transient
+	lateinit var bodyLines: List<String>
 
 	class AssetObject {
 
