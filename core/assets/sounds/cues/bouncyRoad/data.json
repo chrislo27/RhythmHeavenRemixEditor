@@ -34,15 +34,7 @@
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 0.25
-        },
-        {
-          "id": "bouncyRoad/tink",
           "beat": 0.5
-        },
-        {
-          "id": "bouncyRoad/tink",
-          "beat": 0.75
         },
         {
           "id": "bouncyRoad/tink",
@@ -50,15 +42,7 @@
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 1.25
-        },
-        {
-          "id": "bouncyRoad/tink",
           "beat": 1.5
-        },
-        {
-          "id": "bouncyRoad/tink",
-          "beat": 1.75
         },
         {
           "id": "bouncyRoad/tink",
@@ -66,29 +50,114 @@
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 2.25
-        },
-        {
-          "id": "bouncyRoad/tink",
           "beat": 2.5
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 2.75
+          "beat": 3
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 3,
+          "beat": 3.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 4
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 4.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 5.5
+        },
+        {
+          "id": "bouncyRoad/tink",
+          "beat": 6,
           "semitone": -4
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 3.25,
+          "beat": 7.5,
           "semitone": 3
         },
         {
           "id": "bouncyRoad/cymbal",
+          "beat": 8
+        }
+      ]
+    },
+    {
+      "id": "bouncyRoad_15snorts",
+      "name": "15 snorts",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 0
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 0.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 1
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 1.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 2
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 2.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 3
+        },
+        {
+          "id": "bouncyRoad/spySnort",
           "beat": 3.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 4
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 4.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 5.5
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 6,
+          "semitone": -4
+        },
+        {
+          "id": "bouncyRoad/spySnort",
+          "beat": 7.5,
+          "semitone": 3
+        },
+        {
+          "id": "bouncyRoad/cymbal",
+          "beat": 8
         }
       ]
     }
