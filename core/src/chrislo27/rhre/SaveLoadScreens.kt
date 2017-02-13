@@ -14,6 +14,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
+import ionium.util.DebugSetting
 import ionium.util.i18n.Localization
 import java.io.File
 import javax.swing.JFileChooser
@@ -100,7 +101,10 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 						picker.selectedFile.createNewFile()
 
-						val json: String = GsonBuilder().create().toJson(obj)
+						val gsonBuilder = GsonBuilder()
+						if (DebugSetting.debug)
+							gsonBuilder.setPrettyPrinting()
+						val json: String = gsonBuilder.create().toJson(obj)
 
 						handle.writeString(json, false, "UTF-8")
 					}
