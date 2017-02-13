@@ -1,0 +1,105 @@
+{
+  "gameID": "bunnyHop",
+  "gameName": "Bunny Hop",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "bunnyHop/hop1",
+      "duration": 1,
+      "name": "hop1"
+    },
+    {
+      "id": "bunnyHop/hop2",
+      "duration": 1,
+      "name": "hop2"
+    },
+    {
+      "id": "bunnyHop/longJump",
+      "duration": 4,
+      "name": "long jump"
+    },
+    {
+      "id": "bunnyHop/longJumpShort",
+      "duration": 2,
+      "name": "long jump (short)"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bunnyHop_hopping",
+      "name": "hopping",
+      "cues": [
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 1.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump4",
+      "name": "long jump 4 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJump",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 4.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 5.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump8",
+      "name": "long jump 8 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJump",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 8.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 9.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump2",
+      "name": "long jump 2 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJumpShort",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 3.0
+        }
+      ]
+    }
+  ]
+}
