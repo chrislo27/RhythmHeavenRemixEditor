@@ -1,0 +1,56 @@
+{
+  "gameID": "coinToss",
+  "gameName": "Coin Toss",
+  "series": "side",
+  "cues": [
+    {
+      "id": "coinToss/flick",
+      "duration": 1,
+      "name": "flick"
+    },
+    {
+      "id": "coinToss/catch",
+      "duration": 0.25,
+      "name": "catch"
+    },
+    {
+      "id": "coinToss/thankYou",
+      "duration": 2.25,
+      "name": "thank you!"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "coinToss_catchThankYou",
+      "name": "catch with thank you",
+      "cues": [
+        {
+          "id": "coinToss/flick",
+          "beat": 0
+        },
+        {
+          "id": "coinToss/catch",
+          "beat": 6
+        },
+        {
+          "id": "coinToss/thankYou",
+          "beat": 6.25
+        }
+      ]
+    },
+    {
+      "id": "coinToss_catchNoThankYou",
+      "name": "catch without thank you",
+      "cues": [
+        {
+          "id": "coinToss/flick",
+          "beat": 0
+        },
+        {
+          "id": "coinToss/catch",
+          "beat": 6
+        }
+      ]
+    }
+  ]
+}
