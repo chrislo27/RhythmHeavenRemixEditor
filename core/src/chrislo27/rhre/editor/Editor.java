@@ -727,14 +727,18 @@ public class Editor extends InputAdapter implements Disposable {
 						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
 								.SHIFT_RIGHT);
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
+						&& !(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+						Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
 					remix.setPlaybackStart(vec3Tmp2.x);
 					if (!shift) {
 						remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
 					}
 				}
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
+						&& (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+						Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
 					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
 					if (!shift) {
 						remix.setMusicStartTime(remix.getTempoChanges()
