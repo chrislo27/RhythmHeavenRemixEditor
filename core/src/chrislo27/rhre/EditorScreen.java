@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.utils.Array;
 import ionium.screen.Updateable;
 import ionium.stage.Stage;
-import ionium.util.DebugSetting;
 
 public class EditorScreen extends Updateable<Main> {
 
@@ -24,11 +23,7 @@ public class EditorScreen extends Updateable<Main> {
 		editor.render(main.batch);
 
 		if (stage != null) {
-			if (DebugSetting.debug && editor.remix.getCurrentGame() != null) {
-
-			} else {
-				stage.render(main.batch);
-			}
+			stage.render(main.batch);
 		}
 	}
 
