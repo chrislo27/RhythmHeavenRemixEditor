@@ -156,7 +156,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		ttfParam.minFilter = Texture.TextureFilter.Linear
 		ttfParam.genMipMaps = true
 		ttfParam.size = 24
-		//ttfParam.characters += SpecialCharactersList.getJapaneseKana();
+//		ttfParam.characters += "éàèùâêîôûç"
+		ttfParam.characters += "éàèùâêîôûçëïüáéíóú¿¡ñ"
 
 		font = ttfGenerator.generateFont(ttfParam)
 		font.data.markupEnabled = true
