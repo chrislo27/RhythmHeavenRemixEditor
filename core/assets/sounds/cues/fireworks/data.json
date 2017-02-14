@@ -1,0 +1,81 @@
+{
+  "gameID": "fireworks",
+  "gameName": "Fireworks",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "fireworks/bomb1",
+      "duration": 2,
+      "name": "taiko bomb 1"
+    },
+    {
+      "id": "fireworks/bomb2",
+      "duration": 1,
+      "name": "taiko bomb 2"
+    },
+    {
+      "id": "fireworks/firework1",
+      "duration": 1,
+      "name": "firework 1"
+    },
+    {
+      "id": "fireworks/firework2",
+      "duration": 1,
+      "name": "firework 2"
+    },
+    {
+      "id": "fireworks/quickshot1",
+      "duration": 1,
+      "name": "quickshot 1"
+    },
+    {
+      "id": "fireworks/quickshot2",
+      "duration": 1,
+      "name": "quickshot 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "fireworks_firework",
+      "name": "firework",
+      "cues": [
+        {
+          "id": "fireworks/firework1",
+          "beat": 0
+        },
+        {
+          "id": "fireworks/firework2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "fireworks_taikobomb",
+      "name": "taiko bomb",
+      "cues": [
+        {
+          "id": "fireworks/bomb1",
+          "beat": 0
+        },
+        {
+          "id": "fireworks/bomb2",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "fireworks_quickshot",
+      "name": "quickshot",
+      "cues": [
+        {
+          "id": "fireworks/quickshot1",
+          "beat": 0
+        },
+        {
+          "id": "fireworks/quickshot2",
+          "beat": 1.5
+        }
+      ]
+    }
+  ]
+}
