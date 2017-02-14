@@ -83,12 +83,12 @@
         },
         {
           "id": "bouncyRoad/tink",
-          "beat": 7.5,
+          "beat": 6.5,
           "semitone": 3
         },
         {
           "id": "bouncyRoad/cymbal",
-          "beat": 8
+          "beat": 7
         }
       ]
     },
@@ -152,12 +152,12 @@
         },
         {
           "id": "bouncyRoad/spySnort",
-          "beat": 7.5,
+          "beat": 6.5,
           "semitone": 3
         },
         {
           "id": "bouncyRoad/cymbal",
-          "beat": 8
+          "beat": 7
         }
       ]
     }
