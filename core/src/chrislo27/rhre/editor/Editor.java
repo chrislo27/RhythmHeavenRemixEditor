@@ -712,7 +712,7 @@ public class Editor extends InputAdapter implements Disposable {
 							GameObject.PatternObject.CueObject cue = new GameObject.PatternObject.CueObject();
 
 							cue.beat = e.bounds.x - first.bounds.x;
-							cue.track = Math.round(e.bounds.y - first.bounds.y);
+							cue.track = Math.round(first.bounds.y - e.bounds.y);
 							cue.id = e.getID();
 							if (e.isRepitchable())
 								cue.semitone = e.getSemitone();
