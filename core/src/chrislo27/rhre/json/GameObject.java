@@ -48,9 +48,9 @@ public class GameObject {
 			public float beat;
 			public int track;
 
-			public float duration;
+			public Float duration = 0f;
 
-			public int semitone;
+			public Integer semitone = 0;
 
 		}
 	}

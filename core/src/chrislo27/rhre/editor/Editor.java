@@ -2,10 +2,11 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.entity.Entity;
+import chrislo27.rhre.entity.HasGame;
 import chrislo27.rhre.entity.PatternEntity;
 import chrislo27.rhre.entity.SoundEntity;
-import chrislo27.rhre.export.ExportJob;
 import chrislo27.rhre.inspections.InspectionType;
+import chrislo27.rhre.json.GameObject;
 import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
@@ -30,6 +31,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
@@ -679,9 +681,57 @@ public class Editor extends InputAdapter implements Disposable {
 
 		if (DebugSetting.debug) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-				long time = System.nanoTime();
-				System.out.println(((System.nanoTime() - time) / 1_000_000_000d) + " s: " +
-						new ExportJob(this.remix, Gdx.files.local("test.pcm")).processJob());
+				if (remix.getSelection().size() > 0) {
+					if (remix.getSelection().stream().anyMatch(e -> e instanceof PatternEntity)) {
+						Main.logger.debug("Cannot export pattern - contains a pattern");
+					} else {
+						List<Entity> selection = remix.getSelection();
+						selection.sort((e1, e2) -> {
+							if (e1.bounds.x < e2.bounds.x)
+								return -1;
+							if (e1.bounds.x > e2.bounds.x)
+								return 1;
+
+							if (e1.bounds.y < e2.bounds.y)
+								return -1;
+							if (e1.bounds.y > e2.bounds.y)
+								return 1;
+
+							return 0;
+						});
+
+						Main.logger.debug("Exporting pattern:");
+
+						GameObject.PatternObject pattern = new GameObject.PatternObject();
+						final Entity first = selection.get(0);
+						pattern.id = ((HasGame) first).getGame().getId() + "_NEW-PATTERN";
+						pattern.name = "PATTERN NAME";
+						List<GameObject.PatternObject.CueObject> cues = new ArrayList<>();
+
+						selection.forEach(e -> {
+							GameObject.PatternObject.CueObject cue = new GameObject.PatternObject.CueObject();
+
+							cue.beat = e.bounds.x - first.bounds.x;
+							cue.track = Math.round(e.bounds.y - first.bounds.y);
+							cue.id = e.getID();
+							if (e.isRepitchable())
+								cue.semitone = e.getSemitone();
+							else
+								cue.semitone = null;
+							if (e.isStretchable())
+								cue.duration = e.bounds.width;
+							else
+								cue.duration = null;
+
+							cues.add(cue);
+						});
+
+						pattern.cues = cues.toArray(new GameObject.PatternObject.CueObject[cues.size()]);
+						System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(pattern) + "\n\n");
+					}
+				} else {
+					Main.logger.debug("Cannot export pattern - nothing is selected");
+				}
 			}
 		}
 
