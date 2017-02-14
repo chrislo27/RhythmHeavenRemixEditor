@@ -58,8 +58,12 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 				furthest = se;
 
 		}
-		this.bounds.height = highest.bounds.y + highest.bounds.height;
-		this.bounds.width = furthest.bounds.x + furthest.bounds.width;
+		try {
+			this.bounds.height = highest.bounds.y + highest.bounds.height;
+			this.bounds.width = furthest.bounds.x + furthest.bounds.width;
+		} catch (NullPointerException e) {
+			throw new RuntimeException("Couldn't create pattern entity - highest or furthest was null (h: " + highest + ", f: " + furthest + ")");
+		}
 		this.originalWidth = this.bounds.width;
 
 		this.originalBounds = new ArrayList<>();
