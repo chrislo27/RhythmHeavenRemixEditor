@@ -204,7 +204,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 				main.getFontBordered().setColor(main.getPalette().getMusicStartTracker());
 				main.getFontBordered().draw(batch,
-						Localization.get("editor.musicStartTracker", String.format("%.3f", remix.getMusicStartTime())),
+						Localization.get("editor.musicStartTracker", String.format("%.3f", musicToBeats)),
 						musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
