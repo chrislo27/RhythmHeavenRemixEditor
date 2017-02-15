@@ -92,6 +92,11 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 			}
 		}
 
+//		main.font.draw(main.batch, Localization.get("info.d4j"),
+//					   Gdx.graphics.width * 0.025f,
+//					   main.font.capHeight * 2 + main.font.lineHeight * 2, Gdx.graphics.width * 0.95f, Align.center,
+//					   true)
+
 		if (VersionChecker.versionState != VersionState.GETTING
 				&& VersionChecker.versionState != VersionState.FAILED) {
 			main.font.draw(main.batch, Localization.get("info.version"),
@@ -109,6 +114,8 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+			main.screen = ScreenRegistry.get("d4j")
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
 			if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
 
