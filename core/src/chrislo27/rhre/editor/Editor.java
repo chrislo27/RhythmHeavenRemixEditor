@@ -211,6 +211,10 @@ public class Editor extends InputAdapter implements Disposable {
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
 								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
+				main.getFontBordered().draw(batch, Localization.get("editor.musicTrackerHint"),
+						musicToBeats * Entity.PX_WIDTH - 4,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 3) - main.getFontBordered().getCapHeight(),
+						0, Align.right, false);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -226,6 +230,13 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getFontBordered().draw(batch, Localization
 								.get("editor.playbackStartTracker", String.format("%.3f", remix.getPlaybackStart())),
 						remix.getPlaybackStart() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+
+				main.getFontBordered().getData().setScale(0.5f);
+				main.getFontBordered().draw(batch, Localization.get("editor.playbackTrackerHint"),
+						remix.getPlaybackStart() * Entity.PX_WIDTH - 4,
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 1.25f,
+						0, Align.right, false);
+				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 
