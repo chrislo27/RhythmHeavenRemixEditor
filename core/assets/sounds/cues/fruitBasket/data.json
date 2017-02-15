@@ -1,0 +1,125 @@
+{
+  "gameID": "fruitBasket",
+  "gameName": "Fruit Basket",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "fruitBasket/apple",
+      "duration": 1.0,
+      "name": "apple out"
+    },
+    {
+      "id": "fruitBasket/dunk",
+      "duration": 1.0,
+      "name": "dunk"
+    },
+    {
+      "id": "fruitBasket/basket",
+      "duration": 1.0,
+      "name": "basket"
+    },
+    {
+      "id": "fruitBasket/lemon",
+      "duration": 1.0,
+      "name": "lemon out"
+    },
+    {
+      "id": "fruitBasket/melon1",
+      "duration": 1.0,
+      "name": "melon - 1"
+    },
+    {
+      "id": "fruitBasket/melon2",
+      "duration": 1.0,
+      "name": "melon - 2"
+    },
+    {
+      "id": "fruitBasket/melon3",
+      "duration": 0.75,
+      "name": "melon - 3"
+    },
+    {
+      "id": "fruitBasket/melon4",
+      "duration": 0.75,
+      "name": "melon - 4"
+    },
+    {
+      "id": "fruitBasket/melon5",
+      "duration": 0.5,
+      "name": "melon - 5"
+    },
+    {
+      "id": "fruitBasket/melon6",
+      "duration": 1.0,
+      "name": "melon - 6"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "fruitBasket_apple",
+      "name": "apple",
+      "cues": [
+        {
+          "id": "fruitBasket/apple",
+          "beat": 0.0
+        },
+        {
+          "id": "fruitBasket/dunk",
+          "beat": 2.0
+        },
+        {
+          "id": "fruitBasket/basket",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "fruitBasket_lemon",
+      "name": "lemon",
+      "cues": [
+        {
+          "id": "fruitBasket/lemon",
+          "beat": 0.0
+        },
+        {
+          "id": "fruitBasket/dunk",
+          "beat": 4.0
+        },
+        {
+          "id": "fruitBasket/basket",
+          "beat": 5.0
+        }
+      ]
+    },
+    {
+      "id": "fruitBasket_melon",
+      "name": "melon",
+      "cues": [
+        {
+          "id": "fruitBasket/melon1",
+          "beat": 0.0
+        },
+        {
+          "id": "fruitBasket/melon2",
+          "beat": 1.0
+        },
+        {
+          "id": "fruitBasket/melon3",
+          "beat": 2.0
+        },
+        {
+          "id": "fruitBasket/melon4",
+          "beat": 2.75
+        },
+        {
+          "id": "fruitBasket/melon5",
+          "beat": 3.5
+        },
+        {
+          "id": "fruitBasket/melon6",
+          "beat": 4.0
+        }
+      ]
+    }
+  ]
+}
