@@ -247,8 +247,10 @@ public class Editor extends InputAdapter implements Disposable {
 							tc.getBeat() * Entity.PX_WIDTH > camera.position.x + camera.viewportWidth * 0.75f)
 						continue;
 
+					boolean isSelected = tc == selectedTempoChange;
+
 					batch.setColor(main.getPalette().getBpmTracker());
-					if (tc == selectedTempoChange) {
+					if (isSelected) {
 						batch.setColor(main.getPalette().getBpmTrackerSelected());
 					}
 
@@ -259,6 +261,17 @@ public class Editor extends InputAdapter implements Disposable {
 					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
 							tc.getBeat() * Entity.PX_WIDTH + 4,
 							-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
+
+					if (isSelected) {
+						main.getFontBordered().setColor(main.getPalette().getBpmTracker());
+						main.getFontBordered().getData().setScale(0.5f);
+						main.getFontBordered()
+								.draw(batch, Localization.get("editor.bpmTrackerHint"),
+										tc.getBeat() * Entity.PX_WIDTH - 4,
+										-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2,
+								0, Align.right, false);
+						main.getFontBordered().getData().setScale(1);
+					}
 				}
 				main.getFontBordered().setColor(1, 1, 1, 1);
 				batch.setColor(1, 1, 1, 1);
