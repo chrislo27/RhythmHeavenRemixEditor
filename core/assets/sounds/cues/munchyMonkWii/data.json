@@ -1,0 +1,163 @@
+{
+  "gameID": "munchyMonkWii",
+  "gameName": "Munchy Monk (Wii)",
+  "series": "side",
+  "cues": [
+    {
+      "id": "munchyMonkWii/blow",
+      "duration": 0.5,
+      "name": "egg blow"
+    },
+    {
+      "id": "munchyMonkWii/gulp",
+      "duration": 0.5,
+      "name": "egg gulp"
+    },
+    {
+      "id": "munchyMonkWii/oneegg1",
+      "duration": 1.0,
+      "name": "one egg - one"
+    },
+    {
+      "id": "munchyMonkWii/oneegg2",
+      "duration": 1.0,
+      "name": "one egg - egg"
+    },
+    {
+      "id": "munchyMonkWii/peas1",
+      "duration": 0.5,
+      "name": "handful of peas - hand"
+    },
+    {
+      "id": "munchyMonkWii/peas2",
+      "duration": 0.25,
+      "name": "handful of peas - ful"
+    },
+    {
+      "id": "munchyMonkWii/peas3",
+      "duration": 0.25,
+      "name": "handful of peas - of"
+    },
+    {
+      "id": "munchyMonkWii/peas4",
+      "duration": 0.5,
+      "name": "handful of peas - peas!"
+    },
+    {
+      "id": "munchyMonkWii/peas5",
+      "duration": 0.25,
+      "name": "handful of peas - blow1"
+    },
+    {
+      "id": "munchyMonkWii/peas6",
+      "duration": 0.25,
+      "name": "handful of peas - blow2"
+    },
+    {
+      "id": "munchyMonkWii/peas7",
+      "duration": 0.25,
+      "name": "handful of peas - blow3"
+    },
+    {
+      "id": "munchyMonkWii/peas8",
+      "duration": 0.25,
+      "name": "handful of peas - blow4"
+    },
+    {
+      "id": "munchyMonkWii/peas9",
+      "duration": 0.25,
+      "name": "handful of peas - blow5"
+    },
+    {
+      "id": "munchyMonkWii/peasgulp",
+      "duration": 0.5,
+      "name": "handful of peas - gulp"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "munchyMonkWii_oneEgg",
+      "name": "one [WHITE]egg[]!",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "munchyMonkWii/oneegg1",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/oneegg2",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/blow",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/gulp",
+          "beat": 2.5,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "munchyMonkWii_handfulOfPeas",
+      "name": "handful of [#40b722]peas[]!",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "munchyMonkWii/peas1",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas2",
+          "beat": 0.5,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas3",
+          "beat": 0.75,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas4",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas5",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas6",
+          "beat": 2.25,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas7",
+          "beat": 2.5,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas8",
+          "beat": 2.75,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peas9",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "munchyMonkWii/peasgulp",
+          "beat": 3.5,
+          "track": 0
+        }
+      ]
+    }
+  ]
+}
