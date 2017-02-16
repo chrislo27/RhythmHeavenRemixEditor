@@ -156,6 +156,7 @@ class Remix {
 		fun resetEntitiesAndTracker(): Unit {
 			musicPlayed = false
 			music?.music?.stop()
+			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
