@@ -120,7 +120,11 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 						val handle: FileHandle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
-						es.editor.remix.music = MusicData(Gdx.audio.newMusic(handle), handle)
+						try {
+							es.editor.remix.music = MusicData(Gdx.audio.newMusic(handle), handle)
+						} catch (e: Exception) {
+							es.editor.remix.music?.music?.dispose()
+						}
 					}
 				}
 			}
