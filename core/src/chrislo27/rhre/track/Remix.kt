@@ -160,7 +160,7 @@ class Remix {
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
-			lastTickBeat = Int.MIN_VALUE
+			lastTickBeat = Math.ceil(playbackStart.toDouble() - 1).toInt()
 			entities.forEach {
 				if (it is PatternEntity) {
 					it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
