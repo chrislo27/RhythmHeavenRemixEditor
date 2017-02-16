@@ -20,6 +20,8 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 
 class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
+	private var failedToLoad: String? = null
+
 	override fun scrolled(amount: Int): Boolean {
 		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
@@ -68,6 +70,15 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 							 Localization.get("musicScreen.title"),
 							 Gdx.graphics.width * 0.05f,
 							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+
+		if (failedToLoad != null) {
+			failedToLoad as String
+			main.font.setColor(1f, 0f, 0f, 1f)
+			main.font.draw(main.batch,
+						   failedToLoad!!,
+						   Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.8f)
+		}
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
@@ -124,6 +135,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 							es.editor.remix.music = MusicData(Gdx.audio.newMusic(handle), handle)
 						} catch (e: Exception) {
 							es.editor.remix.music?.music?.dispose()
+							failedToLoad = e.toString()
 						}
 					}
 				}
@@ -157,6 +169,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 
 	override fun hide() {
 		closePicker()
+		failedToLoad = null
 
 		if (Gdx.input.inputProcessor is InputMultiplexer) {
 			(Gdx.input.inputProcessor as InputMultiplexer).removeProcessor(this as InputProcessor)
