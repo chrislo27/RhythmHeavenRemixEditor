@@ -68,7 +68,6 @@ public class Editor extends InputAdapter implements Disposable {
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
-	private final OrthographicCamera rendererCamera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final List<InspectionType> highlightedInspections = new ArrayList<>();
@@ -99,8 +98,6 @@ public class Editor extends InputAdapter implements Disposable {
 		this.main = m;
 		camera.setToOrtho(false, 1280, 720);
 		camera.position.x = 0.333f * camera.viewportWidth;
-
-		rendererCamera.setToOrtho(false, 400, 240);
 
 		remix = new Remix();
 
