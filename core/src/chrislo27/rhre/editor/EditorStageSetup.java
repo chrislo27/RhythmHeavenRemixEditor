@@ -479,10 +479,19 @@ public class EditorStageSetup {
 							Main.logger.info("Loaded palette " + fh.name());
 						});
 					}
+
+					num = main.getPreferences().getInteger("palette", 0);
+					if (num >= palettes.size())
+						num = 0;
+
+					cycle();
 				}
 
 				private void cycle() {
 					main.switchPalette(palettes.get(num), 0.35f);
+
+					main.getPreferences().putInteger("palette", num);
+					main.getPreferences().flush();
 
 					num++;
 					if (num >= palettes.size())
