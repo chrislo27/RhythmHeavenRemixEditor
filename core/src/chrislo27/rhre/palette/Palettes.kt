@@ -25,6 +25,22 @@ abstract class AbstractPalette {
 	open val musicStartTracker: Color = Color(0.9f, 0f, 0f, 1f)
 	open val bpmTrackerSelected: Color by lazy { brighten(Color(bpmTracker), 0.5f) }
 
+	fun lerp(a: AbstractPalette, b: AbstractPalette, amt: Float) {
+		editorBg.set(a.editorBg).lerp(b.editorBg, amt)
+		staffLine.set(a.staffLine).lerp(b.staffLine, amt)
+		soundCue.set(a.soundCue).lerp(b.soundCue, amt)
+		stretchableSoundCue.set(a.stretchableSoundCue).lerp(b.stretchableSoundCue, amt)
+		pattern.set(a.pattern).lerp(b.pattern, amt)
+		stretchablePattern.set(a.stretchablePattern).lerp(b.stretchablePattern, amt)
+		selectionTint.set(a.selectionTint).lerp(b.selectionTint, amt)
+		selectionFill.set(a.selectionFill).lerp(b.selectionFill, amt)
+		selectionBorder.set(a.selectionBorder).lerp(b.selectionBorder, amt)
+		beatTracker.set(a.beatTracker).lerp(b.beatTracker, amt)
+		bpmTracker.set(a.bpmTracker).lerp(b.bpmTracker, amt)
+		musicStartTracker.set(a.musicStartTracker).lerp(b.musicStartTracker, amt)
+		bpmTrackerSelected.set(a.bpmTrackerSelected).lerp(b.bpmTrackerSelected, amt)
+	}
+
 }
 
 open class LightPalette : AbstractPalette() {
@@ -141,6 +157,18 @@ object PaletteUtils {
 data class EntityColors(val bg: Color, val outline: Color) {
 
 	constructor(bg: Color) : this(bg, brighten(bg, -0.25f))
+	
+	fun set(other: EntityColors): EntityColors {
+		bg.set(other.bg)
+		outline.set(other.outline)
+		return this
+	}
+	
+	fun lerp(other: EntityColors, amt: Float): EntityColors {
+		bg.lerp(other.bg, amt)
+		outline.lerp(other.outline, amt)
+		return this
+	}
 
 }
 

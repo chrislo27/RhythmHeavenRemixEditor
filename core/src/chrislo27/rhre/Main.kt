@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.mashape.unirest.http.Unirest
@@ -38,7 +39,32 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	lateinit var fontBordered: BitmapFont
 		private set
 
-	var palette: AbstractPalette = LightPalette()
+	private var lastPalette: AbstractPalette = LightPalette()
+	private var toSwitchPalette: AbstractPalette = lastPalette
+	private val currentPalette: AbstractPalette = LightPalette()
+	private var paletteLerp: Vector2 = Vector2()
+
+	fun getPalette(): AbstractPalette {
+		return currentPalette
+	}
+
+	fun switchPalette(newPalette: AbstractPalette, interpolation: Float) {
+		paletteLerp.x = interpolation
+		paletteLerp.y = 0f
+
+		if (interpolation <= 0)
+			paletteLerp.y = 1f
+
+		lastPalette = toSwitchPalette
+		toSwitchPalette = newPalette
+
+		updatePalette()
+	}
+
+	private fun updatePalette() {
+		currentPalette.lerp(lastPalette, toSwitchPalette, paletteLerp.y)
+	}
+
 	lateinit var preferences: Preferences
 		private set
 	lateinit var horizontalResize: Cursor
@@ -110,6 +136,17 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun preRender() {
+		if (paletteLerp.x > 0 && paletteLerp.y < 1) {
+			paletteLerp.y += Gdx.graphics.deltaTime / paletteLerp.x
+			if (paletteLerp.y > 1) {
+				paletteLerp.y = 1f
+			}
+			updatePalette()
+		} else {
+			paletteLerp.y = 1f
+			updatePalette()
+		}
+
 		super.preRender()
 	}
 
@@ -145,10 +182,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		super.inputUpdate()
 
 		if (DebugSetting.debug && Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			if (palette is DarkPalette) {
-				palette = LightPalette()
+			if (getPalette() is DarkPalette) {
+				switchPalette(LightPalette(), 0.75f)
 			} else {
-				palette = DarkPalette()
+				switchPalette(DarkPalette(), 0.75f)
 			}
 		}
 	}

@@ -482,7 +482,7 @@ public class EditorStageSetup {
 				}
 
 				private void cycle() {
-					main.setPalette(palettes.get(num));
+					main.switchPalette(palettes.get(num), 0.35f);
 
 					num++;
 					if (num >= palettes.size())
