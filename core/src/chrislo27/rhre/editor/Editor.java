@@ -18,6 +18,7 @@ import chrislo27.rhre.track.TempoChange;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
@@ -31,6 +32,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.util.DebugSetting;
@@ -39,6 +41,7 @@ import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +64,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
 	private static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
+	private static final float AUTOSAVE_PERIOD = 60f;
 
 	private final Main main;
 	private final OrthographicCamera camera = new OrthographicCamera();
@@ -72,6 +76,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
 	public Remix remix;
+	public FileHandle file = null;
 	float snappingInterval;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
@@ -87,6 +92,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
+	private float timeUntilAutosave = AUTOSAVE_PERIOD;
+	private float autosaveMessageShow = 0f;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -203,18 +210,18 @@ public class Editor extends InputAdapter implements Disposable {
 				batch.setColor(1, 1, 1, 1);
 
 				main.getFontBordered().setColor(main.getPalette().getMusicStartTracker());
-				main.getFontBordered().draw(batch,
-						Localization.get("editor.musicStartTracker", String.format("%.3f", musicToBeats)),
-						musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				main.getFontBordered()
+						.draw(batch, Localization.get("editor.musicStartTracker", String.format("%.3f", musicToBeats)),
+								musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
 								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
-				main.getFontBordered().draw(batch, Localization.get("editor.musicTrackerHint"),
-						musicToBeats * Entity.PX_WIDTH - 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 3) - main.getFontBordered().getCapHeight(),
-						0, Align.right, false);
+				main.getFontBordered()
+						.draw(batch, Localization.get("editor.musicTrackerHint"), musicToBeats * Entity.PX_WIDTH - 4,
+								Entity.PX_HEIGHT * (TRACK_COUNT + 3) - main.getFontBordered().getCapHeight(), 0,
+								Align.right, false);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -234,8 +241,8 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.playbackTrackerHint"),
 						remix.getPlaybackStart() * Entity.PX_WIDTH - 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 1.25f,
-						0, Align.right, false);
+						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 1.25f, 0,
+						Align.right, false);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -265,11 +272,9 @@ public class Editor extends InputAdapter implements Disposable {
 					if (isSelected) {
 						main.getFontBordered().setColor(main.getPalette().getBpmTracker());
 						main.getFontBordered().getData().setScale(0.5f);
-						main.getFontBordered()
-								.draw(batch, Localization.get("editor.bpmTrackerHint"),
-										tc.getBeat() * Entity.PX_WIDTH - 4,
-										-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2,
-								0, Align.right, false);
+						main.getFontBordered().draw(batch, Localization.get("editor.bpmTrackerHint"),
+								tc.getBeat() * Entity.PX_WIDTH - 4,
+								-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2, 0, Align.right, false);
 						main.getFontBordered().getData().setScale(1);
 					}
 				}
@@ -475,6 +480,17 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().getData().setScale(0.5f);
 		}
 
+		if (remix.getPlayingState() == PlayingState.STOPPED) {
+			if (autosaveMessageShow > 0) {
+				Color c = Main.getRainbow(1.0f);
+				main.getFontBordered().setColor(c.r, c.g, c.b, Math.min(autosaveMessageShow, 1f));
+				main.getFontBordered().draw(batch, Localization.get("editor.autosaved"), Gdx.graphics.getWidth() *
+								0.5f,
+						Gdx.graphics.getHeight() * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0, Align.center, false);
+				main.getFontBordered().setColor(1, 1, 1, 1);
+			}
+		}
+
 		// tool icons
 		{
 			batch.setColor(0, 0, 0, 0.5f);
@@ -667,26 +683,14 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-//		// FIXME renderer
-//		if (DebugSetting.debug && remix.getCurrentGame() != null) {
-//			rendererCamera.update();
-//			batch.setProjectionMatrix(rendererCamera.combined);
-//
-//			Renderer renderer = VisualRegistry.INSTANCE.getMap().get(remix.getCurrentGame().getId());
-//			Gdx.gl.glClearColor(0, 0, 0, 1);
-//			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//			if (renderer != null) {
-//				renderer.render(batch, remix);
-//			}
-//
-//			batch.setProjectionMatrix(main.camera.combined);
-//		}
-
 		batch.end();
 	}
 
 	public void renderUpdate() {
 		remix.update(Gdx.graphics.getDeltaTime());
+
+		if (autosaveMessageShow > 0)
+			autosaveMessageShow = Math.max(0f, autosaveMessageShow - Gdx.graphics.getDeltaTime());
 
 		if (remix.getPlayingState() == PlayingState.PLAYING) {
 			if (camera.position.x + camera.viewportWidth * 0.5f < remix.getBeat() * Entity.PX_WIDTH) {
@@ -694,6 +698,32 @@ public class Editor extends InputAdapter implements Disposable {
 			} else if (remix.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.5f) {
 				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.25f;
 			}
+		} else if (remix.getPlayingState() == PlayingState.STOPPED && file != null) {
+			timeUntilAutosave -= Gdx.graphics.getDeltaTime();
+
+			if (timeUntilAutosave <= 0) {
+				timeUntilAutosave = AUTOSAVE_PERIOD;
+				autosave();
+			}
+		}
+	}
+
+	private void autosave() {
+		if (file != null) {
+			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave." + file.extension());
+
+			try {
+				sibling.file().createNewFile();
+
+				sibling.writeString(new Gson().toJson(Remix.Companion.writeToObject(remix)), false, "UTF-8");
+
+				autosaveMessageShow = 3f;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				System.gc();
+			}
+
 		}
 	}
 
@@ -799,18 +829,19 @@ public class Editor extends InputAdapter implements Disposable {
 						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
 								.SHIFT_RIGHT);
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
-						&& !(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-						Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
+						!(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
 					remix.setPlaybackStart(vec3Tmp2.x);
 					if (!shift) {
 						remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
 					}
 				}
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
-						&& (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-						Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || Gdx.input.isButtonPressed(Input.Buttons
+						.RIGHT) &&
+						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
 					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
 					if (!shift) {
 						remix.setMusicStartTime(remix.getTempoChanges()

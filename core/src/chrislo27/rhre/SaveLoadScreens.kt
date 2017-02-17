@@ -107,6 +107,8 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 						val json: String = gsonBuilder.create().toJson(obj)
 
 						handle.writeString(json, false, "UTF-8")
+
+						es.editor.file = handle
 					}
 				}
 
@@ -238,6 +240,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 				es.editor.remix = Remix.readFromObject(remixObj!!)
+				es.editor.file = remixObj?.fileHandle
 
 				main.screen = ScreenRegistry.get("editor")
 			}
@@ -267,6 +270,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 						val obj: RemixObject = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 
+						obj.fileHandle = handle
 						remixObj = obj
 
 						missingContent = obj.entities.filter { entity ->
@@ -360,6 +364,7 @@ class NewScreen(m: Main) : Updateable<Main>(m) {
 			val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 			es.editor.remix = Remix()
+			es.editor.file = null
 
 			main.screen = ScreenRegistry.get("editor")
 		}

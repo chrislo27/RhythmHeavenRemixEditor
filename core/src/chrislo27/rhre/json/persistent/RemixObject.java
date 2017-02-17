@@ -1,8 +1,12 @@
 package chrislo27.rhre.json.persistent;
 
+import com.badlogic.gdx.files.FileHandle;
+
 import java.util.List;
 
 public class RemixObject {
+
+	public transient FileHandle fileHandle;
 
 	public String version;
 	public List<EntityObject> entities;
