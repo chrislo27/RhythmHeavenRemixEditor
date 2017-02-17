@@ -419,11 +419,12 @@ public class EditorStageSetup {
 			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
 				private final List<AbstractPalette> palettes = new ArrayList<>();
 
-				private int num = 0;
+				private int num = 1;
 
 				{
-					palettes.add(new DarkPalette());
 					palettes.add(new LightPalette());
+					palettes.add(new DarkPalette());
+					palettes.add(PaletteUtils.getRHRE0Palette());
 
 					final FileHandle folder = Gdx.files.local("palettes/");
 					if (!folder.exists()) {

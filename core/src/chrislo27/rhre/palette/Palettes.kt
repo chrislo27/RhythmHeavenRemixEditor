@@ -3,6 +3,7 @@ package chrislo27.rhre.palette
 import chrislo27.rhre.json.PaletteObject
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import com.google.gson.Gson
 import java.util.*
 
 abstract class AbstractPalette {
@@ -68,9 +69,32 @@ open class HotDogPalette : AbstractPalette() {
 abstract class CustomPalette : LightPalette()
 
 object PaletteUtils {
+
+	private val gson: Gson = Gson()
+
+	private val rhre0Palette: PaletteObject = gson.fromJson("""{
+  "editorBg": "#FFA57F",
+  "staffLine": "#000000",
+  "soundCue": "#CFB8AF",
+  "stretchableSoundCue": "#FFB8AF",
+  "patternCue": "#BBA49B",
+  "stretchablePatternCue": "#EBA49B",
+  "selectionCueTint": "#DDC7D2",
+  "selectionBg": "#B3AE94",
+  "selectionBorder": "#19D8D8",
+  "beatTracker": "#3FD8D8",
+  "bpmTracker": "#00FA00",
+  "musicStartTracker": "#FF0000"
+}""", PaletteObject::class.java)
+
 	@JvmStatic
 	fun toHex(c: Color): String {
 		return "#" + c.toString().substring(0, 6).toUpperCase(Locale.ROOT)
+	}
+
+	@JvmStatic
+	fun getRHRE0Palette(): CustomPalette {
+		return getPaletteFromObject(rhre0Palette)
 	}
 
 	@JvmStatic
