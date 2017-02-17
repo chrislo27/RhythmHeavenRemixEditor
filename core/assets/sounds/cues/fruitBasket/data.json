@@ -4,54 +4,44 @@
   "series": "megamix",
   "cues": [
     {
+      "id": "fruitBasket/dunk1",
+      "duration": 0.5,
+      "name": "dunk - 1"
+    },
+    {
+      "id": "fruitBasket/dunk2",
+      "duration": 1,
+      "name": "dunk - 2"
+    },
+	{
       "id": "fruitBasket/apple",
-      "duration": 1.0,
-      "name": "apple out"
-    },
-    {
-      "id": "fruitBasket/dunk",
-      "duration": 1.0,
-      "name": "dunk"
-    },
-    {
-      "id": "fruitBasket/basket",
-      "duration": 1.0,
-      "name": "basket"
+      "duration": 1,
+      "name": "apple"
     },
     {
       "id": "fruitBasket/lemon",
-      "duration": 1.0,
-      "name": "lemon out"
+      "duration": 1,
+      "name": "lemon"
     },
-    {
+	{
       "id": "fruitBasket/melon1",
-      "duration": 1.0,
+      "duration": 1,
       "name": "melon - 1"
     },
-    {
+	{
       "id": "fruitBasket/melon2",
-      "duration": 1.0,
+      "duration": 1,
       "name": "melon - 2"
     },
-    {
-      "id": "fruitBasket/melon3",
-      "duration": 0.75,
-      "name": "melon - 3"
-    },
-    {
-      "id": "fruitBasket/melon4",
-      "duration": 0.75,
-      "name": "melon - 4"
-    },
-    {
-      "id": "fruitBasket/melon5",
+	{
+      "id": "fruitBasket/melonBounce",
       "duration": 0.5,
-      "name": "melon - 5"
+      "name": "melon - bounce"
     },
-    {
-      "id": "fruitBasket/melon6",
-      "duration": 1.0,
-      "name": "melon - 6"
+	{
+      "id": "fruitBasket/melonDunk",
+      "duration": 2,
+      "name": "melon - dunk"
     }
   ],
   "patterns": [
@@ -59,66 +49,62 @@
       "id": "fruitBasket_apple",
       "name": "apple",
       "cues": [
-        {
-          "id": "fruitBasket/apple",
-          "beat": 0.0
-        },
-        {
-          "id": "fruitBasket/dunk",
-          "beat": 2.0
-        },
-        {
-          "id": "fruitBasket/basket",
-          "beat": 3.0
-        }
+       {
+        "id": "fruitBasket/apple",
+        "beat": 0.0
+       },
+	   {
+        "id": "fruitBasket/dunk1",
+        "beat": 2.0
+       },
+       {
+        "id": "fruitBasket/dunk2",
+        "beat": 3.0
+       }
       ]
     },
-    {
+	{
       "id": "fruitBasket_lemon",
       "name": "lemon",
       "cues": [
-        {
-          "id": "fruitBasket/lemon",
-          "beat": 0.0
-        },
-        {
-          "id": "fruitBasket/dunk",
-          "beat": 4.0
-        },
-        {
-          "id": "fruitBasket/basket",
-          "beat": 5.0
-        }
+       {
+        "id": "fruitBasket/lemon",
+        "beat": 0.0
+       },
+	   {
+        "id": "fruitBasket/dunk1",
+        "beat": 4.0
+       },
+       {
+        "id": "fruitBasket/dunk2",
+        "beat": 5.0
+       }
       ]
     },
-    {
+	{
       "id": "fruitBasket_melon",
       "name": "melon",
       "cues": [
-        {
-          "id": "fruitBasket/melon1",
-          "beat": 0.0
-        },
-        {
-          "id": "fruitBasket/melon2",
-          "beat": 1.0
-        },
-        {
-          "id": "fruitBasket/melon3",
-          "beat": 2.0
-        },
-        {
-          "id": "fruitBasket/melon4",
-          "beat": 2.75
-        },
-        {
-          "id": "fruitBasket/melon5",
-          "beat": 3.5
-        },
-        {
-          "id": "fruitBasket/melon6",
-          "beat": 4.0
-        }
+       {
+        "id": "fruitBasket/melon1",
+        "beat": 0.0
+       },
+	   {
+        "id": "fruitBasket/melon2",
+        "beat": 1.0
+       },
+	   {
+        "id": "fruitBasket/dunk1",
+        "beat": 2.0
+       },
+       {
+        "id": "fruitBasket/melonBounce",
+        "beat": 2.5
+       },
+	   {
+        "id": "fruitBasket/melonDunk",
+        "beat": 3.5
+       }
       ]
     }
   ]

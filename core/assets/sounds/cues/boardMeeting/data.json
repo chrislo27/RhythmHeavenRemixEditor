@@ -1,0 +1,105 @@
+{
+  "gameID": "boardMeeting",
+  "gameName": "Board Meeting",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "boardMeeting/startPrepare",
+      "duration": 1.0,
+      "name": "start - prepare"
+    },
+	{
+      "id": "boardMeeting/start1",
+      "duration": 0.0001,
+      "name": "start - single"
+    },
+	{
+      "id": "boardMeeting/spin",
+      "duration": 1.0,
+	  "canAlterDuration": true,
+	  "introSound": "boardMeeting/start1",
+      "name": "spinning - start - 1"
+    },
+	{
+      "id": "boardMeeting/start2",
+      "duration": 0.5,
+      "name": "start - 2"
+    },
+	{
+      "id": "boardMeeting/start3",
+      "duration": 0.5,
+      "name": "start - 3"
+    },
+	{
+      "id": "boardMeeting/start4",
+      "duration": 0.5,
+      "name": "start - 4"
+    },
+	{
+      "id": "boardMeeting/stop",
+      "duration": 0.5,
+      "name": "stop"
+    },
+    {
+      "id": "boardMeeting/stopPlayer",
+      "duration": 0.5,
+      "name": "stop - player"
+    },
+    {
+      "id": "boardMeeting/startTogether",
+      "duration": 0.0001,
+      "name": "start - together"
+    },
+    {
+      "id": "boardMeeting/spinTogether",
+      "duration": 1.0,
+	  "canAlterDuration": true,
+	  "introSound": "boardMeeting/startTogether",
+      "name": "spinning - start - together"
+    },
+    {
+      "id": "boardMeeting/abStop1",
+      "duration": 0.66666,
+      "name": "assistant - one"
+    },
+	{
+      "id": "boardMeeting/abStop2",
+      "duration": 0.33333,
+      "name": "assistant - two"
+    },
+	{
+      "id": "boardMeeting/abStop3",
+      "duration": 0.5,
+      "name": "assistant - three"
+    },
+	{
+      "id": "boardMeeting/abStop4",
+      "duration": 1.0,
+      "name": "stop - together"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "boardMeeting_assistant",
+      "name": "assistant - stop",
+      "cues": [
+       {
+        "id": "boardMeeting/abStop1",
+        "beat": 0.0
+       },
+       {
+        "id": "boardMeeting/abStop2",
+        "beat": 0.66667
+       },
+	   {
+        "id": "boardMeeting/abStop3",
+        "beat": 1.0
+       },
+	   {
+        "id": "boardMeeting/abStop4",
+        "beat": 2.0
+       }
+      ]
+    }
+  ]
+}

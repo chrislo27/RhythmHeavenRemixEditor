@@ -1,0 +1,18 @@
+{
+  "gameID": "extraSFX",
+  "gameName": "Extra Sound Effects",
+  "cues": [
+    {
+      "id": "extraSFX/star",
+      "duration": 1,
+      "name": "skill star"
+    },
+	{
+      "id": "extraSFX/textAdvance",
+      "duration": 1,
+      "name": "text advance"
+    }
+  ],
+  "patterns": [
+  ]
+}
