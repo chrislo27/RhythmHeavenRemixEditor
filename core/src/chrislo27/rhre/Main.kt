@@ -64,7 +64,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.3.5"
+		ionium.templates.Main.version = "v2.3.6-SNAPSHOT"
 		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
 		VersionChecker
 
