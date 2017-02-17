@@ -143,8 +143,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			}
 			updatePalette()
 		} else {
-			paletteLerp.y = 1f
-			updatePalette()
+			if (paletteLerp.y != 1f) {
+				paletteLerp.y = 1f
+				updatePalette()
+			}
 		}
 
 		super.preRender()
