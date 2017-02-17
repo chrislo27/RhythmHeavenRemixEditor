@@ -72,17 +72,12 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	var helpTipsEnabled: Boolean = true
 	var inspectionsEnabled: Boolean = true
-	var jumpToD4J: Boolean = false
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
 			ScreenRegistry.get("version")
 		else
-			if (jumpToD4J) {
-				ScreenRegistry.get("d4j")
-			} else {
-				ScreenRegistry.get("editor")
-			}
+			ScreenRegistry.get("editor")
 	}
 
 	override fun getAssetLoadingScreenToUse(): Screen {
@@ -109,7 +104,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		preferences = Gdx.app.getPreferences("RHRE2")
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
-		jumpToD4J = preferences.getBoolean("jumpToD4J", jumpToD4J)
 	}
 
 	override fun setScreen(scr: Screen?) {
@@ -132,7 +126,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("new", NewScreen(this))
 		reg.add("soundboard", SoundboardScreen(this))
 		reg.add("version", VersionScreen(this))
-		reg.add("d4j", D4JAdvertisingScreen(this))
 	}
 
 	override fun preRender() {
