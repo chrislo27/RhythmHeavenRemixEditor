@@ -7,22 +7,26 @@
     {
       "id": "manzaiBirds/boing",
       "duration": 1,
-      "name": "BOING!"
+      "name": "BOING!",
+      "baseBpm": 95
     },
     {
       "id": "manzaiBirds/donaiyanen",
       "duration": 1.5,
-      "name": "donaiyanen!"
+      "name": "donaiyanen!",
+      "baseBpm": 95
     },
     {
       "id": "manzaiBirds/haihai1",
       "duration": 0.5,
-      "name": "hai-"
+      "name": "hai-",
+      "baseBpm": 95
     },
     {
       "id": "manzaiBirds/haihai2",
       "duration": 0.5,
-      "name": "-hai!"
+      "name": "-hai!",
+      "baseBpm": 95
     },
     {
       "id": "manzaiBirds/gameover",
