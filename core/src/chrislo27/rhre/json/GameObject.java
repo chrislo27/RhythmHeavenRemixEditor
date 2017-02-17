@@ -10,6 +10,8 @@ public class GameObject {
 
 	public PatternObject[] patterns;
 
+	public boolean usesGeneratorHelper = false;
+
 	public static class SoundObject {
 
 		public String id;

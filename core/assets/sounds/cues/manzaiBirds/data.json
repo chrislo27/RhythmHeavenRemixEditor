@@ -1,0 +1,35 @@
+{
+  "gameID": "manzaiBirds",
+  "gameName": "Manzai Birds",
+  "series": "side",
+  "usesGeneratorHelper": true,
+  "cues": [
+    {
+      "id": "manzaiBirds/boing",
+      "duration": 1,
+      "name": "BOING!"
+    },
+    {
+      "id": "manzaiBirds/donaiyanen",
+      "duration": 1.5,
+      "name": "donaiyanen!"
+    },
+    {
+      "id": "manzaiBirds/haihai1",
+      "duration": 0.5,
+      "name": "hai-"
+    },
+    {
+      "id": "manzaiBirds/haihai2",
+      "duration": 0.5,
+      "name": "-hai!"
+    },
+    {
+      "id": "manzaiBirds/gameover",
+      "duration": 1,
+      "name": "trapdoor opening"
+    }
+  ],
+  "patterns": [
+  ]
+}

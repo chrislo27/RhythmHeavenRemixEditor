@@ -42,7 +42,9 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 
 //			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
-			internal.add(new SoundEntity(remix, sc, pc.getBeat(), pc.getTrack(), sc.getDuration(), pc.getSemitone()));
+			internal.add(new SoundEntity(remix, sc, pc.getBeat(), pc.getTrack(),
+					sc.getCanAlterDuration() && pc.getDuration() > 0 ? pc.getDuration() : sc.getDuration(),
+					pc.getSemitone()));
 		});
 
 		if (internal.size() == 0)
@@ -62,7 +64,9 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 			this.bounds.height = highest.bounds.y + highest.bounds.height;
 			this.bounds.width = furthest.bounds.x + furthest.bounds.width;
 		} catch (NullPointerException e) {
-			throw new RuntimeException("Couldn't create pattern entity - highest or furthest was null (h: " + highest + ", f: " + furthest + ")");
+			throw new RuntimeException(
+					"Couldn't create pattern entity - highest or furthest was null (h: " + highest + ", f: " +
+							furthest + ")");
 		}
 		this.originalWidth = this.bounds.width;
 

@@ -75,6 +75,18 @@ public class GameRegistry implements Disposable {
 			List<Pattern> patterns = new ArrayList<>();
 			List<SoundCue> soundCues = new ArrayList<>();
 
+			if (gameObj.usesGeneratorHelper) {
+				GeneratorHelper gh = GeneratorHelpers.INSTANCE.getMap().get(gameObj.gameID);
+
+				if (gh != null) {
+					Main.logger.info("GeneratorHelper found for " + gameObj.gameID);
+
+					gh.process(gameFh, gameObj, patterns, soundCues);
+				} else {
+					Main.logger.warn("GeneratorHelper not found for " + gameObj.gameID);
+				}
+			}
+
 			for (GameObject.SoundObject so : gameObj.cues) {
 				soundCues.add(new SoundCue(so.id, so.fileExtension, so.name == null ? so.id : so.name,
 						so.deprecatedIDs == null
