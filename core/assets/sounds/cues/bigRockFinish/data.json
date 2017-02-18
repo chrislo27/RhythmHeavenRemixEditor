@@ -1,0 +1,120 @@
+{
+  "gameID": "bigRockFinish",
+  "gameName": "Big Rock Finish",
+  "series": "ds",
+  "cues": [
+	{
+      "id": "bigRockFinish/thankYou",
+      "duration": 1.0,
+      "name": "ghost - thank you!"
+    },
+	{
+      "id": "bigRockFinish/one",
+      "duration": 1.0,
+      "name": "count in - one"
+    },
+    {
+      "id": "bigRockFinish/two",
+      "duration": 1.0,
+      "name": "count in - two"
+    },
+	{
+      "id": "bigRockFinish/three",
+      "duration": 1.0,
+      "name": "count in - three"
+    },
+	{
+      "id": "bigRockFinish/ooh",
+      "duration": 1.0,
+      "name": "count in - ooh"
+    },
+    {
+      "id": "bigRockFinish/strum",
+      "duration": 1.0,
+	  "canAlterPitch": true,
+      "name": "ghost - strum"
+    },
+	{
+      "id": "bigRockFinish/strumFinal",
+      "duration": 2.0,
+	  "canAlterPitch": true,
+      "name": "ghost - last strum"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bigRockFinish_countIn8",
+      "name": "count in - 8 beats",
+      "cues": [
+       {
+        "id": "bigRockFinish/one",
+        "beat": 0.0
+       },
+	   {
+        "id": "bigRockFinish/two",
+        "beat": 2.0
+       },
+	   {
+        "id": "bigRockFinish/one",
+        "beat": 4.0
+       },
+	   {
+        "id": "bigRockFinish/two",
+        "beat": 5.0
+       },
+	   {
+        "id": "bigRockFinish/three",
+        "beat": 6.0
+       },
+	   {
+        "id": "bigRockFinish/ooh",
+        "beat": 7.0
+       }
+      ]
+    },
+	{
+      "id": "bigRockFinish_countIn4",
+      "name": "count in - 4 beats",
+      "cues": [
+	   {
+        "id": "bigRockFinish/one",
+        "beat": 0.0
+       },
+	   {
+        "id": "bigRockFinish/two",
+        "beat": 1.0
+       },
+	   {
+        "id": "bigRockFinish/three",
+        "beat": 2.0
+       },
+	   {
+        "id": "bigRockFinish/ooh",
+        "beat": 3.0
+       }
+      ]
+    },
+	{
+      "id": "bigRockFinish_strum",
+      "name": "strum",
+      "cues": [
+       {
+        "id": "bigRockFinish/strum",
+        "beat": 0.0
+       },
+	   {
+        "id": "bigRockFinish/strum",
+        "beat": 1.5
+       },
+	   {
+        "id": "bigRockFinish/strum",
+        "beat": 3.0
+       },
+	   {
+        "id": "bigRockFinish/strumFinal",
+        "beat": 4.0
+       }
+      ]
+    }
+  ]
+}

@@ -32,6 +32,16 @@
       "duration": 0.5,
       "name": "and"
     },
+	{
+      "id": "countIn/go1",
+      "duration": 0.5,
+      "name": "go - 1"
+    },
+	{
+      "id": "countIn/go2",
+      "duration": 0.5,
+      "name": "go - 2"
+    },
     {
       "id": "countIn/silence",
       "duration": 1,
