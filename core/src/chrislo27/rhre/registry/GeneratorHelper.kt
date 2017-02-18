@@ -73,7 +73,7 @@ manzaiBirds/umette_umena"""
 			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", 2.5f, 0, 0f, 0))
 			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", 3.0f, 0, 0f, 0))
 
-			patterns.add(Pattern("manzaiBirds_" + it.id, it.name, false, patternCues, true, mutableListOf()))
+			patterns.add(Pattern("manzaiBirds_" + it.id, it.name, false, patternCues, false, mutableListOf()))
 
 			// -----------------------------------------------------------
 
@@ -83,7 +83,7 @@ manzaiBirds/umette_umena"""
 			patternCues.add(Pattern.PatternCue("manzaiBirds/boing", 1.5f, 0, 0f, 0))
 			patternCues.add(Pattern.PatternCue("manzaiBirds/donaiyanen", 2.5f, 0, 0f, 0))
 
-			patterns.add(Pattern("manzaiBirds_" + it.id + "_boing", it.name + " BOING!", false, patternCues, true, mutableListOf()))
+			patterns.add(Pattern("manzaiBirds_" + it.id + "_boing", it.name + " BOING!", false, patternCues, false, mutableListOf()))
 
 		}
 
