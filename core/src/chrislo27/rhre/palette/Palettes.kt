@@ -25,6 +25,8 @@ abstract class AbstractPalette {
 	open val musicStartTracker: Color = Color(0.9f, 0f, 0f, 1f)
 	open val bpmTrackerSelected: Color by lazy { brighten(Color(bpmTracker), 0.5f) }
 
+	open val cueText: Color = Color(0f, 0f, 0f, 1f)
+
 	fun lerp(a: AbstractPalette, b: AbstractPalette, amt: Float) {
 		editorBg.set(a.editorBg).lerp(b.editorBg, amt)
 		staffLine.set(a.staffLine).lerp(b.staffLine, amt)
@@ -39,6 +41,7 @@ abstract class AbstractPalette {
 		bpmTracker.set(a.bpmTracker).lerp(b.bpmTracker, amt)
 		musicStartTracker.set(a.musicStartTracker).lerp(b.musicStartTracker, amt)
 		bpmTrackerSelected.set(a.bpmTrackerSelected).lerp(b.bpmTrackerSelected, amt)
+		cueText.set(a.cueText).lerp(b.cueText, amt)
 	}
 
 }
@@ -148,8 +151,11 @@ object PaletteUtils {
 					super.selectionBorder.a) ?: super.selectionBorder
 			override val beatTracker: Color = obj?.beatTracker?.convertToColor(super.beatTracker.a) ?: super.beatTracker
 			override val bpmTracker: Color = obj?.bpmTracker?.convertToColor(super.bpmTracker.a) ?: super.bpmTracker
+			override val bpmTrackerSelected: Color = obj?.bpmTrackerSelected?.convertToColor(super.bpmTrackerSelected.a) ?: super.bpmTrackerSelected
 			override val musicStartTracker: Color = obj?.musicStartTracker?.convertToColor(
 					super.musicStartTracker.a) ?: super.musicStartTracker
+
+			override val cueText: Color = obj?.cueText?.convertToColor(super.cueText.a) ?: super.cueText
 		}
 	}
 }

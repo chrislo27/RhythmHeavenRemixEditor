@@ -432,36 +432,35 @@ public class EditorStageSetup {
 
 						FileHandle example = folder.child("example.json");
 
-						if (!example.exists()) {
-							PaletteObject po = new PaletteObject() {
+						PaletteObject po = new PaletteObject() {
+							{
+								LightPalette lp = new LightPalette();
 
-								{
-									LightPalette lp = new LightPalette();
+								editorBg = PaletteUtils.toHex(lp.getEditorBg());
+								staffLine = PaletteUtils.toHex(lp.getStaffLine());
 
-									editorBg = PaletteUtils.toHex(lp.getEditorBg());
-									staffLine = PaletteUtils.toHex(lp.getStaffLine());
+								soundCue = PaletteUtils.toHex(lp.getSoundCue().getBg());
+								stretchableSoundCue = PaletteUtils.toHex(lp.getStretchableSoundCue().getBg());
+								patternCue = PaletteUtils.toHex(lp.getPattern().getBg());
+								stretchablePatternCue = PaletteUtils.toHex(lp.getStretchablePattern().getBg());
 
-									soundCue = PaletteUtils.toHex(lp.getSoundCue().getBg());
-									stretchableSoundCue = PaletteUtils.toHex(lp.getStretchableSoundCue().getBg());
-									patternCue = PaletteUtils.toHex(lp.getPattern().getBg());
-									stretchablePatternCue = PaletteUtils.toHex(lp.getStretchablePattern().getBg());
+								selectionCueTint = PaletteUtils.toHex(lp.getSelectionTint());
 
-									selectionCueTint = PaletteUtils.toHex(lp.getSelectionTint());
+								selectionBg = PaletteUtils.toHex(lp.getSelectionFill());
+								selectionBorder = PaletteUtils.toHex(lp.getSelectionBorder());
 
-									selectionBg = PaletteUtils.toHex(lp.getSelectionFill());
-									selectionBorder = PaletteUtils.toHex(lp.getSelectionBorder());
+								beatTracker = PaletteUtils.toHex(lp.getBeatTracker());
+								bpmTracker = PaletteUtils.toHex(lp.getBpmTracker());
+								bpmTrackerSelected = PaletteUtils.toHex(lp.getBpmTrackerSelected());
+								musicStartTracker = PaletteUtils.toHex(lp.getMusicStartTracker());
 
-									beatTracker = PaletteUtils.toHex(lp.getBeatTracker());
-									bpmTracker = PaletteUtils.toHex(lp.getBpmTracker());
-									musicStartTracker = PaletteUtils.toHex(lp.getMusicStartTracker());
-								}
+								cueText = PaletteUtils.toHex(lp.getCueText());
+							}
+						};
 
-							};
-
-							example.writeString(
-									new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class),
-									false, "UTF-8");
-						}
+						example.writeString(
+								new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class), false,
+								"UTF-8");
 					}
 
 					if (folder.exists() && folder.isDirectory()) {

@@ -199,7 +199,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 		batch.setColor(1, 1, 1, 1);
 
 		main.getFont().getData().setScale(0.5f);
-		main.getFont().setColor(0, 0, 0, 1);
+		main.getFont().setColor(palette.getCueText());
 		String name = pattern.getName();
 		float targetWidth = bounds.getWidth() * PX_WIDTH - 8;
 		float height = Utils.getHeightWithWrapping(main.getFont(), name, targetWidth);

@@ -17,6 +17,9 @@ public class PaletteObject {
 
 	public String beatTracker;
 	public String bpmTracker;
+	public String bpmTrackerSelected;
 	public String musicStartTracker;
+
+	public String cueText;
 
 }
