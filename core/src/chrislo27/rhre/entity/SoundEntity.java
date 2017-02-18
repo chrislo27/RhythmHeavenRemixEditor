@@ -42,9 +42,8 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	}
 
 	@Override
-	public void attemptLoadSounds() {
-		cue.getIntroSound();
-		cue.getSoundObj();
+	public boolean attemptLoadSounds() {
+		return cue.attemptLoadSounds();
 	}
 
 	@Override

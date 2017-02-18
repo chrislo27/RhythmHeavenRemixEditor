@@ -82,10 +82,12 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 	}
 
 	@Override
-	public void attemptLoadSounds() {
+	public boolean attemptLoadSounds() {
+		boolean b = false;
 		for (SoundEntity se : internal) {
-			se.attemptLoadSounds();
+			b |= se.attemptLoadSounds();
 		}
+		return b;
 	}
 
 	@Override

@@ -224,7 +224,10 @@ class Remix {
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING) {
 			if (sweepLoad > -1) {
-				entities[sweepLoad++].attemptLoadSounds()
+				while (sweepLoad < entities.size){
+					if (entities[sweepLoad++].attemptLoadSounds())
+						break
+				}
 
 				if (sweepLoad >= entities.size) {
 					sweepLoad = -1

@@ -55,7 +55,8 @@ public abstract class Entity {
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
-	public void attemptLoadSounds() {
+	public boolean attemptLoadSounds() {
+		return false;
 	}
 
 	public final void setBatchColorFromState(SpriteBatch batch, Color c, Color selectionTint, boolean selected) {

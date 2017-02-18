@@ -14,13 +14,30 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 
 	var inspectionFunctions: List<InspectionFunction> = listOf()
 
+	fun getLazySoundObj(): LazySound {
+		return AssetRegistry.getAsset("soundCue_$id", LazySound::class.java)!!
+	}
+
+	fun getLazyIntroSoundObj(): LazySound? {
+		if (introSound == null) return null
+		return AssetRegistry.getAsset("soundCue_$introSound", LazySound::class.java)
+	}
+
 	fun getSoundObj(): Sound {
-		return AssetRegistry.getAsset("soundCue_$id", LazySound::class.java)!!.sound
+		return getLazySoundObj().sound
 	}
 
 	fun getIntroSoundObj(): Sound? {
-		if (introSound == null) return null
-		return AssetRegistry.getAsset("soundCue_$introSound", LazySound::class.java)!!.sound
+		return getLazyIntroSoundObj()?.sound
+	}
+
+	fun attemptLoadSounds(): Boolean {
+		val b: Boolean = !getLazySoundObj().isLoaded or (!(getLazyIntroSoundObj()?.isLoaded ?: false))
+
+		getSoundObj()
+		getIntroSoundObj()
+
+		return b
 	}
 
 	fun shouldBeStopped() = canAlterDuration || loops
