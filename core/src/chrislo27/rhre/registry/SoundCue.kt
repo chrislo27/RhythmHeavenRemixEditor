@@ -1,6 +1,7 @@
 package chrislo27.rhre.registry
 
 import chrislo27.rhre.inspections.InspectionFunction
+import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
@@ -14,12 +15,12 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 	var inspectionFunctions: List<InspectionFunction> = listOf()
 
 	fun getSoundObj(): Sound {
-		return AssetRegistry.getSound("soundCue_$id")
+		return AssetRegistry.getAsset("soundCue_$id", LazySound::class.java)!!.sound
 	}
 
 	fun getIntroSoundObj(): Sound? {
 		if (introSound == null) return null
-		return AssetRegistry.getSound("soundCue_$introSound")
+		return AssetRegistry.getAsset("soundCue_$introSound", LazySound::class.java)!!.sound
 	}
 
 	fun shouldBeStopped() = canAlterDuration || loops

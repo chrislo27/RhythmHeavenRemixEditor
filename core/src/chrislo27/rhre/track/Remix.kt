@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
 import ionium.registry.AssetRegistry
+import ionium.templates.Main
 
 class Remix {
 
@@ -58,6 +59,8 @@ class Remix {
 	val inspections: Inspections = Inspections(this)
 
 	var metadata: RemixObject.MetadataObject? = RemixObject.MetadataObject()
+
+	var sweepLoad: Int = -1
 
 	companion object {
 		fun writeToObject(remix: Remix): RemixObject {
@@ -147,6 +150,7 @@ class Remix {
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
+			remix.sweepLoad = 0
 
 			return remix
 		}
@@ -218,8 +222,18 @@ class Remix {
 	fun getBeat(): Float = beat
 
 	fun update(delta: Float): Unit {
-		if (playingState != PlayingState.PLAYING)
+		if (playingState != PlayingState.PLAYING) {
+			if (sweepLoad > -1) {
+				entities[sweepLoad++].attemptLoadSounds()
+
+				if (sweepLoad >= entities.size) {
+					sweepLoad = -1
+					Main.logger.info("Finished sweep-load")
+				}
+			}
+
 			return@update
+		}
 
 		if (music != null && (!musicPlayed || !music!!.music.isPlaying) && beat >= tempoChanges.secondsToBeats(
 				musicStartTime)) {

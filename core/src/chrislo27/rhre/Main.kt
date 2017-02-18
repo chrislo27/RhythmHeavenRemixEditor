@@ -2,6 +2,8 @@ package chrislo27.rhre
 
 import chrislo27.rhre.init.DefAssetLoader
 import chrislo27.rhre.init.VisualAssetLoader
+import chrislo27.rhre.lazysound.LazySound
+import chrislo27.rhre.lazysound.LazySoundLoader
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
@@ -12,6 +14,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -88,6 +91,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		ionium.templates.Main.version = "v2.3.6-SNAPSHOT"
 		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
 		VersionChecker
+		AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
+				InternalFileHandleResolver()))
 
 		super.create()
 

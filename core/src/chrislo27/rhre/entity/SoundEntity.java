@@ -42,6 +42,12 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	}
 
 	@Override
+	public void attemptLoadSounds() {
+		cue.getIntroSound();
+		cue.getSoundObj();
+	}
+
+	@Override
 	public boolean isStretchable() {
 		return cue.getCanAlterDuration();
 	}

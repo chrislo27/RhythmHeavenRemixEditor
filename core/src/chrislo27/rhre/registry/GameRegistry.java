@@ -4,10 +4,10 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.inspections.InspectionPostfix;
 import chrislo27.rhre.json.GameObject;
+import chrislo27.rhre.lazysound.LazySound;
 import chrislo27.rhre.util.CustomSoundUtil;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Disposable;
@@ -262,7 +262,7 @@ public class GameRegistry implements Disposable {
 				String path = (sc.getSoundFolder() == null ? "sounds/cues/" : sc.getSoundFolder()) + sc.getId() + "." +
 						sc.getFileExtension();
 				manager.load(AssetMap.add("soundCue_" + sc.getId(),
-						path), Sound.class);
+						path), LazySound.class);
 //				sc.loadALMusic(path);
 			}));
 			GameRegistry.instance().games.values().forEach(g -> manager.load(AssetMap.add("gameIcon_" + g.getId(),

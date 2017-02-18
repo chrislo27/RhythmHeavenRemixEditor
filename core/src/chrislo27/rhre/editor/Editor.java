@@ -1045,6 +1045,8 @@ public class Editor extends InputAdapter implements Disposable {
 											.filter(it -> it.getId().equals(p.getCues().get(0).getId())).findFirst()
 											.orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
 
+							en.attemptLoadSounds();
+
 							remix.getEntities().add(en);
 							remix.getSelection().add(en);
 

@@ -35,7 +35,7 @@ public abstract class Entity {
 
 	}
 
-	public void adjustPitch(int semitoneChange, int min, int max){
+	public void adjustPitch(int semitoneChange, int min, int max) {
 
 	}
 
@@ -55,12 +55,12 @@ public abstract class Entity {
 
 	public abstract void render(Main main, AbstractPalette palette, SpriteBatch batch, boolean selected);
 
-	public final void setBatchColorFromState(SpriteBatch batch, Color c, Color selectionTint,
-											 boolean selected) {
-		batch.setColor(selected
-				? tmp
-				.set(c.r * (1 + selectionTint.r), c.g * (1 + selectionTint.g), c.b * (1 + selectionTint.b), c.a)
-				: c);
+	public void attemptLoadSounds() {
+	}
+
+	public final void setBatchColorFromState(SpriteBatch batch, Color c, Color selectionTint, boolean selected) {
+		batch.setColor(selected ? tmp
+				.set(c.r * (1 + selectionTint.r), c.g * (1 + selectionTint.g), c.b * (1 + selectionTint.b), c.a) : c);
 	}
 
 	protected final void renderRect(SpriteBatch batch, EntityColors palette, Color selectionTint, boolean selected,

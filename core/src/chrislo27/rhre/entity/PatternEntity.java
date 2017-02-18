@@ -82,6 +82,13 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 	}
 
 	@Override
+	public void attemptLoadSounds() {
+		for (SoundEntity se : internal) {
+			se.attemptLoadSounds();
+		}
+	}
+
+	@Override
 	public void onLengthChange(float old) {
 		super.onLengthChange(old);
 
