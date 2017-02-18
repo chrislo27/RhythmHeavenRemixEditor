@@ -97,7 +97,7 @@ class Remix {
 				}
 
 				obj.metadata = metadata ?: RemixObject.MetadataObject()
-				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry.instance()["countIn"]}
+				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry.instance()["countIn"] }
 						.map {
 							it as HasGame
 							return@map it.game.name
@@ -224,7 +224,7 @@ class Remix {
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING) {
 			if (sweepLoad > -1) {
-				while (sweepLoad < entities.size){
+				while (sweepLoad < entities.size) {
 					if (entities[sweepLoad++].attemptLoadSounds())
 						break
 				}
@@ -291,8 +291,8 @@ class Remix {
 			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
 		}
 
-		if (tempoChanges.getTempoAt(beat) != lastBpm) {
-//			Gdx.app.postRunnable(AudioChangePitch(music!!.music))
+		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {
+//			MusicUtils.changePitch(music!!.music as OpenALMusic, tempoChanges.getTempoAt(beat) / 120)
 		}
 
 		val filtered = entities.filter { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame }
