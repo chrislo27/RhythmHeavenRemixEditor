@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.MathUtils
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
@@ -49,7 +50,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 					"Supported sound files (.wav, .ogg, .mp3)", "wav", "ogg", "mp3")
 
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
-			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
+			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a music file"
 			setFileFilter(fileFilter)
 		}
@@ -77,7 +78,8 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 			main.font.draw(main.batch,
 						   failedToLoad!!,
 						   Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.8f)
+						   Gdx.graphics.height * 0.8f,
+						   Gdx.graphics.width * 0.9f, Align.left, true)
 		}
 
 		main.font.setColor(1f, 1f, 1f, 1f)
