@@ -1244,7 +1244,7 @@ public class Editor extends InputAdapter implements Disposable {
 						MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
 				return true;
 			}
-		} else {
+		} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
 					remix.getSelection().forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
