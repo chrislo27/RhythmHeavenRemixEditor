@@ -205,11 +205,13 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		font = ttfGenerator.generateFont(ttfParam)
 		font.data.markupEnabled = true
+//		font.setUseIntegerPositions(false)
 		font.setFixedWidthGlyphs("0123456789")
 
 		ttfParam.size *= 4
 		biggerFont = ttfGenerator.generateFont(ttfParam)
 		biggerFont.data.markupEnabled = true
+//		biggerFont.setUseIntegerPositions(false)
 		biggerFont.setFixedWidthGlyphs("0123456789")
 
 		ttfParam.borderWidth = 1.5f
@@ -217,12 +219,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		fontBordered = ttfGenerator.generateFont(ttfParam)
 		fontBordered.data.markupEnabled = true
+//		fontBordered.setUseIntegerPositions(false)
 		fontBordered.setFixedWidthGlyphs("0123456789")
 
 		ttfParam.size *= 4
 		ttfParam.borderWidth *= 4f
 		biggerFontBordered = ttfGenerator.generateFont(ttfParam)
 		biggerFontBordered.data.markupEnabled = true
+//		biggerFontBordered.setUseIntegerPositions(false)
 		biggerFontBordered.setFixedWidthGlyphs("0123456789")
 
 		ttfGenerator.dispose()
