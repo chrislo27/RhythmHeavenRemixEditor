@@ -63,7 +63,7 @@ class Remix {
 	var sweepLoad: Int = -1
 
 	companion object {
-		fun writeToObject(remix: Remix): RemixObject {
+		fun writeToJsonObject(remix: Remix): RemixObject {
 			with(remix) {
 				val obj = RemixObject()
 
@@ -107,7 +107,7 @@ class Remix {
 			}
 		}
 
-		fun readFromObject(obj: RemixObject): Remix {
+		fun readFromJsonObject(obj: RemixObject): Remix {
 			val remix: Remix = Remix()
 
 			remix.playbackStart = obj.playbackStart

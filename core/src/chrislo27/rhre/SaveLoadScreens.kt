@@ -97,7 +97,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 						val handle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
-						val obj: RemixObject = Remix.writeToObject(es.editor.remix)
+						val obj: RemixObject = Remix.writeToJsonObject(es.editor.remix)
 
 						picker.selectedFile.createNewFile()
 
@@ -239,7 +239,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
-				es.editor.remix = Remix.readFromObject(remixObj!!)
+				es.editor.remix = Remix.readFromJsonObject(remixObj!!)
 				es.editor.file = remixObj?.fileHandle
 
 				main.screen = ScreenRegistry.get("editor")

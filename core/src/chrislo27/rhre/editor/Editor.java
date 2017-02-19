@@ -712,7 +712,7 @@ public class Editor extends InputAdapter implements Disposable {
 			try {
 				sibling.file().createNewFile();
 
-				sibling.writeString(new Gson().toJson(Remix.Companion.writeToObject(remix)), false, "UTF-8");
+				sibling.writeString(new Gson().toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
 
 				autosaveMessageShow = 3f;
 			} catch (IOException e) {
