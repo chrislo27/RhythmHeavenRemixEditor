@@ -1,11 +1,14 @@
 package chrislo27.rhre.desktop;
 
 import chrislo27.rhre.Main;
+import chrislo27.rhre.lazysound.LazySound;
 import com.badlogic.gdx.Files;
 import desktop.ArgumentInferredLwjglAppConfig;
 import desktop.GameLwjglApp;
 import ionium.registry.GlobalVariables;
 import ionium.util.Logger;
+
+import java.util.Arrays;
 
 public class DesktopLauncher {
 	private static Logger logger;
@@ -32,6 +35,7 @@ public class DesktopLauncher {
 		config.addIcon("images/icon/icon16.png", Files.FileType.Internal);
 
 		logger = new Logger("", com.badlogic.gdx.utils.Logger.DEBUG);
+		LazySound.Companion.setForceLoadNow(Arrays.stream(args).anyMatch(s -> s.equalsIgnoreCase("--force-load-lazy-sounds")));
 		new GameLwjglApp(new Main(logger), config, logger);
 	}
 }

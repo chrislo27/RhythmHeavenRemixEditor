@@ -8,6 +8,10 @@ import com.badlogic.gdx.utils.Disposable
 
 class LazySound(handle: FileHandle) : Disposable {
 
+	companion object {
+		var forceLoadNow: Boolean = false
+	}
+
 	val sound: Sound by lazy {
 //		val t = System.nanoTime()
 		val s = Gdx.audio.newSound(handle)

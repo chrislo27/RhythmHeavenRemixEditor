@@ -18,7 +18,12 @@ class LazySoundLoader(resolver: FileHandleResolver) : SynchronousAssetLoader<Laz
 
 	override fun load(assetManager: AssetManager?, fileName: String?, file: FileHandle,
 					  parameter: LazySoundLoaderParameter?): LazySound {
-		return LazySound(file)
+		val ls = LazySound(file)
+
+		if (LazySound.forceLoadNow)
+			ls.sound
+
+		return ls
 	}
 }
 
