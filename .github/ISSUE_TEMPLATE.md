@@ -4,21 +4,20 @@
 already
 
 ### Description
-[Description of the issue]
+[insert description of the issue]
 
-### Steps to Reproduce
+### Steps to Reproduce the Problem
 1. [First step]
 2. [Second step]
 
-...
 
-**Expected behavior:** [What was supposed to happen]
+**Expected behavior:** [insert what was supposed to happen here]
 
-**Actual behavior:** [What actually happened]
+**Actual behavior:** [insert what actually happened here]
 
-**Stacktrace (if applicable):** [PASTEBIN or HASTEBIN link to the stacktrace]
+**Stacktrace/error log:** [copy the console output, put it on Pastebin or Hastebin, and put the link here]
 
-**Version affected:** [The version of RHRE2]
+**Version affected:** [insert the version of RHRE2 here]
 
 ### Additional Information
-[Any other information that may be able to help me with the problem]
+[insert any other information that may be able to help me with the problem here]
