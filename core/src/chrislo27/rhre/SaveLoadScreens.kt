@@ -218,11 +218,11 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 							   Gdx.graphics.height * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
 							   Gdx.graphics.width * 0.9f,
 							   Align.left, true)
-			} else {
-				main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
-							   Gdx.graphics.width * 0.05f,
-							   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
 			}
+
+			main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
+						   Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
 		}
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
 					   Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f)
@@ -236,7 +236,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && missingContent.isEmpty()) {
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 				es.editor.remix = Remix.readFromObject(remixObj!!)
