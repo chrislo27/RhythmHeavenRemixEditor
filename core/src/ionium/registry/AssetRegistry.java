@@ -1,5 +1,6 @@
 package ionium.registry;
 
+import chrislo27.rhre.lazysound.LazySound;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
@@ -51,6 +52,7 @@ public final class AssetRegistry implements Disposable {
 	private Texture missingTexture;
 
 	private Array<Sound> tempSoundArray;
+	private Array<LazySound> tempLazySoundArray;
 	private Array<Music> tempMusicArray;
 
 	private void onInstantiate() {
@@ -288,8 +290,17 @@ public final class AssetRegistry implements Disposable {
 			tempSoundArray = manager.getAll(Sound.class, new Array<Sound>());
 		}
 
+		if (tempLazySoundArray == null) {
+			tempLazySoundArray = manager.getAll(LazySound.class, new Array<>());
+		}
+
 		for (Sound s : tempSoundArray) {
 			s.pause();
+		}
+
+		for (LazySound s : tempLazySoundArray) {
+			if (s.isLoaded())
+				s.getSound().pause();
 		}
 	}
 
@@ -298,8 +309,17 @@ public final class AssetRegistry implements Disposable {
 			tempSoundArray = manager.getAll(Sound.class, new Array<Sound>());
 		}
 
+		if (tempLazySoundArray == null) {
+			tempLazySoundArray = manager.getAll(LazySound.class, new Array<>());
+		}
+
 		for (Sound s : tempSoundArray) {
 			s.resume();
+		}
+
+		for (LazySound s : tempLazySoundArray) {
+			if (s.isLoaded())
+				s.getSound().resume();
 		}
 	}
 
@@ -308,8 +328,17 @@ public final class AssetRegistry implements Disposable {
 			tempSoundArray = manager.getAll(Sound.class, new Array<Sound>());
 		}
 
+		if (tempLazySoundArray == null) {
+			tempLazySoundArray = manager.getAll(LazySound.class, new Array<>());
+		}
+
 		for (Sound s : tempSoundArray) {
 			s.stop();
+		}
+
+		for (LazySound s : tempLazySoundArray) {
+			if (s.isLoaded())
+				s.getSound().stop();
 		}
 	}
 
