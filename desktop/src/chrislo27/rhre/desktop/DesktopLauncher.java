@@ -3,6 +3,7 @@ package chrislo27.rhre.desktop;
 import chrislo27.rhre.Main;
 import chrislo27.rhre.lazysound.LazySound;
 import com.badlogic.gdx.Files;
+import com.badlogic.gdx.graphics.Color;
 import desktop.ArgumentInferredLwjglAppConfig;
 import desktop.GameLwjglApp;
 import ionium.registry.GlobalVariables;
@@ -26,6 +27,8 @@ public class DesktopLauncher {
 		config.resizable = false;
 		config.vSyncEnabled = true;
 		config.samples = 0;
+		config.initialBackgroundColor = Color.BLACK;
+		config.allowSoftwareMode = true;
 
 		config.inferFromArguments();
 
