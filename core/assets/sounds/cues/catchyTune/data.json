@@ -41,6 +41,7 @@
     {
       "id": "catchyTune_leftOrange",
       "name": "left - orange",
+      "deprecatedIDs": ["catchyTune_orange"],
       "cues": [
        {
         "id": "catchyTune/leftOrange",
@@ -85,6 +86,7 @@
     {
       "id": "catchyTune_leftPineapple",
       "name": "left - pineapple",
+      "deprecatedIDs": ["catchyTune_pineapple"],
       "cues": [
        {
         "id": "catchyTune/leftPineapple",
