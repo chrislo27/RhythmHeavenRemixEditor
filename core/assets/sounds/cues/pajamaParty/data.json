@@ -1,0 +1,222 @@
+{
+  "gameID": "pajamaParty",
+  "gameName": "Pajama Party",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "pajamaParty/three1",
+      "duration": 0.5,
+      "name": "three - 1"
+    },
+    {
+      "id": "pajamaParty/three2",
+      "duration": 0.5,
+      "name": "three - 2"
+    },
+	{
+      "id": "pajamaParty/three3",
+      "duration": 0.5,
+      "name": "three - 3"
+    },
+    {
+      "id": "pajamaParty/five1",
+      "duration": 0.5,
+      "name": "five - 1"
+    },
+	{
+      "id": "pajamaParty/five2",
+      "duration": 0.5,
+      "name": "five - 2"
+    },
+	{
+      "id": "pajamaParty/five3",
+      "duration": 0.5,
+      "name": "five - 3"
+    },
+	{
+      "id": "pajamaParty/five4",
+      "duration": 0.5,
+      "name": "five - 4"
+    },
+	{
+      "id": "pajamaParty/five5",
+      "duration": 1.0,
+      "name": "five - 5"
+    },
+    {
+      "id": "pajamaParty/siesta1",
+      "duration": 0.5,
+      "name": "siesta - 1"
+    },
+	{
+      "id": "pajamaParty/siesta2",
+      "duration": 0.5,
+      "name": "siesta - 2"
+    },
+	{
+      "id": "pajamaParty/siesta3",
+      "duration": 0.5,
+      "name": "siesta - 3"
+    },
+	{
+      "id": "pajamaParty/siesta4",
+      "duration": 0.5,
+      "name": "siesta - 4"
+    },
+	{
+      "id": "pajamaParty/siesta5",
+      "duration": 0.5,
+      "name": "siesta - 5"
+    },
+	{
+      "id": "pajamaParty/siesta6",
+      "duration": 0.5,
+      "name": "siesta - 6"
+    },
+	{
+      "id": "pajamaParty/throw1",
+      "duration": 0.5,
+      "name": "throw - 1"
+    },
+	{
+      "id": "pajamaParty/throw2",
+      "duration": 0.5,
+      "name": "throw - 2"
+    },
+	{
+      "id": "pajamaParty/throw3",
+      "duration": 0.5,
+      "name": "throw - 3"
+    },
+	{
+      "id": "pajamaParty/throw4",
+      "duration": 0.5,
+      "name": "throw - 4"
+    },
+	{
+      "id": "pajamaParty/throw5",
+      "duration": 1.0,
+      "name": "throw - 5"
+    },
+	{
+      "id": "pajamaParty/throw6",
+      "duration": 1.0,
+      "name": "throw - 6"
+    },
+	{
+      "id": "pajamaParty/throw7",
+      "duration": 0.5,
+      "name": "throw - 7"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pajamaParty_three",
+      "name": "three",
+      "cues": [
+       {
+        "id": "pajamaParty/three1",
+        "beat": 0.0
+       },
+	   {
+        "id": "pajamaParty/three2",
+        "beat": 1.0
+       },
+       {
+        "id": "pajamaParty/three3",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "pajamaParty_five",
+      "name": "five",
+      "cues": [
+       {
+        "id": "pajamaParty/five1",
+        "beat": 0.0
+       },
+	   {
+        "id": "pajamaParty/five2",
+        "beat": 0.5
+       },
+       {
+        "id": "pajamaParty/five3",
+        "beat": 1.0
+       },
+	   {
+        "id": "pajamaParty/five4",
+        "beat": 1.5
+       },
+	   {
+        "id": "pajamaParty/five5",
+        "beat": 2.0
+       }
+      ]
+    },
+	{
+      "id": "pajamaParty_siesta",
+      "name": "siesta",
+      "cues": [
+       {
+        "id": "pajamaParty/siesta1",
+        "beat": 0.0
+       },
+       {
+        "id": "pajamaParty/siesta2",
+        "beat": 0.5
+       },
+	   {
+        "id": "pajamaParty/siesta3",
+        "beat": 1.0
+       },
+	   {
+        "id": "pajamaParty/siesta4",
+        "beat": 2.5
+       },
+	   {
+        "id": "pajamaParty/siesta5",
+        "beat": 4.0
+       },
+	   {
+        "id": "pajamaParty/siesta6",
+        "beat": 7.0
+       }
+      ]
+    },
+	{
+      "id": "pajamaParty_throw",
+      "name": "throw pillow",
+      "cues": [
+       {
+        "id": "pajamaParty/throw1",
+        "beat": 0.0
+       },
+       {
+        "id": "pajamaParty/throw2",
+        "beat": 0.5
+       },
+	   {
+        "id": "pajamaParty/throw3",
+        "beat": 1.0
+       },
+	   {
+        "id": "pajamaParty/throw4",
+        "beat": 1.5
+       },
+	   {
+        "id": "pajamaParty/throw5",
+        "beat": 2.0
+       },
+	   {
+        "id": "pajamaParty/throw6",
+        "beat": 3.0
+       },
+	   {
+        "id": "pajamaParty/throw7",
+        "beat": 7.0
+       }
+      ]
+    }
+  ]
+}

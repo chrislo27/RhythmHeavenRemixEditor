@@ -1,0 +1,221 @@
+{
+  "gameID": "superSamuraiSlice",
+  "gameName": "Super Samurai Slice",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "superSamuraiSlice/appear",
+      "duration": 0.5,
+      "name": "demon - appear"
+    },
+    {
+      "id": "superSamuraiSlice/explode",
+      "duration": 0.5,
+      "name": "demon - explode"
+    },
+	{
+      "id": "superSamuraiSlice/slice1",
+      "duration": 0.5,
+      "name": "samurai - slice - 1"
+    },
+    {
+      "id": "superSamuraiSlice/slice2",
+      "duration": 0.5,
+      "name": "samurai - slice - 2"
+    },
+	{
+      "id": "superSamuraiSlice/slice3",
+      "duration": 0.5,
+      "name": "samurai - slice - 3"
+    },
+	{
+      "id": "superSamuraiSlice/bigDemon1",
+      "duration": 0.5,
+      "name": "big demon - appear - 1"
+    },
+	{
+      "id": "superSamuraiSlice/bigDemon2",
+      "duration": 0.5,
+      "name": "big demon - appear - 2"
+    },
+	{
+      "id": "superSamuraiSlice/bigDemon3",
+      "duration": 0.5,
+      "name": "big demon - appear - 3"
+    },
+	{
+      "id": "superSamuraiSlice/bigDemonSword",
+      "duration": 0.25,
+      "name": "big demon - sword"
+    },
+	{
+      "id": "superSamuraiSlice/bigDemonSlice",
+      "duration": 2.0,
+      "name": "big demon - slice"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "superSamuraiSlice_demon",
+      "name": "demon",
+      "cues": [
+       {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice1",
+        "beat": 2.0
+       },
+       {
+        "id": "superSamuraiSlice/explode",
+        "beat": 3.0
+       }
+      ]
+    },
+	{
+      "id": "superSamuraiSlice_demonTwo",
+      "name": "two demons",
+      "cues": [
+       {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.0
+       },
+	   {
+        "id": "superSamuraiSlice/appear",
+        "beat": 1.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice1",
+        "beat": 2.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice2",
+        "beat": 3.0
+       },
+       {
+        "id": "superSamuraiSlice/explode",
+        "beat": 4.0
+       },
+	   {
+        "id": "superSamuraiSlice/explode",
+        "beat": 5.0
+       }
+      ]
+    },
+	{
+      "id": "superSamuraiSlice_demonTwoFast",
+      "name": "two demons - fast",
+      "cues": [
+       {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.0
+       },
+	   {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.5
+       },
+	   {
+        "id": "superSamuraiSlice/slice1",
+        "beat": 2.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice2",
+        "beat": 2.5
+       },
+       {
+        "id": "superSamuraiSlice/explode",
+        "beat": 3.0
+       },
+	   {
+        "id": "superSamuraiSlice/explode",
+        "beat": 3.5
+       }
+      ]
+    },
+	{
+      "id": "superSamuraiSlice_demonThree",
+      "name": "three demons",
+      "cues": [
+       {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.0
+       },
+	   {
+        "id": "superSamuraiSlice/appear",
+        "beat": 0.5
+       },
+	   {
+        "id": "superSamuraiSlice/appear",
+        "beat": 1.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice1",
+        "beat": 2.0
+       },
+	   {
+        "id": "superSamuraiSlice/slice2",
+        "beat": 2.5
+       },
+       {
+        "id": "superSamuraiSlice/slice3",
+        "beat": 3.0
+       },
+	   {
+        "id": "superSamuraiSlice/explode",
+        "beat": 4.0
+       },
+	   {
+        "id": "superSamuraiSlice/explode",
+        "beat": 4.5
+       },
+	   {
+        "id": "superSamuraiSlice/explode",
+        "beat": 5.0
+       }
+      ]
+    },
+	{
+      "id": "superSamuraiSlice_bigDemon",
+      "name": "big demon",
+      "cues": [
+       {
+        "id": "superSamuraiSlice/bigDemon1",
+        "beat": 0.0
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemon2",
+        "beat": 0.5
+       },
+       {
+        "id": "superSamuraiSlice/bigDemon3",
+        "beat": 1.0
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSword",
+        "beat": 3.0
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSword",
+        "beat": 3.5
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSword",
+        "beat": 3.75
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSword",
+        "beat": 4.0
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSword",
+        "beat": 4.5
+       },
+	   {
+        "id": "superSamuraiSlice/bigDemonSlice",
+        "beat": 5.0
+       }
+      ]
+    }
+  ]
+}
