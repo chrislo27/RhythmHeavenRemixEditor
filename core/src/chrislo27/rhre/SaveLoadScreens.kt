@@ -36,9 +36,9 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a directory to save in"
-			fileFilter = bothFileFilter
-			addChoosableFileFilter(bundledFileFilter)
+			fileFilter = bundledFileFilter
 			addChoosableFileFilter(dataFileFilter)
+			addChoosableFileFilter(bothFileFilter)
 		}
 	}
 
