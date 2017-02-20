@@ -104,7 +104,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 							if (picker.selectedFile.extension != "rhre2") {
 								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".rhre2")
 							}
-						} else if (picker.fileFilter === bundledFileFilter) {
+						} else if (picker.fileFilter === bundledFileFilter || picker.fileFilter === bothFileFilter) {
 							if (picker.selectedFile.extension != "brhre2") {
 								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".brhre2")
 							}
