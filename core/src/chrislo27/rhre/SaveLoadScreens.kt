@@ -17,21 +17,26 @@ import ionium.screen.Updateable
 import ionium.util.DebugSetting
 import ionium.util.i18n.Localization
 import java.io.File
+import java.io.FileOutputStream
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
+
+val dataFileFilter = FileNameExtensionFilter(
+		"RHRE2 remix data file", "rhre2")
+val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file", "brhre2")
 
 class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
 		init {
-			val fileFilter = FileNameExtensionFilter(
-					"RHRE2 remix file", "rhre2")
-
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a directory to save in"
-			setFileFilter(fileFilter)
+			fileFilter = dataFileFilter
+			addChoosableFileFilter(bundledFileFilter)
 		}
 	}
 
@@ -90,25 +95,38 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
-						if (picker.selectedFile.extension != "rhre2") {
-							picker.selectedFile = File(picker.selectedFile.canonicalPath + ".rhre2")
-						}
-
 						val handle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
+
+						if (picker.fileFilter === dataFileFilter) {
+							if (picker.selectedFile.extension != "rhre2") {
+								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".rhre2")
+							}
+						} else if (picker.fileFilter === bundledFileFilter) {
+							if (picker.selectedFile.extension != "brhre2") {
+								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".brhre2")
+							}
+						}
 
 						val obj: RemixObject = Remix.writeToJsonObject(es.editor.remix)
 
 						picker.selectedFile.createNewFile()
 
-						val gsonBuilder = GsonBuilder()
-						if (DebugSetting.debug)
-							gsonBuilder.setPrettyPrinting()
-						val json: String = gsonBuilder.create().toJson(obj)
+						if (picker.fileFilter === dataFileFilter) {
+							val gsonBuilder = GsonBuilder()
+							if (DebugSetting.debug)
+								gsonBuilder.setPrettyPrinting()
+							val json: String = gsonBuilder.create().toJson(obj)
+							handle.writeString(json, false, "UTF-8")
 
-						handle.writeString(json, false, "UTF-8")
+							es.editor.file = handle
+						} else if (picker.fileFilter === bundledFileFilter) {
+							val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
 
-						es.editor.file = handle
+							Remix.writeToZipStream(es.editor.remix, zipStream)
+
+							zipStream.close()
+						}
 					}
 				}
 
@@ -161,13 +179,11 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
 		init {
-			val fileFilter = FileNameExtensionFilter(
-					"RHRE2 remix file", "rhre2")
-
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
 			dialogTitle = "Select a remix file to load"
-			setFileFilter(fileFilter)
+			fileFilter = dataFileFilter
+			addChoosableFileFilter(bundledFileFilter)
 		}
 	}
 
@@ -265,10 +281,15 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
-						val gson: Gson = GsonBuilder().create()
+						val obj: RemixObject
 						val handle = FileHandle(picker.selectedFile)
-
-						val obj: RemixObject = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
+						if (picker.selectedFile.extension == "brhre2") {
+							val zipFile: ZipFile = ZipFile(picker.selectedFile)
+							obj = Remix.readFromZipStream(zipFile)
+						} else {
+							val gson: Gson = GsonBuilder().create()
+							obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
+						}
 
 						obj.fileHandle = handle
 						remixObj = obj
@@ -279,7 +300,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 							} else {
 								GameRegistry.instance().getCueRaw(entity.id) == null
 							}
-						}.map {it.id}.joinToString(separator = ", ", transform = {"[LIGHT_GRAY]$it[]"})
+						}.map { it.id }.joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
 					}
 					else -> {
 						main.screen = ScreenRegistry.get("editor")

@@ -9,11 +9,21 @@ import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.visual.VisualRegistry
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
+import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.templates.Main
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.nio.charset.Charset
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
+
 
 class Remix {
 
@@ -152,7 +162,90 @@ class Remix {
 			remix.inspections.refresh()
 			remix.sweepLoad = 0
 
+			if (obj.musicData != null)
+				remix.music = obj.musicData
+
 			return remix
+		}
+
+		fun writeToZipStream(remix: Remix, stream: ZipOutputStream) {
+			stream.putNextEntry(ZipEntry("data.json"))
+			val json = writeToJsonObject(remix)
+			json.musicAssociation = remix.music?.file?.name()
+			stream.write(Gson().toJson(json).toByteArray(Charset.forName("UTF-8")))
+			stream.closeEntry()
+
+			if (json.musicAssociation != null) {
+				stream.putNextEntry(ZipEntry(json.musicAssociation))
+
+				val music = remix.music!!
+				val reader = music.file.read(2048)
+				val buf = ByteArray(2048)
+
+				while (true) {
+					val amt = reader.read(buf)
+
+					if (amt <= 0)
+						break
+
+					stream.write(buf, 0, amt)
+				}
+
+				stream.closeEntry()
+			}
+
+			stream.close()
+		}
+
+		fun readFromZipStream(zipFile: ZipFile): RemixObject {
+			val dataEntry: ZipEntry = zipFile.getEntry("data.json") ?: throw IllegalStateException(
+					"data.json not found")
+			val inputStream = zipFile.getInputStream(dataEntry)
+			val result = ByteArrayOutputStream()
+			val buffer = ByteArray(1024)
+			var length: Int
+			while (true) {
+				length = inputStream.read(buffer)
+				if (length <= 0)
+					break
+
+				result.write(buffer, 0, length)
+			}
+			inputStream.close()
+
+			val obj = Gson().fromJson(result.toString("UTF-8"), RemixObject::class.java)
+
+			if (obj.musicAssociation != null) {
+				val tmpFolder = Gdx.files.local("tmp/").file()
+				tmpFolder.mkdir()
+				val tempFile: File = File.createTempFile("tempMusic-", "." + obj.musicAssociation.substringAfter("."),
+														   tmpFolder)
+				tempFile.deleteOnExit()
+				tmpFolder.deleteOnExit()
+
+				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation)
+				val iS = zipFile.getInputStream(musicEntry)
+				val baos = ByteArrayOutputStream()
+				var newLength: Int
+				while (true) {
+					newLength = iS.read(buffer)
+					if (newLength <= 0)
+						break
+
+					baos.write(buffer, 0, newLength)
+				}
+				iS.close()
+
+				val out = FileOutputStream(tempFile)
+				out.write(baos.toByteArray())
+				out.close()
+
+				val handle: FileHandle = FileHandle(tempFile)
+				obj.musicData = MusicData(Gdx.audio.newMusic(handle), handle)
+			}
+
+			zipFile.close()
+			return obj
 		}
 	}
 

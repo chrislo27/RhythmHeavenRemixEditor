@@ -1,5 +1,6 @@
 package chrislo27.rhre.json.persistent;
 
+import chrislo27.rhre.track.MusicData;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.List;
 public class RemixObject {
 
 	public transient FileHandle fileHandle;
+	public transient MusicData musicData;
+
+	public String musicAssociation;
 
 	public String version;
 	public List<EntityObject> entities;
