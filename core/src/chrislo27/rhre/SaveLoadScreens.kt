@@ -24,8 +24,9 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 val dataFileFilter = FileNameExtensionFilter(
-		"RHRE2 remix data file", "rhre2")
-val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file", "brhre2")
+		"RHRE2 remix data file (.rhre2)", "rhre2")
+val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
+val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
 
 class SaveScreen(m: Main) : Updateable<Main>(m) {
 
@@ -35,8 +36,9 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a directory to save in"
-			fileFilter = dataFileFilter
+			fileFilter = bothFileFilter
 			addChoosableFileFilter(bundledFileFilter)
+			addChoosableFileFilter(dataFileFilter)
 		}
 	}
 
@@ -182,8 +184,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 			currentDirectory = File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
 			dialogTitle = "Select a remix file to load"
-			fileFilter = dataFileFilter
+			fileFilter = bothFileFilter
 			addChoosableFileFilter(bundledFileFilter)
+			addChoosableFileFilter(dataFileFilter)
 		}
 	}
 
