@@ -216,9 +216,9 @@ class Remix {
 			val obj = Gson().fromJson(result.toString("UTF-8"), RemixObject::class.java)
 
 			if (obj.musicAssociation != null) {
-				val tmpFolder = Gdx.files.local("tmp/").file()
+				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
-				val tempFile: File = File.createTempFile("tempMusic-", "." + obj.musicAssociation.substringAfter("."),
+				val tempFile: File = File.createTempFile("tempMusic-", "-" + obj.musicAssociation,
 														   tmpFolder)
 				tempFile.deleteOnExit()
 				tmpFolder.deleteOnExit()

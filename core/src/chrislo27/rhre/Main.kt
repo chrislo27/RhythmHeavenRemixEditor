@@ -109,6 +109,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		preferences = Gdx.app.getPreferences("RHRE2")
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
+
+		val tmpMusic = Gdx.files.local("tmpMusic/").file()
+		if (tmpMusic.exists() && tmpMusic.isDirectory) {
+			tmpMusic.deleteRecursively()
+		}
 	}
 
 	override fun setScreen(scr: Screen?) {
