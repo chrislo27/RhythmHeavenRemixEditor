@@ -24,7 +24,7 @@ import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 val dataFileFilter = FileNameExtensionFilter(
-		"RHRE2 remix data file (.rhre2)", "rhre2")
+		"Deprecated RHRE2 remix data file (.rhre2)", "rhre2")
 val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
 val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
 
