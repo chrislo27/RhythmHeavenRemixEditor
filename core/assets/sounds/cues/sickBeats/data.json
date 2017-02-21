@@ -21,8 +21,7 @@
     {
       "id": "sickBeats/whoosh",
       "duration": 0.1875,
-      "name": "dash",
-      "fileExtension": "wav"
+      "name": "dash"
     }
   ],
   "patterns": [
