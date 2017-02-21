@@ -122,7 +122,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 							handle.writeString(json, false, "UTF-8")
 
 							es.editor.file = handle
-						} else if (picker.fileFilter === bundledFileFilter) {
+						} else {
 							val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
 
 							Remix.writeToZipStream(es.editor.remix, zipStream)
@@ -286,12 +286,12 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 					JFileChooser.APPROVE_OPTION -> {
 						val obj: RemixObject
 						val handle = FileHandle(picker.selectedFile)
-						if (picker.selectedFile.extension == "brhre2") {
-							val zipFile: ZipFile = ZipFile(picker.selectedFile)
-							obj = Remix.readFromZipStream(zipFile)
-						} else {
+						if (picker.selectedFile.extension == "rhre2"){
 							val gson: Gson = GsonBuilder().create()
 							obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
+						} else {
+							val zipFile: ZipFile = ZipFile(picker.selectedFile)
+							obj = Remix.readFromZipStream(zipFile)
 						}
 
 						obj.fileHandle = handle
