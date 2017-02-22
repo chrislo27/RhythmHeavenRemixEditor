@@ -83,19 +83,19 @@
       "name": "5 bounces",
       "cues": [
         {
-          "id": "builtToScaleFever/1",
+          "id": "builtToScaleFever/4",
           "beat": 0
         },
         {
-          "id": "builtToScaleFever/2",
+          "id": "builtToScaleFever/3",
           "beat": 1
         },
         {
-          "id": "builtToScaleFever/3",
+          "id": "builtToScaleFever/2",
           "beat": 2
         },
         {
-          "id": "builtToScaleFever/4",
+          "id": "builtToScaleFever/1",
           "beat": 3
         },
         {
@@ -114,11 +114,11 @@
       "name": "3 bounces",
       "cues": [
         {
-          "id": "builtToScaleFever/1",
+          "id": "builtToScaleFever/4",
           "beat": 0
         },
         {
-          "id": "builtToScaleFever/2",
+          "id": "builtToScaleFever/3",
           "beat": 1
         },
         {
