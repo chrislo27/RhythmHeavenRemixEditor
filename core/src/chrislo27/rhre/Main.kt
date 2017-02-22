@@ -88,7 +88,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.5.0-SNAPSHOT"
+		ionium.templates.Main.version = "v2.5.0"
 		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
 		VersionChecker
 		AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
