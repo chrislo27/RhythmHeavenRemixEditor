@@ -17,7 +17,7 @@
     {
       "id": "tossBoys/redBlue2",
       "duration": 1,
-      "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 2"
+      "name": "[#FF0000]aka[]-chan - [#70B5FFF]ao[]-kun - 2"
     },
     {
       "id": "tossBoys/redYellow1",
@@ -330,8 +330,9 @@
       ]
     },
     {
-      "id": "tossBoys_aokunSuper",
+      "id": "tossBoys_aokunSuperToAkachan",
       "name": "[#70B5FF]ao[]-kun super to [#FF0000]aka[]-chan",
+      "deprecatedIDs": ["tossBoys_aokunSuper"],
       "cues": [
         {
           "id": "tossBoys/superBlue",
@@ -360,7 +361,7 @@
       ]
     },
     {
-      "id": "tossBoys_aokunSuper",
+      "id": "tossBoys_aokunSuperToKiiyan",
       "name": "[#70B5FF]ao[]-kun super to [#FFFF00]kii[]-yan",
       "cues": [
         {
@@ -386,8 +387,9 @@
       ]
     },
     {
-      "id": "tossBoys_kiiyanSuper",
+      "id": "tossBoys_kiiyanSuperToAkachan",
       "name": "[#FFFF00]kii[]-yan super to [#FF0000]aka[]-chan",
+      "deprecatedIDs": ["tossBoys_kiiyanSuper"],
       "cues": [
         {
           "id": "tossBoys/superYellowStart",
@@ -412,7 +414,7 @@
       ]
     },
     {
-      "id": "tossBoys_kiiyanSuper",
+      "id": "tossBoys_kiiyanSuperToAokun",
       "name": "[#FFFF00]kii[]-yan super to [#70B5FF]ao[]-kun",
       "cues": [
         {
