@@ -234,6 +234,27 @@ public class GameRegistry implements Disposable {
 				warningCount.getAndIncrement();
 			}
 		})));
+		{
+			Map<String, Boolean> checked = new HashMap<>();
+			this.gameList.forEach(game -> {
+				game.getSoundCues().forEach(sc -> {
+					if (checked.get(sc.getId()) != null) {
+						Main.logger.warn("Duplicate sound cue " + sc.getId());
+						warningCount.getAndIncrement();
+					} else {
+						checked.put(sc.getId(), Boolean.TRUE);
+					}
+				});
+				game.getPatterns().forEach(pat -> {
+					if (checked.get(pat.getId()) != null) {
+						Main.logger.warn("Duplicate pattern " + pat.getId());
+						warningCount.getAndIncrement();
+					} else {
+						checked.put(pat.getId(), Boolean.TRUE);
+					}
+				});
+			});
+		}
 
 		Main.logger.info("Loaded " + this.games.size() + " games with " + warningCount.get() + " warning(s), took " +
 				((System.nanoTime() - startTime) / 1_000_000.0) + " ms");
