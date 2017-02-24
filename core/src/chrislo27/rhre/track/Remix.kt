@@ -215,6 +215,8 @@ class Remix {
 
 			val obj = Gson().fromJson(result.toString("UTF-8"), RemixObject::class.java)
 
+			obj.musicData = null
+
 			if (obj.musicAssociation != null) {
 				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
