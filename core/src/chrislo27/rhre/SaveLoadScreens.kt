@@ -258,6 +258,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
+				es.editor.remix?.music?.dispose()
 				es.editor.remix = Remix.readFromJsonObject(remixObj!!)
 				es.editor.file = remixObj?.fileHandle
 
