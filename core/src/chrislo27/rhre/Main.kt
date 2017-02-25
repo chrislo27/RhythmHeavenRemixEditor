@@ -4,6 +4,7 @@ import chrislo27.rhre.init.DefAssetLoader
 import chrislo27.rhre.init.VisualAssetLoader
 import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.lazysound.LazySoundLoader
+import chrislo27.rhre.logging.SysOutPiper
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
@@ -89,6 +90,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	override fun create() {
 		ionium.templates.Main.version = "v2.5.2-SNAPSHOT"
+
+		SysOutPiper.pipe()
+
 		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
 		VersionChecker
 		AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
