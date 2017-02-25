@@ -9,15 +9,14 @@ import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
 import ionium.util.i18n.Localization
 
-const val AUTO_RESET_TIME: Long = 2 * 1000
-const val MAX_SAMPLES: Int = 512
+const val AUTO_RESET_TIME: Long = 3 * 1000
 
 class TapalongScreen(m: Main) : Updateable<Main>(m) {
 
 	private var lastTapTime: Long = System.currentTimeMillis()
-
 	private var averageBpm: Float = 0f
-	private val timeBetween: MutableList<Long> = mutableListOf()
+	private var combinedTotal: Long = 0
+	private var numOfTaps: Long = 0
 
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
@@ -27,18 +26,18 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.draw(main.batch,
-							 if (timeBetween.size == 1) Localization.get("tapalong.firstBeat") else Math.round(
+							 if (numOfTaps == 1L) Localization.get("tapalong.firstBeat") else Math.round(
 									 averageBpm).toString(),
 							 Gdx.graphics.width * 0.5f,
 							 Gdx.graphics.height * 0.575f + main.biggerFont.capHeight, 0f, Align.center, false)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.draw(main.batch, Localization.get("tapalong.realBpm", "$averageBpm", "${timeBetween.size}"),
+		main.font.draw(main.batch, Localization.get("tapalong.realBpm", "$averageBpm", "$numOfTaps"),
 					   Gdx.graphics.width * 0.025f,
 					   Gdx.graphics.height * 0.5f, Gdx.graphics.width * 0.95f, Align.center, true)
 
-		main.font.draw(main.batch, Localization.get("tapalong.resetTime", (AUTO_RESET_TIME / 1000), MAX_SAMPLES),
+		main.font.draw(main.batch, Localization.get("tapalong.resetTime", (AUTO_RESET_TIME / 1000)),
 					   Gdx.graphics.width * 0.025f,
 					   Gdx.graphics.height * 0.25f, Gdx.graphics.width * 0.95f, Align.center, true)
 
@@ -51,12 +50,13 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 				reset()
 			}
 
-			timeBetween.add(System.currentTimeMillis())
-			lastTapTime = System.currentTimeMillis()
+			numOfTaps++
 
-			if (timeBetween.size > MAX_SAMPLES) {
-				timeBetween.removeAt(0)
+			if (numOfTaps > 1) {
+				combinedTotal += (System.currentTimeMillis() - lastTapTime)
 			}
+
+			lastTapTime = System.currentTimeMillis()
 
 			calcAvg()
 		}
@@ -68,25 +68,18 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 
 	private fun reset() {
 		// reset
-		timeBetween.clear()
+		numOfTaps = 0
+		combinedTotal = 0
 		averageBpm = 0f
 	}
 
 	private fun calcAvg() {
-		if (timeBetween.size <= 1) {
+		if (numOfTaps <= 1) {
 			averageBpm = 0f
 			return@calcAvg
 		}
 
-		val deltas: MutableList<Long> = mutableListOf()
-
-		timeBetween.forEachIndexed { index, long ->
-			if (index == 0) return@forEachIndexed
-
-			deltas.add(long - timeBetween[index - 1])
-		}
-
-		val averageSec: Float = ((deltas.average() / 1000f).toFloat())
+		val averageSec: Float = (((combinedTotal.toDouble() / (numOfTaps - 1)) / 1000f)).toFloat()
 
 		averageBpm = 60 / averageSec
 	}
@@ -104,8 +97,6 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun show() {
-		reset()
-
 		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
 		es.editor.remix.music?.music?.isLooping = true
 		es.editor.remix.music?.music?.play()
