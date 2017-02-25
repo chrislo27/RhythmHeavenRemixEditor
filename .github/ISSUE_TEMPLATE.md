@@ -15,7 +15,7 @@ already
 
 **Actual behavior:** [insert what actually happened here]
 
-**Stacktrace/error log:** [copy the console output, put it on Pastebin or Hastebin, and put the link here]
+**Stacktrace/error log:** [attach the log file from `logs/log_YYYY-MM-DD_HH-MM-SS.txt here]
 
 **Version affected:** [insert the version of RHRE2 here]
 

@@ -2,6 +2,7 @@ package chrislo27.rhre.desktop;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.lazysound.LazySound;
+import chrislo27.rhre.logging.SysOutPiper;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.graphics.Color;
 import desktop.ArgumentInferredLwjglAppConfig;
@@ -16,6 +17,8 @@ public class DesktopLauncher {
 
 	public static void main(String[] args) {
 		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true");
+
+		SysOutPiper.INSTANCE.pipe();
 
 		ArgumentInferredLwjglAppConfig config = new ArgumentInferredLwjglAppConfig(args);
 		config.title = "";
