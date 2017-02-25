@@ -60,14 +60,23 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 									1f, 1f)
 		}
 
+		main.font.setColor(0.5f, 0.65f, 1f, 1f)
+		main.font.draw(main.batch, "https://github.com/chrislo27/RhythmHeavenRemixEditor2", Gdx.graphics.width * 0.5f,
+					   Gdx.graphics.height - main.font.capHeight, 0f, Align.center, false)
+		main.font.draw(main.batch, "______________________________________________________________", Gdx.graphics.width * 0.5f,
+					   Gdx.graphics.height - main.font.capHeight, 0f, Align.center, false)
+
 		main.font.setColor(1f, 1f, 1f, 1f)
+
+		main.font.data.setScale(0.75f)
 
 		var height: Float = Utils.getHeightWithWrapping(main.font, Localization.get("info.credits"),
 														Gdx.graphics.width * 0.45f)
 
 		main.font.draw(main.batch, Localization.get("info.credits"),
 					   Gdx.graphics.width * 0.025f,
-					   Gdx.graphics.height * 0.95f, Gdx.graphics.width * 0.45f, Align.topLeft, true)
+					   Gdx.graphics.height * 0.5f + height * 0.6f, Gdx.graphics.width * 0.45f, Align.topLeft, true)
+		main.font.data.setScale(1f)
 
 		val stats: String = Localization.get("info.stats", "${GameRegistry.instance().gameList.size}", "$patternCount",
 											 "$soundCueCount")
@@ -78,7 +87,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 					   Gdx.graphics.width * 0.525f,
 					   Gdx.graphics.height * 0.75f + height * 0.5f, Gdx.graphics.width * 0.45f, Align.center, true)
 
-		Utils.getHeightWithWrapping(main.font, Localization.get("info.rhcrdj"),
+		height = Utils.getHeightWithWrapping(main.font, Localization.get("info.rhcrdj"),
 									Gdx.graphics.width * 0.45f)
 
 		main.font.draw(main.batch, Localization.get("info.rhcrdj"),
@@ -89,6 +98,8 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 					Gdx.graphics.height - Gdx.input.y >= Gdx.graphics.height * 0.25f - height * 0.5f - main.font.capHeight &&
 					Gdx.graphics.height - Gdx.input.y <= Gdx.graphics.height * 0.25f + height * 0.5f) {
 				Gdx.net.openURI(RHCRDJ)
+			} else if (Gdx.input.y <= main.font.lineHeight * 1.25f) {
+				Gdx.net.openURI("https://github.com/chrislo27/RhythmHeavenRemixEditor2")
 			}
 		}
 
