@@ -103,8 +103,6 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 	}
 
 	override fun renderUpdate() {
-
-
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
