@@ -138,6 +138,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 						} catch (e: Exception) {
 							es.editor.remix.music?.music?.dispose()
 							failedToLoad = e.toString()
+							e.printStackTrace()
 						}
 					}
 				}
