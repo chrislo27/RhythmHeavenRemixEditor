@@ -14,7 +14,7 @@ const val AUTO_RESET_TIME: Long = 3 * 1000
 class TapalongScreen(m: Main) : Updateable<Main>(m) {
 
 	private var lastTapTime: Long = System.currentTimeMillis()
-	private var averageBpm: Float = 0f
+	private var averageBpm: Double = 0.0
 	private var combinedTotal: Long = 0
 	private var numOfTaps: Long = 0
 
@@ -70,16 +70,16 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 		// reset
 		numOfTaps = 0
 		combinedTotal = 0
-		averageBpm = 0f
+		averageBpm = 0.0
 	}
 
 	private fun calcAvg() {
 		if (numOfTaps <= 1) {
-			averageBpm = 0f
+			averageBpm = 0.0
 			return@calcAvg
 		}
 
-		val averageSec: Float = (((combinedTotal.toDouble() / (numOfTaps - 1)) / 1000f)).toFloat()
+		val averageSec: Double = (((combinedTotal.toDouble() / (numOfTaps - 1)) / 1000.0))
 
 		averageBpm = 60 / averageSec
 	}
