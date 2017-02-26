@@ -28,12 +28,12 @@ val dataFileFilter = FileNameExtensionFilter(
 val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
 val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
 
-private fun persistDirectory(main: Main, prefName: String, file: File) {
+internal fun persistDirectory(main: Main, prefName: String, file: File) {
 	main.preferences.putString(prefName, file.absolutePath)
 	main.preferences.flush()
 }
 
-private fun attemptRememberDirectory(main: Main, prefName: String): File? {
+internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 	val f: File = File(main.preferences.getString(prefName, null) ?: return null)
 
 	if (f.exists() && f.isDirectory)

@@ -49,7 +49,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 			val fileFilter = FileNameExtensionFilter(
 					"Supported sound files (.wav, .ogg, .mp3)", "wav", "ogg", "mp3")
 
-			currentDirectory = File(System.getProperty("user.home"), "Desktop")
+			currentDirectory = attemptRememberDirectory(main, "lastMusicDirectory") ?: File(System.getProperty("user.home"), "Desktop")
 			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a music file"
 			setFileFilter(fileFilter)
@@ -128,6 +128,7 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
+						persistDirectory(main, "lastMusicDirectory", picker.currentDirectory)
 						val handle: FileHandle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
