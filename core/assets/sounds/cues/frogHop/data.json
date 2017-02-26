@@ -87,6 +87,12 @@
       "id": "frogHop/spinitboys6",
       "duration": 0.5,
       "name": "spin it boys - backup - boys"
+    },
+    {
+      "id": "frogHop/wakame",
+      "duration": 1,
+      "name": "WAAAAAKAAAAAME",
+      "fileExtension": "ogg"
     }
   ],
   "patterns": [
