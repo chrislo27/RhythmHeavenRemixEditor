@@ -945,7 +945,7 @@ public class Editor extends InputAdapter implements Disposable {
 						}
 					} else {
 						int i = Gdx.input.getX() / GAME_ICON_SIZE;
-						if (i < Series.values().length) {
+						if (i < Series.values().length && i >= 0) {
 							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
 						}
 					}
