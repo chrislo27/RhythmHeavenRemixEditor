@@ -725,9 +725,14 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public void inputUpdate() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			remix.setPlayingState(
-					remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
+		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+			if (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)) {
+				remix.setPlayingState(
+						remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.PAUSED : PlayingState.PLAYING);
+			} else {
+				remix.setPlayingState(
+						remix.getPlayingState() == PlayingState.PLAYING ? PlayingState.STOPPED : PlayingState.PLAYING);
+			}
 		}
 
 		if (DebugSetting.debug) {
