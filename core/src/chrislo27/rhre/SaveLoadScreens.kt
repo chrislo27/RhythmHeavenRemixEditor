@@ -28,12 +28,28 @@ val dataFileFilter = FileNameExtensionFilter(
 val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
 val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
 
+private fun persistDirectory(main: Main, prefName: String, file: File) {
+	main.preferences.putString(prefName, file.absolutePath)
+	main.preferences.flush()
+}
+
+private fun attemptRememberDirectory(main: Main, prefName: String): File? {
+	val f: File = File(main.preferences.getString(prefName, null) ?: return null)
+
+	if (f.exists() && f.isDirectory)
+		return f
+
+	return null
+}
+
 class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
 		init {
-			currentDirectory = File(System.getProperty("user.home"), "Desktop")
+			currentDirectory = attemptRememberDirectory(main, "lastSaveDirectory") ?: File(
+					System.getProperty("user.home"),
+					"Desktop")
 			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a directory to save in"
 			fileFilter = bundledFileFilter
@@ -97,6 +113,8 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
+						persistDirectory(main, "lastSaveDirectory", picker.currentDirectory)
+
 						val handle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
@@ -181,7 +199,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
 		init {
-			currentDirectory = File(System.getProperty("user.home"), "Desktop")
+			currentDirectory = attemptRememberDirectory(main, "lastLoadDirectory") ?: File(
+					System.getProperty("user.home"),
+					"Desktop")
 			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
 			dialogTitle = "Select a remix file to load"
 			fileFilter = bothFileFilter
@@ -285,9 +305,11 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
+						persistDirectory(main, "lastLoadDirectory", picker.currentDirectory)
+
 						val obj: RemixObject
 						val handle = FileHandle(picker.selectedFile)
-						if (picker.selectedFile.extension == "rhre2"){
+						if (picker.selectedFile.extension == "rhre2") {
 							val gson: Gson = GsonBuilder().create()
 							obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 						} else {

@@ -98,6 +98,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
 				InternalFileHandleResolver()))
 
+		preferences = Gdx.app.getPreferences("RHRE2")
+		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
+		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
+
 		super.create()
 
 		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
@@ -109,10 +113,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		horizontalResize = Gdx.graphics
 				.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
-
-		preferences = Gdx.app.getPreferences("RHRE2")
-		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
-		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
 
 		val tmpMusic = Gdx.files.local("tmpMusic/").file()
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
