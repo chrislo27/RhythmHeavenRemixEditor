@@ -20,4 +20,4 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 
 #### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
-![Tapalong screen](http://i.imgur.com/hat3adJ.png "Tap to the rhythm")
+![Tapalong screen](https://cdn.discordapp.com/attachments/200705002283466752/285486846027497472/unknown.png "Tap to the rhythm to find the BPM")
