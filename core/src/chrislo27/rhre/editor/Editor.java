@@ -41,11 +41,13 @@ import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipOutputStream;
 
 public class Editor extends InputAdapter implements Disposable {
 
@@ -707,12 +709,23 @@ public class Editor extends InputAdapter implements Disposable {
 
 	private void autosave() {
 		if (file != null) {
-			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave.rhre2");
+			String extension = "brhre2";
+			if (file.extension().equalsIgnoreCase("rhre2"))
+				extension = "rhre2";
+			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave." + extension);
 
 			try {
 				sibling.file().createNewFile();
 
-				sibling.writeString(new Gson().toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
+				if (extension.equals("rhre2")) {
+					sibling.writeString(new Gson().toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
+				} else {
+					ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(sibling.file()));
+
+					Remix.Companion.writeToZipStream(remix, zipStream);
+
+					zipStream.close();
+				}
 
 				autosaveMessageShow = 3f;
 			} catch (IOException e) {
