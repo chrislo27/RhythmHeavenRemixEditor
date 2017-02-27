@@ -707,7 +707,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 	private void autosave() {
 		if (file != null) {
-			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave." + file.extension());
+			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave.rhre2");
 
 			try {
 				sibling.file().createNewFile();
@@ -857,7 +857,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 			boolean isAbleToStretch = false;
 
-			if (possible != null && remix.getSelection().size() <= 1 && possible.isStretchable()) {
+			if (possible != null && remix.getSelection().size() == 1 && possible.isStretchable() &&
+					remix.getSelection().contains(possible)) {
 				if ((cameraPickVec3.x >= possible.bounds.x &&
 						cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
 						(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
