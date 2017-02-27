@@ -1,0 +1,159 @@
+{
+  "gameID": "donkDonkJp",
+  "gameName": "Donk-Donk (Japanese)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "donkDonkJp/donk1",
+      "duration": 0.666666,
+      "name": "donk-donk - 1"
+    },
+    {
+      "id": "donkDonkJp/donk2",
+      "duration": 0.666666,
+      "name": "donk-donk - 2"
+    },
+    {
+      "id": "donkDonkJp/dwonk1",
+      "duration": 0.666666,
+      "name": "donk-dwonk - 1"
+    },
+    {
+      "id": "donkDonkJp/dwonk2",
+      "duration": 0.666666,
+      "name": "donk-dwonk - 2"
+    },
+    {
+      "id": "donkDonkJp/deetdeetduh1",
+      "duration": 0.666666,
+      "name": "deet-deet-duh - 1"
+    },
+    {
+      "id": "donkDonkJp/deetdeetduh2",
+      "duration": 0.666666,
+      "name": "deet-deet-duh - 2"
+    },
+    {
+      "id": "donkDonkJp/deetdeetduh3",
+      "duration": 0.666666,
+      "name": "deet-deet-duh - 3"
+    },
+    {
+      "id": "donkDonkJp/deetdeetdoot1",
+      "duration": 0.666666,
+      "name": "deet-deet-doot - 1"
+    },
+    {
+      "id": "donkDonkJp/deetdeetdoot2",
+      "duration": 0.666666,
+      "name": "deet-deet-doot - 2"
+    },
+    {
+      "id": "donkDonkJp/deetdeetdoot3",
+      "duration": 0.666666,
+      "name": "deet-deet-doot - 3"
+    },
+    {
+      "id": "donkDonkJp/blastoff",
+      "duration": 1,
+      "name": "blastoff"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "donkDonkJp_donkdonk",
+      "name": "donk-donk",
+      "cues": [
+       {
+        "id": "donkDonkJp/donk1",
+        "beat": 0.0
+       },
+       {
+        "id": "donkDonkJp/donk2",
+        "beat": 0.666666
+       }
+      ]
+    },
+    {
+      "id": "donkDonkJp_donkdwonk",
+      "name": "donk-dwonk",
+      "cues": [
+       {
+        "id": "donkDonkJp/dwonk1",
+        "beat": 0.0
+       },
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.666666
+       }
+      ]
+    },
+    {
+      "id": "donkDonkJp_deetdeetduh",
+      "name": "deet-deet-duh",
+      "cues": [
+       {
+        "id": "donkDonkJp/deetdeetduh1",
+        "beat": 0.0
+       },
+       {
+        "id": "donkDonkJp/deetdeetduh2",
+        "beat": 0.666666
+       },
+       {
+        "id": "donkDonkJp/deetdeetduh3",
+        "beat": 1.333333
+       }
+      ]
+    },
+    {
+      "id": "donkDonkJp_deetdeetdoot",
+      "name": "deet-deet-doot",
+      "cues": [
+       {
+        "id": "donkDonkJp/deetdeetdoot1",
+        "beat": 0.0
+       },
+       {
+        "id": "donkDonkJp/deetdeetdoot2",
+        "beat": 0.666666
+       },
+       {
+        "id": "donkDonkJp/deetdeetdoot3",
+        "beat": 1.333333
+       }
+      ]
+    },
+    {
+      "id": "donkDonkJp_toastsaot",
+      "name": "DWONKAME!",
+      "cues": [
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.0,
+        "track": 0
+       },
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.0,
+        "track": 1
+       },
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.0,
+        "track": 2
+       },
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.0,
+        "track": 3
+       },
+       {
+        "id": "donkDonkJp/dwonk2",
+        "beat": 0.0,
+        "track": 4
+       }
+      ]
+    }
+  ]
+}
