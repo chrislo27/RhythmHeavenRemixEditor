@@ -20,6 +20,6 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 
 #### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
-![Tapalong screen](http://i.imgur.com/UaIue4G.png "Tap to the rhythm to find the BPM")
+![Tapalong screen](http://i.imgur.com/zEXRoWE.png "Tap to the rhythm to find the BPM")
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
