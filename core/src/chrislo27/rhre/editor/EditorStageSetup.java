@@ -174,6 +174,13 @@ public class EditorStageSetup {
 
 					main.persistWindowSettings();
 				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
 			};
 
 			fs.setI10NStrategy(new LocalizationStrategy() {
@@ -199,6 +206,13 @@ public class EditorStageSetup {
 
 					Gdx.graphics.setWindowedMode(1280, 720);
 					main.persistWindowSettings();
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
 				}
 			};
 
