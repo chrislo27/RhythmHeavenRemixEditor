@@ -13,6 +13,7 @@ public class EditorScreen extends Updateable<Main> {
 	public Editor editor;
 	public Stage stage;
 	private EditorStageSetup stageSetup;
+	private boolean first = true;
 
 	public EditorScreen(Main m) {
 		super(m);
@@ -67,6 +68,15 @@ public class EditorScreen extends Updateable<Main> {
 		}
 
 		stage.onResize((int) main.camera.viewportWidth, (int) main.camera.viewportHeight);
+
+		if (first) {
+			first = false;
+			if (main.getOldSize().getThird()) {
+				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+			} else {
+				Gdx.graphics.setWindowedMode(main.getOldSize().getFirst(), main.getOldSize().getSecond());
+			}
+		}
 	}
 
 	@Override

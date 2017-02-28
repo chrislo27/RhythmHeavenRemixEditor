@@ -54,7 +54,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	fun getInputY(): Int {
-		return ( camera.unproject(inputProj.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), 0f)).y).toInt()
+		return (camera.unproject(
+				inputProj.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), 0f)).y).toInt()
 	}
 
 	fun getPalette(): AbstractPalette {
@@ -81,6 +82,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	lateinit var preferences: Preferences
 		private set
 	lateinit var horizontalResize: Cursor
+		private set
+	lateinit var oldSize: Triple<Int, Int, Boolean>
 		private set
 
 	var helpTipsEnabled: Boolean = true
@@ -112,6 +115,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		preferences = Gdx.app.getPreferences("RHRE2")
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
+
+		oldSize = Triple(preferences.getInteger("width", 1280), preferences.getInteger("height", 720),
+						 preferences.getBoolean("fullscreen", false))
 
 		super.create()
 
@@ -255,6 +261,13 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	override fun resize(width: Int, height: Int) {
 		super.resize(1280, 720)
+	}
+
+	fun persistWindowSettings() {
+		preferences.putInteger("width", Gdx.graphics.width)
+		preferences.putInteger("height", Gdx.graphics.height)
+		preferences.putBoolean("fullscreen", Gdx.graphics.isFullscreen)
+		preferences.flush()
 	}
 
 	override fun dispose() {

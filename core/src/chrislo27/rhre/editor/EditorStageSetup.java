@@ -160,6 +160,63 @@ public class EditorStageSetup {
 		}
 
 		{
+			TextButton info = new TextButton(stage, palette, "FS") {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					if (Gdx.graphics.isFullscreen()) {
+						Gdx.graphics.setWindowedMode(main.getPreferences().getInteger("width", 1280),
+								main.getPreferences().getInteger("height", 720));
+					} else {
+						Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+					}
+
+					main.persistWindowSettings();
+				}
+			};
+
+			info.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null)
+						return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton info = new TextButton(stage, palette, "R") {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					Gdx.graphics.setWindowedMode(1280, 720);
+				}
+			};
+
+			info.setI10NStrategy(new LocalizationStrategy() {
+
+				@Override
+				public String get(String key, Object... objects) {
+					if (key == null)
+						return "";
+
+					return key;
+				}
+
+			});
+
+			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton interval = new TextButton(stage, palette, "editor.button.snap") {
 
 				private final int[] intervals = {4, 6, 8, 12, 24};
@@ -202,7 +259,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(interval).align(Align.topRight)
-					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 
 		}
 
@@ -228,7 +285,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(metronome).align(Align.topRight)
-					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 4,
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT + BUTTON_HEIGHT * 5, PADDING, BUTTON_HEIGHT * 4,
 							BUTTON_HEIGHT);
 
 		}
@@ -253,7 +310,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(music).align(Align.topRight)
-					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 4,
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4,
 							BUTTON_HEIGHT);
 
 		}
@@ -405,9 +462,8 @@ public class EditorStageSetup {
 
 							Thread thread = new Thread(() -> {
 								try {
-									chooser.setCurrentDirectory(file.get() == null || !file.get().exists()
-											? new File(System.getProperty("user.home"), "Desktop")
-											: file.get());
+									chooser.setCurrentDirectory(file.get() == null || !file.get().exists() ? new File(
+											System.getProperty("user.home"), "Desktop") : file.get());
 									chooser.setVisible(true);
 									int result = chooser.showDialog(null, "Select");
 

@@ -713,10 +713,6 @@ public class Editor extends InputAdapter implements Disposable {
 				autosave();
 			}
 		}
-
-		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-			System.out.println(main.getInputX() + " " + main.getInputY());
-		}
 	}
 
 	private void autosave() {
