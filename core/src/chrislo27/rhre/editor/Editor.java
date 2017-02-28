@@ -264,7 +264,7 @@ public class Editor extends InputAdapter implements Disposable {
 							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
 
 					main.getFontBordered().setColor(batch.getColor());
-					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", "" + (int) tc.getTempo()),
+					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", String.format("%.1f", tc.getTempo())),
 							tc.getBeat() * Entity.PX_WIDTH + 4,
 							-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
 
@@ -300,7 +300,7 @@ public class Editor extends InputAdapter implements Disposable {
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
 								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
-				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerBpm", (int) currentBpm),
+				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerBpm", String.format("%.1f", currentBpm)),
 						remix.getBeat() * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
 				main.getFontBordered().getData().setScale(1);
@@ -822,15 +822,16 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// camera
 		{
+			boolean accelerate = (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+					Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+					Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
-						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1);
+						(accelerate ? 5 : 1);
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
 				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
-						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1);
+						(accelerate ? 5 : 1);
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
@@ -1126,8 +1127,8 @@ public class Editor extends InputAdapter implements Disposable {
 				// tools
 				if (main.getInputX() >= main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE) {
 					Tool[] tools = Tool.values();
-					int icon = (int) (tools.length - 1 -
-							(main.camera.viewportWidth - main.getInputX()) / GAME_ICON_SIZE);
+					int icon = (int) (tools.length -
+							((main.camera.viewportWidth - main.getInputX()) / GAME_ICON_SIZE));
 
 					if (icon < tools.length && icon >= 0) {
 						currentTool = tools[icon];
@@ -1284,9 +1285,11 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 			} else if (currentTool == Tool.BPM) {
 				if (selectedTempoChange != null) {
-					float newTempo = MathUtils.clamp((int) selectedTempoChange.getTempo() + -amount *
+					float newTempo = MathUtils.clamp(selectedTempoChange.getTempo() + -amount *
 							(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1), 30, 480);
+									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1) *
+							(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
+									Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT) ? 0.1f : 1), 30f, 480f);
 
 					if (selectedTempoChange.getTempo() != newTempo) {
 						TempoChange tc = new TempoChange(selectedTempoChange.getBeat(), newTempo,
