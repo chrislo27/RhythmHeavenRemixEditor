@@ -160,7 +160,7 @@ public class EditorStageSetup {
 		}
 
 		{
-			TextButton info = new TextButton(stage, palette, "FS") {
+			TextButton fs = new TextButton(stage, palette, "FS") {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
@@ -176,7 +176,7 @@ public class EditorStageSetup {
 				}
 			};
 
-			info.setI10NStrategy(new LocalizationStrategy() {
+			fs.setI10NStrategy(new LocalizationStrategy() {
 
 				@Override
 				public String get(String key, Object... objects) {
@@ -188,20 +188,21 @@ public class EditorStageSetup {
 
 			});
 
-			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(fs).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
-			TextButton info = new TextButton(stage, palette, "R") {
+			TextButton reset = new TextButton(stage, palette, "R") {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
 					Gdx.graphics.setWindowedMode(1280, 720);
+					main.persistWindowSettings();
 				}
 			};
 
-			info.setI10NStrategy(new LocalizationStrategy() {
+			reset.setI10NStrategy(new LocalizationStrategy() {
 
 				@Override
 				public String get(String key, Object... objects) {
@@ -213,7 +214,7 @@ public class EditorStageSetup {
 
 			});
 
-			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(reset).align(Align.topRight).setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
