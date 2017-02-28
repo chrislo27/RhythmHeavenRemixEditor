@@ -202,7 +202,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 			currentDirectory = attemptRememberDirectory(main, "lastLoadDirectory") ?: File(
 					System.getProperty("user.home"),
 					"Desktop")
-			fileSelectionMode = JFileChooser.FILES_AND_DIRECTORIES
+			fileSelectionMode = JFileChooser.FILES_ONLY
 			dialogTitle = "Select a remix file to load"
 			fileFilter = bothFileFilter
 			addChoosableFileFilter(bundledFileFilter)
