@@ -56,8 +56,8 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 		main.biggerFont.data.setScale(0.75f)
 		main.biggerFont.draw(main.batch,
 							 Localization.get("versionScreen.title$titleType"),
-							 Gdx.graphics.width * 0.05f,
-							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+							 main.camera.viewportWidth * 0.05f,
+							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
 		main.biggerFont.data.setScale(1f)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
@@ -66,35 +66,35 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 				"versionScreen.${if (VersionChecker.versionState == VersionState.UP_TO_DATE) "already" else "available"}",
 				VersionChecker.releaseObject!!.tag_name,
 				ionium.templates.Main.version),
-					   Gdx.graphics.width * 0.05f, Gdx.graphics.height * 0.75f)
+					   main.camera.viewportWidth * 0.05f, main.camera.viewportHeight * 0.75f)
 		main.font.draw(main.batch, Localization.get("versionScreen.coolInfo",
 													((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
 													VersionChecker.releaseObject!!.assets!!.first().download_count,
 													VersionChecker.releaseObject!!.publishedTime!!.format(formatter))
 				.format("%.3f"),
-					   Gdx.graphics.width * 0.05f, Gdx.graphics.height * 0.75f - main.font.lineHeight)
+					   main.camera.viewportWidth * 0.05f, main.camera.viewportHeight * 0.75f - main.font.lineHeight)
 
-		var releaseTitleY = Gdx.graphics.height * 0.75f - main.font.lineHeight * 2.5f
+		var releaseTitleY = main.camera.viewportHeight * 0.75f - main.font.lineHeight * 2.5f
 		main.font.draw(main.batch,
 					   "[#DDDDDD]" + VersionChecker.releaseObject!!.name + "[]",
-					   Gdx.graphics.width * 0.05f, releaseTitleY,
-					   Gdx.graphics.width * 0.9f, Align.left, true)
+					   main.camera.viewportWidth * 0.05f, releaseTitleY,
+					   main.camera.viewportWidth * 0.9f, Align.left, true)
 		releaseTitleY -= main.font.lineHeight
 		main.font.data.setScale(0.75f)
 		main.font.draw(main.batch,
 					   "[LIGHT_GRAY]$content[]",
-					   Gdx.graphics.width * 0.05f, releaseTitleY,
-					   Gdx.graphics.width * 0.9f, Align.left, true)
+					   main.camera.viewportWidth * 0.05f, releaseTitleY,
+					   main.camera.viewportWidth * 0.9f, Align.left, true)
 		main.font.data.setScale(1f)
 
 		val scrollY = main.font.capHeight * 4.5f
 		main.font.data.setScale(0.5f)
-		main.font.draw(main.batch, Localization.get("versionScreen.scroll"), Gdx.graphics.width * 0.05f,
+		main.font.draw(main.batch, Localization.get("versionScreen.scroll"), main.camera.viewportWidth * 0.05f,
 					   scrollY)
 		main.font.data.setScale(1f)
-		main.font.draw(main.batch, Localization.get("versionScreen.goToPage"), Gdx.graphics.width * 0.05f,
+		main.font.draw(main.batch, Localization.get("versionScreen.goToPage"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 3.5f)
-		main.font.draw(main.batch, Localization.get("versionScreen.return"), Gdx.graphics.width * 0.05f,
+		main.font.draw(main.batch, Localization.get("versionScreen.return"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 2)
 
 		main.batch.end()

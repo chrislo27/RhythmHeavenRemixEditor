@@ -24,7 +24,7 @@ public class DesktopLauncher {
 		config.fullscreen = false;
 		config.foregroundFPS = GlobalVariables.maxFps;
 		config.backgroundFPS = GlobalVariables.maxFps;
-		config.resizable = false;
+		config.resizable = true;
 		config.vSyncEnabled = true;
 		config.samples = 0;
 		config.initialBackgroundColor = Color.BLACK;

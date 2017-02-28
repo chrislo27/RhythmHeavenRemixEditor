@@ -45,7 +45,8 @@ public class EditorScreen extends Updateable<Main> {
 
 	@Override
 	public void resize(int width, int height) {
-
+		if (stage != null)
+			stage.onResize((int) main.camera.viewportWidth, (int) main.camera.viewportHeight);
 	}
 
 	@Override
@@ -58,14 +59,14 @@ public class EditorScreen extends Updateable<Main> {
 			stage = stageSetup.getStage();
 		}
 
-		stage.onResize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
 		if (Gdx.input.getInputProcessor() instanceof InputMultiplexer) {
 			InputMultiplexer plex = (InputMultiplexer) Gdx.input.getInputProcessor();
 
 			stage.addSelfToInputMultiplexer(plex);
 			plex.addProcessor(editor);
 		}
+
+		stage.onResize((int) main.camera.viewportWidth, (int) main.camera.viewportHeight);
 	}
 
 	@Override

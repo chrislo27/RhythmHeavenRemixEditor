@@ -22,6 +22,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.math.Vector2
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.mashape.unirest.http.Unirest
@@ -47,6 +48,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private var toSwitchPalette: AbstractPalette = lastPalette
 	private val currentPalette: AbstractPalette = LightPalette()
 	private var paletteLerp: Vector2 = Vector2()
+
+	fun getInputX(): Int {
+		return camera.unproject(inputProj.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)).x.toInt()
+	}
+
+	fun getInputY(): Int {
+		return ( camera.unproject(inputProj.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), 0f)).y).toInt()
+	}
 
 	fun getPalette(): AbstractPalette {
 		return currentPalette
@@ -76,6 +85,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	var helpTipsEnabled: Boolean = true
 	var inspectionsEnabled: Boolean = true
+
+	private val inputProj: Vector3 = Vector3()
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
@@ -166,6 +177,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun postRender() {
 		super.postRender()
 
+		batch.projectionMatrix = camera.combined
 		batch.begin()
 		fontBordered.setColor(1f, 1f, 1f, 1f)
 		fontBordered.data.setScale(0.5f)
@@ -173,7 +185,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
 		else
 			ionium.templates.Main.version
-		fontBordered.draw(batch, str, (Gdx.graphics.width - 4).toFloat(), fontBordered.capHeight + 2, 0f,
+		fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
 						  Align.right, false)
 		fontBordered.data.setScale(1f)
 		batch.end()
@@ -242,7 +254,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun resize(width: Int, height: Int) {
-		super.resize(width, height)
+		super.resize(1280, 720)
 	}
 
 	override fun dispose() {

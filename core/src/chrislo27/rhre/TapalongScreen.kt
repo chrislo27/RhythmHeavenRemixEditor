@@ -28,18 +28,18 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 		main.biggerFont.draw(main.batch,
 							 if (numOfTaps == 1L) Localization.get("tapalong.firstBeat") else Math.round(
 									 averageBpm).toString(),
-							 Gdx.graphics.width * 0.5f,
-							 Gdx.graphics.height * 0.575f + main.biggerFont.capHeight, 0f, Align.center, false)
+							 main.camera.viewportWidth * 0.5f,
+							 main.camera.viewportHeight * 0.575f + main.biggerFont.capHeight, 0f, Align.center, false)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
 		main.font.draw(main.batch, Localization.get("tapalong.realBpm", "$averageBpm", "$numOfTaps"),
-					   Gdx.graphics.width * 0.025f,
-					   Gdx.graphics.height * 0.5f, Gdx.graphics.width * 0.95f, Align.center, true)
+					   main.camera.viewportWidth * 0.025f,
+					   main.camera.viewportHeight * 0.5f, main.camera.viewportWidth * 0.95f, Align.center, true)
 
 		main.font.draw(main.batch, Localization.get("tapalong.resetTime", (AUTO_RESET_TIME / 1000)),
-					   Gdx.graphics.width * 0.025f,
-					   Gdx.graphics.height * 0.25f, Gdx.graphics.width * 0.95f, Align.center, true)
+					   main.camera.viewportWidth * 0.025f,
+					   main.camera.viewportHeight * 0.25f, main.camera.viewportWidth * 0.95f, Align.center, true)
 
 		main.batch.end()
 	}

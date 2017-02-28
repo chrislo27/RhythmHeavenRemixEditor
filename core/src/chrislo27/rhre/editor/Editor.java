@@ -389,11 +389,12 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			batch.setColor(0, 0, 0, 0.5f);
 			// message bar
-			Main.fillRect(batch, 0, 0, Gdx.graphics.getWidth(), MESSAGE_BAR_HEIGHT);
+			Main.fillRect(batch, 0, 0, main.camera.viewportWidth, MESSAGE_BAR_HEIGHT);
 			// picker
-			Main.fillRect(batch, 0, 0, Gdx.graphics.getWidth(), PICKER_HEIGHT + MESSAGE_BAR_HEIGHT);
+			Main.fillRect(batch, 0, 0, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT);
 			// button bar on top
-			Main.fillRect(batch, 0, Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT, Gdx.graphics.getWidth(),
+			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT, main.camera
+							.viewportWidth,
 					EditorStageSetup.BAR_HEIGHT);
 			// series buttons
 			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values().length * GAME_ICON_SIZE,
@@ -432,8 +433,10 @@ public class Editor extends InputAdapter implements Disposable {
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 			main.getFontBordered().draw(batch, Localization
 							.get("editor.inspectionStatus", "" + remix.getInspections().getInspections().size(),
-									"" + remix.getInspections().getLastRefreshDuration()), Gdx.graphics.getWidth() - 4,
-					Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight(), 0,
+									"" + remix.getInspections().getLastRefreshDuration()), main.camera.viewportWidth
+							- 4,
+					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight()
+					, 0,
 					Align.right, false);
 			main.getFontBordered().setColor(1, 1, 1, 1);
 			main.getFontBordered().getData().setScale(1f);
@@ -442,7 +445,7 @@ public class Editor extends InputAdapter implements Disposable {
 		main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
-				Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight());
+				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight());
 		main.getFontBordered().setColor(1, 1, 1, 1);
 		main.getFontBordered().getData().setScale(1f);
 
@@ -460,18 +463,22 @@ public class Editor extends InputAdapter implements Disposable {
 
 				batch.setColor(0, 0, 0, 0.5f);
 				float bgHeight = glyphLayout.height + main.getFont().getLineHeight() + main.getFont().getCapHeight();
-				Main.fillRect(batch, Gdx.graphics.getWidth(),
-						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
+				Main.fillRect(batch, main.camera.viewportWidth,
+						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
 						-bgHeight);
-//				Main.drawRect(batch, Gdx.graphics.getWidth(),
-//						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
+//				Main.drawRect(batch, main.camera.viewportWidth,
+//						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
 //						-bgHeight, 1);
 
-				main.getFont().draw(batch, inspection.getProperName(), Gdx.graphics.getWidth() - glyphLayout.width - 8,
-						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY - 4, 256, Align.left, true);
-				main.getFont().draw(batch, inspection.getProperInfo(), Gdx.graphics.getWidth() - glyphLayout.width - 8,
-						Gdx.graphics.getHeight() - EditorStageSetup.BAR_HEIGHT - offsetY - 4 -
-								main.getFont().getLineHeight(), 256, Align.left, true);
+				main.getFont()
+						.draw(batch, inspection.getProperName(), main.camera.viewportWidth - glyphLayout.width - 8,
+								main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY - 4, 256, Align
+										.left,
+								true);
+				main.getFont()
+						.draw(batch, inspection.getProperInfo(), main.camera.viewportWidth - glyphLayout.width - 8,
+								main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY - 4 -
+										main.getFont().getLineHeight(), 256, Align.left, true);
 
 				offsetY += bgHeight;
 			}
@@ -483,9 +490,10 @@ public class Editor extends InputAdapter implements Disposable {
 			if (autosaveMessageShow > 0) {
 				Color c = Main.getRainbow(1.0f);
 				main.getFontBordered().setColor(c.r, c.g, c.b, Math.min(autosaveMessageShow, 1f));
-				main.getFontBordered().draw(batch, Localization.get("editor.autosaved"), Gdx.graphics.getWidth() *
-								0.5f,
-						Gdx.graphics.getHeight() * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0, Align.center, false);
+				main.getFontBordered()
+						.draw(batch, Localization.get("editor.autosaved"), main.camera.viewportWidth * 0.5f,
+								main.camera.viewportHeight * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0,
+								Align.center, false);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 		}
@@ -493,9 +501,9 @@ public class Editor extends InputAdapter implements Disposable {
 		// tool icons
 		{
 			batch.setColor(0, 0, 0, 0.5f);
-			Main.fillRect(batch, Gdx.graphics.getWidth(), PICKER_HEIGHT + MESSAGE_BAR_HEIGHT,
+			Main.fillRect(batch, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT,
 					-Tool.values().length * GAME_ICON_SIZE, OVERVIEW_HEIGHT);
-			final float start = Gdx.graphics.getWidth() - Tool.values().length * GAME_ICON_SIZE;
+			final float start = main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE;
 			for (int i = 0; i < Tool.values().length; i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, start + i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
@@ -536,14 +544,14 @@ public class Editor extends InputAdapter implements Disposable {
 		// pattern list
 		{
 			batch.setColor(1, 1, 1, 1);
-			Main.fillRect(batch, Gdx.graphics.getWidth() * 0.5f, MESSAGE_BAR_HEIGHT, 1, PICKER_HEIGHT);
+			Main.fillRect(batch, main.camera.viewportWidth * 0.5f, MESSAGE_BAR_HEIGHT, 1, PICKER_HEIGHT);
 
 			batch.end();
 			StencilMaskUtil.prepareMask();
 			main.shapes.setProjectionMatrix(main.camera.combined);
 			main.shapes.begin(ShapeRenderer.ShapeType.Filled);
-			main.shapes
-					.rect(Gdx.graphics.getWidth() * 0.5f, MESSAGE_BAR_HEIGHT, Gdx.graphics.getWidth(), PICKER_HEIGHT);
+			main.shapes.rect(main.camera.viewportWidth * 0.5f, MESSAGE_BAR_HEIGHT, main.camera.viewportWidth,
+					PICKER_HEIGHT);
 			main.shapes.end();
 
 			batch.begin();
@@ -567,28 +575,28 @@ public class Editor extends InputAdapter implements Disposable {
 				if (i == first) {
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
-					main.getFontBordered().draw(batch, ">", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
-							middle);
+					main.getFontBordered()
+							.draw(batch, ">", main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING, middle);
 
 					List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
 							.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
 					if (scrolls.get(currentSeries).getPattern() == 0)
 						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
-					main.getFontBordered().draw(batch, "^", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+					main.getFontBordered().draw(batch, "^", main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING,
 							middle + PICKER_HEIGHT * 0.5f - main.getFontBordered().getCapHeight());
 
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
 					if (scrolls.get(currentSeries).getPattern() == list.size() - 1)
 						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
-					main.getFontBordered().draw(batch, "v", Gdx.graphics.getWidth() * 0.5f + GAME_ICON_PADDING,
+					main.getFontBordered().draw(batch, "v", main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING,
 							middle - PICKER_HEIGHT * 0.5f + 12);
 
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 				}
 
-				main.getFontBordered().draw(batch, p.getName(), Gdx.graphics.getWidth() * 0.525f,
+				main.getFontBordered().draw(batch, p.getName(), main.camera.viewportWidth * 0.525f,
 						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), 0, Align.left, false);
 			}
 
@@ -602,7 +610,7 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			final float startX = Series.values().length * GAME_ICON_SIZE;
 			final float startY = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT;
-			final float mapWidth = Gdx.graphics.getWidth() - (startX + Tool.values().length * GAME_ICON_SIZE);
+			final float mapWidth = main.camera.viewportWidth - (startX + Tool.values().length * GAME_ICON_SIZE);
 			final float duration = Math.max(remix.getDuration(), remix.getEndTime());
 			final float ENTITY_WIDTH = duration == 0 ? mapWidth : mapWidth / duration;
 			final float ENTITY_HEIGHT = (OVERVIEW_HEIGHT / TRACK_COUNT);
@@ -671,10 +679,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0 && selectionOrigin == null &&
 					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
-				if (Gdx.input.getX() > startX && Gdx.input.getX() < startX + mapWidth) {
-					if (Gdx.graphics.getHeight() - Gdx.input.getY() > startY &&
-							Gdx.graphics.getHeight() - Gdx.input.getY() < startY + OVERVIEW_HEIGHT) {
-						float percent = (Gdx.input.getX() - startX) / mapWidth;
+				if (main.getInputX() > startX && main.getInputX() < startX + mapWidth) {
+					if (main.camera.viewportHeight - main.getInputY() > startY &&
+							main.camera.viewportHeight - main.getInputY() < startY + OVERVIEW_HEIGHT) {
+						float percent = (main.getInputX() - startX) / mapWidth;
 						percent *= duration;
 						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
 					}
@@ -704,6 +712,10 @@ public class Editor extends InputAdapter implements Disposable {
 				timeUntilAutosave = AUTOSAVE_PERIOD;
 				autosave();
 			}
+		}
+
+		if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+			System.out.println(main.getInputX() + " " + main.getInputY());
 		}
 	}
 
@@ -833,7 +845,7 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		if (currentTool == Tool.NORMAL && Gdx.input.getY() > EditorStageSetup.BAR_HEIGHT) {
+		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 			// trackers
 			{
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -944,21 +956,22 @@ public class Editor extends InputAdapter implements Disposable {
 						GameRegistry.instance().gamesBySeries.get(currentSeries)
 								.get(scrolls.get(currentSeries).getGame()).getName();
 
-				if (Gdx.graphics.getHeight() - Gdx.input.getY() <=
+				if (main.camera.viewportHeight - main.getInputY() <=
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
-					if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
-						if (Gdx.input.getX() <=
+					if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+						if (main.getInputX() <=
 								GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
 							List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-							int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+							int icon = getIconIndex(main.getInputX(),
+									(int) main.camera.viewportHeight - main.getInputY());
 
 							if (icon < list.size() && icon >= 0)
 								status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
-						} else if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
+						} else if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 							status += " - " + Localization.get("editor.scrollPatterns");
 						}
 					} else {
-						int i = Gdx.input.getX() / GAME_ICON_SIZE;
+						int i = main.getInputX() / GAME_ICON_SIZE;
 						if (i < Series.values().length && i >= 0) {
 							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
 						}
@@ -1003,9 +1016,9 @@ public class Editor extends InputAdapter implements Disposable {
 			float beatPos = MathHelper.snapToNearest(vec3Tmp2.x, snappingInterval);
 
 			if (selectedTempoChange == null) {
-				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && Gdx.graphics.getHeight() - Gdx.input.getY() >
+				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && main.camera.viewportHeight - main.getInputY() >
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
-						Gdx.input.getY() > EditorStageSetup.BAR_HEIGHT) {
+						main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 
@@ -1047,10 +1060,10 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (button == Input.Buttons.LEFT && pointer == 0 && remix.getPlayingState() == PlayingState.STOPPED) {
-			if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
-				if (screenX >= Gdx.graphics.getWidth() * 0.5f) {
+			if (main.getInputY() >= main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
+				if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 					if (currentTool == Tool.NORMAL) {
-						if (screenX >= Gdx.graphics.getWidth() * 0.525f) {
+						if (main.getInputX() >= main.camera.viewportWidth * 0.525f) {
 							// drag new pattern
 							remix.getSelection().clear();
 							selectionGroup = null;
@@ -1077,7 +1090,8 @@ public class Editor extends InputAdapter implements Disposable {
 									remix.getSelection().get(0), new Vector2(0, 0), true);
 						} else {
 							int dir;
-							if (Gdx.graphics.getHeight() - screenY > MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f) {
+							if (main.camera.viewportHeight - main.getInputY() >
+									MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f) {
 								dir = -1;
 							} else {
 								dir = 1;
@@ -1094,17 +1108,18 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					// game picker
 					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
-					int icon = getIconIndex(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+					int icon = getIconIndex(main.getInputX(), (int) main.camera.viewportHeight - main.getInputY());
 
 					if (icon < list.size() && icon >= 0) {
 						scrolls.get(currentSeries).setGame(icon);
 						scrolls.get(currentSeries).setPattern(0);
 					}
 				}
-			} else if (screenY >= Gdx.graphics.getHeight() - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
+			} else if (main.getInputY() >=
+					main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
 				// series
-				if (screenX <= Series.values().length * GAME_ICON_SIZE) {
-					int i = Gdx.input.getX() / GAME_ICON_SIZE;
+				if (main.getInputX() <= Series.values().length * GAME_ICON_SIZE) {
+					int i = main.getInputX() / GAME_ICON_SIZE;
 					if (i < Series.values().length) {
 						if (GameRegistry.instance().gamesBySeries.get(Series.values()[i]) != null &&
 								GameRegistry.instance().gamesBySeries.get(Series.values()[i]).size() > 0)
@@ -1113,9 +1128,10 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 
 				// tools
-				if (screenX >= Gdx.graphics.getWidth() - Tool.values().length * GAME_ICON_SIZE) {
+				if (main.getInputX() >= main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE) {
 					Tool[] tools = Tool.values();
-					int icon = tools.length - 1 - (Gdx.graphics.getWidth() - Gdx.input.getX()) / GAME_ICON_SIZE;
+					int icon = (int) (tools.length - 1 -
+							(main.camera.viewportWidth - main.getInputX()) / GAME_ICON_SIZE);
 
 					if (icon < tools.length && icon >= 0) {
 						currentTool = tools[icon];
@@ -1123,8 +1139,8 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 			} else {
 				if (currentTool == Tool.NORMAL) {
-					Entity possible = getEntityAtPoint(screenX, screenY);
-					camera.unproject(cameraPickVec3.set(screenX, screenY, 0));
+					Entity possible = getEntityAtPoint(Gdx.input.getX(), Gdx.input.getY());
+					camera.unproject(cameraPickVec3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
 					if (possible == null || !remix.getSelection().contains(possible)) {
 						// start selection
@@ -1187,7 +1203,7 @@ public class Editor extends InputAdapter implements Disposable {
 			if (currentTool == Tool.NORMAL) {
 				if (selectionOrigin != null) {
 					// put selected entities into the selection list
-					camera.unproject(vec3Tmp.set(screenX, screenY, 0));
+					camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 					Rectangle selection = new Rectangle(selectionOrigin.x, selectionOrigin.y,
 							vec3Tmp.x - selectionOrigin.x, vec3Tmp.y - selectionOrigin.y);
 
@@ -1254,8 +1270,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 	@Override
 	public boolean scrolled(int amount) {
-		if (Gdx.graphics.getHeight() - Gdx.input.getY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
-			if (Gdx.input.getX() >= Gdx.graphics.getWidth() * 0.5f) {
+
+		if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
+			if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 				List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
 						.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
