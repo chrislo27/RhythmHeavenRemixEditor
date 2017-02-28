@@ -259,6 +259,30 @@ public class EditorStageSetup {
 		}
 
 		{
+			TextButton soundboard = new TextButton(stage, palette, "editor.button.soundboard") {
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+//					main.setScreen(ScreenRegistry.get("soundboard"));
+					main.setScreen(new SoundboardScreen(main));
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+//			stage.addActor(soundboard).align(Align.topRight)
+//					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT + BUTTON_HEIGHT * 11, PADDING, BUTTON_HEIGHT * 4,
+//							BUTTON_HEIGHT);
+		}
+
+		{
 			ImageButton newButton = new ImageButton(stage, palette,
 					AssetRegistry.getAtlasRegion("ionium_ui-icons", "newFile")) {
 				@Override
@@ -592,29 +616,6 @@ public class EditorStageSetup {
 
 //			stage.addActor(helpTips).align(Align.topLeft)
 //					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 13, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
-		}
-
-		{
-			TextButton soundboard = new TextButton(stage, palette, "editor.button.soundboard") {
-
-				@Override
-				public void onClickAction(float x, float y) {
-					super.onClickAction(x, y);
-
-//					main.setScreen(ScreenRegistry.get("soundboard"));
-					main.setScreen(new SoundboardScreen(main));
-				}
-
-				@Override
-				public void render(SpriteBatch batch, float alpha) {
-					getPalette().labelFont.getData().setScale(0.5f);
-					super.render(batch, alpha);
-					getPalette().labelFont.getData().setScale(1);
-				}
-			};
-
-//			stage.addActor(soundboard).align(Align.topLeft)
-//					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 	}
 
