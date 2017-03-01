@@ -4,6 +4,11 @@
   "series": "ds",
   "cues": [
     {
+      "id": "dogNinja/sign",
+      "duration": 1,
+      "name": "cut everything!"
+    },
+    {
       "id": "dogNinja/fruit1",
       "duration": 1,
       "name": "fruit - out"
@@ -42,6 +47,51 @@
       "id": "dogNinja/pan2",
       "duration": 1,
       "name": "pan - slice"
+    },
+    {
+      "id": "dogNinja/hereWeGo1",
+      "duration": 0.5,
+      "name": "here we go! - 1"
+    },
+    {
+      "id": "dogNinja/hereWeGo2",
+      "duration": 0.5,
+      "name": "here we go! - 2"
+    },
+    {
+      "id": "dogNinja/hereWeGo3",
+      "duration": 0.5,
+      "name": "here we go! - 3"
+    },
+    {
+      "id": "dogNinja/hereWeGo1Jp",
+      "duration": 0.5,
+      "name": "here we go! - 1 (JP)"
+    },
+    {
+      "id": "dogNinja/hereWeGo2Jp",
+      "duration": 0.5,
+      "name": "here we go! - 2 (JP)"
+    },
+    {
+      "id": "dogNinja/hereWeGo3Jp",
+      "duration": 0.5,
+      "name": "here we go! - 3 (JP)"
+    },
+    {
+      "id": "dogNinja/hereWeGo1Sp",
+      "duration": 0.5,
+      "name": "here we go! - 1 (SP)"
+    },
+    {
+      "id": "dogNinja/hereWeGo2Sp",
+      "duration": 0.5,
+      "name": "here we go! - 2 (SP)"
+    },
+    {
+      "id": "dogNinja/hereWeGo3Sp",
+      "duration": 0.5,
+      "name": "here we go! - 3 (SP)"
     }
   ],
   "patterns": [
@@ -100,6 +150,60 @@
         "beat": 1.0
        }
       ]
+    },
+    {
+      "id": "dogNinja_hereWeGo",
+      "name": "here we go!",
+      "cues": [
+       {
+        "id": "dogNinja/hereWeGo1",
+        "beat": 0.0
+       },
+       {
+        "id": "dogNinja/hereWeGo2",
+        "beat": 0.5
+       },
+       {
+        "id": "dogNinja/hereWeGo3",
+        "beat": 1.0
+       }
+      ]
+    },
+    {
+      "id": "dogNinja_hereWeGoJp",
+      "name": "here we go! (JP)",
+      "cues": [
+       {
+        "id": "dogNinja/hereWeGo1Jp",
+        "beat": 0.0
+       },
+       {
+        "id": "dogNinja/hereWeGo2Jp",
+        "beat": 0.5
+       },
+       {
+        "id": "dogNinja/hereWeGo3Jp",
+        "beat": 1.0
+       }
+      ]
+    },
+    {
+      "id": "dogNinja_hereWeGoSp",
+      "name": "here we go! (JP)",
+      "cues": [
+       {
+        "id": "dogNinja/hereWeGo1Sp",
+        "beat": 0.0
+       },
+       {
+        "id": "dogNinja/hereWeGo2Sp",
+        "beat": 0.5
+       },
+       {
+        "id": "dogNinja/hereWeGo3Sp",
+        "beat": 1.0
+       }
+      ]
     }
-    ]
+  ]
 }
