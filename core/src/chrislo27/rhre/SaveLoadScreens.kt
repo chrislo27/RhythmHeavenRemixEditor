@@ -210,6 +210,8 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 		}
 	}
 
+	var shouldShowPicker = true
+
 	private var currentThread: Thread? = null
 
 	@Volatile
@@ -219,9 +221,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 	private var missingContent: String = ""
 
 	override fun onFilesDropped(list: List<FileHandle>) {
-		picker.isVisible = false
-		currentThread?.interrupt()
-		currentThread = null
+		if (list.size != 1) return
+
+		hidePicker()
 		attemptLoad(list.first().file())
 	}
 
@@ -270,7 +272,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 						   Gdx.graphics.width * 0.05f,
 						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
 		} else {
-			main.font.draw(main.batch, Localization.get("loadScreen.drag"),  Gdx.graphics.width * 0.05f,
+			main.font.draw(main.batch, Localization.get("loadScreen.drag"), Gdx.graphics.width * 0.05f,
 						   Gdx.graphics.height * 0.85f - main.biggerFont.capHeight * 0.75f)
 		}
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
@@ -297,10 +299,14 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 		}
 	}
 
-	private fun closePicker() {
+	fun hidePicker() {
 		picker.isVisible = false
 		currentThread?.interrupt()
 		currentThread = null
+	}
+
+	private fun closePicker() {
+		hidePicker()
 		remixObj = null
 		missingContent = ""
 	}
@@ -368,11 +374,12 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 	}
 
 	override fun show() {
-		showPicker()
+		if (shouldShowPicker) showPicker()
 	}
 
 	override fun hide() {
 		closePicker()
+		shouldShowPicker = true
 	}
 
 	override fun pause() {

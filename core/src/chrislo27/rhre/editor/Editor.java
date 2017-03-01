@@ -1,5 +1,6 @@
 package chrislo27.rhre.editor;
 
+import chrislo27.rhre.LoadScreen;
 import chrislo27.rhre.Main;
 import chrislo27.rhre.WhenFilesDropped;
 import chrislo27.rhre.entity.Entity;
@@ -36,6 +37,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
+import ionium.registry.ScreenRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
 import ionium.util.Utils;
@@ -1342,7 +1344,14 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 
 	@Override
 	public void onFilesDropped(@NotNull List<? extends FileHandle> list) {
-		
+		if (list.size() != 1 || remix.getPlayingState() != PlayingState.STOPPED)
+			return;
+
+		ScreenRegistry.get("load", LoadScreen.class).setShouldShowPicker(false);
+
+		main.setScreen(ScreenRegistry.get("load"));
+		ScreenRegistry.get("load", LoadScreen.class).onFilesDropped(list);
+		ScreenRegistry.get("load", LoadScreen.class).hidePicker();
 	}
 
 	public enum Tool {
