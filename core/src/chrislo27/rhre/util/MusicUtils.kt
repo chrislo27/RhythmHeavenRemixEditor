@@ -1,6 +1,6 @@
 package chrislo27.rhre.util
 
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic
 import org.lwjgl.openal.AL10
 
 

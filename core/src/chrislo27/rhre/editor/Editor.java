@@ -1,6 +1,7 @@
 package chrislo27.rhre.editor;
 
 import chrislo27.rhre.Main;
+import chrislo27.rhre.WhenFilesDropped;
 import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.HasGame;
 import chrislo27.rhre.entity.PatternEntity;
@@ -40,6 +41,7 @@ import ionium.util.MathHelper;
 import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,7 +51,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipOutputStream;
 
-public class Editor extends InputAdapter implements Disposable {
+public class Editor extends InputAdapter implements Disposable, WhenFilesDropped {
 
 	public static final int GAME_ICON_SIZE = 32;
 	public static final int GAME_ICON_PADDING = 8;
@@ -1336,6 +1338,11 @@ public class Editor extends InputAdapter implements Disposable {
 		return (x - GAME_ICON_PADDING) / (GAME_ICON_PADDING + GAME_ICON_SIZE) +
 				(-(y - (ICON_START_Y + GAME_ICON_SIZE + GAME_ICON_PADDING)) / (GAME_ICON_PADDING + GAME_ICON_SIZE)) *
 						ICON_COUNT_X;
+	}
+
+	@Override
+	public void onFilesDropped(@NotNull List<? extends FileHandle> list) {
+		
 	}
 
 	public enum Tool {

@@ -19,7 +19,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "rhythm-heaven-remix-editor"
-        gdxVersion = '1.9.4'
+        gdxVersion = '1.9.5'
         roboVMVersion = '2.1.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
@@ -51,7 +51,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.google.code.gson:gson:2.7"
         compile "com.mashape.unirest:unirest-java:1.4.9"

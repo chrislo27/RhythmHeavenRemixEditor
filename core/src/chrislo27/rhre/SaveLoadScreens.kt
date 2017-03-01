@@ -194,7 +194,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 }
 
-class LoadScreen(m: Main) : Updateable<Main>(m) {
+class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
@@ -217,6 +217,13 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 	@Volatile
 	private var missingContent: String = ""
+
+	override fun onFilesDropped(list: List<FileHandle>) {
+		picker.isVisible = false
+		currentThread?.interrupt()
+		currentThread = null
+		attemptLoad(list.first().file())
+	}
 
 	override fun render(delta: Float) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
@@ -262,6 +269,9 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 			main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
 						   Gdx.graphics.width * 0.05f,
 						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
+		} else {
+			main.font.draw(main.batch, Localization.get("loadScreen.drag"),  Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.85f - main.biggerFont.capHeight * 0.75f)
 		}
 		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
 					   Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f)
@@ -295,6 +305,31 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 		missingContent = ""
 	}
 
+	private fun attemptLoad(file: File) {
+		persistDirectory(main, "lastLoadDirectory", file.parentFile)
+
+		val obj: RemixObject
+		val handle = FileHandle(file)
+		if (file.extension == "rhre2") {
+			val gson: Gson = GsonBuilder().create()
+			obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
+		} else {
+			val zipFile: ZipFile = ZipFile(file)
+			obj = Remix.readFromZipStream(zipFile)
+		}
+
+		obj.fileHandle = handle
+		remixObj = obj
+
+		missingContent = obj.entities.filter { entity ->
+			if (entity.isPattern) {
+				GameRegistry.instance().getPatternRaw(entity.id) == null
+			} else {
+				GameRegistry.instance().getCueRaw(entity.id) == null
+			}
+		}.map { it.id }.joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
+	}
+
 	private fun showPicker() {
 		val thread: Thread = object : Thread() {
 			override fun run() {
@@ -305,31 +340,10 @@ class LoadScreen(m: Main) : Updateable<Main>(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
-						persistDirectory(main, "lastLoadDirectory", picker.currentDirectory)
-
-						val obj: RemixObject
-						val handle = FileHandle(picker.selectedFile)
-						if (picker.selectedFile.extension == "rhre2") {
-							val gson: Gson = GsonBuilder().create()
-							obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
-						} else {
-							val zipFile: ZipFile = ZipFile(picker.selectedFile)
-							obj = Remix.readFromZipStream(zipFile)
-						}
-
-						obj.fileHandle = handle
-						remixObj = obj
-
-						missingContent = obj.entities.filter { entity ->
-							if (entity.isPattern) {
-								GameRegistry.instance().getPatternRaw(entity.id) == null
-							} else {
-								GameRegistry.instance().getCueRaw(entity.id) == null
-							}
-						}.map { it.id }.joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
+						attemptLoad(picker.selectedFile)
 					}
 					else -> {
-						main.screen = ScreenRegistry.get("editor")
+//						main.screen = ScreenRegistry.get("editor")
 					}
 				}
 			}
