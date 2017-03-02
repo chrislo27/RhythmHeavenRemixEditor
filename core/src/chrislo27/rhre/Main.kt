@@ -33,6 +33,8 @@ import ionium.util.DebugSetting
 import ionium.util.Logger
 import ionium.util.SpecialCharactersList
 import ionium.util.i18n.Localization
+import ionium.util.i18n.NamedLocale
+import java.util.*
 
 class Main(l: Logger) : ionium.templates.Main(l) {
 
@@ -126,6 +128,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		AssetRegistry.instance().addAssetLoader(DefAssetLoader())
 		AssetRegistry.instance().addAssetLoader(VisualAssetLoader())
+
+//		Localization.instance().addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
+		Localization.instance().addBundle(NamedLocale("Español (Spanish)", Locale("es")))
 
 		DebugSetting.showFPS = false
 

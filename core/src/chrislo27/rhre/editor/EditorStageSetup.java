@@ -148,6 +148,19 @@ public class EditorStageSetup {
 		}
 
 		{
+			ImageButton lang = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_language"))) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					Localization.instance().nextLanguage(1);
+				}
+			};
+
+			stage.addActor(lang).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton fs = new TextButton(stage, palette, "FS") {
 				@Override
 				public void onClickAction(float x, float y) {
@@ -184,7 +197,7 @@ public class EditorStageSetup {
 			});
 
 			stage.addActor(fs).align(Align.topRight)
-					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
@@ -218,7 +231,7 @@ public class EditorStageSetup {
 			});
 
 			stage.addActor(reset).align(Align.topRight)
-					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
@@ -264,7 +277,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(interval).align(Align.topRight)
-					.setPixelOffset(PADDING * 4 + BUTTON_HEIGHT * 3, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 4, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 
 		}
 
@@ -290,7 +303,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(metronome).align(Align.topRight)
-					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT + BUTTON_HEIGHT * 5, PADDING, BUTTON_HEIGHT * 4,
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT * 4,
 							BUTTON_HEIGHT);
 
 		}
@@ -315,7 +328,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(music).align(Align.topRight)
-					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT + BUTTON_HEIGHT * 9, PADDING, BUTTON_HEIGHT * 4,
+					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4,
 							BUTTON_HEIGHT);
 
 		}
