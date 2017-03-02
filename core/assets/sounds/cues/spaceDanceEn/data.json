@@ -1,0 +1,301 @@
+{
+  "gameID": "spaceDanceEn",
+  "gameName": "Space Dance (English)",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "spaceDanceEn/and1",
+      "deprecatedIDs": [
+        "spaceDanceEng/and1"
+      ],
+      "duration": 1,
+      "name": "dancers - and pose - and"
+    },
+    {
+      "id": "spaceDanceEn/pose1",
+      "deprecatedIDs": [
+        "spaceDanceEng/pose1"
+      ],
+      "duration": 1,
+      "name": "dancers - and pose - pose"
+    },
+    {
+      "id": "spaceDanceEn/and2",
+      "deprecatedIDs": [
+        "spaceDanceEng/and2"
+      ],
+      "duration": 1,
+      "name": "gramps - and pose - and"
+    },
+    {
+      "id": "spaceDanceEn/pose2",
+      "deprecatedIDs": [
+        "spaceDanceEng/pose2"
+      ],
+      "duration": 1,
+      "name": "gramps - and pose - pose"
+    },
+    {
+      "id": "spaceDanceEn/lets1",
+      "deprecatedIDs": [
+        "spaceDanceEng/lets1"
+      ],
+      "duration": 0.5,
+      "name": "dancers - let's sit down - let's"
+    },
+    {
+      "id": "spaceDanceEn/sit1",
+      "deprecatedIDs": [
+        "spaceDanceEng/sit1"
+      ],
+      "duration": 0.5,
+      "name": "dancers - let's sit down - sit"
+    },
+    {
+      "id": "spaceDanceEn/down1",
+      "deprecatedIDs": [
+        "spaceDanceEng/down1"
+      ],
+      "duration": 0.5,
+      "name": "dancers - let's sit down - down"
+    },
+    {
+      "id": "spaceDanceEn/lets2",
+      "deprecatedIDs": [
+        "spaceDanceEng/lets2"
+      ],
+      "duration": 0.5,
+      "name": "gramps - let's sit down - let's"
+    },
+    {
+      "id": "spaceDanceEn/sit2",
+      "deprecatedIDs": [
+        "spaceDanceEng/sit2"
+      ],
+      "duration": 0.5,
+      "name": "gramps - let's sit down - sit"
+    },
+    {
+      "id": "spaceDanceEn/down2",
+      "deprecatedIDs": [
+        "spaceDanceEng/down2"
+      ],
+      "duration": 0.5,
+      "name": "gramps - let's sit down - down"
+    },
+    {
+      "id": "spaceDanceEn/pa1",
+      "deprecatedIDs": [
+        "spaceDanceEng/pa1"
+      ],
+      "duration": 0.5,
+      "name": "dancers - pu-pu-pu-punch - pu-"
+    },
+    {
+      "id": "spaceDanceEn/punch1",
+      "deprecatedIDs": [
+        "spaceDanceEng/punch1"
+      ],
+      "duration": 0.5,
+      "name": "dancers - pu-pu-pu-punch - punch"
+    },
+    {
+      "id": "spaceDanceEn/pa2",
+      "deprecatedIDs": [
+        "spaceDanceEng/pa2"
+      ],
+      "duration": 0.5,
+      "name": "gramps - pu-pu-pu-punch - pu-"
+    },
+    {
+      "id": "spaceDanceEn/punch2",
+      "deprecatedIDs": [
+        "spaceDanceEng/punch2"
+      ],
+      "duration": 0.5,
+      "name": "gramps - pu-pu-pu-punch - punch"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "spaceDanceEn_andpose1",
+      "deprecatedIDs": [
+        "spaceDanceEng_andpose1"
+      ],
+      "name": "dancers - and pose",
+      "cues": [
+        {
+          "id": "spaceDanceEn/and1",
+          "deprecatedIDs": [
+            "spaceDanceEng/and1"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/pose1",
+          "deprecatedIDs": [
+            "spaceDanceEng/pose1"
+          ],
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "spaceDanceEn_letssitdown1",
+      "deprecatedIDs": [
+        "spaceDanceEng_letssitdown1"
+      ],
+      "name": "dancers - let's sit down",
+      "cues": [
+        {
+          "id": "spaceDanceEn/lets1",
+          "deprecatedIDs": [
+            "spaceDanceEng/lets1"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/sit1",
+          "deprecatedIDs": [
+            "spaceDanceEng/sit1"
+          ],
+          "beat": 0.5
+        },
+        {
+          "id": "spaceDanceEn/down1",
+          "deprecatedIDs": [
+            "spaceDanceEng/down1"
+          ],
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "spaceDanceEn_pupupupunch1",
+      "deprecatedIDs": [
+        "spaceDanceEng_pupupupunch1"
+      ],
+      "name": "dancers - pu-pu-pu-punch",
+      "cues": [
+        {
+          "id": "spaceDanceEn/pa1",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa1"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/pa1",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa1"
+          ],
+          "beat": 0.5
+        },
+        {
+          "id": "spaceDanceEn/pa1",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa1"
+          ],
+          "beat": 1.0
+        },
+        {
+          "id": "spaceDanceEn/punch1",
+          "deprecatedIDs": [
+            "spaceDanceEng/punch1"
+          ],
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "spaceDanceEn_andpose2",
+      "deprecatedIDs": [
+        "spaceDanceEng_andpose2"
+      ],
+      "name": "gramps - and pose",
+      "cues": [
+        {
+          "id": "spaceDanceEn/and2",
+          "deprecatedIDs": [
+            "spaceDanceEng/and2"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/pose2",
+          "deprecatedIDs": [
+            "spaceDanceEng/pose2"
+          ],
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "spaceDanceEn_letssitdown2",
+      "deprecatedIDs": [
+        "spaceDanceEng_letssitdown2"
+      ],
+      "name": "gramps - let's sit down",
+      "cues": [
+        {
+          "id": "spaceDanceEn/lets2",
+          "deprecatedIDs": [
+            "spaceDanceEng/lets2"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/sit2",
+          "deprecatedIDs": [
+            "spaceDanceEng/sit2"
+          ],
+          "beat": 0.5
+        },
+        {
+          "id": "spaceDanceEn/down2",
+          "deprecatedIDs": [
+            "spaceDanceEng/down2"
+          ],
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "spaceDanceEn_pupupupunch2",
+      "deprecatedIDs": [
+        "spaceDanceEng_pupupupunch2"
+      ],
+      "name": "gramps - pu-pu-pu-punch",
+      "cues": [
+        {
+          "id": "spaceDanceEn/pa2",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa2"
+          ],
+          "beat": 0.0
+        },
+        {
+          "id": "spaceDanceEn/pa2",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa2"
+          ],
+          "beat": 0.5
+        },
+        {
+          "id": "spaceDanceEn/pa2",
+          "deprecatedIDs": [
+            "spaceDanceEng/pa2"
+          ],
+          "beat": 1.0
+        },
+        {
+          "id": "spaceDanceEn/punch2",
+          "deprecatedIDs": [
+            "spaceDanceEng/punch2"
+          ],
+          "beat": 1.5
+        }
+      ]
+    }
+  ]
+}
