@@ -1,5 +1,6 @@
+
+
 buildscript {
-    ext.kotlin_version = '1.1.0-rc-91'
     repositories {
         mavenLocal()
         mavenCentral()
@@ -7,7 +8,7 @@ buildscript {
         maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0"
     }
 }
 apply plugin: 'kotlin'
@@ -24,6 +25,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
+        kotlin_version = "1.1.0"
     }
 
     repositories {
@@ -56,6 +58,7 @@ project(":core") {
         compile "com.google.code.gson:gson:2.7"
         compile "com.mashape.unirest:unirest-java:1.4.9"
         compile "commons-io:commons-io:2.5"
+        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     }
 }
 
