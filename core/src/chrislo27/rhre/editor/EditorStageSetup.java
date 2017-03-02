@@ -135,7 +135,8 @@ public class EditorStageSetup {
 		}
 
 		{
-			ImageButton info = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_infobutton"))) {
+			ImageButton info = new ImageButton(stage, palette,
+					new TextureRegion(AssetRegistry.getTexture("ui_infobutton"))) {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
@@ -148,12 +149,14 @@ public class EditorStageSetup {
 		}
 
 		{
-			ImageButton lang = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_language"))) {
+			ImageButton lang = new ImageButton(stage, palette,
+					new TextureRegion(AssetRegistry.getTexture("ui_language"))) {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
 					Localization.instance().nextLanguage(1);
+					Localization.instance().saveToSettings(main.getPreferences());
 				}
 
 				@Override
@@ -168,16 +171,18 @@ public class EditorStageSetup {
 						float height = Utils.getHeight(main.getFont(), text);
 
 						batch.setColor(0, 0, 0, 0.5f);
-						Main.fillRect(batch, this.getX() + this.getWidth() + PADDING, this.getY() - (PADDING * 3) - height,
-								-(width + PADDING * 2), height + PADDING * 2);
-						main.getFont().draw(batch, text, this.getX() + this.getWidth(), this.getY() - PADDING * 2, 0, Align.right, false);
+						Main.fillRect(batch, this.getX() + this.getWidth() + PADDING,
+								this.getY() - (PADDING * 3) - height, -(width + PADDING * 2), height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX() + this.getWidth(), this.getY() - PADDING * 2, 0,
+								Align.right, false);
 						main.getFont().getData().setScale(1);
 						batch.setColor(1, 1, 1, 1);
 					}
 				}
 			};
 
-			stage.addActor(lang).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(lang).align(Align.topRight)
+					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{

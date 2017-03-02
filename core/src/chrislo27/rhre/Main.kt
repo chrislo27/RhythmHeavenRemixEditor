@@ -132,6 +132,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 //		Localization.instance().addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
 		Localization.instance().addBundle(NamedLocale("Español (Spanish)", Locale("es")))
 
+		Localization.instance().loadFromSettings(preferences)
+
 		DebugSetting.showFPS = false
 
 		horizontalResize = Gdx.graphics
