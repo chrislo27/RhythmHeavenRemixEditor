@@ -90,7 +90,6 @@ public abstract class Actor {
 	}
 
 	public void onClickAction(float x, float y) {
-
 	}
 
 	public void onMouseDrag(float x, float y) {
@@ -102,6 +101,9 @@ public abstract class Actor {
 	}
 
 	public boolean onKeyAction(int key) {
+		if (key == 0)
+			return false;
+
 		for (int keycode : getKeybinds().items) {
 			if (key == keycode) {
 				onClickAction(0, 0);
