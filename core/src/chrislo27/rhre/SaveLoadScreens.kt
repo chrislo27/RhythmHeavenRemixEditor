@@ -327,13 +327,17 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 		obj.fileHandle = handle
 		remixObj = obj
 
-		missingContent = obj.entities.filter { entity ->
+		val missingEntities = obj.entities.filter { entity ->
 			if (entity.isPattern) {
 				GameRegistry.instance().getPatternRaw(entity.id) == null
 			} else {
 				GameRegistry.instance().getCueRaw(entity.id) == null
 			}
-		}.map { it.id }.joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
+		}
+
+		obj.entities.removeAll(missingEntities)
+
+		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
 	}
 
 	private fun showPicker() {
