@@ -63,7 +63,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 		main.font.setColor(0.5f, 0.65f, 1f, 1f)
 		main.font.draw(main.batch, "https://github.com/chrislo27/RhythmHeavenRemixEditor2", main.camera.viewportWidth * 0.5f,
 					   main.camera.viewportHeight - main.font.capHeight, 0f, Align.center, false)
-		main.font.draw(main.batch, "______________________________________________________________", main.camera.viewportWidth * 0.5f,
+		main.font.draw(main.batch, "_________________________________________________________", main.camera.viewportWidth * 0.5f,
 					   main.camera.viewportHeight - main.font.capHeight, 0f, Align.center, false)
 
 		main.font.setColor(1f, 1f, 1f, 1f)

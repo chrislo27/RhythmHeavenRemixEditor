@@ -31,6 +31,7 @@ import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
 import ionium.util.DebugSetting
 import ionium.util.Logger
+import ionium.util.SpecialCharactersList
 import ionium.util.i18n.Localization
 
 class Main(l: Logger) : ionium.templates.Main(l) {
@@ -157,6 +158,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("new", NewScreen(this))
 		reg.add("soundboard", SoundboardScreen(this))
 		reg.add("version", VersionScreen(this))
+		reg.add("stats", StatsScreen(this))
 	}
 
 	override fun preRender() {
@@ -220,26 +222,30 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun loadFont() {
 		super.loadFont()
 
-		val ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/PTSans.ttf"))
+		val ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
 
 		val ttfParam = FreeTypeFontGenerator.FreeTypeFontParameter()
 		ttfParam.magFilter = Texture.TextureFilter.Nearest
 		ttfParam.minFilter = Texture.TextureFilter.Linear
 		ttfParam.genMipMaps = true
 		ttfParam.size = 24
-//		ttfParam.characters += "éàèùâêîôûç"
 		ttfParam.characters += "éàèùâêîôûçëïüáéíóú¿¡ñ"
+		ttfParam.characters += SpecialCharactersList.getJapaneseKana()
+
+		val downScale: Float = 0.6f
 
 		font = ttfGenerator.generateFont(ttfParam)
 		font.data.markupEnabled = true
 //		font.setUseIntegerPositions(false)
 		font.setFixedWidthGlyphs("0123456789")
+		font.data.setLineHeight(font.data.lineHeight * downScale)
 
 		ttfParam.size *= 4
 		biggerFont = ttfGenerator.generateFont(ttfParam)
 		biggerFont.data.markupEnabled = true
 //		biggerFont.setUseIntegerPositions(false)
 		biggerFont.setFixedWidthGlyphs("0123456789")
+		biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
 
 		ttfParam.borderWidth = 1.5f
 		ttfParam.size /= 4
@@ -248,6 +254,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		fontBordered.data.markupEnabled = true
 //		fontBordered.setUseIntegerPositions(false)
 		fontBordered.setFixedWidthGlyphs("0123456789")
+		fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
 
 		ttfParam.size *= 4
 		ttfParam.borderWidth *= 4f
@@ -255,6 +262,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		biggerFontBordered.data.markupEnabled = true
 //		biggerFontBordered.setUseIntegerPositions(false)
 		biggerFontBordered.setFixedWidthGlyphs("0123456789")
+		biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
 
 		ttfGenerator.dispose()
 	}

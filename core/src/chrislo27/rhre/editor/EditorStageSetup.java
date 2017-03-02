@@ -667,9 +667,9 @@ public class EditorStageSetup {
 				}
 			};
 
-			stage.addActor(stats).align(Align.topLeft)
-					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT * 3 + PADDING * 2,
-							BUTTON_HEIGHT);
+//			stage.addActor(stats).align(Align.topLeft)
+//					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT * 3 + PADDING * 2,
+//							BUTTON_HEIGHT);
 		}
 
 		{
