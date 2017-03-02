@@ -7,6 +7,9 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 
 **Requires Java 8 and a graphics card that supports OpenGL 2.0+!**
 
+## Contributing
+Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Sugar) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/master/.github/CONTRIBUTING.md) before submitting a pull request!
+
 ## Screenshots
 
 #### Intuitive design - cues and patterns are placed on a music-staff track with different palettes to suit your time of day, mood, or preferences

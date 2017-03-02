@@ -1,6 +1,5 @@
-# Contributing to Discord4J
-Firstly, thanks for considering helping me out on this project! As stated in the readme, "No one is perfect at 
-programming and I am no exception." So I welcome any Pull Requests and Bug Reports. That being said, I have some 
+# Contributing to RHRE2
+Firstly, thanks for considering helping me out on this project! I welcome any Pull Requests and Bug Reports. That being said, I have some 
 standards which I enforce in order to keep this project organized, maintainable and high-quality. 
 
 ## Issues vs Pull Requests
@@ -19,7 +18,7 @@ So, you are thinking about sending a pull request, awesome! Before starting on y
 the [pull request template](PULL_REQUEST_TEMPLATE.md) Just a few things to note when submitting a pull 
 request:
 
-1. All your code will be subject to the project's licence.
+1. All your contributions will be subject to the project's licence.
 2. You cannot modify this project's style (i.e. indentation style, bracket style, naming, etc). I'll understand if you
 do this by accident, but I'll expect you to fix it before I merge the pull request.
 3. Your JSON formatting must be correct (fit the rest of the project's style) and valid.
