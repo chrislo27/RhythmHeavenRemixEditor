@@ -135,7 +135,7 @@ public class EditorStageSetup {
 		}
 
 		{
-			TextButton info = new TextButton(stage, palette, "i") {
+			ImageButton info = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_infobutton"))) {
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
@@ -143,18 +143,6 @@ public class EditorStageSetup {
 					main.setScreen(ScreenRegistry.get("info"));
 				}
 			};
-
-			info.setI10NStrategy(new LocalizationStrategy() {
-
-				@Override
-				public String get(String key, Object... objects) {
-					if (key == null)
-						return "";
-
-					return key;
-				}
-
-			});
 
 			stage.addActor(info).align(Align.topRight).setPixelOffset(PADDING, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
@@ -195,7 +183,8 @@ public class EditorStageSetup {
 
 			});
 
-			stage.addActor(fs).align(Align.topRight).setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(fs).align(Align.topRight)
+					.setPixelOffset(PADDING * 2 + BUTTON_HEIGHT, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
@@ -228,7 +217,8 @@ public class EditorStageSetup {
 
 			});
 
-			stage.addActor(reset).align(Align.topRight).setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+			stage.addActor(reset).align(Align.topRight)
+					.setPixelOffset(PADDING * 3 + BUTTON_HEIGHT * 2, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
 		}
 
 		{
@@ -659,6 +649,27 @@ public class EditorStageSetup {
 
 			stage.addActor(inspections).align(Align.topLeft)
 					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
+		}
+
+		{
+			TextButton stats = new TextButton(stage, palette, "editor.button.stats") {
+
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					getPalette().labelFont.getData().setScale(0.5f);
+					super.render(batch, alpha);
+					getPalette().labelFont.getData().setScale(1);
+				}
+			};
+
+			stage.addActor(stats).align(Align.topLeft)
+					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT * 3 + PADDING * 2,
+							BUTTON_HEIGHT);
 		}
 
 		{

@@ -30,6 +30,7 @@ public class DefAssetLoader implements IAssetLoader {
 
 		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture.class);
 		manager.load(AssetMap.add("ui_audacity", "images/ui/audacity.png"), Texture.class);
+		manager.load(AssetMap.add("ui_infobutton", "images/ui/info.png"), Texture.class);
 	}
 
 	@Override
