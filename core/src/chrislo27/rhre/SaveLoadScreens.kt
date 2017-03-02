@@ -338,6 +338,8 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 		obj.entities.removeAll(missingEntities)
 
 		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
+
+		ionium.templates.Main.logger.warn("Missing content: " + missingContent)
 	}
 
 	private fun showPicker() {
