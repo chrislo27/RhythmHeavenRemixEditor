@@ -143,6 +143,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
 			tmpMusic.deleteRecursively()
 		}
+
+		camera.update()
 	}
 
 	override fun setScreen(scr: Screen?) {
@@ -166,6 +168,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("soundboard", SoundboardScreen(this))
 		reg.add("version", VersionScreen(this))
 		reg.add("stats", StatsScreen(this))
+
+		reg.all.forEach { it.resize(1280, 720) }
 	}
 
 	override fun preRender() {
@@ -276,6 +280,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	override fun resize(width: Int, height: Int) {
 		super.resize(1280, 720)
+
+		persistWindowSettings()
 	}
 
 	fun persistWindowSettings() {

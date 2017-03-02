@@ -21,9 +21,13 @@ public class Stage implements InputProcessor {
 
 	public boolean debugMode = false;
 
-	public Stage() {
+	public Stage(float width, float height) {
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.setToOrtho(false, width, height);
+	}
+
+	public Stage() {
+		this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
 	public <T extends Actor> T addActor(T actor) {

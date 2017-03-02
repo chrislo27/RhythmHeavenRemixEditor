@@ -21,7 +21,7 @@ public class DesktopLauncher {
 		final Main main = new Main(logger);
 
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setTitle("");
+		config.setTitle("Rhythm Heaven Remix Editor");
 		config.setWindowedMode(GlobalVariables.defaultWidth, GlobalVariables.defaultHeight);
 		config.setIdleFPS(GlobalVariables.maxFps);
 		config.setResizable(true);

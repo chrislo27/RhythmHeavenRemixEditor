@@ -57,7 +57,7 @@ public class EditorStageSetup {
 
 	private void create() {
 		final Palette palette = Palettes.getIoniumDefault(main.getFont(), main.getFont());
-		stage = new Stage();
+		stage = new Stage(main.camera.viewportWidth, main.camera.viewportHeight);
 
 		{
 			ImageButton playRemix = new ImageButton(stage, palette,
