@@ -37,9 +37,10 @@ public class TextButton extends Button {
 
 		palette.textFont.setColor(textColor.r, textColor.b, textColor.b, textColor.a * alpha);
 		float textWidth = Utils.getWidth(palette.textFont, getText());
-		if (textWidth > getWidth()) {
+		float desiredWidth = getWidth() - (getBorderThickness(isMouseOver) * 2);
+		if (textWidth > desiredWidth) {
 			palette.textFont.getData()
-					.setScale(getWidth() / textWidth * palette.textFont.getScaleX(), palette.textFont.getScaleY());
+					.setScale(desiredWidth / textWidth * palette.textFont.getScaleX(), palette.textFont.getScaleY());
 		}
 		palette.textFont.draw(batch, getText(), getX() + getWidth() * 0.5f,
 				getY() + getHeight() * 0.5f + palette.textFont.getCapHeight() * 0.5f, 0, Align.center, false);
