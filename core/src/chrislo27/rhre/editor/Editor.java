@@ -1347,11 +1347,14 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 		if (list.size() != 1 || remix.getPlayingState() != PlayingState.STOPPED)
 			return;
 
-		ScreenRegistry.get("load", LoadScreen.class).setShouldShowPicker(false);
+		LoadScreen ls = ScreenRegistry.get("load", LoadScreen.class);
 
-		main.setScreen(ScreenRegistry.get("load"));
-		ScreenRegistry.get("load", LoadScreen.class).onFilesDropped(list);
-		ScreenRegistry.get("load", LoadScreen.class).hidePicker();
+		ls.setShouldShowPicker(false);
+
+		main.setScreen(ls);
+
+		ls.onFilesDropped(list);
+		ls.hidePicker();
 	}
 
 	public enum Tool {
