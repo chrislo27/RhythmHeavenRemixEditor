@@ -16,6 +16,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -94,6 +95,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	private val inputProj: Vector3 = Vector3()
 
+	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
+
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
 			ScreenRegistry.get("version")
@@ -122,17 +125,55 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		oldSize = Triple(preferences.getInteger("width", 1280), preferences.getInteger("height", 720),
 						 preferences.getBoolean("fullscreen", false))
 
+		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = true) {
+			if (!onlyLoadGlyphs) Localization.instance().addBundle(namedLocale)
+
+			val base = Localization.instance().baseFileHandle
+			val locale = namedLocale.locale
+			val language = locale.language
+			val country = locale.country
+			val variant = locale.variant
+			val emptyLanguage = "" == language
+			val emptyCountry = "" == country
+			val emptyVariant = "" == variant
+
+			val sb: StringBuilder = StringBuilder(base.name())
+
+			if (!(emptyLanguage && emptyCountry && emptyVariant)) {
+				sb.append('_')
+				if (!emptyVariant) {
+					sb.append(language).append('_').append(country).append('_').append(variant)
+				} else if (!emptyCountry) {
+					sb.append(language).append('_').append(country)
+				} else {
+					sb.append(language)
+				}
+			}
+
+			val handle: FileHandle = base.sibling(sb.append(".properties").toString())
+
+			if (handle.exists()) {
+				val content: String = handle.readString("UTF-8")
+				content.forEach {
+					if (!fontCharsToLoad.contains(it, ignoreCase = false) && (it != ' ' && it != '\n')) {
+						fontCharsToLoad += it
+					}
+				}
+			}
+		}
+
+		addBundle(NamedLocale("English", Locale("")), onlyLoadGlyphs = true)
+//		addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
+		addBundle(NamedLocale("Español (Spanish)", Locale("es")))
+
+		Localization.instance().loadFromSettings(preferences)
+
 		super.create()
 
 		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
 
 		AssetRegistry.instance().addAssetLoader(DefAssetLoader())
 		AssetRegistry.instance().addAssetLoader(VisualAssetLoader())
-
-//		Localization.instance().addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
-		Localization.instance().addBundle(NamedLocale("Español (Spanish)", Locale("es")))
-
-		Localization.instance().loadFromSettings(preferences)
 
 		DebugSetting.showFPS = false
 
@@ -240,8 +281,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		ttfParam.minFilter = Texture.TextureFilter.Linear
 		ttfParam.genMipMaps = true
 		ttfParam.size = 24
-		ttfParam.characters += "éàèùâêîôûçëïüáéíóú¿¡ñ"
-		ttfParam.characters += SpecialCharactersList.getJapaneseKana()
+		ttfParam.characters = fontCharsToLoad
 
 		val downScale: Float = 0.6f
 
