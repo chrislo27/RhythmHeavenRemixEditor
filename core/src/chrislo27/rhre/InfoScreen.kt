@@ -34,7 +34,8 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 
 	fun createConcatSections() {
 		concatSections = sections.map {
-			"[LIGHT_GRAY]" + Localization.get("info.credits." + it.key) + "[]\n" + it.value
+			"[LIGHT_GRAY]" + Localization.get("info.credits." + it.key).toUpperCase(
+					Localization.instance().currentBundle.locale.locale) + "[]\n" + it.value
 		}.joinToString(separator = "\n\n")
 	}
 
@@ -75,8 +76,16 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 									1f, 1f)
 		}
 
+		val url = "https://github.com/chrislo27/RhythmHeavenRemixEditor2"
+		val urlLength = Utils.getWidth(main.font, url)
+		val hoveringOverUrl = main.getInputY() <= main.font.lineHeight * 1.25f * main.camera.zoom &&
+				main.getInputX() >= main.camera.viewportWidth * 0.5f - urlLength * 0.5f &&
+				main.getInputX() <= main.camera.viewportWidth * 0.5f + urlLength * 0.5f
 		main.font.setColor(0.5f, 0.65f, 1f, 1f)
-		main.font.draw(main.batch, "https://github.com/chrislo27/RhythmHeavenRemixEditor2",
+		if (hoveringOverUrl) {
+			main.font.setColor(0.6f, 0.75f, 1f, 1f)
+		}
+		main.font.draw(main.batch, url,
 					   main.camera.viewportWidth * 0.5f,
 					   main.camera.viewportHeight - main.font.capHeight, 0f, Align.center, false)
 		main.font.draw(main.batch, "_________________________________________________________",
@@ -106,10 +115,20 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 					   main.camera.viewportHeight * 0.75f + height * 0.5f, main.camera.viewportWidth * 0.45f,
 					   Align.center, true)
 
-		if (Utils.isButtonJustPressed(Input.Buttons.LEFT)) {
-			if (main.getInputY() <= main.font.lineHeight * 1.25f * main.camera.zoom) {
-				Gdx.net.openURI("https://github.com/chrislo27/RhythmHeavenRemixEditor2")
-			}
+		main.font.data.setScale(0.75f)
+		val license: String = Localization.get("info.credits.license")
+		height = Utils.getHeightWithWrapping(main.font, license,
+											 main.camera.viewportWidth * 0.45f)
+
+		main.font.draw(main.batch, license,
+					   main.camera.viewportWidth * 0.525f,
+					   main.camera.viewportHeight * 0.25f + height * 0.5f, main.camera.viewportWidth * 0.45f,
+					   Align.right, true)
+
+		main.font.data.setScale(1f)
+
+		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl) {
+			Gdx.net.openURI("https://github.com/chrislo27/RhythmHeavenRemixEditor2")
 		}
 
 		if (VersionChecker.versionState != VersionState.GETTING
