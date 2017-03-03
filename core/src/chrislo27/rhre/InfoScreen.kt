@@ -21,13 +21,11 @@ import ionium.util.render.TexturedQuad
 
 class InfoScreen(m: Main) : Updateable<Main>(m) {
 
-	private val RHCRDJ: String = "https://www.reddit.com/r/rhythmheaven/comments/5h5wu0/rhythm_heaven_custom_remix_dj_v12_is_out_now_26/"
-
 	private val sections: Map<String, String> = mapOf(
 			"programming" to "chrislo27",
 			"databasing" to "ahemtoday, Huebird of Happiness, GuardedLolz, chrislo27",
 			"localization" to "Español (Spanish): Killble",
-			"sfx" to "F Yeah, Rhythm Heaven! Tumblrahemtoday, Toastsaot, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
+			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64",
 			"technologies" to "[DARK_GRAY]Lib[][#E10000]GDX[] by Badlogic Games, LWJGL\n[#B07219]Java[] by Oracle, [#FF8900]Kotlin[] by JetBrains\nRhythm Heaven assets by Nintendo\n\nYou"
@@ -108,19 +106,8 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 					   main.camera.viewportHeight * 0.75f + height * 0.5f, main.camera.viewportWidth * 0.45f,
 					   Align.center, true)
 
-		height = Utils.getHeightWithWrapping(main.font, Localization.get("info.rhcrdj"),
-											 main.camera.viewportWidth * 0.45f)
-
-		main.font.draw(main.batch, Localization.get("info.rhcrdj"),
-					   main.camera.viewportWidth * 0.525f,
-					   main.camera.viewportHeight * 0.25f + height * 0.5f, main.camera.viewportWidth * 0.45f,
-					   Align.right, true)
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT)) {
-			if (main.getInputX() >= main.camera.viewportWidth * 0.525f &&
-					main.camera.viewportHeight - main.getInputY() >= main.camera.viewportHeight * 0.25f - height * 0.5f - main.font.capHeight &&
-					main.camera.viewportHeight - main.getInputY() <= main.camera.viewportHeight * 0.25f + height * 0.5f) {
-				Gdx.net.openURI(RHCRDJ)
-			} else if (main.getInputY() <= main.font.lineHeight * 1.25f * main.camera.zoom) {
+			if (main.getInputY() <= main.font.lineHeight * 1.25f * main.camera.zoom) {
 				Gdx.net.openURI("https://github.com/chrislo27/RhythmHeavenRemixEditor2")
 			}
 		}
