@@ -128,7 +128,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 		main.font.data.setScale(1f)
 
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl) {
-			Gdx.net.openURI("https://github.com/chrislo27/RhythmHeavenRemixEditor2")
+			Gdx.net.openURI(url)
 		}
 
 		if (VersionChecker.versionState != VersionState.GETTING
