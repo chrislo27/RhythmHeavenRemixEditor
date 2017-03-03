@@ -95,6 +95,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	private val inputProj: Vector3 = Vector3()
 
+	private lateinit var ttfGenerator: FreeTypeFontGenerator
 	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
@@ -274,48 +275,54 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun loadFont() {
 		super.loadFont()
 
-		val ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
+		ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
 
-		val ttfParam = FreeTypeFontGenerator.FreeTypeFontParameter()
-		ttfParam.magFilter = Texture.TextureFilter.Nearest
-		ttfParam.minFilter = Texture.TextureFilter.Linear
-		ttfParam.genMipMaps = true
-		ttfParam.size = 24
-		ttfParam.characters = fontCharsToLoad
+		var ttfParam: FreeTypeFontGenerator.FreeTypeFontParameter
+
+		fun getParam(): FreeTypeFontGenerator.FreeTypeFontParameter {
+			val param = FreeTypeFontGenerator.FreeTypeFontParameter()
+			param.magFilter = Texture.TextureFilter.Nearest
+			param.minFilter = Texture.TextureFilter.Linear
+			param.genMipMaps = true
+			param.incremental = true
+			param.size = 24
+			param.characters = fontCharsToLoad
+			return param
+		}
 
 		val downScale: Float = 0.6f
 
+		ttfParam = getParam()
 		font = ttfGenerator.generateFont(ttfParam)
 		font.data.markupEnabled = true
-//		font.setUseIntegerPositions(false)
+		font.setUseIntegerPositions(false)
 		font.setFixedWidthGlyphs("0123456789")
 		font.data.setLineHeight(font.data.lineHeight * downScale)
 
+		ttfParam = getParam()
 		ttfParam.size *= 4
 		biggerFont = ttfGenerator.generateFont(ttfParam)
 		biggerFont.data.markupEnabled = true
-//		biggerFont.setUseIntegerPositions(false)
+		biggerFont.setUseIntegerPositions(false)
 		biggerFont.setFixedWidthGlyphs("0123456789")
 		biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
 
+		ttfParam = getParam()
 		ttfParam.borderWidth = 1.5f
-		ttfParam.size /= 4
-
 		fontBordered = ttfGenerator.generateFont(ttfParam)
 		fontBordered.data.markupEnabled = true
-//		fontBordered.setUseIntegerPositions(false)
+		fontBordered.setUseIntegerPositions(false)
 		fontBordered.setFixedWidthGlyphs("0123456789")
 		fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
 
+		ttfParam = getParam()
+		ttfParam.borderWidth = 1.5f * 4f
 		ttfParam.size *= 4
-		ttfParam.borderWidth *= 4f
 		biggerFontBordered = ttfGenerator.generateFont(ttfParam)
 		biggerFontBordered.data.markupEnabled = true
-//		biggerFontBordered.setUseIntegerPositions(false)
+		biggerFontBordered.setUseIntegerPositions(false)
 		biggerFontBordered.setFixedWidthGlyphs("0123456789")
 		biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
-
-		ttfGenerator.dispose()
 	}
 
 	override fun resize(width: Int, height: Int) {
@@ -338,6 +345,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		biggerFontBordered.dispose()
 		font.dispose()
 		fontBordered.dispose()
+		ttfGenerator.dispose()
+
 		preferences.flush()
 		GameRegistry.instance().dispose()
 		Unirest.shutdown()
