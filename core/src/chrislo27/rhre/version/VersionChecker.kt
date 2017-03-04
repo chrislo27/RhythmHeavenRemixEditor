@@ -16,6 +16,8 @@ object VersionChecker {
 	val url: String = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor2/releases/latest"
 	@Volatile var versionState: VersionState = VersionState.GETTING
 		private set
+	@Volatile var shouldShowOnInit: Boolean = true
+	private set
 
 	@Volatile
 	var releaseObject: ReleaseObject? = null
@@ -37,13 +39,14 @@ object VersionChecker {
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
 			versionState =
-					if (isSame || Main.version.endsWith(
-							"-SNAPSHOT", ignoreCase = true) ||
-							Main.version.endsWith("-alpha", ignoreCase = true) ||
-							Main.version.endsWith("-beta", ignoreCase = true))
+					if (isSame)
 						VersionState.UP_TO_DATE
 					else
 						VersionState.AVAILABLE
+
+			if (Main.version.matches("v(?:.+)-(snapshot|alpha|beta).*".toRegex(RegexOption.IGNORE_CASE))) {
+				shouldShowOnInit = false
+			}
 
 			release.bodyLines = release.body?.lines() ?: listOf("")
 			if (release.published_at != null) {

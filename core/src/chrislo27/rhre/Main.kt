@@ -101,7 +101,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
-		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
+		return if ((VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit) || DebugSetting.debug)
 			ScreenRegistry.get("version")
 		else
 			ScreenRegistry.get("editor")
@@ -134,7 +134,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.7.0-SNAPSHOT"
+		ionium.templates.Main.version = "v2.7.0-beta"
 
 		SysOutPiper.pipe()
 
