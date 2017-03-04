@@ -126,7 +126,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
 		init {
-			Localization.DEFAULT_LOCALE = languagesMap.get("")
+			Localization.DEFAULT_LOCALE = languagesMap[""]
 		}
 
 		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float, align: Int) {
