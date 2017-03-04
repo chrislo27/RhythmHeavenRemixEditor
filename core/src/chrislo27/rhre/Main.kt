@@ -124,7 +124,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			val oldScaleX = font.data.scaleX
 
 			if (textWidth > width) {
-				font.data.scaleX = width / textWidth
+				font.data.scaleX = (width / textWidth) * oldScaleX
 			}
 
 			font.draw(batch, text, x, y, width, align, false)
