@@ -1,6 +1,5 @@
 package chrislo27.rhre
 
-import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
@@ -84,10 +83,10 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 					   Gdx.graphics.width * 0.05f,
 					   Gdx.graphics.height * 0.525f, Gdx.graphics.width * 0.9f, Align.left, true)
 
-		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 4)
-		main.font.draw(main.batch, Localization.get("saveScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 2)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
+					   main.font.capHeight * 4, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), Gdx.graphics.width * 0.05f,
+					   main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -272,18 +271,18 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 							   Align.left, true)
 			}
 
-			main.font.draw(main.batch, Localization.get("loadScreen.confirm"),
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.confirm"),
 						   Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f)
+						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
 		} else {
-			main.font.draw(main.batch, Localization.get("loadScreen.drag"), Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.85f - main.biggerFont.capHeight * 0.75f)
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"), Gdx.graphics.width * 0.05f,
+						   Gdx.graphics.height * 0.85f - main.biggerFont.capHeight * 0.75f, Gdx.graphics.width * 0.9f, Align.left)
 		}
-		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f)
 
-		main.font.draw(main.batch, Localization.get("loadScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 2)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
+							Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), Gdx.graphics.width * 0.05f,
+							main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -425,12 +424,12 @@ class NewScreen(m: Main) : Updateable<Main>(m) {
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.draw(main.batch, Localization.get("newScreen.confirm"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f)
-		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f)
-		main.font.draw(main.batch, Localization.get("newScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 2)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"), Gdx.graphics.width * 0.05f,
+					   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
+					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"), Gdx.graphics.width * 0.05f,
+					   main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
 
 		main.batch.end()
 	}

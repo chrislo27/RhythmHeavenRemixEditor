@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
@@ -33,6 +34,7 @@ import ionium.registry.ScreenRegistry
 import ionium.util.DebugSetting
 import ionium.util.Logger
 import ionium.util.SpecialCharactersList
+import ionium.util.Utils
 import ionium.util.i18n.Localization
 import ionium.util.i18n.NamedLocale
 import java.util.*
@@ -112,9 +114,23 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	companion object {
 		val languagesList: List<NamedLocale> = mutableListOf(
 				NamedLocale("English (English)", Locale("")),
+				NamedLocale("Français (French)", Locale("fr")),
 				NamedLocale("Español (Spanish)", Locale("es"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
+
+		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float, align: Int) {
+			val textWidth = Utils.getWidth(font, text)
+			val oldScaleX = font.data.scaleX
+
+			if (textWidth > width) {
+				font.data.scaleX = width / textWidth
+			}
+
+			font.draw(batch, text, x, y, width, align, false)
+
+			font.data.scaleX = oldScaleX
+		}
 	}
 
 	override fun create() {
