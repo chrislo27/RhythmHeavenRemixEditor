@@ -82,6 +82,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	public Tool currentTool = Tool.NORMAL;
 	public Remix remix;
 	public FileHandle file = null;
+	public float autosaveMessageShow = 0f;
+	public boolean isNormalSave = false;
 	float snappingInterval;
 	private Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
@@ -98,8 +100,6 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
 	private float timeUntilAutosave = AUTOSAVE_PERIOD;
-	public float autosaveMessageShow = 0f;
-	public boolean isNormalSave = false;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -269,9 +269,10 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
 
 					main.getFontBordered().setColor(batch.getColor());
-					main.getFontBordered().draw(batch, Localization.get("editor.bpmTracker", String.format("%.1f", tc.getTempo())),
-							tc.getBeat() * Entity.PX_WIDTH + 4,
-							-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
+					main.getFontBordered()
+							.draw(batch, Localization.get("editor.bpmTracker", String.format("%.1f", tc.getTempo())),
+									tc.getBeat() * Entity.PX_WIDTH + 4,
+									-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
 
 					if (isSelected) {
 						main.getFontBordered().setColor(main.getPalette().getBpmTracker());
@@ -305,9 +306,10 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
 								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
-				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerBpm", String.format("%.1f", currentBpm)),
-						remix.getBeat() * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
+				main.getFontBordered()
+						.draw(batch, Localization.get("editor.beatTrackerBpm", String.format("%.1f", currentBpm)),
+								remix.getBeat() * Entity.PX_WIDTH + 4,
+								Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -412,7 +414,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 			batch.setColor(1, 1, 1, 1);
 			main.getFont().setColor(1, 1, 1, 1);
 			main.getFont().getData().setScale(0.5f);
-			main.getFont().draw(batch, status == null ? "" : status, 2, 2 + main.getFont().getCapHeight());
+			chrislo27.rhre.Main.Companion.drawCompressed(main.getFont(), batch, status == null ? "" : status, 2,
+					2 + main.getFont().getCapHeight(), main.camera.viewportWidth * 0.8f, Align.left);
 
 			// series buttons
 			for (int i = 0; i < Series.values().length; i++) {
@@ -495,10 +498,11 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 			if (autosaveMessageShow > 0) {
 				Color c = Main.getRainbow(1.0f);
 				main.getFontBordered().setColor(c.r, c.g, c.b, Math.min(autosaveMessageShow, 1f));
-				main.getFontBordered()
-						.draw(batch, Localization.get("editor." + (isNormalSave ? "" : "auto") + "saved"), main.camera.viewportWidth * 0.5f,
-								main.camera.viewportHeight * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0,
-								Align.center, false);
+				main.getFontBordered().draw(batch, Localization.get("editor." + (isNormalSave ? "" : "auto") +
+								"saved"),
+						main.camera.viewportWidth * 0.5f,
+						main.camera.viewportHeight * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0,
+						Align.center, false);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
 		}
@@ -830,15 +834,13 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 		// camera
 		{
 			boolean accelerate = (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-					Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) || (Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) ||
-					Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
+					Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) ||
+					(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
-						(accelerate ? 5 : 1);
+				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
 			}
 			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() *
-						(accelerate ? 5 : 1);
+				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
@@ -1134,8 +1136,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 				// tools
 				if (main.getInputX() >= main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE) {
 					Tool[] tools = Tool.values();
-					int icon = (int) (tools.length -
-							((main.camera.viewportWidth - main.getInputX()) / GAME_ICON_SIZE));
+					int icon = (int) (tools.length - ((main.camera.viewportWidth - main.getInputX()) /
+							GAME_ICON_SIZE));
 
 					if (icon < tools.length && icon >= 0) {
 						currentTool = tools[icon];
