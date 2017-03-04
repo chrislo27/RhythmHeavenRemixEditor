@@ -115,12 +115,19 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	companion object {
+
 		val languagesList: List<NamedLocale> = mutableListOf(
-				NamedLocale("English (English)", Locale("")),
+				NamedLocale("English (NA)", Locale("")),
+				NamedLocale("English (UK)", Locale("en", "UK")),
 				NamedLocale("Français (French)", Locale("fr")),
-				NamedLocale("Español (Spanish)", Locale("es"))
+				NamedLocale("Español (Spanish)", Locale("es")),
+				NamedLocale("Everybody row! (Pirate)", Locale("pirate"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
+
+		init {
+			Localization.DEFAULT_LOCALE = languagesMap.get("")
+		}
 
 		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float, align: Int) {
 			val textWidth = Utils.getWidth(font, text)

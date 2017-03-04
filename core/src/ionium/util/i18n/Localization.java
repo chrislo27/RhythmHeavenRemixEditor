@@ -16,6 +16,7 @@ import java.util.MissingResourceException;
 public class Localization {
 
 	public static final String SETTINGS_KEY = "language";
+	public static volatile NamedLocale DEFAULT_LOCALE = new NamedLocale("English", new Locale(""));
 
 	private static Localization instance;
 
@@ -41,7 +42,7 @@ public class Localization {
 	private void loadResources() {
 		setBaseFileHandle(Gdx.files.internal("localization/default"));
 
-		addBundle(new NamedLocale("English", new Locale("")));
+		addBundle(DEFAULT_LOCALE);
 
 		selectedBundle = bundles.get(0);
 	}
