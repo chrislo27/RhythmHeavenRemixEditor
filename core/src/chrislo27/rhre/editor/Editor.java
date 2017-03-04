@@ -979,7 +979,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
 						if (i < Series.values().length && i >= 0) {
-							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getProperName());
+							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getLocalizedName());
 						}
 					}
 				} else {

@@ -1,5 +1,7 @@
 package chrislo27.rhre.registry
 
+import ionium.util.i18n.Localization
+
 
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
@@ -16,10 +18,12 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 	}
 }
 
-enum class Series(val shorthand: String, val properName: String) {
+enum class Series(val i10nKey: String) {
 
-	UNKNOWN("Misc.", "Misc."), TENGOKU("TG", "Rhythm Tengoku"), DS("DS", "Rhythm Heaven"),
-	FEVER("FV", "Rhythm Heaven Fever"), MEGAMIX("MM", "Rhythm Heaven Megamix"), SIDE("Side", "Side games"),
-	CUSTOM("Custom", "Custom sounds");
+	UNKNOWN("other"), TENGOKU("tengoku"), DS("ds"),
+	FEVER("fever"), MEGAMIX("megamix"), SIDE("side"),
+	CUSTOM("custom");
+
+	fun getLocalizedName(): String = Localization.get("series." + i10nKey)
 
 }
