@@ -110,51 +110,30 @@
       "cues": [
         {
           "id": "fanClubJa/hai1",
-          "deprecatedIDs": [
-            "fanClubJp/hai1"
-          ],
           "beat": 0
         },
         {
           "id": "fanClubJa/hai2",
-          "deprecatedIDs": [
-            "fanClubJp/hai2"
-          ],
           "beat": 1
         },
         {
           "id": "fanClubJa/hai3",
-          "deprecatedIDs": [
-            "fanClubJp/hai3"
-          ],
           "beat": 2
         },
         {
           "id": "fanClubJa/haiClap",
-          "deprecatedIDs": [
-            "fanClubJp/haiClap"
-          ],
           "beat": 4
         },
         {
           "id": "fanClubJa/haiClap",
-          "deprecatedIDs": [
-            "fanClubJp/haiClap"
-          ],
           "beat": 5
         },
         {
           "id": "fanClubJa/haiClap",
-          "deprecatedIDs": [
-            "fanClubJp/haiClap"
-          ],
           "beat": 6
         },
         {
           "id": "fanClubJa/haiClap",
-          "deprecatedIDs": [
-            "fanClubJp/haiClap"
-          ],
           "beat": 7
         }
       ]
@@ -168,58 +147,34 @@
       "cues": [
         {
           "id": "fanClubJa/kamone1",
-          "deprecatedIDs": [
-            "fanClubJp/kamone1"
-          ],
           "beat": 0
         },
         {
           "id": "fanClubJa/kamone2",
-          "deprecatedIDs": [
-            "fanClubJp/kamone2"
-          ],
           "beat": 0.5
         },
         {
           "id": "fanClubJa/kamone3",
-          "deprecatedIDs": [
-            "fanClubJp/kamone3"
-          ],
           "beat": 1
         },
         {
           "id": "fanClubJa/kamoneClap1",
-          "deprecatedIDs": [
-            "fanClubJp/kamoneClap1"
-          ],
           "beat": 2
         },
         {
           "id": "fanClubJa/kamoneClap2",
-          "deprecatedIDs": [
-            "fanClubJp/kamoneClap2"
-          ],
           "beat": 2.75
         },
         {
           "id": "fanClubJa/kamoneClap3",
-          "deprecatedIDs": [
-            "fanClubJp/kamoneClap3"
-          ],
           "beat": 3.5
         },
         {
           "id": "fanClubJa/kamoneClap4",
-          "deprecatedIDs": [
-            "fanClubJp/kamoneClap4"
-          ],
           "beat": 4
         },
         {
           "id": "fanClubJa/kamoneJump",
-          "deprecatedIDs": [
-            "fanClubJp/kamoneJump"
-          ],
           "beat": 5
         }
       ]

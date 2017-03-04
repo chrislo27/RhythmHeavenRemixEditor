@@ -78,16 +78,10 @@
       "cues": [
         {
           "id": "munchyMonkJa/one",
-          "deprecatedIDs": [
-            "munchyMonkJp/one"
-          ],
           "beat": 0
         },
         {
           "id": "munchyMonkJa/gulp",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp"
-          ],
           "beat": 1
         }
       ]
@@ -101,30 +95,18 @@
       "cues": [
         {
           "id": "munchyMonkJa/try",
-          "deprecatedIDs": [
-            "munchyMonkJp/try"
-          ],
           "beat": 0
         },
         {
           "id": "munchyMonkJa/two",
-          "deprecatedIDs": [
-            "munchyMonkJp/two"
-          ],
           "beat": 0.5
         },
         {
           "id": "munchyMonkJa/gulp",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp"
-          ],
           "beat": 1.5
         },
         {
           "id": "munchyMonkJa/gulp",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp"
-          ],
           "beat": 2,
           "track": 1
         }
@@ -139,30 +121,18 @@
       "cues": [
         {
           "id": "munchyMonkJa/three",
-          "deprecatedIDs": [
-            "munchyMonkJp/three"
-          ],
           "beat": 0
         },
         {
           "id": "munchyMonkJa/gulp3-1",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp3-1"
-          ],
           "beat": 1
         },
         {
           "id": "munchyMonkJa/gulp3-2",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp3-2"
-          ],
           "beat": 2
         },
         {
           "id": "munchyMonkJa/gulp3-3",
-          "deprecatedIDs": [
-            "munchyMonkJp/gulp3-3"
-          ],
           "beat": 3
         }
       ]

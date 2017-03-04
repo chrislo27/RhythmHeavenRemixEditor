@@ -126,16 +126,10 @@
       "cues": [
         {
           "id": "spaceDanceEn/and1",
-          "deprecatedIDs": [
-            "spaceDanceEng/and1"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/pose1",
-          "deprecatedIDs": [
-            "spaceDanceEng/pose1"
-          ],
           "beat": 1.0
         }
       ]
@@ -149,23 +143,14 @@
       "cues": [
         {
           "id": "spaceDanceEn/lets1",
-          "deprecatedIDs": [
-            "spaceDanceEng/lets1"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/sit1",
-          "deprecatedIDs": [
-            "spaceDanceEng/sit1"
-          ],
           "beat": 0.5
         },
         {
           "id": "spaceDanceEn/down1",
-          "deprecatedIDs": [
-            "spaceDanceEng/down1"
-          ],
           "beat": 1.0
         }
       ]
@@ -179,30 +164,18 @@
       "cues": [
         {
           "id": "spaceDanceEn/pa1",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa1"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/pa1",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa1"
-          ],
           "beat": 0.5
         },
         {
           "id": "spaceDanceEn/pa1",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa1"
-          ],
           "beat": 1.0
         },
         {
           "id": "spaceDanceEn/punch1",
-          "deprecatedIDs": [
-            "spaceDanceEng/punch1"
-          ],
           "beat": 1.5
         }
       ]
@@ -216,16 +189,10 @@
       "cues": [
         {
           "id": "spaceDanceEn/and2",
-          "deprecatedIDs": [
-            "spaceDanceEng/and2"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/pose2",
-          "deprecatedIDs": [
-            "spaceDanceEng/pose2"
-          ],
           "beat": 1.0
         }
       ]
@@ -239,23 +206,14 @@
       "cues": [
         {
           "id": "spaceDanceEn/lets2",
-          "deprecatedIDs": [
-            "spaceDanceEng/lets2"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/sit2",
-          "deprecatedIDs": [
-            "spaceDanceEng/sit2"
-          ],
           "beat": 0.5
         },
         {
           "id": "spaceDanceEn/down2",
-          "deprecatedIDs": [
-            "spaceDanceEng/down2"
-          ],
           "beat": 1.0
         }
       ]
@@ -269,30 +227,18 @@
       "cues": [
         {
           "id": "spaceDanceEn/pa2",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa2"
-          ],
           "beat": 0.0
         },
         {
           "id": "spaceDanceEn/pa2",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa2"
-          ],
           "beat": 0.5
         },
         {
           "id": "spaceDanceEn/pa2",
-          "deprecatedIDs": [
-            "spaceDanceEng/pa2"
-          ],
           "beat": 1.0
         },
         {
           "id": "spaceDanceEn/punch2",
-          "deprecatedIDs": [
-            "spaceDanceEng/punch2"
-          ],
           "beat": 1.5
         }
       ]
