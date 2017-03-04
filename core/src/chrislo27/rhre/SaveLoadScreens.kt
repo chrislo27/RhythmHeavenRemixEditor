@@ -1,5 +1,6 @@
 package chrislo27.rhre
 
+import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
@@ -147,6 +148,9 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 							zipStream.close()
 						}
+
+						es.editor.isNormalSave = true
+						es.editor.autosaveMessageShow = 3f
 					}
 				}
 

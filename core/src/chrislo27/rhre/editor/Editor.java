@@ -98,7 +98,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
 	private float timeUntilAutosave = AUTOSAVE_PERIOD;
-	private float autosaveMessageShow = 0f;
+	public float autosaveMessageShow = 0f;
+	public boolean isNormalSave = false;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -495,7 +496,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 				Color c = Main.getRainbow(1.0f);
 				main.getFontBordered().setColor(c.r, c.g, c.b, Math.min(autosaveMessageShow, 1f));
 				main.getFontBordered()
-						.draw(batch, Localization.get("editor.autosaved"), main.camera.viewportWidth * 0.5f,
+						.draw(batch, Localization.get("editor." + (isNormalSave ? "" : "auto") + "saved"), main.camera.viewportWidth * 0.5f,
 								main.camera.viewportHeight * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0,
 								Align.center, false);
 				main.getFontBordered().setColor(1, 1, 1, 1);
@@ -700,8 +701,9 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	public void renderUpdate() {
 		remix.update(Gdx.graphics.getDeltaTime());
 
-		if (autosaveMessageShow > 0)
+		if (autosaveMessageShow > 0) {
 			autosaveMessageShow = Math.max(0f, autosaveMessageShow - Gdx.graphics.getDeltaTime());
+		}
 
 		if (remix.getPlayingState() == PlayingState.PLAYING) {
 			if (camera.position.x + camera.viewportWidth * 0.5f < remix.getBeat() * Entity.PX_WIDTH) {
@@ -739,6 +741,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					zipStream.close();
 				}
 
+				isNormalSave = false;
 				autosaveMessageShow = 3f;
 			} catch (IOException e) {
 				e.printStackTrace();
