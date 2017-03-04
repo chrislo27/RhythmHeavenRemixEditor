@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 class VersionScreen(m: Main) : Updateable<Main>(m) {
 
-	private val titlesAvailable: Int = 3
+	private val titlesAvailable: Int = 5
 	private var titleType: Int = 0
 	private val MAX_LINES = 12
 	private var content: String = ""
@@ -54,10 +54,11 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.data.setScale(0.75f)
-		main.biggerFont.draw(main.batch,
-							 Localization.get("versionScreen.title$titleType"),
-							 main.camera.viewportWidth * 0.05f,
-							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
+		Main.drawCompressed(main.biggerFont, main.batch,
+							Localization.get("versionScreen.title$titleType"),
+							main.camera.viewportWidth * 0.05f,
+							main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight,
+							main.camera.viewportWidth * 0.9f, Align.left)
 		main.biggerFont.data.setScale(1f)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
@@ -127,7 +128,12 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 
 	override fun show() {
 		line = 0
-		titleType = MathUtils.random(0, titlesAvailable - 1)
+		if (titlesAvailable > 1) {
+			val old = titleType
+			while (titleType == old) {
+				titleType = MathUtils.random(0, titlesAvailable - 1)
+			}
+		}
 
 		(Gdx.input.inputProcessor as InputMultiplexer).addProcessor(input)
 	}
