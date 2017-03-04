@@ -415,7 +415,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 			main.getFont().setColor(1, 1, 1, 1);
 			main.getFont().getData().setScale(0.5f);
 			chrislo27.rhre.Main.Companion.drawCompressed(main.getFont(), batch, status == null ? "" : status, 2,
-					2 + main.getFont().getCapHeight(), main.camera.viewportWidth * 0.8f, Align.left);
+					2 + main.getFont().getCapHeight(), main.camera.viewportWidth - 16 - main.getVersionStringLength(),
+					Align.left);
 
 			// series buttons
 			for (int i = 0; i < Series.values().length; i++) {
@@ -979,7 +980,9 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
 						if (i < Series.values().length && i >= 0) {
-							status += " - " + Localization.get("editor.lookingAt", Series.values()[i].getLocalizedName());
+							status +=
+									" - " + Localization.get("editor.lookingAt", Series.values()[i].getLocalizedName
+											());
 						}
 					}
 				} else {

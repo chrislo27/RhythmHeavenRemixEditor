@@ -100,6 +100,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private lateinit var ttfGenerator: FreeTypeFontGenerator
 	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
 
+	var versionStringLength: Float = 0f
+		private set
+
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if ((VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit) || DebugSetting.debug)
 			ScreenRegistry.get("version")
@@ -271,6 +274,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
 		else
 			ionium.templates.Main.version
+		versionStringLength = Utils.getWidth(fontBordered, str)
 		fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
 						  Align.right, false)
 		fontBordered.data.setScale(1f)
