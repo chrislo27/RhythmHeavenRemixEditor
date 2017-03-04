@@ -1,6 +1,6 @@
 {
   "gameID": "frogHop",
-  "gameName": "Frog Hop",
+  "gameNames": ["Frog Hop"],
   "series": "ds",
   "cues": [
     {

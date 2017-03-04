@@ -1,6 +1,6 @@
 {
   "gameID": "frogPrincess",
-  "gameName": "Frog Princess",
+  "gameNames": ["Frog Princess"],
   "series": "side",
   "cues": [
     {

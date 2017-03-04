@@ -1,6 +1,6 @@
 {
   "gameID": "screwbotFactory",
-  "gameName": "Screwbot Factory",
+  "gameNames": ["Screwbot Factory"],
   "series": "fever",
   "cues": [
     {

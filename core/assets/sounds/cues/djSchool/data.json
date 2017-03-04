@@ -1,6 +1,6 @@
 {
   "gameID": "djSchool",
-  "gameName": "DJ School",
+  "gameNames": ["DJ School"],
   "series": "ds",
   "cues": [
     {

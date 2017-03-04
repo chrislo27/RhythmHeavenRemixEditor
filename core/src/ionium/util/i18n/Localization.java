@@ -18,32 +18,20 @@ public class Localization {
 	public static final String SETTINGS_KEY = "language";
 
 	private static Localization instance;
+	private FileHandle baseFileHandle;
+	private HashMap<String, Boolean> caughtMissing = new HashMap<>();
+	private Array<CompleteI18NBundle> bundles = new Array<>();
+	private CompleteI18NBundle selectedBundle = null;
 
 	private Localization() {
 	}
 
-	public static Localization instance() {
+	public static synchronized Localization instance() {
 		if (instance == null) {
 			instance = new Localization();
 			instance.loadResources();
 		}
 		return instance;
-	}
-
-	private FileHandle baseFileHandle;
-
-	private HashMap<String, Boolean> caughtMissing = new HashMap<>();
-
-	private Array<CompleteI18NBundle> bundles = new Array<>();
-
-	private CompleteI18NBundle selectedBundle = null;
-
-	private void loadResources() {
-		setBaseFileHandle(Gdx.files.internal("localization/default"));
-
-		addBundle(new NamedLocale("English", new Locale("")));
-
-		selectedBundle = bundles.get(0);
 	}
 
 	public static String get(String key, Object... params) {
@@ -60,13 +48,20 @@ public class Localization {
 			}
 		} catch (MissingResourceException e) {
 			instance().caughtMissing.put(key, true);
-			Main.logger.warn(
-					"WARNING: the bundle \"" + instance().getBaseFileHandle().nameWithoutExtension()
-							+ "_" + instance().getCurrentBundle().getLocale().getLocale().toString()
-							+ "\" has no key \"" + key + "\"");
+			Main.logger.warn("WARNING: the bundle \"" + instance().getBaseFileHandle().nameWithoutExtension() + "_" +
+					instance().getCurrentBundle().getLocale().getLocale().toString() + "\" has no key \"" + key +
+					"\"");
 		}
 
 		return key;
+	}
+
+	private void loadResources() {
+		setBaseFileHandle(Gdx.files.internal("localization/default"));
+
+		addBundle(new NamedLocale("English", new Locale("")));
+
+		selectedBundle = bundles.get(0);
 	}
 
 	public void nextLanguage(int advance) {
@@ -95,8 +90,9 @@ public class Localization {
 	}
 
 	public void setLanguage(int index) {
-		if (index < 0 || index >= bundles.size) throw new IllegalArgumentException(
-				"Index for setting language cannot be out of bounds! (got " + index + ")");
+		if (index < 0 || index >= bundles.size)
+			throw new IllegalArgumentException(
+					"Index for setting language cannot be out of bounds! (got " + index + ")");
 
 		selectedBundle = bundles.get(index);
 	}
@@ -118,28 +114,45 @@ public class Localization {
 		for (int i = 0; i < bundles.size; i++) {
 			bundle = bundles.get(i);
 
-			bundle.setBundle(
-					I18NBundle.createBundle(getBaseFileHandle(), bundle.locale.getLocale()));
+			bundle.setBundle(I18NBundle.createBundle(getBaseFileHandle(), bundle.locale.getLocale()));
 		}
 	}
 
 	public void addCustom(String key, String value) {
-		I18NBundle bundle = null;
-
 		for (int i = 0; i < bundles.size; i++) {
-			bundle = bundles.get(i).bundle;
+			addCustom(key, value, bundles.get(i));
+		}
+	}
 
-			try {
-				Field f = bundle.getClass().getDeclaredField("properties");
+	public void addCustom(String key, String value, NamedLocale locale) {
+		if (locale == null)
+			return;
 
-				f.setAccessible(true);
-
-				ObjectMap<String, String> props = (ObjectMap<String, String>) f.get(bundle);
-
-				props.put(key, value);
-			} catch (Exception e) {
-				Main.logger.warn("Failed to add custom key/value to " + bundle.toString(), e);
+		CompleteI18NBundle bundle = null;
+		for (CompleteI18NBundle b : bundles) {
+			if (b.getLocale().equals(locale)) {
+				bundle = b;
+				break;
 			}
+		}
+
+		if (bundle == null)
+			return;
+
+		addCustom(key, value, bundle);
+	}
+
+	public void addCustom(String key, String value, CompleteI18NBundle bundle) {
+		try {
+			Field f = bundle.getBundle().getClass().getDeclaredField("properties");
+
+			f.setAccessible(true);
+
+			ObjectMap<String, String> props = (ObjectMap<String, String>) f.get(bundle.getBundle());
+
+			props.put(key, value);
+		} catch (Exception e) {
+			Main.logger.warn("Failed to add custom key/value to " + bundle.toString(), e);
 		}
 	}
 
@@ -152,11 +165,9 @@ public class Localization {
 	}
 
 	public void addBundle(NamedLocale locale) {
-		bundles.add(new CompleteI18NBundle(locale,
-				I18NBundle.createBundle(getBaseFileHandle(), locale.getLocale())));
+		bundles.add(new CompleteI18NBundle(locale, I18NBundle.createBundle(getBaseFileHandle(), locale.getLocale())));
 
-		Main.logger.info(
-				"Loaded language " + locale.getName() + " (" + locale.getLocale().toString() + ")");
+		Main.logger.info("Loaded language " + locale.getName() + " (" + locale.getLocale().toString() + ")");
 	}
 
 	public void loadFromSettings(Preferences settings) {
@@ -182,12 +193,12 @@ public class Localization {
 		settings.flush();
 	}
 
-	public void setBaseFileHandle(FileHandle handle) {
-		baseFileHandle = handle;
-	}
-
 	public FileHandle getBaseFileHandle() {
 		return baseFileHandle;
+	}
+
+	public void setBaseFileHandle(FileHandle handle) {
+		baseFileHandle = handle;
 	}
 
 }

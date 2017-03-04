@@ -1,6 +1,6 @@
 {
   "gameID": "donkDonkJp",
-  "gameName": "Donk-Donk (Japanese)",
+  "gameNames": ["Donk-Donk (Japanese)"],
   "series": "fever",
   "cues": [
     {

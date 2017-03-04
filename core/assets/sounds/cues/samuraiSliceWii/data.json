@@ -1,6 +1,6 @@
 {
   "gameID": "samuraiSliceWii",
-  "gameName": "Samurai Slice (Fever)",
+  "gameNames": ["Samurai Slice (Fever)"],
   "series": "fever",
   "cues": [
     {

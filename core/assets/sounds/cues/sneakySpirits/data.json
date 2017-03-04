@@ -1,6 +1,6 @@
 {
   "gameID": "sneakySpirits",
-  "gameName": "Sneaky Spirits",
+  "gameNames": ["Sneaky Spirits"],
   "series": "tengoku",
   "cues": [
     {

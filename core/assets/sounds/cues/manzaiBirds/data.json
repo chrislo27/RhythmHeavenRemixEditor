@@ -1,6 +1,6 @@
 {
   "gameID": "manzaiBirds",
-  "gameName": "Manzai Birds",
+  "gameNames": ["Manzai Birds"],
   "series": "side",
   "usesGeneratorHelper": true,
   "cues": [

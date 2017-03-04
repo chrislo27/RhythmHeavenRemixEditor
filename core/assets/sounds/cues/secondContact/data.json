@@ -1,6 +1,6 @@
 {
   "gameID": "secondContact",
-  "gameName": "Second Contact",
+  "gameNames": ["Second Contact"],
   "series": "megamix",
   "cues": [
     {

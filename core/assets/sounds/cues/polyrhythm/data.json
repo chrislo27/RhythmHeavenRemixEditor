@@ -1,6 +1,6 @@
 {
   "gameID": "polyrhythm",
-  "gameName": "Polyrhythm",
+  "gameNames": ["Polyrhythm"],
   "series": "tengoku",
   "cues": [
     {

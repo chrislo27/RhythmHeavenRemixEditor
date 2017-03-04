@@ -1,6 +1,6 @@
 {
   "gameID": "mrUpbeat",
-  "gameName": "Mr Upbeat",
+  "gameNames": ["Mr Upbeat"],
   "series": "side",
   "cues": [
     {

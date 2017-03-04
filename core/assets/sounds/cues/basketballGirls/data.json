@@ -1,6 +1,6 @@
 {
   "gameID": "basketballGirls",
-  "gameName": "Basketball Girls",
+  "gameNames": ["Basketball Girls"],
   "series": "side",
   "cues": [
     {

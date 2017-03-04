@@ -1,6 +1,6 @@
 {
   "gameID": "cropStomp",
-  "gameName": "Crop Stomp",
+  "gameNames": ["Crop Stomp"],
   "series": "ds",
   "cues": [
     {

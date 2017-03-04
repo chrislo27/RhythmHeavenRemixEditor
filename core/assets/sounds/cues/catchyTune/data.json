@@ -1,6 +1,6 @@
 {
   "gameID": "catchyTune",
-  "gameName": "Catchy Tune",
+  "gameNames": ["Catchy Tune"],
   "series": "megamix",
   "cues": [
     {

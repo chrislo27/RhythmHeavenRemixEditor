@@ -1,6 +1,6 @@
 {
   "gameID": "superSamuraiSlice",
-  "gameName": "Super Samurai Slice",
+  "gameNames": ["Super Samurai Slice"],
   "series": "megamix",
   "cues": [
     {

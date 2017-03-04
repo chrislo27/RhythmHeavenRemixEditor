@@ -1,6 +1,6 @@
 {
   "gameID": "builtToScaleFever",
-  "gameName": "Built to Scale (Fever)",
+  "gameNames": ["Built to Scale (Fever)"],
   "series": "fever",
   "cues": [
     {

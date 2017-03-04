@@ -1,6 +1,6 @@
 {
   "gameID": "nightWalk",
-  "gameName": "Night Walk",
+  "gameNames": ["Night Walk"],
   "series": "tengoku",
   "cues": [
     {

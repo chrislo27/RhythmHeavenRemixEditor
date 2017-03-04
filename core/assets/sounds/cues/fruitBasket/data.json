@@ -1,6 +1,6 @@
 {
   "gameID": "fruitBasket",
-  "gameName": "Fruit Basket",
+  "gameNames": ["Fruit Basket"],
   "series": "megamix",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "launchParty",
-  "gameName": "Launch Party",
+  "gameNames": ["Launch Party"],
   "series": "fever",
   "cues": [
     {

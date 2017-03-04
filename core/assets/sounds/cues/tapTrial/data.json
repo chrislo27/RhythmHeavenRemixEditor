@@ -1,6 +1,6 @@
 {
   "gameID": "tapTrial",
-  "gameName": "Tap Trial",
+  "gameNames": ["Tap Trial"],
   "series": "tengoku",
   "cues": [
     {

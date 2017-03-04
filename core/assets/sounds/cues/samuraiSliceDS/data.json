@@ -1,6 +1,6 @@
 {
   "gameID": "samuraiSliceDS",
-  "gameName": "Samurai Slice (DS)",
+  "gameNames": ["Samurai Slice (DS)"],
   "series": "side",
   "cues": [
     {

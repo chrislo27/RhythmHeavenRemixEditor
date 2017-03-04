@@ -1,6 +1,6 @@
 {
   "gameID": "rhythmRally",
-  "gameName": "Rhythm Rally",
+  "gameNames": ["Rhythm Rally"],
   "series": "ds",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "exhibitionMatch",
-  "gameName": "Exhibition Match",
+  "gameNames": ["Exhibition Match"],
   "series": "fever",
   "cues": [
     {

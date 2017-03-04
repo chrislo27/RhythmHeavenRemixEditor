@@ -1,6 +1,6 @@
 {
   "gameID": "builtToScaleDS",
-  "gameName": "Built to Scale (DS)",
+  "gameNames": ["Built to Scale (DS)"],
   "series": "ds",
   "cues": [
     {

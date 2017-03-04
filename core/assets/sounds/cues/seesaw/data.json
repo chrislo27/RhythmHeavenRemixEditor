@@ -1,6 +1,6 @@
 {
   "gameID": "seesaw",
-  "gameName": "See-Saw",
+  "gameNames": ["See-Saw"],
   "series": "fever",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "forkLifter",
-  "gameName": "Fork Lifter",
+  "gameNames": ["Fork Lifter"],
   "series": "fever",
   "cues": [
     {

@@ -1,9 +1,34 @@
 package chrislo27.rhre.registry
 
+import chrislo27.rhre.Main
+import ionium.util.i18n.Localization
+import ionium.util.i18n.NamedLocale
 
-data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
+
+data class Game(val id: String, val names: List<String>, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
 				val iconIsRawPath: Boolean = false) {
+
+	companion object {
+		val LOCALIZATION_KEY = "registry.gameName."
+	}
+
+	init {
+		names.forEach {
+			if (it.indexOf('|') != -1){
+				val lang = it.substringBefore('|')
+				val namedLocale: NamedLocale? = Main.languages.find { it.locale.toString() == lang }
+
+				if (namedLocale != null) {
+					Localization.instance().addCustom(LOCALIZATION_KEY + id, it.substringAfter('|'), namedLocale)
+				}
+			} else {
+				Localization.instance().addCustom(LOCALIZATION_KEY + id, it)
+			}
+		}
+	}
+
+	fun getName(): String = Localization.get(LOCALIZATION_KEY + id)
 
 	fun isCustom() = series == Series.CUSTOM
 

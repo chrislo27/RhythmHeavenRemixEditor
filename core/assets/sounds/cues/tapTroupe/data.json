@@ -1,6 +1,6 @@
 {
   "gameID": "tapTroupe",
-  "gameName": "Tap Troupe",
+  "gameNames": ["Tap Troupe"],
   "series": "fever",
   "cues": [
     {

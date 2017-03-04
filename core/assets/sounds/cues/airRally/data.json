@@ -1,6 +1,6 @@
 {
   "gameID": "airRally",
-  "gameName": "Air Rally",
+  "gameNames": ["Air Rally", "es|adwadwadwad"],
   "series": "fever",
   "cues": [
     {

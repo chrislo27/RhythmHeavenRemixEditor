@@ -1,6 +1,6 @@
 {
   "gameID": "bigRockFinish",
-  "gameName": "Big Rock Finish",
+  "gameNames": ["Big Rock Finish"],
   "series": "ds",
   "cues": [
 	{

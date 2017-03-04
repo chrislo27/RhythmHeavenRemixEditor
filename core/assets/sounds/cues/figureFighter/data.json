@@ -1,6 +1,6 @@
 {
   "gameID": "figureFighter",
-  "gameName": "Figure Fighter",
+  "gameNames": ["Figure Fighter"],
   "series": "fever",
   "cues": [
     {

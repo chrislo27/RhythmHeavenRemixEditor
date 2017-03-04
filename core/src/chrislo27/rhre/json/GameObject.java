@@ -1,9 +1,14 @@
 package chrislo27.rhre.json;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameObject {
 
 	public String gameID;
+	@Deprecated
 	public String gameName;
+	public List<String> gameNames = new ArrayList<>();
 	public String series;
 
 	public SoundObject[] cues;

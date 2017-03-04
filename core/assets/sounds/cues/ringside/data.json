@@ -1,6 +1,6 @@
 {
   "gameID": "ringside",
-  "gameName": "Ringside",
+  "gameNames": ["Ringside"],
   "series": "fever",
   "cues": [
     {

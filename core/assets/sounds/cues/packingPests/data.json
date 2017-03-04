@@ -1,6 +1,6 @@
 {
   "gameID": "packingPests",
-  "gameName": "Packing Pests",
+  "gameNames": ["Packing Pests"],
   "series": "fever",
   "cues": [
     {

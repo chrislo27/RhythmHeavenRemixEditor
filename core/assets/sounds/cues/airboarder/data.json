@@ -1,6 +1,6 @@
 {
   "gameID": "airboarder",
-  "gameName": "Airboarder",
+  "gameNames": ["Airboarder"],
   "series": "ds",
   "cues": [
     {

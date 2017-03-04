@@ -1,6 +1,6 @@
 {
   "gameID": "shrimpShuffle",
-  "gameName": "Shrimp Shuffle",
+  "gameNames": ["Shrimp Shuffle"],
   "series": "fever",
   "cues": [
     {

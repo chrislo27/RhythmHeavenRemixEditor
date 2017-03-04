@@ -1,6 +1,6 @@
 {
   "gameID": "nightWalkFever",
-  "gameName": "Night Walk (Fever)",
+  "gameNames": ["Night Walk (Fever)"],
   "series": "fever",
   "cues": [
     {

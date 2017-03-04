@@ -1,6 +1,6 @@
 {
   "gameID": "blueBirds",
-  "gameName": "Blue Birds",
+  "gameNames": ["Blue Birds"],
   "series": "ds",
   "cues": [
     {

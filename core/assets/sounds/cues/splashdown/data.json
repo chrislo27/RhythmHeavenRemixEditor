@@ -1,6 +1,6 @@
 {
   "gameID": "splashdown",
-  "gameName": "Splashdown",
+  "gameNames": ["Splashdown"],
   "series": "ds",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "glassTappers",
-  "gameName": "Glass Tappers",
+  "gameNames": ["Glass Tappers"],
   "series": "side",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "fanClubJp",
-  "gameName": "Fan Club (Japanese)",
+  "gameNames": ["Fan Club (Japanese)"],
   "series": "ds",
   "cues": [
     {

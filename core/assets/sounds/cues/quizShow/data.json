@@ -1,6 +1,6 @@
 {
   "gameID": "quizShow",
-  "gameName": "Quiz Show",
+  "gameNames": ["Quiz Show"],
   "series": "tengoku",
   "cues": [
     {

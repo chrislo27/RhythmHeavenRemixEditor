@@ -1,6 +1,6 @@
 {
   "gameID": "loveLizards",
-  "gameName": "Love Lizards",
+  "gameNames": ["Love Lizards"],
   "series": "ds",
   "cues": [
     {

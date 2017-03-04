@@ -1,6 +1,6 @@
 {
   "gameID": "catchOfTheDay",
-  "gameName": "Catch of the Day",
+  "gameNames": ["Catch of the Day"],
   "series": "fever",
   "cues": [
     {

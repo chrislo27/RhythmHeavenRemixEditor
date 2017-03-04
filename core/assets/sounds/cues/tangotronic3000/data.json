@@ -1,6 +1,6 @@
 {
   "gameID": "tangotronic3000",
-  "gameName": "Tangotronic 3000",
+  "gameNames": ["Tangotronic 3000"],
   "series": "megamix",
   "cues": [
     {

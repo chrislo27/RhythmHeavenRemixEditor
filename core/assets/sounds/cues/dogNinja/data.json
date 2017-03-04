@@ -1,6 +1,6 @@
 {
   "gameID": "dogNinja",
-  "gameName": "Dog Ninja",
+  "gameNames": ["Dog Ninja"],
   "series": "ds",
   "cues": [
     {

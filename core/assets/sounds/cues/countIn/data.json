@@ -1,6 +1,6 @@
 {
   "gameID": "countIn",
-  "gameName": "Count-Ins",
+  "gameNames": ["Count-Ins"],
   "cues": [
     {
       "id": "countIn/silence",

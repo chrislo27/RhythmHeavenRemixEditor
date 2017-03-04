@@ -1,6 +1,6 @@
 {
   "gameID": "pajamaParty",
-  "gameName": "Pajama Party",
+  "gameNames": ["Pajama Party"],
   "series": "megamix",
   "cues": [
     {

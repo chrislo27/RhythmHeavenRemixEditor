@@ -1,6 +1,6 @@
 {
   "gameID": "flockstep",
-  "gameName": "Flockstep",
+  "gameNames": ["Flockstep"],
   "series": "fever",
   "cues": [
     {

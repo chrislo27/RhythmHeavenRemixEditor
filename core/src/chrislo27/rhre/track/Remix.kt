@@ -110,7 +110,7 @@ class Remix {
 				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry.instance()["countIn"] }
 						.map {
 							it as HasGame
-							return@map it.game.name
+							return@map it.game.getName()
 						}.distinct().sorted().joinToString(", ")
 
 				return obj

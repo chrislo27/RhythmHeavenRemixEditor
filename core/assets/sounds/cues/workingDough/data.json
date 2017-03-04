@@ -1,6 +1,6 @@
 {
   "gameID": "workingDough",
-  "gameName": "Working Dough",
+  "gameNames": ["Working Dough"],
   "series": "fever",
   "cues": [
     {

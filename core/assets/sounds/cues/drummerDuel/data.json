@@ -1,6 +1,6 @@
 {
   "gameID": "drummerDuel",
-  "gameName": "Drummer Duel",
+  "gameNames": ["Drummer Duel"],
   "series": "ds",
   "cues": [
     {

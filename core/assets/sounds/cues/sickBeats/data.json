@@ -1,6 +1,6 @@
 {
   "gameID": "sickBeats",
-  "gameName": "Sick Beats",
+  "gameNames": ["Sick Beats"],
   "series": "tengoku",
   "cues": [
     {

@@ -2,7 +2,7 @@
   // example data.json
 
   "gameID": "example", // spaceDance, spaceball, catchyTune, etc
-  "gameName": "Example Game", // human-readable name
+  "gameNames": ["Example Game"], // human-readable name
   "series": "tengoku", // the game series this is from
   // can be tengoku, ds, fever, megamix, side
   // if a game is present in Megamix and its original game, use the original game

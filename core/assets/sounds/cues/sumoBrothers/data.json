@@ -1,6 +1,6 @@
 {
   "gameID": "sumoBrothers",
-  "gameName": "Sumo Brothers",
+  "gameNames": ["Sumo Brothers"],
   "series": "megamix",
   "cues": [
     {

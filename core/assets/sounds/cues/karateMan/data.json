@@ -1,6 +1,6 @@
 {
   "gameID": "karateMan",
-  "gameName": "Karate Man",
+  "gameNames": ["Karate Man"],
   "series": "tengoku",
   "cues": [
     {

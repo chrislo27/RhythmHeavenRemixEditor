@@ -1,6 +1,6 @@
 {
   "gameID": "fillbots",
-  "gameName": "Fillbots",
+  "gameNames": ["Fillbots"],
   "series": "ds",
   "cues": [
     {

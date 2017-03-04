@@ -1,6 +1,6 @@
 {
   "gameID": "blueBear",
-  "gameName": "Blue Bear",
+  "gameNames": ["Blue Bear"],
   "series": "megamix",
   "cues": [
     {

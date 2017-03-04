@@ -1,6 +1,6 @@
 {
   "gameID": "fireworks",
-  "gameName": "Fireworks",
+  "gameNames": ["Fireworks"],
   "series": "tengoku",
   "cues": [
     {

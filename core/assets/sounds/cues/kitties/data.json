@@ -1,6 +1,6 @@
 {
   "gameID": "kitties",
-  "gameName": "Kitties!",
+  "gameNames": ["Kitties!"],
   "series": "megamix",
   "cues": [
     {

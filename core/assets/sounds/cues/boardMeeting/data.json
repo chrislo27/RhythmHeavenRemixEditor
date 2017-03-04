@@ -1,6 +1,6 @@
 {
   "gameID": "boardMeeting",
-  "gameName": "Board Meeting",
+  "gameNames": ["Board Meeting"],
   "series": "fever",
   "cues": [
     {

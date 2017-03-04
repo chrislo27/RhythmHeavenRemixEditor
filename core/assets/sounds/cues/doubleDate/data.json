@@ -1,6 +1,6 @@
 {
   "gameID": "doubleDate",
-  "gameName": "Double Date",
+  "gameNames": ["Double Date"],
   "series": "fever",
   "cues": [
     {

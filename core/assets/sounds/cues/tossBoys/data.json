@@ -1,6 +1,6 @@
 {
   "gameID": "tossBoys",
-  "gameName": "Toss Boys",
+  "gameNames": ["Toss Boys"],
   "series": "tengoku",
   "cues": [
     {

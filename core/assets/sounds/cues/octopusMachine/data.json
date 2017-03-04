@@ -1,6 +1,6 @@
 {
   "gameID": "octopusMachine",
-  "gameName": "Octopus Machine",
+  "gameNames": ["Octopus Machine"],
   "series": "side",
   "cues": [
     {

@@ -98,6 +98,13 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private lateinit var ttfGenerator: FreeTypeFontGenerator
 	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
 
+	companion object {
+		val languages: List<NamedLocale> = mutableListOf(
+				NamedLocale("Español (Spanish)", Locale("es"))
+															   // ,NamedLocale("日本語 (Japanese)", Locale("ja"))
+															   )
+	}
+
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if (VersionChecker.versionState == VersionState.AVAILABLE || DebugSetting.debug)
 			ScreenRegistry.get("version")
@@ -126,7 +133,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		oldSize = Triple(preferences.getInteger("width", 1280), preferences.getInteger("height", 720),
 						 preferences.getBoolean("fullscreen", false))
 
-		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = true) {
+		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = false) {
 			if (!onlyLoadGlyphs) Localization.instance().addBundle(namedLocale)
 
 			val base = Localization.instance().baseFileHandle
@@ -164,8 +171,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		}
 
 		addBundle(NamedLocale("English", Locale("")), onlyLoadGlyphs = true)
-//		addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
-		addBundle(NamedLocale("Español (Spanish)", Locale("es")))
+		languages.forEach { addBundle(it) }
 
 		Localization.instance().loadFromSettings(preferences)
 

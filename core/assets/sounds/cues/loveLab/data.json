@@ -1,6 +1,6 @@
 {
   "gameID": "loveLab",
-  "gameName": "Love Lab",
+  "gameNames": ["Love Lab"],
   "series": "ds",
   "cues": [
     {

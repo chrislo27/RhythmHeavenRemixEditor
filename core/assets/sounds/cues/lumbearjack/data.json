@@ -1,6 +1,6 @@
 {
   "gameID": "lumbearjack",
-  "gameName": "LumBEARjack",
+  "gameNames": ["LumBEARjack"],
   "series": "megamix",
   "cues": [
     {

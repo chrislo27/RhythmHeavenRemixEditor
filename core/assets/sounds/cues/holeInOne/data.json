@@ -1,6 +1,6 @@
 {
   "gameID": "holeInOne",
-  "gameName": "Hole in One",
+  "gameNames": ["Hole in One"],
   "series": "fever",
   "cues": [
     {

@@ -123,7 +123,7 @@ public class GameRegistry implements Disposable {
 
 			FileHandle iconFh = Gdx.files.internal("sounds/cues/" + gameDef + "/icon.png");
 
-			game = new Game(gameObj.gameID, gameObj.gameName, soundCues, patterns,
+			game = new Game(gameObj.gameID, gameObj.gameNames, soundCues, patterns,
 					gameObj.series == null ? Series.UNKNOWN : Series.valueOf(gameObj.series.toUpperCase(Locale.ROOT)),
 					iconFh.exists() ? ("sounds/cues/" + gameDef + "/icon.png") : null, false);
 
@@ -193,7 +193,7 @@ public class GameRegistry implements Disposable {
 									sc.getCanAlterDuration(), l, true, new ArrayList<>()));
 				});
 
-				game = new Game(fh.nameWithoutExtension(), fh.nameWithoutExtension(), soundCues, patterns,
+				game = new Game(fh.nameWithoutExtension(), Arrays.asList("en_" + fh.nameWithoutExtension()), soundCues, patterns,
 						Series.CUSTOM, (icon.exists() ? icon.path() : null), true);
 
 				Main.logger.info("Finished loading custom folder " + fh.name() + " with " + soundCues.size() + " " +

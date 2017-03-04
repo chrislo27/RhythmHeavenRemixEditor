@@ -1,6 +1,6 @@
 {
   "gameID": "gleeClub",
-  "gameName": "Glee Club",
+  "gameNames": ["Glee Club"],
   "series": "ds",
   "cues": [
     {

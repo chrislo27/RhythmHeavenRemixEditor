@@ -1,6 +1,6 @@
 {
   "gameID": "spaceSoccer",
-  "gameName": "Space Soccer",
+  "gameNames": ["Space Soccer"],
   "series": "ds",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "coinToss",
-  "gameName": "Coin Toss",
+  "gameNames": ["Coin Toss"],
   "series": "side",
   "cues": [
     {

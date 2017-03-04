@@ -1,6 +1,6 @@
 {
   "gameID": "moaiDooWop",
-  "gameName": "Moai Doo-Wop",
+  "gameNames": ["Moai Doo-Wop"],
   "series": "ds",
   "cues": [
     {

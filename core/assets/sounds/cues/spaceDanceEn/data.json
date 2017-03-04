@@ -1,6 +1,6 @@
 {
   "gameID": "spaceDanceEn",
-  "gameName": "Space Dance (English)",
+  "gameNames": ["Space Dance (English)"],
   "series": "tengoku",
   "cues": [
     {

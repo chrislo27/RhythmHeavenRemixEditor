@@ -1,6 +1,6 @@
 {
   "gameID": "munchyMonkEs",
-  "gameName": "Munchy Monk (Spanish)",
+  "gameNames": ["Munchy Monk (Spanish)"],
   "series": "ds",
   "cues": [
     {

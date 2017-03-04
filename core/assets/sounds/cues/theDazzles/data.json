@@ -1,6 +1,6 @@
 {
   "gameID": "theDazzles",
-  "gameName": "The Dazzles",
+  "gameNames": ["The Dazzles"],
   "series": "ds",
   "cues": [
     {

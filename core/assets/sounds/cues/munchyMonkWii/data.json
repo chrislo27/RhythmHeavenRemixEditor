@@ -1,6 +1,6 @@
 {
   "gameID": "munchyMonkWii",
-  "gameName": "Munchy Monk (Fever)",
+  "gameNames": ["Munchy Monk (Fever)"],
   "series": "side",
   "cues": [
     {

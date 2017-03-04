@@ -1,6 +1,6 @@
 {
   "gameID": "ratRace",
-  "gameName": "Rat Race",
+  "gameNames": ["Rat Race"],
   "series": "tengoku",
   "cues": [
     {

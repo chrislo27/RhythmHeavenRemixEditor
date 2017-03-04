@@ -1,6 +1,6 @@
 {
   "gameID": "lockstep",
-  "gameName": "Lockstep",
+  "gameNames": ["Lockstep"],
   "series": "ds",
   "cues": [
     {

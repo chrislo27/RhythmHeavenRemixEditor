@@ -1,6 +1,6 @@
 {
   "gameID": "monkeyWatch",
-  "gameName": "Monkey Watch",
+  "gameNames": ["Monkey Watch"],
   "series": "fever",
   "cues": [
     {

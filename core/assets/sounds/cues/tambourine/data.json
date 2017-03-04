@@ -1,6 +1,6 @@
 {
   "gameID": "tambourine",
-  "gameName": "Tambourine",
+  "gameNames": ["Tambourine"],
   "series": "fever",
   "cues": [
     {

@@ -1,6 +1,6 @@
 {
   "gameID": "rapMen",
-  "gameName": "Rap Men",
+  "gameNames": ["Rap Men"],
   "series": "tengoku",
   "cues": [
     {

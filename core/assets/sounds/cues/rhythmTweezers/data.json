@@ -1,6 +1,6 @@
 {
   "gameID": "rhythmTweezers",
-  "gameName": "Rhythm Tweezers",
+  "gameNames": ["Rhythm Tweezers"],
   "series": "tengoku",
   "cues": [
     {

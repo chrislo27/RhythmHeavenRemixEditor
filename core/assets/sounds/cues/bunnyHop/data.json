@@ -1,6 +1,6 @@
 {
   "gameID": "bunnyHop",
-  "gameName": "Bunny Hop",
+  "gameNames": ["Bunny Hop"],
   "series": "tengoku",
   "cues": [
     {

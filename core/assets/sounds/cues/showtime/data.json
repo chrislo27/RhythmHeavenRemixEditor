@@ -1,6 +1,6 @@
 {
   "gameID": "showtime",
-  "gameName": "Showtime",
+  "gameNames": ["Showtime"],
   "series": "tengoku",
   "cues": [
     {

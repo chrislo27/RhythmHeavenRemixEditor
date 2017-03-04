@@ -1,6 +1,6 @@
 {
   "gameID": "tongueLashing",
-  "gameName": "Tongue Lashing",
+  "gameNames": ["Tongue Lashing"],
   "series": "megamix",
   "cues": [
     {

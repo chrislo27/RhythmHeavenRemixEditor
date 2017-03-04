@@ -1,6 +1,6 @@
 {
   "gameID": "drummingPractice",
-  "gameName": "Drumming Practice",
+  "gameNames": ["Drumming Practice"],
   "series": "side",
   "cues": [
     {
