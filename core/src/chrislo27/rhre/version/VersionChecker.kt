@@ -36,8 +36,14 @@ object VersionChecker {
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
-			versionState = if (isSame || Main.version.endsWith(
-					"-SNAPSHOT")) VersionState.UP_TO_DATE else VersionState.AVAILABLE
+			versionState =
+					if (isSame || Main.version.endsWith(
+							"-SNAPSHOT", ignoreCase = true) ||
+							Main.version.endsWith("-alpha", ignoreCase = true) ||
+							Main.version.endsWith("-beta", ignoreCase = true))
+						VersionState.UP_TO_DATE
+					else
+						VersionState.AVAILABLE
 
 			release.bodyLines = release.body?.lines() ?: listOf("")
 			if (release.published_at != null) {
