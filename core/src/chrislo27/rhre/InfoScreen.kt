@@ -94,7 +94,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.data.setScale(0.75f)
+		main.font.data.setScale(0.7f)
 
 		var height: Float = Utils.getHeightWithWrapping(main.font, concatSections,
 														main.camera.viewportWidth * 0.45f)

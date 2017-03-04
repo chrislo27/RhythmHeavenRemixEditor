@@ -121,7 +121,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				NamedLocale("English (UK)", Locale("en", "UK")),
 				NamedLocale("Français (French)", Locale("fr")),
 				NamedLocale("Español (Spanish)", Locale("es")),
-				NamedLocale("Everybody row! (Pirate)", Locale("pirate"))
+				NamedLocale("日本語 (Japanese)", Locale("ja"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
@@ -197,7 +197,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			}
 		}
 
-//		addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
 		languagesList.forEachIndexed { index, l ->
 			addBundle(l, onlyLoadGlyphs = index == 0)
 		}
