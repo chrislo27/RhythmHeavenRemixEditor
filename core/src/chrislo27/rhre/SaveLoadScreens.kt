@@ -71,8 +71,8 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.draw(main.batch,
 							 Localization.get("saveScreen.title"),
-							 Gdx.graphics.width * 0.05f,
-							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+							 main.camera.viewportWidth * 0.05f,
+							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
@@ -80,13 +80,13 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 					   Localization.get(
 							   "saveScreen.current") + " " + (picker.selectedFile?.path ?: Localization.get(
 							   "saveScreen.noSave")),
-					   Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.525f, Gdx.graphics.width * 0.9f, Align.left, true)
+					   main.camera.viewportWidth * 0.05f,
+					   main.camera.viewportHeight * 0.525f, main.camera.viewportWidth * 0.9f, Align.left, true)
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 4, Gdx.graphics.width * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
+					   main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), main.camera.viewportWidth * 0.05f,
+					   main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -241,48 +241,48 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.draw(main.batch,
 							 Localization.get("loadScreen.title"),
-							 Gdx.graphics.width * 0.05f,
-							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+							 main.camera.viewportWidth * 0.05f,
+							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
 		if (remixObj != null) {
 			main.font.draw(main.batch, Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
-														"${remixObj!!.bpmChanges.size}"), Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.75f, Gdx.graphics.width * 0.9f,
+														"${remixObj!!.bpmChanges.size}"), main.camera.viewportWidth * 0.05f,
+						   main.camera.viewportHeight * 0.75f, main.camera.viewportWidth * 0.9f,
 						   Align.left, true)
 
 			if (remixObj!!.version != ionium.templates.Main.version) {
 				main.font.draw(main.batch,
 							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
 												ionium.templates.Main.version),
-							   Gdx.graphics.width * 0.05f,
-							   Gdx.graphics.height * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
-							   Gdx.graphics.width * 0.9f,
+							   main.camera.viewportWidth * 0.05f,
+							   main.camera.viewportHeight * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   main.camera.viewportWidth * 0.9f,
 							   Align.left, true)
 			}
 
 			if (!missingContent.isEmpty()) {
 				main.font.draw(main.batch,
 							   Localization.get("loadScreen.missingContent", missingContent),
-							   Gdx.graphics.width * 0.05f,
-							   Gdx.graphics.height * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
-							   Gdx.graphics.width * 0.9f,
+							   main.camera.viewportWidth * 0.05f,
+							   main.camera.viewportHeight * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   main.camera.viewportWidth * 0.9f,
 							   Align.left, true)
 			}
 
 			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.confirm"),
-						   Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.175f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
+						   main.camera.viewportWidth * 0.05f,
+						   main.camera.viewportHeight * 0.175f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
 		} else {
-			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"), Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.85f - main.biggerFont.capHeight * 0.75f, Gdx.graphics.width * 0.9f, Align.left)
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"), main.camera.viewportWidth * 0.05f,
+						   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f, main.camera.viewportWidth * 0.9f, Align.left)
 		}
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-							Gdx.graphics.height * 0.1f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), Gdx.graphics.width * 0.05f,
-							main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
+							main.camera.viewportHeight * 0.1f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), main.camera.viewportWidth * 0.05f,
+							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -419,17 +419,17 @@ class NewScreen(m: Main) : Updateable<Main>(m) {
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.draw(main.batch,
 							 Localization.get("newScreen.title"),
-							 Gdx.graphics.width * 0.05f,
-							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+							 main.camera.viewportWidth * 0.05f,
+							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.35f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.25f + main.font.capHeight * 0.5f, Gdx.graphics.width * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 2, Gdx.graphics.width * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"), main.camera.viewportWidth * 0.05f,
+					   main.camera.viewportHeight * 0.35f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
+					   main.camera.viewportHeight * 0.25f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"), main.camera.viewportWidth * 0.05f,
+					   main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}
