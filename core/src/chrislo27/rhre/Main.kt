@@ -109,6 +109,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		return super.getAssetLoadingScreenToUse()
 	}
 
+	companion object {
+		val languagesList: List<NamedLocale> = mutableListOf(
+				NamedLocale("English (English)", Locale("")),
+				NamedLocale("Español (Spanish)", Locale("es"))
+															)
+		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
+	}
+
 	override fun create() {
 		ionium.templates.Main.version = "v2.7.0-SNAPSHOT"
 
@@ -126,7 +134,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		oldSize = Triple(preferences.getInteger("width", 1280), preferences.getInteger("height", 720),
 						 preferences.getBoolean("fullscreen", false))
 
-		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = true) {
+		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = false) {
 			if (!onlyLoadGlyphs) Localization.instance().addBundle(namedLocale)
 
 			val base = Localization.instance().baseFileHandle
@@ -163,9 +171,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			}
 		}
 
-		addBundle(NamedLocale("English", Locale("")), onlyLoadGlyphs = true)
 //		addBundle(NamedLocale("日本語 (Japanese)", Locale("ja")))
-		addBundle(NamedLocale("Español (Spanish)", Locale("es")))
+		languagesList.forEachIndexed { index, l ->
+			addBundle(l, onlyLoadGlyphs = index == 0)
+		}
 
 		Localization.instance().loadFromSettings(preferences)
 
