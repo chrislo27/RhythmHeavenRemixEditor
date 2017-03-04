@@ -606,8 +606,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 				}
 
-				main.getFontBordered().draw(batch, p.getName(), main.camera.viewportWidth * 0.525f,
-						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), 0, Align.left, false);
+				Main.Companion.drawCompressed(main.getFontBordered(), batch, p.getName(), main.camera.viewportWidth * 0.525f,
+						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), main.camera.viewportWidth * 0.45f, Align.left);
 			}
 
 			main.getFontBordered().setColor(1, 1, 1, 1);
