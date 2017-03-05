@@ -25,7 +25,7 @@ class InfoScreen(m: Main) : Updateable<Main>(m) {
 			"programming" to "chrislo27",
 			"databasing" to "ahemtoday, Huebird of Happiness, GuardedLolz, chrislo27",
 			"localization" to """English (UK): Whistler_420
-Español (Spanish): Killble, quantic, GlitchyPSIX
+Español (Spanish): Killble, quantic, GlitchyPSIX, David Mismo
 Français (French): Gabgab2222, Pengu12345, Lovestep, Dragoneteur
 日本語 (グーグル翻訳) (Japanese [G. Translate]): Whistler_420, Google Translate""",
 			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
