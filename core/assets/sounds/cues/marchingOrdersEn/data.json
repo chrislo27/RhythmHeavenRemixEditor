@@ -4,132 +4,132 @@
   "series" : "tengoku",
   "cues": [
     {
-      "id": "marchingOrdersEng/attention1",
+      "id": "marchingOrdersEn/attention1",
       "duration": 0.25,
       "name": "general - attention 1"
     },
     {
-      "id": "marchingOrdersEng/attention2",
+      "id": "marchingOrdersEn/attention2",
       "duration": 0.5,
       "name": "general - attention 2"
     },
     {
-      "id": "marchingOrdersEng/attention3",
+      "id": "marchingOrdersEn/attention3",
       "duration": 1.5,
       "name": "general - attention 3"
     },
     {
-      "id": "marchingOrdersEng/march1",
+      "id": "marchingOrdersEn/march1",
       "duration": 1,
       "name": "general - march"
     },
     {
-      "id": "marchingOrdersEng/march2",
+      "id": "marchingOrdersEn/march2",
       "duration": 1,
       "name": "cadets - start marching"
     },
     {
-      "id": "marchingOrdersEng/step1",
+      "id": "marchingOrdersEn/step1",
       "duration": 1,
       "name": "cadets - left step"
     },
     {
-      "id": "marchingOrdersEng/step2",
+      "id": "marchingOrdersEn/step2",
       "duration": 1,
       "name": "cadets - right step"
     },
     {
-      "id": "marchingOrdersEng/halt1",
+      "id": "marchingOrdersEn/halt1",
       "duration": 1,
       "name": "general - halt"
     },
     {
-      "id": "marchingOrdersEng/halt2",
+      "id": "marchingOrdersEn/halt2",
       "duration": 1,
       "name": "cadets - stop marching"
     },
     {
-      "id": "marchingOrdersEng/leftFaceTurn1",
+      "id": "marchingOrdersEn/leftFaceTurn1",
       "duration": 0.5,
       "name": "general - left face turn 1"
     },
     {
-      "id": "marchingOrdersEng/leftFaceTurn2",
+      "id": "marchingOrdersEn/leftFaceTurn2",
       "duration": 1.5,
       "name": "general - left face turn 2"
     },
     {
-      "id": "marchingOrdersEng/leftFaceTurn3",
+      "id": "marchingOrdersEn/leftFaceTurn3",
       "duration": 1,
       "name": "general - left face turn 3"
     },
     {
-      "id": "marchingOrdersEng/leftFaceTurn4",
+      "id": "marchingOrdersEn/leftFaceTurn4",
       "duration": 1,
       "name": "cadets - left face turn"
     },
     {
-      "id": "marchingOrdersEng/rightFaceTurn1",
+      "id": "marchingOrdersEn/rightFaceTurn1",
       "duration": 0.5,
       "name": "general - right face turn 1"
     },
     {
-      "id": "marchingOrdersEng/rightFaceTurn2",
+      "id": "marchingOrdersEn/rightFaceTurn2",
       "duration": 1.5,
       "name": "general - right face turn 2"
     },
     {
-      "id": "marchingOrdersEng/rightFaceTurn3",
+      "id": "marchingOrdersEn/rightFaceTurn3",
       "duration": 1,
       "name": "general - right face turn 3"
     },
     {
-      "id": "marchingOrdersEng/rightFaceTurn4",
+      "id": "marchingOrdersEn/rightFaceTurn4",
       "duration": 1,
       "name": "cadets - right face turn"
     }
   ],
   "patterns": [
     {
-      "id": "marchingOrdersEng_attentionMarch",
+      "id": "marchingOrdersEn_attentionMarch",
       "name": "attention... march!",
       "cues": [
        {
-        "id": "marchingOrdersEng/attention1",
+        "id": "marchingOrdersEn/attention1",
         "beat": 0.0
        },
        {
-        "id": "marchingOrdersEng/attention2",
+        "id": "marchingOrdersEn/attention2",
         "beat": 0.25
        },
        {
-        "id": "marchingOrdersEng/attention3",
+        "id": "marchingOrdersEn/attention3",
         "beat": 0.75
        },
        {
-        "id": "marchingOrdersEng/march1",
+        "id": "marchingOrdersEn/march1",
         "beat": 2.25
        },
        {
-        "id": "marchingOrdersEng/march2",
+        "id": "marchingOrdersEn/march2",
         "beat": 3.25
        }
       ]
     },
     {
-      "id": "marchingOrdersEng_marching",
+      "id": "marchingOrdersEn_marching",
       "name": "marching",
       "cues": [
        {
-        "id": "marchingOrdersEng/step1",
+        "id": "marchingOrdersEn/step1",
         "beat": 0.0
        },
        {
-        "id": "marchingOrdersEng/step2",
+        "id": "marchingOrdersEn/step2",
         "beat": 1.0
        },
        {
-        "id": "marchingOrdersEng/step1",
+        "id": "marchingOrdersEn/step1",
         "beat": 2.0
        },
        {
@@ -139,71 +139,71 @@
       ]
     },
     {
-      "id": "marchingOrdersEng_attentionHalt",
+      "id": "marchingOrdersEn_attentionHalt",
       "name": "attention... halt!",
       "cues": [
        {
-        "id": "marchingOrdersEng/attention1",
+        "id": "marchingOrdersEn/attention1",
         "beat": 0.0
        },
        {
-        "id": "marchingOrdersEng/attention2",
+        "id": "marchingOrdersEn/attention2",
         "beat": 0.25
        },
        {
-        "id": "marchingOrdersEng/attention3",
+        "id": "marchingOrdersEn/attention3",
         "beat": 0.75
        },
        {
-        "id": "marchingOrdersEng/halt1",
+        "id": "marchingOrdersEn/halt1",
         "beat": 2.25
        },
        {
-        "id": "marchingOrdersEng/halt2",
+        "id": "marchingOrdersEn/halt2",
         "beat": 3.25
        }
       ]
     },
     {
-      "id": "marchingOrdersEng_leftFaceTurn",
+      "id": "marchingOrdersEn_leftFaceTurn",
       "name": "left face turn",
       "cues": [
        {
-        "id": "marchingOrdersEng/leftFaceTurn1",
+        "id": "marchingOrdersEn/leftFaceTurn1",
         "beat": 0.0
        },
        {
-        "id": "marchingOrdersEng/leftFaceTurn2",
+        "id": "marchingOrdersEn/leftFaceTurn2",
         "beat": 0.5
        },
        {
-        "id": "marchingOrdersEng/leftFaceTurn3",
+        "id": "marchingOrdersEn/leftFaceTurn3",
         "beat": 2.0
        },
        {
-        "id": "marchingOrdersEng/leftFaceTurn4",
+        "id": "marchingOrdersEn/leftFaceTurn4",
         "beat": 3.0
        }
       ]
     },
     {
-      "id": "marchingOrdersEng_rightFaceTurn",
+      "id": "marchingOrdersEn_rightFaceTurn",
       "name": "right face turn",
       "cues": [
        {
-        "id": "marchingOrdersEng/rightFaceTurn1",
+        "id": "marchingOrdersEn/rightFaceTurn1",
         "beat": 0.0
        },
        {
-        "id": "marchingOrdersEng/rightFaceTurn2",
+        "id": "marchingOrdersEn/rightFaceTurn2",
         "beat": 0.5
        },
        {
-        "id": "marchingOrdersEng/rightFaceTurn3",
+        "id": "marchingOrdersEn/rightFaceTurn3",
         "beat": 2.0
        },
        {
-        "id": "marchingOrdersEng/rightFaceTurn4",
+        "id": "marchingOrdersEn/rightFaceTurn4",
         "beat": 3.0
        }
       ]
