@@ -126,6 +126,16 @@
           "beat": 0.5
         },
         {
+          "id": "screwbotFactory/clankclank1",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "screwbotFactory/clankclank2",
+          "beat": 0.5,
+          "track": 1
+        },
+        {
           "id": "screwbotFactory/letsgoPlace",
           "beat": 2
         },
