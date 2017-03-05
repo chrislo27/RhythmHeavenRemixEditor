@@ -15,7 +15,7 @@
     },
     {
       "id": "marchingOrdersEn/attention3",
-      "duration": 1.5,
+      "duration": 1.25,
       "name": "general - attention 3"
     },
     {
@@ -108,11 +108,11 @@
        },
        {
         "id": "marchingOrdersEn/march1",
-        "beat": 2.25
+        "beat": 2
        },
        {
         "id": "marchingOrdersEn/march2",
-        "beat": 3.25
+        "beat": 3
        }
       ]
     },
@@ -133,7 +133,7 @@
         "beat": 2.0
        },
        {
-        "id": "marchingOrdersEng/step2",
+        "id": "marchingOrdersEn/step2",
         "beat": 3.0
        }
       ]
@@ -156,11 +156,11 @@
        },
        {
         "id": "marchingOrdersEn/halt1",
-        "beat": 2.25
+        "beat": 2
        },
        {
         "id": "marchingOrdersEn/halt2",
-        "beat": 3.25
+        "beat": 3
        }
       ]
     },
