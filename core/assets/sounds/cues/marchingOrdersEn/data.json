@@ -1,0 +1,212 @@
+{
+  "gameID": "marchingOrdersEn",
+  "gameName" : "Marching Orders (English)",
+  "series" : "tengoku",
+  "cues": [
+    {
+      "id": "marchingOrdersEn/attention1",
+      "duration": 0.25,
+      "name": "general - attention 1"
+    },
+    {
+      "id": "marchingOrdersEn/attention2",
+      "duration": 0.5,
+      "name": "general - attention 2"
+    },
+    {
+      "id": "marchingOrdersEn/attention3",
+      "duration": 1.5,
+      "name": "general - attention 3"
+    },
+    {
+      "id": "marchingOrdersEn/march1",
+      "duration": 1,
+      "name": "general - march"
+    },
+    {
+      "id": "marchingOrdersEn/march2",
+      "duration": 1,
+      "name": "cadets - start marching"
+    },
+    {
+      "id": "marchingOrdersEn/step1",
+      "duration": 1,
+      "name": "cadets - left step"
+    },
+    {
+      "id": "marchingOrdersEn/step2",
+      "duration": 1,
+      "name": "cadets - right step"
+    },
+    {
+      "id": "marchingOrdersEn/halt1",
+      "duration": 1,
+      "name": "general - halt"
+    },
+    {
+      "id": "marchingOrdersEn/halt2",
+      "duration": 1,
+      "name": "cadets - stop marching"
+    },
+    {
+      "id": "marchingOrdersEn/leftFaceTurn1",
+      "duration": 0.5,
+      "name": "general - left face turn 1"
+    },
+    {
+      "id": "marchingOrdersEn/leftFaceTurn2",
+      "duration": 1.5,
+      "name": "general - left face turn 2"
+    },
+    {
+      "id": "marchingOrdersEn/leftFaceTurn3",
+      "duration": 1,
+      "name": "general - left face turn 3"
+    },
+    {
+      "id": "marchingOrdersEn/leftFaceTurn4",
+      "duration": 1,
+      "name": "cadets - left face turn"
+    },
+    {
+      "id": "marchingOrdersEn/rightFaceTurn1",
+      "duration": 0.5,
+      "name": "general - right face turn 1"
+    },
+    {
+      "id": "marchingOrdersEn/rightFaceTurn2",
+      "duration": 1.5,
+      "name": "general - right face turn 2"
+    },
+    {
+      "id": "marchingOrdersEn/rightFaceTurn3",
+      "duration": 1,
+      "name": "general - right face turn 3"
+    },
+    {
+      "id": "marchingOrdersEn/rightFaceTurn4",
+      "duration": 1,
+      "name": "cadets - right face turn"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "marchingOrdersEn_attentionMarch",
+      "name": "attention... march!",
+      "cues": [
+       {
+        "id": "marchingOrdersEn/attention1",
+        "beat": 0.0
+       },
+       {
+        "id": "marchingOrdersEn/attention2",
+        "beat": 0.25
+       },
+       {
+        "id": "marchingOrdersEn/attention3",
+        "beat": 0.75
+       },
+       {
+        "id": "marchingOrdersEn/march1",
+        "beat": 2.25
+       },
+       {
+        "id": "marchingOrdersEn/march2",
+        "beat": 3.25
+       }
+      ]
+    },
+    {
+      "id": "marchingOrdersEn_marching",
+      "name": "marching",
+      "cues": [
+       {
+        "id": "marchingOrdersEn/step1",
+        "beat": 0.0
+       },
+       {
+        "id": "marchingOrdersEn/step2",
+        "beat": 1.0
+       },
+       {
+        "id": "marchingOrdersEn/step1",
+        "beat": 2.0
+       },
+       {
+        "id": "marchingOrdersEng/step2",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "marchingOrdersEn_attentionHalt",
+      "name": "attention... halt!",
+      "cues": [
+       {
+        "id": "marchingOrdersEn/attention1",
+        "beat": 0.0
+       },
+       {
+        "id": "marchingOrdersEn/attention2",
+        "beat": 0.25
+       },
+       {
+        "id": "marchingOrdersEn/attention3",
+        "beat": 0.75
+       },
+       {
+        "id": "marchingOrdersEn/halt1",
+        "beat": 2.25
+       },
+       {
+        "id": "marchingOrdersEn/halt2",
+        "beat": 3.25
+       }
+      ]
+    },
+    {
+      "id": "marchingOrdersEn_leftFaceTurn",
+      "name": "left face turn",
+      "cues": [
+       {
+        "id": "marchingOrdersEn/leftFaceTurn1",
+        "beat": 0.0
+       },
+       {
+        "id": "marchingOrdersEn/leftFaceTurn2",
+        "beat": 0.5
+       },
+       {
+        "id": "marchingOrdersEn/leftFaceTurn3",
+        "beat": 2.0
+       },
+       {
+        "id": "marchingOrdersEn/leftFaceTurn4",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "marchingOrdersEn_rightFaceTurn",
+      "name": "right face turn",
+      "cues": [
+       {
+        "id": "marchingOrdersEn/rightFaceTurn1",
+        "beat": 0.0
+       },
+       {
+        "id": "marchingOrdersEn/rightFaceTurn2",
+        "beat": 0.5
+       },
+       {
+        "id": "marchingOrdersEn/rightFaceTurn3",
+        "beat": 2.0
+       },
+       {
+        "id": "marchingOrdersEn/rightFaceTurn4",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}

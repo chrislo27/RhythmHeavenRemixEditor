@@ -1,63 +1,58 @@
 {
-  "gameID": "clappyTrio",
-  "gameName": "Clappy Trio (Fever)",
-  "series": "fever",
+  "gameID": "clappyTrioGba",
+  "gameName": "Clappy Trio (GBA)",
+  "series": "tengoku",
   "cues": [
     {
-      "id": "clappyTrio/start",
-      "duration": 1,
-      "name": "start"
-    },
-    {
-      "id": "clappyTrio/clap",
+      "id": "clappyTrioGba/clap",
       "duration": 0.25,
       "name": "clap"
     },
     {
-      "id": "clappyTrio/ready",
+      "id": "clappyTrioGba/ready",
       "duration": 0.25,
       "name": "ready"
     }
   ],
   "patterns": [
     {
-      "id": "clappyTrio_triotiming",
+      "id": "clappyTrioGba_triotiming",
       "name": "trio timing!",
       "isStretchable": true,
       "cues": [
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 0.0
        },
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 1.0
        },
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 2.0
        }
       ]
     },
     {
-      "id": "clappyTrio_fouronthefloor",
+      "id": "clappyTrioGba_fouronthefloor",
       "name": "four on the floor!",
       "isStretchable": true,
       "cues": [
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 0.0
        },
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 1.0
        },
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 2.0
        },
        {
-        "id": "clappyTrio/clap",
+        "id": "clappyTrioGba/clap",
         "beat": 3.0
        }
       ]
