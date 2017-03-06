@@ -121,7 +121,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				NamedLocale("English (UK)", Locale("en", "UK")),
 				NamedLocale("Français (French)", Locale("fr")),
 				NamedLocale("Español (Spanish)", Locale("es")),
-				NamedLocale("日本語 (グーグル翻訳) (Japanese [Google Translate])", Locale("ja_GTRANSLATE"))
+				NamedLocale("日本語 (グーグル翻訳) (Japanese [Google Translate])", Locale("ja", "GTRANSLATE"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
@@ -194,6 +194,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 						fontCharsToLoad += it
 					}
 				}
+			} else {
+				ionium.templates.Main.logger.warn("Lang file not found: " + handle.toString())
 			}
 		}
 
