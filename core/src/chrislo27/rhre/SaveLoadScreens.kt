@@ -85,7 +85,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), main.camera.viewportWidth * 0.05f,
+		Main.drawCompressed(main.font, main.batch, Localization.get("info.back"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
@@ -281,7 +281,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
 							main.camera.viewportHeight * 0.1f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("saveScreen.return"), main.camera.viewportWidth * 0.05f,
+		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.back"), main.camera.viewportWidth * 0.05f,
 							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()

@@ -95,7 +95,7 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 		main.font.data.setScale(1f)
 		main.font.draw(main.batch, Localization.get("versionScreen.goToPage"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 3.5f)
-		main.font.draw(main.batch, Localization.get("versionScreen.return"), main.camera.viewportWidth * 0.05f,
+		main.font.draw(main.batch, Localization.get("info.back"), main.camera.viewportWidth * 0.05f,
 					   main.font.capHeight * 2)
 
 		main.batch.end()
