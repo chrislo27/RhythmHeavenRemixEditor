@@ -25,12 +25,12 @@ object CustomSoundUtil {
 				"The sounds must be placed in a folder inside this directory. " +
 				"Each folder is a \"game\", and you can have multiple folders.\n\n" +
 				"Each sound will be limited to these factors:\n" +
-				"Duration: $DURATION beats\n" +
+				"$DURATION beats long by default\n" +
 				"You will be able to stretch the cues.\n" +
 				"You will be able to change the duration of the cues.\n" +
 				"The cues will not loop. If you want them to loop, you will have to manually add a game using the JSON files.\n\n" +
 				"You can have at most ${Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y} custom games. " +
-				"If you have too many they may not show up.\n\n" +
+				"If you have too many they WILL NOT show up!\n\n" +
 				"It is advised that you generate JSON versions of the custom games for more flexibility.\n\n" +
 				"Supported audio formats are ogg, wav, and mp3.\n" +
 				"Optionally, if you put an icon.png in the folder it will use it."
