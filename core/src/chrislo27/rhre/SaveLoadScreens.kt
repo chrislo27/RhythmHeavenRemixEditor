@@ -7,13 +7,11 @@ import chrislo27.rhre.util.FileChooser
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import ionium.registry.ScreenRegistry
-import ionium.screen.Updateable
 import ionium.util.DebugSetting
 import ionium.util.i18n.Localization
 import java.io.File
@@ -42,7 +40,7 @@ internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 	return null
 }
 
-class SaveScreen(m: Main) : Updateable<Main>(m) {
+class SaveScreen(m: Main) : BackgroundedScreen(m) {
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
@@ -61,8 +59,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 	private var currentThread: Thread? = null
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 //		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
@@ -197,7 +194,7 @@ class SaveScreen(m: Main) : Updateable<Main>(m) {
 
 }
 
-class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
+class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 	@Volatile
 	private var picker: FileChooser = object : FileChooser() {
@@ -231,8 +228,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 	}
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 //		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
@@ -281,7 +277,7 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
 							main.camera.viewportHeight * 0.1f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.back"), main.camera.viewportWidth * 0.05f,
+		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.return"), main.camera.viewportWidth * 0.05f,
 							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
@@ -405,12 +401,11 @@ class LoadScreen(m: Main) : Updateable<Main>(m), WhenFilesDropped {
 
 }
 
-class NewScreen(m: Main) : Updateable<Main>(m) {
+class NewScreen(m: Main) : BackgroundedScreen(m) {
 
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 //		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 

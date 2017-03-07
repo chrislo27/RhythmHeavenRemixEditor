@@ -44,6 +44,7 @@ public class DefAssetLoader implements IAssetLoader {
 		textures.put("logo_r", new Texture("images/logo/R.png"));
 		textures.put("logo_t", new Texture("images/logo/T.png"));
 		textures.put("logo_x", new Texture("images/logo/X.png"));
+		textures.put("ui_bg", new Texture("images/ui/bg.png"));
 	}
 
 	@Override

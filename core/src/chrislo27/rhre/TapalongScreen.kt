@@ -2,16 +2,14 @@ package chrislo27.rhre
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
-import ionium.screen.Updateable
 import ionium.util.i18n.Localization
 
 const val AUTO_RESET_TIME: Long = 3 * 1000
 
-class TapalongScreen(m: Main) : Updateable<Main>(m) {
+class TapalongScreen(m: Main) : BackgroundedScreen(m) {
 
 	private var lastTapTime: Long = System.currentTimeMillis()
 	private var averageBpm: Double = 0.0
@@ -19,8 +17,7 @@ class TapalongScreen(m: Main) : Updateable<Main>(m) {
 	private var numOfTaps: Long = 0
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 		main.batch.begin()
 
