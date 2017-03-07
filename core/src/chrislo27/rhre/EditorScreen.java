@@ -25,6 +25,8 @@ public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
 
 	@Override
 	public void render(float delta) {
+		attemptMakeEditor();
+
 		editor.render(main.batch);
 
 		if (stage != null) {
@@ -54,8 +56,7 @@ public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
 			stage.onResize((int) main.camera.viewportWidth, (int) main.camera.viewportHeight);
 	}
 
-	@Override
-	public void show() {
+	private void attemptMakeEditor() {
 		if (editor == null)
 			editor = new Editor(main);
 
@@ -63,6 +64,11 @@ public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
 			stageSetup = new EditorStageSetup(this);
 			stage = stageSetup.getStage();
 		}
+	}
+
+	@Override
+	public void show() {
+		attemptMakeEditor();
 
 		if (Gdx.input.getInputProcessor() instanceof InputMultiplexer) {
 			InputMultiplexer plex = (InputMultiplexer) Gdx.input.getInputProcessor();

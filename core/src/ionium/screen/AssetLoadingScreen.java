@@ -17,7 +17,7 @@ public class AssetLoadingScreen extends MiscLoadingScreen {
 		AssetRegistry.instance().getAssetManager().setLogger(output);
 	}
 
-	private AssetLogger output = new AssetLogger("assetoutput", Logger.DEBUG);
+	protected AssetLogger output = new AssetLogger("assetoutput", Logger.DEBUG);
 
 	private long startms = 0;
 	private boolean finished = false;

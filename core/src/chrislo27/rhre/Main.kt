@@ -111,7 +111,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun getAssetLoadingScreenToUse(): Screen {
-		return super.getAssetLoadingScreenToUse()
+		return ScreenRegistry.get("assetloading")
 	}
 
 	companion object {
@@ -144,7 +144,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.7.0"
+		ionium.templates.Main.version = "v2.8.0-SNAPSHOT"
 
 		SysOutPiper.pipe()
 
@@ -236,6 +236,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		AssetRegistry.instance().addAssetLoader(GameRegistry.instance().assetLoader)
 
 		val reg = ScreenRegistry.instance()
+		reg.add("assetloading", LoadingScreen(this))
 		reg.add("editor", EditorScreen(this))
 		reg.add("tapalong", TapalongScreen(this))
 		reg.add("info", InfoScreen(this))
@@ -286,6 +287,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
 						  Align.right, false)
 		fontBordered.data.setScale(1f)
+
 		batch.end()
 	}
 

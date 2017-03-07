@@ -35,7 +35,15 @@ public class DefAssetLoader implements IAssetLoader {
 
 	@Override
 	public void addUnmanagedTextures(HashMap<String, Texture> textures) {
-
+		textures.put("logo_2nd", new Texture("images/logo/2ND.png"));
+		textures.put("logo_d", new Texture("images/logo/D.png"));
+		textures.put("logo_e", new Texture("images/logo/E.png"));
+		textures.put("logo_i", new Texture("images/logo/I.png"));
+		textures.put("logo_m", new Texture("images/logo/M.png"));
+		textures.put("logo_o", new Texture("images/logo/O.png"));
+		textures.put("logo_r", new Texture("images/logo/R.png"));
+		textures.put("logo_t", new Texture("images/logo/T.png"));
+		textures.put("logo_x", new Texture("images/logo/X.png"));
 	}
 
 	@Override
