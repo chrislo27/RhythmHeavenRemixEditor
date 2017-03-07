@@ -222,6 +222,8 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	@Volatile
 	private var missingContent: String = ""
 
+	private var remixInfo: String = "";
+
 	override fun onFilesDropped(list: List<FileHandle>) {
 		if (list.size != 1) return
 
@@ -245,31 +247,11 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 		main.font.setColor(1f, 1f, 1f, 1f)
 
 		if (remixObj != null) {
-			main.font.draw(main.batch, Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
-														"${remixObj!!.bpmChanges.size}"),
+			main.font.draw(main.batch, remixInfo,
 						   main.camera.viewportWidth * 0.05f,
 						   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f,
 						   main.camera.viewportWidth * 0.9f,
 						   Align.left, true)
-
-			if (remixObj!!.version != ionium.templates.Main.version) {
-				main.font.draw(main.batch,
-							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
-												ionium.templates.Main.version),
-							   main.camera.viewportWidth * 0.05f,
-							   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f - main.font.capHeight * 6,
-							   main.camera.viewportWidth * 0.9f,
-							   Align.left, true)
-			}
-
-			if (!missingContent.isEmpty()) {
-				main.font.draw(main.batch,
-							   Localization.get("loadScreen.missingContent", missingContent),
-							   main.camera.viewportWidth * 0.05f,
-							   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f - main.font.capHeight * 13,
-							   main.camera.viewportWidth * 0.9f,
-							   Align.left, true)
-			}
 
 			Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
 								main.camera.viewportWidth * 0.05f,
@@ -320,6 +302,7 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	}
 
 	private fun attemptLoad(file: File) {
+		remixInfo = ""
 		persistDirectory(main, "lastLoadDirectory", file.parentFile)
 
 		val obj: RemixObject
@@ -348,7 +331,18 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ",
 																			   transform = { "[LIGHT_GRAY]$it[]" })
 
-		ionium.templates.Main.logger.warn("Missing content: " + missingContent)
+		if (!missingContent.isEmpty()) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
+
+		remixInfo = Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
+									 "${remixObj!!.bpmChanges.size}")
+		if (remixObj!!.version != ionium.templates.Main.version) {
+			remixInfo += "\n\n" + Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
+										  ionium.templates.Main.version)
+		}
+
+		if (!missingContent.isEmpty()) {
+			remixInfo += "\n\n" +Localization.get("loadScreen.missingContent", missingContent)
+		}
 	}
 
 	private fun showPicker() {
@@ -396,6 +390,7 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	override fun hide() {
 		closePicker()
 		shouldShowPicker = true
+		remixInfo = ""
 	}
 
 	override fun pause() {
