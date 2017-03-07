@@ -78,12 +78,14 @@ class SaveScreen(m: Main) : BackgroundedScreen(m) {
 							   "saveScreen.current") + " " + (picker.selectedFile?.path ?: Localization.get(
 							   "saveScreen.noSave")),
 					   main.camera.viewportWidth * 0.05f,
-					   main.camera.viewportHeight * 0.525f, main.camera.viewportWidth * 0.9f, Align.left, true)
+					   main.camera.viewportHeight * 0.5f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f,
+					   Align.left, true)
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
-					   main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
+							main.camera.viewportWidth * 0.05f,
+							main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
 		Main.drawCompressed(main.font, main.batch, Localization.get("info.back"), main.camera.viewportWidth * 0.05f,
-					   main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
+							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -244,8 +246,10 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 		if (remixObj != null) {
 			main.font.draw(main.batch, Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
-														"${remixObj!!.bpmChanges.size}"), main.camera.viewportWidth * 0.05f,
-						   main.camera.viewportHeight * 0.75f, main.camera.viewportWidth * 0.9f,
+														"${remixObj!!.bpmChanges.size}"),
+						   main.camera.viewportWidth * 0.05f,
+						   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f,
+						   main.camera.viewportWidth * 0.9f,
 						   Align.left, true)
 
 			if (remixObj!!.version != ionium.templates.Main.version) {
@@ -253,7 +257,7 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 							   Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
 												ionium.templates.Main.version),
 							   main.camera.viewportWidth * 0.05f,
-							   main.camera.viewportHeight * 0.45f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f - main.font.capHeight * 6,
 							   main.camera.viewportWidth * 0.9f,
 							   Align.left, true)
 			}
@@ -262,22 +266,27 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 				main.font.draw(main.batch,
 							   Localization.get("loadScreen.missingContent", missingContent),
 							   main.camera.viewportWidth * 0.05f,
-							   main.camera.viewportHeight * 0.3f + main.font.capHeight * 0.5f + main.font.lineHeight * 2,
+							   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f - main.font.capHeight * 13,
 							   main.camera.viewportWidth * 0.9f,
 							   Align.left, true)
 			}
 
+			Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
+								main.camera.viewportWidth * 0.05f,
+								main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f + main.font.capHeight * 1.5f,
+								main.camera.viewportWidth * 0.9f, Align.center)
 			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.confirm"),
-						   main.camera.viewportWidth * 0.05f,
-						   main.camera.viewportHeight * 0.175f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
+								main.camera.viewportWidth * 0.05f,
+								main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
 		} else {
-			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"), main.camera.viewportWidth * 0.05f,
-						   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f, main.camera.viewportWidth * 0.9f, Align.left)
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"),
+								main.camera.viewportWidth * 0.05f,
+								main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f,
+								main.camera.viewportWidth * 0.9f, Align.left)
 		}
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
-							main.camera.viewportHeight * 0.1f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.return"), main.camera.viewportWidth * 0.05f,
+		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.return"),
+							main.camera.viewportWidth * 0.05f,
 							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
@@ -336,7 +345,8 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 		obj.entities.removeAll(missingEntities)
 
-		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ", transform = { "[LIGHT_GRAY]$it[]" })
+		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ",
+																			   transform = { "[LIGHT_GRAY]$it[]" })
 
 		ionium.templates.Main.logger.warn("Missing content: " + missingContent)
 	}
@@ -419,12 +429,16 @@ class NewScreen(m: Main) : BackgroundedScreen(m) {
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"), main.camera.viewportWidth * 0.05f,
-					   main.camera.viewportHeight * 0.35f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"), main.camera.viewportWidth * 0.05f,
-					   main.camera.viewportHeight * 0.25f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"), main.camera.viewportWidth * 0.05f,
-					   main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
+							main.camera.viewportWidth * 0.05f,
+							main.camera.viewportHeight * 0.5f + main.font.capHeight * 0.5f,
+							main.camera.viewportWidth * 0.9f, Align.center)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"),
+							main.camera.viewportWidth * 0.05f,
+							main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
+		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"),
+							main.camera.viewportWidth * 0.05f,
+							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}

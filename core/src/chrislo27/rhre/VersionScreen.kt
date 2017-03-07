@@ -6,17 +6,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
+import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
-import ionium.screen.Updateable
 import ionium.util.i18n.Localization
 import java.time.format.DateTimeFormatter
 
 
-class VersionScreen(m: Main) : Updateable<Main>(m) {
+class VersionScreen(m: Main) : BackgroundedScreen(m) {
 
 	private val titlesAvailable: Int = 5
 	private var titleType: Int = 0
@@ -47,10 +46,14 @@ class VersionScreen(m: Main) : Updateable<Main>(m) {
 	private val formatter = DateTimeFormatter.ofPattern("MMM'.' d',' yyyy hh:mm a")
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 		main.batch.begin()
+
+		main.batch.setColor(0f, 0f, 0f, 0.5f)
+		ionium.templates.Main.fillRect(main.batch, 0f, main.camera.viewportHeight - 64f, 64f, 64f)
+		main.batch.setColor(1f, 1f, 1f, 1f)
+		main.batch.draw(AssetRegistry.getTexture("ui_update"), 0f, main.camera.viewportHeight - 64f, 64f, 64f)
 
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.data.setScale(0.75f)
