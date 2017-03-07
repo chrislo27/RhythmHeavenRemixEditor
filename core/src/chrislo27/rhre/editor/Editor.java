@@ -834,8 +834,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 
 		// camera
 		{
-			boolean accelerate = (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-					Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) ||
+			boolean accelerate =
 					(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
 			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
 				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
