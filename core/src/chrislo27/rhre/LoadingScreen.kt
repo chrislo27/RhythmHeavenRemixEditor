@@ -105,11 +105,13 @@ class LoadingScreen(m: Main) : AssetLoadingScreen(m) {
 							Gdx.graphics.width * 0.5f - Gdx.graphics.width * 0.95f * 0.5f,
 							Gdx.graphics.height * 0.15f - 75, Gdx.graphics.width * 0.95f, Align.center)
 
-		(main as Main).font.data.setScale(0.5f)
-		Main.drawCompressed((main as Main).font, main.batch, Localization.get("loading.skip"),
-							Gdx.graphics.width * 0.5f - barWidth * 0.5f,
-							Gdx.graphics.height * 0.15f + 25, barWidth, Align.center)
-		(main as Main).font.data.setScale(1f)
+		if (manager.progress >= 1) {
+			(main as Main).font.data.setScale(0.5f)
+			Main.drawCompressed((main as Main).font, main.batch, Localization.get("loading.skip"),
+								Gdx.graphics.width * 0.5f - barWidth * 0.5f,
+								Gdx.graphics.height * 0.15f + 25, barWidth, Align.center)
+			(main as Main).font.data.setScale(1f)
+		}
 
 		main.batch.end()
 
