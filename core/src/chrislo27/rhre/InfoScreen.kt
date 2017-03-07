@@ -30,6 +30,7 @@ Français (French): Gabgab2222, Pengu12345, Lovestep, Dragoneteur
 日本語 (グーグル翻訳) (Japanese [G. Translate]): Whistler_420, Google Translate""",
 			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
+			"uidesign" to "GlitchyPSIX",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64",
 			"technologies" to "[DARK_GRAY]Lib[][#E10000]GDX[] by Badlogic Games, LWJGL\n[#B07219]Java[] by Oracle, [#FF8900]Kotlin[] by JetBrains\nRhythm Heaven assets by Nintendo\n\nYou"
 													 )
@@ -97,7 +98,7 @@ Français (French): Gabgab2222, Pengu12345, Lovestep, Dragoneteur
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.data.setScale(0.7f)
+		main.font.data.setScale(0.65f)
 
 		var height: Float = Utils.getHeightWithWrapping(main.font, concatSections,
 														main.camera.viewportWidth * 0.45f)
