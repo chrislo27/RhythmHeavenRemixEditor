@@ -31,6 +31,17 @@ public class DefAssetLoader implements IAssetLoader {
 		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture.class);
 		manager.load(AssetMap.add("ui_audacity", "images/ui/audacity.png"), Texture.class);
 		manager.load(AssetMap.add("ui_infobutton", "images/ui/info.png"), Texture.class);
+		manager.load(AssetMap.add("ui_beattapper", "images/ui/icons/beattapper.png"), Texture.class);
+		manager.load(AssetMap.add("ui_cuenumber", "images/ui/icons/cuenumber.png"), Texture.class);
+		manager.load(AssetMap.add("ui_folder", "images/ui/icons/folder.png"), Texture.class);
+		manager.load(AssetMap.add("ui_info", "images/ui/icons/info.png"), Texture.class);
+		manager.load(AssetMap.add("ui_newremix", "images/ui/icons/newremix.png"), Texture.class);
+		manager.load(AssetMap.add("ui_save", "images/ui/icons/save.png"), Texture.class);
+		manager.load(AssetMap.add("ui_songchoose", "images/ui/icons/songchoose.png"), Texture.class);
+		manager.load(AssetMap.add("ui_tapper", "images/ui/icons/tapper.png"), Texture.class);
+		manager.load(AssetMap.add("ui_tempochnumber", "images/ui/icons/tempochnumber.png"), Texture.class);
+		manager.load(AssetMap.add("ui_update", "images/ui/icons/update.png"), Texture.class);
+		manager.load(AssetMap.add("ui_warn", "images/ui/icons/warn.png"), Texture.class);
 	}
 
 	@Override
