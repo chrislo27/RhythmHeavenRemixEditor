@@ -43,7 +43,7 @@ internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 class SaveScreen(m: Main) : BackgroundedScreen(m) {
 
 	@Volatile
-	private var picker: FileChooser = object : FileChooser() {
+	internal var picker: FileChooser = object : FileChooser() {
 		init {
 			currentDirectory = attemptRememberDirectory(main, "lastSaveDirectory") ?: File(
 					System.getProperty("user.home"),
@@ -199,7 +199,7 @@ class SaveScreen(m: Main) : BackgroundedScreen(m) {
 class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 	@Volatile
-	private var picker: FileChooser = object : FileChooser() {
+	internal var picker: FileChooser = object : FileChooser() {
 		init {
 			currentDirectory = attemptRememberDirectory(main, "lastLoadDirectory") ?: File(
 					System.getProperty("user.home"),
@@ -362,6 +362,7 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
 						attemptLoad(picker.selectedFile)
+						ScreenRegistry.get("save", SaveScreen::class.java).picker.selectedFile = picker.selectedFile
 					}
 					else -> {
 //						main.screen = ScreenRegistry.get("editor")
