@@ -9,7 +9,6 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.util.i18n.Localization
 import java.time.format.DateTimeFormatter
@@ -50,10 +49,10 @@ class VersionScreen(m: Main) : BackgroundedScreen(m) {
 
 		main.batch.begin()
 
-		main.batch.setColor(0f, 0f, 0f, 0.5f)
-		ionium.templates.Main.fillRect(main.batch, 0f, main.camera.viewportHeight - 64f, 64f, 64f)
-		main.batch.setColor(1f, 1f, 1f, 1f)
-		main.batch.draw(AssetRegistry.getTexture("ui_update"), 0f, main.camera.viewportHeight - 64f, 64f, 64f)
+//		main.batch.setColor(0f, 0f, 0f, 0.5f)
+//		ionium.templates.Main.fillRect(main.batch, 0f, main.camera.viewportHeight - 64f, 64f, 64f)
+//		main.batch.setColor(1f, 1f, 1f, 1f)
+//		main.batch.draw(AssetRegistry.getTexture("ui_update"), 0f, main.camera.viewportHeight - 64f, 64f, 64f)
 
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		main.biggerFont.data.setScale(0.75f)
