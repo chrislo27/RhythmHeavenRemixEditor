@@ -21,14 +21,15 @@ import ionium.util.render.TexturedQuad
 
 class InfoScreen(m: Main) : Updateable<Main>(m) {
 
+	// 日本語 (グーグル翻訳) (Japanese [G. Translate]): Whistler_420, Google Translate
+
 	private val sections: Map<String, String> = mapOf(
 			"programming" to "chrislo27",
 			"databasing" to "ahemtoday, Huebird of Happiness, GuardedLolz, chrislo27",
 			"localization" to """English (UK): Whistler_420
 Español (Spanish): Killble, quantic, GlitchyPSIX, David Mismo
 Français (French): Gabgab2222, Pengu12345, Lovestep, Dragoneteur
-Italiano (Italian): Huebird of Happiness
-日本語 (グーグル翻訳) (Japanese [G. Translate]): Whistler_420, Google Translate""",
+Italiano (Italian): Huebird of Happiness""",
 			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
 			"uidesign" to "GlitchyPSIX",

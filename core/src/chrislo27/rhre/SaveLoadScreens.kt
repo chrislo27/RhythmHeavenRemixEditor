@@ -11,8 +11,10 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.util.DebugSetting
+import ionium.util.Utils
 import ionium.util.i18n.Localization
 import java.io.File
 import java.io.FileOutputStream
@@ -337,11 +339,11 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 									 "${remixObj!!.bpmChanges.size}")
 		if (remixObj!!.version != ionium.templates.Main.version) {
 			remixInfo += "\n\n" + Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
-										  ionium.templates.Main.version)
+												   ionium.templates.Main.version)
 		}
 
 		if (!missingContent.isEmpty()) {
-			remixInfo += "\n\n" +Localization.get("loadScreen.missingContent", missingContent)
+			remixInfo += "\n\n" + Localization.get("loadScreen.missingContent", missingContent)
 		}
 	}
 
@@ -407,8 +409,11 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 }
 
-class NewScreen(m: Main) : BackgroundedScreen(m) {
+class NewScreen(m: Main) : NewUIScreen(m) {
 
+	override var icon: String = "ui_newremix"
+	override var title: String = "newScreen.title"
+	override var bottomInstructions: String = "newScreen.instructions"
 
 	override fun render(delta: Float) {
 		super.render(delta)
@@ -417,24 +422,21 @@ class NewScreen(m: Main) : BackgroundedScreen(m) {
 
 		main.batch.begin()
 
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.draw(main.batch,
-							 Localization.get("newScreen.title"),
-							 main.camera.viewportWidth * 0.05f,
-							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
+		val warnSize = 256f
+		val warnX = startX + BG_WIDTH * 0.5f - warnSize * 1.125f
+		val warnY = startY + BG_HEIGHT * 0.5f - warnSize * 0.5f
+
+		main.batch.draw(AssetRegistry.getTexture("ui_warn"), warnX, warnY, warnSize, warnSize)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
-							main.camera.viewportWidth * 0.05f,
-							main.camera.viewportHeight * 0.5f + main.font.capHeight * 0.5f,
-							main.camera.viewportWidth * 0.9f, Align.center)
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.confirm"),
-							main.camera.viewportWidth * 0.05f,
-							main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("newScreen.return"),
-							main.camera.viewportWidth * 0.05f,
-							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
+		val textHeight = Utils.getHeightWithWrapping(main.font, Localization.get("warning.remixOverwrite"),
+													 warnSize * 1.25f)
+		main.font.draw(main.batch, Localization.get("warning.remixOverwrite"),
+					   warnX + warnSize, warnY + warnSize * 0.5f + textHeight * 0.5f,
+					   warnSize * 1.25f, Align.left, true)
 
 		main.batch.end()
 	}

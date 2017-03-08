@@ -120,9 +120,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				NamedLocale("English (NA)", Locale("")),
 				NamedLocale("English (UK)", Locale("en", "UK")),
 				NamedLocale("Français (French)", Locale("fr")),
-				NamedLocale("Español (Spanish)", Locale("es")),
-				NamedLocale("Italiano (Italian)", Locale("it")),
-				NamedLocale("日本語 (グーグル翻訳) (Japanese [Google Translate])", Locale("ja", "GTRANSLATE"))
+				NamedLocale("Español (Spanish)", Locale("es"))
+//				NamedLocale("Italiano (Italian)", Locale("it"))
+//				NamedLocale("日本語 (グーグル翻訳) (Japanese [Google Translate])", Locale("ja", "GTRANSLATE"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
