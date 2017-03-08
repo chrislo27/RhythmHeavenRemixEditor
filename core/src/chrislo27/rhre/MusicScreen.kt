@@ -8,19 +8,21 @@ import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
-import ionium.screen.Updateable
 import ionium.util.i18n.Localization
 import java.io.File
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
 
-class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
+class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
+	override var icon: String = "ui_songchoose"
+	override var title: String = "musicScreen.title"
+	override var bottomInstructions: String = "musicScreen.return"
+
 	private var failedToLoad: String? = null
 
 	override fun scrolled(amount: Int): Boolean {
@@ -59,45 +61,50 @@ class MusicScreen(m: Main) : Updateable<Main>(m), InputProcessor {
 	private var currentThread: Thread? = null
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 		val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 		main.batch.begin()
 
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.draw(main.batch,
-							 Localization.get("musicScreen.title"),
-							 Gdx.graphics.width * 0.05f,
-							 Gdx.graphics.height * 0.85f + main.biggerFont.capHeight)
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
 		if (failedToLoad != null) {
 			failedToLoad as String
 			main.font.setColor(1f, 0f, 0f, 1f)
 			main.font.draw(main.batch,
 						   failedToLoad!!,
-						   Gdx.graphics.width * 0.05f,
-						   Gdx.graphics.height * 0.8f,
-						   Gdx.graphics.width * 0.9f, Align.left, true)
+						   startX + PADDING,
+						   startY + BG_HEIGHT * 0.55f,
+						   BG_WIDTH * 0.75f - PADDING * 2,
+						   Align.left, true)
 		}
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
 		main.font.draw(main.batch,
 					   Localization.get(
-							   "musicScreen.current") + " " + (es.editor.remix?.music?.file?.name() ?: Localization.get(
+							   "musicScreen.current") + "\n" + (es.editor.remix?.music?.file?.name() ?: Localization.get(
 							   "musicScreen.noMusic")),
-					   Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.525f)
+					   startX + PADDING,
+					   startY + BG_HEIGHT * 0.75f,
+					   BG_WIDTH * 0.65f - PADDING * 2,
+					   Align.left, true)
 
-		main.font.draw(main.batch,
-					   Localization.get("musicScreen.volume", "${(es.editor.remix.musicVolume * 100).toInt()}"),
-					   Gdx.graphics.width * 0.05f,
-					   Gdx.graphics.height * 0.485f)
+		main.biggerFont.data.setScale(0.5f)
+		main.biggerFont.draw(main.batch,
+					   Localization.get("musicScreen.volume", "\n${(es.editor.remix.musicVolume * 100).toInt()}"),
+					   startX + PADDING + BG_WIDTH * 0.65f,
+					   startY + BG_HEIGHT * 0.75f,
+					   BG_WIDTH * 0.35f - PADDING * 2,
+					   Align.left, true)
+		main.biggerFont.data.setScale(1f)
 
-		main.font.draw(main.batch, Localization.get("musicScreen.return"), Gdx.graphics.width * 0.05f,
-					   main.font.capHeight * 6)
+		Main.drawCompressed(main.font, main.batch, Localization.get("musicScreen.scroll"),
+							startX + PADDING,
+							startY + PADDING + main.font.capHeight * 6,
+							BG_WIDTH - PADDING * 2, Align.center)
 
 		main.batch.end()
 	}
