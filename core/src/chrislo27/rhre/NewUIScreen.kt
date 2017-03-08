@@ -11,6 +11,7 @@ abstract class NewUIScreen(m: Main) : BackgroundedScreen(m) {
 	val TITLE_SCALE: Float = 0.75f
 	val PADDING = 32f
 	val ICON_SIZE = main.biggerFont.capHeight * TITLE_SCALE
+	val ICON_SCALE = 1.5f
 
 	abstract var icon: String
 	abstract var title: String
@@ -28,8 +29,9 @@ abstract class NewUIScreen(m: Main) : BackgroundedScreen(m) {
 		ionium.templates.Main.fillRect(main.batch, startX, startY, BG_WIDTH, BG_HEIGHT)
 		main.batch.setColor(1f, 1f, 1f, 1f)
 
-		main.batch.draw(AssetRegistry.getTexture(icon), startX + PADDING, startY + BG_HEIGHT - PADDING - ICON_SIZE,
-						ICON_SIZE, ICON_SIZE)
+		main.batch.draw(AssetRegistry.getTexture(icon), startX + PADDING + ICON_SIZE * 0.5f - ICON_SIZE * ICON_SCALE * 0.5f,
+						startY + BG_HEIGHT - PADDING - ICON_SIZE * 0.5f - ICON_SIZE * ICON_SCALE * 0.5f,
+						ICON_SIZE * ICON_SCALE, ICON_SIZE * ICON_SCALE)
 		main.biggerFont.data.setScale(TITLE_SCALE)
 		main.biggerFont.setColor(1f, 1f, 1f, 1f)
 		Main.drawCompressed(main.biggerFont, main.batch, Localization.get(title), startX + PADDING * 1.5f + ICON_SIZE,
