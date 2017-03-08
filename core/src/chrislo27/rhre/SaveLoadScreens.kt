@@ -42,7 +42,10 @@ internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 	return null
 }
 
-class SaveScreen(m: Main) : BackgroundedScreen(m) {
+class SaveScreen(m: Main) : NewUIScreen(m) {
+	override var icon: String = "ui_save"
+	override var title: String = "saveScreen.title"
+	override var bottomInstructions: String = "info.back"
 
 	@Volatile
 	internal var picker: FileChooser = object : FileChooser() {
@@ -67,27 +70,24 @@ class SaveScreen(m: Main) : BackgroundedScreen(m) {
 
 		main.batch.begin()
 
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.draw(main.batch,
-							 Localization.get("saveScreen.title"),
-							 main.camera.viewportWidth * 0.05f,
-							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
-
 		main.font.setColor(1f, 1f, 1f, 1f)
+
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
 		main.font.draw(main.batch,
 					   Localization.get(
-							   "saveScreen.current") + " " + (picker.selectedFile?.path ?: Localization.get(
+							   "saveScreen.current") + "\n" + (picker.selectedFile?.path ?: Localization.get(
 							   "saveScreen.noSave")),
-					   main.camera.viewportWidth * 0.05f,
-					   main.camera.viewportHeight * 0.5f + main.font.capHeight * 0.5f, main.camera.viewportWidth * 0.9f,
+					   startX + PADDING,
+					   startY + BG_HEIGHT * 0.75f,
+					   BG_WIDTH - PADDING * 2,
 					   Align.left, true)
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
-							main.camera.viewportWidth * 0.05f,
-							main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
-		Main.drawCompressed(main.font, main.batch, Localization.get("info.back"), main.camera.viewportWidth * 0.05f,
-							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
+							startX + PADDING,
+							startY + PADDING + main.font.capHeight * 6,
+							BG_WIDTH - PADDING * 2, Align.center)
 
 		main.batch.end()
 	}
