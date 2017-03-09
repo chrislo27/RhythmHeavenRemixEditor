@@ -53,6 +53,12 @@ object InspectionPostfix {
 		registry.get("munchyMonk")?.patterns?.forEach {
 			it.inspectionFunctions = if (it.id != "munchyMonk_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
+		registry.get("munchyMonkEs")?.patterns?.forEach {
+			it.inspectionFunctions = if (it.id != "munchyMonkEs_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
+		}
+		registry.get("munchyMonkJa")?.patterns?.forEach {
+			it.inspectionFunctions = if (it.id != "munchyMonkJa_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
+		}
 
 		registry.getCueRaw("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingAfter("moaiDooWop/wop1"))
