@@ -7,6 +7,7 @@ import chrislo27.rhre.util.FileChooser
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.google.gson.Gson
@@ -198,7 +199,10 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 
 }
 
-class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
+class LoadScreen(m: Main) : NewUIScreen(m), WhenFilesDropped {
+	override var icon: String = "ui_folder"
+	override var title: String = "loadScreen.title"
+	override var bottomInstructions: String = "loadScreen.confirm"
 
 	@Volatile
 	internal var picker: FileChooser = object : FileChooser() {
@@ -222,9 +226,7 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	private var remixObj: RemixObject? = null
 
 	@Volatile
-	private var missingContent: String = ""
-
-	private var remixInfo: String = "";
+	private var missingContent: Pair<String, Int> = "" to 0
 
 	override fun onFilesDropped(list: List<FileHandle>) {
 		if (list.size != 1) return
@@ -240,38 +242,105 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 		main.batch.begin()
 
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.draw(main.batch,
-							 Localization.get("loadScreen.title"),
-							 main.camera.viewportWidth * 0.05f,
-							 main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight)
-
 		main.font.setColor(1f, 1f, 1f, 1f)
 
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
+
 		if (remixObj != null) {
-			main.font.draw(main.batch, remixInfo,
-						   main.camera.viewportWidth * 0.05f,
-						   main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f,
-						   main.camera.viewportWidth * 0.9f,
-						   Align.left, true)
+			val iconSize: Float = 128f
+
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.hover"),
+								startX + PADDING,
+								startY + BG_HEIGHT * 0.795f,
+								BG_WIDTH - PADDING * 2, Align.center)
+
+			main.batch.draw(AssetRegistry.getTexture("ui_cuenumber"), startX + BG_WIDTH * 0.2f - iconSize * 0.5f,
+							startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, iconSize)
+			Main.drawCompressed(main.font, main.batch,
+								"" + remixObj!!.entities.size,
+								startX + BG_WIDTH * 0.2f - iconSize * 0.5f,
+								startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, Align.center)
+
+			main.batch.draw(AssetRegistry.getTexture("ui_tempochnumber"), startX + BG_WIDTH * 0.4f - iconSize * 0.5f,
+							startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, iconSize)
+			Main.drawCompressed(main.font, main.batch,
+								"" + remixObj!!.bpmChanges.size,
+								startX + BG_WIDTH * 0.4f - iconSize * 0.5f,
+								startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, Align.center)
+
+			if (missingContent.first.isEmpty()) {
+				main.biggerFont.setColor(0f, 1f, 0f, 1f)
+				val height = Utils.getHeight(main.biggerFont, "OK")
+				main.biggerFont.draw(main.batch, "OK",
+									 startX + BG_WIDTH * 0.6f,
+									 startY + BG_HEIGHT * 0.6f + iconSize * 0.5f - height * 0.5f,
+									 0f, Align.center, false)
+			} else {
+				main.biggerFont.setColor(1f, 0f, 0f, 1f)
+				val height = Utils.getHeight(main.biggerFont, "!!")
+				main.biggerFont.draw(main.batch, "!!",
+									 startX + BG_WIDTH * 0.6f,
+									 startY + BG_HEIGHT * 0.6f + iconSize * 0.5f - height * 0.5f,
+									 0f, Align.center, false)
+			}
+			main.font.color = main.biggerFont.color
+			Main.drawCompressed(main.font, main.batch,
+								Localization.get("loadScreen.missingContent", "" + missingContent.second),
+								startX + BG_WIDTH * 0.6f - iconSize * 0.5f,
+								startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, Align.center)
+			main.font.setColor(1f, 1f, 1f, 1f)
+			main.biggerFont.setColor(1f, 1f, 1f, 1f)
+
+			if (remixObj!!.version == ionium.templates.Main.version) {
+				main.font.setColor(0f, 1f, 0f, 1f)
+			} else {
+				main.font.color = Color.ORANGE
+			}
+			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.version", remixObj!!.version),
+								startX + BG_WIDTH * 0.8f - iconSize,
+								startY + BG_HEIGHT * 0.6f + main.font.capHeight,
+								iconSize * 2, Align.center)
+			main.font.setColor(1f, 1f, 1f, 1f)
+
+			val iconNum: Int
+			if (main.camera.viewportHeight - main.getInputY() > startY + BG_HEIGHT * 0.6f - iconSize * 0.5f &&
+					main.camera.viewportHeight - main.getInputY() < startY + BG_HEIGHT * 0.6f + iconSize * 0.5f) {
+				iconNum = Math.floor(
+						(main.getInputX() - (startX + BG_WIDTH * 0.2 - iconSize * 0.5f)) / (BG_WIDTH * 0.2f)).toInt()
+			} else {
+				iconNum = -1
+			}
+
+			if (iconNum in 0..3) {
+				val text: String =
+						when (iconNum) {
+							0 -> Localization.get("loadScreen.cueNumber")
+							1 -> Localization.get("loadScreen.tempoChangeNumber")
+							2 -> if (missingContent.second > 0)
+								Localization.get("loadScreen.missingInfo", missingContent.first)
+							else
+								Localization.get("loadScreen.noneMissing")
+							3 -> Localization.get("loadScreen.versionInfo")
+							else -> ""
+						}
+
+				main.font.draw(main.batch, text, startX + PADDING,
+							   startY + PADDING + BG_HEIGHT * 0.375f,
+							   BG_WIDTH - PADDING * 2, Align.center, true)
+			}
 
 			Main.drawCompressed(main.font, main.batch, Localization.get("warning.remixOverwrite"),
-								main.camera.viewportWidth * 0.05f,
-								main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f + main.font.capHeight * 1.5f,
-								main.camera.viewportWidth * 0.9f, Align.center)
-			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.confirm"),
-								main.camera.viewportWidth * 0.05f,
-								main.font.capHeight * 4, main.camera.viewportWidth * 0.9f, Align.left)
+								startX + PADDING,
+								startY + PADDING + main.font.capHeight * 6,
+								BG_WIDTH - PADDING * 2, Align.center)
 		} else {
 			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"),
-								main.camera.viewportWidth * 0.05f,
-								main.camera.viewportHeight * 0.85f - main.biggerFont.capHeight * 0.75f,
-								main.camera.viewportWidth * 0.9f, Align.left)
+								startX + PADDING,
+								startY + BG_HEIGHT * 0.55f,
+								BG_WIDTH - PADDING * 2,
+								Align.center)
 		}
-
-		Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.return"),
-							main.camera.viewportWidth * 0.05f,
-							main.font.capHeight * 2, main.camera.viewportWidth * 0.9f, Align.left)
 
 		main.batch.end()
 	}
@@ -300,11 +369,10 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	private fun closePicker() {
 		hidePicker()
 		remixObj = null
-		missingContent = ""
+		missingContent = "" to 0
 	}
 
 	private fun attemptLoad(file: File) {
-		remixInfo = ""
 		persistDirectory(main, "lastLoadDirectory", file.parentFile)
 
 		val obj: RemixObject
@@ -330,21 +398,11 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 
 		obj.entities.removeAll(missingEntities)
 
-		missingContent = missingEntities.map { it.id }.distinct().joinToString(separator = ", ",
-																			   transform = { "[LIGHT_GRAY]$it[]" })
+		val distinct = missingEntities.map { it.id }.distinct()
 
-		if (!missingContent.isEmpty()) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
+		missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
 
-		remixInfo = Localization.get("loadScreen.remixInfo", "${remixObj!!.entities.size}",
-									 "${remixObj!!.bpmChanges.size}")
-		if (remixObj!!.version != ionium.templates.Main.version) {
-			remixInfo += "\n\n" + Localization.get("loadScreen.versionMismatch", remixObj!!.version ?: "NO VERSION!",
-												   ionium.templates.Main.version)
-		}
-
-		if (!missingContent.isEmpty()) {
-			remixInfo += "\n\n" + Localization.get("loadScreen.missingContent", missingContent)
-		}
+		if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
 	}
 
 	private fun showPicker() {
@@ -392,7 +450,6 @@ class LoadScreen(m: Main) : BackgroundedScreen(m), WhenFilesDropped {
 	override fun hide() {
 		closePicker()
 		shouldShowPicker = true
-		remixInfo = ""
 	}
 
 	override fun pause() {
