@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import ionium.registry.AssetRegistry
 import ionium.screen.AssetLoadingScreen
 import ionium.util.DebugSetting
@@ -132,6 +133,11 @@ class LoadingScreen(m: Main) : AssetLoadingScreen(m) {
 
 	override fun canFinishLoading(): Boolean {
 		return super.canFinishLoading() && (finish || (animationTime >= 4.5f && !DebugSetting.debug))
+	}
+
+	override fun getDebugStrings(array: Array<String>?) {
+		super.getDebugStrings(array)
+		array?.add("Press R to restart animation")
 	}
 
 }
