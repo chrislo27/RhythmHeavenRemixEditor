@@ -1,7 +1,7 @@
 {
   "gameID": "karateMan",
-  "gameName": "Karate Man",
-  "series": "tengoku",
+  "gameName": "Karate Man (Fever)",
+  "series": "fever",
   "cues": [
     {
       "id": "karateMan/potout",
