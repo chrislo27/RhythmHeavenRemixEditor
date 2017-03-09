@@ -68,9 +68,9 @@ class LoadingScreen(m: Main) : AssetLoadingScreen(m) {
 		draw("e", 0f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 5)
 		draw("d", 40f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 6)
 		draw("i", 76f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 7)
-		draw("t", 112f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 8)
-		draw("o", 146f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 9)
-		draw("r", 186f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 10)
+		draw("t", 106f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 8)
+		draw("o", 140f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 9)
+		draw("r", 180f, main.camera.viewportHeight * 0.6f - 96f, 0.05f * 10)
 
 		val alpha: Float = Interpolation.circleOut.apply((time - 1.0f).coerceIn(0.0f..1.0f))
 		main.batch.setColor(1f, 1f, 1f, alpha)
