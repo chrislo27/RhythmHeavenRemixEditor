@@ -84,6 +84,7 @@ public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
 			if (main.getOldSize().getThird()) {
 				Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 			} else {
+				System.out.println("resizing: " + main.getOldSize());
 				Gdx.graphics.setWindowedMode(main.getOldSize().getFirst(), main.getOldSize().getSecond());
 			}
 		}

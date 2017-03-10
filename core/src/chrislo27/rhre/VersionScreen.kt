@@ -6,40 +6,38 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputAdapter
 import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
+import ionium.util.Utils
 import ionium.util.i18n.Localization
+import ionium.util.render.StencilMaskUtil
 import java.time.format.DateTimeFormatter
 
 
-class VersionScreen(m: Main) : BackgroundedScreen(m) {
+class VersionScreen(m: Main) : NewUIScreen(m) {
+	override var icon: String = "ui_update"
+	override var title: String = "versionScreen.title0"
+	override var bottomInstructions: String = "versionScreen.goToPage"
 
 	private val titlesAvailable: Int = 5
 	private var titleType: Int = 0
-	private val MAX_LINES = 12
-	private var content: String = ""
-	private var line = 0
-		set(value) {
-			field = value
-
-			if (VersionChecker.releaseObject != null) {
-				content = ""
-				for (i in line.coerceIn(
-						0..Math.max(0, VersionChecker.releaseObject!!.bodyLines.size - MAX_LINES - 1))
-						..Math.min(line + MAX_LINES, VersionChecker.releaseObject!!.bodyLines.size - 1)) {
-					content += VersionChecker.releaseObject!!.bodyLines[i] + "\n"
-				}
-			}
-		}
+	private val SCROLL_FACTOR = 0.25f
+	private var scrollAmount: Float = 0f
+	private var textHeight: Float = 0f
 
 	private val input = object : InputAdapter() {
 		override fun scrolled(amount: Int): Boolean {
-			line += amount
-			line = line.coerceIn(0, Math.max(0, VersionChecker.releaseObject!!.bodyLines.size - MAX_LINES - 1))
+			scrollText(amount.toFloat())
 			return true
 		}
+	}
+
+	private fun scrollText(amount: Float) {
+		scrollAmount += amount * SCROLL_FACTOR
+		scrollAmount = scrollAmount.coerceIn(0f, 1f)
 	}
 
 	private val formatter = DateTimeFormatter.ofPattern("MMM'.' d',' yyyy hh:mm a")
@@ -49,66 +47,83 @@ class VersionScreen(m: Main) : BackgroundedScreen(m) {
 
 		main.batch.begin()
 
-//		main.batch.setColor(0f, 0f, 0f, 0.5f)
-//		ionium.templates.Main.fillRect(main.batch, 0f, main.camera.viewportHeight - 64f, 64f, 64f)
-//		main.batch.setColor(1f, 1f, 1f, 1f)
-//		main.batch.draw(AssetRegistry.getTexture("ui_update"), 0f, main.camera.viewportHeight - 64f, 64f, 64f)
-
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.data.setScale(0.75f)
-		Main.drawCompressed(main.biggerFont, main.batch,
-							Localization.get("versionScreen.title$titleType"),
-							main.camera.viewportWidth * 0.05f,
-							main.camera.viewportHeight * 0.85f + main.biggerFont.capHeight,
-							main.camera.viewportWidth * 0.9f, Align.left)
-		main.biggerFont.data.setScale(1f)
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.draw(main.batch, Localization.get(
-				"versionScreen.${if (VersionChecker.versionState == VersionState.UP_TO_DATE) "already" else "available"}",
-				VersionChecker.releaseObject!!.tag_name,
-				ionium.templates.Main.version),
-					   main.camera.viewportWidth * 0.05f, main.camera.viewportHeight * 0.75f)
-		main.font.draw(main.batch, Localization.get("versionScreen.coolInfo",
-													((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
-													VersionChecker.releaseObject!!.assets!!.first().download_count,
-													VersionChecker.releaseObject!!.publishedTime!!.format(formatter))
-				.format("%.3f"),
-					   main.camera.viewportWidth * 0.05f, main.camera.viewportHeight * 0.75f - main.font.lineHeight)
+		main.batch.setColor(1f, 1f, 1f, 1f)
+		ionium.templates.Main.fillRect(main.batch, startX + PADDING + BG_WIDTH * 0.2f + 8,
+									   startY + BG_HEIGHT * 0.15f + 6,
+									   3f, BG_HEIGHT * 0.65f - 6)
 
-		var releaseTitleY = main.camera.viewportHeight * 0.75f - main.font.lineHeight * 2.5f
+		Main.drawCompressed(main.font, main.batch,
+							Localization.get("versionScreen.currentlyUsing") + "\n${ionium.templates.Main.version}",
+							startX + PADDING, startY + BG_HEIGHT * 0.75f,
+							BG_WIDTH * 0.2f, Align.center)
+
+		Main.drawCompressed(main.font, main.batch,
+							(if (VersionChecker.versionState == VersionState.AVAILABLE)
+								"[#00FF00]" + Localization.get("versionScreen.newAvailable") + "[]"
+							else
+								Localization.get("versionScreen.currentRelease"))
+									+ "\n${ionium.templates.Main.githubVersion}",
+							startX + PADDING, startY + BG_HEIGHT * 0.55f,
+							BG_WIDTH * 0.2f, Align.center)
+
+		main.font.draw(main.batch,
+					   Localization.get("versionScreen.scroll"),
+					   startX + PADDING, startY + BG_HEIGHT * 0.3f,
+					   BG_WIDTH * 0.2f, Align.center, true)
+
+		Main.drawCompressed(main.font, main.batch,
+							Localization.get("versionScreen.coolInfo",
+											 ((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
+											 VersionChecker.releaseObject!!.assets!!.first().download_count,
+											 VersionChecker.releaseObject!!.publishedTime!!.format(formatter)).format(
+									"%.3f"),
+							startX + BG_WIDTH * 0.25f, startY + BG_HEIGHT * 0.8f,
+							BG_WIDTH * 0.75f - PADDING, Align.left)
+
+		var releaseTitleY = startY + BG_HEIGHT * 0.8f - main.font.lineHeight
 		main.font.draw(main.batch,
 					   "[#DDDDDD]" + VersionChecker.releaseObject!!.name + "[]",
-					   main.camera.viewportWidth * 0.05f, releaseTitleY,
-					   main.camera.viewportWidth * 0.9f, Align.left, true)
+					   startX + BG_WIDTH * 0.25f, releaseTitleY,
+					   BG_WIDTH * 0.75f - PADDING, Align.left, true)
 		releaseTitleY -= main.font.lineHeight
+
 		main.font.data.setScale(0.75f)
+		val heightToWorkWith: Float = releaseTitleY - (startY + main.font.capHeight * 8f)
+
+		main.batch.end()
+		StencilMaskUtil.prepareMask()
+		main.shapes.projectionMatrix = main.camera.combined
+		main.shapes.begin(ShapeRenderer.ShapeType.Filled)
+		main.shapes.rect(startX + BG_WIDTH * 0.25f, releaseTitleY,
+						 BG_WIDTH * 0.75f - PADDING, -(heightToWorkWith + 8))
+		main.shapes.end()
+
+		main.batch.begin()
+		StencilMaskUtil.useMask()
+
 		main.font.draw(main.batch,
-					   "[LIGHT_GRAY]$content[]",
-					   main.camera.viewportWidth * 0.05f, releaseTitleY,
-					   main.camera.viewportWidth * 0.9f, Align.left, true)
+					   "[LIGHT_GRAY]${VersionChecker.releaseObject?.body}[]",
+					   startX + BG_WIDTH * 0.25f, releaseTitleY + ((textHeight - heightToWorkWith) * scrollAmount),
+					   BG_WIDTH * 0.75f - PADDING, Align.left, true)
 		main.font.data.setScale(1f)
 
-		val scrollY = main.font.capHeight * 4.5f
-		main.font.data.setScale(0.5f)
-		main.font.draw(main.batch, Localization.get("versionScreen.scroll"), main.camera.viewportWidth * 0.05f,
-					   scrollY)
-		main.font.data.setScale(1f)
-		main.font.draw(main.batch, Localization.get("versionScreen.goToPage"), main.camera.viewportWidth * 0.05f,
-					   main.font.capHeight * 3.5f)
-		main.font.draw(main.batch, Localization.get("info.back"), main.camera.viewportWidth * 0.05f,
-					   main.font.capHeight * 2)
+		main.batch.flush()
+		StencilMaskUtil.resetMask()
 
 		main.batch.end()
 	}
 
 	override fun renderUpdate() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-			line = (line + 1).coerceIn(0, Math.max(0, VersionChecker.releaseObject!!.bodyLines.size - MAX_LINES - 1))
+		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+			scrollText(-Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
 		}
-		if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-			line = (line - 1).coerceIn(0, Math.max(0, VersionChecker.releaseObject!!.bodyLines.size - MAX_LINES - 1))
+		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+			scrollText(Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -129,12 +144,17 @@ class VersionScreen(m: Main) : BackgroundedScreen(m) {
 	}
 
 	override fun show() {
-		line = 0
+		scrollAmount = 0f
+		main.font.data.setScale(0.75f)
+		textHeight = Utils.getHeightWithWrapping(main.font, VersionChecker.releaseObject?.body, BG_WIDTH * 0.75f - PADDING)
+		main.font.data.setScale(1f)
 		if (titlesAvailable > 1) {
 			val old = titleType
 			while (titleType == old) {
 				titleType = MathUtils.random(0, titlesAvailable - 1)
 			}
+
+			title = "versionScreen.title$titleType"
 		}
 
 		(Gdx.input.inputProcessor as InputMultiplexer).addProcessor(input)

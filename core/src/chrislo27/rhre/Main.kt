@@ -157,7 +157,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
 		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
 
-		oldSize = Triple(preferences.getInteger("width", 1280), preferences.getInteger("height", 720),
+		fun Int.ensureAtLeastWhenZero(min: Int): Int {
+			if (this <= 0)
+				return min
+			return this
+		}
+
+		oldSize = Triple(preferences.getInteger("width", 1280).ensureAtLeastWhenZero(1280),
+						 preferences.getInteger("height", 720).ensureAtLeastWhenZero(720),
 						 preferences.getBoolean("fullscreen", false))
 
 		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = false) {
