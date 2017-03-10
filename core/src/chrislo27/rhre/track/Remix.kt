@@ -62,7 +62,7 @@ class Remix {
 			lastTickBeat = beat.toInt()
 		}
 	private var lastTickBeat = Int.MIN_VALUE
-	private var musicPlayed = false
+	private var musicPlayed: PlaybackCompletion = PlaybackCompletion.WAITING
 	var currentGame: Game? = null
 		private set
 
@@ -253,7 +253,7 @@ class Remix {
 
 	fun setPlayingState(ps: PlayingState): Unit {
 		fun resetEntitiesAndTracker(): Unit {
-			musicPlayed = false
+			musicPlayed = PlaybackCompletion.WAITING
 			music?.music?.stop()
 			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
 			// reset playback completion
@@ -333,13 +333,16 @@ class Remix {
 			return@update
 		}
 
-		if (music != null && (!musicPlayed || !music!!.music.isPlaying) && beat >= tempoChanges.secondsToBeats(
+		if (music != null && (musicPlayed == PlaybackCompletion.WAITING && !music!!.music.isPlaying) && beat >= tempoChanges.secondsToBeats(
 				musicStartTime)) {
 			val newPosition = tempoChanges.beatsToSeconds(beat) - musicStartTime
 
 			music!!.music.play()
 			music!!.music.position = newPosition
-			musicPlayed = true
+			musicPlayed = PlaybackCompletion.STARTED
+			music!!.music.setOnCompletionListener {
+				musicPlayed = PlaybackCompletion.FINISHED
+			}
 		}
 
 		val lastBpm: Float = tempoChanges.getTempoAt(beat)
@@ -419,7 +422,7 @@ class Remix {
 			}
 		}
 
-		if (beat >= endTime)
+		if (playingState == PlayingState.PLAYING && beat >= endTime)
 			setPlayingState(PlayingState.STOPPED)
 	}
 
