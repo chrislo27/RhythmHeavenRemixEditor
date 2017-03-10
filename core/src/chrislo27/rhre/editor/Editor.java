@@ -721,7 +721,9 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 
 			if (timeUntilAutosave <= 0) {
 				timeUntilAutosave = AUTOSAVE_PERIOD;
-				autosave();
+				if (main.getPreferences().getBoolean("autosave", true)) {
+					autosave();
+				}
 			}
 		}
 	}

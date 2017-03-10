@@ -6,22 +6,21 @@ import chrislo27.rhre.version.VersionChecker
 import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
-import ionium.screen.Updateable
 import ionium.util.DebugSetting
 import ionium.util.MathHelper
 import ionium.util.Utils
 import ionium.util.i18n.Localization
 import ionium.util.render.TexturedQuad
 
-class InfoScreen(m: Main) : Updateable<Main>(m) {
-
-	// 日本語 (グーグル翻訳) (Japanese [G. Translate]): Whistler_420, Google Translate
+class InfoScreen(m: Main) : NewUIScreen(m) {
+	override var icon: String = "ui_info"
+	override var title: String = "info.title"
+	override var bottomInstructions: String = "info.instructions"
 
 	private val sections: Map<String, String> = mapOf(
 			"programming" to "chrislo27",
@@ -53,10 +52,12 @@ Italiano (Italian): Huebird of Happiness""",
 	}
 
 	override fun render(delta: Float) {
-		Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+		super.render(delta)
 
 		main.batch.begin()
+
+		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
 		if (DebugSetting.debug) {
 			val tex: Texture = AssetRegistry.getTexture("ptr_whole")
@@ -83,7 +84,8 @@ Italiano (Italian): Huebird of Happiness""",
 
 		val url = "https://github.com/chrislo27/RhythmHeavenRemixEditor2"
 		val urlLength = Utils.getWidth(main.font, url)
-		val hoveringOverUrl = main.getInputY() <= main.font.lineHeight * 1.25f * main.camera.zoom &&
+		val hoveringOverUrl = main.camera.viewportHeight - main.getInputY() <= startY + BG_HEIGHT * 0.75f &&
+				main.camera.viewportHeight - main.getInputY() >= startY + BG_HEIGHT * 0.75f - main.font.capHeight &&
 				main.getInputX() >= main.camera.viewportWidth * 0.5f - urlLength * 0.5f &&
 				main.getInputX() <= main.camera.viewportWidth * 0.5f + urlLength * 0.5f
 		main.font.setColor(0.5f, 0.65f, 1f, 1f)
@@ -92,61 +94,43 @@ Italiano (Italian): Huebird of Happiness""",
 		}
 		main.font.draw(main.batch, url,
 					   main.camera.viewportWidth * 0.5f,
-					   main.camera.viewportHeight - main.font.capHeight, 0f, Align.center, false)
+					   startY + BG_HEIGHT * 0.75f, 0f, Align.center, false)
 		main.font.draw(main.batch, "_________________________________________________________",
 					   main.camera.viewportWidth * 0.5f,
-					   main.camera.viewportHeight - main.font.capHeight, 0f, Align.center, false)
+					   startY + BG_HEIGHT * 0.75f, 0f, Align.center, false)
 
 		main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.font.data.setScale(0.65f)
-
-		var height: Float = Utils.getHeightWithWrapping(main.font, concatSections,
-														main.camera.viewportWidth * 0.45f)
-
-		main.font.draw(main.batch, concatSections,
-					   main.camera.viewportWidth * 0.025f,
-					   main.camera.viewportHeight * 0.5f + height * 0.5f, main.camera.viewportWidth * 0.45f,
-					   Align.topLeft, true)
-		main.font.data.setScale(1f)
-
 		val stats: String = Localization.get("info.stats", "${GameRegistry.instance().gameList.size}", "$patternCount",
 											 "$soundCueCount")
-		height = Utils.getHeightWithWrapping(main.font, stats,
-											 main.camera.viewportWidth * 0.45f)
 
-		main.font.draw(main.batch, stats,
-					   main.camera.viewportWidth * 0.525f,
-					   main.camera.viewportHeight * 0.75f + height * 0.5f, main.camera.viewportWidth * 0.45f,
-					   Align.center, true)
+		Main.drawCompressed(main.font, main.batch, stats,
+							startX + BG_WIDTH * 0.55f,
+							startY + BG_HEIGHT * 0.65f,
+							BG_WIDTH * 0.4f,
+							Align.center)
 
 		main.font.data.setScale(0.75f)
 		val license: String = Localization.get("info.credits.license")
-		height = Utils.getHeightWithWrapping(main.font, license,
-											 main.camera.viewportWidth * 0.45f)
 
 		main.font.draw(main.batch, license,
-					   main.camera.viewportWidth * 0.525f,
-					   main.camera.viewportHeight * 0.25f + height * 0.5f, main.camera.viewportWidth * 0.45f,
+					   startX + BG_WIDTH * 0.5f,
+					   startY + BG_HEIGHT * 0.3f,
+					   BG_WIDTH * 0.5f - PADDING,
 					   Align.right, true)
 
 		main.font.data.setScale(1f)
 
+		val autosaveEnabled = main.preferences.getBoolean("autosave", true)
+		main.font.draw(main.batch, "[CYAN]A[] - " + Localization.get("info.autosave.${if (autosaveEnabled) "on" else "off"}"),
+					   startX + PADDING,
+					   startY + BG_HEIGHT * 0.2f,
+					   BG_WIDTH * 0.5f - PADDING,
+					   Align.left, true)
+
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl) {
 			Gdx.net.openURI(url)
 		}
-
-		if (VersionChecker.versionState != VersionState.GETTING
-				&& VersionChecker.versionState != VersionState.FAILED) {
-			main.font.draw(main.batch, Localization.get("info.version"),
-						   main.camera.viewportWidth * 0.025f,
-						   main.font.capHeight * 2 + main.font.lineHeight, main.camera.viewportWidth * 0.95f,
-						   Align.center,
-						   true)
-		}
-		main.font.draw(main.batch, Localization.get("info.back"),
-					   main.camera.viewportWidth * 0.025f,
-					   main.font.capHeight * 2, main.camera.viewportWidth * 0.95f, Align.center, true)
 
 		main.batch.end()
 	}
@@ -161,6 +145,9 @@ Italiano (Italian): Huebird of Happiness""",
 					&& VersionChecker.versionState != VersionState.FAILED) {
 				main.screen = ScreenRegistry.get("version")
 			}
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+			main.preferences.putBoolean("autosave", !main.preferences.getBoolean("autosave", true))
+			main.preferences.flush()
 		}
 	}
 
