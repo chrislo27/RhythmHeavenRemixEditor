@@ -16,6 +16,7 @@ abstract class NewUIScreen(m: Main) : BackgroundedScreen(m) {
 	abstract var icon: String
 	abstract var title: String
 	abstract var bottomInstructions: String
+	var instructionsParams: Array<String> = arrayOf()
 
 	override fun render(delta: Float) {
 		super.render(delta)
@@ -29,7 +30,8 @@ abstract class NewUIScreen(m: Main) : BackgroundedScreen(m) {
 		ionium.templates.Main.fillRect(main.batch, startX, startY, BG_WIDTH, BG_HEIGHT)
 		main.batch.setColor(1f, 1f, 1f, 1f)
 
-		main.batch.draw(AssetRegistry.getTexture(icon), startX + PADDING + ICON_SIZE * 0.5f - ICON_SIZE * ICON_SCALE * 0.5f,
+		main.batch.draw(AssetRegistry.getTexture(icon),
+						startX + PADDING + ICON_SIZE * 0.5f - ICON_SIZE * ICON_SCALE * 0.5f,
 						startY + BG_HEIGHT - PADDING - ICON_SIZE * 0.5f - ICON_SIZE * ICON_SCALE * 0.5f,
 						ICON_SIZE * ICON_SCALE, ICON_SIZE * ICON_SCALE)
 		main.biggerFont.data.setScale(TITLE_SCALE)
@@ -43,7 +45,12 @@ abstract class NewUIScreen(m: Main) : BackgroundedScreen(m) {
 		main.biggerFont.data.setScale(1f)
 		main.font.setColor(1f, 1f, 1f, 1f)
 		val instructionsStart = startY + main.font.capHeight * 4f
-		Main.drawCompressed(main.font, main.batch, Localization.get(bottomInstructions), startX + PADDING,
+		Main.drawCompressed(main.font, main.batch,
+							if (instructionsParams.isEmpty())
+								Localization.get(bottomInstructions)
+							else
+								Localization.get(bottomInstructions, *instructionsParams),
+							startX + PADDING,
 							instructionsStart, BG_WIDTH - PADDING * 2, Align.center)
 
 		ionium.templates.Main.fillRect(main.batch, startX + PADDING,
