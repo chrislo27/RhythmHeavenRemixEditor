@@ -16,7 +16,7 @@ class TapalongScreen(m: Main) : NewUIScreen(m) {
 	override var bottomInstructions: String = "tapalong.instructions"
 
 	private var lastTapTime: Long = System.currentTimeMillis()
-	private var averageBpm: Double = 0.0
+	private var averageBpm: Float = 0.0f
 	private var combinedTotal: Long = 0
 	private var numOfTaps: Long = 0
 
@@ -103,18 +103,18 @@ class TapalongScreen(m: Main) : NewUIScreen(m) {
 		// reset
 		numOfTaps = 0
 		combinedTotal = 0
-		averageBpm = 0.0
+		averageBpm = 0.0f
 	}
 
 	private fun calcAvg() {
 		if (numOfTaps <= 1) {
-			averageBpm = 0.0
+			averageBpm = 0.0f
 			return@calcAvg
 		}
 
-		val averageSec: Double = (((combinedTotal.toDouble() / (numOfTaps - 1)) / 1000.0))
+		val averageSec: Float = (((combinedTotal.toFloat() / (numOfTaps - 1)) / 1000.0f))
 
-		averageBpm = 60 / averageSec
+		averageBpm = 60f / averageSec
 	}
 
 	override fun tickUpdate() {
