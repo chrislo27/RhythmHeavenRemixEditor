@@ -23,6 +23,9 @@ Italiano (Italian): Huebird of Happiness""",
 Rhythm Heaven assets by Nintendo""",
 			"you" to ""
 													 )
+
+	val array: List<Pair<String, String>> = sections.toList()
+
 	var concatSections: String = ""
 		private set
 
