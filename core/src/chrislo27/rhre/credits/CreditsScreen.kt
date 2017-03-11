@@ -3,6 +3,7 @@ package chrislo27.rhre.credits
 import chrislo27.rhre.Main
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
+import chrislo27.rhre.entity.SoundEntity
 import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.palette.AbstractPalette
@@ -14,11 +15,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
+import ionium.util.i18n.Localization
 
 class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 
@@ -125,11 +128,53 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 
 	}
 
+	inner class TextEntity(remix: Remix, x: Float, val id: Int) : Entity(remix) {
+
+		init {
+			bounds.x = x
+		}
+
+		override fun getName(): String {
+			return "credits_text"
+		}
+
+		override fun getInspectionFunctions(): MutableList<InspectionFunction> {
+			return mutableListOf()
+		}
+
+		override fun copy(): Entity {
+			throw UnsupportedOperationException("no can do partner")
+		}
+
+		override fun isStretchable(): Boolean = false
+
+		override fun isRepitchable(): Boolean = false
+
+		override fun getID(): String {
+			return "credits_text"
+		}
+
+		override fun getSemitone(): Int {
+			return 0
+		}
+
+		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
+		}
+
+		override fun onStart(delta: Float) {
+			super.onStart(delta)
+			currentString = if (id < 0) "" to "" else Credits.list[id]
+		}
+
+	}
+
 	private var state: State = State.TITLE_CARD
 	private var secondsElapsed: Float = 0f
 
 	private var armExtension: Float = 0f
 	private var beaconFlash: Float = 0f
+
+	var currentString: Pair<String, String> = "" to ""
 
 	val remix: Remix = Remix.readFromJsonObject(
 			Gson().fromJson(Gdx.files.internal("credits/cannery/cannery.rhre2").readString("UTF-8"),
@@ -144,6 +189,19 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 			remix.entities.add(ArmFireEntity(remix, it.bounds.x + 1f))
 			remix.entities.add(BeaconFlashEntity(remix, it.bounds.x))
 		}
+
+		remix.entities.sortBy { it.bounds.x }
+
+		var i: Int = 0
+		remix.entities.filter { it is SoundEntity && (it.id == "cannery/ding" || it.id == "cannery/steam") }.forEach {
+			if (it.id == "cannery/ding") {
+				remix.entities.add(TextEntity(remix, it.bounds.x, i++))
+			} else {
+				remix.entities.add(TextEntity(remix, it.bounds.x, -1))
+			}
+		}
+
+		remix.entities.removeIf { it is SoundEntity && (it.id == "cannery/ding" || it.id == "cannery/steam") }
 	}
 
 	private fun fire() {
@@ -215,6 +273,19 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 			for (i in 0..2) {
 				batch.draw(pipeH, pipeX + pipeV.width + i * pipeH.width, main.camera.viewportHeight - pipeJ.height)
 			}
+
+			val textHeight = main.camera.viewportHeight * 0.8f
+			val textX = pipeX + pipeJ.width * 1.5f
+			val textW = main.camera.viewportWidth - 16f - textX
+
+			if (currentString.first.isNotEmpty()) {
+				main.fontBordered.color = ionium.templates.Main.getRainbow(System.currentTimeMillis(), 3f, 0.5f)
+				main.fontBordered.draw(batch, Localization.get("info.credits." + currentString.first), textX,
+									   textHeight, textW, Align.left, false)
+			}
+			main.fontBordered.setColor(1f, 1f, 1f, 1f)
+			main.fontBordered.draw(batch, currentString.second, textX,
+								   textHeight - main.fontBordered.lineHeight * 1.25f, textW, Align.left, true)
 
 			if (secondsElapsed >= State.REMIX.length - 1f) {
 				batch.setColor(0f, 0f, 0f, (1f - (State.REMIX.length - secondsElapsed)).coerceIn(0.0f, 1.0f))

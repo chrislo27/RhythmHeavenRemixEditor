@@ -5,7 +5,7 @@ import ionium.util.i18n.Localization
 
 object Credits {
 
-	val sections: Map<String, String> = mapOf(
+	val list: List<Pair<String, String>> = listOf(
 			"title" to "",
 			"programming" to "chrislo27",
 			"databasing" to "ahemtoday, Huebird of Happiness, GuardedLolz, chrislo27",
@@ -22,9 +22,8 @@ Italiano (Italian): Huebird of Happiness""",
 [#FF8900]Kotlin[] by JetBrains
 Rhythm Heaven assets by Nintendo""",
 			"you" to ""
-													 )
-
-	val array: List<Pair<String, String>> = sections.toList()
+												 )
+	val sections: Map<String, String> = list.associate { it }
 
 	var concatSections: String = ""
 		private set
