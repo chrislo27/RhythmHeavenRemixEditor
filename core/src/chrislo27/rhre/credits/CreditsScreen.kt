@@ -274,7 +274,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 				batch.draw(pipeH, pipeX + pipeV.width + i * pipeH.width, main.camera.viewportHeight - pipeJ.height)
 			}
 
-			val textHeight = main.camera.viewportHeight * 0.8f
+			val textHeight = main.camera.viewportHeight * 0.85f
 			val textX = pipeX + pipeJ.width * 1.5f
 			val textW = main.camera.viewportWidth - 16f - textX
 
