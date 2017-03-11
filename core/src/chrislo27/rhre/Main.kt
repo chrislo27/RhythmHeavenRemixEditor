@@ -286,7 +286,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			batch.begin()
 			fontBordered.setColor(1f, 1f, 1f, 1f)
 			fontBordered.data.setScale(0.5f)
-			val str = if (VersionChecker.versionState == VersionState.AVAILABLE)
+			val str = if (VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit)
 				Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
 			else
 				ionium.templates.Main.version
