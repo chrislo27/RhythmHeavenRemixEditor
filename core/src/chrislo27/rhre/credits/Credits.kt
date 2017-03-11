@@ -16,7 +16,7 @@ object Credits {
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder, GlitchyPSIX",
 			"uidesign" to "GlitchyPSIX",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64",
-			"creditsgame" to "ahemtoday, Serena Strawberry",
+			"creditsgame" to "ahemtoday, Serena Strawberry, chrislo27",
 			"technologies" to """[DARK_GRAY]Lib[][#E10000]GDX[] by Badlogic Games, LWJGL
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
