@@ -34,6 +34,28 @@ public class DefAssetLoader implements IAssetLoader {
 		manager.load(AssetMap.add("cannery_music_practice", "credits/cannery/music/practice.ogg"), Music.class);
 		manager.load(AssetMap.add("cannery_tex_titlecard", "credits/cannery/titlecard/cannerytitle.png"),
 				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_bg", "credits/cannery/images/background.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_conveyor", "credits/cannery/images/conveyor.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_closed_can", "credits/cannery/images/closed_can.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_open_can", "credits/cannery/images/open_can.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_beacon_flash", "credits/cannery/images/beacon_flash.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_beacon", "credits/cannery/images/beacon.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_box", "credits/cannery/images/box.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_pipe", "credits/cannery/images/pipe.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_pipe_junction", "credits/cannery/images/pipe_junction.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_pipe_v", "credits/cannery/images/pipe_v.png"),
+				Texture.class);
+		manager.load(AssetMap.add("cannery_tex_whoosh", "credits/cannery/images/whoosh.png"),
+				Texture.class);
 
 		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture.class);
 		manager.load(AssetMap.add("ui_audacity", "images/ui/audacity.png"), Texture.class);

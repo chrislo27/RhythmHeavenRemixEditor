@@ -316,6 +316,16 @@ class Remix {
 
 	fun getBeat(): Float = beat
 
+	fun getBeatBounce(): Float {
+		val beatDec = beat - beat.toInt()
+
+		if (beatDec <= 0.3f && beat >= 0 && beat < getDuration()) {
+			return 1f - beatDec / 0.3f
+		} else {
+			return 0f
+		}
+	}
+
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING) {
 			if (sweepLoad > -1) {

@@ -119,7 +119,7 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 					   BG_WIDTH * 0.5f - PADDING,
 					   Align.left, true)
 
-		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl) {
+		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl && main.screen === this) {
 			Gdx.net.openURI(url)
 		}
 
@@ -140,7 +140,7 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 			main.preferences.putBoolean("autosave", !main.preferences.getBoolean("autosave", true))
 			main.preferences.flush()
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-			main.transition(Fade(true, Color.rgba8888(0f, 0f, 0f, 1f), 1f), BlankTransition(1f, Color(0f, 0f, 0f, 1f)),
+			main.transition(Fade(true, Color.rgba8888(0f, 0f, 0f, 1f), 1f), BlankTransition(0.5f, Color(0f, 0f, 0f, 1f)),
 							CreditsScreen(main))
 		}
 	}
