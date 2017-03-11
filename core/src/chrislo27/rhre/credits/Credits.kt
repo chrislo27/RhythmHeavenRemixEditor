@@ -12,14 +12,14 @@ object Credits {
 			"localization" to """[LIGHT_GRAY]Español (Spanish)[]: Killble, quantic, GlitchyPSIX, David Mismo
 [LIGHT_GRAY]Français (French)[]: Gabgab2222, Pengu12345, Lovestep, Dragoneteur, chrislo27
 [LIGHT_GRAY]Italiano (Italian)[]: Huebird of Happiness""",
-			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Kana, Mariofan5000",
-			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
+			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Kana, GlitchyPSIX, Mariofan5000",
+			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder, GlitchyPSIX",
 			"uidesign" to "GlitchyPSIX",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64",
 			"creditsgame" to "ahemtoday, Serena Strawberry",
 			"technologies" to """[DARK_GRAY]Lib[][#E10000]GDX[] by Badlogic Games, LWJGL
-[#B07219]Java[] by Oracle,
 [#FF8900]Kotlin[] by JetBrains
+[#B07219]Java[] by Oracle
 Rhythm Heaven assets by Nintendo""",
 			"you" to ""
 												 )
