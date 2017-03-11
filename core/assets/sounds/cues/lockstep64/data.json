@@ -1,0 +1,126 @@
+{
+  "gameID": "lockstep64",
+  "gameName": "RH64 Lockstep",
+  "cues": [
+    {
+      "id": "lockstep64/yah",
+      "duration": 1,
+      "name": "yah (onbeat switch 1, start)"
+    },
+    {
+      "id": "lockstep64/onbeat",
+      "duration": 1,
+      "name": "onbeat step"
+    },
+    {
+      "id": "lockstep64/hoo",
+      "duration": 1,
+      "name": "hoo (onbeat switch 2)"
+    },
+    {
+      "id": "lockstep64/offbeat",
+      "duration": 1,
+      "name": "offbeat step"
+    },
+    {
+      "id": "lockstep64/wooh",
+      "duration": 0.5,
+      "name": "wooh (offbeat switch 1)"
+    },
+    {
+      "id": "lockstep64/hooh",
+      "duration": 0.5,
+      "name": "hooh (offbeat switch 2)"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "lockstep64_onbeat",
+      "name": "onbeat",
+      "cues": [
+        {
+          "id": "lockstep64/onbeat",
+          "beat": 0
+        },
+        {
+          "id": "lockstep64/onbeat",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "lockstep64_offbeat",
+      "name": "offbeat",
+      "cues": [
+        {
+          "id": "lockstep64/offbeat",
+          "beat": 0
+        },
+        {
+          "id": "lockstep64/offbeat",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "lockstep64_onToOff",
+      "name": "on to off",
+      "cues": [
+        {
+          "id": "lockstep64/yah",
+          "beat": 0
+        },
+        {
+          "id": "lockstep64/yah",
+          "beat": 1
+        },
+        {
+          "id": "lockstep64/yah",
+          "beat": 2
+        },
+        {
+          "id": "lockstep64/yah",
+          "beat": 3
+        },
+        {
+          "id": "lockstep64/hoo",
+          "beat": 3.5
+        },
+        {
+          "id": "lockstep64/hoo",
+          "beat": 4.5
+        },
+        {
+          "id": "lockstep64/hoo",
+          "beat": 5.5
+        }
+      ]
+    },
+    {
+      "id": "lockstep_offToOn",
+      "name": "off to on",
+      "cues": [
+        {
+          "id": "lockstep64/wooh",
+          "beat": 0
+        },
+        {
+          "id": "lockstep64/hooh",
+          "beat": 0.5
+        },
+        {
+          "id": "lockstep64/wooh",
+          "beat": 1
+        },
+        {
+          "id": "lockstep64/hooh",
+          "beat": 1.5
+        },
+        {
+          "id": "lockstep64/yah",
+          "beat": 2
+        }
+      ]
+    }
+  ]
+}
