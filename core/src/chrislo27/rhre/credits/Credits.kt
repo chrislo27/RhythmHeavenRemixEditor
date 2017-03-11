@@ -12,7 +12,7 @@ object Credits {
 			"localization" to """[LIGHT_GRAY]Español (Spanish)[]: Killble, quantic, GlitchyPSIX, David Mismo
 [LIGHT_GRAY]Français (French)[]: Gabgab2222, Pengu12345, Lovestep, Dragoneteur, chrislo27
 [LIGHT_GRAY]Italiano (Italian)[]: Huebird of Happiness""",
-			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
+			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Kana, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
 			"uidesign" to "GlitchyPSIX",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64",
