@@ -30,7 +30,7 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 
 	private val input = object : InputAdapter() {
 		override fun scrolled(amount: Int): Boolean {
-			scrollText(amount.toFloat())
+			scrollText(-amount.toFloat())
 			return true
 		}
 	}
