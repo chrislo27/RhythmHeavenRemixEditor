@@ -15,7 +15,7 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 #### Intuitive design - cues and patterns are placed on a music-staff track with different palettes to suit your time of day, mood, or preferences
 
 (in order of Light, Dark, RHRE0)
-![Different palettes thirds screenshot](http://i.imgur.com/MZVvPyT.png "Customizable palettes with intuitive design")
+![Different palettes thirds screenshot](http://i.imgur.com/L5GhMXP.png "Customizable palettes with intuitive design")
 
 #### Modern UI design
 
