@@ -100,6 +100,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
 	private float timeUntilAutosave = AUTOSAVE_PERIOD;
+	private boolean didMoveCamera = false;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -606,8 +607,10 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 				}
 
-				Main.Companion.drawCompressed(main.getFontBordered(), batch, p.getName(), main.camera.viewportWidth * 0.525f,
-						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1), main.camera.viewportWidth * 0.45f, Align.left);
+				Main.Companion
+						.drawCompressed(main.getFontBordered(), batch, p.getName(), main.camera.viewportWidth * 0.525f,
+								middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1),
+								main.camera.viewportWidth * 0.45f, Align.left);
 			}
 
 			main.getFontBordered().setColor(1, 1, 1, 1);
@@ -836,20 +839,31 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 
 		// camera
 		{
-			boolean accelerate =
+			boolean accelerate = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+					Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ||
 					(Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT));
-			if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+			boolean left = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+			boolean right = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+			if (left) {
 				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
+				didMoveCamera = true;
 			}
-			if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+			if (right) {
 				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
+				didMoveCamera = true;
+			}
+
+			if (!left && !right && !accelerate) {
+				didMoveCamera = false;
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
 				camera.position.x = 0;
+				didMoveCamera = true;
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
 				remix.updateDurationAndCurrentGame();
 				camera.position.x = remix.getEndTime() * Entity.PX_WIDTH;
+				didMoveCamera = true;
 			}
 		}
 
@@ -873,10 +887,10 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 					}
 				}
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || Gdx.input.isButtonPressed(Input.Buttons
+				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || (Gdx.input.isButtonPressed(Input.Buttons
 						.RIGHT) &&
 						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) && !didMoveCamera)) {
 					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
 					if (!shift) {
 						remix.setMusicStartTime(remix.getTempoChanges()
