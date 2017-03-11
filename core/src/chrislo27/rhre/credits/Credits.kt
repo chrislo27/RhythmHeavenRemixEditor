@@ -9,9 +9,9 @@ object Credits {
 			"title" to "",
 			"programming" to "chrislo27",
 			"databasing" to "ahemtoday, Huebird of Happiness, GuardedLolz, chrislo27",
-			"localization" to """Español (Spanish): Killble, quantic, GlitchyPSIX, David Mismo
-Français (French): Gabgab2222, Pengu12345, Lovestep, Dragoneteur
-Italiano (Italian): Huebird of Happiness""",
+			"localization" to """[LIGHT_GRAY]Español (Spanish)[]: Killble, quantic, GlitchyPSIX, David Mismo
+[LIGHT_GRAY]Français (French)[]: Gabgab2222, Pengu12345, Lovestep, Dragoneteur, chrislo27
+[LIGHT_GRAY]Italiano (Italian)[]: Huebird of Happiness""",
 			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder",
 			"uidesign" to "GlitchyPSIX",
