@@ -8,6 +8,7 @@ import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
 import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.util.DoNotRenderVersionPlease
 import chrislo27.rhre.version.VersionChecker
 import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
@@ -280,20 +281,22 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun postRender() {
 		super.postRender()
 
-		batch.projectionMatrix = camera.combined
-		batch.begin()
-		fontBordered.setColor(1f, 1f, 1f, 1f)
-		fontBordered.data.setScale(0.5f)
-		val str = if (VersionChecker.versionState == VersionState.AVAILABLE)
-			Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
-		else
-			ionium.templates.Main.version
-		versionStringLength = Utils.getWidth(fontBordered, str)
-		fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
-						  Align.right, false)
-		fontBordered.data.setScale(1f)
+		if (screen !is DoNotRenderVersionPlease) {
+			batch.projectionMatrix = camera.combined
+			batch.begin()
+			fontBordered.setColor(1f, 1f, 1f, 1f)
+			fontBordered.data.setScale(0.5f)
+			val str = if (VersionChecker.versionState == VersionState.AVAILABLE)
+				Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
+			else
+				ionium.templates.Main.version
+			versionStringLength = Utils.getWidth(fontBordered, str)
+			fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
+							  Align.right, false)
+			fontBordered.data.setScale(1f)
 
-		batch.end()
+			batch.end()
+		}
 	}
 
 	override fun getDebugStrings(): Array<String> {

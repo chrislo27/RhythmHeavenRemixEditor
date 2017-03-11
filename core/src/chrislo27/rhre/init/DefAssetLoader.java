@@ -3,6 +3,7 @@ package chrislo27.rhre.init;
 import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.registry.Series;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import ionium.animation.Animation;
 import ionium.registry.handler.IAssetLoader;
@@ -27,6 +28,12 @@ public class DefAssetLoader implements IAssetLoader {
 		}
 
 		manager.load(AssetMap.add("ptr_whole", "images/ptr/full.png"), Texture.class);
+
+		manager.load(AssetMap.add("cannery_music_jingle", "credits/cannery/music/jingle.ogg"), Music.class);
+		manager.load(AssetMap.add("cannery_music_song", "credits/cannery/music/Cannery.ogg"), Music.class);
+		manager.load(AssetMap.add("cannery_music_practice", "credits/cannery/music/practice.ogg"), Music.class);
+		manager.load(AssetMap.add("cannery_tex_titlecard", "credits/cannery/titlecard/cannerytitle.png"),
+				Texture.class);
 
 		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture.class);
 		manager.load(AssetMap.add("ui_audacity", "images/ui/audacity.png"), Texture.class);
