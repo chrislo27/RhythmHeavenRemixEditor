@@ -17,12 +17,16 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 (in order of Light, Dark, RHRE0)
 ![Different palettes thirds screenshot](http://i.imgur.com/MZVvPyT.png "Customizable palettes with intuitive design")
 
+#### Modern UI design
+
+![Load screen](http://i.imgur.com/cNleYRU.png "Load screen")
+
 #### Inspections for common mistakes keep a remix high-quality
 
 ![Inspections screenshot](http://i.imgur.com/stRbcqg.png "Inspections tell you what's wrong beforehand")
 
 #### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
-![Tapalong screen](http://i.imgur.com/zEXRoWE.png "Tap to the rhythm to find the BPM")
+![Tapalong screen](http://i.imgur.com/XefcYPM.png "Tap to the rhythm to find the BPM")
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
