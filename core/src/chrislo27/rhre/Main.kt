@@ -117,7 +117,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	companion object {
 
 		val languagesList: List<NamedLocale> = mutableListOf(
-				NamedLocale("English (NA)", Locale("")),
+				NamedLocale("English", Locale("")),
 				NamedLocale("Français (French)", Locale("fr")),
 				NamedLocale("Español (Spanish)", Locale("es"))
 //				NamedLocale("Italiano (Italian)", Locale("it"))
