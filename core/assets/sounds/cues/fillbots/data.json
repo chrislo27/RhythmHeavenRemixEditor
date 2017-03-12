@@ -86,7 +86,13 @@
       "duration": 1,
       "name": "filling sound",
       "canAlterDuration": true,
-      "loops": false
+      "loops": false,
+      "introSound": "fillbots/armExtension"
+    },
+    {
+      "id": "fillbots/armExtension",
+      "duration": 0.05,
+      "name": "arm extension"
     },
     {
       "id": "fillbots/beep",
