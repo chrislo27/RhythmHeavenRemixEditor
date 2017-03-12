@@ -150,9 +150,6 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 					: MathUtils.lerp(0.6f, 0.4f, (bounds.width - 3) / 4f));
 
 			s.setPitch(soundId, MathUtils.lerp(from, from + 0.6f, remainder));
-			System.out.println(
-					"set pitch to " + MathUtils.lerp(from, from + 0.6f, remainder) + " (" + from + ", " + remainder +
-							", " + (1f - ((bounds.x + bounds.width) - remix.getBeat()) / bounds.width));
 			// medium: 0.6f - 1.2f
 			// big:    0.5f - 1.1f
 			// small:  1.0f - 1.6f
