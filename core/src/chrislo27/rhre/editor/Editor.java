@@ -709,6 +709,8 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	public void renderUpdate() {
 		remix.update(Gdx.graphics.getDeltaTime());
 
+		timeUntilAutosave -= Gdx.graphics.getDeltaTime();
+
 		if (autosaveMessageShow > 0) {
 			autosaveMessageShow = Math.max(0f, autosaveMessageShow - Gdx.graphics.getDeltaTime());
 		}
@@ -720,8 +722,6 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.25f;
 			}
 		} else if (remix.getPlayingState() == PlayingState.STOPPED && file != null) {
-			timeUntilAutosave -= Gdx.graphics.getDeltaTime();
-
 			if (timeUntilAutosave <= 0) {
 				timeUntilAutosave = AUTOSAVE_PERIOD;
 				if (main.getPreferences().getBoolean("autosave", true)) {
