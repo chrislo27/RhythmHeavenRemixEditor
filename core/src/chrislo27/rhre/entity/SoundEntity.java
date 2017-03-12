@@ -9,6 +9,7 @@ import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALSound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;
@@ -23,9 +24,10 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 
 	public final SoundCue cue;
 	private final Game game;
+	private final boolean isFillbotsFill;
 	public volatile int semitone;
-	private volatile long soundId;
-	private volatile long introSoundId;
+	private volatile long soundId = -1;
+	private volatile long introSoundId = -1;
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
@@ -35,6 +37,7 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 		this.bounds.set(beat, level, duration, 1);
 
 		game = GameRegistry.instance().get(cue.getId().substring(0, cue.getId().indexOf('/')));
+		isFillbotsFill = cue.getId().equals("fillbots/water");
 	}
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, int semitone) {
@@ -127,6 +130,26 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 			soundId = cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
 			soundId = cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
+		}
+
+	}
+
+	@Override
+	public void onWhile(float delta) {
+		super.onWhile(delta);
+
+		if (isFillbotsFill && soundId != -1) {
+			OpenALSound s = (OpenALSound) cue.getSoundObj();
+			float remainder = MathUtils
+					.clamp(1f - ((bounds.x + bounds.width) - remix.getBeat()) / bounds.width, 0f, 1f);
+			float from = (bounds.width <= 3
+					? MathUtils.lerp(1f, 0.6f, (bounds.width - 1) / 2f)
+					: MathUtils.lerp(0.6f, 0.4f, (bounds.width - 3) / 4f));
+
+			s.setPitch(soundId, MathUtils.lerp(from, from + 0.6f, remainder));
+			// medium: 0.6f - 1.2f
+			// big:    0.5f - 1.1f
+			// small:  1.0f - 1.6f
 		}
 	}
 
