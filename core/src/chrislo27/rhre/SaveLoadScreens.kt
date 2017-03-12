@@ -46,7 +46,7 @@ internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 class SaveScreen(m: Main) : NewUIScreen(m) {
 	override var icon: String = "ui_save"
 	override var title: String = "saveScreen.title"
-	override var bottomInstructions: String = "info.back"
+	override var bottomInstructions: String = "saveScreen.back"
 
 	@Volatile
 	internal var picker: FileChooser = object : FileChooser() {
