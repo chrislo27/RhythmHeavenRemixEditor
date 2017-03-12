@@ -30,7 +30,7 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 
 	private val input = object : InputAdapter() {
 		override fun scrolled(amount: Int): Boolean {
-			scrollText(-amount.toFloat())
+			scrollText(amount.toFloat())
 			return true
 		}
 	}
@@ -78,8 +78,8 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 
 		Main.drawCompressed(main.font, main.batch,
 							Localization.get("versionScreen.coolInfo",
-											 ((VersionChecker.releaseObject!!.assets!!.first().size) / 1048576.0),
-											 VersionChecker.releaseObject!!.assets!!.first().download_count,
+											 ((VersionChecker.releaseObject!!.assets!!.firstOrNull()?.size ?: 0) / 1048576.0),
+											 VersionChecker.releaseObject!!.assets!!.firstOrNull()?.download_count,
 											 VersionChecker.releaseObject!!.publishedTime!!.format(formatter)).format(
 									"%.3f"),
 							startX + BG_WIDTH * 0.25f, startY + BG_HEIGHT * 0.8f,
@@ -108,7 +108,8 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 
 		main.font.draw(main.batch,
 					   "[LIGHT_GRAY]${VersionChecker.releaseObject?.body}[]",
-					   startX + BG_WIDTH * 0.25f, releaseTitleY + ((textHeight - heightToWorkWith) * scrollAmount),
+					   startX + BG_WIDTH * 0.25f,
+					   releaseTitleY + ((textHeight * (if (textHeight < heightToWorkWith) 0 else 1) - heightToWorkWith) * scrollAmount),
 					   BG_WIDTH * 0.75f - PADDING, Align.left, true)
 		main.font.data.setScale(1f)
 
@@ -120,10 +121,10 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-			scrollText(-Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
+			scrollText(Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-			scrollText(Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
+			scrollText(-Gdx.graphics.deltaTime / SCROLL_FACTOR * 2)
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
@@ -146,7 +147,8 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 	override fun show() {
 		scrollAmount = 0f
 		main.font.data.setScale(0.75f)
-		textHeight = Utils.getHeightWithWrapping(main.font, VersionChecker.releaseObject?.body, BG_WIDTH * 0.75f - PADDING)
+		textHeight = Utils.getHeightWithWrapping(main.font, VersionChecker.releaseObject?.body,
+												 BG_WIDTH * 0.75f - PADDING)
 		main.font.data.setScale(1f)
 		if (titlesAvailable > 1) {
 			val old = titleType
