@@ -221,7 +221,7 @@ class Remix {
 				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
 				val tempFile: File = File.createTempFile("tempMusic-", "-" + obj.musicAssociation,
-														   tmpFolder)
+														 tmpFolder)
 				tempFile.deleteOnExit()
 				tmpFolder.deleteOnExit()
 
@@ -353,6 +353,9 @@ class Remix {
 			music!!.music.setOnCompletionListener {
 				musicPlayed = PlaybackCompletion.FINISHED
 			}
+			beat = tempoChanges.secondsToBeats(music!!.music.position + musicStartTime)
+
+			return
 		}
 
 		val lastBpm: Float = tempoChanges.getTempoAt(beat)
@@ -368,10 +371,10 @@ class Remix {
 				else
 					beat
 
-		if (music != null && music!!.music.isPlaying && beat >= musicInBeats) {
+		beat = tempoChanges.secondsToBeats(tempoChanges.beatsToSeconds(beat) + delta)
+
+		if (music != null && music!!.music.isPlaying && beat >= musicInBeats){
 			beat = musicInBeats
-		} else {
-			beat = tempoChanges.secondsToBeats(tempoChanges.beatsToSeconds(beat) + delta)
 		}
 
 		for (e: Entity in entities) {
