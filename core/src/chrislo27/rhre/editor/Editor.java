@@ -867,6 +867,13 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 			}
 		}
 
+		if (Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+			scrolled(1);
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+			scrolled(-1);
+		}
+
 		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 			// trackers
 			{
