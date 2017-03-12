@@ -294,6 +294,7 @@ class Remix {
 			}
 			PlayingState.PAUSED -> {
 				music?.music?.pause()
+				musicPlayed = PlaybackCompletion.WAITING
 				AssetRegistry.instance().pauseAllSound()
 			}
 			PlayingState.STOPPED -> {
