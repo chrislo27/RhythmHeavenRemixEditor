@@ -73,7 +73,7 @@ public class Editor extends InputAdapter implements Disposable, WhenFilesDropped
 	private static final float AUTOSAVE_PERIOD = 60f;
 
 	private final Main main;
-	private final OrthographicCamera camera = new OrthographicCamera();
+	public final OrthographicCamera camera = new OrthographicCamera();
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final List<InspectionType> highlightedInspections = new ArrayList<>();

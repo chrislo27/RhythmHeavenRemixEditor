@@ -506,6 +506,7 @@ class NewScreen(m: Main) : NewUIScreen(m) {
 
 			es.editor.remix = Remix()
 			es.editor.file = null
+			es.editor.camera.position.set(0f, 0f, 0f)
 
 			main.screen = ScreenRegistry.get("editor")
 		}
