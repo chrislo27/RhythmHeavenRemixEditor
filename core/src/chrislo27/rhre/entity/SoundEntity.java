@@ -28,6 +28,7 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	public volatile int semitone;
 	private volatile long soundId = -1;
 	private volatile long introSoundId = -1;
+	private volatile float startTime = 0f;
 
 	public SoundEntity(Remix remix, SoundCue cue, float beat, int level, float duration, int semitone) {
 		super(remix);
@@ -121,6 +122,8 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	public void onStart(float delta) {
 		super.onStart(delta);
 
+		startTime = remix.getBeat();
+
 		final float bpm = remix.getTempoChanges().getTempoAt(remix.getBeat());
 
 		if (cue.getIntroSoundObj() != null) {
@@ -141,12 +144,15 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 		if (isFillbotsFill && soundId != -1) {
 			OpenALSound s = (OpenALSound) cue.getSoundObj();
 			float remainder = MathUtils
-					.clamp(1f - ((bounds.x + bounds.width) - remix.getBeat()) / bounds.width, 0f, 1f);
+					.clamp(1f - ((startTime + bounds.width) - remix.getBeat()) / bounds.width, 0f, 1f);
 			float from = (bounds.width <= 3
 					? MathUtils.lerp(1f, 0.6f, (bounds.width - 1) / 2f)
 					: MathUtils.lerp(0.6f, 0.4f, (bounds.width - 3) / 4f));
 
 			s.setPitch(soundId, MathUtils.lerp(from, from + 0.6f, remainder));
+			System.out.println(
+					"set pitch to " + MathUtils.lerp(from, from + 0.6f, remainder) + " (" + from + ", " + remainder +
+							", " + (1f - ((bounds.x + bounds.width) - remix.getBeat()) / bounds.width));
 			// medium: 0.6f - 1.2f
 			// big:    0.5f - 1.1f
 			// small:  1.0f - 1.6f
