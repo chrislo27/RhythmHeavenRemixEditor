@@ -199,7 +199,7 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 
 }
 
-class LoadScreen(m: Main) : NewUIScreen(m), WhenFilesDropped {
+class LoadScreen(m: Main) : NewUIScreen(m) {
 	override var icon: String = "ui_folder"
 	override var title: String = "loadScreen.title"
 	override var bottomInstructions: String = "loadScreen.confirm"
@@ -227,13 +227,6 @@ class LoadScreen(m: Main) : NewUIScreen(m), WhenFilesDropped {
 
 	@Volatile
 	private var missingContent: Pair<String, Int> = "" to 0
-
-	override fun onFilesDropped(list: List<FileHandle>) {
-		if (list.size != 1) return
-
-		hidePicker()
-		attemptLoad(list.first().file())
-	}
 
 	override fun render(delta: Float) {
 		super.render(delta)
@@ -335,11 +328,11 @@ class LoadScreen(m: Main) : NewUIScreen(m), WhenFilesDropped {
 								startY + PADDING + main.font.capHeight * 6,
 								BG_WIDTH - PADDING * 2, Align.center)
 		} else {
-			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"),
-								startX + PADDING,
-								startY + BG_HEIGHT * 0.55f,
-								BG_WIDTH - PADDING * 2,
-								Align.center)
+//			Main.drawCompressed(main.font, main.batch, Localization.get("loadScreen.drag"),
+//								startX + PADDING,
+//								startY + BG_HEIGHT * 0.55f,
+//								BG_WIDTH - PADDING * 2,
+//								Align.center)
 		}
 
 		main.batch.end()

@@ -4,15 +4,11 @@ import chrislo27.rhre.editor.Editor;
 import chrislo27.rhre.editor.EditorStageSetup;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import ionium.screen.Updateable;
 import ionium.stage.Stage;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
+public class EditorScreen extends Updateable<Main> {
 
 	public Editor editor;
 	public Stage stage;
@@ -116,11 +112,5 @@ public class EditorScreen extends Updateable<Main> implements WhenFilesDropped {
 	public void dispose() {
 		if (editor != null)
 			editor.dispose();
-	}
-
-	@Override
-	public void onFilesDropped(@NotNull List<? extends FileHandle> list) {
-		if (editor != null)
-			editor.onFilesDropped(list);
 	}
 }

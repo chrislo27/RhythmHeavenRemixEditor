@@ -1,15 +1,15 @@
 package desktop;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import ionium.util.Logger;
 
 import java.text.SimpleDateFormat;
 
-public class GameLwjglApp extends Lwjgl3Application {
+public class GameLwjglApp extends LwjglApplication {
 
-	public GameLwjglApp(ApplicationListener listener, Lwjgl3ApplicationConfiguration config,
+	public GameLwjglApp(ApplicationListener listener, LwjglApplicationConfiguration config,
 			Logger log) {
 		super(listener, config);
 		logger = log;

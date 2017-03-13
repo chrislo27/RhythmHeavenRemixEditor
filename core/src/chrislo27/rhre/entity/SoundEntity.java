@@ -9,7 +9,7 @@ import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.SoundCue;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
-import com.badlogic.gdx.backends.lwjgl3.audio.OpenALSound;
+import com.badlogic.gdx.backends.lwjgl.audio.OpenALSound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Align;

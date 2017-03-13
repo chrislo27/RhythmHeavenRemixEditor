@@ -53,7 +53,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.google.code.gson:gson:2.7"
         compile "com.mashape.unirest:unirest-java:1.4.9"
