@@ -1,4 +1,4 @@
-package desktop;
+package ionium.desktop;
 
 import ionium.util.Logger;
 

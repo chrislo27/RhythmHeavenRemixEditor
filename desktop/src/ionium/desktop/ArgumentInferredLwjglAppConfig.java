@@ -1,4 +1,4 @@
-package desktop;
+package ionium.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import ionium.util.Utils;

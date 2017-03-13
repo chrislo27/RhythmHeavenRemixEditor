@@ -4,8 +4,8 @@ import chrislo27.rhre.Main;
 import chrislo27.rhre.lazysound.LazySound;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.graphics.Color;
-import desktop.ArgumentInferredLwjglAppConfig;
-import desktop.GameLwjglApp;
+import ionium.desktop.ArgumentInferredLwjglAppConfig;
+import ionium.desktop.GameLwjglApp;
 import ionium.registry.GlobalVariables;
 import ionium.util.Logger;
 
@@ -21,7 +21,7 @@ public class DesktopLauncher {
 		final Main main = new Main(logger);
 
 		ArgumentInferredLwjglAppConfig config = new ArgumentInferredLwjglAppConfig(args);
-		config.title = "";
+		config.title = "Rhythm Heaven Remix Editor";
 		config.width = GlobalVariables.defaultWidth;
 		config.height = GlobalVariables.defaultHeight;
 		config.fullscreen = false;
