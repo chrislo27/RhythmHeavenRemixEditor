@@ -262,7 +262,7 @@ public class EditorStageSetup {
 		{
 			TextButton interval = new TextButton(stage, palette, "editor.button.snap") {
 
-				private final int[] intervals = {4, 6, 8, 12, 24};
+				private final int[] intervals = {4, 6, 8, 12, 16};
 				private int interval = 0;
 
 				{
