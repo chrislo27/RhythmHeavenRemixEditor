@@ -46,6 +46,12 @@ public class Utils {
 		return glyphLayout.height;
 	}
 
+	public static float getWidthWithWrapping(BitmapFont font, String text, float width) {
+		glyphLayout.setText(font, text, Color.WHITE, width, Align.left, true);
+		return glyphLayout.width;
+	}
+
+
 	public static void setArgumentsOverrideSettings(boolean b) {
 		argumentsOverrode = b;
 	}
