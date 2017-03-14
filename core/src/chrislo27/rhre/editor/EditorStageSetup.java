@@ -66,7 +66,7 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					screen.editor.remix.setPlayingState(PlayingState.PLAYING);
+					screen.getEditor().remix.setPlayingState(PlayingState.PLAYING);
 				}
 			};
 			stage.addActor(playRemix);
@@ -84,8 +84,8 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					if (screen.editor.remix.getPlayingState() == PlayingState.PLAYING)
-						screen.editor.remix.setPlayingState(PlayingState.PAUSED);
+					if (screen.getEditor().remix.getPlayingState() == PlayingState.PLAYING)
+						screen.getEditor().remix.setPlayingState(PlayingState.PAUSED);
 				}
 
 			};
@@ -103,7 +103,7 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					screen.editor.remix.setPlayingState(PlayingState.STOPPED);
+					screen.getEditor().remix.setPlayingState(PlayingState.STOPPED);
 				}
 
 			};
@@ -123,7 +123,7 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					if (screen.editor.remix.getPlayingState() != PlayingState.STOPPED)
+					if (screen.getEditor().remix.getPlayingState() != PlayingState.STOPPED)
 						return;
 				}
 
@@ -289,7 +289,7 @@ public class EditorStageSetup {
 						interval = 0;
 					}
 
-					screen.editor.snappingInterval = 1f / intervals[interval];
+					screen.getEditor().snappingInterval = 1f / intervals[interval];
 				}
 
 				@Override
@@ -314,9 +314,9 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					screen.editor.remix.setTickEachBeat(!screen.editor.remix.getTickEachBeat());
+					screen.getEditor().remix.setTickEachBeat(!screen.getEditor().remix.getTickEachBeat());
 					setLocalizationKey(
-							"editor.button.metronome." + (screen.editor.remix.getTickEachBeat() ? "on" : "off"));
+							"editor.button.metronome." + (screen.getEditor().remix.getTickEachBeat() ? "on" : "off"));
 				}
 
 				@Override
