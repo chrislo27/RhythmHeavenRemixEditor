@@ -27,7 +27,6 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.mashape.unirest.http.Unirest
 import ionium.registry.AssetRegistry
 import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
@@ -395,6 +394,5 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		preferences.flush()
 		GameRegistry.dispose()
-		Unirest.shutdown()
 	}
 }

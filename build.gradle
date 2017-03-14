@@ -33,6 +33,7 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "http://jcenter.bintray.com/" }
     }
 }
 
@@ -56,9 +57,9 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.google.code.gson:gson:2.7"
-        compile "com.mashape.unirest:unirest-java:1.4.9"
         compile "commons-io:commons-io:2.5"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        compile "khttp:khttp:0.1.0"
     }
 }
 

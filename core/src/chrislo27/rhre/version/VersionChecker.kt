@@ -1,8 +1,6 @@
 package chrislo27.rhre.version
 
 import com.google.gson.Gson
-import com.mashape.unirest.http.Unirest
-import com.mashape.unirest.http.exceptions.UnirestException
 import ionium.templates.Main
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -34,7 +32,7 @@ object VersionChecker {
 		try {
 			Main.logger.info("Getting version from $url...")
 			val nano = System.nanoTime()
-			releaseObject = Gson().fromJson(Unirest.get(url).asString().body, ReleaseObject::class.java)
+			releaseObject = Gson().fromJson(khttp.get(url).text, ReleaseObject::class.java)
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
@@ -58,7 +56,7 @@ object VersionChecker {
 
 			Main.logger.info(
 					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: ${Main.githubVersion}")
-		} catch (e: UnirestException) {
+		} catch (e: Exception) {
 			Main.logger.warn("Failed to get version!")
 			versionState = VersionState.FAILED
 			e.printStackTrace()
