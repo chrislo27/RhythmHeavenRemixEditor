@@ -21,6 +21,7 @@ import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
+import ionium.util.Utils
 import ionium.util.i18n.Localization
 
 class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
@@ -126,7 +127,10 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 
 		override fun onStart(delta: Float, intended: Float) {
 			super.onStart(delta, intended)
-			currentString = if (cid < 0) "" to "" else Credits.list[cid]
+			currentString = if (cid < 0) Triple("", "", 0f) else Triple(Credits.list[cid].first,
+																		Credits.list[cid].second,
+																		cid.toFloat() / (Credits.list.size - 1).coerceAtLeast(
+																				1))
 		}
 
 	}
@@ -137,7 +141,8 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 	private var armExtension: Float = 0f
 	private var beaconFlash: Float = 0f
 
-	var currentString: Pair<String, String> = "" to ""
+	val startMsTime: Long = System.currentTimeMillis()
+	var currentString: Triple<String, String, Float> = Triple("", "", 0f)
 
 	val remix: Remix = Remix.readFromJsonObject(
 			Gson().fromJson(Gdx.files.internal("credits/cannery/cannery.rhre2").readString("UTF-8"),
@@ -241,14 +246,39 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 			val textX = pipeX + pipeJ.width * 1.5f
 			val textW = main.camera.viewportWidth - 16f - textX
 
+			var realTH: Float = if (currentString.second.isEmpty()) 0f else Utils.getHeightWithWrapping(main.font,
+																										currentString.second,
+																										textW) + main.font.capHeight
+			val s = Localization.get("info.credits." + currentString.first)
 			if (currentString.first.isNotEmpty()) {
-				main.fontBordered.color = ionium.templates.Main.getRainbow(System.currentTimeMillis(), 3f, 0.5f)
-				main.fontBordered.draw(batch, Localization.get("info.credits." + currentString.first), textX,
+				realTH += Utils.getHeight(main.fontBordered, s)
+			}
+
+			val realTW: Float = Math.min(textW, Math.max(if (currentString.second.isEmpty()) 0f
+														 else Utils.getWidthWithWrapping(main.font,
+																						 currentString.second, textW),
+														 if (currentString.first.isEmpty()) 0f
+														 else Utils.getWidth(main.fontBordered, s)))
+
+			if (realTH > 0) {
+				main.batch.setColor(0f, 0f, 0f, 1f)
+				ionium.templates.Main.drawRect(main.batch, textX - 6, textHeight + 6, realTW + 12, -(realTH + 12), 2f)
+				main.batch.setColor(1f, 1f, 1f, 0.75f)
+				ionium.templates.Main.fillRect(main.batch, textX - 4, textHeight + 4, realTW + 8, -(realTH + 8))
+				main.batch.setColor(1f, 1f, 1f, 1f)
+			}
+
+			if (currentString.first.isNotEmpty()) {
+				main.font.color = ionium.templates.Main.getRainbow(startMsTime + (1000L * currentString.third).toLong(), 1f,
+																		   0.75f).mul(.85f, .85f, .85f, 1f)
+				main.font.draw(batch, s, textX,
 									   textHeight, textW, Align.left, false)
 			}
 			main.fontBordered.setColor(1f, 1f, 1f, 1f)
-			main.fontBordered.draw(batch, currentString.second, textX,
-								   textHeight - main.fontBordered.lineHeight * 1.25f, textW, Align.left, true)
+
+			main.font.setColor(0f, 0f, 0f, 1f)
+			main.font.draw(batch, currentString.second, textX,
+						   textHeight - main.fontBordered.lineHeight * 1.25f, textW, Align.left, true)
 
 			if (secondsElapsed >= State.REMIX.length - 1f) {
 				batch.setColor(0f, 0f, 0f, (1f - (State.REMIX.length - secondsElapsed)).coerceIn(0.0f, 1.0f))
