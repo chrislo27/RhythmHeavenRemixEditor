@@ -13,6 +13,7 @@ import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.DoNotRenderVersionPlease
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
@@ -277,6 +278,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 			main.fontBordered.setColor(1f, 1f, 1f, 1f)
 
 			main.font.setColor(0f, 0f, 0f, 1f)
+			Colors.put("RAINBOW", ionium.templates.Main.getRainbow(System.currentTimeMillis(), 3f, 0.75f))
 			main.font.draw(batch, currentString.second, textX,
 						   textHeight - main.fontBordered.lineHeight * 1.25f, textW, Align.left, true)
 

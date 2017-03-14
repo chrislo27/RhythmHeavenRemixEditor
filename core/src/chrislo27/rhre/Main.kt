@@ -17,6 +17,7 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -30,6 +31,7 @@ import com.badlogic.gdx.utils.Array
 import ionium.registry.AssetRegistry
 import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
+import ionium.templates.Main
 import ionium.util.DebugSetting
 import ionium.util.Logger
 import ionium.util.SpecialCharactersList
@@ -268,6 +270,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				updatePalette()
 			}
 		}
+
+		Colors.put("RAINBOW", Main.getRainbow(System.currentTimeMillis(), 2f, 0.8f))
 
 		super.preRender()
 	}
