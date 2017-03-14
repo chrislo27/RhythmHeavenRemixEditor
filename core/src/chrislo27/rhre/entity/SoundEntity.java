@@ -119,10 +119,10 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	}
 
 	@Override
-	public void onStart(float delta) {
-		super.onStart(delta);
+	public void onStart(float delta, float intendedStart) {
+		super.onStart(delta, intendedStart);
 
-		startTime = remix.getBeat();
+		startTime = intendedStart;
 
 		final float bpm = remix.getTempoChanges().getTempoAt(remix.getBeat());
 
@@ -157,8 +157,8 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 	}
 
 	@Override
-	public void onEnd(float delta) {
-		super.onEnd(delta);
+	public void onEnd(float delta, float intendedEnd) {
+		super.onEnd(delta, intendedEnd);
 
 		if (cue.shouldBeStopped()) {
 			if (cue.getIntroSoundObj() != null)

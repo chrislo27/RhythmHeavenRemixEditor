@@ -263,11 +263,11 @@ class Remix {
 				if (it is PatternEntity) {
 					it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
 						inter.playbackCompletion = PlaybackCompletion.FINISHED
-						inter.onEnd(0f)
+						inter.onEnd(0f, it.bounds.x + inter.bounds.x + inter.bounds.width)
 					}
 				} else if (it.bounds.x + it.bounds.width < beat) {
 					it.playbackCompletion = PlaybackCompletion.FINISHED
-					it.onEnd(0f)
+					it.onEnd(0f, it.bounds.x + it.bounds.width)
 				}
 			}
 			currentGame = null
@@ -382,7 +382,7 @@ class Remix {
 
 			if (beat >= e.bounds.x) {
 				if (e.playbackCompletion == PlaybackCompletion.WAITING) {
-					e.onStart(delta)
+					e.onStart(delta, e.bounds.x)
 					e.playbackCompletion = PlaybackCompletion.STARTED
 				}
 
@@ -390,7 +390,7 @@ class Remix {
 					e.onWhile(delta)
 
 					if (beat >= e.bounds.x + e.bounds.width) {
-						e.onEnd(delta)
+						e.onEnd(delta, e.bounds.x + e.bounds.width)
 						e.playbackCompletion = PlaybackCompletion.FINISHED
 					}
 				}

@@ -82,11 +82,11 @@ public abstract class Entity {
 		batch.setColor(1, 1, 1, 1);
 	}
 
-	public void onStart(float delta) {
+	public void onStart(float delta, float intendedStart) {
 
 	}
 
-	public void onEnd(float delta) {
+	public void onEnd(float delta, float intendedEnd) {
 
 	}
 

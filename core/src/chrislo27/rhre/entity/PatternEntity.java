@@ -220,16 +220,16 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 	}
 
 	@Override
-	public void onStart(float delta) {
-		super.onStart(delta);
+	public void onStart(float delta, float intendedStart) {
+		super.onStart(delta, intendedStart);
 	}
 
 	@Override
-	public void onEnd(float delta) {
-		super.onEnd(delta);
+	public void onEnd(float delta, float intendedStart) {
+		super.onEnd(delta, intendedStart);
 
 		internal.forEach(se -> {
-			se.onEnd(delta);
+			se.onEnd(delta, this.bounds.x + se.bounds.x + se.bounds.width);
 			se.playbackCompletion = PlaybackCompletion.FINISHED;
 		});
 	}
@@ -244,7 +244,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 
 			if (remix.getBeat() >= this.bounds.x + e.bounds.x) {
 				if (e.playbackCompletion == PlaybackCompletion.WAITING) {
-					e.onStart(delta);
+					e.onStart(delta, this.bounds.x + e.bounds.x);
 					e.playbackCompletion = PlaybackCompletion.STARTED;
 				}
 
@@ -252,7 +252,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 					e.onWhile(delta);
 
 					if (remix.getBeat() >= this.bounds.x + e.bounds.x + e.bounds.width) {
-						e.onEnd(delta);
+						e.onEnd(delta, this.bounds.x + e.bounds.x + e.bounds.width);
 						e.playbackCompletion = PlaybackCompletion.FINISHED;
 					}
 				}
