@@ -46,13 +46,13 @@ public class GameRegistry implements Disposable {
 		return games.get(id);
 	}
 
-	public SoundCue getCueRaw(String id) {
+	public SoundCue getCue(String id) {
 		return gameList.stream().map(g -> g.getSoundCues().stream()
 				.filter(it -> it.getId().equals(id) || it.getDeprecated().contains(id)).findFirst().orElse(null))
 				.filter(Objects::nonNull).findFirst().orElse(null);
 	}
 
-	public Pattern getPatternRaw(String id) {
+	public Pattern getPattern(String id) {
 		return gameList.stream().map(g -> g.getPatterns().stream()
 				.filter(it -> it.getId().equals(id) || it.getDeprecated().contains(id)).findFirst().orElse(null))
 				.filter(Objects::nonNull).findFirst().orElse(null);

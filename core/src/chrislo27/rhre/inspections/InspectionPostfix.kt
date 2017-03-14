@@ -7,9 +7,9 @@ object InspectionPostfix {
 	fun applyInspectionFunctions() {
 		val registry = GameRegistry.instance()
 
-		registry.getCueRaw("cropStomp/walk")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("cropStomp/stomp")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("cropStomp/molefling")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getCue("cropStomp/walk")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("cropStomp/stomp")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("cropStomp/molefling")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
 		registry.get("cropStomp")?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
@@ -18,32 +18,32 @@ object InspectionPostfix {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.getCueRaw("frogHop/shake")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("frogHop/one")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("frogHop/two")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("frogHop/three")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getCueRaw("frogHop/four")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_shake")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_yahoo")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_spinitboys")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_yeahyeahyeah")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_2BeatCountIn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("frogHop_4BeatCountIn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("frogHop/shake")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("frogHop/one")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("frogHop/two")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("frogHop/three")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getCue("frogHop/four")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_shake")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_yahoo")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_spinitboys")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_yeahyeahyeah")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_2BeatCountIn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("frogHop_4BeatCountIn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 
-		registry.getCueRaw("gleeClub/singLoop")?.inspectionFunctions = listOf(
+		registry.getCue("gleeClub/singLoop")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingAfter("gleeClub/singEnd"))
-		registry.getCueRaw("gleeClub/singEnd")?.inspectionFunctions = listOf(
+		registry.getCue("gleeClub/singEnd")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingBefore("gleeClub/singLoop"))
 
-		registry.getPatternRaw("karateMan_pot")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_soccer ball")?.inspectionFunctions = listOf(
+		registry.getPattern("karateMan_pot")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("karateMan_soccer ball")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_roaster")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_hit3")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
-		registry.getPatternRaw("karateMan_hit4")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
-		registry.getPatternRaw("karateMan_kick")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_combo")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("karateMan_offbeatpot")?.inspectionFunctions = listOf(
+		registry.getPattern("karateMan_roaster")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("karateMan_hit3")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPattern("karateMan_hit4")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPattern("karateMan_kick")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("karateMan_combo")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("karateMan_offbeatpot")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncNotOffbeat())
 
 		registry.get("microRow")?.patterns?.forEach {
@@ -60,13 +60,13 @@ object InspectionPostfix {
 			it.inspectionFunctions = if (it.id != "munchyMonkJa_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
-		registry.getCueRaw("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
+		registry.getCue("moaiDooWop/ooo1")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingAfter("moaiDooWop/wop1"))
-		registry.getCueRaw("moaiDooWop/wop1")?.inspectionFunctions = listOf(
+		registry.getCue("moaiDooWop/wop1")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingBefore("moaiDooWop/ooo1"))
-		registry.getCueRaw("moaiDooWop/ooo2")?.inspectionFunctions = listOf(
+		registry.getCue("moaiDooWop/ooo2")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingAfter("moaiDooWop/wop2"))
-		registry.getCueRaw("moaiDooWop/wop2")?.inspectionFunctions = listOf(
+		registry.getCue("moaiDooWop/wop2")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingBefore("moaiDooWop/ooo2"))
 
 		registry.get("rhythmRally")?.patterns?.forEach {
@@ -85,12 +85,12 @@ object InspectionPostfix {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.getPatternRaw("tapTroupe_step")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("tapTroupe_step")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 
-		registry.getPatternRaw("lockstep_onbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("lockstep_offbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
-		registry.getPatternRaw("lockstep_onToOff")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
-		registry.getPatternRaw("lockstep_offToOn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("lockstep_onbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("lockstep_offbeat")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
+		registry.getPattern("lockstep_onToOff")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
+		registry.getPattern("lockstep_offToOn")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 
 	}
 }

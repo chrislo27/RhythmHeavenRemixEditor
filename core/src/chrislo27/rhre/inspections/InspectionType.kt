@@ -45,12 +45,12 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 			remix.entities.find {
 				it !== target && MathUtils.isEqual(target.bounds.x + offset, it.bounds.x) && it.id == needsID
 			} ?: return InspMissing(target.bounds.x, target, needsID.run {
-				val pattern = GameRegistry.instance().getPatternRaw(needsID)
+				val pattern = GameRegistry.instance().getPattern(needsID)
 				if (pattern != null) {
 					return@run pattern.name
 				}
 
-				val sound = GameRegistry.instance().getCueRaw(needsID)
+				val sound = GameRegistry.instance().getCue(needsID)
 				if (sound != null) {
 					return@run sound.name
 				}
@@ -67,12 +67,12 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 			remix.entities.find {
 				it !== target && MathUtils.isEqual(target.bounds.x, it.bounds.x + it.bounds.width, 0.01f) && it.id == needsID
 			} ?: return InspMissingBefore(target.bounds.x, target, needsID.run {
-				val pattern = GameRegistry.instance().getPatternRaw(needsID)
+				val pattern = GameRegistry.instance().getPattern(needsID)
 				if (pattern != null) {
 					return@run pattern.name
 				}
 
-				val sound = GameRegistry.instance().getCueRaw(needsID)
+				val sound = GameRegistry.instance().getCue(needsID)
 				if (sound != null) {
 					return@run sound.name
 				}
@@ -89,12 +89,12 @@ sealed class InspectionType(val beat: Float, val entity: Entity, val name: Strin
 			remix.entities.find {
 				it !== target && MathUtils.isEqual(target.bounds.x + target.bounds.width, it.bounds.x, 0.01f) && it.id == needsID
 			} ?: return InspMissingAfter(target.bounds.x + target.bounds.width, target, needsID.run {
-				val pattern = GameRegistry.instance().getPatternRaw(needsID)
+				val pattern = GameRegistry.instance().getPattern(needsID)
 				if (pattern != null) {
 					return@run pattern.name
 				}
 
-				val sound = GameRegistry.instance().getCueRaw(needsID)
+				val sound = GameRegistry.instance().getCue(needsID)
 				if (sound != null) {
 					return@run sound.name
 				}

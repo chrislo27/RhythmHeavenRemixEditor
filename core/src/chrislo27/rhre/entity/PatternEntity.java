@@ -38,7 +38,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 		this.pattern = p;
 
 		pattern.getCues().forEach(pc -> {
-			SoundCue sc = GameRegistry.instance().getCueRaw(pc.getId());
+			SoundCue sc = GameRegistry.instance().getCue(pc.getId());
 
 //			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
