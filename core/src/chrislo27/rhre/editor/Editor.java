@@ -67,9 +67,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
 	private static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
 	private static final float AUTOSAVE_PERIOD = 60f;
-
-	private final Main main;
 	public final OrthographicCamera camera = new OrthographicCamera();
+	private final Main main;
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final List<InspectionType> highlightedInspections = new ArrayList<>();
@@ -890,10 +889,10 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				}
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) || (Gdx.input.isButtonPressed(Input.Buttons
-						.RIGHT) &&
-						(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) && !didMoveCamera)) {
+				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
+						(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
+								(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+										Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) && !didMoveCamera)) {
 					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
 					if (!shift) {
 						remix.setMusicStartTime(remix.getTempoChanges()

@@ -220,8 +220,7 @@ class Remix {
 			if (obj.musicAssociation != null) {
 				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
-				val tempFile: File = File.createTempFile("tempMusic-", "-" + obj.musicAssociation,
-														 tmpFolder)
+				val tempFile: File = File(tmpFolder.absolutePath, obj.musicAssociation)
 				tempFile.deleteOnExit()
 				tmpFolder.deleteOnExit()
 
