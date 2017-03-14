@@ -534,25 +534,25 @@ public class EditorStageSetup {
 							{
 								LightPalette lp = new LightPalette();
 
-								editorBg = PaletteUtils.toHex(lp.getEditorBg());
-								staffLine = PaletteUtils.toHex(lp.getStaffLine());
+								setEditorBg(PaletteUtils.toHex(lp.getEditorBg()));
+								setStaffLine(PaletteUtils.toHex(lp.getStaffLine()));
 
-								soundCue = PaletteUtils.toHex(lp.getSoundCue().getBg());
-								stretchableSoundCue = PaletteUtils.toHex(lp.getStretchableSoundCue().getBg());
-								patternCue = PaletteUtils.toHex(lp.getPattern().getBg());
-								stretchablePatternCue = PaletteUtils.toHex(lp.getStretchablePattern().getBg());
+								setSoundCue(PaletteUtils.toHex(lp.getSoundCue().getBg()));
+								setStretchableSoundCue(PaletteUtils.toHex(lp.getStretchableSoundCue().getBg()));
+								setPatternCue(PaletteUtils.toHex(lp.getPattern().getBg()));
+								setStretchablePatternCue(PaletteUtils.toHex(lp.getStretchablePattern().getBg()));
 
-								selectionCueTint = PaletteUtils.toHex(lp.getSelectionTint());
+								setSelectionCueTint(PaletteUtils.toHex(lp.getSelectionTint()));
 
-								selectionBg = PaletteUtils.toHex(lp.getSelectionFill());
-								selectionBorder = PaletteUtils.toHex(lp.getSelectionBorder());
+								setSelectionBg(PaletteUtils.toHex(lp.getSelectionFill()));
+								setSelectionBorder(PaletteUtils.toHex(lp.getSelectionBorder()));
 
-								beatTracker = PaletteUtils.toHex(lp.getBeatTracker());
-								bpmTracker = PaletteUtils.toHex(lp.getBpmTracker());
-								bpmTrackerSelected = PaletteUtils.toHex(lp.getBpmTrackerSelected());
-								musicStartTracker = PaletteUtils.toHex(lp.getMusicStartTracker());
+								setBeatTracker(PaletteUtils.toHex(lp.getBeatTracker()));
+								setBpmTracker(PaletteUtils.toHex(lp.getBpmTracker()));
+								setBpmTrackerSelected(PaletteUtils.toHex(lp.getBpmTrackerSelected()));
+								setMusicStartTracker(PaletteUtils.toHex(lp.getMusicStartTracker()));
 
-								cueText = PaletteUtils.toHex(lp.getCueText());
+								setCueText(PaletteUtils.toHex(lp.getCueText()));
 							}
 						};
 

@@ -93,7 +93,7 @@ class Remix {
 					o.isPattern = it is PatternEntity
 					o.semitone = it.semitone
 
-					obj.entities.add(o)
+					obj.entities!!.add(o)
 				}
 
 				obj.bpmChanges = arrayListOf()
@@ -103,7 +103,7 @@ class Remix {
 					o.beat = it.value.beat
 					o.tempo = it.value.tempo
 
-					obj.bpmChanges.add(o)
+					obj.bpmChanges!!.add(o)
 				}
 
 				obj.metadata = metadata ?: RemixObject.MetadataObject()
@@ -129,7 +129,7 @@ class Remix {
 				val e: Entity
 
 				if (it.isPattern) {
-					e = PatternEntity(remix, GameRegistry.getPattern(it.id))
+					e = PatternEntity(remix, GameRegistry.getPattern(it.id!!))
 
 					e.bounds.x = it.beat
 					e.bounds.y = it.level.toFloat()
@@ -138,10 +138,10 @@ class Remix {
 					e.adjustPitch(it.semitone, -128, 128)
 				} else {
 					if (it.width == 0f) {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id), it.beat, it.level,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id!!), it.beat, it.level,
 										it.semitone)
 					} else {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id), it.beat, it.level, it.width,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id!!), it.beat, it.level, it.width,
 										it.semitone)
 					}
 				}

@@ -251,14 +251,14 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 			main.batch.draw(AssetRegistry.getTexture("ui_cuenumber"), startX + BG_WIDTH * 0.2f - iconSize * 0.5f,
 							startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, iconSize)
 			Main.drawCompressed(main.font, main.batch,
-								"" + remixObj!!.entities.size,
+								"" + remixObj!!.entities!!.size,
 								startX + BG_WIDTH * 0.2f - iconSize * 0.5f,
 								startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, Align.center)
 
 			main.batch.draw(AssetRegistry.getTexture("ui_tempochnumber"), startX + BG_WIDTH * 0.4f - iconSize * 0.5f,
 							startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, iconSize)
 			Main.drawCompressed(main.font, main.batch,
-								"" + remixObj!!.bpmChanges.size,
+								"" + remixObj!!.bpmChanges!!.size,
 								startX + BG_WIDTH * 0.4f - iconSize * 0.5f,
 								startY + BG_HEIGHT * 0.6f - iconSize * 0.5f, iconSize, Align.center)
 
@@ -381,17 +381,17 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 		obj.fileHandle = handle
 		remixObj = obj
 
-		val missingEntities = obj.entities.filter { entity ->
+		val missingEntities = obj.entities!!.filter { entity ->
 			if (entity.isPattern) {
-				GameRegistry.getPattern(entity.id) == null
+				GameRegistry.getPattern(entity.id!!) == null
 			} else {
-				GameRegistry.getCue(entity.id) == null
+				GameRegistry.getCue(entity.id!!) == null
 			}
 		}
 
-		obj.entities.removeAll(missingEntities)
+		obj.entities!!.removeAll(missingEntities)
 
-		val distinct = missingEntities.map { it.id }.distinct()
+		val distinct = missingEntities.map { it.id!! }.distinct()
 
 		missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
 

@@ -796,29 +796,29 @@ public class Editor extends InputAdapter implements Disposable {
 
 						GameObject.PatternObject pattern = new GameObject.PatternObject();
 						final Entity first = selection.get(0);
-						pattern.id = ((HasGame) first).getGame().getId() + "_NEW-PATTERN";
-						pattern.name = "PATTERN NAME";
+						pattern.setId(((HasGame) first).getGame().getId() + "_NEW-PATTERN");
+						pattern.setName("PATTERN NAME");
 						List<GameObject.PatternObject.CueObject> cues = new ArrayList<>();
 
 						selection.forEach(e -> {
 							GameObject.PatternObject.CueObject cue = new GameObject.PatternObject.CueObject();
 
-							cue.beat = e.bounds.x - first.bounds.x;
-							cue.track = Math.round(first.bounds.y - e.bounds.y);
-							cue.id = e.getID();
+							cue.setBeat(e.bounds.x - first.bounds.x);
+							cue.setTrack(Math.round(first.bounds.y - e.bounds.y));
+							cue.setId(e.getID());
 							if (e.isRepitchable())
-								cue.semitone = e.getSemitone();
+								cue.setSemitone(e.getSemitone());
 							else
-								cue.semitone = null;
+								cue.setSemitone(null);
 							if (e.isStretchable())
-								cue.duration = e.bounds.width;
+								cue.setDuration(e.bounds.width);
 							else
-								cue.duration = null;
+								cue.setDuration(null);
 
 							cues.add(cue);
 						});
 
-						pattern.cues = cues.toArray(new GameObject.PatternObject.CueObject[cues.size()]);
+						pattern.setCues(cues.toArray(new GameObject.PatternObject.CueObject[cues.size()]));
 						System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(pattern) + "\n\n");
 					}
 				} else {

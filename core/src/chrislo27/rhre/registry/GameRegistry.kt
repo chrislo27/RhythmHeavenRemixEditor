@@ -90,26 +90,26 @@ object GameRegistry : Disposable {
 				}
 			}
 
-			gameObj.cues.forEach { so ->
-				soundCues.add(SoundCue(so.id, so.fileExtension, if (so.name == null) so.id else so.name,
+			gameObj.cues!!.forEach { so ->
+				soundCues.add(SoundCue(so.id!!, so.fileExtension, if (so.name == null) so.id!! else so.name!!,
 									   if (so.deprecatedIDs == null)
 										   mutableListOf()
 									   else
-										   so.deprecatedIDs.toMutableList(), so.duration,
+										   so.deprecatedIDs!!.toMutableList(), so.duration,
 									   so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm,
-									   if (so.loops == null) so.canAlterDuration else so.loops, null))
+									   if (so.loops == null) so.canAlterDuration else (so.loops ?: false), null))
 			}
 
-			gameObj.patterns.forEach { po ->
+			gameObj.patterns!!.forEach { po ->
 				val p: Pattern
-				val patternCues = po.cues.map { pc ->
-					Pattern.PatternCue(pc.id, pc.beat, pc.track, pc.duration, pc.semitone)
+				val patternCues = po.cues!!.map { pc ->
+					Pattern.PatternCue(pc.id!!, pc.beat, pc.track, pc.duration!!, pc.semitone!!)
 				}
 
-				p = Pattern(po.id, po.name, po.isStretchable, patternCues, false, if (po.deprecatedIDs == null)
+				p = Pattern(po.id!!, po.name!!, po.isStretchable, patternCues, false, if (po.deprecatedIDs == null)
 					mutableListOf()
 				else
-					po.deprecatedIDs.toMutableList())
+					po.deprecatedIDs!!.toMutableList())
 
 				patterns.add(p)
 			}
@@ -122,9 +122,9 @@ object GameRegistry : Disposable {
 
 			val iconFh = Gdx.files.internal("sounds/cues/$gameDef/icon.png")
 
-			game = Game(gameObj.gameID, gameObj.gameName, soundCues, patterns,
+			game = Game(gameObj.gameID!!, gameObj.gameName!!, soundCues, patterns,
 						if (gameObj.series == null) Series.UNKNOWN else Series.valueOf(
-								gameObj.series.toUpperCase(Locale.ROOT)),
+								gameObj.series!!.toUpperCase(Locale.ROOT)),
 						if (iconFh.exists()) "sounds/cues/$gameDef/icon.png" else null, false)
 
 			if (!iconFh.exists())
