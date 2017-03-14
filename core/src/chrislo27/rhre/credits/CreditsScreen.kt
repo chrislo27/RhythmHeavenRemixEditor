@@ -81,8 +81,8 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
 		}
 
-		override fun onStart(delta: Float) {
-			super.onStart(delta)
+		override fun onStart(delta: Float, intended: Float) {
+			super.onStart(delta, intended)
 			fire()
 		}
 
@@ -121,8 +121,8 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
 		}
 
-		override fun onStart(delta: Float) {
-			super.onStart(delta)
+		override fun onStart(delta: Float, intended: Float) {
+			super.onStart(delta, intended)
 			beaconFlash = 1f
 		}
 
@@ -161,8 +161,8 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
 		}
 
-		override fun onStart(delta: Float) {
-			super.onStart(delta)
+		override fun onStart(delta: Float, intended: Float) {
+			super.onStart(delta, intended)
 			currentString = if (id < 0) "" to "" else Credits.list[id]
 		}
 
