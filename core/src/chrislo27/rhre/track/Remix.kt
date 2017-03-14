@@ -129,7 +129,7 @@ class Remix {
 				val e: Entity
 
 				if (it.isPattern) {
-					e = PatternEntity(remix, GameRegistry.getPattern(it.id!!))
+					e = PatternEntity(remix, GameRegistry.getPattern(it.id!!)!!)
 
 					e.bounds.x = it.beat
 					e.bounds.y = it.level.toFloat()
@@ -138,10 +138,10 @@ class Remix {
 					e.adjustPitch(it.semitone, -128, 128)
 				} else {
 					if (it.width == 0f) {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id!!), it.beat, it.level,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id!!)!!, it.beat, it.level,
 										it.semitone)
 					} else {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id!!), it.beat, it.level, it.width,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id!!)!!, it.beat, it.level, it.width,
 										it.semitone)
 					}
 				}
@@ -156,7 +156,7 @@ class Remix {
 				remix.tempoChanges.add(tc)
 			}
 
-			remix.metadata = obj.metadata ?: RemixObject.MetadataObject()
+			remix.metadata = obj.metadata
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()

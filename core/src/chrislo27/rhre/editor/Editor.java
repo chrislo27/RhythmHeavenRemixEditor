@@ -64,7 +64,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
-	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
+	private static final float STRETCHABLE_AREA = 16f / Entity.Companion.getPX_WIDTH();
 	private static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
 	private static final float AUTOSAVE_PERIOD = 60f;
 	public final OrthographicCamera camera = new OrthographicCamera();
@@ -111,10 +111,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 	public Entity getEntityAtPoint(float x, float y) {
 		camera.unproject(cameraPickVec3.set(x, y, 0));
-		cameraPickVec3.x /= Entity.PX_WIDTH;
-		cameraPickVec3.y /= Entity.PX_HEIGHT;
+		cameraPickVec3.x /= Entity.Companion.getPX_WIDTH();
+		cameraPickVec3.y /= Entity.Companion.getPX_HEIGHT();
 
-		return remix.getEntities().stream().filter(e -> e.bounds.contains(cameraPickVec3.x, cameraPickVec3.y))
+		return remix.getEntities().stream().filter(e -> e.getBounds().contains(cameraPickVec3.x, cameraPickVec3.y))
 				.findFirst().orElse(null);
 	}
 
@@ -141,7 +141,8 @@ public class Editor extends InputAdapter implements Disposable {
 			// horizontal
 			batch.setColor(main.getPalette().getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
-				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i * Entity.PX_HEIGHT,
+				Main.fillRect(batch, camera.position.x - camera.viewportWidth * 0.5f, yOffset + i *
+								Entity.Companion.getPX_HEIGHT(),
 						camera.viewportWidth, 2);
 			}
 
@@ -151,19 +152,20 @@ public class Editor extends InputAdapter implements Disposable {
 		// entities
 		// don't replace with foreach call b/c of performance
 		{
-			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
-					(camera.position.y - camera.viewportHeight * 0.5f) / Entity.PX_HEIGHT,
-					(camera.viewportWidth) / Entity.PX_WIDTH, (camera.viewportHeight) / Entity.PX_HEIGHT);
+			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.Companion.getPX_WIDTH(),
+					(camera.position.y - camera.viewportHeight * 0.5f) / Entity.Companion.getPX_HEIGHT(),
+					(camera.viewportWidth) / Entity.Companion.getPX_WIDTH(), (camera.viewportHeight) /
+							Entity.Companion.getPX_HEIGHT());
 			for (Entity e : remix.getEntities()) {
 				if (selectionGroup != null && selectionGroup.getList().contains(e))
 					continue;
-				if (e.bounds.overlaps(Rectangle.tmp)) {
+				if (e.getBounds().overlaps(Rectangle.tmp)) {
 					e.render(main, main.getPalette(), batch, remix.getSelection().contains(e));
 				}
 			}
 			if (selectionGroup != null) {
 				for (Entity e : selectionGroup.getList()) {
-					if (e.bounds.overlaps(Rectangle.tmp)) {
+					if (e.getBounds().overlaps(Rectangle.tmp)) {
 						e.render(main, main.getPalette(), batch, remix.getSelection().contains(e));
 					}
 				}
@@ -174,14 +176,15 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			// vertical
 			final int beatInside = ((int) (camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
-					Entity.PX_WIDTH));
-			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
-				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
+					Entity.Companion.getPX_WIDTH()));
+			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.Companion.getPX_WIDTH());
+				 x * Entity.Companion.getPX_WIDTH() < camera.position.x + camera.viewportWidth * 0.5f; x++) {
 				batch.setColor(main.getPalette().getStaffLine());
 				batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
 						batch.getColor().a * (x == 0 ? 1f : (x < 0 ? 0.25f : 0.5f)));
 
-				Main.fillRect(batch, x * Entity.PX_WIDTH, yOffset, 2, TRACK_COUNT * Entity.PX_HEIGHT);
+				Main.fillRect(batch, x * Entity.Companion.getPX_WIDTH(), yOffset, 2, TRACK_COUNT *
+						Entity.Companion.getPX_HEIGHT());
 
 				if (selectionGroup != null && beatInside == x) {
 					final int numOfLines = ((int) (1 / snappingInterval));
@@ -192,8 +195,8 @@ public class Editor extends InputAdapter implements Disposable {
 						batch.setColor(batch.getColor().r, batch.getColor().g, batch.getColor().b,
 								batch.getColor().a * a);
 
-						Main.fillRect(batch, (x + (snappingInterval * i)) * Entity.PX_WIDTH, yOffset, 1,
-								TRACK_COUNT * Entity.PX_HEIGHT);
+						Main.fillRect(batch, (x + (snappingInterval * i)) * Entity.Companion.getPX_WIDTH(), yOffset, 1,
+								TRACK_COUNT * Entity.Companion.getPX_HEIGHT());
 					}
 				}
 			}
@@ -206,21 +209,24 @@ public class Editor extends InputAdapter implements Disposable {
 				float musicToBeats = remix.getTempoChanges().secondsToBeats(remix.getMusicStartTime());
 
 				batch.setColor(main.getPalette().getMusicStartTracker());
-				Main.fillRect(batch, musicToBeats * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+				Main.fillRect(batch, musicToBeats * Entity.Companion.getPX_WIDTH(), 0, 2, Entity.Companion
+						.getPX_HEIGHT() * (TRACK_COUNT + 3));
 				batch.setColor(1, 1, 1, 1);
 
 				main.getFontBordered().setColor(main.getPalette().getMusicStartTracker());
 				main.getFontBordered()
 						.draw(batch, Localization.get("editor.musicStartTracker", String.format("%.3f", musicToBeats)),
-								musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
+								musicToBeats * Entity.Companion.getPX_WIDTH() + 4, Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 3));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
-								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
+								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats *
+								Entity.Companion.getPX_WIDTH() + 4,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
 				main.getFontBordered()
-						.draw(batch, Localization.get("editor.musicTrackerHint"), musicToBeats * Entity.PX_WIDTH - 4,
-								Entity.PX_HEIGHT * (TRACK_COUNT + 3) - main.getFontBordered().getCapHeight(), 0,
+						.draw(batch, Localization.get("editor.musicTrackerHint"), musicToBeats *
+										Entity.Companion.getPX_WIDTH() - 4,
+								Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 3) - main.getFontBordered().getCapHeight(), 0,
 								Align.right, false);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
@@ -229,19 +235,19 @@ public class Editor extends InputAdapter implements Disposable {
 			// playback start
 			{
 				batch.setColor(main.getPalette().getBeatTracker());
-				Main.fillRect(batch, remix.getPlaybackStart() * Entity.PX_WIDTH, 0, 2,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				Main.fillRect(batch, remix.getPlaybackStart() * Entity.Companion.getPX_WIDTH(), 0, 2,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2));
 				batch.setColor(1, 1, 1, 1);
 
 				main.getFontBordered().setColor(main.getPalette().getBeatTracker());
 				main.getFontBordered().draw(batch, Localization
 								.get("editor.playbackStartTracker", String.format("%.3f", remix.getPlaybackStart())),
-						remix.getPlaybackStart() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+						remix.getPlaybackStart() * Entity.Companion.getPX_WIDTH() + 4, Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2));
 
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.playbackTrackerHint"),
-						remix.getPlaybackStart() * Entity.PX_WIDTH - 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 1.25f, 0,
+						remix.getPlaybackStart() * Entity.Companion.getPX_WIDTH() - 4,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 1.25f, 0,
 						Align.right, false);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
@@ -250,8 +256,9 @@ public class Editor extends InputAdapter implements Disposable {
 			// tempo changes
 			{
 				for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
-					if (tc.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.75f ||
-							tc.getBeat() * Entity.PX_WIDTH > camera.position.x + camera.viewportWidth * 0.75f)
+					if (tc.getBeat() * Entity.Companion.getPX_WIDTH() < camera.position.x - camera.viewportWidth *
+							0.75f ||
+							tc.getBeat() * Entity.Companion.getPX_WIDTH() > camera.position.x + camera.viewportWidth * 0.75f)
 						continue;
 
 					boolean isSelected = tc == selectedTempoChange;
@@ -261,21 +268,22 @@ public class Editor extends InputAdapter implements Disposable {
 						batch.setColor(main.getPalette().getBpmTrackerSelected());
 					}
 
-					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
-							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
+					Main.fillRect(batch, tc.getBeat() * Entity.Companion.getPX_WIDTH(), -Entity.Companion
+									.getPX_HEIGHT(), 2,
+							Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 1));
 
 					main.getFontBordered().setColor(batch.getColor());
 					main.getFontBordered()
 							.draw(batch, Localization.get("editor.bpmTracker", String.format("%.1f", tc.getTempo())),
-									tc.getBeat() * Entity.PX_WIDTH + 4,
-									-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
+									tc.getBeat() * Entity.Companion.getPX_WIDTH() + 4,
+									-Entity.Companion.getPX_HEIGHT() + main.getFontBordered().getCapHeight());
 
 					if (isSelected) {
 						main.getFontBordered().setColor(main.getPalette().getBpmTracker());
 						main.getFontBordered().getData().setScale(0.5f);
 						main.getFontBordered().draw(batch, Localization.get("editor.bpmTrackerHint"),
-								tc.getBeat() * Entity.PX_WIDTH - 4,
-								-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2, 0, Align.right, false);
+								tc.getBeat() * Entity.Companion.getPX_WIDTH() - 4,
+								-Entity.Companion.getPX_HEIGHT() + main.getFontBordered().getLineHeight() * 2, 0, Align.right, false);
 						main.getFontBordered().getData().setScale(1);
 					}
 				}
@@ -286,7 +294,8 @@ public class Editor extends InputAdapter implements Disposable {
 			// playing
 			if (remix.getPlayingState() != PlayingState.STOPPED) {
 				batch.setColor(main.getPalette().getBeatTracker());
-				Main.fillRect(batch, remix.getBeat() * Entity.PX_WIDTH, 0, 2, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+				Main.fillRect(batch, remix.getBeat() * Entity.Companion.getPX_WIDTH(), 0, 2, Entity.Companion
+						.getPX_HEIGHT() * (TRACK_COUNT + 2));
 				batch.setColor(1, 1, 1, 1);
 
 				TempoChange tc = remix.getTempoChanges().getTempoChangeFromBeat(remix.getBeat());
@@ -296,16 +305,16 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getFontBordered()
 						.draw(batch, Localization.get("editor.beatTrackerBeat", String.format("%.3f", remix.getBeat
 										())),
-								remix.getBeat() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
+								remix.getBeat() * Entity.Companion.getPX_WIDTH() + 4, Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
 						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
-								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
+								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.Companion.getPX_WIDTH() + 4,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
 				main.getFontBordered()
 						.draw(batch, Localization.get("editor.beatTrackerBpm", String.format("%.1f", currentBpm)),
-								remix.getBeat() * Entity.PX_WIDTH + 4,
-								Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
+								remix.getBeat() * Entity.Companion.getPX_WIDTH() + 4,
+								Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 3);
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -317,19 +326,20 @@ public class Editor extends InputAdapter implements Disposable {
 			camera.unproject(cameraPickVec3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
 			for (InspectionType inspection : remix.getInspections().getInspections()) {
-				if (inspection.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.75f ||
-						inspection.getBeat() * Entity.PX_WIDTH > camera.position.x + camera.viewportWidth * 0.75f)
+				if (inspection.getBeat() * Entity.Companion.getPX_WIDTH() < camera.position.x - camera.viewportWidth * 0.75f ||
+						inspection.getBeat() * Entity.Companion.getPX_WIDTH() > camera.position.x + camera.viewportWidth * 0.75f)
 					continue;
 
 				batch.setColor(1, 0, 0, 1);
-				Main.fillRect(batch, inspection.getBeat() * Entity.PX_WIDTH, 0, 2,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f));
+				Main.fillRect(batch, inspection.getBeat() * Entity.Companion.getPX_WIDTH(), 0, 2,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f));
 				batch.setColor(1, 1, 1, 1);
-				batch.draw(AssetRegistry.getTexture("inspectionIcon"), inspection.getBeat() * Entity.PX_WIDTH - 7,
-						Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f), 16, 16);
+				batch.draw(AssetRegistry.getTexture("inspectionIcon"), inspection.getBeat() *
+								Entity.Companion.getPX_WIDTH() - 7,
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f), 16, 16);
 
 				if (MathHelper.intersects(cameraPickVec3.x, cameraPickVec3.y, 0, 0,
-						inspection.getBeat() * Entity.PX_WIDTH - 10, Entity.PX_HEIGHT * (TRACK_COUNT + 0.5f) - 2, 20,
+						inspection.getBeat() * Entity.Companion.getPX_WIDTH() - 10, Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f) - 2, 20,
 						20)) {
 					highlightedInspections.add(inspection);
 				}
@@ -339,10 +349,10 @@ public class Editor extends InputAdapter implements Disposable {
 		// beat numbers
 		{
 			main.getFont().setColor(main.getPalette().getStaffLine());
-			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
-				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.getFont().draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, 0, Align.center, false);
+			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.Companion.getPX_WIDTH());
+				 x * Entity.Companion.getPX_WIDTH() < camera.position.x + camera.viewportWidth * 0.5f; x++) {
+				main.getFont().draw(batch, x + "", x * Entity.Companion.getPX_WIDTH(),
+						TRACK_COUNT * Entity.Companion.getPX_HEIGHT() + main.getFont().getCapHeight() + 4, 0, Align.center, false);
 			}
 		}
 
@@ -352,7 +362,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (selectionGroup != null) {
 				camera.unproject(vec3Tmp.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-				float a = MathUtils.clamp(1.0f - (vec3Tmp.y / Entity.PX_HEIGHT), 0.5f, 1f);
+				float a = MathUtils.clamp(1.0f - (vec3Tmp.y / Entity.Companion.getPX_HEIGHT()), 0.5f, 1f);
 
 				batch.setColor(1, 0, 0, 0.25f * a);
 				Main.fillRect(batch, (camera.position.x - camera.viewportWidth * 0.5f), 0, camera.viewportWidth,
@@ -655,11 +665,11 @@ public class Editor extends InputAdapter implements Disposable {
 						c = main.getPalette().getStretchablePattern().getBg();
 				}
 
-				float x = (remix.getStartTime() < 0 ? (e.bounds.x - remix.getStartTime()) : e.bounds.x) * ENTITY_WIDTH;
+				float x = (remix.getStartTime() < 0 ? (e.getBounds().x - remix.getStartTime()) : e.getBounds().x) * ENTITY_WIDTH;
 
 				e.setBatchColorFromState(batch, c, main.getPalette().getSelectionTint(),
 						remix.getSelection().contains(e));
-				Main.fillRect(batch, startX + x, startY + e.bounds.y * ENTITY_HEIGHT, e.bounds.width * ENTITY_WIDTH,
+				Main.fillRect(batch, startX + x, startY + e.getBounds().y * ENTITY_HEIGHT, e.getBounds().width * ENTITY_WIDTH,
 						ENTITY_HEIGHT);
 			}
 
@@ -675,9 +685,9 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(1, 1, 1, 1);
 
 			float camX = (remix.getStartTime() < 0
-					? camera.position.x - remix.getStartTime() * Entity.PX_WIDTH
-					: camera.position.x) / Entity.PX_WIDTH * ENTITY_WIDTH;
-			float camW = camera.viewportWidth / Entity.PX_WIDTH * ENTITY_WIDTH;
+					? camera.position.x - remix.getStartTime() * Entity.Companion.getPX_WIDTH()
+					: camera.position.x) / Entity.Companion.getPX_WIDTH() * ENTITY_WIDTH;
+			float camW = camera.viewportWidth / Entity.Companion.getPX_WIDTH() * ENTITY_WIDTH;
 
 			if (duration > 0)
 				Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
@@ -692,7 +702,8 @@ public class Editor extends InputAdapter implements Disposable {
 							main.camera.viewportHeight - main.getInputY() < startY + OVERVIEW_HEIGHT) {
 						float percent = (main.getInputX() - startX) / mapWidth;
 						percent *= duration;
-						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
+						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) *
+								Entity.Companion.getPX_WIDTH();
 					}
 				}
 			}
@@ -714,10 +725,10 @@ public class Editor extends InputAdapter implements Disposable {
 		}
 
 		if (remix.getPlayingState() == PlayingState.PLAYING) {
-			if (camera.position.x + camera.viewportWidth * 0.5f < remix.getBeat() * Entity.PX_WIDTH) {
-				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.5f;
-			} else if (remix.getBeat() * Entity.PX_WIDTH < camera.position.x - camera.viewportWidth * 0.5f) {
-				camera.position.x = remix.getBeat() * Entity.PX_WIDTH + camera.viewportWidth * 0.25f;
+			if (camera.position.x + camera.viewportWidth * 0.5f < remix.getBeat() * Entity.Companion.getPX_WIDTH()) {
+				camera.position.x = remix.getBeat() * Entity.Companion.getPX_WIDTH() + camera.viewportWidth * 0.5f;
+			} else if (remix.getBeat() * Entity.Companion.getPX_WIDTH() < camera.position.x - camera.viewportWidth * 0.5f) {
+				camera.position.x = remix.getBeat() * Entity.Companion.getPX_WIDTH() + camera.viewportWidth * 0.25f;
 			}
 		} else if (remix.getPlayingState() == PlayingState.STOPPED && file != null) {
 			if (timeUntilAutosave <= 0) {
@@ -779,14 +790,14 @@ public class Editor extends InputAdapter implements Disposable {
 					} else {
 						List<Entity> selection = remix.getSelection();
 						selection.sort((e1, e2) -> {
-							if (e1.bounds.x < e2.bounds.x)
+							if (e1.getBounds().x < e2.getBounds().x)
 								return -1;
-							if (e1.bounds.x > e2.bounds.x)
+							if (e1.getBounds().x > e2.getBounds().x)
 								return 1;
 
-							if (e1.bounds.y < e2.bounds.y)
+							if (e1.getBounds().y < e2.getBounds().y)
 								return -1;
-							if (e1.bounds.y > e2.bounds.y)
+							if (e1.getBounds().y > e2.getBounds().y)
 								return 1;
 
 							return 0;
@@ -803,15 +814,15 @@ public class Editor extends InputAdapter implements Disposable {
 						selection.forEach(e -> {
 							GameObject.PatternObject.CueObject cue = new GameObject.PatternObject.CueObject();
 
-							cue.setBeat(e.bounds.x - first.bounds.x);
-							cue.setTrack(Math.round(first.bounds.y - e.bounds.y));
-							cue.setId(e.getID());
+							cue.setBeat(e.getBounds().x - first.getBounds().x);
+							cue.setTrack(Math.round(first.getBounds().y - e.getBounds().y));
+							cue.setId(e.getId());
 							if (e.isRepitchable())
 								cue.setSemitone(e.getSemitone());
 							else
 								cue.setSemitone(null);
 							if (e.isStretchable())
-								cue.setDuration(e.bounds.width);
+								cue.setDuration(e.getBounds().width);
 							else
 								cue.setDuration(null);
 
@@ -843,11 +854,12 @@ public class Editor extends InputAdapter implements Disposable {
 			boolean left = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
 			boolean right = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 			if (left) {
-				camera.position.x -= Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
+				camera.position.x -= Entity.Companion.getPX_WIDTH() * 5 * Gdx.graphics.getDeltaTime() * (accelerate ?
+						5 : 1);
 				didMoveCamera = true;
 			}
 			if (right) {
-				camera.position.x += Entity.PX_WIDTH * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
+				camera.position.x += Entity.Companion.getPX_WIDTH() * 5 * Gdx.graphics.getDeltaTime() * (accelerate ? 5 : 1);
 				didMoveCamera = true;
 			}
 
@@ -860,7 +872,7 @@ public class Editor extends InputAdapter implements Disposable {
 				didMoveCamera = true;
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
 				remix.updateDurationAndCurrentGame();
-				camera.position.x = remix.getEndTime() * Entity.PX_WIDTH;
+				camera.position.x = remix.getEndTime() * Entity.Companion.getPX_WIDTH();
 				didMoveCamera = true;
 			}
 		}
@@ -876,8 +888,8 @@ public class Editor extends InputAdapter implements Disposable {
 			// trackers
 			{
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-				vec3Tmp2.x /= Entity.PX_WIDTH;
-				vec3Tmp2.y /= Entity.PX_HEIGHT;
+				vec3Tmp2.x /= Entity.Companion.getPX_WIDTH();
+				vec3Tmp2.y /= Entity.Companion.getPX_HEIGHT();
 
 				final boolean shift =
 						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
@@ -911,10 +923,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (possible != null && remix.getSelection().size() == 1 && possible.isStretchable() &&
 					remix.getSelection().contains(possible)) {
-				if ((cameraPickVec3.x >= possible.bounds.x &&
-						cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
-						(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width - STRETCHABLE_AREA &&
-								cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
+				if ((cameraPickVec3.x >= possible.getBounds().x &&
+						cameraPickVec3.x <= possible.getBounds().x + STRETCHABLE_AREA) ||
+						(cameraPickVec3.x >= possible.getBounds().x + possible.getBounds().width - STRETCHABLE_AREA &&
+								cameraPickVec3.x <= possible.getBounds().x + possible.getBounds().width)) {
 					isAbleToStretch = true;
 				}
 			}
@@ -931,8 +943,8 @@ public class Editor extends InputAdapter implements Disposable {
 				camera.update();
 
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-				vec3Tmp2.x /= Entity.PX_WIDTH;
-				vec3Tmp2.y /= Entity.PX_HEIGHT;
+				vec3Tmp2.x /= Entity.Companion.getPX_WIDTH();
+				vec3Tmp2.y /= Entity.Companion.getPX_HEIGHT();
 
 				if (isStretching > 0) {
 					Entity e = selectionGroup.getList().get(0);
@@ -941,19 +953,20 @@ public class Editor extends InputAdapter implements Disposable {
 						float rightSideX = (selectionGroup.getOldPositions().get(0).x +
 								selectionGroup.getOldPositions().get(0).width);
 
-						e.bounds.x = vec3Tmp2.x;
-						e.bounds.x = Math.min(MathHelper.snapToNearest(e.bounds.x, snappingInterval),
+						e.getBounds().x = vec3Tmp2.x;
+						e.getBounds().x = Math.min(MathHelper.snapToNearest(e.getBounds().x, snappingInterval),
 								rightSideX - snappingInterval);
-						e.bounds.width = (selectionGroup.getOldPositions().get(0).x +
-								selectionGroup.getOldPositions().get(0).width) - e.bounds.x;
+						e.getBounds().width = (selectionGroup.getOldPositions().get(0).x +
+								selectionGroup.getOldPositions().get(0).width) - e.getBounds().x;
 					} else if (isStretching == 2) {
-						e.bounds.width = vec3Tmp2.x - selectionGroup.getOldPositions().get(0).x;
-						e.bounds.width = Math
-								.max(MathHelper.snapToNearest(e.bounds.width, snappingInterval), snappingInterval);
+						e.getBounds().width = vec3Tmp2.x - selectionGroup.getOldPositions().get(0).x;
+						e.getBounds().width = Math
+								.max(MathHelper.snapToNearest(e.getBounds().width, snappingInterval),
+										snappingInterval);
 					}
 				} else {
 					// change "origin" entity
-					Rectangle rect = selectionGroup.getEntityClickedOn().bounds;
+					Rectangle rect = selectionGroup.getEntityClickedOn().getBounds();
 					rect.x = vec3Tmp2.x - selectionGroup.getOffset().x;
 					rect.y = vec3Tmp2.y - selectionGroup.getOffset().y;
 
@@ -971,7 +984,7 @@ public class Editor extends InputAdapter implements Disposable {
 							if (e == selectionGroup.getEntityClickedOn())
 								continue;
 
-							e.bounds.setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
+							e.getBounds().setPosition(rect.x + selectionGroup.getRelativePositions().get(i).x,
 									rect.y + selectionGroup.getRelativePositions().get(i).y);
 						}
 					}
@@ -1024,15 +1037,15 @@ public class Editor extends InputAdapter implements Disposable {
 							selectionGroup.getOldPositions().get(0).width;
 					status += " | ";
 					status += Localization.get("editor.stretchStatus1") + " " +
-							selectionGroup.getList().get(0).bounds.width;
+							selectionGroup.getList().get(0).getBounds().width;
 				}
 			}
 		} else if (currentTool == Tool.BPM) {
 			status = Localization.get("editor.bpmToolStatus");
 
 			camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			vec3Tmp2.x /= Entity.PX_WIDTH;
-			vec3Tmp2.y /= Entity.PX_HEIGHT;
+			vec3Tmp2.x /= Entity.Companion.getPX_WIDTH();
+			vec3Tmp2.y /= Entity.Companion.getPX_HEIGHT();
 
 			selectedTempoChange = null;
 			for (TempoChange tc : remix.getTempoChanges().getBeatMap().values()) {
@@ -1071,9 +1084,9 @@ public class Editor extends InputAdapter implements Disposable {
 				if (e instanceof PatternEntity) {
 					PatternEntity pe = (PatternEntity) e;
 
-					pe.internal.forEach(se -> {
-						se.bounds.x += pe.bounds.x;
-						se.bounds.y += pe.bounds.y;
+					pe.getInternal().forEach(se -> {
+						se.getBounds().x += pe.getBounds().x;
+						se.getBounds().y += pe.getBounds().y;
 
 						remix.getEntities().add(se);
 					});
@@ -1113,7 +1126,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 							final List<Rectangle> oldPos = new ArrayList<>();
 							remix.getSelection().stream()
-									.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+									.map(e -> new Rectangle(
+											e.getBounds().x, e.getBounds().y, e.getBounds().width, e.getBounds().height))
 									.forEachOrdered(oldPos::add);
 							selectionGroup = new SelectionGroup(remix.getSelection(), oldPos,
 									remix.getSelection().get(0), new Vector2(0, 0), true);
@@ -1196,24 +1210,25 @@ public class Editor extends InputAdapter implements Disposable {
 						final List<Rectangle> oldPos = new ArrayList<>();
 
 						remix.getSelection().stream()
-								.map(e -> new Rectangle(e.bounds.x, e.bounds.y, e.bounds.width, e.bounds.height))
+								.map(e -> new Rectangle(
+										e.getBounds().x, e.getBounds().y, e.getBounds().width, e.getBounds().height))
 								.forEachOrdered(oldPos::add);
 
 						selectionGroup = new SelectionGroup(remix.getSelection(), oldPos, possible,
-								new Vector2(cameraPickVec3.x / Entity.PX_WIDTH - possible.bounds.x,
-										cameraPickVec3.y / Entity.PX_HEIGHT - possible.bounds.y), isCopying);
+								new Vector2(cameraPickVec3.x / Entity.Companion.getPX_WIDTH() - possible.getBounds().x,
+										cameraPickVec3.y / Entity.Companion.getPX_HEIGHT() - possible.getBounds().y), isCopying);
 
 						// stretch code
 						if (remix.getSelection().size() <= 1 && possible.isStretchable() && !isCopying) {
-							cameraPickVec3.x /= Entity.PX_WIDTH;
-							cameraPickVec3.y /= Entity.PX_HEIGHT;
-							if ((cameraPickVec3.x >= possible.bounds.x &&
-									cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ||
-									(cameraPickVec3.x >= possible.bounds.x + possible.bounds.width -
+							cameraPickVec3.x /= Entity.Companion.getPX_WIDTH();
+							cameraPickVec3.y /= Entity.Companion.getPX_HEIGHT();
+							if ((cameraPickVec3.x >= possible.getBounds().x &&
+									cameraPickVec3.x <= possible.getBounds().x + STRETCHABLE_AREA) ||
+									(cameraPickVec3.x >= possible.getBounds().x + possible.getBounds().width -
 											STRETCHABLE_AREA &&
-											cameraPickVec3.x <= possible.bounds.x + possible.bounds.width)) {
-								this.isStretching = (cameraPickVec3.x >= possible.bounds.x &&
-										cameraPickVec3.x <= possible.bounds.x + STRETCHABLE_AREA) ? 1 : 2;
+											cameraPickVec3.x <= possible.getBounds().x + possible.getBounds().width)) {
+								this.isStretching = (cameraPickVec3.x >= possible.getBounds().x &&
+										cameraPickVec3.x <= possible.getBounds().x + STRETCHABLE_AREA) ? 1 : 2;
 							}
 						}
 					}
@@ -1242,9 +1257,11 @@ public class Editor extends InputAdapter implements Disposable {
 							Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT);
 					if (!shouldAdd)
 						remix.getSelection().clear();
-					remix.getEntities().stream().filter(e -> e.bounds.overlaps(Rectangle.tmp
-							.set(selection.x / Entity.PX_WIDTH, selection.y / Entity.PX_HEIGHT,
-									selection.width / Entity.PX_WIDTH, selection.height / Entity.PX_HEIGHT)) &&
+					remix.getEntities().stream().filter(e -> e.getBounds().overlaps(Rectangle.tmp
+							.set(selection.x / Entity.Companion.getPX_WIDTH(), selection.y /
+											Entity.Companion.getPX_HEIGHT(),
+									selection.width / Entity.Companion.getPX_WIDTH(), selection.height /
+											Entity.Companion.getPX_HEIGHT())) &&
 							(!shouldAdd || !remix.getSelection().contains(e)))
 							.forEachOrdered(remix.getSelection()::add);
 
@@ -1255,12 +1272,12 @@ public class Editor extends InputAdapter implements Disposable {
 
 					boolean collisionFree = selectionGroup.getList().stream().allMatch(
 							e -> remix.getEntities().stream().filter(e2 -> !selectionGroup.getList().contains(e2))
-									.noneMatch(e2 -> e2.bounds.overlaps(e.bounds)) &&
-									(e.bounds.y >= 0 && e.bounds.y + e.bounds.height <= TRACK_COUNT));
+									.noneMatch(e2 -> e2.getBounds().overlaps(e.getBounds())) &&
+									(e.getBounds().y >= 0 && e.getBounds().y + e.getBounds().height <= TRACK_COUNT));
 
 					if (!collisionFree) {
 						boolean delete = selectionGroup.getDeleteInstead() ||
-								selectionGroup.getList().stream().anyMatch(e -> e.bounds.y < 0);
+								selectionGroup.getList().stream().anyMatch(e -> e.getBounds().y < 0);
 
 						if (delete) {
 							remix.getEntities().removeAll(selectionGroup.getList());
@@ -1269,7 +1286,7 @@ public class Editor extends InputAdapter implements Disposable {
 							for (int i = 0; i < selectionGroup.getList().size(); i++) {
 								Entity e = selectionGroup.getList().get(i);
 
-								e.bounds.set(selectionGroup.getOldPositions().get(i));
+								e.getBounds().set(selectionGroup.getOldPositions().get(i));
 							}
 						}
 					} else {

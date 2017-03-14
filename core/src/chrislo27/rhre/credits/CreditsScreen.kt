@@ -49,36 +49,23 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 	}
 
 	inner class ArmFireEntity(remix: Remix, x: Float) : Entity(remix) {
-
-		init {
-			bounds.x = x
-		}
-
-		override fun getName(): String {
-			return "credits_armFire"
-		}
-
-		override fun getInspectionFunctions(): MutableList<InspectionFunction> {
-			return mutableListOf()
-		}
+		override val name: String = "credits_armFire"
+		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
 		}
 
-		override fun isStretchable(): Boolean = false
+		override val isStretchable: Boolean = false
+		override val isRepitchable: Boolean = false
+		override val id: String = "credits_armFire"
+		override val semitone: Int = 0
 
-		override fun isRepitchable(): Boolean = false
-
-		override fun getID(): String {
-			return "credits_armFire"
+		override fun render(main: Main, palette: AbstractPalette, batch: SpriteBatch, selected: Boolean) {
 		}
 
-		override fun getSemitone(): Int {
-			return 0
-		}
-
-		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
+		init {
+			bounds.x = x
 		}
 
 		override fun onStart(delta: Float, intended: Float) {
@@ -94,31 +81,19 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 			bounds.x = x
 		}
 
-		override fun getName(): String {
-			return "credits_beaconFlash"
-		}
-
-		override fun getInspectionFunctions(): MutableList<InspectionFunction> {
-			return mutableListOf()
-		}
+		override val name: String = "credits_beaconFlash"
+		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
 		}
 
-		override fun isStretchable(): Boolean = false
+		override val isStretchable: Boolean = false
+		override val isRepitchable: Boolean = false
+		override val id: String = "credits_beaconFlash"
+		override val semitone: Int = 0
 
-		override fun isRepitchable(): Boolean = false
-
-		override fun getID(): String {
-			return "credits_beaconFlash"
-		}
-
-		override fun getSemitone(): Int {
-			return 0
-		}
-
-		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
+		override fun render(main: Main, palette: AbstractPalette, batch: SpriteBatch, selected: Boolean) {
 		}
 
 		override fun onStart(delta: Float, intended: Float) {
@@ -128,42 +103,30 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
 
 	}
 
-	inner class TextEntity(remix: Remix, x: Float, val id: Int) : Entity(remix) {
+	inner class TextEntity(remix: Remix, x: Float, val cid: Int) : Entity(remix) {
 
 		init {
 			bounds.x = x
 		}
 
-		override fun getName(): String {
-			return "credits_text"
-		}
-
-		override fun getInspectionFunctions(): MutableList<InspectionFunction> {
-			return mutableListOf()
-		}
+		override val name: String = "credits_text"
+		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
 		}
 
-		override fun isStretchable(): Boolean = false
+		override val isStretchable: Boolean = false
+		override val isRepitchable: Boolean = false
+		override val id: String = "credits_text"
+		override val semitone: Int = 0
 
-		override fun isRepitchable(): Boolean = false
-
-		override fun getID(): String {
-			return "credits_text"
-		}
-
-		override fun getSemitone(): Int {
-			return 0
-		}
-
-		override fun render(main: Main?, palette: AbstractPalette?, batch: SpriteBatch?, selected: Boolean) {
+		override fun render(main: Main, palette: AbstractPalette, batch: SpriteBatch, selected: Boolean) {
 		}
 
 		override fun onStart(delta: Float, intended: Float) {
 			super.onStart(delta, intended)
-			currentString = if (id < 0) "" to "" else Credits.list[id]
+			currentString = if (cid < 0) "" to "" else Credits.list[cid]
 		}
 
 	}
