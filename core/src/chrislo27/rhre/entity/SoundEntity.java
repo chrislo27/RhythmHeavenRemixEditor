@@ -127,12 +127,16 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 		final float bpm = remix.getTempoChanges().getTempoAt(remix.getBeat());
 
 		if (cue.getIntroSoundObj() != null) {
-			introSoundId = cue.getIntroSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
+			OpenALSound s = (OpenALSound) cue.getIntroSoundObj();
+			introSoundId = s.play(1, cue.getPitch(semitone, bpm), 0);
 		}
+
+		OpenALSound s = (OpenALSound) cue.getSoundObj();
+		float realPos = remix.getTempoChanges().beatsToSeconds(remix.getBeat() - intendedStart) % s.duration();
 		if (cue.shouldBeLooped()) {
-			soundId = cue.getSoundObj().loop(1, cue.getPitch(semitone, bpm), 0);
+			soundId = s.loop(1, cue.getPitch(semitone, bpm), 0);
 		} else {
-			soundId = cue.getSoundObj().play(1, cue.getPitch(semitone, bpm), 0);
+			soundId = s.play(1, cue.getPitch(semitone, bpm), 0);
 		}
 
 	}
