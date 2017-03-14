@@ -5,7 +5,7 @@ import chrislo27.rhre.registry.GameRegistry
 object InspectionPostfix {
 	@JvmStatic
 	fun applyInspectionFunctions() {
-		val registry = GameRegistry.instance()
+		val registry = GameRegistry
 
 		registry.getCue("cropStomp/walk")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getCue("cropStomp/stomp")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())

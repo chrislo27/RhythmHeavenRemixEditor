@@ -2,7 +2,6 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.EditorScreen;
 import chrislo27.rhre.Main;
-import chrislo27.rhre.SoundboardScreen;
 import chrislo27.rhre.json.PaletteObject;
 import chrislo27.rhre.palette.AbstractPalette;
 import chrislo27.rhre.palette.DarkPalette;
@@ -356,30 +355,6 @@ public class EditorStageSetup {
 					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4,
 							BUTTON_HEIGHT);
 
-		}
-
-		{
-			TextButton soundboard = new TextButton(stage, palette, "editor.button.soundboard") {
-
-				@Override
-				public void onClickAction(float x, float y) {
-					super.onClickAction(x, y);
-
-//					main.setScreen(ScreenRegistry.get("soundboard"));
-					main.setScreen(new SoundboardScreen(main));
-				}
-
-				@Override
-				public void render(SpriteBatch batch, float alpha) {
-					getPalette().labelFont.getData().setScale(0.5f);
-					super.render(batch, alpha);
-					getPalette().labelFont.getData().setScale(1);
-				}
-			};
-
-//			stage.addActor(soundboard).align(Align.topRight)
-//					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT + BUTTON_HEIGHT * 11, PADDING, BUTTON_HEIGHT * 4,
-//							BUTTON_HEIGHT);
 		}
 
 		{

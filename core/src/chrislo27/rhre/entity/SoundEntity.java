@@ -37,7 +37,7 @@ public class SoundEntity extends Entity implements HasGame, SoundCueActionProvid
 
 		this.bounds.set(beat, level, duration, 1);
 
-		game = GameRegistry.instance().get(cue.getId().substring(0, cue.getId().indexOf('/')));
+		game = GameRegistry.INSTANCE.get(cue.getId().substring(0, cue.getId().indexOf('/')));
 		isFillbotsFill = cue.getId().equals("fillbots/water");
 	}
 

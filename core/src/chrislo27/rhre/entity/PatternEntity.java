@@ -38,7 +38,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 		this.pattern = p;
 
 		pattern.getCues().forEach(pc -> {
-			SoundCue sc = GameRegistry.instance().getCue(pc.getId());
+			SoundCue sc = GameRegistry.INSTANCE.getCue(pc.getId());
 
 //			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
@@ -78,7 +78,7 @@ public class PatternEntity extends Entity implements HasGame, SoundCueActionProv
 
 		repitchable = internal.stream().anyMatch(se -> se.cue.getCanAlterPitch());
 		String id = pattern.getCues().get(0).getId();
-		game = GameRegistry.instance().get(id.substring(0, id.indexOf('/')));
+		game = GameRegistry.INSTANCE.get(id.substring(0, id.indexOf('/')));
 	}
 
 	@Override

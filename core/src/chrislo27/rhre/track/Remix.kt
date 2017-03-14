@@ -107,7 +107,7 @@ class Remix {
 				}
 
 				obj.metadata = metadata ?: RemixObject.MetadataObject()
-				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry.instance()["countIn"] }
+				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry["countIn"] }
 						.map {
 							it as HasGame
 							return@map it.game.name
@@ -129,7 +129,7 @@ class Remix {
 				val e: Entity
 
 				if (it.isPattern) {
-					e = PatternEntity(remix, GameRegistry.instance().getPattern(it.id))
+					e = PatternEntity(remix, GameRegistry.getPattern(it.id))
 
 					e.bounds.x = it.beat
 					e.bounds.y = it.level.toFloat()
@@ -138,10 +138,10 @@ class Remix {
 					e.adjustPitch(it.semitone, -128, 128)
 				} else {
 					if (it.width == 0f) {
-						e = SoundEntity(remix, GameRegistry.instance().getCue(it.id), it.beat, it.level,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id), it.beat, it.level,
 										it.semitone)
 					} else {
-						e = SoundEntity(remix, GameRegistry.instance().getCue(it.id), it.beat, it.level, it.width,
+						e = SoundEntity(remix, GameRegistry.getCue(it.id), it.beat, it.level, it.width,
 										it.semitone)
 					}
 				}
@@ -399,7 +399,7 @@ class Remix {
 
 		if (tickEachBeat && beat.toInt() > lastTickBeat) {
 			lastTickBeat = beat.toInt()
-			GameRegistry.instance()["countIn"].getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
+			GameRegistry["countIn"]!!.getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
 		}
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {

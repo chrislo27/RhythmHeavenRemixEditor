@@ -383,9 +383,9 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 		val missingEntities = obj.entities.filter { entity ->
 			if (entity.isPattern) {
-				GameRegistry.instance().getPattern(entity.id) == null
+				GameRegistry.getPattern(entity.id) == null
 			} else {
-				GameRegistry.instance().getCue(entity.id) == null
+				GameRegistry.getCue(entity.id) == null
 			}
 		}
 

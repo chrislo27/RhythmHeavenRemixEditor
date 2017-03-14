@@ -531,8 +531,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// picker icons
 		{
-			for (int i = 0, count = 0; i < GameRegistry.instance().gamesBySeries.get(currentSeries).size(); i++) {
-				Game game = GameRegistry.instance().gamesBySeries.get(currentSeries).get(i);
+			for (int i = 0, count = 0; i < GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(); i++) {
+				Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).get(i);
 
 				batch.draw(AssetRegistry.getTexture("gameIcon_" + game.getId()), getIconX(count), getIconY(count),
 						GAME_ICON_SIZE, GAME_ICON_SIZE);
@@ -564,7 +564,7 @@ public class Editor extends InputAdapter implements Disposable {
 			StencilMaskUtil.useMask();
 
 			main.getFontBordered().setColor(1, 1, 1, 1);
-			Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+			Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 					.get(scrolls.get(currentSeries).getGame());
 
 			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.getFontBordered().getCapHeight() * 0.5f;
@@ -584,7 +584,7 @@ public class Editor extends InputAdapter implements Disposable {
 					main.getFontBordered()
 							.draw(batch, ">", main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING, middle);
 
-					List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+					List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 							.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
 					if (scrolls.get(currentSeries).getPattern() == 0)
@@ -980,7 +980,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 			} else {
 				status = Localization.get("editor.currentGame") + " " +
-						GameRegistry.instance().gamesBySeries.get(currentSeries)
+						GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 								.get(scrolls.get(currentSeries).getGame()).getName();
 
 				if (main.camera.viewportHeight - main.getInputY() <=
@@ -988,7 +988,7 @@ public class Editor extends InputAdapter implements Disposable {
 					if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
 						if (main.getInputX() <=
 								GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
-							List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+							List<Game> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries);
 							int icon = getIconIndex(main.getInputX(),
 									(int) main.camera.viewportHeight - main.getInputY());
 
@@ -1097,7 +1097,7 @@ public class Editor extends InputAdapter implements Disposable {
 							remix.getSelection().clear();
 							selectionGroup = null;
 
-							Game game = GameRegistry.instance().gamesBySeries.get(currentSeries)
+							Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 									.get(scrolls.get(currentSeries).getGame());
 							Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
 
@@ -1126,7 +1126,7 @@ public class Editor extends InputAdapter implements Disposable {
 								dir = 1;
 							}
 
-							List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+							List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 									.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
 							scrolls.get(currentSeries).setPattern(
@@ -1136,7 +1136,7 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				} else {
 					// game picker
-					List<Game> list = GameRegistry.instance().gamesBySeries.get(currentSeries);
+					List<Game> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries);
 					int icon = getIconIndex(main.getInputX(), (int) main.camera.viewportHeight - main.getInputY());
 
 					if (icon < list.size() && icon >= 0) {
@@ -1150,8 +1150,8 @@ public class Editor extends InputAdapter implements Disposable {
 				if (main.getInputX() <= Series.values().length * GAME_ICON_SIZE) {
 					int i = main.getInputX() / GAME_ICON_SIZE;
 					if (i < Series.values().length) {
-						if (GameRegistry.instance().gamesBySeries.get(Series.values()[i]) != null &&
-								GameRegistry.instance().gamesBySeries.get(Series.values()[i]).size() > 0)
+						if (GameRegistry.INSTANCE.getGamesBySeries().get(Series.values()[i]) != null &&
+								GameRegistry.INSTANCE.getGamesBySeries().get(Series.values()[i]).size() > 0)
 							currentSeries = Series.values()[i];
 					}
 				}
@@ -1302,7 +1302,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
 			if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
-				List<Pattern> list = GameRegistry.instance().gamesBySeries.get(currentSeries)
+				List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 						.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
 				scrolls.get(currentSeries).setPattern(

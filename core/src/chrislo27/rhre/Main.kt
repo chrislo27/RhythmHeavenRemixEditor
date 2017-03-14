@@ -238,8 +238,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun prepareStates() {
 		super.prepareStates()
 
-		GameRegistry.instance()
-		AssetRegistry.instance().addAssetLoader(GameRegistry.instance().assetLoader)
+		GameRegistry
+		AssetRegistry.instance().addAssetLoader(GameRegistry.newAssetLoader())
 
 		val reg = ScreenRegistry.instance()
 		reg.add("assetloading", LoadingScreen(this))
@@ -250,7 +250,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("load", LoadScreen(this))
 		reg.add("save", SaveScreen(this))
 		reg.add("new", NewScreen(this))
-		reg.add("soundboard", SoundboardScreen(this))
 		reg.add("version", VersionScreen(this))
 		reg.add("stats", StatsScreen(this))
 
@@ -395,7 +394,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		ttfGenerator.dispose()
 
 		preferences.flush()
-		GameRegistry.instance().dispose()
+		GameRegistry.dispose()
 		Unirest.shutdown()
 	}
 }
