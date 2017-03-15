@@ -16,7 +16,7 @@ object Credits {
 			"uidesign" to "GlitchyPSIX",
 			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64, Chef May",
 			"creditsgame" to "ahemtoday, Serena Strawberry, mistuh_salmon. chrislo27",
-			"technologies" to """[DARK_GRAY]Lib[][#E10000]GDX[] by Badlogic Games, LWJGL
+			"technologies" to """[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games, LWJGL
 KHttp
 Apache Commons IO
 Gson
