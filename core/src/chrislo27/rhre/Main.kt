@@ -224,6 +224,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		horizontalResize = Gdx.graphics
 				.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
 
+		val scripts = listOf("stats")
+		val scriptsDir = Gdx.files.local("scripts/")
+		scriptsDir.mkdirs()
+		scripts.forEach { Gdx.files.internal("scripts/$it.lua").copyTo(scriptsDir.child("$it.lua")) }
+
 		val tmpMusic = Gdx.files.local("tmpMusic/").file()
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
 			tmpMusic.deleteRecursively()

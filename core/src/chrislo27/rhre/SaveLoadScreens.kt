@@ -222,11 +222,9 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 	private var currentThread: Thread? = null
 
-	@Volatile
-	private var remixObj: RemixObject? = null
-
-	@Volatile
-	private var missingContent: Pair<String, Int> = "" to 0
+	@Volatile private var remixObj: RemixObject? = null
+	@Volatile private var missingContent: Pair<String, Int> = "" to 0
+	@Volatile private var failed = false
 
 	override fun render(delta: Float) {
 		super.render(delta)
@@ -333,6 +331,13 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 //								startY + BG_HEIGHT * 0.55f,
 //								BG_WIDTH - PADDING * 2,
 //								Align.center)
+			if (failed) {
+				main.font.draw(main.batch, Localization.get("loadScreen.failed"),
+							   startX + PADDING,
+							   startY + BG_HEIGHT * 0.55f,
+							   BG_WIDTH - PADDING * 2,
+							   Align.center, true)
+			}
 		}
 
 		main.batch.end()
@@ -366,36 +371,42 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 	}
 
 	private fun attemptLoad(file: File) {
-		persistDirectory(main, "lastLoadDirectory", file.parentFile)
+		try {
+			persistDirectory(main, "lastLoadDirectory", file.parentFile)
 
-		val obj: RemixObject
-		val handle = FileHandle(file)
-		if (file.extension == "rhre2") {
-			val gson: Gson = GsonBuilder().create()
-			obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
-		} else {
-			val zipFile: ZipFile = ZipFile(file)
-			obj = Remix.readFromZipStream(zipFile)
-		}
-
-		obj.fileHandle = handle
-		remixObj = obj
-
-		val missingEntities = obj.entities!!.filter { entity ->
-			if (entity.isPattern) {
-				GameRegistry.getPattern(entity.id!!) == null
+			val obj: RemixObject
+			val handle = FileHandle(file)
+			if (file.extension == "rhre2") {
+				val gson: Gson = GsonBuilder().create()
+				obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 			} else {
-				GameRegistry.getCue(entity.id!!) == null
+				val zipFile: ZipFile = ZipFile(file)
+				obj = Remix.readFromZipStream(zipFile)
 			}
+
+			obj.fileHandle = handle
+			remixObj = obj
+
+			val missingEntities = obj.entities!!.filter { entity ->
+				if (entity.isPattern) {
+					GameRegistry.getPattern(entity.id!!) == null
+				} else {
+					GameRegistry.getCue(entity.id!!) == null
+				}
+			}
+
+			obj.entities!!.removeAll(missingEntities)
+
+			val distinct = missingEntities.map { it.id!! }.distinct()
+
+			missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
+
+			if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
+		} catch (e: Exception) {
+			System.err.println("Failed to load " + file.absolutePath)
+			e.printStackTrace()
+			failed = true
 		}
-
-		obj.entities!!.removeAll(missingEntities)
-
-		val distinct = missingEntities.map { it.id!! }.distinct()
-
-		missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
-
-		if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
 	}
 
 	private fun showPicker() {
@@ -443,6 +454,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 	override fun hide() {
 		closePicker()
 		shouldShowPicker = true
+		failed = false
 	}
 
 	override fun pause() {
