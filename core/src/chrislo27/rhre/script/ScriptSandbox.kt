@@ -19,7 +19,9 @@ object ScriptSandbox {
 	fun runScriptInRemix(remix: Remix, script: String) {
 		val globals = getBaseGlobals()
 
-		globals.set("remix", CoerceJavaToLua.coerce(LuaRemix(remix)))
+		val r: LuaValue = CoerceJavaToLua.coerce(LuaRemix(remix))
+		println(r::class.java)
+		globals.set("remix", r)
 
 		LuaC.install(globals)
 
