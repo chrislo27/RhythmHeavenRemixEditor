@@ -837,7 +837,7 @@ public class Editor extends InputAdapter implements Disposable {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-				ScriptSandbox.INSTANCE.runScriptInRemix(remix, "remix:hello()");
+				ScriptSandbox.INSTANCE.runScriptInRemix(remix, "remix:hello()\nremix:hello(" + MathUtils.random(999) + ")");
 			}
 		}
 
