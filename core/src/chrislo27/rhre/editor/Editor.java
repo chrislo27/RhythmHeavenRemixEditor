@@ -11,7 +11,6 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
-import chrislo27.rhre.script.ScriptSandbox;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
@@ -36,12 +35,12 @@ import com.badlogic.gdx.utils.Disposable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
+import ionium.registry.ScreenRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
 import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
-import org.luaj.vm2.LuaError;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -847,12 +846,7 @@ public class Editor extends InputAdapter implements Disposable {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-				try {
-					ScriptSandbox.INSTANCE.runScriptInRemix(remix,
-							Gdx.files.internal("scripts/stats.lua").readString("UTF-8"));
-				} catch (LuaError e) {
-					e.printStackTrace();
-				}
+				main.setScreen(ScreenRegistry.get("script"));
 			}
 		}
 

@@ -16,6 +16,11 @@ import org.luaj.vm2.lib.jse.JseMathLib
 object ScriptSandbox {
 
 	fun runScriptInRemix(remix: Remix, script: String) {
+		val chunk = parseChunk(remix, script)
+		chunk.call()
+	}
+
+	fun parseChunk(remix: Remix, script: String): LuaValue {
 		val globals = getBaseGlobals()
 
 		globals.set("remix", remix.getLuaValue(globals))
@@ -24,8 +29,7 @@ object ScriptSandbox {
 
 		LuaC.install(globals)
 
-		val chunk: LuaValue = globals.load(script)
-		chunk.call()
+		return globals.load(script)
 	}
 
 	fun getBaseGlobals(): Globals {
