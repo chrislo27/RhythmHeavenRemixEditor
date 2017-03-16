@@ -38,14 +38,14 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 	init {
 		this.internal = ArrayList<SoundEntity>()
 
-		pattern.cues.forEach { (id1, beat, track, duration, semitone1) ->
-			val sc = GameRegistry.getCue(id1)
+		pattern.cues.forEach { c ->
+			val sc = GameRegistry.getCue(c.id)
 
 			//			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
-			internal.add(SoundEntity(remix, sc!!, beat, track,
-									 if (sc!!.canAlterDuration && duration > 0) duration else sc.duration,
-									 semitone1))
+			internal.add(SoundEntity(remix, sc!!, c.beat, c.track,
+									 if (sc!!.canAlterDuration && c.duration > 0) c.duration else sc.duration,
+									 c.semitone))
 		}
 
 		if (internal.size == 0)

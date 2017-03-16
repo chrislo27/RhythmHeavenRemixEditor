@@ -8,7 +8,7 @@ import ionium.registry.AssetRegistry
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
-data class SoundCue(val id: String, val fileExtension: String = "ogg", val name: String,
+data class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
 					val deprecated: List<String> = mutableListOf(), val duration: Float,
 					val canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
 					val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
@@ -20,6 +20,7 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 		val l = LuaValue.tableOf()
 
 		l.set("id", id)
+		l.set("gameID", gameID)
 		l.set("name", name)
 		l.set("duration", duration.toDouble())
 		l.set("deprecated", LuaValue.listOf(deprecated.map { CoerceJavaToLua.coerce(it) }.toTypedArray()))

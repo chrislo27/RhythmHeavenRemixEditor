@@ -61,7 +61,7 @@ manzaiBirds/umette_umena"""
 
 		lines.forEach {
 			addedCues.add(
-					SoundCue(it, "ogg", it.replace("manzaiBirds/", "").replace("_", " "), mutableListOf(), 2.5f, false,
+					SoundCue(it, gameObject.gameID!!, "ogg", it.replace("manzaiBirds/", "").replace("_", " "), mutableListOf(), 2.5f, false,
 							 true, null, 95f, false, null))
 		}
 
@@ -69,21 +69,21 @@ manzaiBirds/umette_umena"""
 
 			var patternCues = mutableListOf<Pattern.PatternCue>()
 
-			patternCues.add(Pattern.PatternCue(it.id, 0f, 0, 2.5f, 0))
-			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", 2.5f, 0, 0f, 0))
-			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", 3.0f, 0, 0f, 0))
+			patternCues.add(Pattern.PatternCue(it.id, gameObject.gameID!!, 0f, 0, 2.5f, 0))
+			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", gameObject.gameID!!, 2.5f, 0, 0f, 0))
+			patternCues.add(Pattern.PatternCue("manzaiBirds/haihai1", gameObject.gameID!!, 3.0f, 0, 0f, 0))
 
-			patterns.add(Pattern("manzaiBirds_" + it.id, it.name, false, patternCues, false, mutableListOf()))
+			patterns.add(Pattern("manzaiBirds_" + it.id, gameObject.gameID!!, it.name, false, patternCues, false, mutableListOf()))
 
 			// -----------------------------------------------------------
 
 			patternCues = mutableListOf<Pattern.PatternCue>()
 
-			patternCues.add(Pattern.PatternCue(it.id, 0f, 0, 1.5f, 0))
-			patternCues.add(Pattern.PatternCue("manzaiBirds/boing", 1.5f, 0, 0f, 0))
-			patternCues.add(Pattern.PatternCue("manzaiBirds/donaiyanen", 2.5f, 0, 0f, 0))
+			patternCues.add(Pattern.PatternCue(it.id, gameObject.gameID!!, 0f, 0, 1.5f, 0))
+			patternCues.add(Pattern.PatternCue("manzaiBirds/boing", gameObject.gameID!!, 1.5f, 0, 0f, 0))
+			patternCues.add(Pattern.PatternCue("manzaiBirds/donaiyanen", gameObject.gameID!!, 2.5f, 0, 0f, 0))
 
-			patterns.add(Pattern("manzaiBirds_" + it.id + "_boing", it.name + " BOING!", false, patternCues, false, mutableListOf()))
+			patterns.add(Pattern("manzaiBirds_" + it.id + "_boing", gameObject.gameID!!, it.name + " BOING!", false, patternCues, false, mutableListOf()))
 
 		}
 

@@ -20,6 +20,7 @@ object ScriptSandbox {
 
 		globals.set("remix", remix.getLuaValue(globals))
 		globals.set("registry", GameRegistry.luaValue)
+//		globals.set("rhre2utils", LuaRHRE2Utils(globals, remix))
 
 		LuaC.install(globals)
 

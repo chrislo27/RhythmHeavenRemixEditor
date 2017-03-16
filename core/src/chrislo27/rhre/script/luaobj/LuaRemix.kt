@@ -16,7 +16,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 
-	val cues: LuaTable
+	val entities: LuaTable
 	val playbackStart: Float = remix.playbackStart
 	val musicStart: Float = remix.musicStartTime
 	val tempoChanges: LuaTable
@@ -28,7 +28,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		remix.entities.forEachIndexed { i, en ->
 			eMap.add(Pair(CoerceJavaToLua.coerce(i + 1), CoerceJavaToLua.coerce(LuaEntity(globals, remix, en))))
 		}
-		cues = LuaTable.listOf(eMap.map { it.second }.toTypedArray())
+		entities = LuaTable.listOf(eMap.map { it.second }.toTypedArray())
 
 		val tMap = mutableListOf<Pair<LuaValue, LuaValue>>()
 		remix.tempoChanges.getBeatMap().values.forEachIndexed { index, tempoChange ->
@@ -37,7 +37,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		}
 		tempoChanges = LuaTable.listOf(tMap.map { it.second }.toTypedArray())
 
-		this.set("cues", cues)
+		this.set("entities", entities)
 		this.set("playbackStart", playbackStart.toDouble())
 		this.set("musicStart", musicStart.toDouble())
 		this.set("tempoChanges", tempoChanges)
