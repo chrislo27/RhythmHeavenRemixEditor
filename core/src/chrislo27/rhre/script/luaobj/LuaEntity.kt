@@ -2,11 +2,12 @@ package chrislo27.rhre.script.luaobj
 
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
-import org.luaj.vm2.LuaTable
+import chrislo27.rhre.track.Remix
+import org.luaj.vm2.Globals
 import org.luaj.vm2.LuaValue
 
 
-class LuaEntity(private val luaRemix: LuaRemix, private val entity: Entity) : LuaTable() {
+class LuaEntity(globals: Globals, remix: Remix, private val entity: Entity) : LuaObj(globals, remix) {
 
 	val beat: Float = entity.bounds.x
 	val duration: Float = entity.bounds.width

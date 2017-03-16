@@ -8,6 +8,7 @@ import chrislo27.rhre.inspections.Inspections
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.script.luaobj.LuaRemix
 import chrislo27.rhre.visual.VisualRegistry
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
@@ -16,6 +17,9 @@ import com.badlogic.gdx.utils.Disposable
 import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.templates.Main
+import org.luaj.vm2.Globals
+import org.luaj.vm2.LuaValue
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -28,7 +32,7 @@ import java.util.zip.ZipOutputStream
 class Remix {
 
 	val entities: MutableList<Entity> = mutableListOf()
-	val selection: List<Entity> = mutableListOf()
+	val selection: MutableList<Entity> = mutableListOf()
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
 
@@ -249,6 +253,8 @@ class Remix {
 			return obj
 		}
 	}
+
+	fun getLuaValue(globals: Globals): LuaValue = CoerceJavaToLua.coerce(LuaRemix(globals, this))
 
 	fun setPlayingState(ps: PlayingState): Unit {
 		fun resetEntitiesAndTracker(): Unit {

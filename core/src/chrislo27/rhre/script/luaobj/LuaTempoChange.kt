@@ -1,10 +1,11 @@
 package chrislo27.rhre.script.luaobj
 
+import chrislo27.rhre.track.Remix
 import chrislo27.rhre.track.TempoChange
-import org.luaj.vm2.LuaTable
+import org.luaj.vm2.Globals
 
 
-class LuaTempoChange(private val luaRemix: LuaRemix, private val tempoChange: TempoChange): LuaTable() {
+class LuaTempoChange(globals: Globals, remix: Remix, private val tempoChange: TempoChange): LuaObj(globals, remix) {
 
 	val beat: Float = tempoChange.beat
 	val seconds: Float = tempoChange.seconds

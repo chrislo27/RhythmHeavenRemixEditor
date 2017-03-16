@@ -41,6 +41,7 @@ import ionium.util.MathHelper;
 import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
+import org.luaj.vm2.LuaError;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -62,11 +63,11 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int OVERVIEW_HEIGHT = 32;
 	private static final int STAFF_START_Y =
 			MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT + 32;
-	private static final int TRACK_COUNT = 5;
+	public static final int TRACK_COUNT = 5;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.Companion.getPX_WIDTH();
-	private static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
+	public static final int MAX_SEMITONE = Semitones.SEMITONES_IN_OCTAVE * 2;
 	private static final float AUTOSAVE_PERIOD = 60f;
 	public final OrthographicCamera camera = new OrthographicCamera();
 	private final Main main;
@@ -837,7 +838,11 @@ public class Editor extends InputAdapter implements Disposable {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
 			} else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-				ScriptSandbox.INSTANCE.runScriptInRemix(remix, "print('length: '..tostring(remix.length)..' beats')");
+				try {
+					ScriptSandbox.INSTANCE.runScriptInRemix(remix, "print(remix.playbackStart)\nremix:changePlaybackStart(4.5)\nprint('playback: '..tostring(remix.playbackStart))");
+				} catch (LuaError e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
