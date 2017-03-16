@@ -20,6 +20,7 @@ object Credits {
 KHttp
 Apache Commons IO
 Gson
+LuaJ
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
 Rhythm Heaven assets by Nintendo""",

@@ -228,8 +228,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
 			tmpMusic.deleteRecursively()
 		}
-
-		camera.update()
 	}
 
 	override fun setScreen(scr: Screen?) {

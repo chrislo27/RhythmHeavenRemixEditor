@@ -11,6 +11,7 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
+import chrislo27.rhre.script.ScriptSandbox;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
@@ -835,6 +836,8 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+				ScriptSandbox.INSTANCE.runScriptInRemix(remix, "remix:hello()");
 			}
 		}
 
