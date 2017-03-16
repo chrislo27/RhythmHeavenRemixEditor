@@ -140,9 +140,9 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 						try {
-							es.editor.remix.music = MusicData(Gdx.audio.newMusic(handle), handle)
+							val md = MusicData(Gdx.audio.newMusic(handle), handle)
+							es.editor.remix.music = md
 						} catch (e: Exception) {
-							es.editor.remix.music?.music?.dispose()
 							failedToLoad = e.toString()
 							e.printStackTrace()
 						}
