@@ -5,6 +5,8 @@ import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
+import org.luaj.vm2.LuaValue
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 data class SoundCue(val id: String, val fileExtension: String = "ogg", val name: String,
 					val deprecated: List<String> = mutableListOf(), val duration: Float,
@@ -13,6 +15,22 @@ data class SoundCue(val id: String, val fileExtension: String = "ogg", val name:
 					val soundFolder: String? = null) {
 
 	var inspectionFunctions: List<InspectionFunction> = listOf()
+
+	val luaValue: LuaValue by lazy {
+		val l = LuaValue.tableOf()
+
+		l.set("id", id)
+		l.set("name", name)
+		l.set("duration", duration.toDouble())
+		l.set("deprecated", LuaValue.listOf(deprecated.map { CoerceJavaToLua.coerce(it) }.toTypedArray()))
+		l.set("canAlterPitch", CoerceJavaToLua.coerce(canAlterPitch))
+		l.set("canAlterDuration", CoerceJavaToLua.coerce(canAlterDuration))
+		l.set("introSound", CoerceJavaToLua.coerce(introSound))
+		l.set("baseBpm", baseBpm.toDouble())
+		l.set("loops", CoerceJavaToLua.coerce(loops))
+
+		return@lazy l
+	}
 
 	fun getLazySoundObj(): LazySound {
 		return AssetRegistry.getAsset("soundCue_$id", LazySound::class.java)!!

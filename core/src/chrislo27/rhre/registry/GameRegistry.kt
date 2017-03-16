@@ -16,6 +16,8 @@ import ionium.animation.Animation
 import ionium.registry.handler.IAssetLoader
 import ionium.templates.Main
 import ionium.util.AssetMap
+import org.luaj.vm2.LuaValue
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import java.util.*
 
 object GameRegistry : Disposable {
@@ -24,6 +26,21 @@ object GameRegistry : Disposable {
 	val gameList: List<Game> = mutableListOf()
 	val gamesBySeries: Map<Series, List<Game>> = mutableMapOf()
 	private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+
+	val luaValue: LuaValue by lazy {
+		val l = LuaValue.tableOf()
+
+		l.set("games", LuaValue.tableOf(games.keys.map { CoerceJavaToLua.coerce(it) }.toTypedArray(),
+										games.values.map(Game::luaValue).toTypedArray()))
+		l.set("cues", LuaValue.tableOf(
+				games.values.flatMap(Game::soundCues).map { CoerceJavaToLua.coerce(it.id) }.toTypedArray(),
+				games.values.flatMap(Game::soundCues).map { it.luaValue }.toTypedArray()))
+		l.set("patterns", LuaValue.tableOf(
+				games.values.flatMap(Game::patterns).map { CoerceJavaToLua.coerce(it.id) }.toTypedArray(),
+				games.values.flatMap(Game::patterns).map { it.luaValue }.toTypedArray()))
+
+		return@lazy l
+	}
 
 	operator fun get(id: String): Game? {
 		return games[id]
