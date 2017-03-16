@@ -23,6 +23,7 @@ Gson
 LuaJ
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
+[#000007F]Lua[]
 Rhythm Heaven assets by Nintendo""",
 			"you" to ""
 												 )
