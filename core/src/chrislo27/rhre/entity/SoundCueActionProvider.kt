@@ -7,6 +7,6 @@ data class SoundCueAction(val cue: SoundCue, val seconds: Float, val duration: F
 
 interface SoundCueActionProvider {
 
-	abstract fun provide(): List<SoundCueAction>
+	fun provide(): List<SoundCueAction>
 
 }

@@ -81,7 +81,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public float autosaveMessageShow = 0f;
 	public boolean isNormalSave = false;
 	float snappingInterval;
-	private Map<Series, Scroll> scrolls = new HashMap<>();
+	private final Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
 	/**
 	 * null = not selecting
@@ -91,7 +91,7 @@ public class Editor extends InputAdapter implements Disposable {
 	 * null = not dragging
 	 */
 	private SelectionGroup selectionGroup = null;
-	private Vector3 cameraPickVec3 = new Vector3();
+	private final Vector3 cameraPickVec3 = new Vector3();
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
@@ -475,9 +475,7 @@ public class Editor extends InputAdapter implements Disposable {
 		if (main.getInspectionsEnabled() && highlightedInspections.size() > 0) {
 			main.getFont().getData().setScale(0.5f);
 			float offsetY = 0;
-			for (int i = 0; i < highlightedInspections.size(); i++) {
-				InspectionType inspection = highlightedInspections.get(i);
-
+			for (InspectionType inspection : highlightedInspections) {
 				main.getFont().setColor(1, 1, 1, 1);
 				glyphLayout
 						.setText(main.getFont(), inspection.getProperInfo(), main.getFont().getColor(), 256, Align

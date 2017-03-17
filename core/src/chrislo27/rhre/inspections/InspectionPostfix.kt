@@ -10,11 +10,11 @@ object InspectionPostfix {
 		registry.getCue("cropStomp/walk")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getCue("cropStomp/stomp")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		registry.getCue("cropStomp/molefling")?.inspectionFunctions = listOf(InspectionType.InspFuncNotOffbeat())
-		registry.get("cropStomp")?.patterns?.forEach {
+		registry["cropStomp"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.get("exhibitionMatch")?.patterns?.forEach {
+		registry["exhibitionMatch"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
@@ -46,17 +46,17 @@ object InspectionPostfix {
 		registry.getPattern("karateMan_offbeatpot")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncNotOffbeat())
 
-		registry.get("microRow")?.patterns?.forEach {
+		registry["microRow"]?.patterns?.forEach {
 			it.inspectionFunctions = if (it.id != "microRow_double") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
-		registry.get("munchyMonk")?.patterns?.forEach {
+		registry["munchyMonk"]?.patterns?.forEach {
 			it.inspectionFunctions = if (it.id != "munchyMonk_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
-		registry.get("munchyMonkEs")?.patterns?.forEach {
+		registry["munchyMonkEs"]?.patterns?.forEach {
 			it.inspectionFunctions = if (it.id != "munchyMonkEs_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
-		registry.get("munchyMonkJa")?.patterns?.forEach {
+		registry["munchyMonkJa"]?.patterns?.forEach {
 			it.inspectionFunctions = if (it.id != "munchyMonkJa_trytwo") listOf(InspectionType.InspFuncNotOnbeat()) else listOf(InspectionType.InspFuncNotOffbeat())
 		}
 
@@ -69,19 +69,19 @@ object InspectionPostfix {
 		registry.getCue("moaiDooWop/wop2")?.inspectionFunctions = listOf(
 				InspectionType.InspFuncMissingBefore("moaiDooWop/ooo2"))
 
-		registry.get("rhythmRally")?.patterns?.forEach {
+		registry["rhythmRally"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.get("ringside")?.patterns?.forEach {
+		registry["ringside"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.get("screwbotFactory")?.patterns?.forEach {
+		registry["screwbotFactory"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 
-		registry.get("spaceSoccer")?.patterns?.forEach {
+		registry["spaceSoccer"]?.patterns?.forEach {
 			it.inspectionFunctions = listOf(InspectionType.InspFuncNotOnbeat())
 		}
 

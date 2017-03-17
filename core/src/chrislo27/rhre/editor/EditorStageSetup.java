@@ -436,10 +436,10 @@ public class EditorStageSetup {
 
 			ImageButton audacity = new ImageButton(stage, palette,
 					new TextureRegion(AssetRegistry.getTexture("ui_audacity"))) {
-				AtomicBoolean isRunning = new AtomicBoolean(false);
-				AtomicBoolean shouldCheckVisibility = new AtomicBoolean(true);
+				final AtomicBoolean isRunning = new AtomicBoolean(false);
+				final AtomicBoolean shouldCheckVisibility = new AtomicBoolean(true);
 
-				FileChooser chooser = new FileChooser() {
+				final FileChooser chooser = new FileChooser() {
 					{
 						this.setFileSelectionMode(JFileChooser.FILES_ONLY);
 						this.setDialogTitle("Select your Audacity application");
