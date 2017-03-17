@@ -254,7 +254,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				return LuaTempoChange(globals, remix, remix.tempoChanges.getTempoChangeFromBeat(arg2.tofloat())!!)
 			}
 		})
-		this.set("removeAllEntities", object : OneArgFunction() {
+		this.set("removeAllCues", object : OneArgFunction() {
 			override fun call(arg: LuaValue?): LuaValue {
 				val count = remix.entities.size
 
