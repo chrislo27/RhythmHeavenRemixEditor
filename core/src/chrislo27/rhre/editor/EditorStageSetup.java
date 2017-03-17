@@ -298,6 +298,19 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(1);
 
 					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.button.snapHint");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() - PADDING, this.getY() - (PADDING * 3) - height,
+								width + PADDING * 2, height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX(), this.getY() - PADDING * 2);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+
 						if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
 							interval = 0;
 							screen.getEditor().snappingInterval = 1f / intervals[interval];
