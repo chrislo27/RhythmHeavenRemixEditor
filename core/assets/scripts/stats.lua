@@ -5,22 +5,14 @@ print "Outputting games used"
 print()
 
 do
-    local list = {}
-
-    for k, v in pairs(remix.entities) do
-        local game = v.gameID
-        if (game ~= nil and list[game] == nil) then
-            list[game] = game
-        end
-    end
-
     local out = ""
 
-    for k, v in pairs(list) do
-        if registry.games[v] == nil then
+    for k, v in pairs(remix.gamesUsed) do
+		local game = registry.games[v]
+        if game == nil then
             out = out .. ("Nil game value? " .. tostring(v) .. ", ")
         else
-            out = out .. (tostring(registry.games[v].name) .. ", ")
+            out = out .. (tostring(game.name) .. ", ")
         end
     end
 

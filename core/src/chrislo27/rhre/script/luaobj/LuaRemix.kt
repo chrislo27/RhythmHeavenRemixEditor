@@ -38,6 +38,21 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		}
 		tempoChanges = LuaTable.listOf(tMap.map { it.second }.toTypedArray())
 
+		val gamesUsed = mutableListOf<String>()
+
+		remix.entities.forEach {
+			if (it is PatternEntity) {
+				if (!gamesUsed.contains(it.pattern.gameID)) {
+					gamesUsed.add(it.pattern.gameID)
+				}
+			} else if (it is SoundEntity) {
+				if (!gamesUsed.contains(it.cue.gameID)) {
+					gamesUsed.add(it.cue.gameID)
+				}
+			}
+		}
+		gamesUsed.sort()
+
 		this.set("entities", entities)
 		this.set("playbackStart", playbackStart.toDouble())
 		this.set("musicStart", musicStart.toDouble())
@@ -45,6 +60,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		this.set("length", length.toDouble())
 		this.set("musicVolume", musicVolume.toDouble())
 		this.set("entityCount", remix.entities.size)
+		this.set("gamesUsed", LuaValue.listOf(gamesUsed.map(CoerceJavaToLua::coerce).toTypedArray()))
 		this.set("changePlaybackStart", object : TwoArgFunction() {
 			override fun call(self: LuaValue, arg: LuaValue): LuaValue {
 				if (arg.type() != LuaValue.TNUMBER)
