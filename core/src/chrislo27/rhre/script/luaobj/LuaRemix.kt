@@ -8,6 +8,7 @@ import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.track.TempoChange
 import org.luaj.vm2.*
+import org.luaj.vm2.lib.OneArgFunction
 import org.luaj.vm2.lib.ThreeArgFunction
 import org.luaj.vm2.lib.TwoArgFunction
 import org.luaj.vm2.lib.VarArgFunction
@@ -43,6 +44,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		this.set("tempoChanges", tempoChanges)
 		this.set("length", length.toDouble())
 		this.set("musicVolume", musicVolume.toDouble())
+		this.set("entityCount", remix.entities.size)
 		this.set("changePlaybackStart", object : TwoArgFunction() {
 			override fun call(self: LuaValue, arg: LuaValue): LuaValue {
 				if (arg.type() != LuaValue.TNUMBER)
@@ -234,6 +236,14 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 					return LuaValue.NIL
 
 				return LuaTempoChange(globals, remix, remix.tempoChanges.getTempoChangeFromBeat(arg2.tofloat())!!)
+			}
+		})
+		this.set("removeAllEntities", object : OneArgFunction() {
+			override fun call(arg: LuaValue?): LuaValue {
+				val count = remix.entities.size
+
+				remix.entities.clear()
+				return LuaValue.valueOf(count)
 			}
 		})
 	}
