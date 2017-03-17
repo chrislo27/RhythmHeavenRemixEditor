@@ -724,8 +724,8 @@ public class Editor extends InputAdapter implements Disposable {
 	public void renderUpdate() {
 		remix.update(Gdx.graphics.getDeltaTime());
 
-		if (remix.getPlayingState() == PlayingState.STOPPED ||
-				(remix.getPlayingState() != PlayingState.STOPPED && timeUntilAutosave > 10)) {
+		if (file != null && (remix.getPlayingState() == PlayingState.STOPPED ||
+				(remix.getPlayingState() != PlayingState.STOPPED && timeUntilAutosave > 10))) {
 			timeUntilAutosave -= Gdx.graphics.getDeltaTime();
 		}
 
