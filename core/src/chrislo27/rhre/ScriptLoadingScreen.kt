@@ -15,7 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter
 
 class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 
-	override var icon: String = "cannery_tex_beacon"
+	override var icon: String = "ui_script"
 	override var title: String = "scriptScreen.title"
 	override var bottomInstructions: String = "scriptScreen.instructions"
 

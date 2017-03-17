@@ -30,3 +30,5 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 ![Tapalong screen](http://i.imgur.com/XefcYPM.png "Tap to the rhythm to find the BPM")
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
+
+Use of the Lua logo is copyright © 1998 Lua.org. Graphic design of the Lua logo by Alexandre Nakonechnyj.
