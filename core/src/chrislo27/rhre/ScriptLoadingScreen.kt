@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
 import ionium.registry.ScreenRegistry
 import ionium.util.i18n.Localization
+import org.luaj.vm2.LuaError
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
@@ -39,7 +40,7 @@ class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 	@Volatile private var currentScript: FileHandle? = null
 
 	enum class LoadState {
-		WAITING, LOADED, FAILED
+		WAITING, LOADED, FAILED_TO_LOAD, EXECUTED
 	}
 
 	override fun render(delta: Float) {
@@ -67,8 +68,11 @@ class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 						   LoadState.LOADED -> {
 							   Localization.get("scriptScreen.loaded", currentScript?.path())
 						   }
-						   LoadState.FAILED -> {
+						   LoadState.FAILED_TO_LOAD -> {
 							   Localization.get("loadScreen.failed")
+						   }
+						   LoadState.EXECUTED -> {
+							   Localization.get("scriptScreen.executed")
 						   }
 					   },
 					   startX + PADDING,
@@ -82,10 +86,16 @@ class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 	override fun renderUpdate() {
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+		} else if (Gdx.input.isKeyJustPressed(
+				Input.Keys.ENTER) && loadState == LoadState.LOADED && currentScript != null && currentScript!!.exists()) {
 			val es = ScreenRegistry.get("editor", EditorScreen::class.java)
-			es?.editor?.remix?.music = null
-			main.screen = ScreenRegistry.get("editor")
+			try {
+				ScriptSandbox.runScriptInRemix(es.editor.remix!!, currentScript!!.readString("UTF-8"))
+				loadState = LoadState.EXECUTED
+			} catch (e: LuaError) {
+				loadState = LoadState.FAILED_TO_LOAD
+				e.printStackTrace()
+			}
 		}
 	}
 
@@ -115,7 +125,7 @@ class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 							currentScript = handle
 							loadState = LoadState.LOADED
 						} catch (e: Exception) {
-							loadState = LoadState.FAILED
+							loadState = LoadState.FAILED_TO_LOAD
 							e.printStackTrace()
 						}
 					}
