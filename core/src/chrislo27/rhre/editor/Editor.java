@@ -35,7 +35,6 @@ import com.badlogic.gdx.utils.Disposable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
-import ionium.registry.ScreenRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
 import ionium.util.Utils;
@@ -843,8 +842,6 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
-			} else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-				main.setScreen(ScreenRegistry.get("script"));
 			}
 		}
 

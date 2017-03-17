@@ -685,6 +685,21 @@ public class EditorStageSetup {
 		}
 
 		{
+			ImageButton scripting = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_script"))) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("script"));
+				}
+			};
+
+			scripting.getColor().set(0.1f, 0.1f, 0.1f, 1f);
+			stage.addActor(scripting).align(Align.topLeft)
+					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton stats = new TextButton(stage, palette, "editor.button.stats") {
 
 				@Override
