@@ -225,8 +225,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		horizontalResize = Gdx.graphics
 				.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
 
-		val scripts = listOf("stats")
-		val scriptsDir = Gdx.files.local("scripts/")
+		val scripts = listOf("stats", "debug")
+		val scriptsDir = Gdx.files.local("scripts/examples/")
 		scriptsDir.mkdirs()
 		scripts.forEach {
 			val master = Gdx.files.internal("scripts/$it.lua")
