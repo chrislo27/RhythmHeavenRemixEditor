@@ -130,7 +130,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			Localization.DEFAULT_LOCALE = languagesMap[""]
 		}
 
-		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float, align: Int) {
+		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float,
+						   align: Int) {
 			val textWidth = Utils.getWidth(font, text)
 			val oldScaleX = font.data.scaleX
 
@@ -227,7 +228,12 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		val scripts = listOf("stats")
 		val scriptsDir = Gdx.files.local("scripts/")
 		scriptsDir.mkdirs()
-		scripts.forEach { Gdx.files.internal("scripts/$it.lua").copyTo(scriptsDir.child("$it.lua")) }
+		scripts.forEach {
+			val master = Gdx.files.internal("scripts/$it.lua")
+			val child = scriptsDir.child("$it.lua")
+			if (!child.exists() || child.readString("UTF-8") != master.readString("UTF-8"))
+				master.copyTo(child)
+		}
 
 		val tmpMusic = Gdx.files.local("tmpMusic/").file()
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
