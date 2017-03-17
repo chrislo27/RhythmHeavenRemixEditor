@@ -261,7 +261,7 @@ public class EditorStageSetup {
 		{
 			TextButton interval = new TextButton(stage, palette, "editor.button.snap") {
 
-				private final int[] intervals = {4, 6, 8, 12, 16};
+				private final int[] intervals = {4, 6, 8, 12, 16, 24, 32};
 				private int interval = 0;
 
 				{
@@ -296,6 +296,13 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
 					getPalette().labelFont.getData().setScale(1);
+
+					if (this.stage.isMouseOver(this)) {
+						if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
+							interval = 0;
+							screen.getEditor().snappingInterval = 1f / intervals[interval];
+						}
+					}
 				}
 
 			};
