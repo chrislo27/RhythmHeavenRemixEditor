@@ -259,6 +259,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				val count = remix.entities.size
 
 				remix.entities.clear()
+				resetRemixGlobal()
 				return LuaValue.valueOf(count)
 			}
 		})

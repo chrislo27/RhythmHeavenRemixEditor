@@ -8,6 +8,8 @@ import org.luaj.vm2.LuaTable
 open class LuaObj(internal val globals: Globals, internal val remix: Remix) : LuaTable() {
 
 	internal fun resetRemixGlobal() {
+		remix.updateDurationAndCurrentGame()
+		remix.inspections.refresh()
 		globals.set("remix", remix.getLuaValue(globals))
 	}
 
