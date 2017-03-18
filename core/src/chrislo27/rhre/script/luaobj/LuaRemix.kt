@@ -176,7 +176,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				if (arg2.toint() < 1 || arg2.toint() > remix.entities.size)
 					return LuaValue.valueOf(false)
 
-				remix.entities[arg2.toint()].bounds.x = arg3.tofloat()
+				remix.entities[arg2.toint() - 1].bounds.x = arg3.tofloat()
 				resetRemixGlobal()
 				return LuaValue.valueOf(true)
 			}
@@ -192,7 +192,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				if (arg3.tofloat() in 0f..0.125f)
 					return LuaValue.valueOf(false)
 
-				val e = remix.entities[arg2.toint()]
+				val e = remix.entities[arg2.toint() - 1]
 				val old = e.bounds.width
 				e.bounds.width = arg3.tofloat()
 				e.onLengthChange(old)
@@ -211,7 +211,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				if (!arg3.isint())
 					throw LuaError(arg3)
 
-				val e = remix.entities[arg2.toint()]
+				val e = remix.entities[arg2.toint() - 1]
 				if (!e.isRepitchable)
 					return LuaValue.valueOf(false)
 				val old = e.semitone
