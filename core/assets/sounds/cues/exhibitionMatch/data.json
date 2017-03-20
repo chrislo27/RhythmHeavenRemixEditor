@@ -21,8 +21,7 @@
     {
       "id": "exhibitionMatch/hitHomerun",
       "duration": 4,
-      "name": "stance",
-      "baseBpm": 120
+      "name": "stance"
     }
   ],
   "patterns": [
