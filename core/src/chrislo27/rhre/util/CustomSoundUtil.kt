@@ -26,6 +26,7 @@ object CustomSoundUtil {
 				"Each folder is a \"game\", and you can have multiple folders.\n\n" +
 				"Each sound will be limited to these factors:\n" +
 				"$DURATION beats long by default\n" +
+				"Loaded sound data must be under a megabyte. The editor WILL CRASH if it's too big!\n" +
 				"You will be able to stretch the cues.\n" +
 				"You will be able to change the duration of the cues.\n" +
 				"The cues will not loop. If you want them to loop, you will have to manually add a game using the JSON files.\n\n" +
