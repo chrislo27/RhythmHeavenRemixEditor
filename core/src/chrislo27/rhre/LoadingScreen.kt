@@ -79,38 +79,38 @@ class LoadingScreen(m: Main) : AssetLoadingScreen(m) {
 		main.batch.setColor(1f, 1f, 1f, 1f)
 
 		val manager = AssetRegistry.instance().assetManager
-		val barWidth = Gdx.graphics.width * 0.5f
+		val barWidth = main.camera.viewportWidth * 0.5f
 
-		ionium.templates.Main.drawRect(main.batch, Gdx.graphics.width * 0.25f - 4,
-									   Gdx.graphics.height * 0.15f - 8f - 4f, barWidth + 8,
+		ionium.templates.Main.drawRect(main.batch, main.camera.viewportWidth * 0.25f - 4,
+									   main.camera.viewportHeight * 0.15f - 8f - 4f, barWidth + 8,
 									   (16 + 8).toFloat(),
 									   2f)
 
-		ionium.templates.Main.fillRect(main.batch, Gdx.graphics.width * 0.25f,
-									   Gdx.graphics.height * 0.15f - 8,
+		ionium.templates.Main.fillRect(main.batch, main.camera.viewportWidth * 0.25f,
+									   main.camera.viewportHeight * 0.15f - 8,
 									   barWidth * manager.progress, 16f)
 
 		if (manager.assetNames.size > 0) {
 			Main.drawCompressed((main as Main).font, main.batch, output.lastMsg,
-								Gdx.graphics.width * 0.5f - Gdx.graphics.width * 0.95f * 0.5f,
-								Gdx.graphics.height * 0.15f - 20, Gdx.graphics.width * 0.95f, Align.center)
+								main.camera.viewportWidth * 0.5f - main.camera.viewportWidth * 0.95f * 0.5f,
+								main.camera.viewportHeight * 0.15f - 20, main.camera.viewportWidth * 0.95f, Align.center)
 		}
 
 		val outOf = "" + manager.loadedAssets + " / " + (manager.loadedAssets + manager.queuedAssets)
 		Main.drawCompressed((main as Main).font, main.batch, outOf,
-							Gdx.graphics.width * 0.5f - Gdx.graphics.width * 0.95f * 0.5f,
-							Gdx.graphics.height * 0.15f - 50, Gdx.graphics.width * 0.95f, Align.center)
+							main.camera.viewportWidth * 0.5f - main.camera.viewportWidth * 0.95f * 0.5f,
+							main.camera.viewportHeight * 0.15f - 50, main.camera.viewportWidth * 0.95f, Align.center)
 
 		val percent = String.format("%.0f", manager.progress * 100f) + "%"
 		Main.drawCompressed((main as Main).font, main.batch, percent,
-							Gdx.graphics.width * 0.5f - Gdx.graphics.width * 0.95f * 0.5f,
-							Gdx.graphics.height * 0.15f - 75, Gdx.graphics.width * 0.95f, Align.center)
+							main.camera.viewportWidth * 0.5f - main.camera.viewportWidth * 0.95f * 0.5f,
+							main.camera.viewportHeight * 0.15f - 75, main.camera.viewportWidth * 0.95f, Align.center)
 
 		if (manager.progress >= 1) {
 			(main as Main).font.data.setScale(0.5f)
 			Main.drawCompressed((main as Main).font, main.batch, Localization.get("loading.skip"),
-								Gdx.graphics.width * 0.5f - barWidth * 0.5f,
-								Gdx.graphics.height * 0.15f + 25, barWidth, Align.center)
+								main.camera.viewportWidth * 0.5f - barWidth * 0.5f,
+								main.camera.viewportHeight * 0.15f + 25, barWidth, Align.center)
 			(main as Main).font.data.setScale(1f)
 		}
 
