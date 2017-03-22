@@ -250,9 +250,10 @@ public class Editor extends InputAdapter implements Disposable {
 						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) -
 								main.getFontBordered().getLineHeight() * 1.25f, 0, Align.right, false);
 
+				float start = remix.getTempoChanges().beatsToSeconds(remix.getPlaybackStart());
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
-						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
-								Math.abs(beatInSeconds) % 60)),
+						String.format("%1$02d:%2$02.3f", (int) (Math.abs(start) / 60),
+								Math.abs(start) % 60)),
 						remix.getPlaybackStart() * Entity.Companion.getPX_WIDTH() + 4,
 						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) - (main.getFontBordered().getCapHeight() * 6));
 				main.getFontBordered().getData().setScale(1);
