@@ -9,14 +9,13 @@ import chrislo27.rhre.palette.LightPalette;
 import chrislo27.rhre.palette.PaletteUtils;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.util.FileChooser;
+import chrislo27.rhre.util.JsonHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Align;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.registry.ScreenRegistry;
 import ionium.stage.Stage;
@@ -547,7 +546,9 @@ public class EditorStageSetup {
 					final FileHandle folder = Gdx.files.local("palettes/");
 					if (!folder.exists()) {
 						folder.mkdirs();
+					}
 
+					{
 						FileHandle example = folder.child("example.json");
 
 						PaletteObject po = new PaletteObject() {
@@ -576,8 +577,9 @@ public class EditorStageSetup {
 							}
 						};
 
+						// TODO gson needed a class
 						example.writeString(
-								new GsonBuilder().setPrettyPrinting().create().toJson(po, PaletteObject.class), false,
+								JsonHandler.toJson(po), false,
 								"UTF-8");
 					}
 
@@ -586,12 +588,11 @@ public class EditorStageSetup {
 								name.toLowerCase(Locale.ROOT).endsWith(".json"));
 						Main.logger.info("Found " + list.length + " palette files");
 
-						final Gson gson = new GsonBuilder().create();
 						Arrays.stream(list).forEach(fh -> {
 							Main.logger.info("Loading palette " + fh.name());
 
 							palettes.add(PaletteUtils
-									.getPaletteFromObject(gson.fromJson(fh.readString("UTF-8"), PaletteObject.class)));
+									.getPaletteFromObject(JsonHandler.fromJson(fh.readString("UTF-8"), PaletteObject.class)));
 
 							Main.logger.info("Loaded palette " + fh.name());
 						});

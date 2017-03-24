@@ -5,13 +5,12 @@ import chrislo27.rhre.inspections.InspectionPostfix
 import chrislo27.rhre.json.GameObject
 import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.util.CustomSoundUtil
+import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import ionium.animation.Animation
 import ionium.registry.handler.IAssetLoader
 import ionium.templates.Main
@@ -25,7 +24,7 @@ object GameRegistry : Disposable {
 	val games: Map<String, Game> = linkedMapOf()
 	val gameList: List<Game> = mutableListOf()
 	val gamesBySeries: Map<Series, List<Game>> = mutableMapOf()
-	private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
+//	private val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
 	val luaValue: LuaValue by lazy {
 		val l = LuaValue.tableOf()
@@ -85,14 +84,14 @@ object GameRegistry : Disposable {
 		val startTime: Long = System.nanoTime()
 
 		val gamesList: FileHandle = Gdx.files.internal("data/games.json")
-		val games: List<String> = gson.fromJson(gamesList.readString("UTF-8"), Array<String>::class.java).toList()
+		val games: List<String> = JsonHandler.fromJson<Array<String>>(gamesList.readString("UTF-8")).toList()
 		val numberPerSeries: MutableMap<Series, Int> = mutableMapOf()
 
 		// games from games.json
 		games.forEach { gameDef ->
 			Main.logger.info("Loading $gameDef")
 			val gameFh: FileHandle = Gdx.files.internal("sounds/cues/$gameDef/data.json")
-			val gameObj: GameObject = gson.fromJson(gameFh.readString("UTF-8"), GameObject::class.java)
+			val gameObj: GameObject = JsonHandler.fromJson<GameObject>(gameFh.readString("UTF-8"))
 
 			val game: Game
 			val patterns: MutableList<Pattern> = mutableListOf()
