@@ -260,7 +260,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("info", InfoScreen(this))
 		reg.add("music", MusicScreen(this))
 		reg.add("load", LoadScreen(this))
-
 		reg.add("save", SaveScreen(this))
 		reg.add("new", NewScreen(this))
 		reg.add("version", VersionScreen(this))
