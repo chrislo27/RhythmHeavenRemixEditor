@@ -34,6 +34,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "http://jcenter.bintray.com/" }
+        maven { url "https://kotlin.bintray.com/kotlinx/" }
     }
 }
 
@@ -59,6 +60,7 @@ project(":core") {
         compile "com.google.code.gson:gson:2.7"
         compile "commons-io:commons-io:2.5"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+//        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14"
         compile "khttp:khttp:0.1.0"
         compile "org.luaj:luaj-jse:3.0.1"
         compile "com.github.axet:vget:1.2.6"
