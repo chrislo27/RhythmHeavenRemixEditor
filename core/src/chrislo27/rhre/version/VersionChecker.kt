@@ -32,7 +32,8 @@ object VersionChecker {
 		try {
 			Main.logger.info("Getting version from $url...")
 			val nano = System.nanoTime()
-			releaseObject = JsonHandler.fromJson(khttp.get(url).text, ReleaseObject::class.java)
+			val jsonText = khttp.get(url).text
+			releaseObject = JsonHandler.fromJson(jsonText, ReleaseObject::class.java)
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
