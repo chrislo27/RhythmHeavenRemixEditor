@@ -84,14 +84,14 @@ object GameRegistry : Disposable {
 		val startTime: Long = System.nanoTime()
 
 		val gamesList: FileHandle = Gdx.files.internal("data/games.json")
-		val games: List<String> = JsonHandler.fromJson<Array<String>>(gamesList.readString("UTF-8")).toList()
+		val games: List<String> = JsonHandler.fromJson<Array<String>>(gamesList.readBytes()).toList()
 		val numberPerSeries: MutableMap<Series, Int> = mutableMapOf()
 
 		// games from games.json
 		games.forEach { gameDef ->
 			Main.logger.info("Loading $gameDef")
 			val gameFh: FileHandle = Gdx.files.internal("sounds/cues/$gameDef/data.json")
-			val gameObj: GameObject = JsonHandler.fromJson<GameObject>(gameFh.readString("UTF-8"))
+			val gameObj: GameObject = JsonHandler.fromJson<GameObject>(gameFh.readBytes())
 
 			val game: Game
 			val patterns: MutableList<Pattern> = mutableListOf()

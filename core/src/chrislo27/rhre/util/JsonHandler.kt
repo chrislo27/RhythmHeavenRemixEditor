@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 
 
 object JsonHandler {
@@ -15,6 +16,7 @@ object JsonHandler {
 	@JvmStatic
 	fun createObjectMapper(): ObjectMapper {
 		return ObjectMapper()
+				.registerModule(AfterburnerModule())
 				.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
 				.enable(SerializationFeature.WRITE_NULL_MAP_VALUES)
 				.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
@@ -35,6 +37,16 @@ object JsonHandler {
 
 	@JvmStatic
 	fun <T> fromJson(json: String, clazz: Class<T>): T {
+		return OBJECT_MAPPER.readValue(json, clazz)
+	}
+
+	@JvmStatic
+	inline fun <reified T> fromJson(json: ByteArray): T {
+		return OBJECT_MAPPER.readValue(json, T::class.java)
+	}
+
+	@JvmStatic
+	fun <T> fromJson(json: ByteArray, clazz: Class<T>): T {
 		return OBJECT_MAPPER.readValue(json, clazz)
 	}
 

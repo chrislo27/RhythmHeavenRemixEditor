@@ -62,7 +62,7 @@ project(":core") {
         compile "khttp:khttp:0.1.0"
         compile "org.luaj:luaj-jse:3.0.1"
         compile "com.github.axet:vget:1.2.6"
-        compile "com.fasterxml.jackson.core:jackson-databind:2.7.0"
+        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
     }
 }
 
