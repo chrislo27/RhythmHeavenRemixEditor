@@ -48,17 +48,18 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 	override var title: String = "saveScreen.title"
 	override var bottomInstructions: String = "saveScreen.back"
 
-	@Volatile
-	internal var picker: FileChooser = object : FileChooser() {
-		init {
-			currentDirectory = attemptRememberDirectory(main, "lastSaveDirectory") ?: File(
-					System.getProperty("user.home"),
-					"Desktop")
-			fileSelectionMode = JFileChooser.FILES_ONLY
-			dialogTitle = "Select a directory to save in"
-			fileFilter = bundledFileFilter
-			addChoosableFileFilter(dataFileFilter)
-			addChoosableFileFilter(bothFileFilter)
+	internal val picker: FileChooser by lazy {
+		object : FileChooser() {
+			init {
+				currentDirectory = attemptRememberDirectory(main, "lastSaveDirectory") ?: File(
+						System.getProperty("user.home"),
+						"Desktop")
+				fileSelectionMode = JFileChooser.FILES_ONLY
+				dialogTitle = "Select a directory to save in"
+				fileFilter = bundledFileFilter
+				addChoosableFileFilter(dataFileFilter)
+				addChoosableFileFilter(bothFileFilter)
+			}
 		}
 	}
 
@@ -204,17 +205,18 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 	override var title: String = "loadScreen.title"
 	override var bottomInstructions: String = "loadScreen.confirm"
 
-	@Volatile
-	internal var picker: FileChooser = object : FileChooser() {
-		init {
-			currentDirectory = attemptRememberDirectory(main, "lastLoadDirectory") ?: File(
-					System.getProperty("user.home"),
-					"Desktop")
-			fileSelectionMode = JFileChooser.FILES_ONLY
-			dialogTitle = "Select a remix file to load"
-			fileFilter = bothFileFilter
-			addChoosableFileFilter(bundledFileFilter)
-			addChoosableFileFilter(dataFileFilter)
+	internal val picker: FileChooser by lazy {
+		object : FileChooser() {
+			init {
+				currentDirectory = attemptRememberDirectory(main, "lastLoadDirectory") ?: File(
+						System.getProperty("user.home"),
+						"Desktop")
+				fileSelectionMode = JFileChooser.FILES_ONLY
+				dialogTitle = "Select a remix file to load"
+				fileFilter = bothFileFilter
+				addChoosableFileFilter(bundledFileFilter)
+				addChoosableFileFilter(dataFileFilter)
+			}
 		}
 	}
 

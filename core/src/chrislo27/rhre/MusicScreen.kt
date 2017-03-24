@@ -45,16 +45,18 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 		return false
 	}
 
-	@Volatile
-	private var picker: FileChooser = object : FileChooser() {
-		init {
-			val fileFilter = FileNameExtensionFilter(
-					"Supported sound files (.wav, .ogg, .mp3)", "wav", "ogg", "mp3")
+	private val picker: FileChooser by lazy {
+		object : FileChooser() {
+			init {
+				val fileFilter = FileNameExtensionFilter(
+						"Supported sound files (.wav, .ogg, .mp3)", "wav", "ogg", "mp3")
 
-			currentDirectory = attemptRememberDirectory(main, "lastMusicDirectory") ?: File(System.getProperty("user.home"), "Desktop")
-			fileSelectionMode = JFileChooser.FILES_ONLY
-			dialogTitle = "Select a music file"
-			setFileFilter(fileFilter)
+				currentDirectory = attemptRememberDirectory(main, "lastMusicDirectory") ?: File(
+						System.getProperty("user.home"), "Desktop")
+				fileSelectionMode = JFileChooser.FILES_ONLY
+				dialogTitle = "Select a music file"
+				setFileFilter(fileFilter)
+			}
 		}
 	}
 
@@ -94,11 +96,11 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 
 		main.biggerFont.data.setScale(0.5f)
 		main.biggerFont.draw(main.batch,
-					   Localization.get("musicScreen.volume", "\n${(es.editor.remix.musicVolume * 100).toInt()}"),
-					   startX + PADDING + BG_WIDTH * 0.65f,
-					   startY + BG_HEIGHT * 0.75f,
-					   BG_WIDTH * 0.35f - PADDING * 2,
-					   Align.left, true)
+							 Localization.get("musicScreen.volume", "\n${(es.editor.remix.musicVolume * 100).toInt()}"),
+							 startX + PADDING + BG_WIDTH * 0.65f,
+							 startY + BG_HEIGHT * 0.75f,
+							 BG_WIDTH * 0.35f - PADDING * 2,
+							 Align.left, true)
 		main.biggerFont.data.setScale(1f)
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("musicScreen.scroll"),

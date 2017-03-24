@@ -214,6 +214,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		Localization.instance().loadFromSettings(preferences)
 
+		println("BEFORE IONIUM CREATE")
 		super.create()
 
 		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
@@ -252,12 +253,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		AssetRegistry.instance().addAssetLoader(GameRegistry.newAssetLoader())
 
 		val reg = ScreenRegistry.instance()
+
 		reg.add("assetloading", LoadingScreen(this))
 		reg.add("editor", EditorScreen(this))
 		reg.add("tapalong", TapalongScreen(this))
 		reg.add("info", InfoScreen(this))
 		reg.add("music", MusicScreen(this))
 		reg.add("load", LoadScreen(this))
+
 		reg.add("save", SaveScreen(this))
 		reg.add("new", NewScreen(this))
 		reg.add("version", VersionScreen(this))

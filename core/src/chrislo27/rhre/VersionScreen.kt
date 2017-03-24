@@ -28,10 +28,12 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 	private var scrollAmount: Float = 0f
 	private var textHeight: Float = 0f
 
-	private val input = object : InputAdapter() {
-		override fun scrolled(amount: Int): Boolean {
-			scrollText(amount.toFloat())
-			return true
+	private val input by lazy {
+		object : InputAdapter() {
+			override fun scrolled(amount: Int): Boolean {
+				scrollText(amount.toFloat())
+				return true
+			}
 		}
 	}
 
@@ -40,7 +42,7 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 		scrollAmount = scrollAmount.coerceIn(0f, 1f)
 	}
 
-	private val formatter = DateTimeFormatter.ofPattern("MMM'.' d',' yyyy hh:mm a")
+	private val formatter by lazy{ DateTimeFormatter.ofPattern("MMM'.' d',' yyyy hh:mm a")}
 
 	override fun render(delta: Float) {
 		super.render(delta)

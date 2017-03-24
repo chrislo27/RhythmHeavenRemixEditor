@@ -19,19 +19,20 @@ class ScriptLoadingScreen(m: Main) : NewUIScreen(m) {
 	override var title: String = "scriptScreen.title"
 	override var bottomInstructions: String = "scriptScreen.instructions"
 
-	@Volatile
-	private var picker: FileChooser = object : FileChooser() {
-		init {
-			val fileFilter = FileNameExtensionFilter(
-					"Lua script file", "lua")
+	private val picker: FileChooser by lazy {
+		object : FileChooser() {
+			init {
+				val fileFilter = FileNameExtensionFilter(
+						"Lua script file", "lua")
 
-			val defLoc = Gdx.files.local("scripts/")
-			defLoc.mkdirs()
+				val defLoc = Gdx.files.local("scripts/")
+				defLoc.mkdirs()
 
-			currentDirectory = attemptRememberDirectory(main, "lastScriptDirectory") ?: defLoc.file()
-			fileSelectionMode = JFileChooser.FILES_ONLY
-			dialogTitle = "Select a music file"
-			setFileFilter(fileFilter)
+				currentDirectory = attemptRememberDirectory(main, "lastScriptDirectory") ?: defLoc.file()
+				fileSelectionMode = JFileChooser.FILES_ONLY
+				dialogTitle = "Select a music file"
+				setFileFilter(fileFilter)
+			}
 		}
 	}
 
