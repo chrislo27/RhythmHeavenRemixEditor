@@ -2,9 +2,11 @@ package chrislo27.rhre
 
 import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.editor.EditorStageSetup
+import chrislo27.rhre.track.PlayingState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.utils.Array
+import ionium.registry.AssetRegistry
 import ionium.screen.Updateable
 import ionium.stage.Stage
 
@@ -74,6 +76,12 @@ class EditorScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun hide() {
+		AssetRegistry.instance().stopAllMusic()
+		AssetRegistry.instance().stopAllSound()
+
+		editor.remix.music?.music?.stop()
+		editor.remix.setPlayingState(PlayingState.STOPPED)
+
 		if (Gdx.input.inputProcessor is InputMultiplexer && stage != null) {
 			Gdx.app.postRunnable {
 				val plex = Gdx.input.inputProcessor as InputMultiplexer
