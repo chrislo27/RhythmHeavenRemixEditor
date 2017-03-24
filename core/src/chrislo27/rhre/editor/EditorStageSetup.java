@@ -577,9 +577,8 @@ public class EditorStageSetup {
 							}
 						};
 
-						// TODO gson needed a class
 						example.writeString(
-								JsonHandler.toJson(po), false,
+								JsonHandler.toJson(po, PaletteObject.class), false,
 								"UTF-8");
 					}
 

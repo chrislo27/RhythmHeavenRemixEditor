@@ -15,6 +15,7 @@ import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
 import chrislo27.rhre.track.TempoChange;
+import chrislo27.rhre.util.JsonHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
@@ -32,7 +33,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.util.DebugSetting;
@@ -765,7 +765,7 @@ public class Editor extends InputAdapter implements Disposable {
 				sibling.file().createNewFile();
 
 				if (extension.equals("rhre2")) {
-					sibling.writeString(new Gson().toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
+					sibling.writeString(JsonHandler.toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
 				} else {
 					ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(sibling.file()));
 

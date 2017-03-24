@@ -1,6 +1,6 @@
 package chrislo27.rhre.version
 
-import com.google.gson.Gson
+import chrislo27.rhre.util.JsonHandler
 import ionium.templates.Main
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -32,7 +32,7 @@ object VersionChecker {
 		try {
 			Main.logger.info("Getting version from $url...")
 			val nano = System.nanoTime()
-			releaseObject = Gson().fromJson(khttp.get(url).text, ReleaseObject::class.java)
+			releaseObject = JsonHandler.fromJson(khttp.get(url).text, ReleaseObject::class.java)
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
 			val isSame: Boolean = release.tag_name == Main.version
