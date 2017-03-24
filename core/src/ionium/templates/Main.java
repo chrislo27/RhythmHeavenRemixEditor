@@ -177,14 +177,16 @@ public abstract class Main extends Game {
 
 		this.setScreen(getAssetLoadingScreenToUse());
 
-		new Thread("version checker") {
+		Thread t = new Thread("version checker") {
 
 			@Override
 			public void run() {
 				VersionGetter.instance().getVersionFromServer();
 				persistentDebugStrings.clear();
 			}
-		}.start();
+		};
+		t.setDaemon(true);
+		t.start();
 	}
 
 	public void prepareStates() {
