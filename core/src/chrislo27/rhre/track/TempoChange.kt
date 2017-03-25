@@ -78,6 +78,14 @@ class TempoChanges(val defTempo: Float = 120f) {
 		return tc.beat + BpmUtils.secondsToBeats(seconds - tc.seconds, tc.tempo)
 	}
 
+	fun copy(): TempoChanges {
+		val new = TempoChanges(this.defTempo)
+
+		this.beatMap.forEach { new.add(it.value.copy(tc = new)) }
+
+		return new
+	}
+
 }
 
 object BpmUtils {

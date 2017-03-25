@@ -11,6 +11,8 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
+import chrislo27.rhre.track.ActionDeleteEntities;
+import chrislo27.rhre.track.ActionSplitPattern;
 import chrislo27.rhre.track.PlayingState;
 import chrislo27.rhre.track.Remix;
 import chrislo27.rhre.track.Semitones;
@@ -33,7 +35,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Disposable;
-import com.google.gson.GsonBuilder;
 import ionium.registry.AssetRegistry;
 import ionium.util.DebugSetting;
 import ionium.util.MathHelper;
@@ -73,6 +74,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final List<InspectionType> highlightedInspections = new ArrayList<>();
 	private final GlyphLayout glyphLayout = new GlyphLayout();
+	private final Map<Series, Scroll> scrolls = new HashMap<>();
+	private final Vector3 cameraPickVec3 = new Vector3();
 	public String status;
 	public Tool currentTool = Tool.NORMAL;
 	public Remix remix;
@@ -80,7 +83,6 @@ public class Editor extends InputAdapter implements Disposable {
 	public float autosaveMessageShow = 0f;
 	public boolean isNormalSave = false;
 	float snappingInterval;
-	private final Map<Series, Scroll> scrolls = new HashMap<>();
 	private Series currentSeries = Series.TENGOKU;
 	/**
 	 * null = not selecting
@@ -90,7 +92,6 @@ public class Editor extends InputAdapter implements Disposable {
 	 * null = not dragging
 	 */
 	private SelectionGroup selectionGroup = null;
-	private final Vector3 cameraPickVec3 = new Vector3();
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
@@ -252,10 +253,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 				float start = remix.getTempoChanges().beatsToSeconds(remix.getPlaybackStart());
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
-						String.format("%1$02d:%2$02.3f", (int) (Math.abs(start) / 60),
-								Math.abs(start) % 60)),
+						String.format("%1$02d:%2$02.3f", (int) (Math.abs(start) / 60), Math.abs(start) % 60)),
 						remix.getPlaybackStart() * Entity.Companion.getPX_WIDTH() + 4,
-						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) - (main.getFontBordered().getCapHeight() * 6));
+						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 2) -
+								(main.getFontBordered().getCapHeight() * 6));
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -844,7 +845,7 @@ public class Editor extends InputAdapter implements Disposable {
 						});
 
 						pattern.setCues(cues.toArray(new GameObject.PatternObject.CueObject[cues.size()]));
-						System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(pattern) + "\n\n");
+						System.out.println(JsonHandler.toJson(pattern) + "\n\n");
 					}
 				} else {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
@@ -1040,7 +1041,8 @@ public class Editor extends InputAdapter implements Disposable {
 				if (remix.getSelection().size() > 0) {
 					if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
 							Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
-						remix.getEntities().removeAll(remix.getSelection());
+//						remix.getEntities().removeAll(remix.getSelection());
+						remix.mutate(new ActionDeleteEntities(remix.getSelection()));
 						remix.getSelection().clear();
 					}
 				}
@@ -1099,17 +1101,20 @@ public class Editor extends InputAdapter implements Disposable {
 				if (e instanceof PatternEntity) {
 					PatternEntity pe = (PatternEntity) e;
 
-					pe.getInternal().forEach(se -> {
-						se.getBounds().x += pe.getBounds().x;
-						se.getBounds().y += pe.getBounds().y;
-
-						remix.getEntities().add(se);
-					});
-
-					remix.getEntities().remove(pe);
+					remix.mutate(new ActionSplitPattern(pe));
 					selectionGroup = null;
 					remix.getSelection().clear();
 				}
+			}
+		}
+
+		if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+			if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+				System.out.println("undo: " + remix.undo());
+			}
+
+			if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+				System.out.println("redo: " + remix.redo());
 			}
 		}
 	}
@@ -1294,7 +1299,11 @@ public class Editor extends InputAdapter implements Disposable {
 								selectionGroup.getList().stream().anyMatch(e -> e.getBounds().y < 0);
 
 						if (delete) {
-							remix.getEntities().removeAll(selectionGroup.getList());
+							if (selectionGroup.getDeleteInstead()) {
+								remix.getEntities().removeAll(selectionGroup.getList());
+							} else {
+								remix.mutate(new ActionDeleteEntities(selectionGroup.getList()));
+							}
 							remix.getSelection().clear();
 						} else {
 							for (int i = 0; i < selectionGroup.getList().size(); i++) {

@@ -6,6 +6,7 @@ import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
 import chrislo27.rhre.inspections.Inspections
 import chrislo27.rhre.json.persistent.RemixObject
+import chrislo27.rhre.oopsies.ActionHistory
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.script.luaobj.LuaRemix
@@ -29,7 +30,7 @@ import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 
 
-class Remix {
+class Remix : ActionHistory<Remix>() {
 
 	val entities: MutableList<Entity> = mutableListOf()
 	val selection: MutableList<Entity> = mutableListOf()
@@ -444,6 +445,25 @@ class Remix {
 		if (playingState == PlayingState.PLAYING && beat >= endTime)
 			setPlayingState(PlayingState.STOPPED)
 	}
+
+	fun copy(): Remix {
+		val new = Remix()
+
+		entities.forEach { new.entities.add(it.copy()) }
+		println(new.entities.size)
+
+		new.music = this.music?.copy(music = Gdx.audio.newMusic(this.music?.file), file = this.music!!.file)
+		new.playbackStart = this.playbackStart
+		new.musicStartTime = musicStartTime
+		new.musicVolume = this.musicVolume
+		new.tempoChanges = this.tempoChanges.copy()
+
+		new.updateDurationAndCurrentGame()
+
+		return new
+	}
+
+
 
 }
 
