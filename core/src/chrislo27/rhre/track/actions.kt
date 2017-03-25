@@ -121,3 +121,27 @@ class ActionSplitPattern(val pattern: PatternEntity) : ReversibleAction<Remix> {
 	}
 
 }
+
+class ActionMovePlaybackTracker(val old: Float, val new: Float) : ReversibleAction<Remix> {
+
+	override fun redo(context: Remix) {
+		context.playbackStart = new
+	}
+
+	override fun undo(context: Remix) {
+		context.playbackStart = old
+	}
+
+}
+
+class ActionMoveMusicTracker(val old: Float, val new: Float) : ReversibleAction<Remix> {
+
+	override fun redo(context: Remix) {
+		context.musicStartTime = new
+	}
+
+	override fun undo(context: Remix) {
+		context.musicStartTime = old
+	}
+
+}

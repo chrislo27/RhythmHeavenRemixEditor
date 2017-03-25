@@ -92,6 +92,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private TempoChange selectedTempoChange;
 	private float timeUntilAutosave = AUTOSAVE_PERIOD;
 	private boolean didMoveCamera = false;
+	private int trackerMoving = 0; // 0 - none, 1 - playback, 2 - music
+	private float lastTrackerPos = 0f;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -906,23 +908,43 @@ public class Editor extends InputAdapter implements Disposable {
 						Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys
 								.SHIFT_RIGHT);
 
-				if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
+				if ((trackerMoving == 0 || trackerMoving == 1) && Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
 						!(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
 								Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT))) {
+					if (trackerMoving != 1) {
+						trackerMoving = 1;
+						lastTrackerPos = remix.getPlaybackStart();
+					}
 					remix.setPlaybackStart(vec3Tmp2.x);
 					if (!shift) {
 						remix.setPlaybackStart(MathHelper.snapToNearest(remix.getPlaybackStart(), snappingInterval));
 					}
-				}
-
-				if (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
-						(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
-								(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
-										Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) && !didMoveCamera)) {
+				} else if ((trackerMoving == 0 || trackerMoving == 2) &&
+						(Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
+								(Gdx.input.isButtonPressed(Input.Buttons.RIGHT) &&
+										(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+												Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) && !didMoveCamera)
+						)) {
+					if (trackerMoving != 2) {
+						trackerMoving = 2;
+						lastTrackerPos = remix.getMusicStartTime();
+					}
 					remix.setMusicStartTime(remix.getTempoChanges().beatsToSeconds(vec3Tmp2.x));
 					if (!shift) {
 						remix.setMusicStartTime(remix.getTempoChanges()
 								.beatsToSeconds(MathHelper.snapToNearest(vec3Tmp2.x, snappingInterval)));
+					}
+				} else {
+					if (trackerMoving != 0) {
+						if (trackerMoving == 1) {
+							remix.addActionWithoutMutating(
+									new ActionMovePlaybackTracker(lastTrackerPos, remix.getPlaybackStart()));
+						} else if (trackerMoving == 2) {
+							remix.addActionWithoutMutating(
+									new ActionMoveMusicTracker(lastTrackerPos, remix.getMusicStartTime()));
+						}
+
+						trackerMoving = 0;
 					}
 				}
 			}
