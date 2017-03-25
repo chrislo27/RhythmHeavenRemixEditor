@@ -4,13 +4,18 @@ import java.util.*
 
 /**
  * Supports undoing and redoing on this instance.
+ * @param maxItems Max items, <= 0 is infinite
  * @param SELF The real impl
  */
 @Suppress("UNCHECKED_CAST")
-open class ActionHistory<SELF : ActionHistory<SELF>> {
+open class ActionHistory<SELF : ActionHistory<SELF>>(val maxItems: Int = 128) {
 
-	private val undos: Deque<ReversibleAction<SELF>> = ArrayDeque()
-	private val redos: Deque<ReversibleAction<SELF>> = ArrayDeque()
+	private fun createDeque(): Deque<ReversibleAction<SELF>> {
+		return ArrayDeque()
+	}
+
+	private val undos: Deque<ReversibleAction<SELF>> = createDeque()
+	private val redos: Deque<ReversibleAction<SELF>> = createDeque()
 
 	/**
 	 * Mutate this object, adding the action on the undo stack, and clearing all redos.
@@ -27,6 +32,18 @@ open class ActionHistory<SELF : ActionHistory<SELF>> {
 	fun addActionWithoutMutating(action: ReversibleAction<SELF>) {
 		redos.clear()
 		undos.push(action)
+	}
+
+	fun ensureCapacity() {
+		if (maxItems > 0) {
+			if (undos.size > maxItems) {
+				undos.removeLast()
+			}
+
+			if (redos.size > maxItems) {
+				redos.removeLast()
+			}
+		}
 	}
 
 	fun undo(): Boolean {
