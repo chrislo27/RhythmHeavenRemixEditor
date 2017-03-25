@@ -164,7 +164,8 @@ public class EditorStageSetup {
 					if (this.stage.isMouseOver(this)) {
 						main.getFont().getData().setScale(0.5f);
 
-						String text = Localization.instance().getCurrentBundle().getLocale().getName() + "\n" + Localization.get("editor.translationsmaynotbeaccurate");
+						String text = Localization.instance().getCurrentBundle().getLocale().getName() + "\n" +
+								Localization.get("editor.translationsmaynotbeaccurate");
 						float width = Utils.getWidth(main.getFont(), text);
 						float height = Utils.getHeight(main.getFont(), text);
 
@@ -204,6 +205,22 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
 					getPalette().labelFont.getData().setScale(1);
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.fullscreen");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() + this.getWidth() + PADDING,
+								this.getY() - (PADDING * 3) - height, -(width + PADDING * 2), height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX() + this.getWidth(), this.getY() - PADDING * 2, 0,
+								Align.right, false);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+					}
 				}
 			};
 
@@ -238,6 +255,22 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
 					getPalette().labelFont.getData().setScale(1);
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.reset");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() + this.getWidth() + PADDING,
+								this.getY() - (PADDING * 3) - height, -(width + PADDING * 2), height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX() + this.getWidth(), this.getY() - PADDING * 2, 0,
+								Align.right, false);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+					}
 				}
 			};
 
@@ -533,6 +566,97 @@ public class EditorStageSetup {
 		}
 
 		{
+			ImageButton scripting = new ImageButton(stage, palette,
+					new TextureRegion(AssetRegistry.getTexture("ui_script"))) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					main.setScreen(ScreenRegistry.get("script"));
+				}
+			};
+
+			scripting.getColor().set(0.1f, 0.1f, 0.1f, 1f);
+			stage.addActor(scripting).align(Align.topLeft)
+					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 4, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
+			ImageButton undo = new ImageButton(stage, palette,
+					AssetRegistry.getAtlasRegion("ionium_ui-icons", "back")) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					screen.getEditor().remix.undo();
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
+
+					this.setEnabled(screen.getEditor().remix.canUndo());
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.undo");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() - PADDING, this.getY() - (PADDING * 3) - height,
+								width + PADDING * 2, height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX(), this.getY() - PADDING * 2);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+					}
+				}
+			};
+
+			undo.getColor().set(0.1f, 0.1f, 0.1f, 1f);
+			stage.addActor(undo).align(Align.topLeft)
+					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 5, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+
+			TextureRegion tex = new TextureRegion(AssetRegistry.getAtlasRegion("ionium_ui-icons", "back"));
+			tex.flip(true, false);
+			ImageButton redo = new ImageButton(stage, palette, tex) {
+				@Override
+				public void onClickAction(float x, float y) {
+					super.onClickAction(x, y);
+
+					screen.getEditor().remix.redo();
+				}
+
+				@Override
+				public void render(SpriteBatch batch, float alpha) {
+					super.render(batch, alpha);
+
+					this.setEnabled(screen.getEditor().remix.canRedo());
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.redo");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() - PADDING, this.getY() - (PADDING * 3) - height,
+								width + PADDING * 2, height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX(), this.getY() - PADDING * 2);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+					}
+				}
+			};
+
+			redo.getColor().set(0.1f, 0.1f, 0.1f, 1f);
+			stage.addActor(redo).align(Align.topLeft)
+					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 6, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+		}
+
+		{
 			TextButton paletteSwap = new TextButton(stage, palette, "editor.button.paletteSwap") {
 				private final List<AbstractPalette> palettes = new ArrayList<>();
 
@@ -577,9 +701,7 @@ public class EditorStageSetup {
 							}
 						};
 
-						example.writeString(
-								JsonHandler.toJson(po, PaletteObject.class), false,
-								"UTF-8");
+						example.writeString(JsonHandler.toJson(po, PaletteObject.class), false, "UTF-8");
 					}
 
 					if (folder.exists() && folder.isDirectory()) {
@@ -590,8 +712,8 @@ public class EditorStageSetup {
 						Arrays.stream(list).forEach(fh -> {
 							Main.logger.info("Loading palette " + fh.name());
 
-							palettes.add(PaletteUtils
-									.getPaletteFromObject(JsonHandler.fromJson(fh.readString("UTF-8"), PaletteObject.class)));
+							palettes.add(PaletteUtils.getPaletteFromObject(
+									JsonHandler.fromJson(fh.readString("UTF-8"), PaletteObject.class)));
 
 							Main.logger.info("Loaded palette " + fh.name());
 						});
@@ -631,7 +753,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(paletteSwap).align(Align.topLeft)
-					.setPixelOffset(PADDING * 5 + BUTTON_HEIGHT * 4, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
@@ -653,7 +775,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(tapalong).align(Align.topLeft)
-					.setPixelOffset(PADDING * 6 + BUTTON_HEIGHT * 7, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 9 + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 3, BUTTON_HEIGHT);
 		}
 
 		{
@@ -681,22 +803,7 @@ public class EditorStageSetup {
 			};
 
 			stage.addActor(inspections).align(Align.topLeft)
-					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 10, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
-		}
-
-		{
-			ImageButton scripting = new ImageButton(stage, palette, new TextureRegion(AssetRegistry.getTexture("ui_script"))) {
-				@Override
-				public void onClickAction(float x, float y) {
-					super.onClickAction(x, y);
-
-					main.setScreen(ScreenRegistry.get("script"));
-				}
-			};
-
-			scripting.getColor().set(0.1f, 0.1f, 0.1f, 1f);
-			stage.addActor(scripting).align(Align.topLeft)
-					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT, BUTTON_HEIGHT);
+					.setPixelOffset(PADDING * 10 + BUTTON_HEIGHT * 13, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
 		}
 
 		{
