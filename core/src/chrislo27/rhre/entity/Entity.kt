@@ -23,8 +23,8 @@ abstract class Entity(val remix: Remix) {
 
 	}
 
-	open fun adjustPitch(semitoneChange: Int, min: Int, max: Int) {
-
+	open fun adjustPitch(semitoneChange: Int, min: Int, max: Int): Boolean {
+		return false
 	}
 
 	abstract val name: String

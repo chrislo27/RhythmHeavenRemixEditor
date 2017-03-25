@@ -56,8 +56,11 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		return cue.attemptLoadSounds()
 	}
 
-	override fun adjustPitch(semitoneChange: Int, min: Int, max: Int) {
+	override fun adjustPitch(semitoneChange: Int, min: Int, max: Int): Boolean {
+		val old = semitone
 		semitone = MathUtils.clamp(semitone + semitoneChange, min, max)
+
+		return semitone == old
 	}
 
 	override fun copy(): SoundEntity {

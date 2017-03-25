@@ -79,6 +79,20 @@ class ActionEditEntityBounds : ReversibleAction<Remix> {
 
 }
 
+class ActionPitchChange(val old: IntArray, val entities: List<Entity>) : ReversibleAction<Remix> {
+
+	private val current: IntArray = entities.map { it.semitone }.toIntArray()
+
+	override fun redo(context: Remix) {
+		entities.forEachIndexed { i, it -> it.adjustPitch(current[i] - it.semitone, Int.MIN_VALUE, Int.MAX_VALUE) }
+	}
+
+	override fun undo(context: Remix) {
+		entities.forEachIndexed { i, it -> it.adjustPitch(old[i] - it.semitone, Int.MIN_VALUE, Int.MAX_VALUE) }
+	}
+
+}
+
 class ActionSplitPattern(val pattern: PatternEntity) : ReversibleAction<Remix> {
 
 	val splitResults = mutableListOf<Entity>()

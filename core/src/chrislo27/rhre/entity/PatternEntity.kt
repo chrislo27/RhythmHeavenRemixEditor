@@ -107,7 +107,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		}
 	}
 
-	override fun adjustPitch(semitoneChange: Int, min: Int, max: Int) {
+	override fun adjustPitch(semitoneChange: Int, min: Int, max: Int): Boolean {
 		val original = IntArray(internal.size)
 		val originalSt = semitone
 		for (i in internal.indices) {
@@ -115,6 +115,8 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		}
 
 		semitone += semitoneChange
+
+		var changed = false
 
 		for (se in internal) {
 			se.semitone += semitoneChange
@@ -125,9 +127,15 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 				}
 				semitone = originalSt
 
+				changed = false
+
 				break
+			} else {
+				changed = true
 			}
 		}
+
+		return changed
 	}
 
 	override fun copy(): PatternEntity {
