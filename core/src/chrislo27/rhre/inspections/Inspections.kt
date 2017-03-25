@@ -19,7 +19,7 @@ class Inspections(val remix: Remix) {
 
 		remix.entities
 				.filter {
-					it.inspectionFunctions != null
+					it.inspectionFunctions.isNotEmpty()
 				}
 				.forEach { entity ->
 					entity.inspectionFunctions.forEach {
