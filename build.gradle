@@ -58,7 +58,6 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.google.code.gson:gson:2.7"
-        compile "commons-io:commons-io:2.5"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 //        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14"
         compile "khttp:khttp:0.1.0"

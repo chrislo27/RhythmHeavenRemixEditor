@@ -18,7 +18,6 @@ object Credits {
 			"creditsgame" to "ahemtoday, Serena Strawberry, mistuh_salmon. chrislo27",
 			"technologies" to """[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games, LWJGL
 KHttp
-Apache Commons IO
 Gson
 LuaJ
 [#FF8900]Kotlin[] by JetBrains
