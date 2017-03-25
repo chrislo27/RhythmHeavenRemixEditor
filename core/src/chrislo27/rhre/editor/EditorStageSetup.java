@@ -588,7 +588,8 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					screen.getEditor().remix.undo();
+					if (screen.getEditor().remix.getPlayingState() == PlayingState.STOPPED)
+						screen.getEditor().remix.undo();
 				}
 
 				@Override
@@ -625,7 +626,8 @@ public class EditorStageSetup {
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
 
-					screen.getEditor().remix.redo();
+					if (screen.getEditor().remix.getPlayingState() == PlayingState.STOPPED)
+						screen.getEditor().remix.redo();
 				}
 
 				@Override
