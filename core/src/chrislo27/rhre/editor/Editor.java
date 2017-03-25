@@ -11,12 +11,7 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
-import chrislo27.rhre.track.ActionDeleteEntities;
-import chrislo27.rhre.track.ActionSplitPattern;
-import chrislo27.rhre.track.PlayingState;
-import chrislo27.rhre.track.Remix;
-import chrislo27.rhre.track.Semitones;
-import chrislo27.rhre.track.TempoChange;
+import chrislo27.rhre.track.*;
 import chrislo27.rhre.util.JsonHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -1322,6 +1317,17 @@ public class Editor extends InputAdapter implements Disposable {
 							selectionGroup.getList().get(0)
 									.onLengthChange(selectionGroup.getOldPositions().get(0).width);
 						}
+
+						if (selectionGroup.getDeleteInstead()) {
+							// new entities, send action
+							remix.addActionWithoutMutating(new ActionAddEntities(selectionGroup.getList()));
+						} else {
+							// move action
+							remix.addActionWithoutMutating(new ActionEditEntityBounds(selectionGroup));
+						}
+
+						remix.updateDurationAndCurrentGame();
+						remix.getInspections().refresh();
 					}
 
 					selectionGroup = null;

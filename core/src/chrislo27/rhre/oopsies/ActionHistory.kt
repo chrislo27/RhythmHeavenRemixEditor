@@ -16,10 +16,17 @@ open class ActionHistory<SELF : ActionHistory<SELF>> {
 	 * Mutate this object, adding the action on the undo stack, and clearing all redos.
 	 */
 	fun mutate(action: ReversibleAction<SELF>) {
-		redos.clear()
-		undos.push(action)
+		addActionWithoutMutating(action)
 
 		action.redo(this as SELF)
+	}
+
+	/**
+	 * Adds an action without calling the redo method of the action.
+	 */
+	fun addActionWithoutMutating(action: ReversibleAction<SELF>) {
+		redos.clear()
+		undos.push(action)
 	}
 
 	fun undo(): Boolean {
