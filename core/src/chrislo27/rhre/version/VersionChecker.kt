@@ -43,7 +43,7 @@ object VersionChecker {
 					else
 						VersionState.AVAILABLE
 
-			if (Main.version.matches("v(?:.+)-(snapshot|alpha|beta|rc).*".toRegex(RegexOption.IGNORE_CASE))) {
+			if (Main.version.matches("v(?:.+)-.*".toRegex(RegexOption.IGNORE_CASE))) {
 				shouldShowOnInit = false
 			}
 
