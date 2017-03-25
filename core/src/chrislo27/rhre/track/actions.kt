@@ -145,3 +145,50 @@ class ActionMoveMusicTracker(val old: Float, val new: Float) : ReversibleAction<
 	}
 
 }
+
+class ActionAddTempoChange(val tc: TempoChange) : ReversibleAction<Remix> {
+
+	override fun redo(context: Remix) {
+		context.tempoChanges.add(tc.copy(tc = context.tempoChanges))
+		context.updateDurationAndCurrentGame()
+	}
+
+	override fun undo(context: Remix) {
+		context.tempoChanges.remove(tc)
+		context.updateDurationAndCurrentGame()
+	}
+
+}
+
+class ActionRemoveTempoChange(val tc: TempoChange) : ReversibleAction<Remix> {
+
+	override fun redo(context: Remix) {
+		context.tempoChanges.remove(tc)
+		context.updateDurationAndCurrentGame()
+	}
+
+	override fun undo(context: Remix) {
+		context.tempoChanges.add(tc.copy(tc = context.tempoChanges))
+		context.updateDurationAndCurrentGame()
+	}
+
+}
+
+class ActionChangeTempoChange(val tc: TempoChange, val old: Float,
+							  val new: Float = tc.tempo) : ReversibleAction<Remix> {
+
+	override fun redo(context: Remix) {
+		context.tempoChanges.remove(tc)
+		context.tempoChanges.add(TempoChange(tc.beat, new, context.tempoChanges))
+
+		context.updateDurationAndCurrentGame()
+	}
+
+	override fun undo(context: Remix) {
+		context.tempoChanges.remove(tc)
+		context.tempoChanges.add(TempoChange(tc.beat, old, context.tempoChanges))
+
+		context.updateDurationAndCurrentGame()
+	}
+
+}

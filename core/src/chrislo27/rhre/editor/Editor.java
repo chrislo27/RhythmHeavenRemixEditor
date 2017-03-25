@@ -1098,7 +1098,7 @@ public class Editor extends InputAdapter implements Disposable {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 
-					remix.getTempoChanges().add(tc);
+					remix.mutate(new ActionAddTempoChange(tc));
 				}
 			} else if (selectedTempoChange != null) {
 				if (Utils.isButtonJustPressed(Input.Buttons.LEFT)) {
@@ -1106,7 +1106,7 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 
 				if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
-					remix.getTempoChanges().remove(selectedTempoChange);
+					remix.mutate(new ActionRemoveTempoChange(selectedTempoChange));
 				}
 			}
 		} else if (currentTool == Tool.SPLIT_PATTERN) {
@@ -1127,11 +1127,11 @@ public class Editor extends InputAdapter implements Disposable {
 
 		if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
-				System.out.println("undo: " + remix.undo());
+				remix.undo();
 			}
 
 			if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-				System.out.println("redo: " + remix.redo());
+				remix.redo();
 			}
 		}
 	}
@@ -1397,6 +1397,7 @@ public class Editor extends InputAdapter implements Disposable {
 				}
 			} else if (currentTool == Tool.BPM) {
 				if (selectedTempoChange != null) {
+					float old = selectedTempoChange.getTempo();
 					float newTempo = MathUtils.clamp(selectedTempoChange.getTempo() + -amount *
 							(Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
 									Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT) ? 5 : 1) *
@@ -1407,10 +1408,9 @@ public class Editor extends InputAdapter implements Disposable {
 						TempoChange tc = new TempoChange(selectedTempoChange.getBeat(), newTempo,
 								remix.getTempoChanges());
 
-						remix.getTempoChanges().remove(selectedTempoChange);
-						selectedTempoChange = null;
+						remix.mutate(new ActionChangeTempoChange(tc, old, newTempo));
 
-						remix.getTempoChanges().add(tc);
+						selectedTempoChange = null;
 					}
 				}
 			}
