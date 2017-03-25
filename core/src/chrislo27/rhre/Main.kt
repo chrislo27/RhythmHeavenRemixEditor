@@ -146,7 +146,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.9.0"
+		ionium.templates.Main.version = "v2.10.0-SNAPSHOT"
 
 		SysOutPiper.pipe()
 
