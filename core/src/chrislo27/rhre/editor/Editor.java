@@ -1302,6 +1302,11 @@ public class Editor extends InputAdapter implements Disposable {
 							if (selectionGroup.getDeleteInstead()) {
 								remix.getEntities().removeAll(selectionGroup.getList());
 							} else {
+								// reset positions so undo works correctly
+								for (int i = 0; i < selectionGroup.getList().size(); i++) {
+									Entity e = selectionGroup.getList().get(i);
+									e.getBounds().set(selectionGroup.getOldPositions().get(i));
+								}
 								remix.mutate(new ActionDeleteEntities(selectionGroup.getList()));
 							}
 							remix.getSelection().clear();
