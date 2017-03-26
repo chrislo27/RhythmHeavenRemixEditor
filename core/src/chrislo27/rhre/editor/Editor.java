@@ -183,7 +183,7 @@ public class Editor extends InputAdapter implements Disposable {
 				Main.fillRect(batch, x * Entity.Companion.getPX_WIDTH(), yOffset, 2,
 						TRACK_COUNT * Entity.Companion.getPX_HEIGHT());
 
-				if (selectionGroup != null && beatInside == x) {
+				if ((selectionGroup != null || trackerMoving > 0) && beatInside == x) {
 					final int numOfLines = ((int) (1 / snappingInterval));
 					for (int i = 0; i < numOfLines; i++) {
 						float a = 0.75f;
