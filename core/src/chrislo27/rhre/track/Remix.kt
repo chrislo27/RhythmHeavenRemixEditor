@@ -10,7 +10,6 @@ import chrislo27.rhre.oopsies.ActionHistory
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.script.luaobj.LuaRemix
-import chrislo27.rhre.visual.VisualRegistry
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
@@ -430,16 +429,8 @@ class Remix : ActionHistory<Remix>() {
 			}
 
 			if (!atLeastOne) {
-				if (currentGame != null) {
-					val renderer = VisualRegistry.map[currentGame!!.id]
-					renderer?.onEnd(this)
-				}
 				currentGame = (entities
 						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && it.game.id != "countIn" } as HasGame?)?.game
-				if (currentGame != null) {
-					val renderer = VisualRegistry.map[currentGame!!.id]
-					renderer?.onStart(this)
-				}
 			}
 		}
 
