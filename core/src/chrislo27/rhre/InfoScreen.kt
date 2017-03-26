@@ -9,18 +9,13 @@ import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.transition.BlankTransition
 import ionium.transition.Fade
-import ionium.util.DebugSetting
-import ionium.util.MathHelper
 import ionium.util.Utils
 import ionium.util.i18n.Localization
-import ionium.util.render.TexturedQuad
 
 class InfoScreen(m: Main) : NewUIScreen(m) {
 	override var icon: String = "ui_info"
@@ -42,29 +37,6 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 
 		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
 		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
-
-		if (DebugSetting.debug) {
-			val tex: Texture = AssetRegistry.getTexture("ptr_whole")
-			val originX = main.camera.viewportWidth * 0.5f - tex.width * 0.5f
-			val originY = 128f
-			val adjust = (MathHelper.getTriangleWave(0.75f) - 0.5f) / 0.5f
-			// hat
-			// 59, 421, 186, 133
-			TexturedQuad.renderQuad(main.batch, tex,
-									originX + 59, originY + 288,
-									originX + 59 + 186, originY + 288,
-									originX + 59 + 186 + adjust * 16, originY + 288 + 133,
-									originX + 59 + adjust * 16, originY + 288 + 133,
-									(59f) / tex.width, (5f) / tex.height,
-									(59f + 186f) / tex.width, (133f) / tex.height)
-			TexturedQuad.renderQuad(main.batch, tex,
-									originX, originY,
-									originX + tex.width, originY,
-									originX + tex.width, originY + tex.height - 133,
-									originX, originY + tex.height - 133,
-									0f, (5f + 133f) / tex.height,
-									1f, 1f)
-		}
 
 		val url = "https://github.com/chrislo27/RhythmHeavenRemixEditor2"
 		val urlLength = Utils.getWidth(main.font, url)
