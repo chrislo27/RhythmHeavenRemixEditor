@@ -20,6 +20,7 @@ object Credits {
 KHttp
 Gson
 LuaJ
+Apache Commons IO
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
 [#000007F]Lua[]
