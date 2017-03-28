@@ -35,6 +35,7 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         maven { url "http://jcenter.bintray.com/" }
         maven { url "https://kotlin.bintray.com/kotlinx/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -63,6 +64,7 @@ project(":core") {
 //        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14"
         compile "khttp:khttp:0.1.0"
         compile "org.luaj:luaj-jse:3.0.1"
+        compile "com.github.orsjb:beads:29d342e"
         compile "com.github.axet:vget:1.2.6"
 //        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
     }
