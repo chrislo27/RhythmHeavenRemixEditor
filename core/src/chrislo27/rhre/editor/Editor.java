@@ -102,7 +102,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		remix = new Remix();
 
-		for (Series s : Series.values())
+		for (Series s : Series.values)
 			scrolls.put(s, new Scroll(0, 0));
 		snappingInterval = 0.25f;
 	}
@@ -422,9 +422,9 @@ public class Editor extends InputAdapter implements Disposable {
 							.viewportWidth,
 					EditorStageSetup.BAR_HEIGHT);
 			// series buttons
-			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values().length * GAME_ICON_SIZE,
+			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values.length * GAME_ICON_SIZE,
 					OVERVIEW_HEIGHT);
-			for (int i = 0; i < Series.values().length; i++) {
+			for (int i = 0; i < Series.values.length; i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
 						OVERVIEW_HEIGHT, 1);
@@ -437,15 +437,15 @@ public class Editor extends InputAdapter implements Disposable {
 					Align.left);
 
 			// series buttons
-			for (int i = 0; i < Series.values().length; i++) {
-//				main.font.draw(batch, Series.values()[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
+			for (int i = 0; i < Series.values.length; i++) {
+//				main.font.draw(batch, Series.values[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
 //						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
 //						0, Align.center, false);
 
-				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values()[i].name()), i * GAME_ICON_SIZE,
+				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values[i].name()), i * GAME_ICON_SIZE,
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
-				if (Series.values()[i] == currentSeries) {
+				if (Series.values[i] == currentSeries) {
 					batch.setColor(1, 1, 1, 1);
 					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
 							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
@@ -528,19 +528,19 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			batch.setColor(0, 0, 0, 0.5f);
 			Main.fillRect(batch, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT,
-					-Tool.values().length * GAME_ICON_SIZE, OVERVIEW_HEIGHT);
-			final float start = main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE;
-			for (int i = 0; i < Tool.values().length; i++) {
+					-Tool.values.length * GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+			final float start = main.camera.viewportWidth - Tool.values.length * GAME_ICON_SIZE;
+			for (int i = 0; i < Tool.values.length; i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, start + i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
 						OVERVIEW_HEIGHT, 1);
 				batch.setColor(1, 1, 1, 1);
 
-				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values()[i].name()), start + i *
+				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values[i].name()), start + i *
 								GAME_ICON_SIZE,
 						PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
-				if (Tool.values()[i] == currentTool) {
+				if (Tool.values[i] == currentTool) {
 					batch.setColor(1, 1, 1, 1);
 					batch.draw(AssetRegistry.getTexture("icon_selector_fever"), start + i * GAME_ICON_SIZE,
 							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
@@ -636,9 +636,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// minimap
 		{
-			final float startX = Series.values().length * GAME_ICON_SIZE;
+			final float startX = Series.values.length * GAME_ICON_SIZE;
 			final float startY = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT;
-			final float mapWidth = main.camera.viewportWidth - (startX + Tool.values().length * GAME_ICON_SIZE);
+			final float mapWidth = main.camera.viewportWidth - (startX + Tool.values.length * GAME_ICON_SIZE);
 			final float duration = Math.max(remix.getDuration(), remix.getEndTime());
 			final float ENTITY_WIDTH = duration == 0 ? mapWidth : mapWidth / duration;
 			final float ENTITY_HEIGHT = (OVERVIEW_HEIGHT / TRACK_COUNT);
@@ -1045,9 +1045,9 @@ public class Editor extends InputAdapter implements Disposable {
 						}
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
-						if (i < Series.values().length && i >= 0) {
+						if (i < Series.values.length && i >= 0) {
 							status +=
-									" - " + Localization.get("editor.lookingAt", Series.values()[i].getLocalizedName
+									" - " + Localization.get("editor.lookingAt", Series.values[i].getLocalizedName
 											());
 						}
 					}
@@ -1197,18 +1197,18 @@ public class Editor extends InputAdapter implements Disposable {
 			} else if (main.getInputY() >=
 					main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
 				// series
-				if (main.getInputX() <= Series.values().length * GAME_ICON_SIZE) {
+				if (main.getInputX() <= Series.values.length * GAME_ICON_SIZE) {
 					int i = main.getInputX() / GAME_ICON_SIZE;
-					if (i < Series.values().length) {
-						if (GameRegistry.INSTANCE.getGamesBySeries().get(Series.values()[i]) != null &&
-								GameRegistry.INSTANCE.getGamesBySeries().get(Series.values()[i]).size() > 0)
-							currentSeries = Series.values()[i];
+					if (i < Series.values.length) {
+						if (GameRegistry.INSTANCE.getGamesBySeries().get(Series.values[i]) != null &&
+								GameRegistry.INSTANCE.getGamesBySeries().get(Series.values[i]).size() > 0)
+							currentSeries = Series.values[i];
 					}
 				}
 
 				// tools
-				if (main.getInputX() >= main.camera.viewportWidth - Tool.values().length * GAME_ICON_SIZE) {
-					Tool[] tools = Tool.values();
+				if (main.getInputX() >= main.camera.viewportWidth - Tool.values.length * GAME_ICON_SIZE) {
+					Tool[] tools = Tool.values;
 					int icon = (int) (tools.length - ((main.camera.viewportWidth - main.getInputX()) /
 							GAME_ICON_SIZE));
 
@@ -1424,8 +1424,8 @@ public class Editor extends InputAdapter implements Disposable {
 		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
 			int index = keycode - Input.Keys.NUM_1;
 
-			if (index < Tool.values().length)
-				currentTool = Tool.values()[index];
+			if (index < Tool.values.length)
+				currentTool = Tool.values[index];
 		}
 
 		return false;
@@ -1451,7 +1451,9 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	public enum Tool {
-		NORMAL, BPM, SPLIT_PATTERN
+		NORMAL, BPM, SPLIT_PATTERN;
+
+		public static final Tool[] values = values();
 	}
 
 }

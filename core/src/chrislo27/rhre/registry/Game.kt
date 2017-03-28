@@ -39,6 +39,11 @@ enum class Series(val i10nKey: String) {
 	FEVER("fever"), MEGAMIX("megamix"), SIDE("side"),
 	CUSTOM("custom");
 
+	companion object {
+		@JvmField
+		val values: Array<Series> = values()
+	}
+
 	fun getLocalizedName(): String = Localization.get("series." + i10nKey)
 
 	val luaValue: LuaValue by lazy {
