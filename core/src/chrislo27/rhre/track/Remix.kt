@@ -74,7 +74,7 @@ class Remix : ActionHistory<Remix>() {
 
 	var metadata: RemixObject.MetadataObject? = RemixObject.MetadataObject()
 
-	var sweepLoad: Int = -1
+	private var sweepLoad: Pair<Int, Long> = -1 to 0L
 
 	companion object {
 		fun writeToJsonObject(remix: Remix): RemixObject {
@@ -164,7 +164,7 @@ class Remix : ActionHistory<Remix>() {
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
-			remix.sweepLoad = 0
+			remix.sweepLoad = 0 to System.nanoTime()
 
 			if (obj.musicData != null)
 				remix.music = obj.musicData
@@ -335,15 +335,17 @@ class Remix : ActionHistory<Remix>() {
 
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING) {
-			if (sweepLoad > -1) {
-				while (sweepLoad < entities.size) {
-					if (entities[sweepLoad++].attemptLoadSounds())
+			if (sweepLoad.first > -1) {
+				while (sweepLoad.first < entities.size) {
+					val i = sweepLoad.first
+					sweepLoad = sweepLoad.first + 1 to sweepLoad.second
+					if (entities[i].attemptLoadSounds())
 						break
 				}
 
-				if (sweepLoad >= entities.size) {
-					sweepLoad = -1
-					Main.logger.info("Finished sweep-load")
+				if (sweepLoad.first >= entities.size) {
+					Main.logger.info("Finished sweep-load in ${(System.nanoTime() - sweepLoad.second) / 1_000_000.0} ms")
+					sweepLoad = -1 to 0L
 				}
 			}
 
