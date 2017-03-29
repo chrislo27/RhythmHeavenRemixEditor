@@ -21,9 +21,9 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 
 ![Load screen](http://i.imgur.com/cNleYRU.png "Load screen")
 
-#### Inspections for common mistakes keep a remix high-quality
+#### Lua scripting support
 
-![Inspections screenshot](http://i.imgur.com/stRbcqg.png "Inspections tell you what's wrong beforehand")
+![Lua screenshot](http://i.imgur.com/TcoM0sK.png "Lua scripting allows for powerful manipulation")
 
 #### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
