@@ -344,7 +344,8 @@ class Remix : ActionHistory<Remix>() {
 				}
 
 				if (sweepLoad.first >= entities.size) {
-					Main.logger.info("Finished sweep-load in ${(System.nanoTime() - sweepLoad.second) / 1_000_000.0} ms")
+					Main.logger.info(
+							"Finished sweep-load in ${(System.nanoTime() - sweepLoad.second) / 1_000_000.0} ms")
 					sweepLoad = -1 to 0L
 				}
 			}
@@ -352,8 +353,9 @@ class Remix : ActionHistory<Remix>() {
 			return@update
 		}
 
-		if (music != null && (musicPlayed == PlaybackCompletion.WAITING && !music!!.music.isPlaying) && beat >= tempoChanges.secondsToBeats(
-				musicStartTime)) {
+		if (music != null && (musicPlayed == PlaybackCompletion.WAITING && !music!!.music.isPlaying) &&
+				(beat >= tempoChanges.secondsToBeats(musicStartTime) || beat <= tempoChanges.secondsToBeats(
+						musicStartTime) - 0.5f)) {
 			val newPosition = tempoChanges.beatsToSeconds(beat) - musicStartTime
 
 			music!!.music.play()
@@ -382,7 +384,7 @@ class Remix : ActionHistory<Remix>() {
 
 		beat = tempoChanges.secondsToBeats(tempoChanges.beatsToSeconds(beat) + delta)
 
-		if (music != null && music!!.music.isPlaying && beat >= musicInBeats){
+		if (music != null && music!!.music.isPlaying && beat >= musicInBeats) {
 			beat = musicInBeats
 		}
 
@@ -456,7 +458,6 @@ class Remix : ActionHistory<Remix>() {
 //
 //		return new
 //	}
-
 
 
 }
