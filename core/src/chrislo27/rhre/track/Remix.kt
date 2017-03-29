@@ -355,7 +355,7 @@ class Remix : ActionHistory<Remix>() {
 
 		if (music != null && (musicPlayed == PlaybackCompletion.WAITING && !music!!.music.isPlaying) &&
 				(beat >= tempoChanges.secondsToBeats(musicStartTime) || beat <= tempoChanges.secondsToBeats(
-						musicStartTime) - 0.5f)) {
+						musicStartTime) - 1)) {
 			val newPosition = tempoChanges.beatsToSeconds(beat) - musicStartTime
 
 			music!!.music.play()
