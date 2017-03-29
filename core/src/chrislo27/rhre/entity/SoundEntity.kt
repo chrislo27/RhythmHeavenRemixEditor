@@ -49,8 +49,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 	}
 
 	constructor(remix: Remix, cue: SoundCue, beat: Float, level: Int, semitone: Int) : this(remix, cue, beat, level,
-																							cue.duration, semitone) {
-	}
+																							cue.duration, semitone)
 
 	override fun attemptLoadSounds(): Boolean {
 		return cue.attemptLoadSounds()
