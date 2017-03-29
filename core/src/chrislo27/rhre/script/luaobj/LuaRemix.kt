@@ -115,7 +115,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 		})
 		this.set("addCue", object : VarArgFunction() {
 			override fun invoke(args: Varargs): Varargs {
-				if (args.narg() !in 5..6)
+				if (args.narg() !in 4..5)
 					throw LuaError("Args is wrong number (5 or 6)")
 
 				val id = args.arg(2).tostring().toString()
@@ -127,7 +127,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				if (track < 1 || track > Editor.TRACK_COUNT)
 					throw LuaError("Track out of range (1.." + Editor.TRACK_COUNT + "): " + track)
 
-				val duration = if (args.narg() < 6) -1f else args.arg(5).tofloat()
+				val duration = if (args.narg() < 5) -1f else args.arg(5).tofloat()
 				if (duration in 0f..0.125f)
 					throw LuaError("Duration out of range (> 0.125): " + duration)
 
