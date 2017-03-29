@@ -36,7 +36,7 @@ class Remix : ActionHistory<Remix>() {
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
 
-	private var playingState = PlayingState.STOPPED
+	@Volatile private var playingState = PlayingState.STOPPED
 	@Volatile
 	var music: MusicData? = null
 		set(value) {
