@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Disposable
 import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.templates.Main
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.launch
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
@@ -74,7 +77,7 @@ class Remix : ActionHistory<Remix>() {
 
 	var metadata: RemixObject.MetadataObject? = RemixObject.MetadataObject()
 
-	private var sweepLoad: Pair<Int, Long> = -1 to 0L
+	@Volatile private var queueSweepLoad: Boolean = false
 
 	companion object {
 		fun writeToJsonObject(remix: Remix): RemixObject {
@@ -164,7 +167,7 @@ class Remix : ActionHistory<Remix>() {
 
 			remix.updateDurationAndCurrentGame()
 			remix.inspections.refresh()
-			remix.sweepLoad = 0 to System.nanoTime()
+			remix.queueSweepLoad = true
 
 			if (obj.musicData != null)
 				remix.music = obj.musicData
@@ -335,18 +338,35 @@ class Remix : ActionHistory<Remix>() {
 
 	fun update(delta: Float): Unit {
 		if (playingState != PlayingState.PLAYING) {
-			if (sweepLoad.first > -1) {
-				while (sweepLoad.first < entities.size) {
-					val i = sweepLoad.first
-					sweepLoad = sweepLoad.first + 1 to sweepLoad.second
-					if (entities[i].attemptLoadSounds())
-						break
+			if (queueSweepLoad) {
+				queueSweepLoad = false
+				val cachedEntities = entities.flatMap {
+					if (it is PatternEntity) {
+						return@flatMap it.internal
+					}
+					return@flatMap listOf(it)
+				}.distinctBy { it.id }.filter(Entity::needsToBeLoaded)
+				val coroutines = mutableListOf<Job>()
+				val idsPerCoroutine: Int = 64 // 145, 74, 49
+
+				val nano = System.nanoTime()
+				(0..cachedEntities.size - 1 step idsPerCoroutine).mapTo(coroutines) {
+					launch(CommonPool) {
+						for (index in it..Math.min(it + idsPerCoroutine, cachedEntities.size - 1)) {
+							cachedEntities[index].attemptLoadSounds()
+						}
+					}
 				}
 
-				if (sweepLoad.first >= entities.size) {
+				Main.logger.info("Starting sweep-load with ${cachedEntities.size} IDs and ${coroutines.size} coroutines")
+
+				launch(CommonPool) {
+					for (c in coroutines) {
+						c.join()
+					}
+
 					Main.logger.info(
-							"Finished sweep-load in ${(System.nanoTime() - sweepLoad.second) / 1_000_000.0} ms")
-					sweepLoad = -1 to 0L
+							"Finished sweep-load in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
 				}
 			}
 

@@ -50,8 +50,12 @@ data class SoundCue(val id: String, val gameID: String, val fileExtension: Strin
 		return getLazyIntroSoundObj()?.sound
 	}
 
+	fun needsToBeLoaded(): Boolean {
+		return !getLazySoundObj().isLoaded or (!(getLazyIntroSoundObj()?.isLoaded ?: false))
+	}
+
 	fun attemptLoadSounds(): Boolean {
-		val b: Boolean = !getLazySoundObj().isLoaded or (!(getLazyIntroSoundObj()?.isLoaded ?: false))
+		val b: Boolean = needsToBeLoaded()
 
 		getSoundObj()
 		getIntroSoundObj()

@@ -47,6 +47,10 @@ abstract class Entity(val remix: Remix) {
 		return false
 	}
 
+	open fun needsToBeLoaded(): Boolean {
+		return false
+	}
+
 	fun setBatchColorFromState(batch: SpriteBatch, c: Color, selectionTint: Color, selected: Boolean) {
 		batch.color = if (selected)
 			tmp.set(c.r * (1 + selectionTint.r), c.g * (1 + selectionTint.g), c.b * (1 + selectionTint.b), c.a)

@@ -55,6 +55,10 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		return cue.attemptLoadSounds()
 	}
 
+	override fun needsToBeLoaded(): Boolean {
+		return cue.needsToBeLoaded()
+	}
+
 	override fun adjustPitch(semitoneChange: Int, min: Int, max: Int): Boolean {
 		val old = semitone
 		semitone = MathUtils.clamp(semitone + semitoneChange, min, max)

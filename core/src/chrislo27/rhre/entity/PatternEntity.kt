@@ -92,6 +92,10 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		return b
 	}
 
+	override fun needsToBeLoaded(): Boolean {
+		return internal.any { it.needsToBeLoaded() }
+	}
+
 	override fun onLengthChange(old: Float) {
 		super.onLengthChange(old)
 
