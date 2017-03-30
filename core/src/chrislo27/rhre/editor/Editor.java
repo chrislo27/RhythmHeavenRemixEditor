@@ -172,7 +172,7 @@ public class Editor extends InputAdapter implements Disposable {
 		// vertical beat line
 		{
 			// vertical
-			final int beatInside = ((int) (camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
+			final int beatInside = ((int) Math.floor(camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
 					Entity.Companion.getPX_WIDTH()));
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.Companion.getPX_WIDTH());
 				 x * Entity.Companion.getPX_WIDTH() < camera.position.x + camera.viewportWidth * 0.5f; x++) {
