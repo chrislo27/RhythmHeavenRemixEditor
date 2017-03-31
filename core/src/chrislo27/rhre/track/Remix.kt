@@ -318,8 +318,6 @@ class Remix : ActionHistory<Remix>() {
 		startTime = entities.fold(Float.MAX_VALUE,
 								  { value, entity -> Math.min(value, entity.bounds.x) })
 		inspections.refresh()
-
-		println(playbackStart)
 	}
 
 	fun getDuration() = endTime - startTime
