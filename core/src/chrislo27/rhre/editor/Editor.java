@@ -458,13 +458,18 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// inspections
 		if (main.getInspectionsEnabled()) {
+			main.getFontBordered().getData().setScale(0.5f);
+			main.getFontBordered().draw(batch, Localization.get("inspections.deprecated"),
+					main.camera.viewportWidth - 4,
+					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT -
+							main.getFontBordered().getCapHeight() * 0.25f, 0, Align.right, false);
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 			main.getFontBordered().draw(batch, Localization
 							.get("editor.inspectionStatus", "" + remix.getInspections().getInspections().size(),
 									"" + remix.getInspections().getLastRefreshDuration()), main.camera.viewportWidth
 							- 4,
-					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight()
+					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getLineHeight()
 					, 0,
 					Align.right, false);
 			main.getFontBordered().setColor(1, 1, 1, 1);
@@ -474,7 +479,7 @@ public class Editor extends InputAdapter implements Disposable {
 		main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
-				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getCapHeight());
+				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4);
 		main.getFontBordered().setColor(1, 1, 1, 1);
 		main.getFontBordered().getData().setScale(1f);
 

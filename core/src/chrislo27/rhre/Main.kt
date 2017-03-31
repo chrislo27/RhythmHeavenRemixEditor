@@ -94,7 +94,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		private set
 
 	var helpTipsEnabled: Boolean = true
-	var inspectionsEnabled: Boolean = true
+	var inspectionsEnabled: Boolean = false
 
 	private val inputProj: Vector3 = Vector3()
 
@@ -121,8 +121,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				NamedLocale("English", Locale("")),
 				NamedLocale("Français (French)", Locale("fr")),
 				NamedLocale("Español (Spanish)", Locale("es"))
-//				NamedLocale("Italiano (Italian)", Locale("it"))
-//				NamedLocale("日本語 (グーグル翻訳) (Japanese [Google Translate])", Locale("ja", "GTRANSLATE"))
 															)
 		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
@@ -146,7 +144,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.9.1"
+		ionium.templates.Main.version = "v2.10.0-SNAPSHOT"
 
 		SysOutPiper.pipe()
 
