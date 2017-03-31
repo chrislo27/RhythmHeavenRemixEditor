@@ -38,7 +38,7 @@ class EditorScreen(m: Main) : Updateable<Main>(m) {
 	}
 
 	override fun getDebugStrings(array: Array<String>) {
-
+		editor.getDebugStrings(array)
 	}
 
 	override fun resize(width: Int, height: Int) {

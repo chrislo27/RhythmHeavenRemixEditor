@@ -29,6 +29,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import ionium.registry.AssetRegistry;
 import ionium.util.DebugSetting;
@@ -1456,6 +1457,10 @@ public class Editor extends InputAdapter implements Disposable {
 		return (x - GAME_ICON_PADDING) / (GAME_ICON_PADDING + GAME_ICON_SIZE) +
 				(-(y - (ICON_START_Y + GAME_ICON_SIZE + GAME_ICON_PADDING)) / (GAME_ICON_PADDING + GAME_ICON_SIZE)) *
 						ICON_COUNT_X;
+	}
+
+	public void getDebugStrings(Array<String> array) {
+		array.add("autosaveTimer: " + timeUntilAutosave);
 	}
 
 	public enum Tool {
