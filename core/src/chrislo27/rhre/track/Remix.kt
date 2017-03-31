@@ -263,7 +263,7 @@ class Remix : ActionHistory<Remix>() {
 		fun resetEntitiesAndTracker(): Unit {
 			musicPlayed = PlaybackCompletion.WAITING
 			music?.music?.stop()
-			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
+//			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
 			// reset playback completion
 			entities.forEach(Entity::reset)
 			beat = playbackStart
@@ -318,6 +318,8 @@ class Remix : ActionHistory<Remix>() {
 		startTime = entities.fold(Float.MAX_VALUE,
 								  { value, entity -> Math.min(value, entity.bounds.x) })
 		inspections.refresh()
+
+		println(playbackStart)
 	}
 
 	fun getDuration() = endTime - startTime
@@ -374,8 +376,7 @@ class Remix : ActionHistory<Remix>() {
 		}
 
 		if (music != null && (musicPlayed == PlaybackCompletion.WAITING && !music!!.music.isPlaying) &&
-				(beat >= tempoChanges.secondsToBeats(musicStartTime) || beat <= tempoChanges.secondsToBeats(
-						musicStartTime) - 1)) {
+				(beat >= tempoChanges.secondsToBeats(musicStartTime))) {
 			val newPosition = tempoChanges.beatsToSeconds(beat) - musicStartTime
 
 			music!!.music.play()
