@@ -172,8 +172,9 @@ public class Editor extends InputAdapter implements Disposable {
 		// vertical beat line
 		{
 			// vertical
-			final int beatInside = ((int) Math.floor(camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
-					Entity.Companion.getPX_WIDTH()));
+			final int beatInside = ((int) Math
+					.floor(camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0)).x /
+							Entity.Companion.getPX_WIDTH()));
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.Companion.getPX_WIDTH());
 				 x * Entity.Companion.getPX_WIDTH() < camera.position.x + camera.viewportWidth * 0.5f; x++) {
 				batch.setColor(main.getPalette().getStaffLine());
@@ -183,7 +184,8 @@ public class Editor extends InputAdapter implements Disposable {
 				Main.fillRect(batch, x * Entity.Companion.getPX_WIDTH(), yOffset, 2,
 						TRACK_COUNT * Entity.Companion.getPX_HEIGHT());
 
-				if ((selectionGroup != null || trackerMoving > 0) && beatInside == x) {
+				if (((selectionGroup != null || trackerMoving > 0) &&
+						remix.getPlayingState() == PlayingState.PLAYING) && beatInside == x) {
 					final int numOfLines = ((int) (1 / snappingInterval));
 					for (int i = 0; i < numOfLines; i++) {
 						float a = 0.75f;
@@ -536,8 +538,7 @@ public class Editor extends InputAdapter implements Disposable {
 						OVERVIEW_HEIGHT, 1);
 				batch.setColor(1, 1, 1, 1);
 
-				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values[i].name()), start + i *
-								GAME_ICON_SIZE,
+				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values[i].name()), start + i * GAME_ICON_SIZE,
 						PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
 				if (Tool.values[i] == currentTool) {
@@ -1046,9 +1047,8 @@ public class Editor extends InputAdapter implements Disposable {
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
 						if (i < Series.values.length && i >= 0) {
-							status +=
-									" - " + Localization.get("editor.lookingAt", Series.values[i].getLocalizedName
-											());
+							status += " - " + Localization.get("editor.lookingAt", Series.values[i].getLocalizedName
+									());
 						}
 					}
 				} else {
