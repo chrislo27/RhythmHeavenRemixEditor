@@ -108,6 +108,9 @@ class VersionScreen(m: Main) : NewUIScreen(m) {
 		main.batch.begin()
 		StencilMaskUtil.useMask()
 
+		if (textHeight < heightToWorkWith)
+			scrollAmount = 0f
+
 		main.font.draw(main.batch,
 					   "[LIGHT_GRAY]${VersionChecker.releaseObject?.body}[]",
 					   startX + BG_WIDTH * 0.25f,
