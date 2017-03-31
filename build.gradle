@@ -25,7 +25,7 @@ allprojects {
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
         aiVersion = '1.8.0'
-        kotlin_version = "1.1.0"
+        kotlin_version = "1.1.1"
     }
 
     repositories {
@@ -58,7 +58,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.google.code.gson:gson:2.7"
+        compile "com.google.code.gson:gson:2.8.0"
         compile "commons-io:commons-io:2.5"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.14"
