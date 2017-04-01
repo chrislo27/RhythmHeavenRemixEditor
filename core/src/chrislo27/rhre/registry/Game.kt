@@ -6,8 +6,8 @@ import java.util.*
 
 
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
-				val patterns: List<Pattern>, val series: Series, val icon: String?,
-				val iconIsRawPath: Boolean = false) {
+				val patterns: List<Pattern>, val series: Series, val icon: String?, val isModule: Boolean,
+				val iconIsRawPath: Boolean) {
 
 	fun isCustom() = series == Series.CUSTOM
 
