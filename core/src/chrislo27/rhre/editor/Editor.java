@@ -186,7 +186,7 @@ public class Editor extends InputAdapter implements Disposable {
 						TRACK_COUNT * Entity.Companion.getPX_HEIGHT());
 
 				if (((selectionGroup != null || trackerMoving > 0) &&
-						remix.getPlayingState() == PlayingState.PLAYING) && beatInside == x) {
+						remix.getPlayingState() == PlayingState.STOPPED) && beatInside == x) {
 					final int numOfLines = ((int) (1 / snappingInterval));
 					for (int i = 0; i < numOfLines; i++) {
 						float a = 0.75f;
