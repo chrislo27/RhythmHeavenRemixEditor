@@ -341,48 +341,48 @@
       "cues": [
        {
         "id": "loveRap/mcamoreintoyou1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamoreintoyou2",
-        "beat": 0.625
-		"track": 0
+        "beat": 0.625,
+	"track": 0
        },
        {
         "id": "loveRap/mcamoreintoyou3",
-        "beat": 1.0
-		"track": 0
+        "beat": 1.0,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1intoyou1",
-        "beat": 1.5
-		"track": 0
+        "beat": 1.5,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1intoyou2",
-        "beat": 2.125
-		"track": 0
+        "beat": 2.125,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1intoyou3",
-        "beat": 2.5
-		"track": 0
+        "beat": 2.5,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2intoyou1",
-        "beat": 1.5
-		"track": 1
+        "beat": 1.5,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2intoyou2",
-        "beat": 2.125
-		"track": 1
+        "beat": 2.125,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2intoyou3",
-        "beat": 2.5
-		"track": 1
+        "beat": 2.5,
+	"track": 1
        }
       ]
     },
@@ -392,78 +392,78 @@
       "cues": [
        {
         "id": "loveRap/mcamorecrazyintoyou1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyou2",
-        "beat": 0.375
-		"track": 0
+        "beat": 0.375,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyou3",
-        "beat": 0.75
-		"track": 0
+        "beat": 0.75,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyou4",
-        "beat": 1.3125
-		"track": 0
+        "beat": 1.3125,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyou5",
-        "beat": 1.75
-		"track": 0
+        "beat": 1.75,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyou1",
-        "beat": 2.25
-		"track": 0
+        "beat": 2.25,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyou2",
-        "beat": 2.625
-		"track": 0
+        "beat": 2.625,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyou3",
-        "beat": 2.9375
-		"track": 0
+        "beat": 2.9375,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyou4",
-        "beat": 3.625
-		"track": 0
+        "beat": 3.625,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyou5",
-        "beat": 4.0
-		"track": 0
+        "beat": 4.0,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2crazyintoyou1",
-        "beat": 2.25
-		"track": 1
+        "beat": 2.25,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyou2",
-        "beat": 2.625
-		"track": 1
+        "beat": 2.625,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyou3",
-        "beat": 2.9375
-		"track": 1
+        "beat": 2.9375,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyou4",
-        "beat": 3.625
-		"track": 1
+        "beat": 3.625,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyou5",
-        "beat": 4.0
-		"track": 1
+        "beat": 4.0,
+	"track": 1
        }
       ]
     },
@@ -473,78 +473,78 @@
       "cues": [
        {
         "id": "loveRap/mcamorecrazyintoyouswing1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyouswing2",
-        "beat": 0.25
-		"track": 0
+        "beat": 0.25,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyouswing3",
-        "beat": 0.75
-		"track": 0
+        "beat": 0.75,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyouswing4",
-        "beat": 1.0
-		"track": 0
+        "beat": 1.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorecrazyintoyouswing5",
-        "beat": 1.75
-		"track": 0
+        "beat": 1.75,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyouswing1",
-        "beat": 2.5
-		"track": 0
+        "beat": 2.5,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyouswing2",
-        "beat": 2.75
-		"track": 0
+        "beat": 2.75,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyouswing3",
-        "beat": 3.25
-		"track": 0
+        "beat": 3.25,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyouswing4",
-        "beat": 3.5
-		"track": 0
+        "beat": 3.5,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1crazyintoyouswing5",
-        "beat": 4.25
-		"track": 0
+        "beat": 4.25,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2crazyintoyouswing1",
-        "beat": 2.5
-		"track": 1
+        "beat": 2.5,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyouswing2",
-        "beat": 2.75
-		"track": 1
+        "beat": 2.75,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyouswing3",
-        "beat": 3.25
-		"track": 1
+        "beat": 3.25,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyouswing4",
-        "beat": 3.5
-		"track": 1
+        "beat": 3.5,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2crazyintoyouswing5",
-        "beat": 4.25
-		"track": 1
+        "beat": 4.25,
+	"track": 1
        }
       ]
     },
@@ -554,43 +554,43 @@
       "cues": [
        {
         "id": "loveRap/mcamorefosho1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorefosho2",
-        "beat": 0.5
-		"track": 0
+        "beat": 0.5,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1fosholong1",
-        "beat": 1.25
-		"track": 0
+        "beat": 1.25,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1fosholong2",
-        "beat": 1.4375
-		"track": 0
+        "beat": 1.4375,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1fosholong3",
-        "beat": 1.875
-		"track": 0
+        "beat": 1.875,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2fosholong1",
-        "beat": 1.25
-		"track": 1
+        "beat": 1.25,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2fosholong2",
-        "beat": 1.4375
-		"track": 1
+        "beat": 1.4375,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2fosholong3",
-        "beat": 1.875
-		"track": 1
+        "beat": 1.875,
+	"track": 1
        }
       ]
     },
@@ -600,38 +600,38 @@
       "cues": [
        {
         "id": "loveRap/mcamorefosholong1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorefosholong2",
-        "beat": 0.3125
-		"track": 0
+        "beat": 0.3125,
+	"track": 0
        },
        {
         "id": "loveRap/mcamorefosholong3",
-        "beat": 0.625
-		"track": 0
+        "beat": 0.625,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1fosho1",
-        "beat": 1.25
-		"track": 0
+        "beat": 1.25,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1fosho2",
-        "beat": 1.8125
-		"track": 0
+        "beat": 1.8125,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2fosho1",
-        "beat": 1.25
-		"track": 1
+        "beat": 1.25,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2fosho2",
-        "beat": 1.8125
-		"track": 1
+        "beat": 1.8125,
+	"track": 1
        }
       ]
     },
@@ -641,63 +641,63 @@
       "cues": [
        {
         "id": "loveRap/mcamoreallaboutyou1",
-        "beat": 0.0
-		"track": 0
+        "beat": 0.0,
+	"track": 0
        },
        {
         "id": "loveRap/mcamoreallaboutyou2",
-        "beat": 0.25
-		"track": 0
+        "beat": 0.25,
+	"track": 0
        },
        {
         "id": "loveRap/mcamoreallaboutyou3",
-        "beat": 0.75
-		"track": 0
+        "beat": 0.75,
+	"track": 0
        },
        {
         "id": "loveRap/mcamoreallaboutyou4",
-        "beat": 1.375
-		"track": 0
+        "beat": 1.375,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1allaboutyou1",
-        "beat": 2.0
-		"track": 0
+        "beat": 2.0,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1allaboutyou2",
-        "beat": 2.3125
-		"track": 0
+        "beat": 2.3125,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1allaboutyou3",
-        "beat": 2.6875
-		"track": 0
+        "beat": 2.6875,
+	"track": 0
        },
        {
         "id": "loveRap/rapper1allaboutyou4",
-        "beat": 3.3125
-		"track": 0
+        "beat": 3.3125,
+	"track": 0
        },
        {
         "id": "loveRap/rapper2allaboutyou1",
-        "beat": 2.0
-		"track": 1
+        "beat": 2.0,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2allaboutyou2",
-        "beat": 2.3125
-		"track": 1
+        "beat": 2.3125,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2allaboutyou3",
-        "beat": 2.6875
-		"track": 1
+        "beat": 2.6875,
+	"track": 1
        },
        {
         "id": "loveRap/rapper2allaboutyou4",
-        "beat": 3.3125
-		"track": 1
+        "beat": 3.3125,
+	"track": 1
        }
       ]
     }
