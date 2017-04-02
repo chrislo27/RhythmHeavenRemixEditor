@@ -179,7 +179,7 @@ object GameRegistry : Disposable {
 			game = Game(gameObj.gameID!!, gameObj.gameName!!, soundCues, patterns,
 						if (gameObj.series == null) Series.UNKNOWN else Series.valueOf(
 								gameObj.series!!.toUpperCase(Locale.ROOT)),
-						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, false, false)
+						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true)
 
 			if (!iconFh.exists())
 				Main.logger.warn(game.id + " is missing icon.png")
@@ -238,7 +238,7 @@ object GameRegistry : Disposable {
 			}
 
 			game = Game(fh.nameWithoutExtension(), fh.nameWithoutExtension(), soundCues, patterns,
-						Series.CUSTOM, if (icon.exists()) icon.path() else null, false, true)
+						Series.CUSTOM, if (icon.exists()) icon.path() else null, true)
 
 			Main.logger.info("Finished loading custom folder " + fh.name() + " with " + soundCues.size + " " +
 									 "cues")
@@ -311,7 +311,6 @@ object GameRegistry : Disposable {
 		}
 
 		val numAreCustom = this.gameList.filter { it.series == Series.CUSTOM }.count()
-		val numAreModule = this.gameList.filter { it.isModule }.count()
 		Main.logger.info(
 				"Loaded " + this.gameList.size + " games (" +
 						(this.gameList.size - numAreCustom) + " databased, $numAreCustom custom game(s)) with " +
