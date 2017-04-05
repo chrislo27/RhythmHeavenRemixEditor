@@ -145,7 +145,8 @@ object GameRegistry : Disposable {
 									   else
 										   so.deprecatedIDs!!.toMutableList(), so.duration,
 									   so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm,
-									   if (so.loops == null) so.canAlterDuration else (so.loops ?: false), null))
+									   if (so.loops == null) so.canAlterDuration else (so.loops ?: false),
+									   if (isCustom) baseDir else null))
 			}
 
 			gameObj.patterns!!.forEach { po ->
