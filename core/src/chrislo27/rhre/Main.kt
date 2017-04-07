@@ -8,7 +8,7 @@ import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
 import chrislo27.rhre.registry.GameRegistry
-import chrislo27.rhre.util.DoNotRenderVersionPlease
+import chrislo27.rhre.util.HideVersionText
 import chrislo27.rhre.version.VersionChecker
 import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
@@ -292,7 +292,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun postRender() {
 		super.postRender()
 
-		if (screen !is DoNotRenderVersionPlease) {
+		if (screen !is HideVersionText) {
 			batch.projectionMatrix = camera.combined
 			batch.begin()
 			fontBordered.setColor(1f, 1f, 1f, 1f)
