@@ -1,0 +1,163 @@
+{
+  "gameID": "AnimalAcrobat",
+  "gameName": "Animal Acrobat",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Beginning leap",
+      "duration": 1.0,
+      "name": "Leap"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+      "duration": 1.0,
+      "name": "Eek"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Flip",
+      "duration": 1.0,
+      "name": "Flip"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Giraffe Release",
+      "duration": 2.0,
+      "name": "Giraffe Release"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Grab",
+      "duration": 2.0,
+      "name": "Grab"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Release",
+      "duration": 1.0,
+      "name": "Release"
+    },
+    {
+      "id": "AnimalAcrobat/Animal Acrobat- Ring of fire cymbal",
+      "duration": 2.0,
+      "name": "Ring of Fire"
+    }
+    
+   ],
+  "patterns": [
+    {
+      "id": "AnimalAcrobat_Elephant",
+      "name": "Elephant",
+      "cues": [
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Release",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Flip",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 0.0,
+	"track": 1
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 1.0,
+	"track": 1
+       }
+      ]
+    },
+    {
+      "id": "AnimalAcrobat_Giraffe",
+      "name": "Giraffe",
+      "cues": [
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Giraffe Release",
+        "beat": 4.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Ring of fire cymbal",
+        "beat": 6.0,
+	"track": 0
+       }
+      ]
+    },
+    {
+      "id": "AnimalAcrobat_Monkeys",
+      "name": "Monkeys",
+      "cues": [
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 1.0,
+	"track": 1
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Release",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Flip",
+        "beat": 4.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Grab",
+        "beat": 5.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Release",
+        "beat": 6.0,
+	"track": 1
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Flip",
+        "beat": 7.0,
+	"track": 0
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 4.0,
+	"track": 1
+       },
+       {
+        "id": "AnimalAcrobat/Animal Acrobat- Eek!",
+        "beat": 5.0,
+	"track": 1
+       }
+      ]
+    }
+  ]
+}
