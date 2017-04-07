@@ -4,33 +4,68 @@
   "series": "tengoku",
   "cues": [
     {
+      "id": "rapMen/yeah",
+      "duration": 1,
+      "name": "yeah"
+    },
+    {
       "id": "rapMen/desu",
-      "duration": 0.625,
+      "duration": 0.5,
       "name": "desu-"
     },
     {
       "id": "rapMen/ka",
-      "duration": 0.25,
+      "duration": 1,
       "name": "-ka?"
     },
     {
-      "id": "rapMen/herushi1",
-      "duration": 0.375,
-      "name": "herushi - heru"
+      "id": "rapMen/yo",
+      "duration": 0.75,
+      "name": "yo,"
     },
     {
-      "id": "rapMen/herushi2",
-      "duration": 1.0,
-      "name": "herushi - shi"
+      "id": "rapMen/sanji",
+      "duration": 0.75,
+      "name": "sanji"
+    },
+    {
+      "id": "rapMen/oyatsudesuka1",
+      "duration": 0.125,
+      "name": "oyatsu desu ka - o"
+    },
+    {
+      "id": "rapMen/oyatsudesuka2",
+      "duration": 0.5,
+      "name": "oyatsu desu ka - yatsu"
+    },
+    {
+      "id": "rapMen/okaeri1",
+      "duration": 0.25,
+      "name": "okaeri masu ka - o"
+    },
+    {
+      "id": "rapMen/okaeri2",
+      "duration": 0.375,
+      "name": "okaeri masu ka - kae"
+    },
+    {
+      "id": "rapMen/okaeri3",
+      "duration": 0.125,
+      "name": "okaeri masu ka - ri"
+    },
+    {
+      "id": "rapMen/okaeri4",
+      "duration": 0.5,
+      "name": "okaeri masu ka - masu"
     },
     {
       "id": "rapMen/honto1",
-      "duration": 0.5,
+      "duration": 0.625,
       "name": "honto desu ka - hon"
     },
     {
       "id": "rapMen/honto2",
-      "duration": 0.25,
+      "duration": 0.125,
       "name": "honto desu ka - to"
     },
     {
@@ -45,43 +80,18 @@
     },
     {
       "id": "rapMen/kamone1",
-      "duration": 0.25,
+      "duration": 0.125,
       "name": "kamone - ka"
     },
     {
       "id": "rapMen/kamone2",
-      "duration": 0.375,
+      "duration": 0.25,
       "name": "kamone - mo"
     },
     {
       "id": "rapMen/kamone3",
-      "duration": 0.5,
+      "duration": 0.75,
       "name": "kamone - ne?"
-    },
-    {
-      "id": "rapMen/kimitte1",
-      "duration": 0.25,
-      "name": "kimitte saiko - ki"
-    },
-    {
-      "id": "rapMen/kimitte2",
-      "duration": 0.5,
-      "name": "kimitte saiko - mi"
-    },
-    {
-      "id": "rapMen/kimitte3",
-      "duration": 0.25,
-      "name": "kimitte saiko - tte"
-    },
-    {
-      "id": "rapMen/saiko1",
-      "duration": 0.625,
-      "name": "saiko - sai"
-    },
-    {
-      "id": "rapMen/saiko2",
-      "duration": 0.375,
-      "name": "saiko - ko!"
     },
     {
       "id": "rapMen/oishii1",
@@ -90,18 +100,98 @@
     },
     {
       "id": "rapMen/oishii2",
-      "duration": 0.625,
+      "duration": 1,
       "name": "oishii - shii"
     },
     {
-      "id": "rapMen/oyatsudesuka1",
-      "duration": 0.125,
-      "name": "oyatsu desu ka - o"
+      "id": "rapMen/herushi1",
+      "duration": 0.375,
+      "name": "herushi - heru"
     },
     {
-      "id": "rapMen/oyatsudesuka2",
+      "id": "rapMen/herushi2",
+      "duration": 1.0,
+      "name": "herushi - shi"
+    },
+    {
+      "id": "rapMen/soremosou1",
+      "duration": 0.375,
+      "name": "soremosou - so"
+    },
+    {
+      "id": "rapMen/soremosou2",
+      "duration": 0.125,
+      "name": "soremosou - re"
+    },
+    {
+      "id": "rapMen/soremosou3",
+      "duration": 0.125,
+      "name": "soremosou - mo"
+    },
+    {
+      "id": "rapMen/soremosou4",
+      "duration": 0.75,
+      "name": "soremosou - sou"
+    },
+    {
+      "id": "rapMen/orenosei1",
+      "duration": 0.25,
+      "name": "orenosei - o"
+    },
+    {
+      "id": "rapMen/orenosei2",
+      "duration": 0.125,
+      "name": "orenosei - re"
+    },
+    {
+      "id": "rapMen/orenosei3",
+      "duration": 0.375,
+      "name": "orenosei - no"
+    },
+    {
+      "id": "rapMen/orenosei1",
+      "duration": 0.25,
+      "name": "orenosei - o"
+    },
+    {
+      "id": "rapMen/orenosei2",
+      "duration": 0.125,
+      "name": "orenosei - re"
+    },
+    {
+      "id": "rapMen/orenosei3",
+      "duration": 0.375,
+      "name": "orenosei - no"
+    },
+    {
+      "id": "rapMen/orenosei4",
       "duration": 0.625,
-      "name": "oyatsu desu ka - yatsu"
+      "name": "orenosei - sei"
+    },
+    {
+      "id": "rapMen/tanoshii1",
+      "duration": 0.25,
+      "name": "tanoshii - ta"
+    },
+    {
+      "id": "rapMen/tanoshii2",
+      "duration": 0.375,
+      "name": "tanoshii - nosh"
+    },
+    {
+      "id": "rapMen/tanoshii3",
+      "duration": 0.375,
+      "name": "tanoshii - ii"
+    },
+    {
+      "id": "rapMen/saiko1",
+      "duration": 0.625,
+      "name": "saiko - sai"
+    },
+    {
+      "id": "rapMen/saiko2",
+      "duration": 0.5,
+      "name": "saiko - ko!"
     },
     {
       "id": "rapMen/oyatsusaiko1",
@@ -115,13 +205,108 @@
     },
     {
       "id": "rapMen/oyatsusaiko3",
-      "duration": 0.5,
+      "duration": 0.25,
       "name": "oyatsu saiko - tsu"
     },
     {
-      "id": "rapMen/sanji",
-      "duration": 1.0,
-      "name": "sanji"
+      "id": "rapMen/oyatsusaiko4",
+      "duration": 0.125,
+      "name": "oyatsu saiko - wa"
+    },
+    {
+      "id": "rapMen/kibun1",
+      "duration": 0.25,
+      "name": "kibun - ki"
+    },
+    {
+      "id": "rapMen/kibun2",
+      "duration": 0.5,
+      "name": "kibun - bun"
+    },
+    {
+      "id": "rapMen/kibun3",
+      "duration": 0.125,
+      "name": "kibun - wa"
+    },
+    {
+      "id": "rapMen/orette1",
+      "duration": 0.25,
+      "name": "orette - o"
+    },
+    {
+      "id": "rapMen/orette2",
+      "duration": 0.5,
+      "name": "orette - re"
+    },
+    {
+      "id": "rapMen/orette3",
+      "duration": 0.125,
+      "name": "orette - tte"
+    },
+    {
+      "id": "rapMen/kimitte1",
+      "duration": 0.25,
+      "name": "kimitte - ki"
+    },
+    {
+      "id": "rapMen/kimitte2",
+      "duration": 0.5,
+      "name": "kimitte - mi"
+    },
+    {
+      "id": "rapMen/kimitte3",
+      "duration": 0.125,
+      "name": "kimitte - tte"
+    },
+    {
+      "id": "rapMen/naiyo1",
+      "duration": 0.5,
+      "name": "naiyo - nai"
+    },
+    {
+      "id": "rapMen/naiyo2",
+      "duration": 0.5,
+      "name": "naiyo - yo"
+    },
+    {
+      "id": "rapMen/oyatsunaiyo1",
+      "duration": 0.25,
+      "name": "oyatsu naiyo - o"
+    },
+    {
+      "id": "rapMen/oyatsunaiyo2",
+      "duration": 0.25,
+      "name": "oyatsu naiyo - ya"
+    },
+    {
+      "id": "rapMen/oyatsunaiyo3",
+      "duration": 0.25,
+      "name": "oyatsu naiyo - tsu"
+    },
+    {
+      "id": "rapMen/oyatsunaiyo4",
+      "duration": 0.25,
+      "name": "oyatsu naiyo - ga"
+    },
+    {
+      "id": "rapMen/oreshira1",
+      "duration": 0.25,
+      "name": "oreshira - o"
+    },
+    {
+      "id": "rapMen/oreshira2",
+      "duration": 0.25,
+      "name": "oreshira - re"
+    },
+    {
+      "id": "rapMen/oreshira3",
+      "duration": 0.25,
+      "name": "oreshira - shi"
+    },
+    {
+      "id": "rapMen/oreshira4",
+      "duration": 0.25,
+      "name": "oreshira - ra"
     },
     {
       "id": "rapMen/uh",
@@ -132,19 +317,35 @@
       "id": "rapMen/uhn",
       "duration": 0.5,
       "name": "-UHN!"
-    },
-    {
-      "id": "rapMen/yeah",
-      "duration": 1.0,
-      "name": "yeah"
-    },
-    {
-      "id": "rapMen/yo",
-      "duration": 0.5,
-      "name": "yo, "
     }
   ],
   "patterns": [
+    {
+      "id": "rapMen_sanjidesuka",
+      "name": "yo, sanji [CYAN]desu ka?[]",
+      "cues": [
+        {
+          "id": "rapMen/yo",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/sanji",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/desu",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/ka",
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 3
+        }
+      ]
+    },
     {
       "id": "rapMen_oyatsudesuka",
       "name": "yo, oyatsu [CYAN]desu ka?[]",
@@ -152,33 +353,61 @@
       "cues": [
         {
           "id": "rapMen/yo",
-          "beat": 0.0,
-          "track": 0
+          "beat": 0.0
         },
         {
           "id": "rapMen/oyatsudesuka1",
-          "beat": 1.0,
-          "track": 0
+          "beat": 0.75
         },
         {
           "id": "rapMen/oyatsudesuka2",
-          "beat": 1.125,
-          "track": 0
+          "beat": 0.875
         },
         {
           "id": "rapMen/desu",
-          "beat": 1.75,
-          "track": 0
+          "beat": 1.375
         },
         {
           "id": "rapMen/ka",
-          "beat": 2.375,
-          "track": 0
+          "beat": 2
         },
         {
           "id": "rapMen/uh",
-          "beat": 3.5,
-          "track": 0
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "rapMen_okaerimasuka",
+      "name": "yo, okaeri [CYAN]masu ka?[]",
+      "cues": [
+        {
+          "id": "rapMen/yo",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/okaeri1",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/okaeri2",
+          "beat": 1
+        },
+        {
+          "id": "rapMen/okaeri3",
+          "beat": 1.375
+        },
+        {
+          "id": "rapMen/okaeri4",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/ka",
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 3
         }
       ]
     },
@@ -189,28 +418,23 @@
       "cues": [
         {
           "id": "rapMen/honto1",
-          "beat": 0.0,
-          "track": 0
+          "beat": 0.0
         },
         {
           "id": "rapMen/honto2",
-          "beat": 0.5,
-          "track": 0
+          "beat": 0.625
         },
         {
           "id": "rapMen/honto3",
-          "beat": 0.75,
-          "track": 0
+          "beat": 0.75
         },
         {
           "id": "rapMen/honto4",
-          "beat": 1.25,
-          "track": 0
+          "beat": 1.25
         },
         {
           "id": "rapMen/uh",
-          "beat": 2.5,
-          "track": 0
+          "beat": 2.25
         }
       ]
     },
@@ -221,38 +445,31 @@
       "cues": [
         {
           "id": "rapMen/oishii1",
-          "beat": 0.0,
-          "track": 0
+          "beat": 0.0
         },
         {
           "id": "rapMen/oishii2",
-          "beat": 0.375,
-          "track": 0
+          "beat": 0.375
         },
         {
           "id": "rapMen/kamone1",
-          "beat": 1.375,
-          "track": 0
+          "beat": 1.375
         },
         {
           "id": "rapMen/kamone2",
-          "beat": 1.625,
-          "track": 0
+          "beat": 1.5
         },
         {
           "id": "rapMen/kamone3",
-          "beat": 2.0,
-          "track": 0
+          "beat": 1.75
         },
         {
           "id": "rapMen/uh",
-          "beat": 2.5,
-          "track": 0
+          "beat": 2.5
         },
         {
           "id": "rapMen/uh",
-          "beat": 3.5,
-          "track": 0
+          "beat": 3.5
         }
       ]
     },
@@ -263,75 +480,332 @@
       "cues": [
         {
           "id": "rapMen/herushi1",
-          "beat": 0.0,
-          "track": 0
+          "beat": 0.0
         },
         {
           "id": "rapMen/herushi2",
-          "beat": 0.375,
-          "track": 0
+          "beat": 0.375
         },
         {
           "id": "rapMen/kamone1",
-          "beat": 1.375,
-          "track": 0
+          "beat": 1.375
         },
         {
           "id": "rapMen/kamone2",
-          "beat": 1.625,
-          "track": 0
+          "beat": 1.5
         },
         {
           "id": "rapMen/kamone3",
-          "beat": 2.0,
-          "track": 0
+          "beat": 1.75
         },
         {
           "id": "rapMen/uh",
-          "beat": 2.5,
-          "track": 0
+          "beat": 2.5
         },
         {
           "id": "rapMen/uh",
-          "beat": 3.5,
-          "track": 0
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_soremosoukamone",
+      "name": "soremosou [PINK]kamone?[]",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "rapMen/soremosou1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/soremosou2",
+          "beat": 0.375
+        },
+        {
+          "id": "rapMen/soremosou3",
+          "beat": 0.5
+        },
+        {
+          "id": "rapMen/soremosou4",
+          "beat": 0.625
+        },
+        {
+          "id": "rapMen/kamone1",
+          "beat": 1.375
+        },
+        {
+          "id": "rapMen/kamone2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/kamone3",
+          "beat": 1.75
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_orenoseikamone",
+      "name": "orenosei [PINK]kamone?[]",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "rapMen/orenosei1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/orenosei2",
+          "beat": 0.25
+        },
+        {
+          "id": "rapMen/orenosei3",
+          "beat": 0.375
+        },
+        {
+          "id": "rapMen/orenosei4",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/kamone1",
+          "beat": 1.375
+        },
+        {
+          "id": "rapMen/kamone2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/kamone3",
+          "beat": 1.75
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_tanoshiikamone",
+      "name": "tanoshii [PINK]kamone?[]",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "rapMen/tanoshii1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/tanoshii2",
+          "beat": 0.25
+        },
+        {
+          "id": "rapMen/tanoshii3",
+          "beat": 0.625
+        },
+        {
+          "id": "rapMen/kamone1",
+          "beat": 1.375
+        },
+        {
+          "id": "rapMen/kamone2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/kamone3",
+          "beat": 1.75
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_oyatsusaiko",
+      "name": "oyatsu wa [YELLOW]saiko!![]",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "rapMen/oyatsusaiko1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/oyatsusaiko2",
+          "beat": 0.125
+        },
+        {
+          "id": "rapMen/oyatsusaiko3",
+          "beat": 0.375
+        },
+        {
+          "id": "rapMen/oyatsusaiko4",
+          "beat": 0.625
+        },
+        {
+          "id": "rapMen/saiko1",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/saiko2",
+          "beat": 1.375
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uhn",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_kibunsaiko",
+      "name": "kibun wa [YELLOW]saiko!![]",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "rapMen/kibun1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/kibun2",
+          "beat": 0.25
+        },
+        {
+          "id": "rapMen/kibun3",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/saiko1",
+          "beat": 0.875
+        },
+        {
+          "id": "rapMen/saiko2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uhn",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_orettesaiko",
+      "name": "orette [YELLOW]saiko!![]",
+      "cues": [
+        {
+          "id": "rapMen/orette1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/orette2",
+          "beat": 0.25
+        },
+        {
+          "id": "rapMen/orette3",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/saiko1",
+          "beat": 0.875
+        },
+        {
+          "id": "rapMen/saiko2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uhn",
+          "beat": 2.5
         }
       ]
     },
     {
       "id": "rapMen_kimittesaiko",
       "name": "kimitte [YELLOW]saiko!![]",
-      "isStretchable": false,
       "cues": [
         {
           "id": "rapMen/kimitte1",
-          "beat": 0.0,
-          "track": 0
+          "beat": 0.0
         },
         {
           "id": "rapMen/kimitte2",
-          "beat": 0.25,
-          "track": 0
+          "beat": 0.25
         },
         {
           "id": "rapMen/kimitte3",
-          "beat": 0.75,
-          "track": 0
+          "beat": 0.75
         },
         {
           "id": "rapMen/saiko1",
-          "beat": 1.0,
-          "track": 0
+          "beat": 0.875
         },
         {
           "id": "rapMen/saiko2",
-          "beat": 1.625,
-          "track": 0
+          "beat": 1.5
         },
         {
           "id": "rapMen/uh",
-          "beat": 2.0,
-          "track": 0
+          "beat": 2
+        },
+        {
+          "id": "rapMen/uhn",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "rapMen_oyatsunaiyo",
+      "name": "oyatsu ga [YELLOW]naiyo!![]",
+      "cues": [
+        {
+          "id": "rapMen/oyatsunaiyo1",
+          "beat": 0.0
+        },
+        {
+          "id": "rapMen/oyatsunaiyo2",
+          "beat": 0.25
+        },
+        {
+          "id": "rapMen/oyatsunaiyo3",
+          "beat": 0.5
+        },
+        {
+          "id": "rapMen/oyatsunaiyo4",
+          "beat": 0.75
+        },
+        {
+          "id": "rapMen/naiyo1",
+          "beat": 1
+        },
+        {
+          "id": "rapMen/naiyo2",
+          "beat": 1.5
+        },
+        {
+          "id": "rapMen/uh",
+          "beat": 2
         },
         {
           "id": "rapMen/uhn",
@@ -341,44 +815,40 @@
       ]
     },
     {
-      "id": "rapMen_oyatsusaiko",
-      "name": "oyatsu [YELLOW]saiko!![]",
-      "isStretchable": false,
+      "id": "rapMen_oreshiranaiyo",
+      "name": "oreshira [YELLOW]naiyo!![]",
       "cues": [
         {
-          "id": "rapMen/oyatsusaiko1",
-          "beat": 0.0,
-          "track": 0
+          "id": "rapMen/oreshira1",
+          "beat": 0.0
         },
         {
-          "id": "rapMen/oyatsusaiko2",
-          "beat": 0.125,
-          "track": 0
+          "id": "rapMen/oreshira2",
+          "beat": 0.25
         },
         {
-          "id": "rapMen/oyatsusaiko3",
-          "beat": 0.375,
-          "track": 0
+          "id": "rapMen/oreshira3",
+          "beat": 0.5
         },
         {
-          "id": "rapMen/saiko1",
-          "beat": 0.875,
-          "track": 0
+          "id": "rapMen/oreshira4",
+          "beat": 0.75
         },
         {
-          "id": "rapMen/saiko2",
-          "beat": 1.625,
-          "track": 0
+          "id": "rapMen/naiyo1",
+          "beat": 1
+        },
+        {
+          "id": "rapMen/naiyo2",
+          "beat": 1.5
         },
         {
           "id": "rapMen/uh",
-          "beat": 2.0,
-          "track": 0
+          "beat": 2
         },
         {
           "id": "rapMen/uhn",
-          "beat": 2.5,
-          "track": 0
+          "beat": 2.5
         }
       ]
     }

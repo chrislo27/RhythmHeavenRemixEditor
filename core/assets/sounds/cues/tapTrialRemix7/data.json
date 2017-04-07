@@ -1,0 +1,101 @@
+{
+  "gameID": "tapTrialRemix7",
+  "gameName": "Tap Trial (Remix 7)",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "tapTrialRemix7/tap",
+      "duration": 0.5,
+      "name": "tap"
+    },
+    {
+      "id": "tapTrialRemix7/ook",
+      "duration": 1,
+      "name": "moo"
+    },
+    {
+      "id": "tapTrialRemix7/ookook1",
+      "duration": 0.5,
+      "name": "moo-moo - 1"
+    },
+    {
+      "id": "tapTrialRemix7/ookook2",
+      "duration": 0.5,
+      "name": "moo-moo - 2"
+    },
+    {
+      "id": "tapTrialRemix7/ooki1",
+      "duration": 0.5,
+      "name": "bohi - 1"
+    },
+    {
+      "id": "tapTrialRemix7/ooki2",
+      "duration": 1.5,
+      "name": "bohi - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "tapTrialRemix7_tap",
+      "name": "tap",
+      "cues": [
+       {
+        "id": "tapTrialRemix7/ook",
+        "beat": 0.0
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 1.0
+       }
+      ]
+    },
+    {
+      "id": "tapTrialRemix7_doubletap",
+      "name": "double tap",
+      "cues": [
+       {
+        "id": "tapTrialRemix7/ookook1",
+        "beat": 0.0
+       },
+       {
+        "id": "tapTrialRemix7/ookook2",
+        "beat": 0.5
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 1.0
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 1.5
+       }
+      ]
+    },
+    {
+      "id": "tapTrialRemix7_tripletap",
+      "name": "triple tap",
+      "cues": [
+       {
+        "id": "tapTrialRemix7/ooki1",
+        "beat": 0.0
+       },
+       {
+        "id": "tapTrialRemix7/ooki2",
+        "beat": 0.5
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 2.0
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 2.5
+       },
+       {
+        "id": "tapTrialRemix7/tap",
+        "beat": 3.0
+       }
+      ]
+    }
+  ]
+}

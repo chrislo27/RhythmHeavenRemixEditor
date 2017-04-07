@@ -1,0 +1,119 @@
+{
+  "gameID": "blueBirdsEs",
+  "gameName": "Blue Birds (Spanish)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "blueBirdsEs/peckyourbeak1",
+      "duration": 0.5,
+      "name": "peck your beak - peck"
+    },
+    {
+      "id": "blueBirdsEs/peckyourbeak2",
+      "duration": 0.5,
+      "name": "peck your beak - your"
+    },
+    {
+      "id": "blueBirdsEs/peckyourbeak3",
+      "duration": 0.5,
+      "name": "peck your beak - beak"
+    },
+    {
+      "id": "blueBirdsEs/peck",
+      "duration": 0.5,
+      "name": "peck"
+    },
+    {
+      "id": "blueBirdsEs/stretchoutyourneck1",
+      "duration": 0.75,
+      "name": "stretch out your neck - stretch"
+    },
+    {
+      "id": "blueBirdsEs/stretchoutyourneck2",
+      "duration": 0.75,
+      "name": "stretch out your neck - out"
+    },
+    {
+      "id": "blueBirdsEs/stretchoutyourneck3",
+      "duration": 0.5,
+      "name": "stretch out your neck - your"
+    },
+    {
+      "id": "blueBirdsEs/stretchoutyourneck4",
+      "duration": 1,
+      "name": "stretch out your neck - neck!"
+    },
+    {
+      "id": "blueBirdsEs/stretch1",
+      "duration": 1,
+      "name": "stretch1"
+    },
+    {
+      "id": "blueBirdsEs/stretch2",
+      "duration": 0.5,
+      "name": "stretch2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "blueBirdsEs_peckyourbeak",
+      "name": "peck your beak",
+      "cues": [
+        {
+          "id": "blueBirdsEs/peckyourbeak1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEs/peckyourbeak2",
+          "beat": 0.5
+        },
+        {
+          "id": "blueBirdsEs/peckyourbeak3",
+          "beat": 1
+        },
+        {
+          "id": "blueBirdsEs/peck",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsEs/peck",
+          "beat": 2.5
+        },
+        {
+          "id": "blueBirdsEs/peck",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "blueBirdsEs_stretchoutyourneck",
+      "name": "stretch out your neck",
+      "cues": [
+        {
+          "id": "blueBirdsEs/stretchoutyourneck1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEs/stretchoutyourneck2",
+          "beat": 0.75
+        },
+        {
+          "id": "blueBirdsEs/stretchoutyourneck3",
+          "beat": 1.5
+        },
+        {
+          "id": "blueBirdsEs/stretchoutyourneck4",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsEs/stretch1",
+          "beat": 3
+        },
+        {
+          "id": "blueBirdsEs/stretch2",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}

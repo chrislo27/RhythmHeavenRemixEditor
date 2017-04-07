@@ -1,0 +1,177 @@
+{
+  "gameID": "headSpinner",
+  "gameName": "Head Spinner",
+  "series": "side",
+  "cues": [
+    {
+      "id": "headSpinner/drum",
+      "duration": 0.25,
+      "name": "drum"
+    },
+    {
+      "id": "headSpinner/drumroll1",
+      "duration": 0.167,
+      "name": "drumroll - 1"
+    },
+    {
+      "id": "headSpinner/drumroll2",
+      "duration": 0.167,
+      "name": "drumroll - 2"
+    },
+    {
+      "id": "headSpinner/drumroll3",
+      "duration": 0.167,
+      "name": "drumroll - 3"
+    },
+    {
+      "id": "headSpinner/drumroll4",
+      "duration": 0.167,
+      "name": "drumroll - 4"
+    },
+    {
+      "id": "headSpinner/drumroll5",
+      "duration": 0.167,
+      "name": "drumroll - 5"
+    },
+    {
+      "id": "headSpinner/drumroll6",
+      "duration": 0.167,
+      "name": "drumroll - 6"
+    },
+    {
+      "id": "headSpinner/drumroll7",
+      "duration": 1,
+      "name": "drumroll - 7"
+    },
+    {
+      "id": "headSpinner/slap",
+      "duration": 2,
+      "name": "slap"
+    },
+    {
+      "id": "headSpinner/eyes",
+      "duration": 1,
+      "name": "eyes"
+    },
+    {
+      "id": "headSpinner/claw1",
+      "duration": 0.5,
+      "name": "claw - 1"
+    },
+    {
+      "id": "headSpinner/claw2",
+      "duration": 0.5,
+      "name": "claw - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "headSpinner_eyesOnly",
+      "name": "mannequin - eyes only",
+      "cues": [
+       {
+        "id": "headSpinner/drum",
+        "beat": 0
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 0.5
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 1.5
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 2
+       },
+       {
+        "id": "headSpinner/drumroll1",
+        "beat": 3
+       },
+       {
+        "id": "headSpinner/drumroll2",
+        "beat": 3.167
+       },
+       {
+        "id": "headSpinner/drumroll3",
+        "beat": 3.333
+       },
+       {
+        "id": "headSpinner/drumroll4",
+        "beat": 3.5
+       },
+       {
+        "id": "headSpinner/drumroll5",
+        "beat": 3.667
+       },
+       {
+        "id": "headSpinner/drumroll6",
+        "beat": 3.833
+       },
+       {
+        "id": "headSpinner/drumroll7",
+        "beat": 4
+       },
+       {
+        "id": "headSpinner/eyes",
+        "beat": 5
+       },
+       {
+        "id": "headSpinner/claw1",
+        "beat": 6
+       },
+       {
+        "id": "headSpinner/claw2",
+        "beat": 6.5
+       }
+      ]
+    },
+    {
+      "id": "headSpinner_slapAndEyes",
+      "name": "mannequin - slap and eyes",
+      "cues": [
+       {
+        "id": "headSpinner/drum",
+        "beat": 0
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 0.5
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 0.75
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 1
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 1.5
+       },
+       {
+        "id": "headSpinner/drum",
+        "beat": 2
+       },
+       {
+        "id": "headSpinner/slap",
+        "beat": 3
+       },
+       {
+        "id": "headSpinner/eyes",
+        "beat": 5
+       },
+       {
+        "id": "headSpinner/claw1",
+        "beat": 6
+       },
+       {
+        "id": "headSpinner/claw2",
+        "beat": 6.5
+       }
+      ]
+    }
+  ]
+}
