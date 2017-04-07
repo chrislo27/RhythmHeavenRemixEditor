@@ -297,10 +297,14 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			batch.begin()
 			fontBordered.setColor(1f, 1f, 1f, 1f)
 			fontBordered.data.setScale(0.5f)
-			val str = if (VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit)
+			val str = (if (VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit)
 				Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
 			else
-				ionium.templates.Main.version
+				ionium.templates.Main.version) +
+					if (LazySound.forceLoadNow)
+						" (force load)"
+					else
+						""
 			versionStringLength = Utils.getWidth(fontBordered, str)
 			fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
 							  Align.right, false)
