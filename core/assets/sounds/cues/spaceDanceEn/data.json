@@ -244,19 +244,19 @@
       "name": "dancers - pu-pu-pu-punch (cosmic)",
       "cues": [
         {
-          "id": "spaceDanceEn/pa2",
+          "id": "spaceDanceEn/pa1",
           "beat": 0.0
         },
         {
-          "id": "spaceDanceEn/pa2",
+          "id": "spaceDanceEn/pa1",
           "beat": 0.667
         },
         {
-          "id": "spaceDanceEn/pa2",
+          "id": "spaceDanceEn/pa1",
           "beat": 1.0
         },
         {
-          "id": "spaceDanceEn/punch2",
+          "id": "spaceDanceEn/punch1",
           "beat": 1.667
         }
       ]
