@@ -1,40 +1,40 @@
 {
-  "gameID": "animalacrobat",
+  "gameID": "animalAcrobat",
   "gameName": "Animal Acrobat",
   "series": "megamix",
   "cues": [
     {
-      "id": "animalacrobat/Animal Acrobat- Beginning leap",
+      "id": "animalAcrobat/Animal Acrobat- Beginning leap",
       "duration": 1.0,
       "name": "Leap"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Eek!",
+      "id": "animalAcrobat/Animal Acrobat- Eek!",
       "duration": 1.0,
       "name": "Eek"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Flip",
+      "id": "animalAcrobat/Animal Acrobat- Flip",
       "duration": 1.0,
       "name": "Flip"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Giraffe Release",
+      "id": "animalAcrobat/Animal Acrobat- Giraffe Release",
       "duration": 2.0,
       "name": "Giraffe Release"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Grab",
+      "id": "animalAcrobat/Animal Acrobat- Grab",
       "duration": 2.0,
       "name": "Grab"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Release",
+      "id": "animalAcrobat/Animal Acrobat- Release",
       "duration": 1.0,
       "name": "Release"
     },
     {
-      "id": "animalacrobat/Animal Acrobat- Ring of fire cymbal",
+      "id": "animalAcrobat/Animal Acrobat- Ring of fire cymbal",
       "duration": 2.0,
       "name": "Ring of Fire"
     }
@@ -42,118 +42,118 @@
    ],
   "patterns": [
     {
-      "id": "animalacrobat_elephant",
+      "id": "animalAcrobat_elephant",
       "name": "Elephant",
       "cues": [
        {
-        "id": "animalacrobat/Animal Acrobat- Grab",
+        "id": "animalAcrobat/Animal Acrobat- Grab",
         "beat": 0.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Release",
+        "id": "animalAcrobat/Animal Acrobat- Release",
         "beat": 2.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Flip",
+        "id": "animalAcrobat/Animal Acrobat- Flip",
         "beat": 3.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 0.0,
 	"track": 1
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 1.0,
 	"track": 1
        }
       ]
     },
     {
-      "id": "animalacrobat_giraffe",
+      "id": "animalAcrobat_giraffe",
       "name": "Giraffe",
       "cues": [
        {
-        "id": "animalacrobat/Animal Acrobat- Grab",
+        "id": "animalAcrobat/Animal Acrobat- Grab",
         "beat": 0.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 2.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 3.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Giraffe Release",
+        "id": "animalAcrobat/Animal Acrobat- Giraffe Release",
         "beat": 4.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Ring of fire cymbal",
+        "id": "animalAcrobat/Animal Acrobat- Ring of fire cymbal",
         "beat": 6.0,
 	"track": 0
        }
       ]
     },
     {
-      "id": "animalacrobat_monkeys",
+      "id": "animalAcrobat_monkeys",
       "name": "Monkeys",
       "cues": [
        {
-        "id": "animalacrobat/Animal Acrobat- Grab",
+        "id": "animalAcrobat/Animal Acrobat- Grab",
         "beat": 0.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 1.0,
 	"track": 1
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 2.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Release",
+        "id": "animalAcrobat/Animal Acrobat- Release",
         "beat": 3.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Flip",
+        "id": "animalAcrobat/Animal Acrobat- Flip",
         "beat": 4.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Grab",
+        "id": "animalAcrobat/Animal Acrobat- Grab",
         "beat": 5.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Release",
+        "id": "animalAcrobat/Animal Acrobat- Release",
         "beat": 6.0,
 	"track": 1
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Flip",
+        "id": "animalAcrobat/Animal Acrobat- Flip",
         "beat": 7.0,
 	"track": 0
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 4.0,
 	"track": 1
        },
        {
-        "id": "animalacrobat/Animal Acrobat- Eek!",
+        "id": "animalAcrobat/Animal Acrobat- Eek!",
         "beat": 5.0,
 	"track": 1
        }
