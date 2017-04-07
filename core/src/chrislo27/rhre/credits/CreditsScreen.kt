@@ -10,7 +10,7 @@ import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.track.MusicData
 import chrislo27.rhre.track.PlayingState
 import chrislo27.rhre.track.Remix
-import chrislo27.rhre.util.DoNotRenderVersionPlease
+import chrislo27.rhre.util.HideVersionText
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Colors
@@ -25,7 +25,7 @@ import ionium.screen.Updateable
 import ionium.util.Utils
 import ionium.util.i18n.Localization
 
-class CreditsScreen(m: Main) : Updateable<Main>(m), DoNotRenderVersionPlease {
+class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 	enum class State(val length: Float = -1f) {
 		TITLE_CARD(4.5f) {
