@@ -11,8 +11,6 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
-import chrislo27.rhre.tonejs.ToneJsJson;
-import chrislo27.rhre.tonejs.ToneReader;
 import chrislo27.rhre.track.*;
 import chrislo27.rhre.util.JsonHandler;
 import com.badlogic.gdx.Gdx;
@@ -858,22 +856,6 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
-			} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-				ToneJsJson obj = ToneReader.INSTANCE.read();
-//				remix.getTempoChanges().add(new TempoChange(0, 60, remix.getTempoChanges()));
-				remix.getTempoChanges().add(new TempoChange(0, obj.getHeader().getBpm(), remix.getTempoChanges()));
-				obj.getTracks().forEach(t -> {
-					if (t.getNotes() == null)
-						return;
-					t.getNotes().forEach(note -> {
-						remix.getEntities().add(new SoundEntity(remix, GameRegistry.INSTANCE
-								.getCue(t.isPercussion() ? "polyrhythm/side_a" : "gleeClub/singLoop"),
-								remix.getTempoChanges().secondsToBeats((float) note.getTime()),
-								t.isPercussion() ? 1 : 0,
-								remix.getTempoChanges().secondsToBeats((float) note.getDuration()),
-								note.getMidi() - 60));
-					});
-				});
 			}
 		}
 

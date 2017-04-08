@@ -358,7 +358,8 @@ class Remix : ActionHistory<Remix>() {
 					}
 				}
 
-				Main.logger.info("Starting sweep-load with ${cachedEntities.size} IDs and ${coroutines.size} coroutines")
+				Main.logger.info(
+						"Starting sweep-load with ${cachedEntities.size} IDs and ${coroutines.size} coroutines")
 
 				launch(CommonPool) {
 					for (c in coroutines) {
