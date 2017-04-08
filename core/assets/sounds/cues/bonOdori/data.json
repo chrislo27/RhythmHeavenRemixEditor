@@ -55,7 +55,7 @@
     },
     {
       "id": "bonOdori/pan1",
-      "deprecatedIDs": ["bonOdori/pan", "bonOdori/panpan1",],
+      "deprecatedIDs": ["bonOdori/pan", "bonOdori/panpan1"],
       "duration": 1,
       "canAlterPitch": true,
       "name": "pan - 1"
