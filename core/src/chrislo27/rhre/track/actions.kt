@@ -100,12 +100,10 @@ class ActionSplitPattern(val pattern: PatternEntity) : ReversibleAction<Remix> {
 	override fun redo(context: Remix) {
 		context.entities.remove(pattern)
 		pattern.internal.forEach { se ->
-			val copy = se.copy()
+			se.bounds.x += pattern.bounds.x
+			se.bounds.y += pattern.bounds.y
 
-			copy.bounds.x += pattern.bounds.x
-			copy.bounds.y += pattern.bounds.y
-
-			splitResults.add(copy)
+			splitResults.add(se)
 		}
 
 		context.entities.addAll(splitResults)
@@ -116,6 +114,10 @@ class ActionSplitPattern(val pattern: PatternEntity) : ReversibleAction<Remix> {
 	override fun undo(context: Remix) {
 		context.entities.removeAll(splitResults)
 		splitResults.clear()
+		pattern.internal.forEach { se ->
+			se.bounds.x -= pattern.bounds.x
+			se.bounds.y -= pattern.bounds.y
+		}
 		context.entities.add(pattern)
 		context.updateDurationAndCurrentGame()
 	}
