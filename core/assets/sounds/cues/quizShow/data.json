@@ -47,6 +47,11 @@
       "id": "quizShow/correct",
       "duration": 2,
       "name": "correct answer"
+    },
+    {
+      "id": "quizShow/correctNoMusic",
+      "duration": 2,
+      "name": "correct answer - no music"
     }
   ],
   "patterns": []

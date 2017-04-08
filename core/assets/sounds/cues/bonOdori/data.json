@@ -4,40 +4,196 @@
   "series": "tengoku",
   "cues": [
     {
+      "id": "bonOdori/don1",
+      "deprecatedIDs": ["bonOdori/dondon1"],
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "don - 1"
+    },
+    {
+      "id": "bonOdori/don2",
+      "deprecatedIDs": ["bonOdori/dondon2"],
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "don - 2"
+    },
+    {
+      "id": "bonOdori/don3",
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "don - 3"
+    },
+    {
+      "id": "bonOdori/don4",
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "don - 4"
+    },
+    {
       "id": "bonOdori/dondo1",
-      "duration": 0.333333,
-      "name": "don1"
+      "duration": 0.6667,
+      "canAlterPitch": true,
+      "name": "dondo - 1"
+    },
+    {
+      "id": "bonOdori/do1",
+      "duration": 0.333,
+      "canAlterPitch": true,
+      "name": "do - 1"
     },
     {
       "id": "bonOdori/dondo2",
-      "duration": 0.333333,
-      "name": "don2"
+      "duration": 0.6667,
+      "canAlterPitch": true,
+      "name": "dondo - 2"
     },
     {
-      "id": "bonOdori/dondon1",
-      "duration": 0.333333,
-      "name": "don3"
+      "id": "bonOdori/do2",
+      "duration": 0.333,
+      "canAlterPitch": true,
+      "name": "do - 2"
     },
     {
-      "id": "bonOdori/dondon2",
-      "duration": 0.333333,
-      "name": "don4"
+      "id": "bonOdori/pan1",
+      "deprecatedIDs": ["bonOdori/pan", "bonOdori/panpan1"],
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "pan - 1"
     },
     {
-      "id": "bonOdori/pan",
-      "duration": 0.333333,
-      "name": "pan1"
+      "id": "bonOdori/pan2",
+      "deprecatedIDs": ["bonOdori/panpan2"],
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "pan - 2"
     },
     {
-      "id": "bonOdori/panpan1",
-      "duration": 0.333333,
-      "name": "pan2"
+      "id": "bonOdori/pan3",
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "pan - 3"
     },
     {
-      "id": "bonOdori/panpan2",
-      "duration": 0.333333,
-      "name": "pan3"
+      "id": "bonOdori/pan4",
+      "duration": 1,
+      "canAlterPitch": true,
+      "name": "pan - 4"
+    },
+    {
+      "id": "bonOdori/panpa",
+      "duration": 0.6667,
+      "canAlterPitch": true,
+      "name": "panpa"
+    },
+    {
+      "id": "bonOdori/pa",
+      "duration": 0.333,
+      "canAlterPitch": true,
+      "name": "pa"
     }
   ],
-  "patterns": []
+  "patterns": [
+    {
+      "id": "bonOdori_donDonPanPan",
+      "name": "[#40b722]don don[] [YELLOW]pan pan[]",
+      "cues": [
+       {
+        "id": "bonOdori/don1",
+        "beat": 0.0
+       },
+       {
+        "id": "bonOdori/don2",
+        "beat": 1.0
+       },
+       {
+        "id": "bonOdori/pan1",
+        "beat": 2.0
+       },
+       {
+        "id": "bonOdori/pan2",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "bonOdori_dondoPanPan",
+      "name": "[#40b722]dondo[] [YELLOW]pan pan[]",
+      "cues": [
+       {
+        "id": "bonOdori/dondo1",
+        "beat": 0.0
+       },
+       {
+        "id": "bonOdori/do1",
+        "beat": 0.667
+       },
+       {
+        "id": "bonOdori/pan3",
+        "beat": 1.0
+       },
+       {
+        "id": "bonOdori/pan3",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "bonOdori_dondoPanpa",
+      "name": "[#40b722]dondo[] [YELLOW]panpa[]",
+      "cues": [
+       {
+        "id": "bonOdori/dondo2",
+        "beat": 0.0
+       },
+       {
+        "id": "bonOdori/do2",
+        "beat": 0.667
+       },
+       {
+        "id": "bonOdori/panpa",
+        "beat": 1.0
+       },
+       {
+        "id": "bonOdori/pa",
+        "beat": 1.667
+       }
+      ]
+    },
+    {
+      "id": "bonOdori_donDonPan",
+      "name": "[#40b722]don don[] [YELLOW]pan[]",
+      "cues": [
+       {
+        "id": "bonOdori/don4",
+        "beat": 0.0
+       },
+       {
+        "id": "bonOdori/don4",
+        "beat": 1.0
+       },
+       {
+        "id": "bonOdori/pan4",
+        "beat": 2.0
+       }
+      ]
+    },
+    {
+      "id": "bonOdori_donPanPan",
+      "name": "[#40b722]don[] [YELLOW]pan pan[]",
+      "cues": [
+       {
+        "id": "bonOdori/don3",
+        "beat": 0.0
+       },
+       {
+        "id": "bonOdori/pan3",
+        "beat": 1.0
+       },
+       {
+        "id": "bonOdori/pan3",
+        "beat": 2.0
+       }
+      ]
+    }
+  ]
 }

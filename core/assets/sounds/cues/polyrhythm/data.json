@@ -13,15 +13,21 @@
       "duration": 0.5,
       "name": "+ side"
     },
-	{
+    {
       "id": "polyrhythm/enter",
       "duration": 0.5,
       "name": "cylinder - entering"
     },
-	{
+    {
       "id": "polyrhythm/land",
       "duration": 0.5,
       "name": "cylinder - landing"
+    },
+    {
+      "id": "polyrhythm/clear",
+      "duration": 4,
+      "baseBpm": 129,
+      "name": "clear"
     }
   ],
   "patterns": []

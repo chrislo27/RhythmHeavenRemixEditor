@@ -10,6 +10,12 @@
       "fileExtension": "wav"
     },
     {
+      "id": "tossBoys/stop",
+      "duration": 2,
+      "name": "[#FFFF00]kii[]-yan - stop",
+      "fileExtension": "wav"
+    },
+    {
       "id": "tossBoys/redBlue1",
       "duration": 1,
       "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 1"
@@ -21,13 +27,18 @@
     },
     {
       "id": "tossBoys/redYellow1",
-      "duration": 1,
+      "duration": 0.5,
       "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 1"
     },
     {
       "id": "tossBoys/redYellow2",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 2"
+    },
+    {
+      "id": "tossBoys/redYellow3",
       "duration": 1,
-      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 1"
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 3"
     },
     {
       "id": "tossBoys/blueRed1",
@@ -80,15 +91,15 @@
       "name": "[#FFFF00]kii[]-yan - [#70B5FF]ao[]-kun - 2"
     },
     {
-      "id": "tossBoys/stop",
-      "duration": 2,
-      "name": "[#FFFF00]kii[]-yan - stop",
-      "fileExtension": "wav"
+      "id": "tossBoys/superRed1",
+      "deprecatedIDs": ["tossBoys/superRed"],
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - start - 1"
     },
     {
-      "id": "tossBoys/superRed",
-      "duration": 1,
-      "name": "[#FF0000]aka[]-chan super - start"
+      "id": "tossBoys/superRed2",
+      "duration": 0.75,
+      "name": "[#FF0000]aka[]-chan super - start - 2"
     },
     {
       "id": "tossBoys/superRedA1",
@@ -116,9 +127,40 @@
       "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 3"
     },
     {
-      "id": "tossBoys/superBlue",
-      "duration": 1,
-      "name": "[#70B5FF]ao[]-kun super - start"
+      "id": "tossBoys/superRedHit",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - hit"
+    },
+    {
+      "id": "tossBoys/superRedBlue1",
+      "deprecatedIDs": ["tossBoys/superBlue"],
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoys/superRedBlue2",
+      "duration": 1.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoys/superRedYellow1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoys/superRedYellow2",
+      "duration": 1.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#FFFF00]kii[]-yan - 2"
+    },
+    {
+      "id": "tossBoys/superBlue1",
+      "duration": 0.25,
+      "name": "[#70B5FF]ao[]-kun super - start - 1"
+    },
+    {
+      "id": "tossBoys/superBlue2",
+      "duration": 0.75,
+      "name": "[#70B5FF]ao[]-kun super - start - 2"
     },
     {
       "id": "tossBoys/superBlueHit",
@@ -211,6 +253,10 @@
         },
         {
           "id": "tossBoys/redYellow2",
+          "beat": 0.5
+        },
+        {
+          "id": "tossBoys/redYellow3",
           "beat": 1
         }
       ]
@@ -284,8 +330,12 @@
       "name": "[#FF0000]aka[]-chan super",
       "cues": [
         {
-          "id": "tossBoys/superRed",
+          "id": "tossBoys/superRed1",
           "beat": 0
+        },
+        {
+          "id": "tossBoys/superRed2",
+          "beat": 0.25
         },
         {
           "id": "tossBoys/superRedA1",
@@ -330,13 +380,77 @@
       ]
     },
     {
+      "id": "tossBoys_akachanSuperToAokun",
+      "name": "[#FF0000]aka[]-chan unused super to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoys/superRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superRed2",
+          "beat": 0.25
+        },
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superRedBlue1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superRedBlue2",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoys_akachanSuperToKiiyan",
+      "name": "[#FF0000]aka[]-chan unused super to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoys/superRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superRed2",
+          "beat": 0.25
+        },
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superRedYellow1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superRedYellow2",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
       "id": "tossBoys_aokunSuperToAkachan",
       "name": "[#70B5FF]ao[]-kun super to [#FF0000]aka[]-chan",
       "deprecatedIDs": ["tossBoys_aokunSuper"],
       "cues": [
         {
-          "id": "tossBoys/superBlue",
+          "id": "tossBoys/superBlue1",
           "beat": 0
+        },
+        {
+          "id": "tossBoys/superBlue2",
+          "beat": 0.25
         },
         {
           "id": "tossBoys/superBlueHit",
@@ -365,8 +479,12 @@
       "name": "[#70B5FF]ao[]-kun super to [#FFFF00]kii[]-yan",
       "cues": [
         {
-          "id": "tossBoys/superBlue",
+          "id": "tossBoys/superBlue1",
           "beat": 0
+        },
+        {
+          "id": "tossBoys/superBlue2",
+          "beat": 0.25
         },
         {
           "id": "tossBoys/superBlueHit",
