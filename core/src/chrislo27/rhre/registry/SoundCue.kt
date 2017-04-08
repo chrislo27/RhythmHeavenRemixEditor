@@ -1,10 +1,10 @@
 package chrislo27.rhre.registry
 
 import chrislo27.rhre.inspections.InspectionFunction
-import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
+import ionium.registry.lazysound.LazySound
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 

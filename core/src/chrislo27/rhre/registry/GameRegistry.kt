@@ -3,7 +3,6 @@ package chrislo27.rhre.registry
 import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.inspections.InspectionPostfix
 import chrislo27.rhre.json.GameObject
-import chrislo27.rhre.lazysound.LazySound
 import chrislo27.rhre.util.CustomSoundUtil
 import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
@@ -13,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import ionium.animation.Animation
 import ionium.registry.handler.IAssetLoader
+import ionium.registry.lazysound.LazySound
 import ionium.templates.Main
 import ionium.util.AssetMap
 import org.luaj.vm2.LuaValue

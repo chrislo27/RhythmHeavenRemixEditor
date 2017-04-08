@@ -1,12 +1,12 @@
 package chrislo27.rhre.desktop
 
 import chrislo27.rhre.Main
-import chrislo27.rhre.lazysound.LazySound
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import ionium.desktop.ArgumentInferredLwjglAppConfig
 import ionium.desktop.GameLwjglApp
 import ionium.registry.GlobalVariables
+import ionium.registry.lazysound.LazySound
 import ionium.util.Logger
 import java.util.*
 

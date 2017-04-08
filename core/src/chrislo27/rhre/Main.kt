@@ -1,8 +1,6 @@
 package chrislo27.rhre
 
 import chrislo27.rhre.init.DefAssetLoader
-import chrislo27.rhre.lazysound.LazySound
-import chrislo27.rhre.lazysound.LazySoundLoader
 import chrislo27.rhre.logging.SysOutPiper
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
@@ -31,6 +29,8 @@ import com.badlogic.gdx.utils.Array
 import ionium.registry.AssetRegistry
 import ionium.registry.GlobalVariables
 import ionium.registry.ScreenRegistry
+import ionium.registry.lazysound.LazySound
+import ionium.registry.lazysound.LazySoundLoader
 import ionium.templates.Main
 import ionium.util.DebugSetting
 import ionium.util.Logger
