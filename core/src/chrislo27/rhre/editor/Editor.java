@@ -11,6 +11,8 @@ import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
 import chrislo27.rhre.registry.Pattern;
 import chrislo27.rhre.registry.Series;
+import chrislo27.rhre.tonejs.ToneJsJson;
+import chrislo27.rhre.tonejs.ToneReader;
 import chrislo27.rhre.track.*;
 import chrislo27.rhre.util.JsonHandler;
 import com.badlogic.gdx.Gdx;
@@ -460,10 +462,10 @@ public class Editor extends InputAdapter implements Disposable {
 		// inspections
 		if (main.getInspectionsEnabled()) {
 			main.getFontBordered().getData().setScale(0.5f);
-			main.getFontBordered().draw(batch, Localization.get("inspections.deprecated"),
-					main.camera.viewportWidth - 4,
-					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT -
-							main.getFontBordered().getCapHeight() * 0.25f, 0, Align.right, false);
+			main.getFontBordered()
+					.draw(batch, Localization.get("inspections.deprecated"), main.camera.viewportWidth - 4,
+							main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT -
+									main.getFontBordered().getCapHeight() * 0.25f, 0, Align.right, false);
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 			main.getFontBordered().draw(batch, Localization
@@ -634,7 +636,7 @@ public class Editor extends InputAdapter implements Disposable {
 										""),
 						main.camera.viewportWidth * 0.525f,
 						middle + (first - i) * PICKER_HEIGHT / (PATTERNS_ABOVE_BELOW * 2 + 1),
-								main.camera.viewportWidth * 0.45f, Align.left);
+						main.camera.viewportWidth * 0.45f, Align.left);
 			}
 
 			main.getFontBordered().setColor(1, 1, 1, 1);
@@ -856,6 +858,21 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					Main.logger.debug("Cannot export pattern - nothing is selected");
 				}
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+				ToneJsJson obj = ToneReader.INSTANCE.read();
+//				remix.getTempoChanges().add(new TempoChange(0, 60, remix.getTempoChanges()));
+				remix.getTempoChanges().add(new TempoChange(0, obj.getHeader().getBpm(), remix.getTempoChanges()));
+				obj.getTracks().forEach(t -> {
+					if (t.getNotes() == null)
+						return;
+					t.getNotes().forEach(note -> {
+						remix.getEntities().add(new SoundEntity(remix, GameRegistry.INSTANCE.getCue
+								("gleeClub/singLoop"),
+								remix.getTempoChanges().secondsToBeats((float) note.getTime()), 0,
+								remix.getTempoChanges().secondsToBeats((float) note.getDuration()),
+								note.getMidi() - 60));
+					});
+				});
 			}
 		}
 
@@ -1036,8 +1053,8 @@ public class Editor extends InputAdapter implements Disposable {
 			} else {
 				Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 						.get(scrolls.get(currentSeries).getGame());
-				status = Localization.get("editor.currentGame") + " " +
-						game.getName() + (DebugSetting.debug ? (" [GRAY](" + game.getId() + ")[]") : "");
+				status = Localization.get("editor.currentGame") + " " + game.getName() +
+						(DebugSetting.debug ? (" [GRAY](" + game.getId() + ")[]") : "");
 
 				if (main.camera.viewportHeight - main.getInputY() <=
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
