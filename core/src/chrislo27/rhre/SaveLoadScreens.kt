@@ -403,7 +403,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 			missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
 
-			if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent)
+			if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent.first)
 		} catch (e: Exception) {
 			System.err.println("Failed to load " + file.absolutePath)
 			e.printStackTrace()
