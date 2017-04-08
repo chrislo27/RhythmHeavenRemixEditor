@@ -103,6 +103,7 @@
     },
     {
       "id": "nightWalk_jump3",
+      "deprecatedIDs": ["nightWalk_jump"],
       "name": "two flowers, two lollipops",
       "cues": [
        {

@@ -5,12 +5,14 @@
   "cues": [
     {
       "id": "bonOdori/don1",
+      "deprecatedIDs": ["bonOdori/dondon1"],
       "duration": 1,
       "canAlterPitch": true,
       "name": "don - 1"
     },
     {
       "id": "bonOdori/don2",
+      "deprecatedIDs": ["bonOdori/dondon2"],
       "duration": 1,
       "canAlterPitch": true,
       "name": "don - 2"
@@ -53,12 +55,14 @@
     },
     {
       "id": "bonOdori/pan1",
+      "deprecatedIDs": ["bonOdori/pan", "bonOdori/panpan1",],
       "duration": 1,
       "canAlterPitch": true,
       "name": "pan - 1"
     },
     {
       "id": "bonOdori/pan2",
+      "deprecatedIDs": ["bonOdori/panpan2"],
       "duration": 1,
       "canAlterPitch": true,
       "name": "pan - 2"

@@ -92,6 +92,7 @@
     },
     {
       "id": "tossBoys/superRed1",
+      "deprecatedIDs": ["tossBoys/superRed"],
       "duration": 0.25,
       "name": "[#FF0000]aka[]-chan super - start - 1"
     },
@@ -132,6 +133,7 @@
     },
     {
       "id": "tossBoys/superRedBlue1",
+      "deprecatedIDs": ["tossBoys/superBlue"],
       "duration": 0.5,
       "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 1"
     },
