@@ -99,7 +99,10 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private val inputProj: Vector3 = Vector3()
 
 	private lateinit var ttfGenerator: FreeTypeFontGenerator
-	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS + "éàèùâêîôûçëïüáéíóú¿¡ñ" + SpecialCharactersList.getJapaneseKana()
+	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS +
+			"éàèùâêîôûçëïüáéíóú¿¡ñ" +
+			SpecialCharactersList.getJapaneseKana() +
+			"レ力、己寸心" // These characters are for Power Calligraphy
 
 	var versionStringLength: Float = 0f
 		private set
