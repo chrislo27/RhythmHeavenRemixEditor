@@ -31,6 +31,7 @@ object DesktopLauncher {
 		config.samples = 0
 		config.initialBackgroundColor = Color.BLACK
 		config.allowSoftwareMode = true
+		config.audioDeviceSimultaneousSources = 128
 
 		config.inferFromArguments()
 
