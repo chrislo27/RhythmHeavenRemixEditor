@@ -1,0 +1,183 @@
+{
+  "gameID": "blueBirdsEn",
+  "gameName": "Blue Birds (English)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "blueBirdsEn/peckyourbeak1",
+      "deprecatedIDs": ["blueBirds/peckyourbeak1"],
+      "duration": 0.5,
+      "name": "peck your beak - peck"
+    },
+    {
+      "id": "blueBirdsEn/peckyourbeak2",
+      "deprecatedIDs": ["blueBirds/peckyourbeak2"],
+      "duration": 0.5,
+      "name": "peck your beak - your"
+    },
+    {
+      "id": "blueBirdsEn/peckyourbeak3",
+      "deprecatedIDs": ["blueBirds/peckyourbeak3"],
+      "duration": 0.5,
+      "name": "peck your beak - beak"
+    },
+    {
+      "id": "blueBirdsEn/peckyourbeakBaseBpm",
+      "duration": 1.5,
+      "baseBpm": 120,
+      "name": "peck your beak - full"
+    },
+    {
+      "id": "blueBirdsEn/peck",
+      "deprecatedIDs": ["blueBirds/peck"],
+      "duration": 0.5,
+      "name": "peck"
+    },
+    {
+      "id": "blueBirdsEn/stretchoutyourneck1",
+      "deprecatedIDs": ["blueBirds/stretchoutyourneck1"],
+      "duration": 0.75,
+      "name": "stretch out your neck - stretch"
+    },
+    {
+      "id": "blueBirdsEn/stretchoutyourneck2",
+      "deprecatedIDs": ["blueBirds/stretchoutyourneck2"],
+      "duration": 0.75,
+      "name": "stretch out your neck - out"
+    },
+    {
+      "id": "blueBirdsEn/stretchoutyourneck3",
+      "deprecatedIDs": ["blueBirds/stretchoutyourneck3"],
+      "duration": 0.5,
+      "name": "stretch out your neck - your"
+    },
+    {
+      "id": "blueBirdsEn/stretchoutyourneck4",
+      "deprecatedIDs": ["blueBirds/stretchoutyourneck4"],
+      "duration": 1,
+      "name": "stretch out your neck - neck!"
+    },
+    {
+      "id": "blueBirdsEn/stretchoutyourneckBaseBpm",
+      "duration": 3,
+      "baseBpm": 120,
+      "name": "stretch out your neck - full"
+    },
+    {
+      "id": "blueBirdsEn/stretch1",
+      "deprecatedIDs": ["blueBirds/stretch1"],
+      "duration": 1,
+      "name": "stretch1"
+    },
+    {
+      "id": "blueBirdsEn/stretch2",
+      "deprecatedIDs": ["blueBirds/stretch2"],
+      "duration": 0.5,
+      "name": "stretch2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "blueBirdsEn_peckyourbeak",
+      "deprecatedIDs": ["blueBirds_peckyourbeak"],
+      "name": "peck your beak",
+      "cues": [
+        {
+          "id": "blueBirdsEn/peckyourbeak1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEn/peckyourbeak2",
+          "beat": 0.5
+        },
+        {
+          "id": "blueBirdsEn/peckyourbeak3",
+          "beat": 1
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 2.5
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "blueBirdsEn_stretchoutyourneck",
+      "deprecatedIDs": ["blueBirds_stretchoutyourneck"],
+      "name": "stretch out your neck",
+      "cues": [
+        {
+          "id": "blueBirdsEn/stretchoutyourneck1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEn/stretchoutyourneck2",
+          "beat": 0.75
+        },
+        {
+          "id": "blueBirdsEn/stretchoutyourneck3",
+          "beat": 1.5
+        },
+        {
+          "id": "blueBirdsEn/stretchoutyourneck4",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsEn/stretch1",
+          "beat": 3
+        },
+        {
+          "id": "blueBirdsEn/stretch2",
+          "beat": 4
+        }
+      ]
+    },
+    {
+      "id": "blueBirdsEn_peckyourbeakBaseBpm",
+      "name": "peck your beak - pitch changing",
+      "cues": [
+        {
+          "id": "blueBirdsEn/peckyourbeakBaseBpm",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 2.5
+        },
+        {
+          "id": "blueBirdsEn/peck",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "blueBirdsEn_stretchoutyourneckBaseBpm",
+      "name": "stretch out your neck - pitch changing",
+      "cues": [
+        {
+          "id": "blueBirdsEn/stretchoutyourneckBaseBpm",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsEn/stretch1",
+          "beat": 3
+        },
+        {
+          "id": "blueBirdsEn/stretch2",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}
