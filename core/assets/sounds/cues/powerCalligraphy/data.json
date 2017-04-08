@@ -72,7 +72,7 @@
   "patterns": [
     {
       "id": "powerCalligraphy_re",
-      "name": "re",
+      "name": "re (レ)",
       "cues": [
         {
           "id": "powerCalligraphy/reShout",
@@ -98,7 +98,7 @@
     },
     {
       "id": "powerCalligraphy_comma",
-      "name": "comma",
+      "name": "comma (、)",
       "cues": [
         {
           "id": "powerCalligraphy/comma1",
@@ -128,7 +128,7 @@
     },
     {
       "id": "powerCalligraphy_chikara",
-      "name": "chikara",
+      "name": "chikara (力)",
       "cues": [
         {
           "id": "powerCalligraphy/brushTap",
@@ -162,7 +162,7 @@
     },
     {
       "id": "powerCalligraphy_onore",
-      "name": "onore",
+      "name": "onore (己)",
       "cues": [
         {
           "id": "powerCalligraphy/brushTap",
@@ -201,7 +201,7 @@
     },
     {
       "id": "powerCalligraphy_sun",
-      "name": "sun",
+      "name": "sun (寸)",
       "cues": [
         {
           "id": "powerCalligraphy/brushTap",
@@ -239,7 +239,7 @@
     },
     {
       "id": "powerCalligraphy_kokoro",
-      "name": "kokoro",
+      "name": "kokoro (心)",
       "cues": [
         {
           "id": "powerCalligraphy/brush3",
