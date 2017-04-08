@@ -866,9 +866,10 @@ public class Editor extends InputAdapter implements Disposable {
 					if (t.getNotes() == null)
 						return;
 					t.getNotes().forEach(note -> {
-						remix.getEntities().add(new SoundEntity(remix, GameRegistry.INSTANCE.getCue
-								("gleeClub/singLoop"),
-								remix.getTempoChanges().secondsToBeats((float) note.getTime()), 0,
+						remix.getEntities().add(new SoundEntity(remix, GameRegistry.INSTANCE
+								.getCue(t.isPercussion() ? "polyrhythm/side_a" : "gleeClub/singLoop"),
+								remix.getTempoChanges().secondsToBeats((float) note.getTime()),
+								t.isPercussion() ? 1 : 0,
 								remix.getTempoChanges().secondsToBeats((float) note.getDuration()),
 								note.getMidi() - 60));
 					});
@@ -880,6 +881,10 @@ public class Editor extends InputAdapter implements Disposable {
 			if (isCursorStretching) {
 				isCursorStretching = false;
 				Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow);
+			}
+
+			if (selectedTempoChange != null) {
+				selectedTempoChange = null;
 			}
 			return;
 		}
@@ -1151,7 +1156,8 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
+		if (remix.getPlayingState() == PlayingState.STOPPED && Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) ||
+				Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
 				remix.undo();
 			}
@@ -1447,7 +1453,8 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean keyDown(int keycode) {
 
-		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
+		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9 &&
+				remix.getPlayingState() == PlayingState.STOPPED) {
 			int index = keycode - Input.Keys.NUM_1;
 
 			if (index < Tool.values.length)
