@@ -4,16 +4,6 @@
   "series": "megamix",
   "cues": [
     {
-      "id": "sumoBrothers/stompsignal",
-      "duration": 1.0,
-      "name": "stomp signal"
-    },
-    {
-      "id": "sumoBrothers/stomp",
-      "duration": 1.0,
-      "name": "stomp"
-    },
-    {
       "id": "sumoBrothers/slapsignal",
       "duration": 1.0,
       "name": "slap signal"
@@ -23,12 +13,30 @@
       "duration": 1.0,
       "name": "slap"
     },
-    {
-      "id": "sumoBrothers/posesignal",
-      "duration": 3.0,
-      "name": "pose signal"
+	{
+      "id": "sumoBrothers/stompsignal",
+      "duration": 1.0,
+      "name": "stomp signal"
     },
     {
+      "id": "sumoBrothers/stomp",
+      "duration": 1.0,
+      "name": "stomp"
+    },
+	{
+      "id": "sumoBrothers/posesignalBegin",
+      "duration": 0.0001
+    },
+	{
+      "id": "sumoBrothers/posesignalLoop",
+      "duration": 3.0,
+      "name": "pose signal",
+	  "introSound": "sumoBrothers/posesignalBegin",
+	  "loops": true,
+	  "isStretchable": false,
+	  "deprecatedIDs": ["sumoBrothers/posesignal"]
+    },
+	{
       "id": "sumoBrothers/pose",
       "duration": 1.0,
       "name": "pose"
@@ -113,7 +121,7 @@
       "deprecatedIDs": ["sumoBrothers/pose"],
       "cues":  [
        {
-        "id": "sumoBrothers/posesignal",
+        "id": "sumoBrothers/posesignalLoop",
         "beat": 0.0
        },
        {

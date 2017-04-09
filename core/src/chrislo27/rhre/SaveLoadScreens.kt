@@ -4,6 +4,7 @@ import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.FileChooser
+import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
@@ -14,7 +15,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
-import ionium.util.DebugSetting
 import ionium.util.Utils
 import ionium.util.i18n.Localization
 import java.io.File
@@ -136,10 +136,7 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 						picker.selectedFile.createNewFile()
 
 						if (picker.fileFilter === dataFileFilter) {
-							val gsonBuilder = GsonBuilder()
-							if (DebugSetting.debug)
-								gsonBuilder.setPrettyPrinting()
-							val json: String = gsonBuilder.create().toJson(obj)
+							val json: String = JsonHandler.toJson(obj)
 							handle.writeString(json, false, "UTF-8")
 
 							es.editor.file = handle
