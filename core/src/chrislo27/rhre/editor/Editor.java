@@ -421,9 +421,8 @@ public class Editor extends InputAdapter implements Disposable {
 			// picker
 			Main.fillRect(batch, 0, 0, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT);
 			// button bar on top
-			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT, main.camera
-							.viewportWidth,
-					EditorStageSetup.BAR_HEIGHT);
+			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT(), main.camera
+							.viewportWidth, EditorStageSetup.Companion.getBAR_HEIGHT());
 			// series buttons
 			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values.length * GAME_ICON_SIZE,
 					OVERVIEW_HEIGHT);
@@ -462,7 +461,7 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFontBordered().getData().setScale(0.5f);
 			main.getFontBordered()
 					.draw(batch, Localization.get("inspections.deprecated"), main.camera.viewportWidth - 4,
-							main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT -
+							main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() -
 									main.getFontBordered().getCapHeight() * 0.25f, 0, Align.right, false);
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
@@ -470,7 +469,7 @@ public class Editor extends InputAdapter implements Disposable {
 							.get("editor.inspectionStatus", "" + remix.getInspections().getInspections().size(),
 									"" + remix.getInspections().getLastRefreshDuration()), main.camera.viewportWidth
 							- 4,
-					main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - main.getFontBordered().getLineHeight(),
+					main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - main.getFontBordered().getLineHeight(),
 					0, Align.right, false);
 			main.getFontBordered().setColor(1, 1, 1, 1);
 			main.getFontBordered().getData().setScale(1f);
@@ -479,7 +478,7 @@ public class Editor extends InputAdapter implements Disposable {
 		main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
-				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4);
+				main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - 4);
 		main.getFontBordered().setColor(1, 1, 1, 1);
 		main.getFontBordered().getData().setScale(1f);
 
@@ -496,7 +495,7 @@ public class Editor extends InputAdapter implements Disposable {
 				batch.setColor(0, 0, 0, 0.5f);
 				float bgHeight = glyphLayout.height + main.getFont().getLineHeight() + main.getFont().getCapHeight();
 				Main.fillRect(batch, main.camera.viewportWidth,
-						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
+						main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY, -glyphLayout.width - 12,
 						-bgHeight);
 //				Main.drawRect(batch, main.camera.viewportWidth,
 //						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
@@ -504,12 +503,12 @@ public class Editor extends InputAdapter implements Disposable {
 
 				main.getFont()
 						.draw(batch, inspection.getProperName(), main.camera.viewportWidth - glyphLayout.width - 8,
-								main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY - 4, 256, Align
+								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4, 256, Align
 										.left,
 								true);
 				main.getFont()
 						.draw(batch, inspection.getProperInfo(), main.camera.viewportWidth - glyphLayout.width - 8,
-								main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY - 4 -
+								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4 -
 										main.getFont().getLineHeight(), 256, Align.left, true);
 
 				offsetY += bgHeight;
@@ -910,7 +909,7 @@ public class Editor extends InputAdapter implements Disposable {
 			scrolled(-1);
 		}
 
-		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
+		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.Companion.getBAR_HEIGHT()) {
 			// trackers
 			{
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -1107,7 +1106,7 @@ public class Editor extends InputAdapter implements Disposable {
 			if (selectedTempoChange == null) {
 				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && main.camera.viewportHeight - main.getInputY() >
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
-						main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
+						main.getInputY() > EditorStageSetup.Companion.getBAR_HEIGHT()) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 

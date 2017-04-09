@@ -72,7 +72,6 @@ class Remix : ActionHistory<Remix>() {
 	private var musicPlayed: PlaybackCompletion = PlaybackCompletion.WAITING
 	var currentGame: Game? = null
 		private set
-	var muteMusic: Boolean = false
 
 	val inspections: Inspections = Inspections(this)
 
@@ -81,6 +80,9 @@ class Remix : ActionHistory<Remix>() {
 	@Volatile private var queueSweepLoad: Boolean = false
 
 	companion object {
+		@JvmField
+		var muteMusic: Boolean = false
+
 		fun writeToJsonObject(remix: Remix): RemixObject {
 			with(remix) {
 				val obj = RemixObject()
