@@ -72,6 +72,7 @@ class Remix : ActionHistory<Remix>() {
 	private var musicPlayed: PlaybackCompletion = PlaybackCompletion.WAITING
 	var currentGame: Game? = null
 		private set
+	var muteMusic: Boolean = false
 
 	val inspections: Inspections = Inspections(this)
 
@@ -388,6 +389,8 @@ class Remix : ActionHistory<Remix>() {
 
 			return
 		}
+
+		music?.music?.volume = if (muteMusic) 0f else musicVolume
 
 		val lastBpm: Float = tempoChanges.getTempoAt(beat)
 

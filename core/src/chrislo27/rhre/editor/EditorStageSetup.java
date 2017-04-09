@@ -387,7 +387,6 @@ public class EditorStageSetup {
 		{
 			TextButton music = new TextButton(stage, palette, "editor.button.music") {
 
-
 				@Override
 				public void onClickAction(float x, float y) {
 					super.onClickAction(x, y);
@@ -400,6 +399,28 @@ public class EditorStageSetup {
 					getPalette().labelFont.getData().setScale(0.5f);
 					super.render(batch, alpha);
 					getPalette().labelFont.getData().setScale(1);
+
+					if (this.stage.isMouseOver(this)) {
+						main.getFont().getData().setScale(0.5f);
+
+						String text = Localization.get("editor.button.muteMusicHint");
+						float width = Utils.getWidth(main.getFont(), text);
+						float height = Utils.getHeight(main.getFont(), text);
+
+						batch.setColor(0, 0, 0, 0.75f);
+						Main.fillRect(batch, this.getX() - PADDING, this.getY() - (PADDING * 3) - height,
+								width + PADDING * 2, height + PADDING * 2);
+						main.getFont().draw(batch, text, this.getX(), this.getY() - PADDING * 2);
+						main.getFont().getData().setScale(1);
+						batch.setColor(1, 1, 1, 1);
+
+						if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
+							screen.getEditor().remix.setMuteMusic(!screen.getEditor().remix.getMuteMusic());
+							this.setLocalizationKey(screen.getEditor().remix.getMuteMusic()
+									? "editor.button.musicMuted"
+									: "editor.button.music");
+						}
+					}
 				}
 			};
 
