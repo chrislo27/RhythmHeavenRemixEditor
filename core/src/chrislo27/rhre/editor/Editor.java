@@ -1401,7 +1401,7 @@ public class Editor extends InputAdapter implements Disposable {
 					int[] old = remix.getSelection().stream().mapToInt(Entity::getSemitone).toArray();
 					boolean anyChanged = remix.getSelection().stream()
 							.map(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE))
-							.anyMatch(b -> b); // CANNOT SHORT CIRCUIT
+							.distinct().findAny().orElse(false); // CANNOT SHORT CIRCUIT
 
 					if (anyChanged) {
 						remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));
