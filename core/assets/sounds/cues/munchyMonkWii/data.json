@@ -77,8 +77,7 @@
   "patterns": [
     {
       "id": "munchyMonkWii_oneEgg",
-      "name": "one [WHITE]egg[]!",
-      "isStretchable": false,
+      "name": "egg!",
       "cues": [
         {
           "id": "munchyMonkWii/oneegg1",
@@ -104,8 +103,7 @@
     },
     {
       "id": "munchyMonkWii_handfulOfPeas",
-      "name": "handful of [#40b722]peas[]!",
-      "isStretchable": false,
+      "name": "handful of peas!",
       "cues": [
         {
           "id": "munchyMonkWii/peas1",
