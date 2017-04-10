@@ -6,29 +6,29 @@
     {
       "id": "tramAndPauline/paulinejump",
       "duration": 1.0,
-      "name": "Pauline Jump"
+      "name": "pauline jump"
     },
     {
       "id": "tramAndPauline/paulinetransform",
       "duration": 1.0,
-      "name": "Pauline Transform"
+      "name": "pauline transform"
     },
     {
       "id": "tramAndPauline/tramjump",
       "duration": 1.0,
-      "name": "Tram Jump"
+      "name": "tram jump"
     },
     {
       "id": "tramAndPauline/tramtransform",
       "duration": 1.0,
-      "name": "Tram Transform"
+      "name": "tram transform"
     }
     
    ],
   "patterns": [
     {
       "id": "tramAndPauline_tram",
-      "name": "Tram",
+      "name": "tram",
       "cues": [
        {
         "id": "tramAndPauline/tramjump",
@@ -44,7 +44,7 @@
     },
     {
       "id": "tramAndPauline_pauline",
-      "name": "Pauline",
+      "name": "pauline",
       "cues": [
        {
         "id": "tramAndPauline/paulinejump",
