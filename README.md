@@ -8,7 +8,7 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 **Requires Java 8 and a graphics card that supports OpenGL 2.0+!**
 
 ## Contributing
-Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Sugar) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/master/.github/CONTRIBUTING.md) before submitting a pull request!
+Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
 
 ## Screenshots
 
