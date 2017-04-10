@@ -4,7 +4,7 @@
   "series": "megamix",
   "cues": [
     {
-      "id": "animalAcrobat/beginning_leap",
+      "id": "animalAcrobat/beginningLeap",
       "duration": 1.0,
       "name": "leap"
     },
@@ -19,7 +19,7 @@
       "name": "flip"
     },
     {
-      "id": "animalAcrobat/giraffe_release",
+      "id": "animalAcrobat/giraffeRelease",
       "duration": 2.0,
       "name": "giraffe release"
     },
@@ -34,9 +34,9 @@
       "name": "release"
     },
     {
-      "id": "animalAcrobat/ring_of_fire_cymbal",
+      "id": "animalAcrobat/ringOfFireCymbal",
       "duration": 2.0,
-      "name": "ring_of_fire"
+      "name": "ring of fire"
     }
     
    ],
@@ -92,12 +92,12 @@
 	"track": 0
        },
        {
-        "id": "animalAcrobat/giraffe_release",
+        "id": "animalAcrobat/giraffeRelease",
         "beat": 4.0,
 	"track": 0
        },
        {
-        "id": "animalAcrobat/ring_of_fire_cymbal",
+        "id": "animalAcrobat/ringOfFireCymbal",
         "beat": 6.0,
 	"track": 0
        }
