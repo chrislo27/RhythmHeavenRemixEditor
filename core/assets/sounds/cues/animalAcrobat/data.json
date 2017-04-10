@@ -105,7 +105,7 @@
     },
     {
       "id": "animalAcrobat_monkeys",
-      "name": "Monkeys",
+      "name": "monkeys",
       "cues": [
        {
         "id": "animalAcrobat/grab",
