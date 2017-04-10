@@ -189,7 +189,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 
 		main.font.data.setScale(0.5f)
 		main.font.color = palette.cueText
-		val name = pattern.name
+		val name = pattern.newlinedName
 		val targetWidth = bounds.getWidth() * Entity.Companion.PX_WIDTH - 8
 		val height = Utils.getHeightWithWrapping(main.font, name, targetWidth)
 		main.font.draw(batch, name, bounds.getX() * Entity.Companion.PX_WIDTH,

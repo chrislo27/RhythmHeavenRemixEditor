@@ -83,7 +83,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 
 		main.font.data.setScale(0.5f)
 		main.font.color = palette.cueText
-		val name = cue.name
+		val name = cue.newlinedName
 		val targetWidth = bounds.getWidth() * Entity.Companion.PX_WIDTH - 8
 		val height = Utils.getHeightWithWrapping(main.font, name, targetWidth)
 		main.font.draw(batch, name, bounds.getX() * Entity.Companion.PX_WIDTH,

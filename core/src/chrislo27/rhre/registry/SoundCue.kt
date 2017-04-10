@@ -8,13 +8,19 @@ import ionium.registry.lazysound.LazySound
 import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
-data class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
+class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
 					val deprecated: List<String> = mutableListOf(), val duration: Float,
-					val canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
+					canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
 					val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
 					val soundFolder: String? = null) {
 
 	var inspectionFunctions: List<InspectionFunction> = listOf()
+	val canAlterPitch: Boolean = canAlterPitch
+		get() {
+			if (baseBpm > 0) return false
+			return field
+		}
+	val newlinedName: String = name.replace(" - ", "\n")
 
 	val luaValue: LuaValue by lazy {
 		val l = LuaValue.tableOf()
@@ -81,9 +87,3 @@ data class SoundCue(val id: String, val gameID: String, val fileExtension: Strin
 	}
 
 }
-
-val SoundCue.canAlterPitch: Boolean
-	get() {
-		if (baseBpm > 0) return false
-		return canAlterPitch
-	}
