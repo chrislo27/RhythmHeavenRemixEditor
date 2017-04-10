@@ -1,0 +1,62 @@
+{
+  "gameID": "tramAndPauline",
+  "gameName": "Tram and Pauline",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "tramAndPauline/paulineJump",
+      "duration": 1.0,
+      "name": "pauline jump"
+    },
+    {
+      "id": "tramAndPauline/paulineTransform",
+      "duration": 1.0,
+      "name": "pauline transform"
+    },
+    {
+      "id": "tramAndPauline/tramJump",
+      "duration": 1.0,
+      "name": "tram jump"
+    },
+    {
+      "id": "tramAndPauline/tramTransform",
+      "duration": 1.0,
+      "name": "tram transform"
+    }
+    
+   ],
+  "patterns": [
+    {
+      "id": "tramAndPauline_tram",
+      "name": "tram",
+      "cues": [
+       {
+        "id": "tramAndPauline/tramJump",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "tramAndPauline/tramTransform",
+        "beat": 1.0,
+	"track": 0
+       }
+      ]
+    },
+    {
+      "id": "tramAndPauline_pauline",
+      "name": "pauline",
+      "cues": [
+       {
+        "id": "tramAndPauline/paulineJump",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "tramAndPauline/paulineTransform",
+        "beat": 1.0,
+	"track": 0
+       }
+      ]
+    }
+  ]
+}
