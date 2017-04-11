@@ -4,19 +4,31 @@
   "series": "tengoku",
   "cues": [
     {
-      "id": "polyrhythm/side_a",
+      "id": "polyrhythm/aSpring",
+      "deprecatedIDs": ["polyrhythm/side_a"],
       "duration": 0.5,
-      "name": "A side"
+      "name": "spring - a"
     },
     {
-      "id": "polyrhythm/side_d",
+      "id": "polyrhythm/dPadSpring",
+      "deprecatedIDs": ["polyrhythm/side_d"],
       "duration": 0.5,
-      "name": "+ side"
+      "name": "spring - +"
+    },
+    {
+      "id": "polyrhythm/aWidget",
+      "duration": 0.5,
+      "name": "widget - a"
+    },
+    {
+      "id": "polyrhythm/dPadWidget",
+      "duration": 0.5,
+      "name": "widget - +"
     },
     {
       "id": "polyrhythm/enter",
       "duration": 0.5,
-      "name": "cylinder - entering"
+      "name": "springs - retracting"
     },
     {
       "id": "polyrhythm/land",
