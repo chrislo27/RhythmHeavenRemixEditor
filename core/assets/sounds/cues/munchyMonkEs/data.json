@@ -5,7 +5,7 @@
   "cues": [
     {
       "id": "munchyMonkEs/gulp",
-      "duration": 1,
+      "duration": 0.5,
       "name": "gulp"
     },
     {
@@ -77,10 +77,9 @@
         },
         {
           "id": "munchyMonkEs/gulp",
-          "beat": 2,
-          "track": 1
+          "beat": 2
         }
-        ]
+      ]
     },
     {
       "id": "munchyMonkEs_three",
@@ -102,7 +101,7 @@
           "id": "munchyMonkEs/gulp3-3",
           "beat": 3
         }
-        ]
+      ]
     }
-    ]
+  ]
 }
