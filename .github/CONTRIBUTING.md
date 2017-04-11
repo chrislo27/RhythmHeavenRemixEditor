@@ -22,6 +22,7 @@ request:
 2. You cannot modify this project's style (i.e. indentation style, bracket style, naming, etc). I'll understand if you
 do this by accident, but I'll expect you to fix it before I merge the pull request.
 3. Your JSON formatting must be correct (fit the rest of the project's style) and valid.
+4. ALWAYS merge into dev! If you don't merge into dev I will immediately reject your pull request.
 
 ## Credit
 I won't ever take complete credit for something I didn't do or something someone helped me with. I will always credit you in the editor (visible by going to the info screen).

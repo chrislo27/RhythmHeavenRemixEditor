@@ -1,0 +1,163 @@
+{
+  "gameID": "animalAcrobat",
+  "gameName": "Animal Acrobat",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "animalAcrobat/beginningLeap",
+      "duration": 1.0,
+      "name": "leap"
+    },
+    {
+      "id": "animalAcrobat/eek!",
+      "duration": 1.0,
+      "name": "eek"
+    },
+    {
+      "id": "animalAcrobat/flip",
+      "duration": 1.0,
+      "name": "flip"
+    },
+    {
+      "id": "animalAcrobat/giraffeRelease",
+      "duration": 2.0,
+      "name": "giraffe release"
+    },
+    {
+      "id": "animalAcrobat/grab",
+      "duration": 2.0,
+      "name": "grab"
+    },
+    {
+      "id": "animalAcrobat/release",
+      "duration": 1.0,
+      "name": "release"
+    },
+    {
+      "id": "animalAcrobat/ringOfFireCymbal",
+      "duration": 2.0,
+      "name": "ring of fire"
+    }
+    
+   ],
+  "patterns": [
+    {
+      "id": "animalAcrobat_elephant",
+      "name": "elephant",
+      "cues": [
+       {
+        "id": "animalAcrobat/grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/release",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/flip",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 0.0,
+	"track": 1
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 1.0,
+	"track": 1
+       }
+      ]
+    },
+    {
+      "id": "animalAcrobat_giraffe",
+      "name": "giraffe",
+      "cues": [
+       {
+        "id": "animalAcrobat/grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/giraffeRelease",
+        "beat": 4.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/ringOfFireCymbal",
+        "beat": 6.0,
+	"track": 0
+       }
+      ]
+    },
+    {
+      "id": "animalAcrobat_monkeys",
+      "name": "monkeys",
+      "cues": [
+       {
+        "id": "animalAcrobat/grab",
+        "beat": 0.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 1.0,
+	"track": 1
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 2.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/release",
+        "beat": 3.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/flip",
+        "beat": 4.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/grab",
+        "beat": 5.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/release",
+        "beat": 6.0,
+	"track": 1
+       },
+       {
+        "id": "animalAcrobat/flip",
+        "beat": 7.0,
+	"track": 0
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 4.0,
+	"track": 1
+       },
+       {
+        "id": "animalAcrobat/eek!",
+        "beat": 5.0,
+	"track": 1
+       }
+      ]
+    }
+  ]
+}
