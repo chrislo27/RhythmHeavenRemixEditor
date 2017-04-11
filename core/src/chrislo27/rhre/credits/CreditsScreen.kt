@@ -41,6 +41,10 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 		LITTLE_WAIT(4.5f + 0.75f + 51f + 1.0f),
 		END;
 
+		companion object {
+			val values = values()
+		}
+
 		open fun start(screen: CreditsScreen) {
 
 		}
@@ -313,7 +317,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 		if (state.length > 0f && secondsElapsed >= state.length) {
 			state.end(this)
-			state = State.values()[State.values().indexOf(state) + 1]
+			state = State.values[State.values.indexOf(state) + 1]
 			state.start(this)
 		}
 
