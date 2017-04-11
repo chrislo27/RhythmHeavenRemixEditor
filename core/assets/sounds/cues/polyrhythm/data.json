@@ -7,7 +7,7 @@
       "id": "polyrhythm/aSpring",
       "deprecatedIDs": ["polyrhythm/side_a"],
       "duration": 0.5,
-      "name": "spring - a"
+      "name": "spring - A"
     },
     {
       "id": "polyrhythm/dPadSpring",
@@ -18,7 +18,7 @@
     {
       "id": "polyrhythm/aWidget",
       "duration": 0.5,
-      "name": "widget - a"
+      "name": "widget - A"
     },
     {
       "id": "polyrhythm/dPadWidget",
@@ -26,7 +26,8 @@
       "name": "widget - +"
     },
     {
-      "id": "polyrhythm/enter",
+      "id": "polyrhythm/retract",
+      "deprecatedIDs": ["polyrhythm/enter"],
       "duration": 0.5,
       "name": "springs - retracting"
     },
