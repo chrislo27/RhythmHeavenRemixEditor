@@ -102,7 +102,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS +
 			"éàèùâêîôûçëïüáéíóú¿¡ñ" +
 			SpecialCharactersList.getJapaneseKana() +
-			"レ力、己寸心" // These characters are for Power Calligraphy
+			"レ力、己寸心" + // These characters are for Power Calligraphy
+			"◉☂"
 
 	var versionStringLength: Float = 0f
 		private set
@@ -212,6 +213,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		languagesList.forEachIndexed { index, l ->
 			addBundle(l, onlyLoadGlyphs = index == 0)
 		}
+
+
 
 		Localization.instance().loadFromSettings(preferences)
 
