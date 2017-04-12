@@ -1,0 +1,69 @@
+{
+  "gameID": "spaceSoccerJa",
+  "gameName": "Space Soccer (Japanese)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "spaceSoccerJa/kick",
+      "duration": 1,
+      "name": "kick"
+    },
+    {
+      "id": "spaceSoccerJa/highkicktoe1",
+      "duration": 1,
+      "name": "highkick - high"
+    },
+    {
+      "id": "spaceSoccerJa/highkicktoe2",
+      "duration": 0.5,
+      "name": "highkick - kick"
+    },
+    {
+      "id": "spaceSoccerJa/highkicktoe3",
+      "duration": 1.5,
+      "name": "highkick - toe"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "spaceSoccerJa_keepup",
+      "name": "keep-up",
+      "cues": [
+       {
+        "id": "spaceSoccerJa/kick",
+        "beat": 0.0
+       },
+       {
+        "id": "spaceSoccerJa/kick",
+        "beat": 1.0
+       },
+       {
+        "id": "spaceSoccerJa/kick",
+        "beat": 2.0
+       },
+       {
+        "id": "spaceSoccerJa/kick",
+        "beat": 3.0
+       }
+      ]
+    },
+    {
+      "id": "spaceSoccerJa_highkicktoe",
+      "name": "high kick-toe!",
+      "cues": [
+       {
+        "id": "spaceSoccerJa/highkicktoe1",
+        "beat": 0.0
+       },
+       {
+        "id": "spaceSoccerJa/highkicktoe2",
+        "beat": 1.0
+       },
+       {
+        "id": "spaceSoccerJa/highkicktoe3",
+        "beat": 1.5
+       }
+      ]
+    }
+  ]
+}
