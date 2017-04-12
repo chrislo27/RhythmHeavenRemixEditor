@@ -369,7 +369,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 		missingContent = "" to 0
 	}
 
-	private fun attemptLoad(file: File) {
+	private fun attemptLoad(file: File, endFunction: (success: Boolean) -> Unit) {
 		try {
 			persistDirectory(main, "lastLoadDirectory", file.parentFile)
 
@@ -400,11 +400,16 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 			missingContent = distinct.joinToString(separator = ", ", transform = { it }) to distinct.size
 
-			if (missingContent.second > 0) ionium.templates.Main.logger.warn("Missing content: " + missingContent.first)
+			if (missingContent.second > 0) {
+				ionium.templates.Main.logger.warn("Missing content: " + missingContent.first)
+			}
+
+			endFunction(true)
 		} catch (e: Exception) {
 			System.err.println("Failed to load " + file.absolutePath)
 			e.printStackTrace()
 			failed = true
+			endFunction(false)
 		}
 	}
 
@@ -418,11 +423,17 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 				when (result) {
 					JFileChooser.APPROVE_OPTION -> {
-						attemptLoad(picker.selectedFile)
-						ScreenRegistry.get("save", SaveScreen::class.java).picker.selectedFile = picker.selectedFile
+						attemptLoad(picker.selectedFile) { success ->
+							if (!success) {
+								ScreenRegistry.get("save",
+												   SaveScreen::class.java).picker.selectedFile = picker.selectedFile
+							}
+						}
 					}
 					else -> {
-//						main.screen = ScreenRegistry.get("editor")
+						Gdx.app.postRunnable {
+							main.screen = ScreenRegistry.get("editor")
+						}
 					}
 				}
 			}
