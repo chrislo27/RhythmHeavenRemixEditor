@@ -1,8 +1,11 @@
 [
   "countIn",
   "extraSFX",
-  "airboarder",
+  "airboarderEn",
+  "airboarderEs",
+  "airboarderJa",
   "airRally",
+  "animalAcrobat",
   "basketballGirls",
   "bigRockFinish",
   "blueBear",
@@ -96,7 +99,9 @@
   "sneakySpirits",
   "spaceDanceEn",
   "spaceDanceJa",
-  "spaceSoccer",
+  "spaceSoccerEn",
+  "spaceSoccerEs",
+  "spaceSoccerJa",
   "spaceball",
   "splashdown",
   "sumoBrothers",
@@ -109,6 +114,7 @@
   "theDazzles",
   "tongueLashing",
   "tossBoys",
+  "tramAndPauline",
   "wizardWaltz",
   "workingDough"
 ]
