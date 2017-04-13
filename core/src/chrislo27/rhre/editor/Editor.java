@@ -421,8 +421,8 @@ public class Editor extends InputAdapter implements Disposable {
 			// picker
 			Main.fillRect(batch, 0, 0, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT);
 			// button bar on top
-			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT(), main.camera
-							.viewportWidth, EditorStageSetup.Companion.getBAR_HEIGHT());
+			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT(),
+					main.camera.viewportWidth, EditorStageSetup.Companion.getBAR_HEIGHT());
 			// series buttons
 			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values.length * GAME_ICON_SIZE,
 					OVERVIEW_HEIGHT);
@@ -469,8 +469,8 @@ public class Editor extends InputAdapter implements Disposable {
 							.get("editor.inspectionStatus", "" + remix.getInspections().getInspections().size(),
 									"" + remix.getInspections().getLastRefreshDuration()), main.camera.viewportWidth
 							- 4,
-					main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - main.getFontBordered().getLineHeight(),
-					0, Align.right, false);
+					main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() -
+							main.getFontBordered().getLineHeight(), 0, Align.right, false);
 			main.getFontBordered().setColor(1, 1, 1, 1);
 			main.getFontBordered().getData().setScale(1f);
 		}
@@ -495,17 +495,16 @@ public class Editor extends InputAdapter implements Disposable {
 				batch.setColor(0, 0, 0, 0.5f);
 				float bgHeight = glyphLayout.height + main.getFont().getLineHeight() + main.getFont().getCapHeight();
 				Main.fillRect(batch, main.camera.viewportWidth,
-						main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY, -glyphLayout.width - 12,
-						-bgHeight);
+						main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY,
+						-glyphLayout.width - 12, -bgHeight);
 //				Main.drawRect(batch, main.camera.viewportWidth,
 //						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
 //						-bgHeight, 1);
 
 				main.getFont()
 						.draw(batch, inspection.getProperName(), main.camera.viewportWidth - glyphLayout.width - 8,
-								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4, 256, Align
-										.left,
-								true);
+								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4,
+								256, Align.left, true);
 				main.getFont()
 						.draw(batch, inspection.getProperInfo(), main.camera.viewportWidth - glyphLayout.width - 8,
 								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4 -
@@ -523,8 +522,7 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getFontBordered().setColor(c.r, c.g, c.b, Math.min(autosaveMessageShow, 1f));
 				main.getFontBordered().draw(batch, Localization.get("editor." + (isNormalSave ? "" : "auto") +
 								"saved"),
-						main.camera.viewportWidth * 0.5f,
-						main.camera.viewportHeight * 0.5f - main.getFontBordered().getCapHeight() * 0.5f, 0,
+						main.camera.viewportWidth * 0.5f, STAFF_START_Y - main.getFontBordered().getCapHeight(), 0,
 						Align.center, false);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
@@ -596,8 +594,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 			scrolls.values().forEach(ScrollValue::update);
 
-			for (int i = Math.max(0, scrolls.get(currentSeries).getPattern() - PATTERNS_ABOVE_BELOW - 1), first = scrolls
-					.get(currentSeries).getPattern();
+			for (int i = Math
+					.max(0, scrolls.get(currentSeries).getPattern() - PATTERNS_ABOVE_BELOW - 1), first = scrolls
+						 .get(currentSeries).getPattern();
 				 i < Math.min(game.getPatterns().size(), first + PATTERNS_ABOVE_BELOW + 900); i++) {
 				Pattern p = game.getPatterns().get(i);
 
@@ -1403,8 +1402,8 @@ public class Editor extends InputAdapter implements Disposable {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
 					int[] old = remix.getSelection().stream().mapToInt(Entity::getSemitone).toArray();
 					boolean anyChanged = remix.getSelection().stream()
-							.map(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE))
-							.distinct().findAny().orElse(false); // CANNOT SHORT CIRCUIT
+							.map(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE)).distinct().findAny()
+							.orElse(false); // CANNOT SHORT CIRCUIT
 
 					if (anyChanged) {
 						remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));
