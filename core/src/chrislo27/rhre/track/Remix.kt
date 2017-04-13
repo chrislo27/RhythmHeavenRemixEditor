@@ -79,6 +79,9 @@ class Remix : ActionHistory<Remix>() {
 
 	@Volatile private var queueSweepLoad: Boolean = false
 
+	@Volatile var sweepLoadProgress: Float = 0f
+	@Volatile private var sweepLoadCount: Int = 0
+
 	companion object {
 		@JvmField
 		var muteMusic: Boolean = false
@@ -343,6 +346,8 @@ class Remix : ActionHistory<Remix>() {
 		if (playingState != PlayingState.PLAYING) {
 			if (queueSweepLoad) {
 				queueSweepLoad = false
+				sweepLoadProgress = 0f
+				sweepLoadCount = 0
 				val cachedEntities = entities.flatMap {
 					if (it is PatternEntity) {
 						return@flatMap it.internal
@@ -357,6 +362,8 @@ class Remix : ActionHistory<Remix>() {
 					launch(CommonPool) {
 						for (index in it..Math.min(it + idsPerCoroutine, cachedEntities.size - 1)) {
 							cachedEntities[index].attemptLoadSounds()
+							sweepLoadCount++
+							sweepLoadProgress = sweepLoadCount.toFloat() / cachedEntities.size
 						}
 					}
 				}
@@ -369,6 +376,7 @@ class Remix : ActionHistory<Remix>() {
 						c.join()
 					}
 
+					sweepLoadProgress = 1f
 					Main.logger.info(
 							"Finished sweep-load in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
 				}

@@ -713,6 +713,12 @@ public class Editor extends InputAdapter implements Disposable {
 			if (duration > 0)
 				Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
 
+			if (remix.getSweepLoadProgress() > 0 && remix.getSweepLoadProgress() < 1) {
+				batch.setColor(0.75f, 1, 0.75f, 0.25f);
+				Main.fillRect(batch, startX, startY, mapWidth * remix.getSweepLoadProgress(), OVERVIEW_HEIGHT);
+				batch.setColor(1, 1, 1, 1);
+			}
+
 			batch.flush();
 			StencilMaskUtil.resetMask();
 
