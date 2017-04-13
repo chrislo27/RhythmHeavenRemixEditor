@@ -24,6 +24,11 @@
       "name": "-y!"
     },
     {
+      "id": "tapTroupe/popper",
+      "duration": 1,
+      "name": "popper"
+    },
+    {
       "id": "tapTroupe/and",
       "duration": 0.5,
       "name": "and"
