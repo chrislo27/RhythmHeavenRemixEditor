@@ -408,7 +408,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 			stage!!.addActor<TextButton>(music).align(Align.topRight)
 					.setPixelOffset((PADDING * 7 + BUTTON_HEIGHT + BUTTON_HEIGHT * 10).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 4).toFloat(),
+									(BUTTON_HEIGHT * 6 + PADDING * 3).toFloat(),
 									BUTTON_HEIGHT.toFloat())
 
 		}
@@ -760,7 +760,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 			stage!!.addActor<TextButton>(paletteSwap).align(Align.topLeft)
 					.setPixelOffset((PADDING * 8 + BUTTON_HEIGHT * 7).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 4).toFloat(), BUTTON_HEIGHT.toFloat())
+									(BUTTON_HEIGHT * 5).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
@@ -780,8 +780,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			}
 
 			stage!!.addActor<TextButton>(tapalong).align(Align.topLeft)
-					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 11).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 4).toFloat(), BUTTON_HEIGHT.toFloat())
+					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 12).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT * 5 + PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
