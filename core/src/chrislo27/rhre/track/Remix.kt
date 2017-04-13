@@ -72,7 +72,7 @@ class Remix : ActionHistory<Remix>() {
 				}
 			}
 
-			playingState = ps
+			field = ps
 
 			// change to
 			when (ps) {
