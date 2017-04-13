@@ -174,7 +174,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
-			val fs = object : TextButton(stage, palette, "FS") {
+			val fs = object : ImageButton(stage, palette, TextureRegion(AssetRegistry.getTexture("ui_fullscreen"))) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
@@ -212,24 +212,13 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				}
 			}
 
-			fs.i10NStrategy = object : LocalizationStrategy() {
-
-				override fun get(key: String?, vararg objects: Any): String {
-					if (key == null)
-						return ""
-
-					return key
-				}
-
-			}
-
-			stage!!.addActor<TextButton>(fs).align(Align.topRight)
+			stage!!.addActor(fs).align(Align.topRight)
 					.setPixelOffset((PADDING * 3 + BUTTON_HEIGHT * 2).toFloat(), PADDING.toFloat(),
 									BUTTON_HEIGHT.toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
-			val reset = object : TextButton(stage, palette, "R") {
+			val reset = object : ImageButton(stage, palette, TextureRegion(AssetRegistry.getTexture("ui_resetwindow"))) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
@@ -261,18 +250,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				}
 			}
 
-			reset.i10NStrategy = object : LocalizationStrategy() {
-
-				override fun get(key: String?, vararg objects: Any): String {
-					if (key == null)
-						return ""
-
-					return key
-				}
-
-			}
-
-			stage!!.addActor<TextButton>(reset).align(Align.topRight)
+			stage!!.addActor(reset).align(Align.topRight)
 					.setPixelOffset((PADDING * 4 + BUTTON_HEIGHT * 3).toFloat(), PADDING.toFloat(),
 									BUTTON_HEIGHT.toFloat(), BUTTON_HEIGHT.toFloat())
 		}
