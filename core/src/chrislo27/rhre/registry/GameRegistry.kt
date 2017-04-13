@@ -1,7 +1,6 @@
 package chrislo27.rhre.registry
 
 import chrislo27.rhre.editor.Editor
-import chrislo27.rhre.inspections.InspectionPostfix
 import chrislo27.rhre.json.GameObject
 import chrislo27.rhre.util.CustomSoundUtil
 import chrislo27.rhre.util.JsonHandler
@@ -259,8 +258,6 @@ object GameRegistry : Disposable {
 				loadCustomSoundFolder(it)
 			}
 		}
-
-		InspectionPostfix.applyInspectionFunctions()
 
 		// warnings
 		var warningCount: Int = 0

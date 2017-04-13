@@ -5,7 +5,6 @@ import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.HasGame;
 import chrislo27.rhre.entity.PatternEntity;
 import chrislo27.rhre.entity.SoundEntity;
-import chrislo27.rhre.inspections.InspectionType;
 import chrislo27.rhre.json.GameObject;
 import chrislo27.rhre.registry.Game;
 import chrislo27.rhre.registry.GameRegistry;
@@ -68,7 +67,6 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Main main;
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
-	private final List<InspectionType> highlightedInspections = new ArrayList<>();
 	private final GlyphLayout glyphLayout = new GlyphLayout();
 	private final Map<Series, ScrollValue> scrolls = new HashMap<>();
 	private final Vector3 cameraPickVec3 = new Vector3();
@@ -332,34 +330,6 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
-		// inspections
-		if (main.getInspectionsEnabled()) {
-			highlightedInspections.clear();
-			camera.unproject(cameraPickVec3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-			for (InspectionType inspection : remix.getInspections().getInspections()) {
-				if (inspection.getBeat() * Entity.Companion.getPX_WIDTH() <
-						camera.position.x - camera.viewportWidth * 0.75f ||
-						inspection.getBeat() * Entity.Companion.getPX_WIDTH() >
-								camera.position.x + camera.viewportWidth * 0.75f)
-					continue;
-
-				batch.setColor(1, 0, 0, 1);
-				Main.fillRect(batch, inspection.getBeat() * Entity.Companion.getPX_WIDTH(), 0, 2,
-						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f));
-				batch.setColor(1, 1, 1, 1);
-				batch.draw(AssetRegistry.getTexture("inspectionIcon"),
-						inspection.getBeat() * Entity.Companion.getPX_WIDTH() - 7,
-						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f), 16, 16);
-
-				if (MathHelper.intersects(cameraPickVec3.x, cameraPickVec3.y, 0, 0,
-						inspection.getBeat() * Entity.Companion.getPX_WIDTH() - 10,
-						Entity.Companion.getPX_HEIGHT() * (TRACK_COUNT + 0.5f) - 2, 20, 20)) {
-					highlightedInspections.add(inspection);
-				}
-			}
-		}
-
 		// beat numbers
 		{
 			main.getFont().setColor(main.getPalette().getStaffLine());
@@ -456,65 +426,12 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().getData().setScale(1);
 		}
 
-		// inspections
-		if (main.getInspectionsEnabled()) {
-			main.getFontBordered().getData().setScale(0.5f);
-			main.getFontBordered()
-					.draw(batch, Localization.get("inspections.deprecated"), main.camera.viewportWidth - 4,
-							main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() -
-									main.getFontBordered().getCapHeight() * 0.25f, 0, Align.right, false);
-			main.getFontBordered().getData().setScale(0.75f);
-//			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-			main.getFontBordered().draw(batch, Localization
-							.get("editor.inspectionStatus", "" + remix.getInspections().getInspections().size(),
-									"" + remix.getInspections().getLastRefreshDuration()), main.camera.viewportWidth
-							- 4,
-					main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() -
-							main.getFontBordered().getLineHeight(), 0, Align.right, false);
-			main.getFontBordered().setColor(1, 1, 1, 1);
-			main.getFontBordered().getData().setScale(1f);
-		}
-
 		main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
 				main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - 4);
 		main.getFontBordered().setColor(1, 1, 1, 1);
 		main.getFontBordered().getData().setScale(1f);
-
-		if (main.getInspectionsEnabled() && highlightedInspections.size() > 0) {
-			main.getFont().getData().setScale(0.5f);
-			float offsetY = 0;
-			for (InspectionType inspection : highlightedInspections) {
-				main.getFont().setColor(1, 1, 1, 1);
-				glyphLayout
-						.setText(main.getFont(), inspection.getProperInfo(), main.getFont().getColor(), 256, Align
-										.left,
-								true);
-
-				batch.setColor(0, 0, 0, 0.5f);
-				float bgHeight = glyphLayout.height + main.getFont().getLineHeight() + main.getFont().getCapHeight();
-				Main.fillRect(batch, main.camera.viewportWidth,
-						main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY,
-						-glyphLayout.width - 12, -bgHeight);
-//				Main.drawRect(batch, main.camera.viewportWidth,
-//						main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - offsetY, -glyphLayout.width - 12,
-//						-bgHeight, 1);
-
-				main.getFont()
-						.draw(batch, inspection.getProperName(), main.camera.viewportWidth - glyphLayout.width - 8,
-								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4,
-								256, Align.left, true);
-				main.getFont()
-						.draw(batch, inspection.getProperInfo(), main.camera.viewportWidth - glyphLayout.width - 8,
-								main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - offsetY - 4 -
-										main.getFont().getLineHeight(), 256, Align.left, true);
-
-				offsetY += bgHeight;
-			}
-
-			main.getFont().getData().setScale(0.5f);
-		}
 
 		if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (autosaveMessageShow > 0) {
@@ -695,13 +612,6 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 
 			batch.setColor(1, 0, 0, 1);
-
-			// inspections
-			if (main.getInspectionsEnabled()) {
-				for (InspectionType inspect : remix.getInspections().getInspections()) {
-					Main.fillRect(batch, startX + inspect.getBeat() * ENTITY_WIDTH, startY, 1, OVERVIEW_HEIGHT);
-				}
-			}
 
 			batch.setColor(1, 1, 1, 1);
 
@@ -1370,7 +1280,6 @@ public class Editor extends InputAdapter implements Disposable {
 						}
 
 						remix.updateDurationAndCurrentGame();
-						remix.getInspections().refresh();
 					}
 
 					selectionGroup = null;
@@ -1383,7 +1292,6 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 
 			remix.updateDurationAndCurrentGame();
-			remix.getInspections().refresh();
 
 			return true;
 		}

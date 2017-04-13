@@ -2,7 +2,6 @@ package chrislo27.rhre.entity
 
 import chrislo27.rhre.Main
 import chrislo27.rhre.editor.Editor
-import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
@@ -18,7 +17,7 @@ import ionium.util.Utils
 import java.util.*
 
 class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, duration: Float,
-				  @Volatile override var semitone: Int) : Entity(remix), HasGame, SoundCueActionProvider {
+				  @Volatile override var semitone: Int) : Entity(remix), HasGame{
 	override val game: Game
 	private val isFillbotsFill: Boolean
 	@Volatile private var soundId: Long = -1
@@ -36,9 +35,6 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 
 	override val name: String
 		get() = cue.name
-
-	override val inspectionFunctions: List<InspectionFunction>
-		get() = cue.inspectionFunctions
 
 	init {
 
@@ -148,15 +144,5 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 			cue.getSoundObj().stop(soundId)
 		}
 
-	}
-
-	override fun provide(): List<SoundCueAction> {
-		val list = ArrayList<SoundCueAction>()
-
-		val startTime = remix.tempoChanges.beatsToSeconds(this.bounds.x)
-		list.add(SoundCueAction(cue, startTime,
-								remix.tempoChanges.beatsToSeconds(this.bounds.x + this.bounds.width) - startTime))
-
-		return list
 	}
 }

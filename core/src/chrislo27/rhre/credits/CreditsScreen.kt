@@ -4,7 +4,6 @@ import chrislo27.rhre.Main
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
-import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.track.MusicData
@@ -56,7 +55,6 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 	inner class ArmFireEntity(remix: Remix, x: Float) : Entity(remix) {
 		override val name: String = "credits_armFire"
-		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
@@ -88,7 +86,6 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 		}
 
 		override val name: String = "credits_beaconFlash"
-		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
@@ -116,7 +113,6 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 		}
 
 		override val name: String = "credits_text"
-		override val inspectionFunctions: List<InspectionFunction> = mutableListOf()
 
 		override fun copy(): Entity {
 			throw UnsupportedOperationException("no can do partner")
@@ -274,10 +270,11 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 			}
 
 			if (currentString.first.isNotEmpty()) {
-				main.font.color = ionium.templates.Main.getRainbow(startMsTime + (1000L * currentString.third).toLong(), 1f,
-																		   0.75f).mul(.85f, .85f, .85f, 1f)
+				main.font.color = ionium.templates.Main.getRainbow(startMsTime + (1000L * currentString.third).toLong(),
+																   1f,
+																   0.75f).mul(.85f, .85f, .85f, 1f)
 				main.font.draw(batch, s, textX,
-									   textHeight, textW, Align.left, false)
+							   textHeight, textW, Align.left, false)
 			}
 			main.fontBordered.setColor(1f, 1f, 1f, 1f)
 

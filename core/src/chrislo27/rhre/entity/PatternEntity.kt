@@ -1,7 +1,6 @@
 package chrislo27.rhre.entity
 
 import chrislo27.rhre.editor.Editor
-import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
@@ -18,7 +17,7 @@ import ionium.util.Utils
 import java.util.*
 import java.util.function.Consumer
 
-class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame, SoundCueActionProvider {
+class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame {
 
 	val internal: MutableList<SoundEntity>
 	private val originalBounds: MutableList<Vector2>
@@ -31,9 +30,6 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 
 	override val name: String
 		get() = pattern.name
-
-	override val inspectionFunctions: List<InspectionFunction>
-		get() = pattern.inspectionFunctions
 
 	init {
 		this.internal = ArrayList<SoundEntity>()
@@ -244,18 +240,5 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 				}
 			}
 		}
-	}
-
-	override fun provide(): List<SoundCueAction> {
-		val list = ArrayList<SoundCueAction>()
-
-		internal.forEach { se ->
-			val startTime = remix.tempoChanges.beatsToSeconds(this.bounds.x + se.bounds.x)
-			list.add(SoundCueAction(se.cue, startTime,
-									remix.tempoChanges.beatsToSeconds(
-											this.bounds.x + se.bounds.x + se.bounds.width) - startTime))
-		}
-
-		return list
 	}
 }

@@ -1,6 +1,5 @@
 package chrislo27.rhre.entity
 
-import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.EntityColors
 import chrislo27.rhre.track.PlaybackCompletion
@@ -28,8 +27,6 @@ abstract class Entity(val remix: Remix) {
 	}
 
 	abstract val name: String
-
-	abstract val inspectionFunctions: List<InspectionFunction>
 
 	abstract fun copy(): Entity
 

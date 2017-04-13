@@ -4,7 +4,6 @@ import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.HasGame
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
-import chrislo27.rhre.inspections.Inspections
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.oopsies.ActionHistory
 import chrislo27.rhre.registry.Game
@@ -72,8 +71,6 @@ class Remix : ActionHistory<Remix>() {
 	private var musicPlayed: PlaybackCompletion = PlaybackCompletion.WAITING
 	var currentGame: Game? = null
 		private set
-
-	val inspections: Inspections = Inspections(this)
 
 	var metadata: RemixObject.MetadataObject? = RemixObject.MetadataObject()
 
@@ -172,7 +169,6 @@ class Remix : ActionHistory<Remix>() {
 			remix.metadata = obj.metadata
 
 			remix.updateDurationAndCurrentGame()
-			remix.inspections.refresh()
 			remix.queueSweepLoad = true
 
 			if (obj.musicData != null)
@@ -323,7 +319,6 @@ class Remix : ActionHistory<Remix>() {
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
 		startTime = entities.fold(Float.MAX_VALUE,
 								  { value, entity -> Math.min(value, entity.bounds.x) })
-		inspections.refresh()
 	}
 
 	fun getDuration() = endTime - startTime

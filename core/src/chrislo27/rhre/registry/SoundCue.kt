@@ -1,6 +1,5 @@
 package chrislo27.rhre.registry
 
-import chrislo27.rhre.inspections.InspectionFunction
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.audio.Sound
 import ionium.registry.AssetRegistry
@@ -9,12 +8,11 @@ import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
-					val deprecated: List<String> = mutableListOf(), val duration: Float,
-					canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
-					val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
-					val soundFolder: String? = null) {
+			   val deprecated: List<String> = mutableListOf(), val duration: Float,
+			   canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
+			   val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
+			   val soundFolder: String? = null) {
 
-	var inspectionFunctions: List<InspectionFunction> = listOf()
 	val canAlterPitch: Boolean = canAlterPitch
 		get() {
 			if (baseBpm > 0) return false

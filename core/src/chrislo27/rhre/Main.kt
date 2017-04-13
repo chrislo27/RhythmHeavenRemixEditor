@@ -93,9 +93,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	lateinit var oldSize: Triple<Int, Int, Boolean>
 		private set
 
-	var helpTipsEnabled: Boolean = true
-	var inspectionsEnabled: Boolean = false
-
 	private val inputProj: Vector3 = Vector3()
 
 	private lateinit var ttfGenerator: FreeTypeFontGenerator
@@ -158,8 +155,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				InternalFileHandleResolver()))
 
 		preferences = Gdx.app.getPreferences("RHRE2")
-		helpTipsEnabled = preferences.getBoolean("helpTipsEnabled", helpTipsEnabled)
-		inspectionsEnabled = preferences.getBoolean("inspectionsEnabled", inspectionsEnabled)
 
 		fun Int.ensureAtLeastWhenZero(min: Int): Int {
 			if (this <= 0)

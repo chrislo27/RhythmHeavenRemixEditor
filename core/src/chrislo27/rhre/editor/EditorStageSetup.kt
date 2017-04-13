@@ -760,7 +760,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 			stage!!.addActor<TextButton>(paletteSwap).align(Align.topLeft)
 					.setPixelOffset((PADDING * 8 + BUTTON_HEIGHT * 7).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 3).toFloat(), BUTTON_HEIGHT.toFloat())
+									(BUTTON_HEIGHT * 4).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
@@ -780,34 +780,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			}
 
 			stage!!.addActor<TextButton>(tapalong).align(Align.topLeft)
-					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 10).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 3).toFloat(), BUTTON_HEIGHT.toFloat())
-		}
-
-		run {
-			val inspections = object : TextButton(stage, palette, "editor.button.inspections.on") {
-
-				init {
-					localizationKey = "editor.button.inspections." + if (main.inspectionsEnabled) "on" else "off"
-				}
-
-				override fun onClickAction(x: Float, y: Float) {
-					super.onClickAction(x, y)
-
-					main.inspectionsEnabled = !main.inspectionsEnabled
-					main.preferences.flush()
-					localizationKey = "editor.button.inspections." + if (main.inspectionsEnabled) "on" else "off"
-				}
-
-				override fun render(batch: SpriteBatch, alpha: Float) {
-					getPalette().labelFont.data.setScale(0.5f)
-					super.render(batch, alpha)
-					getPalette().labelFont.data.setScale(1f)
-				}
-			}
-
-			stage!!.addActor<TextButton>(inspections).align(Align.topLeft)
-					.setPixelOffset((PADDING * 10 + BUTTON_HEIGHT * 13).toFloat(), PADDING.toFloat(),
+					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 11).toFloat(), PADDING.toFloat(),
 									(BUTTON_HEIGHT * 4).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
@@ -829,32 +802,6 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			//					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT * 3 + PADDING * 2,
 			//							BUTTON_HEIGHT);
 		}
-
-		run {
-			val helpTips = object : TextButton(stage, palette, "editor.button.helpTips.on") {
-
-				init {
-					localizationKey = "editor.button.helpTips." + if (main.helpTipsEnabled) "on" else "off"
-				}
-
-				override fun onClickAction(x: Float, y: Float) {
-					super.onClickAction(x, y)
-
-					main.helpTipsEnabled = !main.helpTipsEnabled
-					main.preferences.flush()
-					localizationKey = "editor.button.helpTips." + if (main.helpTipsEnabled) "on" else "off"
-				}
-
-				override fun render(batch: SpriteBatch, alpha: Float) {
-					getPalette().labelFont.data.setScale(0.5f)
-					super.render(batch, alpha)
-					getPalette().labelFont.data.setScale(1f)
-				}
-			}
-
-			//			stage.addActor(helpTips).align(Align.topLeft)
-			//					.setPixelOffset(PADDING * 7 + BUTTON_HEIGHT * 13, PADDING, BUTTON_HEIGHT * 4, BUTTON_HEIGHT);
-		}
 	}
 
 	companion object {
@@ -862,6 +809,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		val BUTTON_HEIGHT = 32
 		val PADDING = 4
 		val BAR_HEIGHT = BUTTON_HEIGHT + PADDING * 2
+
 	}
 
 }

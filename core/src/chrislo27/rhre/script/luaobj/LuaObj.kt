@@ -9,7 +9,6 @@ open class LuaObj(internal val globals: Globals, internal val remix: Remix) : Lu
 
 	internal fun resetRemixGlobal() {
 		remix.updateDurationAndCurrentGame()
-		remix.inspections.refresh()
 		globals.set("remix", remix.getLuaValue(globals))
 	}
 
