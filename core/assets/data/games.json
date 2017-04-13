@@ -3,7 +3,6 @@
   "extraSFX",
   "airboarder",
   "airRally",
-  "animalAcrobat",
   "basketballGirls",
   "bigRockFinish",
   "blueBear",
@@ -39,6 +38,7 @@
   "fireworks",
   "flockstep",
   "forkLifter",
+  "freezeFrame",
   "frogHop",
   "frogPrincess",
   "fruitBasket",
@@ -109,7 +109,6 @@
   "theDazzles",
   "tongueLashing",
   "tossBoys",
-  "tramAndPauline",
   "wizardWaltz",
   "workingDough"
 ]
