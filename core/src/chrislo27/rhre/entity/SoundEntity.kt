@@ -99,7 +99,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 
 		startTime = intendedStart
 
-		val bpm = remix.tempoChanges.getTempoAt(remix.getBeat())
+		val bpm = remix.tempoChanges.getTempoAt(remix.beat)
 
 		if (cue.getIntroSoundObj() != null) {
 			val s = cue.getIntroSoundObj()!! as OpenALSound
@@ -107,7 +107,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		}
 
 		val s = cue.getSoundObj() as OpenALSound
-		val realPos = remix.tempoChanges.beatsToSeconds(remix.getBeat() - intendedStart) % s.duration()
+		val realPos = remix.tempoChanges.beatsToSeconds(remix.beat - intendedStart) % s.duration()
 		if (cue.shouldBeLooped()) {
 			soundId = s.loop(1f, cue.getPitch(semitone, bpm), 0f)
 		} else {
@@ -122,7 +122,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		if (isFillbotsFill && soundId != -1L) {
 			val s = cue.getSoundObj() as OpenALSound
 			val remainder = MathUtils
-					.clamp(1f - (startTime + bounds.width - remix.getBeat()) / bounds.width, 0f, 1f)
+					.clamp(1f - (startTime + bounds.width - remix.beat) / bounds.width, 0f, 1f)
 			val from = if (bounds.width <= 3)
 				MathUtils.lerp(1f, 0.6f, (bounds.width - 1) / 2f)
 			else

@@ -34,7 +34,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 		},
 		AFTER_TITLE(4.5f + 0.75f), REMIX(4.5f + 0.75f + 51f) {
 			override fun start(screen: CreditsScreen) {
-				screen.remix.setPlayingState(PlayingState.PLAYING)
+				screen.remix.playingState = PlayingState.PLAYING
 			}
 		},
 		LITTLE_WAIT(4.5f + 0.75f + 51f + 1.0f),
@@ -136,6 +136,16 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 	}
 
+	fun Remix.getBeatBounce(): Float {
+		val beatDec = beat - beat.toInt()
+
+		if (beatDec <= 0.3f && beat >= 0 && beat < duration) {
+			return 1f - beatDec / 0.3f
+		} else {
+			return 0f
+		}
+	}
+
 	private var state: State = State.TITLE_CARD
 	private var secondsElapsed: Float = 0f
 
@@ -193,7 +203,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 			val conveyorHeight = 136f
 			val conveyor = AssetRegistry.getTexture("cannery_tex_conveyor")
-			for (x in (((remix.getBeat() % 1f)) * main.camera.viewportWidth * 0.5f - main.camera.viewportWidth * 0.5f).toInt()..main.camera.viewportWidth.toInt() step conveyor.width) {
+			for (x in (((remix.beat % 1f)) * main.camera.viewportWidth * 0.5f - main.camera.viewportWidth * 0.5f).toInt()..main.camera.viewportWidth.toInt() step conveyor.width) {
 				batch.draw(conveyor, x * 1f, conveyorHeight)
 			}
 
@@ -201,7 +211,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 			remix.entities.forEach {
 				if (it is PatternEntity && it.id == "cannery_can") {
-					val beatsFromCentre = remix.getBeat() - (it.bounds.x + 1f)
+					val beatsFromCentre = remix.beat - (it.bounds.x + 1f)
 					if (Math.abs(beatsFromCentre) > 2)
 						return@forEach
 

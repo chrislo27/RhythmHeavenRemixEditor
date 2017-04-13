@@ -224,7 +224,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 			if (e.playbackCompletion === PlaybackCompletion.FINISHED)
 				continue
 
-			if (remix.getBeat() >= this.bounds.x + e.bounds.x) {
+			if (remix.beat >= this.bounds.x + e.bounds.x) {
 				if (e.playbackCompletion === PlaybackCompletion.WAITING) {
 					e.onStart(delta, this.bounds.x + e.bounds.x)
 					e.playbackCompletion = PlaybackCompletion.STARTED
@@ -233,7 +233,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 				if (e.playbackCompletion === PlaybackCompletion.STARTED) {
 					e.onWhile(delta)
 
-					if (remix.getBeat() >= this.bounds.x + e.bounds.x + e.bounds.width) {
+					if (remix.beat >= this.bounds.x + e.bounds.x + e.bounds.width) {
 						e.onEnd(delta, this.bounds.x + e.bounds.x + e.bounds.width)
 						e.playbackCompletion = PlaybackCompletion.FINISHED
 					}

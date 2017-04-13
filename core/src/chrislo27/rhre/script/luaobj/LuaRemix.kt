@@ -21,7 +21,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 	val playbackStart: Float = remix.playbackStart
 	val musicStart: Float = remix.musicStartTime
 	val tempoChanges: LuaTable
-	val length: Float = remix.getDuration()
+	val length: Float = remix.duration
 	val musicVolume: Float = remix.musicVolume
 
 	init {

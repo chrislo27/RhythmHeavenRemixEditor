@@ -38,7 +38,59 @@ class Remix : ActionHistory<Remix>() {
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
 
-	@Volatile private var playingState = PlayingState.STOPPED
+	@Volatile var playingState = PlayingState.STOPPED
+		set(ps) {
+			fun resetEntitiesAndTracker(): Unit {
+				musicPlayed = PlaybackCompletion.WAITING
+				music?.music?.stop()
+//			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
+				// reset playback completion
+				entities.forEach(Entity::reset)
+				beat = playbackStart
+				lastTickBeat = Math.ceil(playbackStart.toDouble() - 1).toInt()
+				entities.forEach {
+					if (it is PatternEntity) {
+						it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
+							inter.playbackCompletion = PlaybackCompletion.FINISHED
+							inter.onEnd(0f, it.bounds.x + inter.bounds.x + inter.bounds.width)
+						}
+					} else if (it.bounds.x + it.bounds.width < beat) {
+						it.playbackCompletion = PlaybackCompletion.FINISHED
+						it.onEnd(0f, it.bounds.x + it.bounds.width)
+					}
+				}
+				currentGame = null
+			}
+
+			when (playingState) {
+				PlayingState.PLAYING -> {
+				}
+				PlayingState.PAUSED -> {
+				}
+				PlayingState.STOPPED -> {
+					resetEntitiesAndTracker()
+				}
+			}
+
+			playingState = ps
+
+			// change to
+			when (ps) {
+				PlayingState.PLAYING -> {
+					updateDurationAndCurrentGame()
+					AssetRegistry.instance().resumeAllSound()
+				}
+				PlayingState.PAUSED -> {
+					music?.music?.pause()
+					musicPlayed = PlaybackCompletion.WAITING
+					AssetRegistry.instance().pauseAllSound()
+				}
+				PlayingState.STOPPED -> {
+					resetEntitiesAndTracker()
+					AssetRegistry.instance().stopAllSound()
+				}
+			}
+		}
 	@Volatile
 	var music: MusicData? = null
 		set(value) {
@@ -55,12 +107,18 @@ class Remix : ActionHistory<Remix>() {
 			music?.music?.volume = field
 		}
 
-	private var beat: Float = 0f
+	var beat: Float = 0f
+		private set
 	var musicStartTime: Float = 0f
 	var playbackStart: Float = 0f
 	var endTime: Float = 0f
 		private set
 	var startTime: Float = 0f
+		private set
+	var duration: Float = endTime - startTime
+		get() {
+			return endTime - startTime
+		}
 		private set
 	var tickEachBeat = false
 		set(value) {
@@ -261,59 +319,6 @@ class Remix : ActionHistory<Remix>() {
 
 	fun getLuaValue(globals: Globals): LuaValue = CoerceJavaToLua.coerce(LuaRemix(globals, this))
 
-	fun setPlayingState(ps: PlayingState): Unit {
-		fun resetEntitiesAndTracker(): Unit {
-			musicPlayed = PlaybackCompletion.WAITING
-			music?.music?.stop()
-//			music?.music?.position = tempoChanges.beatsToSeconds(playbackStart)
-			// reset playback completion
-			entities.forEach(Entity::reset)
-			beat = playbackStart
-			lastTickBeat = Math.ceil(playbackStart.toDouble() - 1).toInt()
-			entities.forEach {
-				if (it is PatternEntity) {
-					it.internal.filter { inter -> it.bounds.x + inter.bounds.x < beat }.forEach { inter ->
-						inter.playbackCompletion = PlaybackCompletion.FINISHED
-						inter.onEnd(0f, it.bounds.x + inter.bounds.x + inter.bounds.width)
-					}
-				} else if (it.bounds.x + it.bounds.width < beat) {
-					it.playbackCompletion = PlaybackCompletion.FINISHED
-					it.onEnd(0f, it.bounds.x + it.bounds.width)
-				}
-			}
-			currentGame = null
-		}
-
-		when (playingState) {
-			PlayingState.PLAYING -> {
-			}
-			PlayingState.PAUSED -> {
-			}
-			PlayingState.STOPPED -> {
-				resetEntitiesAndTracker()
-			}
-		}
-
-		playingState = ps
-
-		// change to
-		when (ps) {
-			PlayingState.PLAYING -> {
-				updateDurationAndCurrentGame()
-				AssetRegistry.instance().resumeAllSound()
-			}
-			PlayingState.PAUSED -> {
-				music?.music?.pause()
-				musicPlayed = PlaybackCompletion.WAITING
-				AssetRegistry.instance().pauseAllSound()
-			}
-			PlayingState.STOPPED -> {
-				resetEntitiesAndTracker()
-				AssetRegistry.instance().stopAllSound()
-			}
-		}
-	}
-
 	fun updateDurationAndCurrentGame() {
 		endTime = entities.fold(Float.MIN_VALUE,
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
@@ -321,16 +326,10 @@ class Remix : ActionHistory<Remix>() {
 								  { value, entity -> Math.min(value, entity.bounds.x) })
 	}
 
-	fun getDuration() = endTime - startTime
-
-	fun getPlayingState(): PlayingState = playingState
-
-	fun getBeat(): Float = beat
-
 	fun getBeatBounce(): Float {
 		val beatDec = beat - beat.toInt()
 
-		if (beatDec <= 0.3f && beat >= 0 && beat < getDuration()) {
+		if (beatDec <= 0.3f && beat >= 0 && beat < duration) {
 			return 1f - beatDec / 0.3f
 		} else {
 			return 0f
@@ -467,7 +466,7 @@ class Remix : ActionHistory<Remix>() {
 		}
 
 		if (playingState == PlayingState.PLAYING && beat >= endTime)
-			setPlayingState(PlayingState.STOPPED)
+			playingState = PlayingState.STOPPED
 	}
 
 //	fun copy(): Remix {

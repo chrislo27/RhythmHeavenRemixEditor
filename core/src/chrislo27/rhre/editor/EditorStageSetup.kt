@@ -50,7 +50,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					screen.editor.remix.setPlayingState(PlayingState.PLAYING)
+					screen.editor.remix.playingState = (PlayingState.PLAYING)
 				}
 			}
 			stage!!.addActor<ImageButton>(playRemix)
@@ -68,8 +68,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					if (screen.editor.remix.getPlayingState() === PlayingState.PLAYING)
-						screen.editor.remix.setPlayingState(PlayingState.PAUSED)
+					if (screen.editor.remix.playingState == PlayingState.PLAYING)
+						screen.editor.remix.playingState = (PlayingState.PAUSED)
 				}
 
 			}
@@ -87,7 +87,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					screen.editor.remix.setPlayingState(PlayingState.STOPPED)
+					screen.editor.remix.playingState = (PlayingState.STOPPED)
 				}
 
 			}
@@ -107,7 +107,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					if (screen.editor.remix.getPlayingState() !== PlayingState.STOPPED)
+					if (screen.editor.remix.playingState !== PlayingState.STOPPED)
 						return
 				}
 
@@ -594,7 +594,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					if (screen.editor.remix.getPlayingState() === PlayingState.STOPPED)
+					if (screen.editor.remix.playingState === PlayingState.STOPPED)
 						screen.editor.remix.undo()
 				}
 
@@ -631,7 +631,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					if (screen.editor.remix.getPlayingState() === PlayingState.STOPPED)
+					if (screen.editor.remix.playingState === PlayingState.STOPPED)
 						screen.editor.remix.redo()
 				}
 

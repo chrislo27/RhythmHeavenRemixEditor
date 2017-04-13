@@ -80,7 +80,7 @@ class EditorScreen(m: Main) : Updateable<Main>(m) {
 		AssetRegistry.instance().stopAllSound()
 
 		editor.remix.music?.music?.stop()
-		editor.remix.setPlayingState(PlayingState.STOPPED)
+		editor.remix.playingState = (PlayingState.STOPPED)
 
 		if (Gdx.input.inputProcessor is InputMultiplexer && stage != null) {
 			Gdx.app.postRunnable {
