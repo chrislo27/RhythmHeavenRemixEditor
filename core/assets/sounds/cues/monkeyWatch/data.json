@@ -33,7 +33,7 @@
       "duration": 1.0,
       "name": "offbeat - clap - 1"
     },
-	{
+    {
       "id": "monkeyWatch/offbeat5",
       "duration": 1.0,
       "name": "offbeat - clap - 2"
@@ -44,40 +44,40 @@
       "id": "clap",
       "name": "clap",
       "cues": [
-       {
-        "id": "monkeyWatch/clap1",
-        "beat": 0.0
-       },
-       {
-        "id": "monkeyWatch/clap2",
-        "beat": 2.0
-       }
+        {
+          "id": "monkeyWatch/clap1",
+          "beat": 0.0
+        },
+        {
+          "id": "monkeyWatch/clap2",
+          "beat": 2.0
+        }
       ]
     },
-	{
+    {
       "id": "offbeat",
       "name": "offbeat clap",
       "cues": [
-       {
-        "id": "monkeyWatch/offbeat1",
-        "beat": 0.0
-       },
-       {
-        "id": "monkeyWatch/offbeat2",
-        "beat": 1.0
-       },
-	   {
-        "id": "monkeyWatch/offbeat3",
-        "beat": 2.0
-       },
-       {
-        "id": "monkeyWatch/offbeat4",
-        "beat": 2.5
-       },
-	   {
-	    "id": "monkeyWatch/offbeat5",
-		"beat": 3.5
-	   }
+        {
+          "id": "monkeyWatch/offbeat1",
+          "beat": 0.0
+        },
+        {
+          "id": "monkeyWatch/offbeat2",
+          "beat": 1.0
+        },
+        {
+          "id": "monkeyWatch/offbeat3",
+          "beat": 2.0
+        },
+        {
+          "id": "monkeyWatch/offbeat4",
+          "beat": 2.5
+        },
+        {
+          "id": "monkeyWatch/offbeat5",
+          "beat": 3.5
+        }
       ]
     }
   ]

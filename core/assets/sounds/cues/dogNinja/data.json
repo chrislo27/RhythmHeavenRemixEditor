@@ -49,57 +49,57 @@
       "id": "dogNinja_fruit",
       "name": "fruit",
       "cues": [
-       {
-        "id": "dogNinja/fruit1",
-        "beat": 0.0
-       },
-       {
-        "id": "dogNinja/fruit2",
-        "beat": 1.0
-       }
+        {
+          "id": "dogNinja/fruit1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinja/fruit2",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "dogNinja_bone",
       "name": "bone",
       "cues": [
-       {
-        "id": "dogNinja/bone1",
-        "beat": 0.0
-       },
-       {
-        "id": "dogNinja/bone2",
-        "beat": 1.0
-       }
+        {
+          "id": "dogNinja/bone1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinja/bone2",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "dogNinja_tire",
       "name": "tire",
       "cues": [
-       {
-        "id": "dogNinja/tire1",
-        "beat": 0.0
-       },
-       {
-        "id": "dogNinja/tire2",
-        "beat": 1.0
-       }
+        {
+          "id": "dogNinja/tire1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinja/tire2",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "dogNinja_pan",
       "name": "pan",
       "cues": [
-       {
-        "id": "dogNinja/pan1",
-        "beat": 0.0
-       },
-       {
-        "id": "dogNinja/pan2",
-        "beat": 1.0
-       }
+        {
+          "id": "dogNinja/pan1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinja/pan2",
+          "beat": 1.0
+        }
       ]
     }
-    ]
+  ]
 }

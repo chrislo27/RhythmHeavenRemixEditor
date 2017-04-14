@@ -15,55 +15,73 @@
     },
     {
       "id": "spaceSoccerEn/kick",
-      "deprecatedIDs": ["spaceSoccer/kick"],
+      "deprecatedIDs": [
+        "spaceSoccer/kick"
+      ],
       "duration": 1,
       "name": "kick"
     },
     {
       "id": "spaceSoccerEn/highkicktoe1",
-      "deprecatedIDs": ["spaceSoccer/highkicklow1"],
+      "deprecatedIDs": [
+        "spaceSoccer/highkicklow1"
+      ],
       "duration": 1,
       "name": "highkick - high"
     },
     {
       "id": "spaceSoccerEn/highkicktoe2",
-      "deprecatedIDs": ["spaceSoccer/highkicklow2"],
+      "deprecatedIDs": [
+        "spaceSoccer/highkicklow2"
+      ],
       "duration": 0.5,
       "name": "highkick - kick"
     },
     {
       "id": "spaceSoccerEn/highkicktoe3",
-      "deprecatedIDs": ["spaceSoccer/highkicklow3"],
+      "deprecatedIDs": [
+        "spaceSoccer/highkicklow3"
+      ],
       "duration": 1.5,
       "name": "highkick - toe"
     },
     {
       "id": "spaceSoccerEn/dispense1",
-      "deprecatedIDs": ["spaceSoccer/dispense1"],
+      "deprecatedIDs": [
+        "spaceSoccer/dispense1"
+      ],
       "duration": 0.75,
       "name": "dispense - 1"
     },
     {
       "id": "spaceSoccerEn/dispense2",
-      "deprecatedIDs": ["spaceSoccer/dispense2"],
+      "deprecatedIDs": [
+        "spaceSoccer/dispense2"
+      ],
       "duration": 0.25,
       "name": "dispense - 2"
     },
     {
       "id": "spaceSoccerEn/dispense3",
-      "deprecatedIDs": ["spaceSoccer/dispense3"],
+      "deprecatedIDs": [
+        "spaceSoccer/dispense3"
+      ],
       "duration": 0.25,
       "name": "dispense - 3"
     },
     {
       "id": "spaceSoccerEn/dispense4",
-      "deprecatedIDs": ["spaceSoccer/dispense4"],
+      "deprecatedIDs": [
+        "spaceSoccer/dispense4"
+      ],
       "duration": 0.25,
       "name": "dispense - 4"
     },
     {
       "id": "spaceSoccerEn/dispense5",
-      "deprecatedIDs": ["spaceSoccer/dispense5"],
+      "deprecatedIDs": [
+        "spaceSoccer/dispense5"
+      ],
       "duration": 0.5,
       "name": "dispense - 5"
     }
@@ -71,71 +89,77 @@
   "patterns": [
     {
       "id": "spaceSoccerEn_dispense",
-      "deprecatedIDs": ["spaceSoccer_dispense"],
+      "deprecatedIDs": [
+        "spaceSoccer_dispense"
+      ],
       "name": "ball dispense",
       "cues": [
-       {
-        "id": "spaceSoccerEn/dispense1",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerEn/dispense2",
-        "beat": 0.75
-       },
-       {
-        "id": "spaceSoccerEn/dispense3",
-        "beat": 1
-       },
-       {
-        "id": "spaceSoccerEn/dispense4",
-        "beat": 1.25
-       },
-       {
-        "id": "spaceSoccerEn/dispense5",
-        "beat": 1.5
-       }
+        {
+          "id": "spaceSoccerEn/dispense1",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerEn/dispense2",
+          "beat": 0.75
+        },
+        {
+          "id": "spaceSoccerEn/dispense3",
+          "beat": 1
+        },
+        {
+          "id": "spaceSoccerEn/dispense4",
+          "beat": 1.25
+        },
+        {
+          "id": "spaceSoccerEn/dispense5",
+          "beat": 1.5
+        }
       ]
     },
     {
       "id": "spaceSoccerEn_keepup",
-      "deprecatedIDs": ["spaceSoccer_keepup"],
+      "deprecatedIDs": [
+        "spaceSoccer_keepup"
+      ],
       "name": "keep-up",
       "cues": [
-       {
-        "id": "spaceSoccerEn/kick",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerEn/kick",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerEn/kick",
-        "beat": 2.0
-       },
-       {
-        "id": "spaceSoccerEn/kick",
-        "beat": 3.0
-       }
+        {
+          "id": "spaceSoccerEn/kick",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerEn/kick",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerEn/kick",
+          "beat": 2.0
+        },
+        {
+          "id": "spaceSoccerEn/kick",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "spaceSoccerEn_highkicktoe",
-      "deprecatedIDs": ["spaceSoccer_highkicktoe"],
+      "deprecatedIDs": [
+        "spaceSoccer_highkicktoe"
+      ],
       "name": "high kick-toe!",
       "cues": [
-       {
-        "id": "spaceSoccerEn/highkicktoe1",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerEn/highkicktoe2",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerEn/highkicktoe3",
-        "beat": 1.5
-       }
+        {
+          "id": "spaceSoccerEn/highkicktoe1",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerEn/highkicktoe2",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerEn/highkicktoe3",
+          "beat": 1.5
+        }
       ]
     }
   ]

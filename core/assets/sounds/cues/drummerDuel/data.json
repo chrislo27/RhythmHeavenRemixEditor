@@ -13,12 +13,12 @@
       "duration": 0.5,
       "name": "red - offbeat drum"
     },
-	{
+    {
       "id": "drummerDuel/redPass",
       "duration": 1.0,
       "name": "red - turn pass"
     },
-	{
+    {
       "id": "drummerDuel/blueOnbeat",
       "duration": 0.5,
       "name": "blue - onbeat drum"
@@ -28,7 +28,7 @@
       "duration": 0.5,
       "name": "blue - offbeat drum"
     },
-	{
+    {
       "id": "drummerDuel/bluePass",
       "duration": 1.0,
       "name": "blue - turn pass"

@@ -34,54 +34,54 @@
       "id": "cropStomp_walk",
       "name": "walk",
       "cues": [
-       {
-        "id": "cropStomp/walk",
-        "beat": 0.0
-       },
-       {
-        "id": "cropStomp/walk",
-        "beat": 2.0
-       },
-       {
-        "id": "cropStomp/walk",
-        "beat": 4.0
-       },
-       {
-        "id": "cropStomp/walk",
-        "beat": 6.0
-       }
+        {
+          "id": "cropStomp/walk",
+          "beat": 0.0
+        },
+        {
+          "id": "cropStomp/walk",
+          "beat": 2.0
+        },
+        {
+          "id": "cropStomp/walk",
+          "beat": 4.0
+        },
+        {
+          "id": "cropStomp/walk",
+          "beat": 6.0
+        }
       ]
     },
     {
       "id": "cropStomp_pick",
       "name": "pick",
       "cues": [
-       {
-        "id": "cropStomp/stomp",
-        "beat": 0.0
-       },
-       {
-        "id": "cropStomp/pick1",
-        "beat": 0.5
-       },
-       {
-        "id": "cropStomp/pick2",
-        "beat": 1
-       }
+        {
+          "id": "cropStomp/stomp",
+          "beat": 0.0
+        },
+        {
+          "id": "cropStomp/pick1",
+          "beat": 0.5
+        },
+        {
+          "id": "cropStomp/pick2",
+          "beat": 1
+        }
       ]
     },
     {
       "id": "cropStomp_mole",
       "name": "mole",
       "cues": [
-       {
-        "id": "cropStomp/stomp",
-        "beat": 0.0
-       },
-       {
-        "id": "cropStomp/molefling",
-        "beat": 0.5
-       }
+        {
+          "id": "cropStomp/stomp",
+          "beat": 0.0
+        },
+        {
+          "id": "cropStomp/molefling",
+          "beat": 0.5
+        }
       ]
     }
   ]

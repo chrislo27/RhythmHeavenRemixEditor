@@ -39,115 +39,117 @@
       "id": "nightWalk_walk",
       "name": "walking",
       "cues": [
-       {
-        "id": "nightWalk/walk1",
-        "beat": 0.0
-       },
-       {
-        "id": "nightWalk/walk2",
-        "beat": 0.5
-       },
-       {
-        "id": "nightWalk/walk1",
-        "beat": 1.0
-       },
-       {
-        "id": "nightWalk/walk2",
-        "beat": 1.5
-       }
+        {
+          "id": "nightWalk/walk1",
+          "beat": 0.0
+        },
+        {
+          "id": "nightWalk/walk2",
+          "beat": 0.5
+        },
+        {
+          "id": "nightWalk/walk1",
+          "beat": 1.0
+        },
+        {
+          "id": "nightWalk/walk2",
+          "beat": 1.5
+        }
       ]
     },
     {
       "id": "nightWalk_jump1",
       "name": "four flowers",
       "cues": [
-       {
-        "id": "nightWalk/jump1",
-        "beat": 0
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 1
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 2
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 3
-       }
+        {
+          "id": "nightWalk/jump1",
+          "beat": 0
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 1
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 2
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 3
+        }
       ]
     },
     {
       "id": "nightWalk_jump2",
       "name": "three flowers, one lollipop",
       "cues": [
-       {
-        "id": "nightWalk/jump1",
-        "beat": 0
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 1
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 2
-       },
-       {
-        "id": "nightWalk/jump2",
-        "beat": 3
-       }
+        {
+          "id": "nightWalk/jump1",
+          "beat": 0
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 1
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 2
+        },
+        {
+          "id": "nightWalk/jump2",
+          "beat": 3
+        }
       ]
     },
     {
       "id": "nightWalk_jump3",
-      "deprecatedIDs": ["nightWalk_jump"],
+      "deprecatedIDs": [
+        "nightWalk_jump"
+      ],
       "name": "two flowers, two lollipops",
       "cues": [
-       {
-        "id": "nightWalk/jump1",
-        "beat": 0
-       },
-       {
-        "id": "nightWalk/jump2",
-        "beat": 1
-       },
-       {
-        "id": "nightWalk/jump1",
-        "beat": 2
-       },
-       {
-        "id": "nightWalk/jump2",
-        "beat": 3
-       }
+        {
+          "id": "nightWalk/jump1",
+          "beat": 0
+        },
+        {
+          "id": "nightWalk/jump2",
+          "beat": 1
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 2
+        },
+        {
+          "id": "nightWalk/jump2",
+          "beat": 3
+        }
       ]
     },
     {
       "id": "nightWalk_disappear",
       "name": "boxes disappearing",
       "cues": [
-       {
-        "id": "nightWalk/disappear",
-        "beat": 0.0
-       },
-       {
-        "id": "nightWalk/disappear",
-        "beat": 1.0
-       },
-       {
-        "id": "nightWalk/disappear",
-        "beat": 2.0
-       },
-       {
-        "id": "nightWalk/disappear",
-        "beat": 3.0
-       },
-       {
-        "id": "nightWalk/disappear",
-        "beat": 4.0
-       }
+        {
+          "id": "nightWalk/disappear",
+          "beat": 0.0
+        },
+        {
+          "id": "nightWalk/disappear",
+          "beat": 1.0
+        },
+        {
+          "id": "nightWalk/disappear",
+          "beat": 2.0
+        },
+        {
+          "id": "nightWalk/disappear",
+          "beat": 3.0
+        },
+        {
+          "id": "nightWalk/disappear",
+          "beat": 4.0
+        }
       ]
     }
   ]

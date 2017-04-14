@@ -13,17 +13,17 @@
       "duration": 0.5,
       "name": "fading - 1"
     },
-	{
+    {
       "id": "sneakySpirits/fading2",
       "duration": 0.5,
       "name": "fading - 2"
     },
-	{
+    {
       "id": "sneakySpirits/fading3",
       "duration": 0.5,
       "name": "fading - 3"
     },
-	{
+    {
       "id": "sneakySpirits/hit",
       "duration": 0.5,
       "name": "hit"
@@ -35,34 +35,34 @@
       "name": "7 beats",
       "isStretchable": true,
       "cues": [
-       {
-        "id": "sneakySpirits/moving",
-        "beat": 0.0
-       },
-       {
-        "id": "sneakySpirits/moving",
-        "beat": 0.5
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 1.0
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 1.5
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 2.0
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 2.5
-       },
-	   {
-        "id": "sneakySpirits/hit",
-        "beat": 3.0
-       }
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 0.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 0.5
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 1.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 1.5
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 2.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 2.5
+        },
+        {
+          "id": "sneakySpirits/hit",
+          "beat": 3.0
+        }
       ]
     },
     {
@@ -70,38 +70,38 @@
       "name": "8 beats",
       "isStretchable": true,
       "cues": [
-       {
-        "id": "sneakySpirits/moving",
-        "beat": 0.0
-       },
-       {
-        "id": "sneakySpirits/moving",
-        "beat": 0.5
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 1.0
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 1.5
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 2.0
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 2.5
-       },
-	   {
-        "id": "sneakySpirits/moving",
-        "beat": 3.0
-       },
-	   {
-        "id": "sneakySpirits/hit",
-        "beat": 3.5
-       }
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 0.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 0.5
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 1.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 1.5
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 2.0
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 2.5
+        },
+        {
+          "id": "sneakySpirits/moving",
+          "beat": 3.0
+        },
+        {
+          "id": "sneakySpirits/hit",
+          "beat": 3.5
+        }
       ]
     }
   ]

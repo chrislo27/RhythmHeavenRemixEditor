@@ -39,48 +39,48 @@
       "id": "forkLifter_onePea",
       "name": "single pea",
       "cues": [
-       {
-        "id": "forkLifter/flick",
-        "beat": 0.0
-       },
-	   {
-        "id": "forkLifter/zoom",
-        "beat": 1.5
-       },
-       {
-        "id": "forkLifter/stab",
-        "beat": 2.0
-       }
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 1.5
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 2.0
+        }
       ]
     },
     {
       "id": "forkLifter_twoPeas",
       "name": "two peas",
       "cues": [
-       {
-        "id": "forkLifter/flick",
-        "beat": 0.0
-       },
-	   {
-        "id": "forkLifter/flick",
-        "beat": 1.0
-       },
-	   {
-        "id": "forkLifter/zoom",
-        "beat": 1.5
-       },
-       {
-        "id": "forkLifter/stab",
-        "beat": 2.0
-       },
-	   {
-        "id": "forkLifter/zoom",
-        "beat": 2.5
-       },
-       {
-        "id": "forkLifter/stab",
-        "beat": 3.0
-       }
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifter/flick",
+          "beat": 1.0
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 1.5
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 2.0
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 2.5
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 3.0
+        }
       ]
     }
   ]

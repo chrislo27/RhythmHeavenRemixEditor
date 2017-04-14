@@ -44,58 +44,58 @@
       "id": "microRow_go",
       "name": "go",
       "cues": [
-       {
-        "id": "microRow/go",
-        "beat": 0.0
-       },
-       {
-        "id": "microRow/go",
-        "beat": 2.0
-       }
+        {
+          "id": "microRow/go",
+          "beat": 0.0
+        },
+        {
+          "id": "microRow/go",
+          "beat": 2.0
+        }
       ]
     },
     {
       "id": "microRow_triple",
       "name": "triple",
       "cues": [
-       {
-        "id": "microRow/ding",
-        "beat": 0.0
-       },
-       {
-        "id": "microRow/triple1",
-        "beat": 1.0
-       },
-       {
-        "id": "microRow/triple2",
-        "beat": 2.0
-       },
-       {
-        "id": "microRow/triple3",
-        "beat": 3.0
-       }
+        {
+          "id": "microRow/ding",
+          "beat": 0.0
+        },
+        {
+          "id": "microRow/triple1",
+          "beat": 1.0
+        },
+        {
+          "id": "microRow/triple2",
+          "beat": 2.0
+        },
+        {
+          "id": "microRow/triple3",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "microRow_double",
       "name": "double",
       "cues": [
-       {
-        "id": "microRow/dash1",
-        "beat": 0.0
-       },
-       {
-        "id": "microRow/dash2",
-        "beat": 0.5
-       },
-       {
-        "id": "microRow/go",
-        "beat": 1.5
-       },
-       {
-        "id": "microRow/go",
-        "beat": 2
-       }
+        {
+          "id": "microRow/dash1",
+          "beat": 0.0
+        },
+        {
+          "id": "microRow/dash2",
+          "beat": 0.5
+        },
+        {
+          "id": "microRow/go",
+          "beat": 1.5
+        },
+        {
+          "id": "microRow/go",
+          "beat": 2
+        }
       ]
     }
   ]

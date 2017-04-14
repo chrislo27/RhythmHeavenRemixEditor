@@ -33,27 +33,27 @@
       "duration": 0.25,
       "name": "jump - 2"
     },
-	{
+    {
       "id": "flockstep/jump3",
       "duration": 0.25,
       "name": "jump - 3"
     },
-	{
+    {
       "id": "flockstep/jump4",
       "duration": 0.5,
       "name": "jump - 4"
     },
-	{
+    {
       "id": "flockstep/jump5",
       "duration": 0.5,
       "name": "jump - 5"
     },
-	{
+    {
       "id": "flockstep/jump6",
       "duration": 1.0,
       "name": "jump - 6"
     },
-	{
+    {
       "id": "flockstep/jump7",
       "duration": 1.0,
       "name": "jump - 7"
@@ -64,72 +64,72 @@
       "id": "flockstep_march",
       "name": "march",
       "cues": [
-       {
-        "id": "flockstep/step1",
-        "beat": 0.0
-       },
-       {
-        "id": "flockstep/step2",
-        "beat": 0.5
-       },
-	   {
-        "id": "flockstep/step3",
-        "beat": 1.0
-       },
-       {
-        "id": "flockstep/step4",
-        "beat": 1.5
-       },
-	   {
-        "id": "flockstep/step1",
-        "beat": 2.0
-       },
-       {
-        "id": "flockstep/step2",
-        "beat": 2.5
-       },
-	   {
-        "id": "flockstep/step3",
-        "beat": 3.0
-       },
-       {
-        "id": "flockstep/step4",
-        "beat": 3.5
-       }
+        {
+          "id": "flockstep/step1",
+          "beat": 0.0
+        },
+        {
+          "id": "flockstep/step2",
+          "beat": 0.5
+        },
+        {
+          "id": "flockstep/step3",
+          "beat": 1.0
+        },
+        {
+          "id": "flockstep/step4",
+          "beat": 1.5
+        },
+        {
+          "id": "flockstep/step1",
+          "beat": 2.0
+        },
+        {
+          "id": "flockstep/step2",
+          "beat": 2.5
+        },
+        {
+          "id": "flockstep/step3",
+          "beat": 3.0
+        },
+        {
+          "id": "flockstep/step4",
+          "beat": 3.5
+        }
       ]
     },
-	{
+    {
       "id": "flockstep_jump",
       "name": "jump",
       "cues": [
-       {
-        "id": "flockstep/jump1",
-        "beat": 0.0
-       },
-       {
-        "id": "flockstep/jump2",
-        "beat": 0.5
-       },
-	   {
-        "id": "flockstep/jump3",
-        "beat": 0.75
-       },
-       {
-        "id": "flockstep/jump4",
-        "beat": 1.0
-       },
-	   {
-        "id": "flockstep/jump5",
-        "beat": 1.5
-       },
-       {
-        "id": "flockstep/jump6",
-        "beat": 2.0
-       },
-	   {
-        "id": "flockstep/jump7",
-        "beat": 3.0
-       }
+        {
+          "id": "flockstep/jump1",
+          "beat": 0.0
+        },
+        {
+          "id": "flockstep/jump2",
+          "beat": 0.5
+        },
+        {
+          "id": "flockstep/jump3",
+          "beat": 0.75
+        },
+        {
+          "id": "flockstep/jump4",
+          "beat": 1.0
+        },
+        {
+          "id": "flockstep/jump5",
+          "beat": 1.5
+        },
+        {
+          "id": "flockstep/jump6",
+          "beat": 2.0
+        },
+        {
+          "id": "flockstep/jump7",
+          "beat": 3.0
+        }
       ]
     }
   ]

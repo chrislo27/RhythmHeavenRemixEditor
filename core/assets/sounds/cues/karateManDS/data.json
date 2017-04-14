@@ -67,7 +67,7 @@
           "id": "karateManDS/pothit",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateManDS_offbeatpot",
@@ -81,7 +81,7 @@
           "id": "karateManDS/pothit",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateManDS_hit3",
@@ -121,7 +121,7 @@
           "id": "karateManDS/pothit",
           "beat": 4.5
         }
-        ]
+      ]
     },
     {
       "id": "karateManDS_kick",
@@ -147,7 +147,7 @@
           "id": "karateManDS/punchkick2",
           "beat": 3.75
         }
-        ]
+      ]
     }
-    ]
+  ]
 }

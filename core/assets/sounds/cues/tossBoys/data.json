@@ -92,7 +92,9 @@
     },
     {
       "id": "tossBoys/superRed1",
-      "deprecatedIDs": ["tossBoys/superRed"],
+      "deprecatedIDs": [
+        "tossBoys/superRed"
+      ],
       "duration": 0.25,
       "name": "[#FF0000]aka[]-chan super - start - 1"
     },
@@ -133,7 +135,9 @@
     },
     {
       "id": "tossBoys/superRedBlue1",
-      "deprecatedIDs": ["tossBoys/superBlue"],
+      "deprecatedIDs": [
+        "tossBoys/superBlue"
+      ],
       "duration": 0.5,
       "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 1"
     },
@@ -442,7 +446,9 @@
     {
       "id": "tossBoys_aokunSuperToAkachan",
       "name": "[#70B5FF]ao[]-kun super to [#FF0000]aka[]-chan",
-      "deprecatedIDs": ["tossBoys_aokunSuper"],
+      "deprecatedIDs": [
+        "tossBoys_aokunSuper"
+      ],
       "cues": [
         {
           "id": "tossBoys/superBlue1",
@@ -507,7 +513,9 @@
     {
       "id": "tossBoys_kiiyanSuperToAkachan",
       "name": "[#FFFF00]kii[]-yan super to [#FF0000]aka[]-chan",
-      "deprecatedIDs": ["tossBoys_kiiyanSuper"],
+      "deprecatedIDs": [
+        "tossBoys_kiiyanSuper"
+      ],
       "cues": [
         {
           "id": "tossBoys/superYellowStart",

@@ -33,28 +33,28 @@
       "id": "blueBear_donut",
       "name": "donut",
       "cues": [
-       {
-        "id": "blueBear/donutOut",
-        "beat": 0.0
-       },
-       {
-        "id": "blueBear/donutChomp",
-        "beat": 2.0
-       }
+        {
+          "id": "blueBear/donutOut",
+          "beat": 0.0
+        },
+        {
+          "id": "blueBear/donutChomp",
+          "beat": 2.0
+        }
       ]
     },
     {
       "id": "blueBear_cake",
       "name": "cake",
       "cues": [
-       {
-        "id": "blueBear/cakeOut",
-        "beat": 0.0
-       },
-       {
-        "id": "blueBear/cakeChomp",
-        "beat": 3.0
-       }
+        {
+          "id": "blueBear/cakeOut",
+          "beat": 0.0
+        },
+        {
+          "id": "blueBear/cakeChomp",
+          "beat": 3.0
+        }
       ]
     }
   ]

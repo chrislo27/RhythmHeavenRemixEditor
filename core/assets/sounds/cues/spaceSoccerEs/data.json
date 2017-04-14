@@ -29,40 +29,40 @@
       "id": "spaceSoccerEs_keepup",
       "name": "keep-up",
       "cues": [
-       {
-        "id": "spaceSoccerEs/hey",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerEs/hey",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerEs/hey",
-        "beat": 2.0
-       },
-       {
-        "id": "spaceSoccerEs/hey",
-        "beat": 3.0
-       }
+        {
+          "id": "spaceSoccerEs/hey",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerEs/hey",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerEs/hey",
+          "beat": 2.0
+        },
+        {
+          "id": "spaceSoccerEs/hey",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "spaceSoccerEs_pieheypie",
       "name": "pie hey-pie!",
       "cues": [
-       {
-        "id": "spaceSoccerEs/pieheypie1",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerEs/pieheypie2",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerEs/pieheypie3",
-        "beat": 1.5
-       }
+        {
+          "id": "spaceSoccerEs/pieheypie1",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerEs/pieheypie2",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerEs/pieheypie3",
+          "beat": 1.5
+        }
       ]
     }
   ]

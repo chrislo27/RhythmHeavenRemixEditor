@@ -19,14 +19,14 @@
       "id": "drummingPractice_hitdrum",
       "name": "hit drum",
       "cues": [
-       {
-        "id": "drummingPractice/raisearm",
-        "beat": 0.0
-       },
-       {
-        "id": "drummingPractice/hitdrum",
-        "beat": 1.0
-       }
+        {
+          "id": "drummingPractice/raisearm",
+          "beat": 0.0
+        },
+        {
+          "id": "drummingPractice/hitdrum",
+          "beat": 1.0
+        }
       ]
     }
   ]

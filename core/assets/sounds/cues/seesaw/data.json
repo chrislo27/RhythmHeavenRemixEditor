@@ -33,7 +33,7 @@
       "duration": 1.0,
       "name": "saw - long - 2"
     },
-	{
+    {
       "id": "seesaw/sawShort1",
       "duration": 0.5,
       "name": "saw - short - 1"
@@ -49,88 +49,88 @@
       "id": "seesaw_longLong",
       "name": "long long",
       "cues": [
-       {
-        "id": "seesaw/seeLong1",
-        "beat": 0.0
-       },
-       {
-        "id": "seesaw/seeLong2",
-        "beat": 1.0
-       },
-	   {
-        "id": "seesaw/sawLong1",
-        "beat": 2.0
-       },
-       {
-        "id": "seesaw/sawLong2",
-        "beat": 3.0
-       }
+        {
+          "id": "seesaw/seeLong1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesaw/seeLong2",
+          "beat": 1.0
+        },
+        {
+          "id": "seesaw/sawLong1",
+          "beat": 2.0
+        },
+        {
+          "id": "seesaw/sawLong2",
+          "beat": 3.0
+        }
       ]
     },
-	{
+    {
       "id": "seesaw_shortShort",
       "name": "short short",
       "cues": [
-       {
-        "id": "seesaw/seeShort1",
-        "beat": 0.0
-       },
-       {
-        "id": "seesaw/seeShort2",
-        "beat": 0.5
-       },
-	   {
-        "id": "seesaw/sawShort1",
-        "beat": 1.0
-       },
-       {
-        "id": "seesaw/sawShort2",
-        "beat": 1.5
-       }
+        {
+          "id": "seesaw/seeShort1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesaw/seeShort2",
+          "beat": 0.5
+        },
+        {
+          "id": "seesaw/sawShort1",
+          "beat": 1.0
+        },
+        {
+          "id": "seesaw/sawShort2",
+          "beat": 1.5
+        }
       ]
     },
-	{
+    {
       "id": "seesaw_longShort",
       "name": "long short",
       "cues": [
-       {
-        "id": "seesaw/seeLong1",
-        "beat": 0.0
-       },
-       {
-        "id": "seesaw/seeLong2",
-        "beat": 1.0
-       },
-	   {
-        "id": "seesaw/sawShort1",
-        "beat": 2.0
-       },
-       {
-        "id": "seesaw/sawShort2",
-        "beat": 2.5
-       }
+        {
+          "id": "seesaw/seeLong1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesaw/seeLong2",
+          "beat": 1.0
+        },
+        {
+          "id": "seesaw/sawShort1",
+          "beat": 2.0
+        },
+        {
+          "id": "seesaw/sawShort2",
+          "beat": 2.5
+        }
       ]
     },
-	{
+    {
       "id": "seesaw_shortLong",
       "name": "short long",
       "cues": [
-       {
-        "id": "seesaw/seeShort1",
-        "beat": 0.0
-       },
-       {
-        "id": "seesaw/seeShort2",
-        "beat": 0.5
-       },
-	   {
-        "id": "seesaw/sawLong1",
-        "beat": 1.0
-       },
-       {
-        "id": "seesaw/sawLong2",
-        "beat": 2.0
-       }
+        {
+          "id": "seesaw/seeShort1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesaw/seeShort2",
+          "beat": 0.5
+        },
+        {
+          "id": "seesaw/sawLong1",
+          "beat": 1.0
+        },
+        {
+          "id": "seesaw/sawLong2",
+          "beat": 2.0
+        }
       ]
     }
   ]

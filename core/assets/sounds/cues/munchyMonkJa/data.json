@@ -5,49 +5,65 @@
   "cues": [
     {
       "id": "munchyMonkJa/gulp",
-      "deprecatedIDs": ["munchyMonkJp/gulp"],
+      "deprecatedIDs": [
+        "munchyMonkJp/gulp"
+      ],
       "duration": 0.5,
       "name": "gulp"
     },
     {
       "id": "munchyMonkJa/one",
-      "deprecatedIDs": ["munchyMonkJp/one"],
+      "deprecatedIDs": [
+        "munchyMonkJp/one"
+      ],
       "duration": 1,
       "name": "one"
     },
     {
       "id": "munchyMonkJa/try",
-      "deprecatedIDs": ["munchyMonkJp/try"],
+      "deprecatedIDs": [
+        "munchyMonkJp/try"
+      ],
       "duration": 0.5,
       "name": "two - try"
     },
     {
       "id": "munchyMonkJa/two",
-      "deprecatedIDs": ["munchyMonkJp/two"],
+      "deprecatedIDs": [
+        "munchyMonkJp/two"
+      ],
       "duration": 0.5,
       "name": "two - two!"
     },
     {
       "id": "munchyMonkJa/three",
-      "deprecatedIDs": ["munchyMonkJp/three"],
+      "deprecatedIDs": [
+        "munchyMonkJp/three"
+      ],
       "duration": 1,
       "name": "three - three"
     },
     {
       "id": "munchyMonkJa/gulp3-1",
-      "deprecatedIDs": ["munchyMonkJp/gulp3-1"],
+      "deprecatedIDs": [
+        "munchyMonkJp/gulp3-1"
+      ],
       "duration": 1,
       "name": "three - go - 1"
     },
     {
       "id": "munchyMonkJa/gulp3-2",
-      "deprecatedIDs": ["munchyMonkJp/gulp3-2"],
+      "deprecatedIDs": [
+        "munchyMonkJp/gulp3-2"
+      ],
       "duration": 1,
       "name": "three - go - 2"
     },
     {
       "id": "munchyMonkJa/gulp3-3",
-      "deprecatedIDs": ["munchyMonkJp/gulp3-3"],
+      "deprecatedIDs": [
+        "munchyMonkJp/gulp3-3"
+      ],
       "duration": 1,
       "name": "three - go - 3"
     }
@@ -55,7 +71,9 @@
   "patterns": [
     {
       "id": "munchyMonkJa_one",
-      "deprecatedIDs": ["munchyMonkJp_one"],
+      "deprecatedIDs": [
+        "munchyMonkJp_one"
+      ],
       "name": "one",
       "cues": [
         {
@@ -70,7 +88,9 @@
     },
     {
       "id": "munchyMonkJa_trytwo",
-      "deprecatedIDs": ["munchyMonkJp_trytwo"],
+      "deprecatedIDs": [
+        "munchyMonkJp_trytwo"
+      ],
       "name": "try two",
       "cues": [
         {
@@ -93,7 +113,9 @@
     },
     {
       "id": "munchyMonkJa_three",
-      "deprecatedIDs": ["munchyMonkJp_three"],
+      "deprecatedIDs": [
+        "munchyMonkJp_three"
+      ],
       "name": "three",
       "cues": [
         {

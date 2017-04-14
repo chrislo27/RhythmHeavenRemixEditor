@@ -1,7 +1,7 @@
 {
   "gameID": "marchingOrdersEn",
-  "gameName" : "Marching Orders (English)",
-  "series" : "tengoku",
+  "gameName": "Marching Orders (English)",
+  "series": "tengoku",
   "cues": [
     {
       "id": "marchingOrdersEn/attention1",
@@ -94,118 +94,118 @@
       "id": "marchingOrdersEn_attentionMarch",
       "name": "attention... march!",
       "cues": [
-       {
-        "id": "marchingOrdersEn/attention1",
-        "beat": 0.0
-       },
-       {
-        "id": "marchingOrdersEn/attention2",
-        "beat": 0.25
-       },
-       {
-        "id": "marchingOrdersEn/attention3",
-        "beat": 0.75
-       },
-       {
-        "id": "marchingOrdersEn/march1",
-        "beat": 2.25
-       },
-       {
-        "id": "marchingOrdersEn/march2",
-        "beat": 3.25
-       }
+        {
+          "id": "marchingOrdersEn/attention1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersEn/attention2",
+          "beat": 0.25
+        },
+        {
+          "id": "marchingOrdersEn/attention3",
+          "beat": 0.75
+        },
+        {
+          "id": "marchingOrdersEn/march1",
+          "beat": 2.25
+        },
+        {
+          "id": "marchingOrdersEn/march2",
+          "beat": 3.25
+        }
       ]
     },
     {
       "id": "marchingOrdersEn_marching",
       "name": "marching",
       "cues": [
-       {
-        "id": "marchingOrdersEn/step1",
-        "beat": 0.0
-       },
-       {
-        "id": "marchingOrdersEn/step2",
-        "beat": 1.0
-       },
-       {
-        "id": "marchingOrdersEn/step1",
-        "beat": 2.0
-       },
-       {
-        "id": "marchingOrdersEn/step2",
-        "beat": 3.0
-       }
+        {
+          "id": "marchingOrdersEn/step1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersEn/step2",
+          "beat": 1.0
+        },
+        {
+          "id": "marchingOrdersEn/step1",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersEn/step2",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "marchingOrdersEn_attentionHalt",
       "name": "attention... halt!",
       "cues": [
-       {
-        "id": "marchingOrdersEn/attention1",
-        "beat": 0.0
-       },
-       {
-        "id": "marchingOrdersEn/attention2",
-        "beat": 0.25
-       },
-       {
-        "id": "marchingOrdersEn/attention3",
-        "beat": 0.75
-       },
-       {
-        "id": "marchingOrdersEn/halt1",
-        "beat": 2.25
-       },
-       {
-        "id": "marchingOrdersEn/halt2",
-        "beat": 3.25
-       }
+        {
+          "id": "marchingOrdersEn/attention1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersEn/attention2",
+          "beat": 0.25
+        },
+        {
+          "id": "marchingOrdersEn/attention3",
+          "beat": 0.75
+        },
+        {
+          "id": "marchingOrdersEn/halt1",
+          "beat": 2.25
+        },
+        {
+          "id": "marchingOrdersEn/halt2",
+          "beat": 3.25
+        }
       ]
     },
     {
       "id": "marchingOrdersEn_leftFaceTurn",
       "name": "left face turn",
       "cues": [
-       {
-        "id": "marchingOrdersEn/leftFaceTurn1",
-        "beat": 0.0
-       },
-       {
-        "id": "marchingOrdersEn/leftFaceTurn2",
-        "beat": 0.5
-       },
-       {
-        "id": "marchingOrdersEn/leftFaceTurn3",
-        "beat": 2.0
-       },
-       {
-        "id": "marchingOrdersEn/leftFaceTurn4",
-        "beat": 3.0
-       }
+        {
+          "id": "marchingOrdersEn/leftFaceTurn1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersEn/leftFaceTurn2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersEn/leftFaceTurn3",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersEn/leftFaceTurn4",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "marchingOrdersEn_rightFaceTurn",
       "name": "right face turn",
       "cues": [
-       {
-        "id": "marchingOrdersEn/rightFaceTurn1",
-        "beat": 0.0
-       },
-       {
-        "id": "marchingOrdersEn/rightFaceTurn2",
-        "beat": 0.5
-       },
-       {
-        "id": "marchingOrdersEn/rightFaceTurn3",
-        "beat": 2.0
-       },
-       {
-        "id": "marchingOrdersEn/rightFaceTurn4",
-        "beat": 3.0
-       }
+        {
+          "id": "marchingOrdersEn/rightFaceTurn1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersEn/rightFaceTurn2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersEn/rightFaceTurn3",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersEn/rightFaceTurn4",
+          "beat": 3.0
+        }
       ]
     }
   ]

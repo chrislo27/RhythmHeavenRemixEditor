@@ -59,90 +59,90 @@
       "id": "tapTrialRemix7_tap",
       "name": "tap",
       "cues": [
-       {
-        "id": "tapTrialRemix7/ook",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrialRemix7/ook",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "tapTrialRemix7_doubletap",
       "name": "double tap",
       "cues": [
-       {
-        "id": "tapTrialRemix7/ookook1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrialRemix7/ookook2",
-        "beat": 0.5
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 1.0
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 1.5
-       }
+        {
+          "id": "tapTrialRemix7/ookook1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrialRemix7/ookook2",
+          "beat": 0.5
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 1.0
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 1.5
+        }
       ]
     },
     {
       "id": "tapTrialRemix7_tripletap",
       "name": "triple tap",
       "cues": [
-       {
-        "id": "tapTrialRemix7/ooki1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrialRemix7/ooki2",
-        "beat": 0.5
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 2.0
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 2.5
-       },
-       {
-        "id": "tapTrialRemix7/tap",
-        "beat": 3.0
-       }
+        {
+          "id": "tapTrialRemix7/ooki1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrialRemix7/ooki2",
+          "beat": 0.5
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 2.0
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 2.5
+        },
+        {
+          "id": "tapTrialRemix7/tap",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "tapTrialRemix7_jumptap",
       "name": "jump tap",
       "cues": [
-       {
-        "id": "tapTrialRemix7/jumptap1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrialRemix7/jumptap1_tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrialRemix7/jumptap1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrialRemix7/jumptap1_tap",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "tapTrialRemix7_finaljumptap",
       "name": "final jump tap",
       "cues": [
-       {
-        "id": "tapTrialRemix7/jumptap2",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrialRemix7/jumptap2_tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrialRemix7/jumptap2",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrialRemix7/jumptap2_tap",
+          "beat": 1.0
+        }
       ]
     }
   ]

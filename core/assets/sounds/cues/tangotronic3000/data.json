@@ -75,76 +75,76 @@
   ],
   "patterns": [
     {
-    "id": "tangotronic3000_2StepCorte",
-    "name": "2-step corte",
-    "cues": [
+      "id": "tangotronic3000_2StepCorte",
+      "name": "2-step corte",
+      "cues": [
         {
-        "id": "tangotronic3000/whistle1",
-        "beat": 0
+          "id": "tangotronic3000/whistle1",
+          "beat": 0
         },
         {
-        "id": "tangotronic3000/whistle2",
-        "beat": 0.5
+          "id": "tangotronic3000/whistle2",
+          "beat": 0.5
         },
         {
-        "id": "tangotronic3000/2step1",
-        "beat": 2
+          "id": "tangotronic3000/2step1",
+          "beat": 2
         },
         {
-        "id": "tangotronic3000/2step2",
-        "beat": 2.5
+          "id": "tangotronic3000/2step2",
+          "beat": 2.5
         }
       ]
     },
     {
-    "id": "tangotronic3000_3StepColgada",
-    "name": "3-step colgada",
-    "cues": [
+      "id": "tangotronic3000_3StepColgada",
+      "name": "3-step colgada",
+      "cues": [
         {
-        "id": "tangotronic3000/tock",
-        "beat": 0
+          "id": "tangotronic3000/tock",
+          "beat": 0
         },
         {
-        "id": "tangotronic3000/tock",
-        "beat": 0.5
+          "id": "tangotronic3000/tock",
+          "beat": 0.5
         },
         {
-        "id": "tangotronic3000/tock",
-        "beat": 1
+          "id": "tangotronic3000/tock",
+          "beat": 1
         },
         {
-        "id": "tangotronic3000/3step1",
-        "beat": 2
+          "id": "tangotronic3000/3step1",
+          "beat": 2
         },
         {
-        "id": "tangotronic3000/3step2",
-        "beat": 2.5
+          "id": "tangotronic3000/3step2",
+          "beat": 2.5
         },
         {
-        "id": "tangotronic3000/3step3",
-        "beat": 3
+          "id": "tangotronic3000/3step3",
+          "beat": 3
         }
       ]
     },
     {
-    "id": "tangotronic3000_twirl",
-    "name": "twirl",
-    "cues": [
+      "id": "tangotronic3000_twirl",
+      "name": "twirl",
+      "cues": [
         {
-        "id": "tangotronic3000/ready1",
-        "beat": 0
+          "id": "tangotronic3000/ready1",
+          "beat": 0
         },
         {
-        "id": "tangotronic3000/ready2",
-        "beat": 1
+          "id": "tangotronic3000/ready2",
+          "beat": 1
         },
         {
-        "id": "tangotronic3000/twirlLoop",
-        "beat": 2
+          "id": "tangotronic3000/twirlLoop",
+          "beat": 2
         },
         {
-        "id": "tangotronic3000/twirlStop",
-        "beat": 3
+          "id": "tangotronic3000/twirlStop",
+          "beat": 3
         }
       ]
     }

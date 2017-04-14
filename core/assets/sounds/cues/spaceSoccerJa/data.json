@@ -29,40 +29,40 @@
       "id": "spaceSoccerJa_keepup",
       "name": "keep-up",
       "cues": [
-       {
-        "id": "spaceSoccerJa/kick",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerJa/kick",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerJa/kick",
-        "beat": 2.0
-       },
-       {
-        "id": "spaceSoccerJa/kick",
-        "beat": 3.0
-       }
+        {
+          "id": "spaceSoccerJa/kick",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerJa/kick",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerJa/kick",
+          "beat": 2.0
+        },
+        {
+          "id": "spaceSoccerJa/kick",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "spaceSoccerJa_highkicktoe",
       "name": "high kick-toe!",
       "cues": [
-       {
-        "id": "spaceSoccerJa/highkicktoe1",
-        "beat": 0.0
-       },
-       {
-        "id": "spaceSoccerJa/highkicktoe2",
-        "beat": 1.0
-       },
-       {
-        "id": "spaceSoccerJa/highkicktoe3",
-        "beat": 1.5
-       }
+        {
+          "id": "spaceSoccerJa/highkicktoe1",
+          "beat": 0.0
+        },
+        {
+          "id": "spaceSoccerJa/highkicktoe2",
+          "beat": 1.0
+        },
+        {
+          "id": "spaceSoccerJa/highkicktoe3",
+          "beat": 1.5
+        }
       ]
     }
   ]

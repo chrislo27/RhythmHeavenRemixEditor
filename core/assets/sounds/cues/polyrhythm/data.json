@@ -5,13 +5,17 @@
   "cues": [
     {
       "id": "polyrhythm/aSpring",
-      "deprecatedIDs": ["polyrhythm/side_a"],
+      "deprecatedIDs": [
+        "polyrhythm/side_a"
+      ],
       "duration": 0.5,
       "name": "spring - A"
     },
     {
       "id": "polyrhythm/dPadSpring",
-      "deprecatedIDs": ["polyrhythm/side_d"],
+      "deprecatedIDs": [
+        "polyrhythm/side_d"
+      ],
       "duration": 0.5,
       "name": "spring - +"
     },
@@ -27,7 +31,9 @@
     },
     {
       "id": "polyrhythm/retract",
-      "deprecatedIDs": ["polyrhythm/enter"],
+      "deprecatedIDs": [
+        "polyrhythm/enter"
+      ],
       "duration": 0.5,
       "name": "springs - retracting"
     },

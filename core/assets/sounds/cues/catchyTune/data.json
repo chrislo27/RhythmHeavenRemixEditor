@@ -7,19 +7,25 @@
       "id": "catchyTune/leftCatch",
       "duration": 1,
       "name": "left - catch",
-      "deprecatedIDs": ["catchyTune/clap"]
+      "deprecatedIDs": [
+        "catchyTune/clap"
+      ]
     },
     {
       "id": "catchyTune/leftOrange",
       "duration": 1,
       "name": "left - orange",
-      "deprecatedIDs": ["catchyTune/orange"]
+      "deprecatedIDs": [
+        "catchyTune/orange"
+      ]
     },
     {
       "id": "catchyTune/leftPineapple",
       "duration": 2,
       "name": "left - pineapple",
-      "deprecatedIDs": ["catchyTune/melon"]
+      "deprecatedIDs": [
+        "catchyTune/melon"
+      ]
     },
     {
       "id": "catchyTune/rightCatch",
@@ -41,91 +47,95 @@
     {
       "id": "catchyTune_leftOrange",
       "name": "left - orange",
-      "deprecatedIDs": ["catchyTune_orange"],
+      "deprecatedIDs": [
+        "catchyTune_orange"
+      ],
       "cues": [
-       {
-        "id": "catchyTune/leftOrange",
-        "beat": 0.0
-       },
-       {
-        "id": "catchyTune/leftOrange",
-        "beat": 1.0
-       },
-       {
-        "id": "catchyTune/leftOrange",
-        "beat": 2.0
-       },
-       {
-        "id": "catchyTune/leftCatch",
-        "beat": 3.0
-       }
+        {
+          "id": "catchyTune/leftOrange",
+          "beat": 0.0
+        },
+        {
+          "id": "catchyTune/leftOrange",
+          "beat": 1.0
+        },
+        {
+          "id": "catchyTune/leftOrange",
+          "beat": 2.0
+        },
+        {
+          "id": "catchyTune/leftCatch",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "catchyTune_rightOrange",
       "name": "right - orange",
       "cues": [
-       {
-        "id": "catchyTune/rightOrange",
-        "beat": 0.0
-       },
-       {
-        "id": "catchyTune/rightOrange",
-        "beat": 1.0
-       },
-       {
-        "id": "catchyTune/rightOrange",
-        "beat": 2.0
-       },
-       {
-        "id": "catchyTune/rightCatch",
-        "beat": 3.0
-       }
+        {
+          "id": "catchyTune/rightOrange",
+          "beat": 0.0
+        },
+        {
+          "id": "catchyTune/rightOrange",
+          "beat": 1.0
+        },
+        {
+          "id": "catchyTune/rightOrange",
+          "beat": 2.0
+        },
+        {
+          "id": "catchyTune/rightCatch",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "catchyTune_leftPineapple",
       "name": "left - pineapple",
-      "deprecatedIDs": ["catchyTune_pineapple"],
+      "deprecatedIDs": [
+        "catchyTune_pineapple"
+      ],
       "cues": [
-       {
-        "id": "catchyTune/leftPineapple",
-        "beat": 0.0
-       },
-       {
-        "id": "catchyTune/leftPineapple",
-        "beat": 2.0
-       },
-       {
-        "id": "catchyTune/leftPineapple",
-        "beat": 4.0
-       },
-       {
-        "id": "catchyTune/leftCatch",
-        "beat": 6.0
-       }
+        {
+          "id": "catchyTune/leftPineapple",
+          "beat": 0.0
+        },
+        {
+          "id": "catchyTune/leftPineapple",
+          "beat": 2.0
+        },
+        {
+          "id": "catchyTune/leftPineapple",
+          "beat": 4.0
+        },
+        {
+          "id": "catchyTune/leftCatch",
+          "beat": 6.0
+        }
       ]
     },
     {
       "id": "catchyTune_rightPineapple",
       "name": "right - pineapple",
       "cues": [
-       {
-        "id": "catchyTune/rightPineapple",
-        "beat": 0.0
-       },
-       {
-        "id": "catchyTune/rightPineapple",
-        "beat": 2.0
-       },
-       {
-        "id": "catchyTune/rightPineapple",
-        "beat": 4.0
-       },
-       {
-        "id": "catchyTune/rightCatch",
-        "beat": 6.0
-       }
+        {
+          "id": "catchyTune/rightPineapple",
+          "beat": 0.0
+        },
+        {
+          "id": "catchyTune/rightPineapple",
+          "beat": 2.0
+        },
+        {
+          "id": "catchyTune/rightPineapple",
+          "beat": 4.0
+        },
+        {
+          "id": "catchyTune/rightCatch",
+          "beat": 6.0
+        }
       ]
     }
   ]

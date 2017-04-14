@@ -16,13 +16,17 @@
     },
     {
       "id": "airboarderJa/hup",
-      "deprecatedIDs": ["airboarder/hup"],
+      "deprecatedIDs": [
+        "airboarder/hup"
+      ],
       "duration": 1,
       "name": "ready"
     },
     {
       "id": "airboarderJa/crouch",
-      "deprecatedIDs": ["airboarder/crouch"],
+      "deprecatedIDs": [
+        "airboarder/crouch"
+      ],
       "duration": 1,
       "name": "crouch"
     },
@@ -33,7 +37,9 @@
     },
     {
       "id": "airboarderJa/jump",
-      "deprecatedIDs": ["airboarder/jump"],
+      "deprecatedIDs": [
+        "airboarder/jump"
+      ],
       "duration": 1,
       "name": "jump"
     }
@@ -55,7 +61,9 @@
     },
     {
       "id": "airboarderJa_crouch",
-      "deprecatedIDs": ["airboarder_crouch"],
+      "deprecatedIDs": [
+        "airboarder_crouch"
+      ],
       "name": "crouch",
       "cues": [
         {
@@ -100,7 +108,9 @@
     },
     {
       "id": "airboarderJa_jump",
-      "deprecatedIDs": ["airboarder_jump"],
+      "deprecatedIDs": [
+        "airboarder_jump"
+      ],
       "name": "jump",
       "cues": [
         {

@@ -13,7 +13,7 @@
       "duration": 0.5,
       "name": "bounce - 2"
     },
-	{
+    {
       "id": "basketballGirls/bounce3",
       "duration": 0.5,
       "name": "bounce - 3"
@@ -23,27 +23,27 @@
       "duration": 0.5,
       "name": "go"
     },
-	{
+    {
       "id": "basketballGirls/dunk1",
       "duration": 0.5,
       "name": "dunk - 1"
     },
-	{
+    {
       "id": "basketballGirls/dunk2",
       "duration": 0.5,
       "name": "dunk - 2"
     },
-	{
+    {
       "id": "basketballGirls/dunk3",
       "duration": 0.5,
       "name": "dunk - 3"
     },
-	{
+    {
       "id": "basketballGirls/dunk4",
       "duration": 0.5,
       "name": "dunk - 4"
     },
-	{
+    {
       "id": "basketballGirls/dunk5",
       "duration": 1.0,
       "name": "dunk - 5"
@@ -54,52 +54,52 @@
       "id": "basketballGirls_bounce",
       "name": "bounce",
       "cues": [
-       {
-        "id": "basketballGirls/bounce1",
-        "beat": 0.0
-       },
-       {
-        "id": "basketballGirls/bounce2",
-        "beat": 0.5
-       },
-	   {
-        "id": "basketballGirls/bounce3",
-        "beat": 1.0
-       },
-       {
-        "id": "basketballGirls/bounce2",
-        "beat": 1.5
-       }
+        {
+          "id": "basketballGirls/bounce1",
+          "beat": 0.0
+        },
+        {
+          "id": "basketballGirls/bounce2",
+          "beat": 0.5
+        },
+        {
+          "id": "basketballGirls/bounce3",
+          "beat": 1.0
+        },
+        {
+          "id": "basketballGirls/bounce2",
+          "beat": 1.5
+        }
       ]
     },
-	{
+    {
       "id": "basketballGirls_dunk",
       "name": "dunk",
       "cues": [
-       {
-        "id": "basketballGirls/go",
-        "beat": 0.0
-       },
-       {
-        "id": "basketballGirls/dunk1",
-        "beat": 1.0
-       },
-	   {
-        "id": "basketballGirls/dunk2",
-        "beat": 1.5
-       },
-       {
-        "id": "basketballGirls/dunk3",
-        "beat": 2.0
-       },
-	   {
-        "id": "basketballGirls/dunk4",
-        "beat": 2.5
-       },
-	   {
-        "id": "basketballGirls/dunk5",
-        "beat": 3.0
-       }
+        {
+          "id": "basketballGirls/go",
+          "beat": 0.0
+        },
+        {
+          "id": "basketballGirls/dunk1",
+          "beat": 1.0
+        },
+        {
+          "id": "basketballGirls/dunk2",
+          "beat": 1.5
+        },
+        {
+          "id": "basketballGirls/dunk3",
+          "beat": 2.0
+        },
+        {
+          "id": "basketballGirls/dunk4",
+          "beat": 2.5
+        },
+        {
+          "id": "basketballGirls/dunk5",
+          "beat": 3.0
+        }
       ]
     }
   ]

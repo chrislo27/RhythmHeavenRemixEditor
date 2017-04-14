@@ -99,136 +99,136 @@
       "id": "lumbearjack_small",
       "name": "small log",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/small1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/small2",
-        "beat": 2
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/small1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/small2",
+          "beat": 2
+        }
       ]
     },
     {
       "id": "lumbearjack_medium",
       "name": "medium log",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/medium1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/medium2",
-        "beat": 2
-       },
-       {
-        "id": "lumbearjack/medium3",
-        "beat": 3
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/medium1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/medium2",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/medium3",
+          "beat": 3
+        }
       ]
     },
-	{
+    {
       "id": "lumbearjack_large",
       "name": "large log",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/large1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/large2",
-        "beat": 2
-       },
-       {
-        "id": "lumbearjack/large3",
-        "beat": 3
-       },
-       {
-        "id": "lumbearjack/large4",
-        "beat": 4
-       },
-       {
-        "id": "lumbearjack/large5",
-        "beat": 5
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/large1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/large2",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/large3",
+          "beat": 3
+        },
+        {
+          "id": "lumbearjack/large4",
+          "beat": 4
+        },
+        {
+          "id": "lumbearjack/large5",
+          "beat": 5
+        }
       ]
     },
     {
       "id": "lumbearjack_can",
       "name": "can",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/can1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/can2",
-        "beat": 2
-       },
-       {
-        "id": "lumbearjack/huh",
-        "beat": 3
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/can1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/can2",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/huh",
+          "beat": 3
+        }
       ]
     },
     {
       "id": "lumbearjack_bat",
       "name": "bat",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/small1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/bat",
-        "beat": 2
-       },
-       {
-        "id": "lumbearjack/huh",
-        "beat": 3
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/small1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/bat",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/huh",
+          "beat": 3
+        }
       ]
     },
     {
       "id": "lumbearjack_broom",
       "name": "broom",
       "cues": [
-       {
-        "id": "lumbearjack/nya",
-        "beat": 0
-       },
-       {
-        "id": "lumbearjack/broom1",
-        "beat": 1
-       },
-       {
-        "id": "lumbearjack/broom2",
-        "beat": 2
-       },
-       {
-        "id": "lumbearjack/huh",
-        "beat": 3
-       }
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/broom1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/broom2",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/huh",
+          "beat": 3
+        }
       ]
     }
   ]

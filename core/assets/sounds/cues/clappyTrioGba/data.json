@@ -20,18 +20,18 @@
       "name": "trio timing!",
       "isStretchable": true,
       "cues": [
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 0.0
-       },
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 1.0
-       },
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 2.0
-       }
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 0.0
+        },
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 1.0
+        },
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 2.0
+        }
       ]
     },
     {
@@ -39,23 +39,23 @@
       "name": "four on the floor!",
       "isStretchable": true,
       "cues": [
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 0.0
-       },
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 1.0
-       },
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 2.0
-       },
-       {
-        "id": "clappyTrioGba/clap",
-        "beat": 3.0
-       }
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 0.0
+        },
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 1.0
+        },
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 2.0
+        },
+        {
+          "id": "clappyTrioGba/clap",
+          "beat": 3.0
+        }
       ]
     }
-    ]
+  ]
 }

@@ -26,158 +26,158 @@
   ],
   "patterns": [
     {
-    "id": "sickBeats_blueVirus",
-    "name": "blue virus",
-    "cues": [
+      "id": "sickBeats_blueVirus",
+      "name": "blue virus",
+      "cues": [
         {
-        "id": "sickBeats/appear",
-        "beat": 0
+          "id": "sickBeats/appear",
+          "beat": 0
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 1
+          "id": "sickBeats/stab",
+          "beat": 1
         }
       ]
     },
     {
-    "id": "sickBeats_quickBlueVirus",
-    "name": "quick blue virus",
-    "cues": [
+      "id": "sickBeats_quickBlueVirus",
+      "name": "quick blue virus",
+      "cues": [
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0
+          "id": "sickBeats/whoosh",
+          "beat": 0
         },
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0.1875
+          "id": "sickBeats/whoosh",
+          "beat": 0.1875
         },
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0.375
+          "id": "sickBeats/whoosh",
+          "beat": 0.375
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 2.375
+          "id": "sickBeats/appear",
+          "beat": 2.375
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 3.375
+          "id": "sickBeats/stab",
+          "beat": 3.375
         }
       ]
     },
     {
-    "id": "sickBeats_pinkVirus",
-    "name": "pink virus",
-    "cues": [
+      "id": "sickBeats_pinkVirus",
+      "name": "pink virus",
+      "cues": [
         {
-        "id": "sickBeats/appear",
-        "beat": 0
+          "id": "sickBeats/appear",
+          "beat": 0
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 1
+          "id": "sickBeats/resist",
+          "beat": 1
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 2
+          "id": "sickBeats/appear",
+          "beat": 2
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 3
+          "id": "sickBeats/stab",
+          "beat": 3
         }
       ]
     },
     {
-    "id": "sickBeats_quickPinkVirus",
-    "name": "quick pink virus",
-    "cues": [
+      "id": "sickBeats_quickPinkVirus",
+      "name": "quick pink virus",
+      "cues": [
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0
+          "id": "sickBeats/whoosh",
+          "beat": 0
         },
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0.1875
+          "id": "sickBeats/whoosh",
+          "beat": 0.1875
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 1.1875
+          "id": "sickBeats/appear",
+          "beat": 1.1875
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 2.1875
+          "id": "sickBeats/resist",
+          "beat": 2.1875
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 3.1875
+          "id": "sickBeats/appear",
+          "beat": 3.1875
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 4.1875
+          "id": "sickBeats/stab",
+          "beat": 4.1875
         }
       ]
     },
     {
-    "id": "sickBeats_blackVirus",
-    "name": "black virus",
-    "cues": [
+      "id": "sickBeats_blackVirus",
+      "name": "black virus",
+      "cues": [
         {
-        "id": "sickBeats/appear",
-        "beat": 0
+          "id": "sickBeats/appear",
+          "beat": 0
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 1
+          "id": "sickBeats/resist",
+          "beat": 1
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 2
+          "id": "sickBeats/appear",
+          "beat": 2
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 3
+          "id": "sickBeats/resist",
+          "beat": 3
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 4
+          "id": "sickBeats/appear",
+          "beat": 4
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 5
+          "id": "sickBeats/stab",
+          "beat": 5
         }
       ]
     },
     {
-    "id": "sickBeats_quickBlackVirus",
-    "name": "quick black virus",
-    "cues": [
+      "id": "sickBeats_quickBlackVirus",
+      "name": "quick black virus",
+      "cues": [
         {
-        "id": "sickBeats/whoosh",
-        "beat": 0
+          "id": "sickBeats/whoosh",
+          "beat": 0
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 2
+          "id": "sickBeats/appear",
+          "beat": 2
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 3
+          "id": "sickBeats/resist",
+          "beat": 3
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 4
+          "id": "sickBeats/appear",
+          "beat": 4
         },
         {
-        "id": "sickBeats/resist",
-        "beat": 5
+          "id": "sickBeats/resist",
+          "beat": 5
         },
         {
-        "id": "sickBeats/appear",
-        "beat": 6
+          "id": "sickBeats/appear",
+          "beat": 6
         },
         {
-        "id": "sickBeats/stab",
-        "beat": 7
+          "id": "sickBeats/stab",
+          "beat": 7
         }
       ]
     }

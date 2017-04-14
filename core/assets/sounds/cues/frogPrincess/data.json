@@ -24,22 +24,22 @@
       "id": "frogPrincess_jump",
       "name": "jump",
       "cues": [
-       {
-        "id": "frogPrincess/donk",
-        "beat": 0.0
-       },
-       {
-        "id": "frogPrincess/donk",
-        "beat": 1.0
-       },
-	   {
-        "id": "frogPrincess/prepare",
-        "beat": 2.0
-       },
-       {
-        "id": "frogPrincess/jump",
-        "beat": 3.0
-       }
+        {
+          "id": "frogPrincess/donk",
+          "beat": 0.0
+        },
+        {
+          "id": "frogPrincess/donk",
+          "beat": 1.0
+        },
+        {
+          "id": "frogPrincess/prepare",
+          "beat": 2.0
+        },
+        {
+          "id": "frogPrincess/jump",
+          "beat": 3.0
+        }
       ]
     }
   ]

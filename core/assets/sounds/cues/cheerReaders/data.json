@@ -8,42 +8,42 @@
       "duration": 1,
       "name": "yay!"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThree1",
       "duration": 1,
       "name": "one two three - 1"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThree2",
       "duration": 1,
       "name": "one two three - 2"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThree3",
       "duration": 1,
       "name": "one two three - 3"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThreeS1",
       "duration": 1,
       "name": "one two three - solo - 1"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThreeS2",
       "duration": 1,
       "name": "one two three - solo - 2"
     },
-	{
+    {
       "id": "cheerReaders/oneTwoThreeS3",
       "duration": 1,
       "name": "one two three - solo - 3"
     },
-	{
+    {
       "id": "cheerReaders/itsUpToYou1",
       "duration": 0.75,
       "name": "it's up to you - 1"
     },
-	{
+    {
       "id": "cheerReaders/itsUpToYou2",
       "duration": 0.75,
       "name": "it's up to you - 2"
@@ -53,99 +53,99 @@
       "duration": 0.5,
       "name": "it's up to you - 3"
     },
-	{
+    {
       "id": "cheerReaders/itsUpToYou4",
       "duration": 1,
       "name": "it's up to you - 4"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom1",
       "duration": 0.5,
       "name": "rah rah sis boom ba boom - 1"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom2",
       "duration": 0.5,
       "name": "rah rah sis boom ba boom - 2"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom3",
       "duration": 0.5,
       "name": "rah rah sis boom ba boom - 3"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom4",
       "duration": 0.5,
       "name": "rah rah sis boom ba boom - 4"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom5",
       "duration": 0.5,
       "name": "rah rah sis boom ba boom - 5"
     },
-	{
+    {
       "id": "cheerReaders/rahRahSisBoomBaBoom6",
       "duration": 1.5,
       "name": "rah rah sis boom ba boom - 6"
     },
-	{
+    {
       "id": "cheerReaders/okItsOn1",
       "duration": 1,
       "name": "ok it's on! - 1"
     },
-	{
+    {
       "id": "cheerReaders/okItsOn2",
       "duration": 1,
       "name": "ok it's on! - 2"
     },
-	{
+    {
       "id": "cheerReaders/okItsOn3",
       "duration": 0.000001
     },
-	{
+    {
       "id": "cheerReaders/okItsOn3Loop",
       "duration": 1,
-	  "name": "ok it's on! - 3",
-	  "introSound": "cheerReaders/okItsOn3",
+      "name": "ok it's on! - 3",
+      "introSound": "cheerReaders/okItsOn3",
       "canAlterDuration": false,
       "loops": true
     },
-	{
+    {
       "id": "cheerReaders/okItsOn3LoopL",
       "duration": 4,
-	  "name": "ok it's on! - 3 - long",
-	  "introSound": "cheerReaders/okItsOn3",
+      "name": "ok it's on! - 3 - long",
+      "introSound": "cheerReaders/okItsOn3",
       "canAlterDuration": false,
       "loops": true
     },
-	{
+    {
       "id": "cheerReaders/okItsOn4",
       "duration": 1,
       "name": "ok it's on! - 4"
     },
-	{
+    {
       "id": "cheerReaders/okItsOnS1",
       "duration": 1,
       "name": "ok it's on! - solo - 1"
     },
-	{
+    {
       "id": "cheerReaders/okItsOnS2",
       "duration": 1,
       "name": "ok it's on! - solo - 2"
     },
-	{
+    {
       "id": "cheerReaders/okItsOnS3",
       "duration": 0.000001
     },
-	{
+    {
       "id": "cheerReaders/okItsOnS3Loop",
       "duration": 1,
-	  "name": "ok it's on! - solo - 3",
-	  "introSound": "cheerReaders/okItsOn3",
+      "name": "ok it's on! - solo - 3",
+      "introSound": "cheerReaders/okItsOn3",
       "canAlterDuration": false,
       "loops": true
     },
-	{
+    {
       "id": "cheerReaders/okItsOnS4",
       "duration": 1,
       "name": "ok it's on! - solo - 4"
@@ -156,154 +156,154 @@
       "id": "cheerReaders_oneTwoThree",
       "name": "one two three!",
       "cues": [
-       {
-        "id": "cheerReaders/oneTwoThree1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/oneTwoThree2",
-        "beat": 1
-       },
-	   {
-        "id": "cheerReaders/oneTwoThree3",
-        "beat": 2
-       }
+        {
+          "id": "cheerReaders/oneTwoThree1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/oneTwoThree2",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/oneTwoThree3",
+          "beat": 2
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_oneTwoThreeS",
       "name": "one two three! - solo",
       "cues": [
-       {
-        "id": "cheerReaders/oneTwoThreeS1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/oneTwoThreeS2",
-        "beat": 1
-       },
-	   {
-        "id": "cheerReaders/oneTwoThreeS3",
-        "beat": 2
-       }
+        {
+          "id": "cheerReaders/oneTwoThreeS1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/oneTwoThreeS2",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/oneTwoThreeS3",
+          "beat": 2
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_itsUpToYou",
       "name": "it's up to you!",
       "cues": [
-       {
-        "id": "cheerReaders/itsUpToYou1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/itsUpToYou2",
-        "beat": 0.75
-       },
-	   {
-        "id": "cheerReaders/itsUpToYou3",
-        "beat": 1.5
-       },
-	   {
-        "id": "cheerReaders/itsUpToYou4",
-        "beat": 2
-       }
+        {
+          "id": "cheerReaders/itsUpToYou1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/itsUpToYou2",
+          "beat": 0.75
+        },
+        {
+          "id": "cheerReaders/itsUpToYou3",
+          "beat": 1.5
+        },
+        {
+          "id": "cheerReaders/itsUpToYou4",
+          "beat": 2
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_rahRahSisBoomBaBoom",
       "name": "rah rah sis boom ba boom!",
       "cues": [
-       {
-        "id": "cheerReaders/rahRahSisBoomBaBoom1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/rahRahSisBoomBaBoom2",
-        "beat": 0.5
-       },
-	   {
-        "id": "cheerReaders/rahRahSisBoomBaBoom3",
-        "beat": 1
-       },
-	   {
-        "id": "cheerReaders/rahRahSisBoomBaBoom4",
-        "beat": 1.5
-       },
-	   {
-        "id": "cheerReaders/rahRahSisBoomBaBoom5",
-        "beat": 2
-       },
-	   {
-        "id": "cheerReaders/rahRahSisBoomBaBoom6",
-        "beat": 2.5
-       }
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom2",
+          "beat": 0.5
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom3",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom4",
+          "beat": 1.5
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom5",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom6",
+          "beat": 2.5
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_okItsOn",
       "name": "ok it's on!",
       "cues": [
-       {
-        "id": "cheerReaders/okItsOn1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/okItsOn2",
-        "beat": 1
-       },
-	   {
-        "id": "cheerReaders/okItsOn3Loop",
-        "beat": 2
-       },
-	   {
-        "id": "cheerReaders/okItsOn4",
-        "beat": 3
-       }
+        {
+          "id": "cheerReaders/okItsOn1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/okItsOn2",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/okItsOn3Loop",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/okItsOn4",
+          "beat": 3
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_okItsOnS",
       "name": "ok it's on! - solo",
       "cues": [
-       {
-        "id": "cheerReaders/okItsOnS1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/okItsOnS2",
-        "beat": 1
-       },
-	   {
-        "id": "cheerReaders/okItsOnS3Loop",
-        "beat": 2
-       },
-	   {
-        "id": "cheerReaders/okItsOnS4",
-        "beat": 3
-       }
+        {
+          "id": "cheerReaders/okItsOnS1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/okItsOnS2",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/okItsOnS3Loop",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/okItsOnS4",
+          "beat": 3
+        }
       ]
     },
-	{
+    {
       "id": "cheerReaders_okItsOnLong",
       "name": "ok it's on! - long",
       "cues": [
-       {
-        "id": "cheerReaders/okItsOn1",
-        "beat": 0
-       },
-       {
-        "id": "cheerReaders/okItsOn2",
-        "beat": 4
-       },
-	   {
-        "id": "cheerReaders/okItsOn3LoopL",
-        "beat": 8
-       },
-	   {
-        "id": "cheerReaders/okItsOn4",
-        "beat": 12
-       }
+        {
+          "id": "cheerReaders/okItsOn1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/okItsOn2",
+          "beat": 4
+        },
+        {
+          "id": "cheerReaders/okItsOn3LoopL",
+          "beat": 8
+        },
+        {
+          "id": "cheerReaders/okItsOn4",
+          "beat": 12
+        }
       ]
     }
   ]

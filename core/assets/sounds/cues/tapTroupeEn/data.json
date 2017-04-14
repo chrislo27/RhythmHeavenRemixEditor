@@ -125,7 +125,9 @@
   "patterns": [
     {
       "id": "tapTroupeEn_step",
-      "deprecatedIDs": ["tapTroupe_step"],
+      "deprecatedIDs": [
+        "tapTroupe_step"
+      ],
       "name": "step",
       "cues": [
         {
@@ -148,7 +150,9 @@
     },
     {
       "id": "tapTroupeEn_tap0bom",
-      "deprecatedIDs": ["tapTroupe_tap0bom"],
+      "deprecatedIDs": [
+        "tapTroupe_tap0bom"
+      ],
       "name": "tap - 0 boms",
       "cues": [
         {
@@ -179,7 +183,9 @@
     },
     {
       "id": "tapTroupeEn_tap3boms",
-      "deprecatedIDs": ["tapTroupe_tap3boms"],
+      "deprecatedIDs": [
+        "tapTroupe_tap3boms"
+      ],
       "name": "tap - 3 boms",
       "cues": [
         {
@@ -222,7 +228,9 @@
     },
     {
       "id": "tapTroupeEn_tap8boms",
-      "deprecatedIDs": ["tapTroupe_tap8boms"],
+      "deprecatedIDs": [
+        "tapTroupe_tap8boms"
+      ],
       "name": "tap - 8 boms",
       "cues": [
         {

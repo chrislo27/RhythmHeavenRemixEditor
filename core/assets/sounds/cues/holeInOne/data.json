@@ -33,17 +33,17 @@
       "duration": 1.0,
       "name": "mandrill - 1"
     },
-	{
+    {
       "id": "holeInOne/mandrill2",
       "duration": 1.0,
       "name": "mandrill - 2"
     },
-	{
+    {
       "id": "holeInOne/mandrill3",
       "duration": 1.0,
       "name": "mandrill - 3"
     },
-	{
+    {
       "id": "holeInOne/mandrill4",
       "duration": 2.0,
       "name": "mandrill - 4"
@@ -54,72 +54,72 @@
       "id": "holeInOne_monkey",
       "name": "monkey",
       "cues": [
-       {
-        "id": "holeInOne/monkey1",
-        "beat": 0.0
-       },
-       {
-        "id": "holeInOne/monkey2",
-        "beat": 1.0
-       },
-	   {
-        "id": "holeInOne/monkey3",
-        "beat": 2.0
-       }
+        {
+          "id": "holeInOne/monkey1",
+          "beat": 0.0
+        },
+        {
+          "id": "holeInOne/monkey2",
+          "beat": 1.0
+        },
+        {
+          "id": "holeInOne/monkey3",
+          "beat": 2.0
+        }
       ]
     },
     {
       "id": "holeInOne_mandrill",
       "name": "mandrill",
       "cues": [
-       {
-        "id": "holeInOne/mandrill1",
-        "beat": 0.0
-       },
-       {
-        "id": "holeInOne/mandrill2",
-        "beat": 1.0
-       },
-	   {
-        "id": "holeInOne/mandrill3",
-        "beat": 2.0
-       },
-	   {
-        "id": "holeInOne/mandrill4",
-        "beat": 3.0
-       }
+        {
+          "id": "holeInOne/mandrill1",
+          "beat": 0.0
+        },
+        {
+          "id": "holeInOne/mandrill2",
+          "beat": 1.0
+        },
+        {
+          "id": "holeInOne/mandrill3",
+          "beat": 2.0
+        },
+        {
+          "id": "holeInOne/mandrill4",
+          "beat": 3.0
+        }
       ]
     },
-	{
+    {
       "id": "holeInOne_monkeyShort",
       "name": "monkey - short",
       "cues": [
-       {
-        "id": "holeInOne/monkey2",
-        "beat": 0.0
-       },
-       {
-        "id": "holeInOne/monkey3",
-        "beat": 1.0
-       }
+        {
+          "id": "holeInOne/monkey2",
+          "beat": 0.0
+        },
+        {
+          "id": "holeInOne/monkey3",
+          "beat": 1.0
+        }
       ]
     },
-	{
+    {
       "id": "holeInOne_mandrillShort",
       "name": "mandrill - short",
       "cues": [
-       {
-        "id": "holeInOne/mandrill2",
-        "beat": 0.0
-       },
-       {
-        "id": "holeInOne/mandrill3",
-        "beat": 1.0
-       },
-	   {
-        "id": "holeInOne/mandrill4",
-        "beat": 2.0
-       }
+        {
+          "id": "holeInOne/mandrill2",
+          "beat": 0.0
+        },
+        {
+          "id": "holeInOne/mandrill3",
+          "beat": 1.0
+        },
+        {
+          "id": "holeInOne/mandrill4",
+          "beat": 2.0
+        }
       ]
     }
   ]

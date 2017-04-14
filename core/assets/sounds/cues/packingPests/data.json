@@ -40,7 +40,9 @@
     },
     {
       "id": "packingPests/dingHm",
-      "deprecatedIDs": ["packingPests/dingcandy"],
+      "deprecatedIDs": [
+        "packingPests/dingcandy"
+      ],
       "duration": 0.5,
       "name": "ding - hm"
     }

@@ -100,165 +100,165 @@
       "id": "frogHop_shake",
       "name": "shake",
       "cues": [
-       {
-        "id": "frogHop/shake",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 1.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 3.0
-       }
+        {
+          "id": "frogHop/shake",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 1.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 2.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "frogHop_yahoo",
       "name": "yahoo",
       "cues": [
-       {
-        "id": "frogHop/yahoo1",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 0.0,
-        "track": 1
-       },
-       {
-        "id": "frogHop/yahoo2",
-        "beat": 0.5
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 1.0,
-        "track": 1
-       },
-       {
-        "id": "frogHop/yahoo3",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/yahoo4",
-        "beat": 2.5
-       }
+        {
+          "id": "frogHop/yahoo1",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "frogHop/yahoo2",
+          "beat": 0.5
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 1.0,
+          "track": 1
+        },
+        {
+          "id": "frogHop/yahoo3",
+          "beat": 2.0
+        },
+        {
+          "id": "frogHop/yahoo4",
+          "beat": 2.5
+        }
       ]
     },
     {
       "id": "frogHop_yeahyeahyeah",
       "name": "yeah yeah yeah",
       "cues": [
-       {
-        "id": "frogHop/yeah1",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 0.0,
-        "track": 1
-       },
-       {
-        "id": "frogHop/yeah1",
-        "beat": 0.5
-       },
-       {
-        "id": "frogHop/yeah1",
-        "beat": 1.0
-       },
         {
-        "id": "frogHop/shake",
-        "beat": 1.0,
-        "track": 1
-       },
-       {
-        "id": "frogHop/yeah2",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/yeah2",
-        "beat": 2.5
-       },
-       {
-        "id": "frogHop/yeah2",
-        "beat": 3.0
-       }
+          "id": "frogHop/yeah1",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "frogHop/yeah1",
+          "beat": 0.5
+        },
+        {
+          "id": "frogHop/yeah1",
+          "beat": 1.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 1.0,
+          "track": 1
+        },
+        {
+          "id": "frogHop/yeah2",
+          "beat": 2.0
+        },
+        {
+          "id": "frogHop/yeah2",
+          "beat": 2.5
+        },
+        {
+          "id": "frogHop/yeah2",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "frogHop_spinitboys",
       "name": "spin it boys",
       "cues": [
-       {
-        "id": "frogHop/spinitboys1",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/shake",
-        "beat": 0.0,
-        "track": 1
-       },
-       {
-        "id": "frogHop/spinitboys2",
-        "beat": 0.5
-       },
-       {
-        "id": "frogHop/spinitboys3",
-        "beat": 1.0
-       },
-       {
-        "id": "frogHop/spinitboys4",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/spinitboys5",
-        "beat": 2.5
-       },
-       {
-        "id": "frogHop/spinitboys6",
-        "beat": 3.0
-       }
+        {
+          "id": "frogHop/spinitboys1",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/shake",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "frogHop/spinitboys2",
+          "beat": 0.5
+        },
+        {
+          "id": "frogHop/spinitboys3",
+          "beat": 1.0
+        },
+        {
+          "id": "frogHop/spinitboys4",
+          "beat": 2.0
+        },
+        {
+          "id": "frogHop/spinitboys5",
+          "beat": 2.5
+        },
+        {
+          "id": "frogHop/spinitboys6",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "frogHop_2BeatCountIn",
       "name": "2-beat count-in",
       "cues": [
-       {
-        "id": "frogHop/three",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/four",
-        "beat": 1.0
-       }
+        {
+          "id": "frogHop/three",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/four",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "frogHop_4BeatCountIn",
       "name": "4-beat count-in",
       "cues": [
-       {
-        "id": "frogHop/one",
-        "beat": 0.0
-       },
-       {
-        "id": "frogHop/two",
-        "beat": 1.0
-       },
-       {
-        "id": "frogHop/three",
-        "beat": 2.0
-       },
-       {
-        "id": "frogHop/four",
-        "beat": 3.0
-       }
+        {
+          "id": "frogHop/one",
+          "beat": 0.0
+        },
+        {
+          "id": "frogHop/two",
+          "beat": 1.0
+        },
+        {
+          "id": "frogHop/three",
+          "beat": 2.0
+        },
+        {
+          "id": "frogHop/four",
+          "beat": 3.0
+        }
       ]
     }
   ]

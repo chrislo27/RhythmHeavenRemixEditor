@@ -59,90 +59,90 @@
       "id": "tapTrial_tap",
       "name": "tap",
       "cues": [
-       {
-        "id": "tapTrial/ook",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrial/ook",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "tapTrial_doubletap",
       "name": "double tap",
       "cues": [
-       {
-        "id": "tapTrial/ookook1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrial/ookook2",
-        "beat": 0.5
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 1.0
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 1.5
-       }
+        {
+          "id": "tapTrial/ookook1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrial/ookook2",
+          "beat": 0.5
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 1.0
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 1.5
+        }
       ]
     },
     {
       "id": "tapTrial_tripletap",
       "name": "triple tap",
       "cues": [
-       {
-        "id": "tapTrial/ooki1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrial/ooki2",
-        "beat": 0.5
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 2.0
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 2.5
-       },
-       {
-        "id": "tapTrial/tap",
-        "beat": 3.0
-       }
+        {
+          "id": "tapTrial/ooki1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrial/ooki2",
+          "beat": 0.5
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 2.0
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 2.5
+        },
+        {
+          "id": "tapTrial/tap",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "tapTrial_jumptap",
       "name": "jump tap",
       "cues": [
-       {
-        "id": "tapTrial/jumptap1",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrial/jumptap1_tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrial/jumptap1",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrial/jumptap1_tap",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "tapTrial_finaljumptap",
       "name": "final jump tap",
       "cues": [
-       {
-        "id": "tapTrial/jumptap2",
-        "beat": 0.0
-       },
-       {
-        "id": "tapTrial/jumptap2_tap",
-        "beat": 1.0
-       }
+        {
+          "id": "tapTrial/jumptap2",
+          "beat": 0.0
+        },
+        {
+          "id": "tapTrial/jumptap2_tap",
+          "beat": 1.0
+        }
       ]
     }
   ]

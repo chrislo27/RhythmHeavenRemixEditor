@@ -31,7 +31,9 @@
     },
     {
       "id": "airboarderEn/glow",
-      "deprecatedIDs": ["airboarder/glow"],
+      "deprecatedIDs": [
+        "airboarder/glow"
+      ],
       "duration": 1,
       "name": "glow"
     },
@@ -84,7 +86,9 @@
     },
     {
       "id": "airboarderEn_chargeCrouch",
-      "deprecatedIDs": ["airboarder_chargeCrouch"],
+      "deprecatedIDs": [
+        "airboarder_chargeCrouch"
+      ],
       "name": "charge crouch",
       "cues": [
         {

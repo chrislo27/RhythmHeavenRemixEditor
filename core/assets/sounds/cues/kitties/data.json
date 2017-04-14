@@ -28,160 +28,160 @@
       "duration": 0.5,
       "name": "clap - 2"
     },
-	{
-	  "id": "kitties/fish1",
-	  "duration": 0.33333,
-	  "name": "fish - 1"
-	},
-	{
-	  "id": "kitties/fish2",
-	  "duration": 0.16666,
-	  "name": "fish - 2"
-	},
-	{
-	  "id": "kitties/fish3",
-	  "duration": 0.33333,
-	  "name": "fish - 3"
-	},
-	{
-	  "id": "kitties/fish4",
-	  "duration": 1.16666,
-	  "name": "fish - 4"
-	},
-	{
-	  "id": "kitties/roll1",
-	  "duration": 0.5,
-	  "name": "roll - 1"
-	},
-	{
-	  "id": "kitties/roll2",
-	  "duration": 0.5,
-	  "name": "roll - 2"
-	},
-	{
-	  "id": "kitties/roll3",
-	  "duration": 0.5,
-	  "name": "roll - 3"
-	},
-	{
-	  "id": "kitties/roll4",
-	  "duration": 0.5,
-	  "name": "roll - 4"
-	},
-	{
-	  "id": "kitties/roll5",
-	  "duration": 0.83333,
-	  "name": "roll - 5"
-	},
-	{
-	  "id": "kitties/roll6",
-	  "duration": 0.66666,
-	  "name": "roll - 6"
-	}
+    {
+      "id": "kitties/fish1",
+      "duration": 0.33333,
+      "name": "fish - 1"
+    },
+    {
+      "id": "kitties/fish2",
+      "duration": 0.16666,
+      "name": "fish - 2"
+    },
+    {
+      "id": "kitties/fish3",
+      "duration": 0.33333,
+      "name": "fish - 3"
+    },
+    {
+      "id": "kitties/fish4",
+      "duration": 1.16666,
+      "name": "fish - 4"
+    },
+    {
+      "id": "kitties/roll1",
+      "duration": 0.5,
+      "name": "roll - 1"
+    },
+    {
+      "id": "kitties/roll2",
+      "duration": 0.5,
+      "name": "roll - 2"
+    },
+    {
+      "id": "kitties/roll3",
+      "duration": 0.5,
+      "name": "roll - 3"
+    },
+    {
+      "id": "kitties/roll4",
+      "duration": 0.5,
+      "name": "roll - 4"
+    },
+    {
+      "id": "kitties/roll5",
+      "duration": 0.83333,
+      "name": "roll - 5"
+    },
+    {
+      "id": "kitties/roll6",
+      "duration": 0.66666,
+      "name": "roll - 6"
+    }
   ],
   "patterns": [
     {
       "id": "kitties_clapclap",
       "name": "clap clap",
       "cues": [
-       {
-        "id": "kitties/nya1",
-        "beat": 0.0
-       },
-       {
-        "id": "kitties/nya2",
-        "beat": 0.75
-       },
-	   {
-        "id": "kitties/nya3",
-        "beat": 1.5
-       },
-       {
-        "id": "kitties/clap1",
-        "beat": 2.5
-       },
-	   {
-        "id": "kitties/clap2",
-        "beat": 3.0
-       }
+        {
+          "id": "kitties/nya1",
+          "beat": 0.0
+        },
+        {
+          "id": "kitties/nya2",
+          "beat": 0.75
+        },
+        {
+          "id": "kitties/nya3",
+          "beat": 1.5
+        },
+        {
+          "id": "kitties/clap1",
+          "beat": 2.5
+        },
+        {
+          "id": "kitties/clap2",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "kitties_clapClapSwing",
       "name": "clap clap - swing",
       "cues": [
-       {
-        "id": "kitties/nya1",
-        "beat": 0.0
-       },
-       {
-        "id": "kitties/nya2",
-        "beat": 0.83333
-       },
-	   {
-        "id": "kitties/nya3",
-        "beat": 1.5
-       },
-       {
-        "id": "kitties/clap1",
-        "beat": 2.5
-       },
-	   {
-        "id": "kitties/clap2",
-        "beat": 3.0
-       }
+        {
+          "id": "kitties/nya1",
+          "beat": 0.0
+        },
+        {
+          "id": "kitties/nya2",
+          "beat": 0.83333
+        },
+        {
+          "id": "kitties/nya3",
+          "beat": 1.5
+        },
+        {
+          "id": "kitties/clap1",
+          "beat": 2.5
+        },
+        {
+          "id": "kitties/clap2",
+          "beat": 3.0
+        }
       ]
     },
-	{
+    {
       "id": "kitties_roll",
       "name": "roll",
       "cues": [
-       {
-        "id": "kitties/roll1",
-        "beat": 0.0
-       },
-       {
-        "id": "kitties/roll2",
-        "beat": 0.5
-       },
-	   {
-        "id": "kitties/roll3",
-        "beat": 1.0
-       },
-       {
-        "id": "kitties/roll4",
-        "beat": 1.5
-       },
-	   {
-        "id": "kitties/roll5",
-        "beat": 2.0
-       },
-	   {
-        "id": "kitties/roll6",
-        "beat": 2.83333
-       }
+        {
+          "id": "kitties/roll1",
+          "beat": 0.0
+        },
+        {
+          "id": "kitties/roll2",
+          "beat": 0.5
+        },
+        {
+          "id": "kitties/roll3",
+          "beat": 1.0
+        },
+        {
+          "id": "kitties/roll4",
+          "beat": 1.5
+        },
+        {
+          "id": "kitties/roll5",
+          "beat": 2.0
+        },
+        {
+          "id": "kitties/roll6",
+          "beat": 2.83333
+        }
       ]
     },
-	{
+    {
       "id": "kitties_fish",
       "name": "fish",
       "cues": [
-       {
-        "id": "kitties/fish1",
-        "beat": 0.0
-       },
-       {
-        "id": "kitties/fish2",
-        "beat": 0.33333
-       },
-	   {
-        "id": "kitties/fish3",
-        "beat": 0.5
-       },
-       {
-        "id": "kitties/fish4",
-        "beat": 0.83333
-       }
+        {
+          "id": "kitties/fish1",
+          "beat": 0.0
+        },
+        {
+          "id": "kitties/fish2",
+          "beat": 0.33333
+        },
+        {
+          "id": "kitties/fish3",
+          "beat": 0.5
+        },
+        {
+          "id": "kitties/fish4",
+          "beat": 0.83333
+        }
       ]
     }
   ]

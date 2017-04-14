@@ -44,84 +44,84 @@
       "id": "samuraiSliceGba_weakSlice",
       "name": "weak slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/sliceLow",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceLow",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "samuraiSliceGba_mediumSlice",
       "name": "medium slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/sliceMiddle",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceMiddle",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "samuraiSliceGba_strongSlice",
       "name": "strong slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/sliceHigh",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceHigh",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "samuraiSliceGba_bigWeakSlice",
       "name": "big demon weak slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/bigSliceLow",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/bigSliceLow",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "samuraiSliceGba_bigMediumSlice",
       "name": "big demon medium slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/bigSliceMiddle",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/bigSliceMiddle",
+          "beat": 1.0
+        }
       ]
     },
     {
       "id": "samuraiSliceGba_bigStrongSlice",
       "name": "big demon strong slice",
       "cues": [
-       {
-        "id": "samuraiSliceGba/jump",
-        "beat": 0.0
-       },
-       {
-        "id": "samuraiSliceGba/bigSliceHigh",
-        "beat": 1.0
-       }
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/bigSliceHigh",
+          "beat": 1.0
+        }
       ]
     }
   ]

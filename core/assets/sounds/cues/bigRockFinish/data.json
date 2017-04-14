@@ -71,134 +71,134 @@
       "id": "bigRockFinish_countIn8",
       "name": "count in - 8 beats",
       "cues": [
-       {
-        "id": "bigRockFinish/one",
-        "beat": 0.0
-       },
-       {
-        "id": "bigRockFinish/two",
-        "beat": 2.0
-       },
-       {
-        "id": "bigRockFinish/one",
-        "beat": 4.0
-       },
-       {
-        "id": "bigRockFinish/two",
-        "beat": 5.0
-       },
-       {
-        "id": "bigRockFinish/three",
-        "beat": 6.0
-       },
-       {
-        "id": "bigRockFinish/ooh",
-        "beat": 7.0
-       }
+        {
+          "id": "bigRockFinish/one",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinish/two",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinish/one",
+          "beat": 4.0
+        },
+        {
+          "id": "bigRockFinish/two",
+          "beat": 5.0
+        },
+        {
+          "id": "bigRockFinish/three",
+          "beat": 6.0
+        },
+        {
+          "id": "bigRockFinish/ooh",
+          "beat": 7.0
+        }
       ]
     },
     {
       "id": "bigRockFinish_countIn8Fast",
       "name": "count in - 8 beats - fast",
       "cues": [
-       {
-        "id": "bigRockFinish/oneFast",
-        "beat": 0.0
-       },
-       {
-        "id": "bigRockFinish/twoFast",
-        "beat": 2.0
-       },
-	   {
-        "id": "bigRockFinish/oneFast",
-        "beat": 4.0
-       },
-       {
-        "id": "bigRockFinish/twoFast",
-        "beat": 5.0
-       },
-       {
-        "id": "bigRockFinish/threeFast",
-        "beat": 6.0
-       },
-       {
-        "id": "bigRockFinish/comeOn1",
-        "beat": 7.0
-       },
-       {
-        "id": "bigRockFinish/comeOn2",
-        "beat": 7.5
-       }
+        {
+          "id": "bigRockFinish/oneFast",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinish/twoFast",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinish/oneFast",
+          "beat": 4.0
+        },
+        {
+          "id": "bigRockFinish/twoFast",
+          "beat": 5.0
+        },
+        {
+          "id": "bigRockFinish/threeFast",
+          "beat": 6.0
+        },
+        {
+          "id": "bigRockFinish/comeOn1",
+          "beat": 7.0
+        },
+        {
+          "id": "bigRockFinish/comeOn2",
+          "beat": 7.5
+        }
       ]
     },
     {
       "id": "bigRockFinish_countIn4",
       "name": "count in - 4 beats",
       "cues": [
-       {
-        "id": "bigRockFinish/one",
-        "beat": 0.0
-       },
-       {
-        "id": "bigRockFinish/two",
-        "beat": 1.0
-       },
-       {
-        "id": "bigRockFinish/three",
-        "beat": 2.0
-       },
-       {
-        "id": "bigRockFinish/ooh",
-        "beat": 3.0
-       }
+        {
+          "id": "bigRockFinish/one",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinish/two",
+          "beat": 1.0
+        },
+        {
+          "id": "bigRockFinish/three",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinish/ooh",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "bigRockFinish_countIn4Fast",
       "name": "count in - 4 beats - fast",
       "cues": [
-       {
-        "id": "bigRockFinish/oneFast",
-        "beat": 0.0
-       },
-       {
-        "id": "bigRockFinish/twoFast",
-        "beat": 1.0
-       },
-       {
-        "id": "bigRockFinish/threeFast",
-        "beat": 2.0
-       },
-       {
-        "id": "bigRockFinish/comeOn1",
-        "beat": 3.0
-       },
-       {
-        "id": "bigRockFinish/comeOn2",
-        "beat": 3.5
-       }
+        {
+          "id": "bigRockFinish/oneFast",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinish/twoFast",
+          "beat": 1.0
+        },
+        {
+          "id": "bigRockFinish/threeFast",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinish/comeOn1",
+          "beat": 3.0
+        },
+        {
+          "id": "bigRockFinish/comeOn2",
+          "beat": 3.5
+        }
       ]
     },
     {
       "id": "bigRockFinish_strum",
       "name": "strum",
       "cues": [
-       {
-        "id": "bigRockFinish/strum",
-        "beat": 0.0
-       },
-       {
-        "id": "bigRockFinish/strum",
-        "beat": 1.5
-       },
-       {
-        "id": "bigRockFinish/strum",
-        "beat": 3.0
-       },
-       {
-        "id": "bigRockFinish/strumFinal",
-        "beat": 4.0
-       }
+        {
+          "id": "bigRockFinish/strum",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinish/strum",
+          "beat": 1.5
+        },
+        {
+          "id": "bigRockFinish/strum",
+          "beat": 3.0
+        },
+        {
+          "id": "bigRockFinish/strumFinal",
+          "beat": 4.0
+        }
       ]
     }
   ]

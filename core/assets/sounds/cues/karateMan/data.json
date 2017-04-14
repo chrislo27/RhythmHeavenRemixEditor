@@ -118,7 +118,7 @@
           "id": "karateMan/pothit",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_offbeatpot",
@@ -132,7 +132,7 @@
           "id": "karateMan/pothit",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_soccer ball",
@@ -146,7 +146,7 @@
           "id": "karateMan/soccerHit",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_roaster",
@@ -160,7 +160,7 @@
           "id": "karateMan/KarateRoaster",
           "beat": 1
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_hit3",
@@ -200,7 +200,7 @@
           "id": "karateMan/rock",
           "beat": 4.5
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_hit4",
@@ -250,7 +250,7 @@
           "id": "karateMan/rock",
           "beat": 5.5
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_kick",
@@ -276,7 +276,7 @@
           "id": "karateMan/punchkick2",
           "beat": 3.75
         }
-        ]
+      ]
     },
     {
       "id": "karateMan_combo",
@@ -318,7 +318,7 @@
           "id": "karateMan/pow",
           "beat": 4.5
         }
-        ]
+      ]
     }
-    ]
+  ]
 }

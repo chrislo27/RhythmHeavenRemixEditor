@@ -33,32 +33,32 @@
       "duration": 1.0,
       "name": "pausegill - 3"
     },
-	{
+    {
       "id": "catchOfTheDay/pausegill4",
       "duration": 1.5,
       "name": "pausegill - 4"
     },
-	{
+    {
       "id": "catchOfTheDay/threefish1",
       "duration": 0.25,
       "name": "threefish - 1"
     },
-	{
+    {
       "id": "catchOfTheDay/threefish2",
       "duration": 0.25,
       "name": "threefish - 2"
     },
-	{
+    {
       "id": "catchOfTheDay/threefish3",
       "duration": 0.5,
       "name": "threefish - 3"
     },
-	{
+    {
       "id": "catchOfTheDay/threefish4",
       "duration": 1.0,
       "name": "threefish - 4"
     },
-	{
+    {
       "id": "catchOfTheDay/threefish5",
       "duration": 1.5,
       "name": "threefish - 5"
@@ -69,66 +69,66 @@
       "id": "catchOfTheDay_quicknibble",
       "name": "quicknibble",
       "cues": [
-       {
-        "id": "catchOfTheDay/quick1",
-        "beat": 0.0
-       },
-	   {
-        "id": "catchOfTheDay/quick2",
-        "beat": 1.0
-       },
-       {
-        "id": "catchOfTheDay/quick3",
-        "beat": 2.0
-       }
+        {
+          "id": "catchOfTheDay/quick1",
+          "beat": 0.0
+        },
+        {
+          "id": "catchOfTheDay/quick2",
+          "beat": 1.0
+        },
+        {
+          "id": "catchOfTheDay/quick3",
+          "beat": 2.0
+        }
       ]
     },
     {
       "id": "catchOfTheDay_pausegill",
       "name": "pausegill",
       "cues": [
-       {
-        "id": "catchOfTheDay/pausegill1",
-        "beat": 0.0
-       },
-	   {
-        "id": "catchOfTheDay/pausegill2",
-        "beat": 0.5
-       },
-	   {
-        "id": "catchOfTheDay/pausegill3",
-        "beat": 1.0
-       },
-       {
-        "id": "catchOfTheDay/pausegill4",
-        "beat": 3.0
-       }
+        {
+          "id": "catchOfTheDay/pausegill1",
+          "beat": 0.0
+        },
+        {
+          "id": "catchOfTheDay/pausegill2",
+          "beat": 0.5
+        },
+        {
+          "id": "catchOfTheDay/pausegill3",
+          "beat": 1.0
+        },
+        {
+          "id": "catchOfTheDay/pausegill4",
+          "beat": 3.0
+        }
       ]
     },
-	{
+    {
       "id": "catchOfTheDay_threefish",
       "name": "threefish",
       "cues": [
-       {
-        "id": "catchOfTheDay/threefish1",
-        "beat": 0.0
-       },
-	   {
-        "id": "catchOfTheDay/threefish2",
-        "beat": 0.25
-       },
-	   {
-        "id": "catchOfTheDay/threefish3",
-        "beat": 0.5
-       },
-	   {
-        "id": "catchOfTheDay/threefish4",
-        "beat": 1.0
-       },
-       {
-        "id": "catchOfTheDay/threefish5",
-        "beat": 4.5
-       }
+        {
+          "id": "catchOfTheDay/threefish1",
+          "beat": 0.0
+        },
+        {
+          "id": "catchOfTheDay/threefish2",
+          "beat": 0.25
+        },
+        {
+          "id": "catchOfTheDay/threefish3",
+          "beat": 0.5
+        },
+        {
+          "id": "catchOfTheDay/threefish4",
+          "beat": 1.0
+        },
+        {
+          "id": "catchOfTheDay/threefish5",
+          "beat": 4.5
+        }
       ]
     }
   ]

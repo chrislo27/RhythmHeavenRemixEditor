@@ -29,36 +29,36 @@
       "id": "exhibitionMatch_pitch",
       "name": "pitch",
       "cues": [
-       {
-        "id": "exhibitionMatch/stance",
-        "beat": 0.0
-       },
-       {
-        "id": "exhibitionMatch/throw",
-        "beat": 2.0
-       },
-       {
-        "id": "exhibitionMatch/hit",
-        "beat": 6.0
-       }
+        {
+          "id": "exhibitionMatch/stance",
+          "beat": 0.0
+        },
+        {
+          "id": "exhibitionMatch/throw",
+          "beat": 2.0
+        },
+        {
+          "id": "exhibitionMatch/hit",
+          "beat": 6.0
+        }
       ]
     },
     {
       "id": "exhibitionMatch_homerun",
       "name": "home run",
       "cues": [
-       {
-        "id": "exhibitionMatch/stance",
-        "beat": 0.0
-       },
-       {
-        "id": "exhibitionMatch/throw",
-        "beat": 2.0
-       },
-       {
-        "id": "exhibitionMatch/hitHomerun",
-        "beat": 6.0
-       }
+        {
+          "id": "exhibitionMatch/stance",
+          "beat": 0.0
+        },
+        {
+          "id": "exhibitionMatch/throw",
+          "beat": 2.0
+        },
+        {
+          "id": "exhibitionMatch/hitHomerun",
+          "beat": 6.0
+        }
       ]
     }
   ]
