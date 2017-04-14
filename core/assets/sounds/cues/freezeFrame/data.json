@@ -30,12 +30,12 @@
     },
     {
       "id": "freezeFrame/smallCarZoom",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "small car zoom"
     },
     {
       "id": "freezeFrame/smallCarClick",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "small car click"
     }
   ],
@@ -78,7 +78,7 @@
        {
         "id": "freezeFrame/smallCarZoom",
         "beat": 0.5,
-	"track": 1
+	"track": 0
        },
        {
         "id": "freezeFrame/smallCarClick",
@@ -93,7 +93,7 @@
        {
         "id": "freezeFrame/smallCarClick",
         "beat": 2.5,
-	"track": 1
+	"track": 0
        },
        {
         "id": "freezeFrame/success",
@@ -114,7 +114,7 @@
        {
         "id": "freezeFrame/smallCarZoom",
         "beat": 0.5,
-	"track": 1
+	"track": 0
        },
        {
         "id": "freezeFrame/smallCarClick",
@@ -124,7 +124,7 @@
        {
         "id": "freezeFrame/smallCarClick",
         "beat": 2.5,
-	"track": 1
+	"track": 0
        },
        {
         "id": "freezeFrame/success",
