@@ -209,8 +209,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			addBundle(l, onlyLoadGlyphs = index == 0)
 		}
 
-
-
 		Localization.instance().loadFromSettings(preferences)
 
 		super.create()
