@@ -15,7 +15,6 @@ class DefAssetLoader : IAssetLoader {
 		manager.load(AssetMap.add("icon_selector_fever", "images/selector/fever.png"), Texture::class.java)
 		manager.load(AssetMap.add("icon_selector_tengoku", "images/selector/tengoku.png"), Texture::class.java)
 		manager.load(AssetMap.add("icon_selector_ds", "images/selector/ds.png"), Texture::class.java)
-		manager.load(AssetMap.add("inspectionIcon", "images/inspection.png"), Texture::class.java)
 
 		for (t in Editor.Tool.values()) {
 			manager.load(AssetMap.add("tool_icon_" + t.name, "images/tool/" + t.name + ".png"), Texture::class.java)
