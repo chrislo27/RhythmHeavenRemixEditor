@@ -51,13 +51,13 @@
         },
         {
           "id": "freezeFrame/beginningSignal1",
-          "beat": 1.0,
-  "track": 0
+        "beat": 1.0,
+	"track": 0
         },
         {
           "id": "freezeFrame/beginningSignal2",
-          "beat": 2.0,
-  "track": 0
+        "beat": 2.0,
+	"track": 0
         }
       ]
     },
