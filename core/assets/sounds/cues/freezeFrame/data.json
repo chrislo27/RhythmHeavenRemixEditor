@@ -45,17 +45,17 @@
       "name": "race start",
       "cues": [
         {
-          "id": "freezeFrame/beginningSignal1",
+        "id": "freezeFrame/beginningSignal1",
         "beat": 0.0,
 	"track": 0
         },
         {
-          "id": "freezeFrame/beginningSignal1",
+        "id": "freezeFrame/beginningSignal1",
         "beat": 1.0,
 	"track": 0
         },
         {
-          "id": "freezeFrame/beginningSignal2",
+        "id": "freezeFrame/beginningSignal2",
         "beat": 2.0,
 	"track": 0
         }
