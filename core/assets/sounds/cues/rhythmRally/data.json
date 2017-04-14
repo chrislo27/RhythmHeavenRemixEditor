@@ -186,15 +186,15 @@
         "beat": 7.5
        },
        {
-        "id": "rhythmRally/tonk",
+        "id": "rhythmRally/hit1",
         "beat": 8.0
        },
        {
-        "id": "rhythmRally/tink",
+        "id": "rhythmRally/hit2",
         "beat": 8.5
        },
        {
-        "id": "rhythmRally/hit1",
+        "id": "rhythmRally/hit3",
         "beat": 9.0
        },
        {
@@ -202,7 +202,7 @@
         "beat": 9.5
        },
        {
-        "id": "rhythmRally/hit3",
+        "id": "rhythmRally/hit1",
         "beat": 10.0
        },
        {
@@ -210,7 +210,7 @@
         "beat": 10.5
        },
        {
-        "id": "rhythmRally/hit1",
+        "id": "rhythmRally/hit3",
         "beat": 11.0
        },
        {
