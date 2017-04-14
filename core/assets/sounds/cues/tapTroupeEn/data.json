@@ -90,6 +90,36 @@
       ],
       "duration": 1,
       "name": "tap - 3"
+    },
+    {
+      "id": "tapTroupeEn/okay1a",
+      "duration": 0.5,
+      "name": "okay 1 - o"
+    },
+    {
+      "id": "tapTroupeEn/okay1b",
+      "duration": 1.5,
+      "name": "okay 1 - kay"
+    },
+    {
+      "id": "tapTroupeEn/okay2a",
+      "duration": 0.5,
+      "name": "okay 2 - o"
+    },
+    {
+      "id": "tapTroupeEn/okay2b",
+      "duration": 1.5,
+      "name": "okay 2 - kay"
+    },
+    {
+      "id": "tapTroupeEn/okay3a",
+      "duration": 0.5,
+      "name": "okay 3 - o"
+    },
+    {
+      "id": "tapTroupeEn/okay3b",
+      "duration": 1.5,
+      "name": "okay 3 - kay"
     }
   ],
   "patterns": [
@@ -250,6 +280,48 @@
         {
           "id": "tapTroupeEn/taptaptap3",
           "beat": 10
+        }
+      ]
+    },
+    {
+      "id": "tapTroupeEn_okay1",
+      "name": "okay 1",
+      "cues": [
+        {
+          "id": "tapTroupeEn/okay1a",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupeEn/okay1b",
+          "beat": 0.5
+        }
+      ]
+    },
+    {
+      "id": "tapTroupeEn_okay2",
+      "name": "okay 2",
+      "cues": [
+        {
+          "id": "tapTroupeEn/okay2a",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupeEn/okay2b",
+          "beat": 0.5
+        }
+      ]
+    },
+    {
+      "id": "tapTroupeEn_okay3",
+      "name": "okay 3",
+      "cues": [
+        {
+          "id": "tapTroupeEn/okay3a",
+          "beat": 0
+        },
+        {
+          "id": "tapTroupeEn/okay3b",
+          "beat": 0.5
         }
       ]
     }
