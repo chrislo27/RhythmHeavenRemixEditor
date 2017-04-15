@@ -9,6 +9,7 @@ import chrislo27.rhre.oopsies.ActionHistory
 import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.script.luaobj.LuaRemix
+import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
@@ -239,7 +240,7 @@ class Remix : ActionHistory<Remix>() {
 			stream.putNextEntry(ZipEntry("data.json"))
 			val json = writeToJsonObject(remix)
 			json.musicAssociation = remix.music?.file?.name()
-			stream.write(Gson().toJson(json).toByteArray(Charset.forName("UTF-8")))
+			stream.write(JsonHandler.toJson(json).toByteArray(Charset.forName("UTF-8")))
 			stream.closeEntry()
 
 			if (json.musicAssociation != null) {
@@ -261,6 +262,7 @@ class Remix : ActionHistory<Remix>() {
 				stream.closeEntry()
 			}
 
+			stream.finish()
 			stream.close()
 		}
 
@@ -291,7 +293,7 @@ class Remix : ActionHistory<Remix>() {
 				tempFile.deleteOnExit()
 				tmpFolder.deleteOnExit()
 
-				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation)
+				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation) ?: throw RuntimeException("Music file not found!")
 				val iS = zipFile.getInputStream(musicEntry)
 				val baos = ByteArrayOutputStream()
 				var newLength: Int
@@ -311,7 +313,6 @@ class Remix : ActionHistory<Remix>() {
 				val handle: FileHandle = FileHandle(tempFile)
 				obj.musicData = MusicData(Gdx.audio.newMusic(handle), handle)
 			}
-
 			zipFile.close()
 			return obj
 		}
