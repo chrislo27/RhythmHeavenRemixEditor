@@ -723,8 +723,8 @@ public class Editor extends InputAdapter implements Disposable {
 		if (DebugSetting.debug) {
 			if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
 				if (remix.getSelection().size() > 0) {
-					if (remix.getSelection().stream().anyMatch(e -> e instanceof PatternEntity)) {
-						Main.logger.debug("Cannot export pattern - contains a pattern");
+					if (!remix.getSelection().stream().allMatch(e -> e instanceof SoundEntity)) {
+						Main.logger.debug("Cannot export pattern - must all be sound entities");
 					} else {
 						List<Entity> selection = remix.getSelection();
 						selection.sort((e1, e2) -> {
