@@ -30,7 +30,7 @@ object SysOutPiper {
 
 		val folder: File = File("logs/")
 		folder.mkdir()
-		val file: File = File(folder, "log_" + SimpleDateFormat("yyyy-MM-dd_hh-mm-ss").format(
+		val file: File = File(folder, "log_" + SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(
 				Date(System.currentTimeMillis())) + ".txt")
 		file.createNewFile()
 
