@@ -210,8 +210,8 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		super.onStart(delta, intendedStart)
 	}
 
-	override fun onEnd(delta: Float, intendedStart: Float) {
-		super.onEnd(delta, intendedStart)
+	override fun onEnd(delta: Float, intendedEnd: Float) {
+		super.onEnd(delta, intendedEnd)
 
 		internal.forEach { se ->
 			se.onEnd(delta, this.bounds.x + se.bounds.x + se.bounds.width)
