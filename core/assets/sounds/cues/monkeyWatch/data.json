@@ -41,7 +41,10 @@
   ],
   "patterns": [
     {
-      "id": "clap",
+      "id": "monkeyWatch_clap",
+      "deprecatedIDs": [
+        "clap"
+      ],
       "name": "clap",
       "cues": [
         {
@@ -55,7 +58,10 @@
       ]
     },
     {
-      "id": "offbeat",
+      "id": "monkeyWatch_offbeat",
+      "deprecatedIDs": [
+        "offbeat"
+      ],
       "name": "offbeat clap",
       "cues": [
         {

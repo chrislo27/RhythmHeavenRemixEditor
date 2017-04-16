@@ -52,7 +52,10 @@
   ],
   "patterns": [
     {
-      "id": "countin_2BeatCountIn",
+      "id": "countIn_2BeatCountIn",
+      "deprecatedIDs": [
+        "countin_2BeatCountIn"
+      ],
       "name": "2-beat count-in",
       "cues": [
         {
@@ -66,7 +69,10 @@
       ]
     },
     {
-      "id": "countin_4BeatCountIn",
+      "id": "countIn_4BeatCountIn",
+      "deprecatedIDs": [
+        "countin_4BeatCountIn"
+      ],
       "name": "4-beat count-in",
       "cues": [
         {
@@ -88,7 +94,10 @@
       ]
     },
     {
-      "id": "countin_8BeatCountIn",
+      "id": "countIn_8BeatCountIn",
+      "deprecatedIDs": [
+        "countin_8BeatCountIn"
+      ],
       "name": "8-beat count-in",
       "cues": [
         {
@@ -118,7 +127,10 @@
       ]
     },
     {
-      "id": "countin_4BeatCountInCowbell",
+      "id": "countIn_4BeatCountInCowbell",
+      "deprecatedIDs": [
+        "countin_4BeatCountInCowbell"
+      ],
       "name": "4-beat count-in (cowbell)",
       "cues": [
         {
@@ -140,7 +152,10 @@
       ]
     },
     {
-      "id": "countin_8BeatCountInCowbell",
+      "id": "countIn_8BeatCountInCowbell",
+      "deprecatedIDs": [
+        "countin_8BeatCountInCowbell"
+      ],
       "name": "8-beat count-in (cowbell)",
       "cues": [
         {
