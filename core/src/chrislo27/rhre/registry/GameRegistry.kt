@@ -137,6 +137,9 @@ object GameRegistry : Disposable {
 			}
 
 			gameObj.cues!!.forEach { so ->
+				if (!so.id!!.startsWith(gameObj.gameID!!)) {
+					throw RuntimeException("Sound cue ID " + so.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				}
 				soundCues.add(SoundCue(so.id!!, gameObj.gameID!!, so.fileExtension,
 									   so.name ?: so.id!!,
 									   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
@@ -146,6 +149,9 @@ object GameRegistry : Disposable {
 			}
 
 			gameObj.patterns!!.forEach { po ->
+				if (!po.id!!.startsWith(gameObj.gameID!!)) {
+					throw RuntimeException("Pattern definition ID " + po.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				}
 				val p: Pattern
 				val patternCues = po.cues!!.map { pc ->
 					Pattern.PatternCue(pc.id!!, gameObj.gameID!!, pc.beat, pc.track, pc.duration!!, pc.semitone!!)
