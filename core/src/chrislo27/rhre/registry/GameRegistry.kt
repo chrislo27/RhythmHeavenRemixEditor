@@ -307,7 +307,7 @@ object GameRegistry : Disposable {
 		Main.logger.info(
 				"Loaded " + this.gameList.size + " games (" +
 						(this.gameList.size - numAreCustom) + " databased, $numAreCustom custom game(s)) with " +
-						warningCount + " warning(s), done in " + ((System.nanoTime() - startTime) / 1_000_000.0))
+						warningCount + " warning(s), done in " + ((System.nanoTime() - startTime) / 1_000_000.0) + " ms")
 	}
 
 }
