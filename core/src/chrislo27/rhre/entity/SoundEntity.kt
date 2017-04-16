@@ -14,7 +14,6 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import ionium.registry.AssetRegistry
 import ionium.util.Utils
-import java.util.*
 
 class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, duration: Float,
 				  @Volatile override var semitone: Int) : Entity(remix), HasGame{
@@ -36,8 +35,9 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 	override val name: String
 		get() = cue.name
 
-	init {
+	private val iconId: String = "gameIcon_" + cue.id.substring(0, cue.id.indexOf('/'))
 
+	init {
 		this.bounds.set(beat, level.toFloat(), duration, 1f)
 
 		game = GameRegistry[cue.id.substring(0, cue.id.indexOf('/'))]!!
@@ -71,7 +71,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 				   palette.selectionTint, selected, bounds)
 
 		batch.setColor(1f, 1f, 1f, 0.25f)
-		batch.draw(AssetRegistry.getTexture("gameIcon_" + cue.id.substring(0, cue.id.indexOf('/'))),
+		batch.draw(AssetRegistry.getTexture(iconId),
 				   bounds.getX() * Entity.Companion.PX_WIDTH + Editor.GAME_ICON_PADDING,
 				   bounds.getY() * Entity.Companion.PX_HEIGHT + bounds.getHeight() * Entity.Companion.PX_HEIGHT.toFloat() * 0.5f - Editor.GAME_ICON_SIZE * 0.5f,
 				   Editor.GAME_ICON_SIZE.toFloat(), Editor.GAME_ICON_SIZE.toFloat())

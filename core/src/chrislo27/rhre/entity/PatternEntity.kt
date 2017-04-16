@@ -31,6 +31,8 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 	override val name: String
 		get() = pattern.name
 
+	private val iconId: String
+
 	init {
 		this.internal = ArrayList<SoundEntity>()
 
@@ -78,6 +80,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		isRepitchable = internal.stream().anyMatch { se -> se.cue.canAlterPitch }
 		val id = pattern.cues[0].id
 		game = GameRegistry[id.substring(0, id.indexOf('/'))]!!
+		iconId = "gameIcon_" + internal[0].cue.id.substring(0, internal[0].cue.id.indexOf('/'))
 	}
 
 	override fun attemptLoadSounds(): Boolean {
@@ -176,8 +179,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		}
 
 		batch.setColor(1f, 1f, 1f, 0.25f)
-		batch.draw(AssetRegistry.getTexture(
-				"gameIcon_" + internal[0].cue.id.substring(0, internal[0].cue.id.indexOf('/'))),
+		batch.draw(AssetRegistry.getTexture(iconId),
 				   bounds.getX() * Entity.Companion.PX_WIDTH + Editor.GAME_ICON_PADDING,
 				   bounds.getY() * Entity.Companion.PX_HEIGHT + bounds.getHeight() * Entity.Companion.PX_HEIGHT.toFloat() * 0.5f - Editor.GAME_ICON_SIZE * 0.5f,
 				   Editor.GAME_ICON_SIZE.toFloat(), Editor.GAME_ICON_SIZE.toFloat())
