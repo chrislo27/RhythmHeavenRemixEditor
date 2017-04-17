@@ -2,6 +2,7 @@ package chrislo27.rhre.logging
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
+import ionium.registry.lazysound.LazySound
 import ionium.templates.Main
 import ionium.util.MemoryUtils
 import org.apache.commons.io.output.TeeOutputStream
@@ -42,6 +43,7 @@ object SysOutPiper {
 		builder.append("Game Specifications:\n")
 		builder.append("   Version: " + Main.version + "\n")
 		builder.append("   Application type: " + Gdx.app.type.toString() + "\n")
+		builder.append("   Lazy loading enabled: " + !LazySound.forceLoadNow + "\n")
 
 		builder.append("\n")
 
