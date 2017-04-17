@@ -24,6 +24,8 @@ class DefAssetLoader : IAssetLoader {
 			manager.load(AssetMap.add("series_icon_" + s.name, "images/series/" + s.name + ".png"), Texture::class.java)
 		}
 
+		manager.load(AssetMap.add("baristron", "images/baristron.png"), Texture::class.java)
+
 		manager.load(AssetMap.add("cannery_music_jingle", "credits/cannery/music/jingle.ogg"), Music::class.java)
 		manager.load(AssetMap.add("cannery_music_song", "credits/cannery/music/Cannery.ogg"), Music::class.java)
 		manager.load(AssetMap.add("cannery_music_practice", "credits/cannery/music/practice.ogg"), Music::class.java)
