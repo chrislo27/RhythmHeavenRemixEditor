@@ -86,8 +86,7 @@
         "gleeClub/baton"
       ],
       "duration": 1,
-      "name": "baton - lift",
-      "fileExtension": "wav"
+      "name": "baton - lift"
     },
     {
       "id": "gleeClubEn/batonStop",
