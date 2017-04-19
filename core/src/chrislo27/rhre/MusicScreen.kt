@@ -112,6 +112,13 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 	}
 
 	override fun renderUpdate() {
+		if (Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+			scrolled(1)
+		}
+		if (Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+			scrolled(-1)
+		}
+
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 			main.screen = ScreenRegistry.get("editor")
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {

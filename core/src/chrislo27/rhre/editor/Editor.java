@@ -820,6 +820,7 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
+		// scroll imitation
 		if (Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
 			scrolled(1);
 		}
