@@ -6,6 +6,7 @@
     {
       "id": "rhythmoveDungeon/cycle",
       "duration": 2,
+      "baseBpm": 121,
       "name": "cycle"
     },
     {
