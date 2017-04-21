@@ -1,0 +1,105 @@
+{
+  "gameID": "rhythmoveDungeon",
+  "gameName": "Rhythmove Dungeon",
+  "series": "side",
+  "cues": [
+    {
+      "id": "rhythmoveDungeon/cycle",
+      "duration": 2,
+      "baseBpm": 121,
+      "name": "cycle"
+    },
+    {
+      "id": "rhythmoveDungeon/up",
+      "duration": 1,
+      "name": "up"
+    },
+    {
+      "id": "rhythmoveDungeon/down",
+      "duration": 1,
+      "name": "down"
+    },
+    {
+      "id": "rhythmoveDungeon/right",
+      "duration": 1,
+      "name": "right"
+    },
+    {
+      "id": "rhythmoveDungeon/left",
+      "duration": 1,
+      "name": "left"
+    },
+    {
+      "id": "rhythmoveDungeon/door",
+      "duration": 1,
+      "name": "door"
+    },
+    {
+      "id": "rhythmoveDungeon/victory",
+      "duration": 8,
+      "name": "victory"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "rhythmoveDungeon_up",
+      "name": "up",
+      "cues": [
+        {
+          "id": "rhythmoveDungeon/cycle",
+          "beat": 0
+        },
+        {
+          "id": "rhythmoveDungeon/up",
+          "beat": 0,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "rhythmoveDungeon_down",
+      "name": "down",
+      "cues": [
+        {
+          "id": "rhythmoveDungeon/cycle",
+          "beat": 0
+        },
+        {
+          "id": "rhythmoveDungeon/down",
+          "beat": 0.5,
+          "track": 1
+        }
+      ]
+     },
+     {
+      "id": "rhythmoveDungeon_right",
+      "name": "right",
+      "cues": [
+        {
+          "id": "rhythmoveDungeon/cycle",
+          "beat": 0
+        },
+        {
+          "id": "rhythmoveDungeon/right",
+          "beat": 1,
+          "track": 1
+        }
+      ]
+     },
+     {
+      "id": "rhythmoveDungeon_left",
+      "name": "left",
+      "cues": [
+        {
+          "id": "rhythmoveDungeon/cycle",
+          "beat": 0
+        },
+        {
+          "id": "rhythmoveDungeon/left",
+          "beat": 1.5,
+          "track": 1
+        }
+      ]
+     }
+  ]
+}

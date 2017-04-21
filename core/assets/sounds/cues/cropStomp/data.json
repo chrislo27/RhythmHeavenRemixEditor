@@ -24,6 +24,21 @@
       "name": "pick - 2"
     },
     {
+      "id": "cropStomp/molewarning1",
+      "duration": 0.5,
+      "name": "mole warning - 1"
+    },
+    {
+      "id": "cropStomp/molewarning2",
+      "duration": 0.5,
+      "name": "mole warning - 2"
+    },
+    {
+      "id": "cropStomp/molewarning3",
+      "duration": 0.5,
+      "name": "mole warning - 3"
+    },
+    {
       "id": "cropStomp/molefling",
       "duration": 0.5,
       "name": "mole"
@@ -75,12 +90,24 @@
       "name": "mole",
       "cues": [
         {
-          "id": "cropStomp/stomp",
+          "id": "cropStomp/molewarning1",
           "beat": 0.0
         },
         {
-          "id": "cropStomp/molefling",
+          "id": "cropStomp/molewarning2",
           "beat": 0.5
+        },
+        {
+          "id": "cropStomp/molewarning3",
+          "beat": 1
+        },
+        {
+          "id": "cropStomp/stomp",
+          "beat": 2.0
+        },
+        {
+          "id": "cropStomp/molefling",
+          "beat": 2.5
         }
       ]
     }
