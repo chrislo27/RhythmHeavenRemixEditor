@@ -784,8 +784,11 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 	companion object {
 
+		@JvmField
 		val BUTTON_HEIGHT = 32
+		@JvmField
 		val PADDING = 4
+		@JvmField
 		val BAR_HEIGHT = BUTTON_HEIGHT + PADDING * 2
 
 	}

@@ -23,10 +23,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -93,6 +90,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private boolean didMoveCamera = false;
 	private int trackerMoving = 0; // 0 - none, 1 - playback, 2 - music
 	private float lastTrackerPos = 0f;
+	private float animation = -1f;
 
 	public Editor(Main m) {
 		this.main = m;
@@ -383,6 +381,34 @@ public class Editor extends InputAdapter implements Disposable {
 		batch.setProjectionMatrix(main.camera.combined);
 		batch.begin();
 
+		{
+			if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+				animation = 0f;
+			} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+				animation = -1;
+			}
+			if (animation >= 0)
+				animation += Gdx.graphics.getDeltaTime();
+
+			float width = 256 + 128;
+			float baseX = 1280 - Interpolation.pow3.apply(MathUtils.clamp(animation * 1.5f, 0f, 1f)) * width;
+			float baseY = 720 - EditorStageSetup.BAR_HEIGHT - 64;
+
+			batch.setColor(0, 0, 0, 0.6f);
+			Main.fillRect(batch, baseX, baseY, width, 64);
+			batch.setColor(1, 1, 1, 1);
+			batch.draw(AssetRegistry.getTexture("baristron"), baseX, baseY, 64, 64);
+			float textAlpha = MathUtils.clamp((animation - 1 / 1.5f + 0.3f) / 0.25f, 0f, 1f);
+//			main.getFont().setColor(Main.getRainbow(System.currentTimeMillis(), 0.4f, 1f));
+//			main.getFont().setColor(1, 0, 0, 1);
+			main.getFont()
+					.setColor(main.getFont().getColor().r, main.getFont().getColor().g, main.getFont().getColor().b,
+							textAlpha);
+			Main.Companion.drawCompressed(main.getFont(), batch, "Unsuccessfully saved. ☂", baseX + 64 + 4,
+					baseY + 32 + main.getFont().getCapHeight() * 0.5f, width - 64 - 8, Align.left);
+			main.getFont().setColor(1, 1, 1, 1);
+		}
+
 		// message bar on bottom
 		{
 			batch.setColor(0, 0, 0, 0.5f);
@@ -391,8 +417,9 @@ public class Editor extends InputAdapter implements Disposable {
 			// picker
 			Main.fillRect(batch, 0, 0, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT);
 			// button bar on top
-			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT(),
-					main.camera.viewportWidth, EditorStageSetup.Companion.getBAR_HEIGHT());
+			Main.fillRect(batch, 0, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT, main.camera
+							.viewportWidth,
+					EditorStageSetup.BAR_HEIGHT);
 			// series buttons
 			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values.length * GAME_ICON_SIZE,
 					OVERVIEW_HEIGHT);
@@ -429,7 +456,7 @@ public class Editor extends InputAdapter implements Disposable {
 		main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
-				main.camera.viewportHeight - EditorStageSetup.Companion.getBAR_HEIGHT() - 4);
+				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4);
 		main.getFontBordered().setColor(1, 1, 1, 1);
 		main.getFontBordered().getData().setScale(1f);
 
@@ -828,7 +855,7 @@ public class Editor extends InputAdapter implements Disposable {
 			scrolled(-1);
 		}
 
-		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.Companion.getBAR_HEIGHT()) {
+		if (currentTool == Tool.NORMAL && main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 			// trackers
 			{
 				camera.unproject(vec3Tmp2.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -1025,7 +1052,7 @@ public class Editor extends InputAdapter implements Disposable {
 			if (selectedTempoChange == null) {
 				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && main.camera.viewportHeight - main.getInputY() >
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
-						main.getInputY() > EditorStageSetup.Companion.getBAR_HEIGHT()) {
+						main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
 
