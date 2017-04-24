@@ -100,18 +100,19 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		startTime = intendedStart
 
 		val bpm = remix.tempoChanges.getTempoAt(remix.beat)
+		val pan = cue.pan
 
 		if (cue.getIntroSoundObj() != null) {
 			val s = cue.getIntroSoundObj()!! as OpenALSound
-			introSoundId = s.play(1f, cue.getPitch(semitone, bpm), 0f)
+			introSoundId = s.play(1f, cue.getPitch(semitone, bpm), pan)
 		}
 
 		val s = cue.getSoundObj() as OpenALSound
 		val realPos = remix.tempoChanges.beatsToSeconds(remix.beat - intendedStart) % s.duration()
 		if (cue.shouldBeLooped()) {
-			soundId = s.loop(1f, cue.getPitch(semitone, bpm), 0f)
+			soundId = s.loop(1f, cue.getPitch(semitone, bpm), pan)
 		} else {
-			soundId = s.play(1f, cue.getPitch(semitone, bpm), 0f)
+			soundId = s.play(1f, cue.getPitch(semitone, bpm), pan)
 		}
 
 	}

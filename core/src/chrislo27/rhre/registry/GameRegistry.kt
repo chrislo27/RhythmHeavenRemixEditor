@@ -143,7 +143,7 @@ object GameRegistry : Disposable {
 				soundCues.add(SoundCue(so.id!!, gameObj.gameID!!, so.fileExtension,
 									   so.name ?: so.id!!,
 									   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
-									   so.canAlterPitch, so.canAlterDuration, so.introSound, so.baseBpm,
+									   so.canAlterPitch, so.pan, so.canAlterDuration, so.introSound, so.baseBpm,
 									   so.loops ?: so.canAlterDuration,
 									   if (isCustom) baseDir else null))
 			}
@@ -223,7 +223,7 @@ object GameRegistry : Disposable {
 				val sc = SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(), fh.name(),
 								  soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(),
 								  ArrayList<String>(),
-								  CustomSoundUtil.DURATION, true, true, null, 0f, false, customFolder.path() + "/")
+								  CustomSoundUtil.DURATION, true, 0f, true, null, 0f, false, customFolder.path() + "/")
 				soundCues.add(sc)
 			}
 

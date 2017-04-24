@@ -9,7 +9,7 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
 			   val deprecated: List<String> = mutableListOf(), val duration: Float,
-			   canAlterPitch: Boolean, val canAlterDuration: Boolean = false,
+			   canAlterPitch: Boolean, val pan: Float, val canAlterDuration: Boolean = false,
 			   val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
 			   val soundFolder: String? = null) {
 
@@ -33,6 +33,7 @@ class SoundCue(val id: String, val gameID: String, val fileExtension: String = "
 		l.set("introSound", CoerceJavaToLua.coerce(introSound))
 		l.set("baseBpm", baseBpm.toDouble())
 		l.set("loops", CoerceJavaToLua.coerce(loops))
+		l.set("pan", CoerceJavaToLua.coerce(pan))
 
 		return@lazy l
 	}

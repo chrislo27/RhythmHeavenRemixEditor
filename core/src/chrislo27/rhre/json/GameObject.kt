@@ -30,6 +30,8 @@ class GameObject {
 
 		var baseBpm = 0f
 
+		var pan: Float = 0f
+
 		var loops: Boolean? = null
 	}
 

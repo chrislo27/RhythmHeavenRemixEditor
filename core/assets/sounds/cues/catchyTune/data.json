@@ -9,7 +9,8 @@
       "name": "left - catch",
       "deprecatedIDs": [
         "catchyTune/clap"
-      ]
+      ],
+      "pan": 0.75
     },
     {
       "id": "catchyTune/leftOrange",
@@ -17,7 +18,8 @@
       "name": "left - orange",
       "deprecatedIDs": [
         "catchyTune/orange"
-      ]
+      ],
+      "pan": 0.75
     },
     {
       "id": "catchyTune/leftPineapple",
@@ -25,22 +27,26 @@
       "name": "left - pineapple",
       "deprecatedIDs": [
         "catchyTune/melon"
-      ]
+      ],
+      "pan": 0.75
     },
     {
       "id": "catchyTune/rightCatch",
       "duration": 1,
-      "name": "right - catch"
+      "name": "right - catch",
+      "pan": -0.75
     },
     {
       "id": "catchyTune/rightOrange",
       "duration": 1,
-      "name": "right - orange"
+      "name": "right - orange",
+      "pan": -0.75
     },
     {
       "id": "catchyTune/rightPineapple",
       "duration": 2,
-      "name": "right - pineapple"
+      "name": "right - pineapple",
+      "pan": -0.75
     }
   ],
   "patterns": [
