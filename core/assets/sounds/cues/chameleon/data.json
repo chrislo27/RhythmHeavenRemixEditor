@@ -16,7 +16,8 @@
     {
       "id": "chameleon/farAwayBug",
       "duration": 3.5,
-      "name": "far away bug"
+      "name": "far away bug",
+      "loops": true
     },
     {
       "id": "chameleon/farAwayPrepare1",
@@ -36,7 +37,8 @@
     {
       "id": "chameleon/closeUpBug",
       "duration": 2.5,
-      "name": "close up bug"
+      "name": "close up bug",
+      "loops": true
     },
     {
       "id": "chameleon/closeUpPrepare1",
