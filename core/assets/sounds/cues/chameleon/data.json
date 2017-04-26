@@ -1,0 +1,130 @@
+{
+  "gameID": "chameleon",
+  "gameName": "Chameleon",
+  "series": "side",
+  "cues": [
+    {
+      "id": "chameleon/gulp1",
+      "duration": 0.25,
+      "name": "gulp - 1"
+    },
+    {
+      "id": "chameleon/gulp2",
+      "duration": 0.25,
+      "name": "gulp - 2"
+    },
+    {
+      "id": "chameleon/farAwayBug",
+      "duration": 3.5,
+      "name": "far away bug"
+    },
+    {
+      "id": "chameleon/farAwayPrepare1",
+      "duration": 1.0,
+      "name": "far away prepare - 1"
+    },
+    {
+      "id": "chameleon/farAwayPrepare2",
+      "duration": 1.0,
+      "name": "far away prepare - 2"
+    },
+    {
+      "id": "chameleon/farAwayPrepare3",
+      "duration": 1.0,
+      "name": "far away prepare - 3"
+    },
+    {
+      "id": "chameleon/closeUpBug",
+      "duration": 2.5,
+      "name": "close up bug"
+    },
+    {
+      "id": "chameleon/closeUpPrepare1",
+      "duration": 1.0,
+      "name": "close up prepare - 1"
+    },
+    {
+      "id": "chameleon/closeUpPrepare2",
+      "duration": 1.0,
+      "name": "close up prepare - 2"
+    },{
+      "id": "chameleon/closeUpPrepare3",
+      "duration": 1.0,
+      "name": "close up prepare - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "chameleon_farAwayBug",
+      "name": "far away bug",
+      "cues": [
+        {
+          "id": "chameleon/farAwayBug",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "chameleon/farAwayPrepare1",
+          "beat": 3.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/farAwayPrepare2",
+          "beat": 4.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/farAwayPrepare3",
+          "beat": 5.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/gulp1",
+          "beat": 6.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/gulp2",
+          "beat": 6.75,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "chameleon_closeUpBug",
+      "name": "close up bug",
+      "cues": [
+        {
+          "id": "chameleon/closeUpBug",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "chameleon/closeUpPrepare1",
+          "beat": 2.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/closeUpPrepare2",
+          "beat": 3.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/closeUpPrepare3",
+          "beat": 4.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/gulp1",
+          "beat": 5.5,
+          "track": 0
+        },
+        {
+          "id": "chameleon/gulp2",
+          "beat": 5.75,
+          "track": 0
+        }
+      ]
+     }
+  ]
+}
