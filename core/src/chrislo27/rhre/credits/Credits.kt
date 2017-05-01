@@ -14,7 +14,7 @@ object Credits {
 			"sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, GuardedLolz, TheRhythmKid, Kana, GlitchyPSIX, Mariofan5000",
 			"icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder, GlitchyPSIX",
 			"uidesign" to "GlitchyPSIX",
-			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64, Chef May",
+			"misc" to "Pengu12345, ToonLucas22, Strawzzboy64, Chef May\nRhythm Heaven Discord Server",
 			"creditsgame" to "ahemtoday, Serena Strawberry, mistuh_salmon, chrislo27",
 			"technologies" to """[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games, LWJGL
 KHttp
