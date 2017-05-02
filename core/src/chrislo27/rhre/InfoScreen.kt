@@ -28,9 +28,9 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 
 		private @Volatile var inviteBacking: String? = null
 		val invite: String
-		get() {
-			return inviteBacking ?: if (isChecking == -1) "[failed to get invite]" else "[getting...]"
-		}
+			get() {
+				return inviteBacking ?: if (isChecking == -1) "[failed to get invite]" else "[getting...]"
+			}
 
 		init {
 			if (isChecking == 0) {
