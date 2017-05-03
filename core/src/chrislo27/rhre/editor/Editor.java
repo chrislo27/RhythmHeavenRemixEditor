@@ -803,6 +803,9 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
+		if (currentTool != Tool.BPM && selectedTempoChange != null)
+			selectedTempoChange = null;
+
 		if (remix.getPlayingState() != PlayingState.STOPPED) {
 			if (isCursorStretching) {
 				isCursorStretching = false;
@@ -1410,6 +1413,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 	public void getDebugStrings(Array<String> array) {
 		array.add("autosaveTimer: " + timeUntilAutosave);
+		array.add("selTempoChange: " + selectedTempoChange);
 	}
 
 	public enum Tool {
