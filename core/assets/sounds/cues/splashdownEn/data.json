@@ -14,7 +14,7 @@
     {
       "id": "splashdownEn/descend1",
       "deprecatedIDs": [
-        "splashdown/descend1"
+        "splashdown/descend"
       ],
       "duration": 0.25,
       "name": "descend - others"
@@ -215,6 +215,9 @@
     {
       "id": "splashdownEn_alleyoop",
       "name": "alley-oop!",
+      "deprecatedIDs": [
+        "splashdown_alleyoop"
+      ],
       "cues": [
         {
           "id": "splashdownEn/oooh",
