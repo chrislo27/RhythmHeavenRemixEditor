@@ -94,6 +94,9 @@ object GameRegistry : Disposable {
 		this.gameList as MutableList
 		this.gamesBySeries as MutableMap
 
+		val debugFolder = Gdx.files.local("debug/")
+		debugFolder.mkdirs()
+
 //		val coroutinesToUse = coroutinesToUse
 
 		val startTime: Long = System.nanoTime()

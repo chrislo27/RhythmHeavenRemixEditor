@@ -230,6 +230,9 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		if (tmpMusic.exists() && tmpMusic.isDirectory) {
 			tmpMusic.deleteRecursively()
 		}
+
+		val debugFolder = Gdx.files.local("debug/")
+		debugFolder.mkdirs()
 	}
 
 	override fun setScreen(scr: Screen?) {
