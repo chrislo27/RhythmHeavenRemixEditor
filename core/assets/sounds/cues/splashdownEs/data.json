@@ -1,0 +1,210 @@
+{
+  "gameID": "splashdownEs",
+  "gameName": "Splashdown (Spanish)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "splashdownEs/start",
+      "duration": 1,
+      "name": "start"
+    },
+    {
+      "id": "splashdownEs/descend1",
+      "duration": 0.25,
+      "name": "descend - others"
+    },
+    {
+      "id": "splashdownEs/descend2",
+      "duration": 0.25,
+      "name": "descend - player"
+    },
+    {
+      "id": "splashdownEs/ascend1",
+      "duration": 0.25,
+      "name": "ascend"
+    },
+    {
+      "id": "splashdownEs/ascend2",
+      "duration": 0.25,
+      "name": "ascend - player"
+    },
+    {
+      "id": "splashdownEs/yeah1",
+      "duration": 1,
+      "name": "jump - others"
+    },
+    {
+      "id": "splashdownEs/yeah2",
+      "duration": 1,
+      "name": "jump - player"
+    },
+    {
+      "id": "splashdownEs/jumpSimultaneous",
+      "duration": 0.5,
+      "name": "jump - simultaneous"
+    },
+    {
+      "id": "splashdownEs/spin1",
+      "duration": 1,
+      "name": "spin - others"
+    },
+    {
+      "id": "splashdownEs/spin2",
+      "duration": 1,
+      "name": "spin - player"
+    },
+    {
+      "id": "splashdownEs/splash",
+      "duration": 1,
+      "name": "splash"
+    },
+    {
+      "id": "splashdownEs/oooh",
+      "duration": 2,
+      "name": "ohhhhh"
+    },
+    {
+      "id": "splashdownEs/ahiva1",
+      "duration": 0.25,
+      "name": "ahiva - 1"
+    },    
+    {
+      "id": "splashdownEs/ahiva2",
+      "duration": 0.25,
+      "name": "ahiva - 2"
+    },
+    {
+      "id": "splashdownEs/ahiva3",
+      "duration": 1,
+      "name": "ahiva - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "splashdownEs_descend",
+      "name": "descend",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "splashdownEs/descend1",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/descend1",
+          "beat": 0.75
+        },
+        {
+          "id": "splashdownEs/descend2",
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "splashdownEs_ascend",
+      "name": "ascend",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "splashdownEs/ascend1",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/ascend1",
+          "beat": 0.75
+        },
+        {
+          "id": "splashdownEs/ascend2",
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "splashdownEs_jumpOthers",
+      "name": "jump - others",
+      "cues": [
+        {
+          "id": "splashdownEs/yeah1",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/spin1",
+          "beat": 1
+        },
+        {
+          "id": "splashdownEs/splash",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "splashdownEs_jumpPlayer",
+      "name": "jump - player",
+      "cues": [
+        {
+          "id": "splashdownEs/yeah2",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/spin2",
+          "beat": 1
+        },
+        {
+          "id": "splashdownEs/splash",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "splashdownEs_simultaneousJump",
+      "name": "simultaneous jump",
+      "cues": [
+        {
+          "id": "splashdownEs/oooh",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/jumpSimultaneous",
+          "beat": 2
+        },
+        {
+          "id": "splashdownEs/spin2",
+          "beat": 2.75
+        },
+        {
+          "id": "splashdownEs/splash",
+          "beat": 3.75
+        }
+      ]
+    },
+    {
+      "id": "splashdownEs_ahiva",
+      "name": "ahiva!",
+      "cues": [
+        {
+          "id": "splashdownEs/oooh",
+          "beat": 0
+        },
+        {
+          "id": "splashdownEs/jumpSimultaneous",
+          "beat": 2
+        },
+        {
+          "id": "splashdownEs/ahiva1",
+          "beat": 2.5
+        },
+        {
+          "id": "splashdownEs/ahiva2",
+          "beat": 2.75
+        },
+        {
+          "id": "splashdownEs/ahiva3",
+          "beat": 3
+        },
+        {
+          "id": "splashdownEs/splash",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}
