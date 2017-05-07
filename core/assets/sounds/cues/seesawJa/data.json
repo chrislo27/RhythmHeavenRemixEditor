@@ -1,0 +1,137 @@
+{
+  "gameID": "seesawJa",
+  "gameName": "See-Saw (Japanese)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "seesawJa/seeLong1",
+      "duration": 1.0,
+      "name": "see - long - 1"
+    },
+    {
+      "id": "seesawJa/seeLong2",
+      "duration": 1.0,
+      "name": "see - long - 2"
+    },
+    {
+      "id": "seesawJa/seeShort1",
+      "duration": 0.5,
+      "name": "see - short - 1"
+    },
+    {
+      "id": "seesawJa/seeShort2",
+      "duration": 0.5,
+      "name": "see - short - 2"
+    },
+    {
+      "id": "seesawJa/sawLong1",
+      "duration": 1.0,
+      "name": "saw - long - 1"
+    },
+    {
+      "id": "seesawJa/sawLong2",
+      "duration": 1.0,
+      "name": "saw - long - 2"
+    },
+    {
+      "id": "seesawJa/sawShort1",
+      "duration": 0.5,
+      "name": "saw - short - 1"
+    },
+    {
+      "id": "seesawJa/sawShort2",
+      "duration": 0.5,
+      "name": "saw - short - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "seesawJa_longLong",
+      "name": "long long",
+      "cues": [
+        {
+          "id": "seesawJa/seeLong1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesawJa/seeLong2",
+          "beat": 1.0
+        },
+        {
+          "id": "seesawJa/sawLong1",
+          "beat": 2.0
+        },
+        {
+          "id": "seesawJa/sawLong2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "seesawJa_shortShort",
+      "name": "short short",
+      "cues": [
+        {
+          "id": "seesawJa/seeShort1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesawJa/seeShort2",
+          "beat": 0.5
+        },
+        {
+          "id": "seesawJa/sawShort1",
+          "beat": 1.0
+        },
+        {
+          "id": "seesawJa/sawShort2",
+          "beat": 1.5
+        }
+      ]
+    },
+    {
+      "id": "seesawJa_longShort",
+      "name": "long short",
+      "cues": [
+        {
+          "id": "seesawJa/seeLong1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesawJa/seeLong2",
+          "beat": 1.0
+        },
+        {
+          "id": "seesawJa/sawShort1",
+          "beat": 2.0
+        },
+        {
+          "id": "seesawJa/sawShort2",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "seesawJa_shortLong",
+      "name": "short long",
+      "cues": [
+        {
+          "id": "seesawJa/seeShort1",
+          "beat": 0.0
+        },
+        {
+          "id": "seesawJa/seeShort2",
+          "beat": 0.5
+        },
+        {
+          "id": "seesawJa/sawLong1",
+          "beat": 1.0
+        },
+        {
+          "id": "seesawJa/sawLong2",
+          "beat": 2.0
+        }
+      ]
+    }
+  ]
+}
