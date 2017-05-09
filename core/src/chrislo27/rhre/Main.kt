@@ -14,7 +14,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.Pixmap
@@ -160,48 +159,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 						 preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,
 						 preferences.getBoolean("fullscreen", false))
 
-		fun addBundle(namedLocale: NamedLocale, onlyLoadGlyphs: Boolean = false) {
-			if (!onlyLoadGlyphs) Localization.instance().addBundle(namedLocale)
-
-			val base = Localization.instance().baseFileHandle
-			val locale = namedLocale.locale
-			val language = locale.language
-			val country = locale.country
-			val variant = locale.variant
-			val emptyLanguage = "" == language
-			val emptyCountry = "" == country
-			val emptyVariant = "" == variant
-
-			val sb: StringBuilder = StringBuilder(base.name())
-
-			if (!(emptyLanguage && emptyCountry && emptyVariant)) {
-				sb.append('_')
-				if (!emptyVariant) {
-					sb.append(language).append('_').append(country).append('_').append(variant)
-				} else if (!emptyCountry) {
-					sb.append(language).append('_').append(country)
-				} else {
-					sb.append(language)
-				}
-			}
-
-			val handle: FileHandle = base.sibling(sb.append(".properties").toString())
-
-			if (handle.exists()) {
-				val content: String = handle.readString("UTF-8")
-				content.forEach {
-					if (!fontCharsToLoad.contains(it, ignoreCase = false) && (it != ' ' && it != '\n')) {
-						fontCharsToLoad += it
-					}
-				}
-			} else {
-				ionium.templates.Main.logger.warn("Lang file not found: " + handle.toString())
-			}
-		}
-
-		languagesList.forEachIndexed { index, l ->
-			addBundle(l, onlyLoadGlyphs = index == 0)
-		}
+		languagesList.forEach( Localization.instance()::addBundle)
 
 		Localization.instance().loadFromSettings(preferences)
 

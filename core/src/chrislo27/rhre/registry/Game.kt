@@ -1,5 +1,6 @@
 package chrislo27.rhre.registry
 
+import ionium.util.MathHelper
 import ionium.util.i18n.Localization
 import org.luaj.vm2.LuaValue
 import java.util.*
@@ -8,6 +9,32 @@ import java.util.*
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
 				val iconIsRawPath: Boolean = false) {
+
+	private companion object {
+		val defaultPointerString: String = "➡"
+		val levels: List<String> = "▁▂▃▄▅▆▇█".reversed().map(Character::toString)
+		val bts: List<String> = "❶❷❸❹❸❷".map(Character::toString)
+	}
+
+	val pointerString: String get() {
+		return when (id) {
+			"extraSFX" -> "★"
+			"rhythmTweezers" -> "✂"
+			"moaiDooWop" -> "‼"
+			"builtToScaleFever" -> {
+				val time = MathHelper.getSawtoothWave(0.5f * bts.size)
+
+				bts[(bts.size * time).toInt().coerceIn(0, bts.size - 1)]
+			}
+			"fruitBasket" -> {
+				val time = MathHelper.getTriangleWave(1.5f)
+
+				levels[((levels.size * (time * 8) - 6).toInt() + 1).coerceIn(0, levels.size - 1)]
+			}
+			"clapTrap" -> "〠"
+			else -> defaultPointerString
+		}
+	}
 
 	fun isCustom() = series == Series.CUSTOM
 
