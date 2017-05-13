@@ -44,7 +44,7 @@
       // note that this sound will automatically be hidden
 
       "baseBpm": 105,
-      // used for Fillbots - the original BPM of the filling sound
+      // used for Manzai Birds
       // note that if this is present, canAlterPitch will always be set to false
 
       "loops": false
