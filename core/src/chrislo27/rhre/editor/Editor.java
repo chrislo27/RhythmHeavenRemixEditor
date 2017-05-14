@@ -382,16 +382,18 @@ public class Editor extends InputAdapter implements Disposable {
 		batch.begin();
 
 		if (false) {
-			if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-				animation = 0f;
-			} else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
-				animation = -1;
-			}
-			if (animation >= 0)
+			if (Gdx.input.isKeyPressed(Input.Keys.N)) {
+				if (animation < 0)
+					animation = 0;
 				animation += Gdx.graphics.getDeltaTime();
+			} else if (Gdx.input.isKeyPressed(Input.Keys.M)) {
+				if (animation > 1)
+					animation = 1;
+				animation -= Gdx.graphics.getDeltaTime();
+			}
 
 			float width = 256 + 128;
-			float baseX = 1280 - Interpolation.pow3.apply(MathUtils.clamp(animation * 1.5f, 0f, 1f)) * width;
+			float baseX = 1280 - Interpolation.sine.apply(MathUtils.clamp(animation * 1.5f, 0f, 1f)) * width;
 			float baseY = 720 - EditorStageSetup.BAR_HEIGHT - 64;
 
 			batch.setColor(0, 0, 0, 0.6f);
@@ -404,7 +406,7 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont()
 					.setColor(main.getFont().getColor().r, main.getFont().getColor().g, main.getFont().getColor().b,
 							textAlpha);
-			Main.Companion.drawCompressed(main.getFont(), batch, " ☂", baseX + 64 + 4,
+			Main.Companion.drawCompressed(main.getFont(), batch, "I want to use this for saved messages", baseX + 64 + 4,
 					baseY + 32 + main.getFont().getCapHeight() * 0.5f, width - 64 - 8, Align.left);
 			main.getFont().setColor(1, 1, 1, 1);
 		}
