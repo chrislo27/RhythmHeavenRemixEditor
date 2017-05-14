@@ -128,6 +128,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			Localization.DEFAULT_LOCALE = languagesMap[""]
 		}
 
+		@JvmStatic
 		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float,
 						   align: Int) {
 			val textWidth = Utils.getWidth(font, text)

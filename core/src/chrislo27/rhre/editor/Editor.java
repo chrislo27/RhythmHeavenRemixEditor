@@ -406,7 +406,7 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont()
 					.setColor(main.getFont().getColor().r, main.getFont().getColor().g, main.getFont().getColor().b,
 							textAlpha);
-			Main.Companion.drawCompressed(main.getFont(), batch, "I want to use this for saved messages", baseX + 64 + 4,
+			Main.drawCompressed(main.getFont(), batch, "I want to use this for saved messages", baseX + 64 + 4,
 					baseY + 32 + main.getFont().getCapHeight() * 0.5f, width - 64 - 8, Align.left);
 			main.getFont().setColor(1, 1, 1, 1);
 		}
