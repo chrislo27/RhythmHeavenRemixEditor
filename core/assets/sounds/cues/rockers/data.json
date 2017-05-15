@@ -44,6 +44,21 @@
       "duration": 1.5,
       "name": "together - last",
       "canAlterPitch": true
+    },
+    {
+      "id": "rockers/one",
+      "duration": 1,
+      "name": "count - 1"
+    },
+    {
+      "id": "rockers/two",
+      "duration": 1,
+      "name": "count - 1"
+    },
+    {
+      "id": "rockers/three",
+      "duration": 1,
+      "name": "count - 1"
     }
   ],
   "patterns": [
