@@ -1,0 +1,28 @@
+{
+  "gameID": "rockers",
+  "gameName": "Rockers",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "",
+      "duration": 0.5,
+      "name": ""
+    }
+  ],
+  "patterns": [
+    {
+      "id": "_",
+      "name": "",
+      "cues": [
+        {
+          "id": "/",
+          "beat": 0.0
+        },
+        {
+          "id": "/",
+          "beat": 2.0
+        }
+      ]
+    }
+  ]
+}
