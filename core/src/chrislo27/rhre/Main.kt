@@ -160,7 +160,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 						 preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,
 						 preferences.getBoolean("fullscreen", false))
 
-		languagesList.forEach( Localization.instance()::addBundle)
+		languagesList.forEachIndexed { i, it ->
+			if (i > 0) {
+				Localization.instance().addBundle(it)
+			}
+		}
 
 		Localization.instance().loadFromSettings(preferences)
 
