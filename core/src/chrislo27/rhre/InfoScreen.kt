@@ -1,5 +1,7 @@
 package chrislo27.rhre
 
+import chrislo27.rhre.PreferenceKeys.AUTOSAVE
+import chrislo27.rhre.PreferenceKeys.SHOW_CURRENT_GAME
 import chrislo27.rhre.credits.Credits.createConcatSections
 import chrislo27.rhre.credits.CreditsScreen
 import chrislo27.rhre.registry.Game
@@ -119,11 +121,19 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 
 		main.font.data.setScale(1f)
 
-		val autosaveEnabled = main.preferences.getBoolean("autosave", true)
+		val autosaveEnabled = main.preferences.getBoolean(AUTOSAVE, true)
 		main.font.draw(main.batch,
 					   "[CYAN]A[] - " + Localization.get("info.autosave.${if (autosaveEnabled) "on" else "off"}"),
 					   startX + PADDING,
 					   startY + BG_HEIGHT * 0.2f,
+					   BG_WIDTH * 0.5f - PADDING,
+					   Align.left, true)
+
+		val showCurrentGame = main.preferences.getBoolean(SHOW_CURRENT_GAME, true)
+		main.font.draw(main.batch,
+					   "[CYAN]Q[] - " + Localization.get("info.showCurrentGame.${if (showCurrentGame) "on" else "off"}"),
+					   startX + PADDING,
+					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight,
 					   BG_WIDTH * 0.5f - PADDING,
 					   Align.left, true)
 
@@ -145,7 +155,10 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 				main.screen = ScreenRegistry.get("version")
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			main.preferences.putBoolean("autosave", !main.preferences.getBoolean("autosave", true))
+			main.preferences.putBoolean(AUTOSAVE, !main.preferences.getBoolean(AUTOSAVE, true))
+			main.preferences.flush()
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+			main.preferences.putBoolean(SHOW_CURRENT_GAME, !main.preferences.getBoolean(SHOW_CURRENT_GAME, true))
 			main.preferences.flush()
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
 			main.transition(Fade(true, Color.rgba8888(0f, 0f, 0f, 1f), 1f),

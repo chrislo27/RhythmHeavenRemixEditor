@@ -1,6 +1,7 @@
 package chrislo27.rhre.editor;
 
 import chrislo27.rhre.Main;
+import chrislo27.rhre.PreferenceKeys;
 import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.HasGame;
 import chrislo27.rhre.entity.PatternEntity;
@@ -16,10 +17,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Cursor;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -455,12 +453,17 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().getData().setScale(1);
 		}
 
-		main.getFontBordered().getData().setScale(0.75f);
+		if (remix.getCurrentGame() != null && main.getPreferences().getBoolean(PreferenceKeys.SHOW_CURRENT_GAME, true)) {
+			final float x = 4, y = main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4;
+			final Texture icon = AssetRegistry.getTexture("gameIcon_" + remix.getCurrentGame().getId());
+			main.batch.draw(icon, x, y - icon.getHeight());
+			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-		main.getFontBordered().draw(batch, (remix.getCurrentGame() == null ? "" : remix.getCurrentGame().getName()), 4,
-				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4);
-		main.getFontBordered().setColor(1, 1, 1, 1);
-		main.getFontBordered().getData().setScale(1f);
+			main.getFontBordered().draw(batch, remix.getCurrentGame().getName(), x * 2 + icon.getWidth(),
+					y - (icon.getHeight() / 2 - main.getFontBordered().getCapHeight() / 2));
+			main.getFontBordered().setColor(1, 1, 1, 1);
+			main.getFontBordered().getData().setScale(1f);
+		}
 
 		if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (autosaveMessageShow > 0) {
@@ -707,7 +710,7 @@ public class Editor extends InputAdapter implements Disposable {
 		} else if (remix.getPlayingState() == PlayingState.STOPPED && file != null) {
 			if (timeUntilAutosave <= 0) {
 				timeUntilAutosave = AUTOSAVE_PERIOD;
-				if (main.getPreferences().getBoolean("autosave", true)) {
+				if (main.getPreferences().getBoolean(PreferenceKeys.AUTOSAVE, true)) {
 					autosave();
 				}
 			}
