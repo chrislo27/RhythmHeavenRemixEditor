@@ -455,7 +455,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		if (remix.getCurrentGame() != null && main.getPreferences().getBoolean(PreferenceKeys.SHOW_CURRENT_GAME, true)) {
 			final float x = 4, y = main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4;
-			final Texture icon = AssetRegistry.getTexture("gameIcon_" + remix.getCurrentGame().getId());
+			final Texture icon = remix.getCurrentGame().getIconTexture();
 			main.batch.draw(icon, x, y - icon.getHeight());
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
@@ -506,7 +506,7 @@ public class Editor extends InputAdapter implements Disposable {
 			for (int i = 0, count = 0; i < GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(); i++) {
 				Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).get(i);
 
-				batch.draw(AssetRegistry.getTexture("gameIcon_" + game.getId()), getIconX(count), getIconY(count),
+				batch.draw(game.getIconTexture(), getIconX(count), getIconY(count),
 						GAME_ICON_SIZE, GAME_ICON_SIZE);
 
 				if (count == scrolls.get(currentSeries).getGame()) {
