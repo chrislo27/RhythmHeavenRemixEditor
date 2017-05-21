@@ -5,6 +5,7 @@ import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.FileChooser
 import chrislo27.rhre.util.JsonHandler
+import chrislo27.rhre.util.message.IconMessage
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
@@ -149,7 +150,10 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 						}
 
 						es.editor.isNormalSave = true
-						es.editor.autosaveMessageShow = 3f
+						es.editor.messageHandler.list.add(0,
+												IconMessage(3f, AssetRegistry.getTexture("ui_save"),
+															Localization.get("editor.saved"),
+															main, 0.5f, 4f))
 					}
 				}
 
