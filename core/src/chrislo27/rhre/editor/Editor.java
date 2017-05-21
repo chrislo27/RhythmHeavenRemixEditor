@@ -431,7 +431,7 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(1, 1, 1, 1);
 			main.getFont().setColor(1, 1, 1, 1);
 			main.getFont().getData().setScale(0.5f);
-			chrislo27.rhre.Main.Companion.drawCompressed(main.getFont(), batch, status == null ? "" : status, 2,
+			Main.drawCompressed(main.getFont(), batch, status == null ? "" : status, 2,
 					2 + main.getFont().getCapHeight(), main.camera.viewportWidth - 16 - main.getVersionStringLength(),
 					Align.left);
 
