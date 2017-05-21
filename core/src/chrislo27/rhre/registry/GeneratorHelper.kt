@@ -300,9 +300,7 @@ $id/thwack"""
 			addedCues.add(
 					SoundCue(it, gameObject.gameID!!, "ogg",
 							 it.replace("$id/", "")
-									 .replace("_", " ")
-									 .replace("male", "bossa")
-									 .replace("female", "nova"),
+									 .replace("_", " "),
 							 mutableListOf(),
 							 if (it.endsWith("cloud1")) {
 								 1f
