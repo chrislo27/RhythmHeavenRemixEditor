@@ -20,7 +20,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -67,7 +66,6 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Main main;
 	private final Vector3 vec3Tmp = new Vector3();
 	private final Vector3 vec3Tmp2 = new Vector3();
-	private final GlyphLayout glyphLayout = new GlyphLayout();
 	private final Map<Series, ScrollValue> scrolls = new HashMap<>();
 	private final Vector3 cameraPickVec3 = new Vector3();
 	public final MessageHandler messageHandler = new MessageHandler();
