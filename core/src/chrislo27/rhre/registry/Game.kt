@@ -1,5 +1,7 @@
 package chrislo27.rhre.registry
 
+import com.badlogic.gdx.graphics.Texture
+import ionium.registry.AssetRegistry
 import ionium.util.MathHelper
 import ionium.util.i18n.Localization
 import org.luaj.vm2.LuaValue
@@ -34,6 +36,11 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 			"clapTrap" -> "〠"
 			else -> defaultPointerString
 		}
+	}
+
+	private val iconTextureID: String by lazy { "gameIcon_$id" }
+	val iconTexture: Texture get() {
+		return AssetRegistry.getTexture(iconTextureID)
 	}
 
 	fun isCustom() = series == Series.CUSTOM

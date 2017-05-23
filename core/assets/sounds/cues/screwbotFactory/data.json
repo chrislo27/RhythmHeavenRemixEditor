@@ -156,6 +156,84 @@
           "beat": 5
         }
       ]
+    },
+    {
+      "id": "screwbotFactory_blackRobotFaster",
+      "name": "black robot (faster)",
+      "cues": [
+        {
+          "id": "screwbotFactory/clankclank1",
+          "beat": 0
+        },
+        {
+          "id": "screwbotFactory/clankclank2",
+          "beat": 0.5
+        },
+        {
+          "id": "screwbotFactory/ohyeahPlace",
+          "beat": 1
+        },
+        {
+          "id": "screwbotFactory/screwingOhYeah",
+          "beat": 2
+        },
+        {
+          "id": "screwbotFactory/complete",
+          "beat": 4
+        },
+        {
+          "id": "screwbotFactory/oh",
+          "beat": 4.5
+        },
+        {
+          "id": "screwbotFactory/yeah",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "screwbotFactory_whiteRobotFast",
+      "name": "white robot (faster)",
+      "cues": [
+        {
+          "id": "screwbotFactory/whiteCrane",
+          "beat": 0
+        },
+        {
+          "id": "screwbotFactory/whiteCrane",
+          "beat": 0.5
+        },
+        {
+          "id": "screwbotFactory/clankclank1",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "screwbotFactory/clankclank2",
+          "beat": 0.5,
+          "track": 1
+        },
+        {
+          "id": "screwbotFactory/letsgoPlace",
+          "beat": 1
+        },
+        {
+          "id": "screwbotFactory/screwingLetsGo",
+          "beat": 2
+        },
+        {
+          "id": "screwbotFactory/complete",
+          "beat": 3
+        },
+        {
+          "id": "screwbotFactory/lets",
+          "beat": 3.5
+        },
+        {
+          "id": "screwbotFactory/go",
+          "beat": 4
+        }
+      ]
     }
   ]
 }

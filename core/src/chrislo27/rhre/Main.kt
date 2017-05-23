@@ -128,6 +128,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 			Localization.DEFAULT_LOCALE = languagesMap[""]
 		}
 
+		@JvmStatic
 		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float,
 						   align: Int) {
 			val textWidth = Utils.getWidth(font, text)
@@ -159,7 +160,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 						 preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,
 						 preferences.getBoolean("fullscreen", false))
 
-		languagesList.forEach( Localization.instance()::addBundle)
+		languagesList.forEachIndexed { i, it ->
+			if (i > 0) {
+				Localization.instance().addBundle(it)
+			}
+		}
 
 		Localization.instance().loadFromSettings(preferences)
 

@@ -1,0 +1,88 @@
+{
+  "gameID": "rockers",
+  "gameName": "Rockers",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "rockers/strumLoop",
+      "duration": 1,
+      "name": "strum loop",
+      "canAlterDuration": true,
+      "canAlterPitch": true,
+      "loops": true,
+      "introSound": "rockers/strumStart"
+    },
+    {
+      "id": "rockers/strumStart",
+      "duration": 0.25,
+      "name": "strum start",
+      "canAlterPitch": true
+    },
+    {
+      "id": "rockers/hold",
+      "duration": 0.25,
+      "name": "hold"
+    },
+    {
+      "id": "rockers/cmon",
+      "duration": 0.5,
+      "name": "c'mon"
+    },
+    {
+      "id": "rockers/lastone",
+      "duration": 1,
+      "name": "last one!"
+    },
+    {
+      "id": "rockers/group1",
+      "duration": 0.5,
+      "name": "together - start",
+      "canAlterPitch": true
+    },
+    {
+      "id": "rockers/group2",
+      "duration": 1.5,
+      "name": "together - last",
+      "canAlterPitch": true
+    },
+    {
+      "id": "rockers/one",
+      "duration": 1,
+      "name": "count - 1"
+    },
+    {
+      "id": "rockers/two",
+      "duration": 1,
+      "name": "count - 1"
+    },
+    {
+      "id": "rockers/three",
+      "duration": 1,
+      "name": "count - 1"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "rockers_together",
+      "name": "strum together",
+      "cues": [
+        {
+          "id": "rockers/group1",
+          "beat": 0.0
+        },
+        {
+          "id": "rockers/group1",
+          "beat": 1.5
+        },
+        {
+          "id": "rockers/group1",
+          "beat": 3
+        },
+        {
+          "id": "rockers/group2",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}

@@ -4,22 +4,26 @@
   "series": "tengoku",
   "cues": [
     {
-      "id": "tramAndPauline/paulineJump",
+      "id": "tramAndPauline/jumpPauline",
+      "deprecatedIDs": ["tramAndPauline/paulineJump"],
       "duration": 1.0,
       "name": "pauline jump"
     },
     {
-      "id": "tramAndPauline/paulineTransform",
+      "id": "tramAndPauline/transformPauline",
+      "deprecatedIDs": ["tramAndPauline/paulineTransform"],
       "duration": 1.0,
       "name": "pauline transform"
     },
     {
-      "id": "tramAndPauline/tramJump",
+      "id": "tramAndPauline/jumpTram",
+      "deprecatedIDs": ["tramAndPauline/tramJump"],
       "duration": 1.0,
       "name": "tram jump"
     },
     {
-      "id": "tramAndPauline/tramTransform",
+      "id": "tramAndPauline/transformTram",
+      "deprecatedIDs": ["tramAndPauline/tramTransform"],
       "duration": 1.0,
       "name": "tram transform"
     }
@@ -30,12 +34,12 @@
       "name": "tram",
       "cues": [
         {
-          "id": "tramAndPauline/tramJump",
+          "id": "tramAndPauline/jumpTram",
           "beat": 0.0,
           "track": 0
         },
         {
-          "id": "tramAndPauline/tramTransform",
+          "id": "tramAndPauline/transformTram",
           "beat": 1.0,
           "track": 0
         }
@@ -46,12 +50,12 @@
       "name": "pauline",
       "cues": [
         {
-          "id": "tramAndPauline/paulineJump",
+          "id": "tramAndPauline/jumpPauline",
           "beat": 0.0,
           "track": 0
         },
         {
-          "id": "tramAndPauline/paulineTransform",
+          "id": "tramAndPauline/transformPauline",
           "beat": 1.0,
           "track": 0
         }

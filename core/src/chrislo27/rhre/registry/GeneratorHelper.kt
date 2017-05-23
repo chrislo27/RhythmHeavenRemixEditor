@@ -9,7 +9,8 @@ object GeneratorHelpers {
 
 	val map: Map<String, GeneratorHelper> = mapOf(
 			"manzaiBirds" to ManzaiBirdsGeneratorHelper(),
-			"flipperFlopEn" to FlipperFlopGeneratorHelper("flipperFlopEn")
+			"flipperFlopEn" to FlipperFlopGeneratorHelper("flipperFlopEn"),
+			"bossaNovaEn" to BossaNovaGeneratorHelper("bossaNovaEn")
 												 )
 
 }
@@ -146,7 +147,7 @@ class FlipperFlopGeneratorHelper(val id: String) : GeneratorHelper() {
 					Pattern.PatternCue("$id/attention/attention6", id, 2.5f, 0, 0.25f, 0),
 					Pattern.PatternCue("$id/attention/attention7", id, 2.75f, 0, 0.5f, 0),
 					Pattern.PatternCue("$id/attention/attention8", id, 3.25f, 0, 1f, 0)
-																	  ), false,
+																			  ), false,
 								 mutableListOf()))
 		}
 
@@ -212,6 +213,135 @@ $id/count/flopCount4B""".lines().forEach {
 									 mutableListOf()))
 			}
 		}
+
+		soundCues.addAll(addedCues)
+	}
+
+}
+
+class BossaNovaGeneratorHelper(val id: String) : GeneratorHelper() {
+
+	private val allCues: String = """$id/ball
+$id/ball_echo
+$id/ball_hard
+$id/ball_low
+$id/ball_pop
+$id/click
+$id/cloud1
+$id/cloud2
+$id/cube
+$id/cube_echo
+$id/cube_heavy
+$id/female_bom1
+$id/female_bom2
+$id/female_bom3
+$id/female_bom4
+$id/female_bom5
+$id/female_bom6
+$id/female_bom7
+$id/female_bom8
+$id/female_bom9
+$id/female_bom10
+$id/female_bom_laugh
+$id/female_cough1
+$id/female_giggle1
+$id/female_giggle2
+$id/female_giggle3
+$id/female_mmm
+$id/female_pin1
+$id/female_pin2
+$id/female_pin3
+$id/female_ss1
+$id/female_ss2
+$id/female_ss3
+$id/female_yelp
+$id/hack
+$id/male_ahh1
+$id/male_cough1
+$id/male_d1
+$id/male_d2
+$id/male_d3
+$id/male_don1
+$id/male_don2
+$id/male_don3
+$id/male_don5
+$id/male_don6
+$id/male_don7
+$id/male_don8
+$id/male_don9
+$id/male_don10
+$id/male_don11
+$id/male_don12
+$id/male_don13
+$id/male_grunt1
+$id/male_mmm
+$id/male_ooh1
+$id/male_ss1
+$id/male_ss2
+$id/male_ss3
+$id/male_t
+$id/male_tt
+$id/male_turn1
+$id/male_turn2
+$id/male_turn3
+$id/male_turn4
+$id/male_turn5
+$id/male_turn6
+$id/sniff
+$id/ss
+$id/thwack"""
+
+	override fun process(gameFh: FileHandle, gameObject: GameObject, patterns: MutableList<Pattern>,
+						 soundCues: MutableList<SoundCue>) {
+		val addedCues: MutableList<SoundCue> = mutableListOf()
+		val lines = allCues.lines()
+
+		lines.forEach {
+			addedCues.add(
+					SoundCue(it, gameObject.gameID!!, "ogg",
+							 it.replace("$id/", "")
+									 .replace("_", " "),
+							 mutableListOf(),
+							 if (it.endsWith("cloud1")) {
+								 1f
+							 } else if (it.endsWith("cloud2")) {
+								 2f
+							 } else if (it.contains("bom") || it.contains("don")) {
+								 1.5f
+							 } else if (it.contains("turn") || it.contains("spin")) {
+								 1f
+							 } else {
+								 0.5f
+							 },
+							 false,
+							 0f))
+		}
+
+		patterns.add(Pattern("${id}_startPattern", gameObject.gameID!!,
+							 "starting pattern", false, mutableListOf(
+				Pattern.PatternCue("$id/ball", id, 0f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/cube", id, 1f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/ball", id, 1.5f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/ball", id, 2f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/cube", id, 2.5f, 0, 0.5f, 0)
+															), false,
+							 mutableListOf()))
+		patterns.add(Pattern("${id}_pattern", gameObject.gameID!!,
+							 "pattern", false, mutableListOf(
+				Pattern.PatternCue("$id/ball", id, 0f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/ball", id, 0.5f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/cube", id, 1.5f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/ball", id, 2f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/ball", id, 2.5f, 0, 0.5f, 0),
+				Pattern.PatternCue("$id/cube", id, 3f, 0, 0.5f, 0)
+															   ), false,
+							 mutableListOf()))
+		patterns.add(Pattern("${id}_cloudSpin", gameObject.gameID!!,
+							 "cloud spin", false, mutableListOf(
+				Pattern.PatternCue("$id/cloud1", id, 0f, 0, 1f, 0),
+				Pattern.PatternCue("$id/cloud2", id, 1f, 0, 2f, 0)
+															   ), false,
+							 mutableListOf()))
 
 		soundCues.addAll(addedCues)
 	}
