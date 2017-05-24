@@ -1,7 +1,7 @@
 {
   "gameID": "rhythmTweezers",
-  "gameName": "Rhythm Tweezers",
-  "series": "tengoku",
+  "gameName": "Rhythm Tweezers (Megamix)",
+  "series": "megamix",
   "cues": [
     {
       "id": "rhythmTweezers/appear",
