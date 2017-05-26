@@ -31,15 +31,17 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 		if (es.editor.remix?.music != null) {
 			val music: Music = es.editor.remix?.music?.music!!
 
-			var vol: Int = (music.volume * 100).toInt()
+			var vol: Int = Math.round(music.volume * 100)
 
-			vol += -amount * if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
-					Input.Keys.CONTROL_RIGHT)) 5 else 1
+			vol += -amount * (if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
+					Input.Keys.CONTROL_RIGHT)) 5 else 1)
 
 			vol = MathUtils.clamp(vol, 0, 100)
 
 			es.editor.remix.musicVolume = vol / 100f
 			music.volume = es.editor.remix.musicVolume
+
+			return true
 		}
 
 		return false
@@ -96,7 +98,7 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 
 		main.biggerFont.data.setScale(0.5f)
 		main.biggerFont.draw(main.batch,
-							 Localization.get("musicScreen.volume", "\n${(es.editor.remix.musicVolume * 100).toInt()}"),
+							 Localization.get("musicScreen.volume", "\n${Math.round(es.editor.remix.musicVolume * 100)}"),
 							 startX + PADDING + BG_WIDTH * 0.65f,
 							 startY + BG_HEIGHT * 0.75f,
 							 BG_WIDTH * 0.35f - PADDING * 2,
