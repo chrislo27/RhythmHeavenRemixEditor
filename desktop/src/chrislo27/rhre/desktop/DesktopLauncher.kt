@@ -14,8 +14,6 @@ object DesktopLauncher {
 	private var logger: Logger? = null
 
 	@JvmStatic fun main(args: Array<String>) {
-		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "true")
-
 		logger = Logger("", com.badlogic.gdx.utils.Logger.DEBUG)
 		val main = Main(logger!!)
 
@@ -34,6 +32,8 @@ object DesktopLauncher {
 		config.audioDeviceSimultaneousSources = 256
 
 		config.inferFromArguments()
+
+		System.setProperty("org.lwjgl.opengl.Display.allowSoftwareOpenGL", "${config.allowSoftwareMode}")
 
 		config.addIcon("images/icon/icon128.png", Files.FileType.Internal)
 		config.addIcon("images/icon/icon64.png", Files.FileType.Internal)
