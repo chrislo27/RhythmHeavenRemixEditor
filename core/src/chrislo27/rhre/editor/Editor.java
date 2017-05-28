@@ -381,11 +381,6 @@ public class Editor extends InputAdapter implements Disposable {
 		batch.setProjectionMatrix(main.camera.combined);
 		batch.begin();
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-			messageHandler.getList()
-					.add(new IconMessage(3, AssetRegistry.getTexture("ui_save"), "Saved.", main, 0.5f, 4f));
-		}
-
 		messageHandler.render(batch, camera.viewportWidth, camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 64,
 				camera.viewportWidth - 360, camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 64, 360, 64);
 
