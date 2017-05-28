@@ -8,7 +8,6 @@ import ionium.desktop.GameLwjglApp
 import ionium.registry.GlobalVariables
 import ionium.registry.lazysound.LazySound
 import ionium.util.Logger
-import java.util.*
 
 object DesktopLauncher {
 	private var logger: Logger? = null
@@ -40,7 +39,7 @@ object DesktopLauncher {
 		config.addIcon("images/icon/icon32.png", Files.FileType.Internal)
 		config.addIcon("images/icon/icon16.png", Files.FileType.Internal)
 
-		LazySound.forceLoadNow = Arrays.stream(args).anyMatch { s ->
+		LazySound.forceLoadNow = args.any { s ->
 			s.equals("--force-load-lazy-sounds", ignoreCase = true)
 		}
 		GameLwjglApp(main, config, logger)
