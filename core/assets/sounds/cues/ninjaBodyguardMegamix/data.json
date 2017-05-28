@@ -1,0 +1,18 @@
+{
+  "gameID": "ninjaBodyguardMegamix",
+  "gameName": "Ninja Bodyguard (3DS)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "ninjaBodyguardMegamix/shoot",
+      "duration": 0.25,
+      "name": "shoot"
+    },
+    {
+      "id": "ninjaBodyguardMegamix/cut",
+      "duration": 0.25,
+      "name": "cut"
+    }
+  ],
+  "patterns": []
+}
