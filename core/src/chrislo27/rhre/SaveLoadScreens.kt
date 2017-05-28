@@ -20,6 +20,7 @@ import ionium.util.Utils
 import ionium.util.i18n.Localization
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import javax.swing.JFileChooser
@@ -45,6 +46,10 @@ internal fun attemptRememberDirectory(main: Main, prefName: String): File? {
 }
 
 class SaveScreen(m: Main) : NewUIScreen(m) {
+	companion object {
+		const val MAX_ZIP_ATTEMPTS: Int = 4
+	}
+
 	override var icon: String = "ui_save"
 	override var title: String = "saveScreen.title"
 	override var bottomInstructions: String = "saveScreen.back"
@@ -142,11 +147,32 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 
 							es.editor.file = handle
 						} else {
-							val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
+							for (i in 1..MAX_ZIP_ATTEMPTS) {
+								var zipFile: ZipFile? = null
+								try {
+									val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
 
-							Remix.writeToZipStream(es.editor.remix, zipStream)
+									Remix.writeToZipStream(es.editor.remix, zipStream)
 
-							zipStream.close()
+									zipStream.close()
+
+									zipFile = ZipFile(picker.selectedFile)
+
+									break
+								} catch (e: IOException) {
+									e.printStackTrace()
+
+									if (i == MAX_ZIP_ATTEMPTS) {
+										es.editor.messageHandler.list.add(0,
+																		  IconMessage(5f, AssetRegistry.getTexture("ui_save"),
+																					  Localization.get("saveScreen.failed"),
+																					  main, 0.5f, 4f))
+										throw e
+									}
+								} finally {
+									zipFile?.close()
+								}
+							}
 						}
 
 						es.editor.isNormalSave = true

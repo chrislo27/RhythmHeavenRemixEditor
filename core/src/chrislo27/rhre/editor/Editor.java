@@ -2,6 +2,7 @@ package chrislo27.rhre.editor;
 
 import chrislo27.rhre.Main;
 import chrislo27.rhre.PreferenceKeys;
+import chrislo27.rhre.SaveScreen;
 import chrislo27.rhre.entity.Entity;
 import chrislo27.rhre.entity.HasGame;
 import chrislo27.rhre.entity.PatternEntity;
@@ -36,12 +37,14 @@ import ionium.util.Utils;
 import ionium.util.i18n.Localization;
 import ionium.util.render.StencilMaskUtil;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
 public class Editor extends InputAdapter implements Disposable {
@@ -690,11 +693,34 @@ public class Editor extends InputAdapter implements Disposable {
 				if (extension.equals("rhre2")) {
 					sibling.writeString(JsonHandler.toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
 				} else {
-					ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(sibling.file()));
+					final File siblingFile = sibling.file();
+					for (int i = 1; i <= SaveScreen.MAX_ZIP_ATTEMPTS; i++) {
+						ZipFile zipFile = null;
+						try {
+							ZipOutputStream zipStream = new ZipOutputStream(new FileOutputStream(siblingFile));
 
-					Remix.Companion.writeToZipStream(remix, zipStream);
+							Remix.Companion.writeToZipStream(remix, zipStream);
 
-					zipStream.close();
+							zipStream.close();
+
+							zipFile = new ZipFile(siblingFile);
+
+							break;
+						} catch (IOException e) {
+							if (i == SaveScreen.MAX_ZIP_ATTEMPTS) {
+								messageHandler.getList().add(0,
+										new IconMessage(5f, AssetRegistry.getTexture("ui_save"), Localization.get("saveScreen.failed"),
+												main, 0.5f, 4f));
+								throw new RuntimeException(e);
+							} else {
+								e.printStackTrace();
+							}
+						} finally {
+							if (zipFile != null) {
+								zipFile.close();
+							}
+						}
+					}
 				}
 
 				isNormalSave = false;
