@@ -21,7 +21,7 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 	val pointerString: String get() {
 		return when (id) {
 			"extraSFX" -> "★"
-			"rhythmTweezers" -> "✂"
+			"rhythmTweezers", "rhythmTweezersGba" -> "✂"
 			"moaiDooWop" -> "‼"
 			"builtToScaleFever" -> {
 				val time = MathHelper.getSawtoothWave(0.5f * bts.size)
