@@ -184,6 +184,41 @@
       "id": "cheerReaders/bunchaBooks7",
       "duration": 1,
       "name": "let's go read a buncha books - 7"
+    },
+    {
+      "id": "cheerReaders/onegirls",
+      "duration": 1,
+      "name": "one two three (girls) - 1"
+    },
+    {
+      "id": "cheerReaders/twogirls",
+      "duration": 1,
+      "name": "one two three (girls) - 2"
+    },
+    {
+      "id": "cheerReaders/threegirls",
+      "duration": 1,
+      "name": "one two three (girls) - 3"
+    },
+    {
+      "id": "cheerReaders/itsgirls",
+      "duration": 1,
+      "name": "it's up to you! (girls) - it's"
+    },
+    {
+      "id": "cheerReaders/upgirls",
+      "duration": 1,
+      "name": "it's up to you! (girls) - up"
+    },
+    {
+      "id": "cheerReaders/togirls",
+      "duration": 1,
+      "name": "it's up to you! (girls) - to"
+    },
+    {
+      "id": "cheerReaders/yougirls",
+      "duration": 1,
+      "name": "it's up to you! (girls) - you!"
     }
   ],
   "patterns": [
@@ -224,6 +259,24 @@
       ]
     },
     {
+      "id": "cheerReaders_oneTwoThreeGirls",
+      "name": "one two three! - girls",
+      "cues": [
+        {
+          "id": "cheerReaders/onegirls",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/twogirls",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/threegirls",
+          "beat": 2
+        }
+      ]
+    },
+    {
       "id": "cheerReaders_itsUpToYou",
       "name": "it's up to you!",
       "cues": [
@@ -241,6 +294,28 @@
         },
         {
           "id": "cheerReaders/itsUpToYou4",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "cheerReaders_itsUpToYouGirls",
+      "name": "it's up to you! (girls)",
+      "cues": [
+        {
+          "id": "cheerReaders/itsgirls",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/upgirls",
+          "beat": 0.75
+        },
+        {
+          "id": "cheerReaders/togirls",
+          "beat": 1.5
+        },
+        {
+          "id": "cheerReaders/yougirls",
           "beat": 2
         }
       ]
