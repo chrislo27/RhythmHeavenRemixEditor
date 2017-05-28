@@ -1,102 +1,102 @@
 {
-  "gameID": "dogNinja",
-  "gameName": "Dog Ninja (DS)",
-  "series": "ds",
+  "gameID": "dogNinjaMegamix",
+  "gameName": "Dog Ninja (3DS)",
+  "series": "megamix",
   "cues": [
     {
-      "id": "dogNinja/fruit1",
+      "id": "dogNinjaMegamix/fruit1",
       "duration": 1,
       "name": "fruit - out"
     },
     {
-      "id": "dogNinja/fruit2",
+      "id": "dogNinjaMegamix/fruit2",
       "duration": 1,
       "name": "fruit - slice"
     },
     {
-      "id": "dogNinja/bone1",
+      "id": "dogNinjaMegamix/bone1",
       "duration": 1,
       "name": "bone - out"
     },
     {
-      "id": "dogNinja/bone2",
+      "id": "dogNinjaMegamix/bone2",
       "duration": 1,
       "name": "bone - slice"
     },
     {
-      "id": "dogNinja/tire1",
+      "id": "dogNinjaMegamix/tire1",
       "duration": 1,
       "name": "tire - out"
     },
     {
-      "id": "dogNinja/tire2",
+      "id": "dogNinjaMegamix/tire2",
       "duration": 1,
       "name": "tire - slice"
     },
     {
-      "id": "dogNinja/pan1",
+      "id": "dogNinjaMegamix/pan1",
       "duration": 1,
       "name": "pan - out"
     },
     {
-      "id": "dogNinja/pan2",
+      "id": "dogNinjaMegamix/pan2",
       "duration": 1,
       "name": "pan - slice"
     }
   ],
   "patterns": [
     {
-      "id": "dogNinja_fruit",
+      "id": "dogNinjaMegamix_fruit",
       "name": "fruit",
       "cues": [
         {
-          "id": "dogNinja/fruit1",
+          "id": "dogNinjaMegamix/fruit1",
           "beat": 0.0
         },
         {
-          "id": "dogNinja/fruit2",
+          "id": "dogNinjaMegamix/fruit2",
           "beat": 1.0
         }
       ]
     },
     {
-      "id": "dogNinja_bone",
+      "id": "dogNinjaMegamix_bone",
       "name": "bone",
       "cues": [
         {
-          "id": "dogNinja/bone1",
+          "id": "dogNinjaMegamix/bone1",
           "beat": 0.0
         },
         {
-          "id": "dogNinja/bone2",
+          "id": "dogNinjaMegamix/bone2",
           "beat": 1.0
         }
       ]
     },
     {
-      "id": "dogNinja_tire",
+      "id": "dogNinjaMegamix_tire",
       "name": "tire",
       "cues": [
         {
-          "id": "dogNinja/tire1",
+          "id": "dogNinjaMegamix/tire1",
           "beat": 0.0
         },
         {
-          "id": "dogNinja/tire2",
+          "id": "dogNinjaMegamix/tire2",
           "beat": 1.0
         }
       ]
     },
     {
-      "id": "dogNinja_pan",
+      "id": "dogNinjaMegamix_pan",
       "name": "pan",
       "cues": [
         {
-          "id": "dogNinja/pan1",
+          "id": "dogNinjaMegamix/pan1",
           "beat": 0.0
         },
         {
-          "id": "dogNinja/pan2",
+          "id": "dogNinjaMegamix/pan2",
           "beat": 1.0
         }
       ]
