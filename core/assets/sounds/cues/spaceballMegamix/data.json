@@ -1,54 +1,54 @@
 {
-  "gameID": "spaceball",
-  "gameName": "Spaceball (GBA)",
+  "gameID": "spaceballMegamix",
+  "gameName": "Spaceball (3DS)",
   "series": "tengoku",
   "cues": [
     {
-      "id": "spaceball/alien",
+      "id": "spaceballMegamix/alien",
       "duration": 5,
       "name": "AAAAHHHHHH"
     },
     {
-      "id": "spaceball/shoot",
+      "id": "spaceballMegamix/shoot",
       "duration": 1,
       "name": "shoot"
     },
     {
-      "id": "spaceball/longShoot",
+      "id": "spaceballMegamix/longShoot",
       "duration": 1,
       "name": "high shot"
     },
     {
-      "id": "spaceball/hit",
+      "id": "spaceballMegamix/hit",
       "duration": 1,
       "name": "hit"
     }
   ],
   "patterns": [
     {
-      "id": "spaceball_ball",
+      "id": "spaceballMegamix_ball",
       "name": "ball",
       "cues": [
         {
-          "id": "spaceball/shoot",
+          "id": "spaceballMegamix/shoot",
           "beat": 0
         },
         {
-          "id": "spaceball/hit",
+          "id": "spaceballMegamix/hit",
           "beat": 1
         }
       ]
     },
     {
-      "id": "spaceball_highball",
+      "id": "spaceballMegamix_highball",
       "name": "high ball",
       "cues": [
         {
-          "id": "spaceball/longShoot",
+          "id": "spaceballMegamix/longShoot",
           "beat": 0
         },
         {
-          "id": "spaceball/hit",
+          "id": "spaceballMegamix/hit",
           "beat": 2
         }
       ]
