@@ -16,7 +16,17 @@
     {
       "id": "exhibitionMatch/hit",
       "duration": 1,
-      "name": "hit"
+      "name": "hit 1"
+    },
+    {
+      "id": "exhibitionMatch/hit2",
+      "duration": 1,
+      "name": "hit 2"
+    },
+    {
+      "id": "exhibitionMatch/hit3",
+      "duration": 1,
+      "name": "hit 3"
     },
     {
       "id": "exhibitionMatch/hitHomerun",
@@ -26,8 +36,9 @@
   ],
   "patterns": [
     {
-      "id": "exhibitionMatch_pitch",
-      "name": "pitch",
+      "id": "exhibitionMatch_pitch1",
+      "deprecatedIDs": ["exhibitionMatch_pitch"],
+      "name": "pitch 1",
       "cues": [
         {
           "id": "exhibitionMatch/stance",
@@ -39,6 +50,42 @@
         },
         {
           "id": "exhibitionMatch/hit",
+          "beat": 6.0
+        }
+      ]
+    },
+    {
+      "id": "exhibitionMatch_pitch2",
+      "name": "pitch 2",
+      "cues": [
+        {
+          "id": "exhibitionMatch/stance",
+          "beat": 0.0
+        },
+        {
+          "id": "exhibitionMatch/throw",
+          "beat": 2.0
+        },
+        {
+          "id": "exhibitionMatch/hit2",
+          "beat": 6.0
+        }
+      ]
+    },
+    {
+      "id": "exhibitionMatch_pitch3",
+      "name": "pitch 3",
+      "cues": [
+        {
+          "id": "exhibitionMatch/stance",
+          "beat": 0.0
+        },
+        {
+          "id": "exhibitionMatch/throw",
+          "beat": 2.0
+        },
+        {
+          "id": "exhibitionMatch/hit3",
           "beat": 6.0
         }
       ]
