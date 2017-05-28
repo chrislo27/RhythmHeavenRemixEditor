@@ -16,7 +16,12 @@
     {
       "id": "rhythmTweezers/pluck",
       "duration": 0.25,
-      "name": "hair - pluck"
+      "name": "hair - pluck 1"
+    },
+    {
+      "id": "rhythmTweezers/pluck2",
+      "duration": 0.25,
+      "name": "hair - pluck 2"
     },
     {
       "id": "rhythmTweezers/gr",
