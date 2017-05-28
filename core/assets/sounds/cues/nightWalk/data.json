@@ -29,6 +29,16 @@
       "name": "jump - lollipop"
     },
     {
+      "id": "nightWalk/jump3",
+      "duration": 1.0,
+      "name": "jump - umbrella"
+    },
+    {
+      "id": "nightWalk/jumpUmbrella",
+      "duration": 1.0,
+      "name": "jump UP - umbrella / end"
+    },
+    {
       "id": "nightWalk/disappear",
       "duration": 1.0,
       "name": "box disappear"
@@ -123,6 +133,55 @@
         {
           "id": "nightWalk/jump2",
           "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "nightWalk_jumpUmbrella1",
+      "name": "three flowers, one umbrella (same level)",
+      "cues": [
+        {
+          "id": "nightWalk/jump1",
+          "beat": 0
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 1
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 2
+        },
+        {
+          "id": "nightWalk/jump3",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "nightWalk_jumpUmbrella2",
+      "name": "three flowers, one umbrella (up a level)",
+      "cues": [
+        {
+          "id": "nightWalk/jump1",
+          "beat": 0
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 1
+        },
+        {
+          "id": "nightWalk/jump1",
+          "beat": 2
+        },
+        {
+          "id": "nightWalk/jump3",
+          "beat": 3
+        },
+        {
+          "id": "nightWalk/jumpUmbrella",
+          "beat": 3,
+          "track": 1
         }
       ]
     },
