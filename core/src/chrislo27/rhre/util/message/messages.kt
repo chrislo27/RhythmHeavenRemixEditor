@@ -62,6 +62,9 @@ open class IconMessage(length: Float, val icon: Texture?, var text: String, val 
 					   transitionTime: Float = 0.5f,
 					   val iconPadding: Float = 4f) : Message(length, transitionTime) {
 
+	constructor(length: Float, icon: Texture?, text: String, main: chrislo27.rhre.Main) : this(length, icon, text, main,
+																							   0.5f, 4f)
+
 	override fun render(batch: Batch, x: Float, y: Float,
 						endX: Float, endY: Float, width: Float, height: Float) {
 		val realX: Float = MathUtils.lerp(x, endX, position)
@@ -93,7 +96,8 @@ open class IconMessage(length: Float, val icon: Texture?, var text: String, val 
 
 		var textHeight: Float
 		do {
-			textHeight = Utils.getHeightWithWrapping(main.font, text, realWidth) + (main.font.lineHeight - main.font.capHeight)
+			textHeight = Utils.getHeightWithWrapping(main.font, text,
+													 realWidth) + (main.font.lineHeight - main.font.capHeight)
 			if (textHeight > height - iconPadding * 2) {
 				main.font.data.setScale(main.font.data.scaleX * 0.75f)
 				continue
