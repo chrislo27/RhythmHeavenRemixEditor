@@ -24,6 +24,11 @@
       "name": "log - small - 2"
     },
     {
+      "id": "lumbearjack/small2b",
+      "duration": 1.5,
+      "name": "log - small - 2b"
+    },
+    {
       "id": "lumbearjack/medium1",
       "duration": 1,
       "name": "log - medium - 1"
@@ -74,11 +79,6 @@
       "name": "can - 2"
     },
     {
-      "id": "lumbearjack/bat",
-      "duration": 1,
-      "name": "bat"
-    },
-    {
       "id": "lumbearjack/broom1",
       "duration": 1,
       "name": "broom - 1"
@@ -87,6 +87,17 @@
       "id": "lumbearjack/broom2",
       "duration": 1,
       "name": "broom - 2"
+    },
+    {
+      "id": "lumbearjack/baseballBat1",
+      "duration": 1,
+      "name": "baseball bat - 1"
+    },
+    {
+      "id": "lumbearjack/baseballBat2",
+      "deprecatedIDs": ["lumbearjack/bat"],
+      "duration": 1,
+      "name": "baseball bat - 2"
     },
     {
       "id": "lumbearjack/huh",
@@ -196,11 +207,11 @@
           "beat": 0
         },
         {
-          "id": "lumbearjack/small1",
+          "id": "lumbearjack/baseballBat1",
           "beat": 1
         },
         {
-          "id": "lumbearjack/bat",
+          "id": "lumbearjack/baseballBat2",
           "beat": 2
         },
         {
