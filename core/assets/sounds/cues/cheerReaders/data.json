@@ -202,17 +202,17 @@
     },
     {
       "id": "cheerReaders/itsgirls",
-      "duration": 1,
+      "duration": 0.75,
       "name": "it's up to you! (girls) - it's"
     },
     {
       "id": "cheerReaders/upgirls",
-      "duration": 1,
+      "duration": 0.75,
       "name": "it's up to you! (girls) - up"
     },
     {
       "id": "cheerReaders/togirls",
-      "duration": 1,
+      "duration": 5,
       "name": "it's up to you! (girls) - to"
     },
     {
