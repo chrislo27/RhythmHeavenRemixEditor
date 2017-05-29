@@ -9,6 +9,11 @@
       "name": "and"
     },
     {
+      "id": "figureFighter/and2",
+      "duration": 0.5,
+      "name": "and2"
+    },
+    {
       "id": "figureFighter/jab",
       "duration": 0.5,
       "name": "jab"
@@ -72,6 +77,17 @@
       "id": "figureFighter/goHit3",
       "duration": 1.0,
       "name": "go go go - hit - 3"
+    },
+    {
+      "id": "figureFighter/jabHitpower",
+      "duration": 1.0,
+      "name": "jab hit - power"
+    },
+    {
+      "id": "figureFighter/applauseHit",
+      "deprecatedIDs": ["figureFighter/appaluseHit"],
+      "duration": 1.0,
+      "name": "crowd - falling pieces"
     },
     {
       "id": "figureFighter/fastOneTwo1",
@@ -172,6 +188,40 @@
         {
           "id": "figureFighter/goHit3",
           "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "figureFighter_gogogo",
+      "name": "go go go! appluase",
+      "cues": [
+        {
+          "id": "figureFighter/go1",
+          "beat": 0.0
+        },
+        {
+          "id": "figureFighter/go2",
+          "beat": 0.5
+        },
+        {
+          "id": "figureFighter/go3",
+          "beat": 1.0
+        },
+        {
+          "id": "figureFighter/goHit1",
+          "beat": 2.0
+        },
+        {
+          "id": "figureFighter/goHit2",
+          "beat": 2.5
+        },
+        {
+          "id": "figureFighter/jabHitpower",
+          "beat": 3.0
+        },
+        {
+          "id": "figureFighter/appaluseHit",
+          "beat": 4.5
         }
       ]
     },
