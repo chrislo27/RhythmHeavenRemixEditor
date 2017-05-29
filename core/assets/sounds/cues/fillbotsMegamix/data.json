@@ -1,262 +1,244 @@
 {
-  "gameID": "fillbots",
-  "gameName": "Fillbots (DS)",
-  "series": "ds",
+  "gameID": "fillbotsMegamix",
+  "gameName": "Fillbots (Megamix)",
+  "series": "megamix",
   "cues": [
     {
-      "id": "fillbots/mediumFall",
+      "id": "fillbotsMegamix/mediumFall",
       "duration": 1,
       "name": "medium - fall"
     },
-    //    {
-    //      "id": "fillbots/mediumFill",
-    //      "duration": 3,
-    //      "name": "medium - fill",
-    //      "baseBpm": 104
-    //    },
     {
-      "id": "fillbots/mediumFinish1",
+      "id": "fillbotsMegamix/mediumFinish1",
       "duration": 0.5,
       "name": "medium - detach - 1"
     },
     {
-      "id": "fillbots/mediumFinish2",
+      "id": "fillbotsMegamix/mediumFinish2",
       "duration": 0.5,
       "name": "medium - detach - 2"
     },
     {
-      "id": "fillbots/mediumFinish3",
+      "id": "fillbotsMegamix/mediumFinish3",
       "duration": 0.5,
       "name": "medium - detach - 3"
     },
     {
-      "id": "fillbots/bigFall",
+      "id": "fillbotsMegamix/bigFall",
       "duration": 1,
       "name": "big - fall"
     },
-    //    {
-    //      "id": "fillbots/bigFill",
-    //      "duration": 7,
-    //      "name": "big - fill",
-    //      "baseBpm": 104
-    //    },
     {
-      "id": "fillbots/bigFinish1",
+      "id": "fillbotsMegamix/bigFinish1",
       "duration": 0.5,
       "name": "big - detach - 1"
     },
     {
-      "id": "fillbots/bigFinish2",
+      "id": "fillbotsMegamix/bigFinish2",
       "duration": 0.5,
       "name": "big - detach - 2"
     },
     {
-      "id": "fillbots/bigFinish3",
+      "id": "fillbotsMegamix/bigFinish3",
       "duration": 0.5,
       "name": "big - detach - 3"
     },
     {
-      "id": "fillbots/smallFall",
+      "id": "fillbotsMegamix/smallFall",
       "duration": 1,
       "name": "small - fall"
     },
-    //    {
-    //      "id": "fillbots/smallFill",
-    //      "duration": 1,
-    //      "name": "small - fill",
-    //      "baseBpm": 104
-    //    },
     {
-      "id": "fillbots/smallFinish1",
+      "id": "fillbotsMegamix/smallFinish1",
       "duration": 0.5,
       "name": "small - detach - 1"
     },
     {
-      "id": "fillbots/smallFinish2",
+      "id": "fillbotsMegamix/smallFinish2",
       "duration": 0.5,
       "name": "small - detach - 2"
     },
     {
-      "id": "fillbots/smallFinish3",
+      "id": "fillbotsMegamix/smallFinish3",
       "duration": 0.5,
       "name": "small - detach - 3"
     },
     {
-      "id": "fillbots/water",
+      "id": "fillbotsMegamix/water",
       "duration": 1,
       "name": "filling sound",
       "canAlterDuration": true,
       "loops": false,
-      "introSound": "fillbots/armExtension"
+      "introSound": "fillbotsMegamix/armExtension"
     },
     {
-      "id": "fillbots/armExtension",
+      "id": "fillbotsMegamix/armExtension",
       "duration": 0.05,
       "name": "arm extension"
     },
     {
-      "id": "fillbots/beep",
+      "id": "fillbotsMegamix/beep",
       "duration": 1,
       "name": "beep"
     }
   ],
   "patterns": [
     {
-      "id": "fillbots_mediumRobot",
+      "id": "fillbotsMegamix_mediumRobot",
       "name": "medium robot",
       "cues": [
         {
-          "id": "fillbots/mediumFall",
+          "id": "fillbotsMegamix/mediumFall",
           "beat": 0
         },
         {
-          "id": "fillbots/mediumFall",
+          "id": "fillbotsMegamix/mediumFall",
           "beat": 1
         },
         {
-          "id": "fillbots/mediumFall",
+          "id": "fillbotsMegamix/mediumFall",
           "beat": 2
         },
         {
-          "id": "fillbots/water",
+          "id": "fillbotsMegamix/water",
           "beat": 4,
           "duration": 3
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 4,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 5,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 6,
           "track": 1
         },
         {
-          "id": "fillbots/mediumFinish1",
+          "id": "fillbotsMegamix/mediumFinish1",
           "beat": 7
         },
         {
-          "id": "fillbots/mediumFinish2",
+          "id": "fillbotsMegamix/mediumFinish2",
           "beat": 7.5
         },
         {
-          "id": "fillbots/mediumFinish3",
+          "id": "fillbotsMegamix/mediumFinish3",
           "beat": 8
         }
       ]
     },
     {
-      "id": "fillbots_bigRobot",
+      "id": "fillbotsMegamix_bigRobot",
       "name": "big robot",
       "cues": [
         {
-          "id": "fillbots/bigFall",
+          "id": "fillbotsMegamix/bigFall",
           "beat": 0
         },
         {
-          "id": "fillbots/bigFall",
+          "id": "fillbotsMegamix/bigFall",
           "beat": 1
         },
         {
-          "id": "fillbots/bigFall",
+          "id": "fillbotsMegamix/bigFall",
           "beat": 2
         },
         {
-          "id": "fillbots/water",
+          "id": "fillbotsMegamix/water",
           "beat": 4,
           "duration": 7
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 4,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 5,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 6,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 7,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 8,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 9,
           "track": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 10,
           "track": 1
         },
         {
-          "id": "fillbots/bigFinish1",
+          "id": "fillbotsMegamix/bigFinish1",
           "beat": 11
         },
         {
-          "id": "fillbots/bigFinish2",
+          "id": "fillbotsMegamix/bigFinish2",
           "beat": 11.5
         },
         {
-          "id": "fillbots/bigFinish3",
+          "id": "fillbotsMegamix/bigFinish3",
           "beat": 12
         }
       ]
     },
     {
-      "id": "fillbots_smallRobot",
+      "id": "fillbotsMegamix_smallRobot",
       "name": "small robot",
       "cues": [
         {
-          "id": "fillbots/smallFall",
+          "id": "fillbotsMegamix/smallFall",
           "beat": 0
         },
         {
-          "id": "fillbots/smallFall",
+          "id": "fillbotsMegamix/smallFall",
           "beat": 1
         },
         {
-          "id": "fillbots/smallFall",
+          "id": "fillbotsMegamix/smallFall",
           "beat": 2
         },
         {
-          "id": "fillbots/water",
+          "id": "fillbotsMegamix/water",
           "beat": 4,
           "duration": 1
         },
         {
-          "id": "fillbots/beep",
+          "id": "fillbotsMegamix/beep",
           "beat": 4,
           "track": 1
         },
         {
-          "id": "fillbots/smallFinish1",
+          "id": "fillbotsMegamix/smallFinish1",
           "beat": 5
         },
         {
-          "id": "fillbots/smallFinish2",
+          "id": "fillbotsMegamix/smallFinish2",
           "beat": 5.5
         },
         {
-          "id": "fillbots/smallFinish3",
+          "id": "fillbotsMegamix/smallFinish3",
           "beat": 6
         }
       ]
