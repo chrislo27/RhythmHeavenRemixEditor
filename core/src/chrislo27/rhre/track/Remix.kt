@@ -449,7 +449,7 @@ class Remix : ActionHistory<Remix>() {
 		val anyDiffer = filtered.any {
 			it as HasGame
 
-			if (it.game.id == "countIn") return@any false
+			if (it.game.id == "countIn" || it.game.id == "extraSFX") return@any false
 
 			return@any it.game != currentGame
 		}
