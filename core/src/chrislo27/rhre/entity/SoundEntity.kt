@@ -41,7 +41,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		this.bounds.set(beat, level.toFloat(), duration, 1f)
 
 		game = GameRegistry[cue.id.substring(0, cue.id.indexOf('/'))]!!
-		isFillbotsFill = cue.id == "fillbots/water"
+		isFillbotsFill = cue.id == "fillbots/water" || cue.id == "fillbotsMegamix/water"
 	}
 
 	constructor(remix: Remix, cue: SoundCue, beat: Float, level: Int, semitone: Int) : this(remix, cue, beat, level,
