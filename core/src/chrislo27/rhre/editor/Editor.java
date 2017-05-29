@@ -708,9 +708,6 @@ public class Editor extends InputAdapter implements Disposable {
 							break;
 						} catch (IOException e) {
 							if (i == SaveScreen.MAX_ZIP_ATTEMPTS) {
-								messageHandler.getList().add(0,
-										new IconMessage(5f, AssetRegistry.getTexture("ui_save"), Localization.get("saveScreen.failed"),
-												main, 0.5f, 4f));
 								throw new RuntimeException(e);
 							} else {
 								e.printStackTrace();
@@ -727,8 +724,11 @@ public class Editor extends InputAdapter implements Disposable {
 				messageHandler.getList().add(0,
 						new IconMessage(3f, AssetRegistry.getTexture("ui_save"), Localization.get("editor.autosaved"),
 								main, 0.5f, 4f));
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
+				messageHandler.getList().add(0,
+						new IconMessage(5f, AssetRegistry.getTexture("ui_save"), Localization.get("saveScreen.failed"),
+								main, 0.5f, 4f));
 			} finally {
 				System.gc();
 			}
