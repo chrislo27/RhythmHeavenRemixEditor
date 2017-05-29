@@ -136,50 +136,53 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".brhre2")
 							}
 						}
+						try {
+							val obj: RemixObject = Remix.writeToJsonObject(es.editor.remix)
 
-						val obj: RemixObject = Remix.writeToJsonObject(es.editor.remix)
+							picker.selectedFile.createNewFile()
 
-						picker.selectedFile.createNewFile()
+							if (picker.fileFilter === dataFileFilter) {
+								val json: String = JsonHandler.toJson(obj)
+								handle.writeString(json, false, "UTF-8")
 
-						if (picker.fileFilter === dataFileFilter) {
-							val json: String = JsonHandler.toJson(obj)
-							handle.writeString(json, false, "UTF-8")
+								es.editor.file = handle
+							} else {
+								for (i in 1..MAX_ZIP_ATTEMPTS) {
+									var zipFile: ZipFile? = null
+									try {
+										val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
 
-							es.editor.file = handle
-						} else {
-							for (i in 1..MAX_ZIP_ATTEMPTS) {
-								var zipFile: ZipFile? = null
-								try {
-									val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
+										Remix.writeToZipStream(es.editor.remix, zipStream)
 
-									Remix.writeToZipStream(es.editor.remix, zipStream)
+										zipStream.close()
 
-									zipStream.close()
+										zipFile = ZipFile(picker.selectedFile)
 
-									zipFile = ZipFile(picker.selectedFile)
+										break
+									} catch (e: IOException) {
+										e.printStackTrace()
 
-									break
-								} catch (e: IOException) {
-									e.printStackTrace()
-
-									if (i == MAX_ZIP_ATTEMPTS) {
-										es.editor.messageHandler.list.add(0,
-																		  IconMessage(5f, AssetRegistry.getTexture("ui_save"),
-																					  Localization.get("saveScreen.failed"),
-																					  main, 0.5f, 4f))
-										throw e
+										if (i == MAX_ZIP_ATTEMPTS) {
+											throw e
+										}
+									} finally {
+										zipFile?.close()
 									}
-								} finally {
-									zipFile?.close()
 								}
 							}
-						}
 
-						es.editor.isNormalSave = true
-						es.editor.messageHandler.list.add(0,
-												IconMessage(3f, AssetRegistry.getTexture("ui_save"),
-															Localization.get("editor.saved"),
-															main, 0.5f, 4f))
+							es.editor.isNormalSave = true
+							es.editor.messageHandler.list.add(0,
+															  IconMessage(3f, AssetRegistry.getTexture("ui_save"),
+																		  Localization.get("editor.saved"),
+																		  main, 0.5f, 4f))
+						} catch (e: Exception) {
+							e.printStackTrace()
+							es.editor.messageHandler.list.add(0,
+															  IconMessage(5f, AssetRegistry.getTexture("ui_save"),
+																		  Localization.get("saveScreen.failed"),
+																		  main, 0.5f, 4f))
+						}
 					}
 				}
 
