@@ -33,6 +33,11 @@ object GameRegistry : Disposable {
 
 	@Volatile private var alreadyLoaded = false
 
+	/**
+	 * Throw exception on any warnings
+	 */
+	var pedantic: Boolean = true
+
 	val luaValue: LuaValue by lazy {
 		val l = LuaValue.tableOf()
 
@@ -334,6 +339,10 @@ object GameRegistry : Disposable {
 				"Loaded " + this.gameList.size + " games (" +
 						(this.gameList.size - numAreCustom) + " databased, $numAreCustom custom game(s)) with " +
 						warningCount + " warning(s), done in " + ((System.nanoTime() - startTime) / 1_000_000.0) + " ms")
+
+		if (pedantic && warningCount > 0) {
+			throw IllegalStateException("Warnings exist and pedantic mode is on")
+		}
 	}
 
 }
