@@ -1,0 +1,120 @@
+{
+  "gameID": "firstContact",
+  "gameName": "First Contact",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "firstContact/passover",
+      "duration": 0.5,
+      "name": "turn passover"
+    },
+    {
+      "id": "firstContact/success1",
+      "duration": 0.5,
+      "name": "turn success 1"
+    },
+    {
+      "id": "firstContact/success2",
+      "duration": 2,
+      "name": "turn success 2"
+    },
+    {
+      "id": "firstContact/alien1",
+      "duration": 0.5,
+      "name": "alien - 1"
+    },
+    {
+      "id": "firstContact/alien2",
+      "duration": 0.5,
+      "name": "alien - 2"
+    },
+    {
+      "id": "firstContact/alien3",
+      "duration": 0.5,
+      "name": "alien - 3"
+    },
+    {
+      "id": "firstContact/alien4",
+      "duration": 0.5,
+      "name": "alien - 4"
+    },
+    {
+      "id": "firstContact/alien5",
+      "duration": 0.5,
+      "name": "alien - 5"
+    },
+    {
+      "id": "firstContact/alien6",
+      "duration": 0.5,
+      "name": "alien - 6"
+    },
+    {
+      "id": "firstContact/translator1",
+      "duration": 0.5,
+      "name": "translator - 1"
+    },
+    {
+      "id": "firstContact/translator2",
+      "duration": 0.5,
+      "name": "translator - 2"
+    },
+    {
+      "id": "firstContact/translator3",
+      "duration": 0.5,
+      "name": "translator - 3"
+    },
+    {
+      "id": "firstContact/translator4",
+      "duration": 0.5,
+      "name": "translator - 4"
+    },
+    {
+      "id": "firstContact/translator5",
+      "duration": 0.5,
+      "name": "translator - 5"
+    },
+    {
+      "id": "firstContact/translator6",
+      "duration": 0.5,
+      "name": "translator - 6"
+    },
+    {
+      "id": "firstContact/translator7",
+      "duration": 0.5,
+      "name": "translator - 7"
+    },
+    {
+      "id": "firstContact/translator8",
+      "duration": 0.5,
+      "name": "translator - 8"
+    },
+    {
+      "id": "firstContact/translator9",
+      "duration": 0.5,
+      "name": "translator - 9"
+    },
+    {
+      "id": "firstContact/translator10",
+      "duration": 0.5,
+      "name": "translator - 10"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "firstContact_success",
+      "name": "success",
+      "cues": [
+        {
+          "id": "firstContact/success1",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "firstContact/success2",
+          "beat": 0.5,
+          "track": 0
+        }
+      ]
+    }
+  ]
+}
