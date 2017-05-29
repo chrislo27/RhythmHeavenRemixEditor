@@ -294,6 +294,11 @@ object GameRegistry : Disposable {
 			val checked = mutableMapOf<String, Boolean>()
 			gameList.forEach { game ->
 				game.soundCues.forEach { sc ->
+					if (!sc.id.startsWith(game.id)) {
+						Main.logger.warn("Sound cue ${sc.id} is in game ${game.id}")
+						warningCount++
+					}
+
 					if (checked[sc.id] != null) {
 						Main.logger.warn("Duplicate sound cue " + sc.id)
 						warningCount++
@@ -302,6 +307,18 @@ object GameRegistry : Disposable {
 					}
 				}
 				game.patterns.forEach { pat ->
+					if (!pat.id.startsWith(game.id)) {
+						Main.logger.warn("Pattern cue ${pat.id} is in game ${game.id}")
+						warningCount++
+					}
+
+					pat.cues.forEach { pc ->
+						if (!pc.id.startsWith(game.id)) {
+							Main.logger.warn("Pattern cue ${pc.id} in pattern ${pat.id} is in game ${game.id}")
+							warningCount++
+						}
+					}
+
 					if (checked[pat.id] != null) {
 						Main.logger.warn("Duplicate pattern " + pat.id)
 						warningCount++
