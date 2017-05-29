@@ -14,14 +14,29 @@
       "name": "weak slice"
     },
     {
+      "id": "samuraiSliceGba/sliceLowDouble",
+      "duration": 1,
+      "name": "weak slice double"
+    },
+    {
       "id": "samuraiSliceGba/sliceMiddle",
       "duration": 1,
       "name": "medium slice"
     },
     {
+      "id": "samuraiSliceGba/sliceMiddleDouble",
+      "duration": 1,
+      "name": "medium slice double"
+    },
+    {
       "id": "samuraiSliceGba/sliceHigh",
       "duration": 1,
       "name": "strong slice"
+    },
+    {
+      "id": "samuraiSliceGba/sliceHighDouble",
+      "duration": 1,
+      "name": "strong slice double"
     },
     {
       "id": "samuraiSliceGba/bigSliceLow",
@@ -55,6 +70,20 @@
       ]
     },
     {
+      "id": "samuraiSliceGba_weakSliceDouble",
+      "name": "weak slice double",
+      "cues": [
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceLowDouble",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
       "id": "samuraiSliceGba_mediumSlice",
       "name": "medium slice",
       "cues": [
@@ -64,6 +93,20 @@
         },
         {
           "id": "samuraiSliceGba/sliceMiddle",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "samuraiSliceGba_mediumSliceDouble",
+      "name": "medium slice double",
+      "cues": [
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceMiddleDouble",
           "beat": 1.0
         }
       ]
@@ -83,6 +126,20 @@
       ]
     },
     {
+      "id": "samuraiSliceGba_strongSliceDouble",
+      "name": "strong slice double",
+      "cues": [
+        {
+          "id": "samuraiSliceGba/jump",
+          "beat": 0.0
+        },
+        {
+          "id": "samuraiSliceGba/sliceHighDouble",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
       "id": "samuraiSliceGba_bigWeakSlice",
       "name": "big demon weak slice",
       "cues": [
@@ -92,7 +149,7 @@
         },
         {
           "id": "samuraiSliceGba/bigSliceLow",
-          "beat": 1.0
+          "beat": 1.5
         }
       ]
     },
@@ -106,7 +163,7 @@
         },
         {
           "id": "samuraiSliceGba/bigSliceMiddle",
-          "beat": 1.0
+          "beat": 1.5
         }
       ]
     },
@@ -120,7 +177,7 @@
         },
         {
           "id": "samuraiSliceGba/bigSliceHigh",
-          "beat": 1.0
+          "beat": 1.5
         }
       ]
     }
