@@ -1,0 +1,90 @@
+{
+  "gameID": "bouncyRoadMegamix",
+  "gameName": "Bouncy Road (Megamix)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "bouncyRoadMegamix/tink",
+      "duration": 0.25,
+      "name": "tink",
+      "canAlterPitch": true
+    },
+    {
+      "id": "bouncyRoadMegamix/cymbal",
+      "duration": 0.25,
+      "name": "cymbal",
+      "canAlterPitch": true
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bouncyRoadMegamix_15bounces",
+      "name": "15 bounces",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 0
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 0.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 1
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 1.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 2
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 2.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 3
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 3.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 4
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 4.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 5.5
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 6,
+          "semitone": -4
+        },
+        {
+          "id": "bouncyRoadMegamix/tink",
+          "beat": 6.5,
+          "semitone": 3
+        },
+        {
+          "id": "bouncyRoadMegamix/cymbal",
+          "beat": 7
+        }
+      ]
+    }
+  ]
+}
