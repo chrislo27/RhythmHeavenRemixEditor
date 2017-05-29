@@ -49,7 +49,8 @@
       "id": "launchParty/greenMiddle",
       "duration": 0.166666,
       "name": "green - middle",
-      "canAlterPitch": true
+      "canAlterPitch": true,
+      "loops": true
     },
     {
       "id": "launchParty/greenEnd",
@@ -166,22 +167,22 @@
         {
           "id": "launchParty/greenMiddle",
           "beat": 1.5,
-          "semitone": 5
-        },
-        {
-          "id": "launchParty/greenMiddle",
-          "beat": 1.666666,
           "semitone": 7
         },
         {
           "id": "launchParty/greenMiddle",
-          "beat": 1.833333,
+          "beat": 1.666666,
           "semitone": 9
+        },
+        {
+          "id": "launchParty/greenMiddle",
+          "beat": 1.833333,
+          "semitone": 11
         },
         {
           "id": "launchParty/greenEnd",
           "beat": 2,
-          "semitone": 11
+          "semitone": 12
         }
       ]
     },
