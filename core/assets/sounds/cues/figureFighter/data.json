@@ -192,8 +192,8 @@
       ]
     },
     {
-      "id": "figureFighter_gogogo",
-      "name": "go go go! appluase",
+      "id": "figureFighter_gogogoApplause",
+      "name": "go go go! applause",
       "cues": [
         {
           "id": "figureFighter/go1",
@@ -220,7 +220,7 @@
           "beat": 3.0
         },
         {
-          "id": "figureFighter/appaluseHit",
+          "id": "figureFighter/applauseHit",
           "beat": 4.5
         }
       ]
