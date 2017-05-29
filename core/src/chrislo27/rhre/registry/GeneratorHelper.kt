@@ -264,6 +264,7 @@ $id/male_d3
 $id/male_don1
 $id/male_don2
 $id/male_don3
+$id/male_don4
 $id/male_don5
 $id/male_don6
 $id/male_don7
@@ -272,7 +273,6 @@ $id/male_don9
 $id/male_don10
 $id/male_don11
 $id/male_don12
-$id/male_don13
 $id/male_grunt1
 $id/male_mmm
 $id/male_ooh1
