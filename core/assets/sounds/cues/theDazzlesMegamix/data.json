@@ -1,0 +1,216 @@
+{
+  "gameID": "theDazzlesMegamix",
+  "gameName": "The Dazzles (Megamix)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "theDazzlesMegamix/hold3",
+      "duration": 0.5,
+      "name": "hold - three"
+    },
+    {
+      "id": "theDazzlesMegamix/hold2",
+      "duration": 0.5,
+      "name": "hold - two"
+    },
+    {
+      "id": "theDazzlesMegamix/hold1",
+      "duration": 0.5,
+      "name": "hold - 1"
+    },
+    {
+      "id": "theDazzlesMegamix/holdCrouch",
+      "duration":1.0,
+      "name": "hold - crouch"
+    },
+    {
+      "id": "theDazzlesMegamix/crouch",
+      "duration": 1.0,
+      "name": "hold - crouch"
+    },
+    {
+      "id": "theDazzlesMegamix/posePartner",
+      "duration": 0.5,
+      "name": "partner pose"
+    },
+    {
+      "id": "theDazzlesMegamix/posePartnerLong",
+      "duration": 1.0,
+      "name": "partner pose - long"
+    },
+    {
+      "id": "theDazzlesMegamix/posePlayer",
+      "duration": 1.0,
+      "name": "player pose"
+    },
+    {
+      "id": "theDazzlesMegamix/posePlayerStars",
+      "duration": 2.0,
+      "name": "player pose - stars"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "theDazzlesMegamix_hold",
+      "name": "hold count in",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/hold3",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/hold2",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamix/hold1",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamix/crouch",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_holdCrouch",
+      "name": "crouching",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/hold3",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/hold2",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamix/holdCrouch",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_poseThree",
+      "name": "pose - three",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePlayer",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_poseTwo",
+      "name": "pose - two",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePlayerStars",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_poseSix1",
+      "name": "pose - six - diagonal",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.75
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 2.75
+        },
+        {
+          "id": "theDazzlesMegamix/posePlayer",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_poseSix2",
+      "name": "pose - six - columns",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesMegamix/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 2.5
+        },
+        {
+          "id": "theDazzlesMegamix/posePlayer",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamix_poseSix3",
+      "name": "pose - six",
+      "cues": [
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesMegamix/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamix/posePlayerStars",
+          "beat": 2.5
+        }
+      ]
+    }
+  ]
+}
