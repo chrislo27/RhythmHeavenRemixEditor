@@ -75,7 +75,7 @@ class SoundCue(val id: String, val gameID: String, val fileExtension: String = "
 	fun getPitch(semitone: Int, bpm: Float): Float {
 		var result = 1f
 
-		if (canAlterPitch)
+		if (canAlterPitch || semitone != 0)
 			result = Semitones.getALPitch(semitone)
 
 		if (baseBpm > 0) {

@@ -1,5 +1,9 @@
 package chrislo27.rhre
 
+import chrislo27.rhre.FileFilters.bothFileFilter
+import chrislo27.rhre.FileFilters.bundledFileFilter
+import chrislo27.rhre.FileFilters.dataFileFilter
+import chrislo27.rhre.FileFilters.midiFileFilter
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.track.Remix
@@ -23,13 +27,17 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import javax.sound.midi.MidiSystem
 import javax.swing.JFileChooser
 import javax.swing.filechooser.FileNameExtensionFilter
 
-val dataFileFilter = FileNameExtensionFilter(
-		"Deprecated RHRE2 remix data file (.rhre2)", "rhre2")
-val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
-val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
+internal object FileFilters {
+	val dataFileFilter = FileNameExtensionFilter(
+			"Deprecated RHRE2 remix data file (.rhre2)", "rhre2")
+	val bundledFileFilter = FileNameExtensionFilter("RHRE2 bundled file (.brhre2)", "brhre2")
+	val bothFileFilter = FileNameExtensionFilter("Any RHRE2 compatible file (.brhre2, .rhre2)", "brhre2", "rhre2")
+	val midiFileFilter = FileNameExtensionFilter("MIDI file (.mid, .midi)", "mid", "midi")
+}
 
 internal fun persistDirectory(main: Main, prefName: String, file: File) {
 	main.preferences.putString(prefName, file.absolutePath)
@@ -246,6 +254,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 				fileFilter = bothFileFilter
 				addChoosableFileFilter(bundledFileFilter)
 				addChoosableFileFilter(dataFileFilter)
+				addChoosableFileFilter(midiFileFilter)
 			}
 		}
 	}
@@ -408,7 +417,9 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 			val obj: RemixObject
 			val handle = FileHandle(file)
-			if (file.extension == "rhre2") {
+			if (picker.fileFilter === midiFileFilter) {
+				obj = Remix.readFromMidiSequence(MidiSystem.getSequence(file))
+			} else if (file.extension == "rhre2") {
 				val gson: Gson = GsonBuilder().create()
 				obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 			} else {

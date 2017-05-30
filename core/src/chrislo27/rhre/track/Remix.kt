@@ -1,5 +1,6 @@
 package chrislo27.rhre.track
 
+import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.HasGame
 import chrislo27.rhre.entity.PatternEntity
@@ -14,7 +15,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
-import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.templates.Main
 import kotlinx.coroutines.experimental.CommonPool
@@ -30,6 +30,10 @@ import java.nio.charset.Charset
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import javax.sound.midi.MidiEvent
+import javax.sound.midi.MidiMessage
+import javax.sound.midi.Sequence
+import javax.sound.midi.ShortMessage
 
 
 class Remix : ActionHistory<Remix>() {
@@ -282,7 +286,7 @@ class Remix : ActionHistory<Remix>() {
 			}
 			inputStream.close()
 
-			val obj = Gson().fromJson(result.toString("UTF-8"), RemixObject::class.java)
+			val obj = JsonHandler.fromJson(result.toString("UTF-8"), RemixObject::class.java)
 
 			obj.musicData = null
 
@@ -314,6 +318,75 @@ class Remix : ActionHistory<Remix>() {
 				obj.musicData = MusicData(Gdx.audio.newMusic(handle), handle)
 			}
 			zipFile.close()
+			return obj
+		}
+
+		fun readFromMidiSequence(sequence: Sequence): RemixObject {
+			val beatsPerTick: Float = 1f / sequence.resolution // TODO this assumes PPQ
+
+			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val track: Int)
+
+			var trackNum: Int = 0
+			val points: List<NotePoint> = sequence.tracks.flatMap { track ->
+				var current: NotePoint? = null
+				val list = mutableListOf<NotePoint>()
+
+				for (i in 0 until track.size()) {
+					val event: MidiEvent = track[i]
+					val message: MidiMessage = event.message
+
+					if (message is ShortMessage) {
+						val command: Int = message.command
+						val semitone: Int = message.data1 - 60 // TODO maybe works
+
+						fun endNote() {
+							if (current != null) {
+								current!!.duration = event.tick * beatsPerTick - current!!.startBeat
+								list += current!!
+								current = null
+							}
+						}
+
+						when (command) {
+							ShortMessage.NOTE_ON -> {
+								endNote()
+								current = NotePoint(event.tick * beatsPerTick, 0f, semitone, trackNum)
+							}
+							ShortMessage.NOTE_OFF -> {
+								endNote()
+							}
+						}
+					}
+				}
+
+				trackNum++
+
+				return@flatMap list
+			}
+
+			val noteCue: String = "secondContact/alien1"
+
+			val obj: RemixObject = RemixObject()
+			obj.entities = mutableListOf()
+			obj.bpmChanges = mutableListOf()
+			obj.metadata = RemixObject.MetadataObject()
+			obj.playbackStart = 0f
+
+			val entities: MutableList<RemixObject.EntityObject> = obj.entities!!
+
+			points.forEach { point ->
+				val ent = RemixObject.EntityObject()
+
+				ent.id = noteCue
+
+				ent.beat = point.startBeat
+				ent.width = point.duration
+				ent.semitone = point.semitone
+				ent.level = point.track % Editor.TRACK_COUNT
+
+				entities.add(ent)
+			}
+
 			return obj
 		}
 	}
