@@ -9,6 +9,7 @@ import chrislo27.rhre.registry.SoundCue
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.track.Semitones
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALSound
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
@@ -87,7 +88,10 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 					   targetWidth,
 					   Align.right, true)
 
-		if (cue.canAlterPitch) {
+		if (cue.canAlterPitch || semitone != 0) {
+			if (!cue.canAlterPitch) {
+				main.font.color = Color.RED
+			}
 			main.font.draw(batch, Semitones.getSemitoneName(semitone), bounds.getX() * Entity.Companion.PX_WIDTH + 4,
 						   bounds.getY() * Entity.Companion.PX_HEIGHT + main.font.capHeight + 4f)
 		}
