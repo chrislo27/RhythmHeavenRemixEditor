@@ -30,10 +30,7 @@ import java.nio.charset.Charset
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
-import javax.sound.midi.MidiEvent
-import javax.sound.midi.MidiMessage
-import javax.sound.midi.Sequence
-import javax.sound.midi.ShortMessage
+import javax.sound.midi.*
 
 
 class Remix : ActionHistory<Remix>() {
@@ -297,7 +294,8 @@ class Remix : ActionHistory<Remix>() {
 				tempFile.deleteOnExit()
 				tmpFolder.deleteOnExit()
 
-				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation) ?: throw RuntimeException("Music file not found!")
+				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation) ?: throw RuntimeException(
+						"Music file not found!")
 				val iS = zipFile.getInputStream(musicEntry)
 				val baos = ByteArrayOutputStream()
 				var newLength: Int
@@ -322,7 +320,13 @@ class Remix : ActionHistory<Remix>() {
 		}
 
 		fun readFromMidiSequence(sequence: Sequence): RemixObject {
-			val beatsPerTick: Float = 1f / sequence.resolution // TODO this assumes PPQ
+			val beatsPerTick: Float = 1f / sequence.resolution
+
+			val obj: RemixObject = RemixObject()
+			obj.entities = mutableListOf()
+			obj.bpmChanges = mutableListOf()
+			obj.metadata = RemixObject.MetadataObject()
+			obj.playbackStart = 0f
 
 			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val track: Int)
 
@@ -337,7 +341,7 @@ class Remix : ActionHistory<Remix>() {
 
 					if (message is ShortMessage) {
 						val command: Int = message.command
-						val semitone: Int = message.data1 - 60 // TODO maybe works
+						val semitone: Int = message.data1 - 60
 
 						fun endNote() {
 							if (current != null) {
@@ -356,6 +360,19 @@ class Remix : ActionHistory<Remix>() {
 								endNote()
 							}
 						}
+					} else if (message is MetaMessage) {
+						when (message.type) {
+							0x51 /* SET_TEMPO */ -> {
+								val data = message.data
+								val tempo: Int = (data[0].toInt() and 0xFF) shl 16 or (data[1].toInt() and 0xFF) shl 8 or (data[2].toInt() and 0xFF)
+								val bpm: Float = 60000000f / tempo
+
+								val bpmTrackerObject = RemixObject.BpmTrackerObject()
+								bpmTrackerObject.beat = event.tick * beatsPerTick
+								bpmTrackerObject.tempo = bpm
+								obj.bpmChanges!! += bpmTrackerObject
+							}
+						}
 					}
 				}
 
@@ -364,13 +381,7 @@ class Remix : ActionHistory<Remix>() {
 				return@flatMap list
 			}
 
-			val noteCue: String = "secondContact/alien1"
-
-			val obj: RemixObject = RemixObject()
-			obj.entities = mutableListOf()
-			obj.bpmChanges = mutableListOf()
-			obj.metadata = RemixObject.MetadataObject()
-			obj.playbackStart = 0f
+			val noteCue: String = "builtToScaleDS/c" // TODO
 
 			val entities: MutableList<RemixObject.EntityObject> = obj.entities!!
 
@@ -383,6 +394,7 @@ class Remix : ActionHistory<Remix>() {
 				ent.width = point.duration
 				ent.semitone = point.semitone
 				ent.level = point.track % Editor.TRACK_COUNT
+				ent.isPattern = !ent.id!!.contains('/')
 
 				entities.add(ent)
 			}
