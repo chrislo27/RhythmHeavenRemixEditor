@@ -377,7 +377,6 @@ class Remix : ActionHistory<Remix>() {
 				}
 
 				trackNum++
-
 				return@flatMap list
 			}
 
