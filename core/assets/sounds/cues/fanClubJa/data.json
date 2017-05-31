@@ -64,7 +64,7 @@
       "deprecatedIDs": [
         "fanClubJp/kamoneClap1"
       ],
-      "duration": 0.75,
+      "duration": 1.5,
       "name": "audience - kamone - 1"
     },
     {
@@ -72,7 +72,7 @@
       "deprecatedIDs": [
         "fanClubJp/kamoneClap2"
       ],
-      "duration": 0.75,
+      "duration": 0.5,
       "name": "audience - kamone - 2"
     },
     {
@@ -97,7 +97,7 @@
         "fanClubJp/kamoneJump"
       ],
       "duration": 1,
-      "name": "audience - kamone - 5"
+      "name": "audience - kamone - 4b"
     }
   ],
   "patterns": [
@@ -163,18 +163,14 @@
         },
         {
           "id": "fanClubJa/kamoneClap2",
-          "beat": 2.75
-        },
-        {
-          "id": "fanClubJa/kamoneClap3",
           "beat": 3.5
         },
         {
-          "id": "fanClubJa/kamoneClap4",
+          "id": "fanClubJa/kamoneClap3",
           "beat": 4
         },
         {
-          "id": "fanClubJa/kamoneJump",
+          "id": "fanClubJa/kamoneClap4",
           "beat": 5
         }
       ]
