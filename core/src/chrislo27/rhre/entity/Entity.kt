@@ -13,6 +13,7 @@ abstract class Entity(val remix: Remix) {
 	val bounds = Rectangle()
 
 	var playbackCompletion = PlaybackCompletion.WAITING
+	var volume: Float = 1f
 
 	open fun reset() {
 		playbackCompletion = PlaybackCompletion.WAITING

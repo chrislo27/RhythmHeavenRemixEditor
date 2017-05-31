@@ -31,6 +31,9 @@ class RemixObject {
 		var width: Float = 0f
 		var semitone: Int = 0
 
+		var stopAlways: Boolean = false
+		var volume: Float = 1f
+
 	}
 
 	class BpmTrackerObject {

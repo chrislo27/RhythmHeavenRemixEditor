@@ -214,7 +214,11 @@ class Remix : ActionHistory<Remix>() {
 						e = SoundEntity(remix, GameRegistry.getCue(it.id!!)!!, it.beat, it.level, it.width,
 										it.semitone)
 					}
+
+					e.stopSoundAlways = it.stopAlways
 				}
+
+				e.volume = it.volume
 
 				remix.entities.add(e)
 			}
@@ -328,7 +332,7 @@ class Remix : ActionHistory<Remix>() {
 			obj.metadata = RemixObject.MetadataObject()
 			obj.playbackStart = 0f
 
-			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val track: Int)
+			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float, val track: Int)
 
 			var trackNum: Int = 0
 			val points: List<NotePoint> = sequence.tracks.flatMap { track ->
@@ -354,7 +358,7 @@ class Remix : ActionHistory<Remix>() {
 						when (command) {
 							ShortMessage.NOTE_ON -> {
 								endNote()
-								current = NotePoint(event.tick * beatsPerTick, 0f, semitone, trackNum)
+								current = NotePoint(event.tick * beatsPerTick, 0f, semitone, message.data2 / 127f, trackNum)
 							}
 							ShortMessage.NOTE_OFF -> {
 								endNote()
@@ -388,12 +392,17 @@ class Remix : ActionHistory<Remix>() {
 				val ent = RemixObject.EntityObject()
 
 				ent.id = noteCue
+//				ent.id = "quizShow/contestantA"
+				if (point.track == 9) {
+//					ent.id = "bossaNovaEn/ball"
+				}
 
 				ent.beat = point.startBeat
 				ent.width = point.duration
 				ent.semitone = point.semitone
 				ent.level = point.track % Editor.TRACK_COUNT
 				ent.isPattern = !ent.id!!.contains('/')
+//				ent.stopAlways = true
 
 				entities.add(ent)
 			}

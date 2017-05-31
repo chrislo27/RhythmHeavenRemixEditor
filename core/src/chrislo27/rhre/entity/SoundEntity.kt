@@ -20,6 +20,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 				  @Volatile override var semitone: Int) : Entity(remix), HasGame{
 	override val game: Game
 	private val isFillbotsFill: Boolean
+	var stopSoundAlways: Boolean = false
 	@Volatile private var soundId: Long = -1
 	@Volatile private var introSoundId: Long = -1
 	@Volatile private var startTime = 0f
@@ -108,15 +109,15 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 
 		if (cue.getIntroSoundObj() != null) {
 			val s = cue.getIntroSoundObj()!! as OpenALSound
-			introSoundId = s.play(1f, cue.getPitch(semitone, bpm), pan)
+			introSoundId = s.play(volume, cue.getPitch(semitone, bpm), pan)
 		}
 
 		val s = cue.getSoundObj() as OpenALSound
 		val realPos = remix.tempoChanges.beatsToSeconds(remix.beat - intendedStart) % s.duration()
 		if (cue.shouldBeLooped()) {
-			soundId = s.loop(1f, cue.getPitch(semitone, bpm), pan)
+			soundId = s.loop(volume, cue.getPitch(semitone, bpm), pan)
 		} else {
-			soundId = s.play(1f, cue.getPitch(semitone, bpm), pan)
+			soundId = s.play(volume, cue.getPitch(semitone, bpm), pan)
 		}
 
 	}
@@ -143,7 +144,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 	override fun onEnd(delta: Float, intendedEnd: Float) {
 		super.onEnd(delta, intendedEnd)
 
-		if (cue.shouldBeStopped()) {
+		if (cue.shouldBeStopped() || stopSoundAlways) {
 			if (cue.getIntroSoundObj() != null)
 				cue.getIntroSoundObj()!!.stop(introSoundId)
 			cue.getSoundObj().stop(soundId)
