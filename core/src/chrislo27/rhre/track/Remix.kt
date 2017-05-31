@@ -365,7 +365,6 @@ class Remix : ActionHistory<Remix>() {
 							0x51 /* SET_TEMPO */ -> {
 								val data = message.data
 								val microseconds: Int = ((data[0].toInt() and 0xFF) shl 16) or ((data[1].toInt() and 0xFF) shl 8) or (data[2].toInt() and 0xFF)
-								println(microseconds)
 								val bpm: Float = 60_000_000f / microseconds
 
 								val bpmTrackerObject = RemixObject.BpmTrackerObject()
