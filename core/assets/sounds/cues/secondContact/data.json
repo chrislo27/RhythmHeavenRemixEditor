@@ -40,21 +40,6 @@
       "name": "turn success (Bob) 2"
     },
     {
-      "id": "secondContact/reporter1",
-      "duration": 0.5,
-      "name": "reporter - 1"
-    },
-    {
-      "id": "secondContact/reporter2",
-      "duration": 0.5,
-      "name": "reporter - 2"
-    },
-    {
-      "id": "secondContact/reporter3",
-      "duration": 0.5,
-      "name": "reporter - 3"
-    },
-    {
       "id": "secondContact/farmer1",
       "duration": 0.5,
       "name": "farmer - 1"
