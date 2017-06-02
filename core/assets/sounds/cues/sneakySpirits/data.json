@@ -24,6 +24,11 @@
       "name": "fading - 3"
     },
     {
+      "id": "sneakySpirits/rain",
+      "duration": 3.0,
+      "name": "no ghost - raining"
+    },
+    {
       "id": "sneakySpirits/hit",
       "duration": 0.5,
       "name": "hit"
