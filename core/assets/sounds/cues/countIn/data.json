@@ -15,24 +15,56 @@
       "name": "cowbell"
     },
     {
-      "id": "countIn/one",
+      "id": "countIn/one1",
+      "deprecatedIDs": [
+        "countIn/one"
+      ],
       "duration": 1,
       "name": "one"
     },
     {
-      "id": "countIn/two",
+      "id": "countIn/one2",
+      "duration": 1,
+      "name": "one (alternative)"
+    },
+    {
+      "id": "countIn/two1",
+      "deprecatedIDs": [
+        "countIn/two"
+      ],
       "duration": 1,
       "name": "two"
     },
     {
-      "id": "countIn/three",
+      "id": "countIn/two2",
+      "duration": 1,
+      "name": "two (alternative)"
+    },
+    {
+      "id": "countIn/three1",
+      "deprecatedIDs": [
+        "countIn/three"
+      ],
       "duration": 1,
       "name": "three"
     },
     {
-      "id": "countIn/four",
+      "id": "countIn/three2",
+      "duration": 1,
+      "name": "three (alternative)"
+    },
+    {
+      "id": "countIn/four1",
+      "deprecatedIDs": [
+        "countIn/four"
+      ],
       "duration": 1,
       "name": "four"
+    },
+    {
+      "id": "countIn/four2",
+      "duration": 1,
+      "name": "four (alternative)"
     },
     {
       "id": "countIn/and",
@@ -59,11 +91,11 @@
       "name": "2-beat count-in",
       "cues": [
         {
-          "id": "countIn/three",
+          "id": "countIn/three1",
           "beat": 0
         },
         {
-          "id": "countIn/four",
+          "id": "countIn/four1",
           "beat": 1
         }
       ]
@@ -76,19 +108,19 @@
       "name": "4-beat count-in",
       "cues": [
         {
-          "id": "countIn/one",
+          "id": "countIn/one1",
           "beat": 0
         },
         {
-          "id": "countIn/two",
+          "id": "countIn/two1",
           "beat": 1
         },
         {
-          "id": "countIn/three",
+          "id": "countIn/three1",
           "beat": 2
         },
         {
-          "id": "countIn/four",
+          "id": "countIn/four1",
           "beat": 3
         }
       ]
@@ -101,27 +133,93 @@
       "name": "8-beat count-in",
       "cues": [
         {
-          "id": "countIn/one",
+          "id": "countIn/one1",
           "beat": 0
         },
         {
-          "id": "countIn/two",
+          "id": "countIn/two1",
           "beat": 2
         },
         {
-          "id": "countIn/one",
+          "id": "countIn/one1",
           "beat": 4
         },
         {
-          "id": "countIn/two",
+          "id": "countIn/two1",
           "beat": 5
         },
         {
-          "id": "countIn/three",
+          "id": "countIn/three1",
           "beat": 6
         },
         {
-          "id": "countIn/four",
+          "id": "countIn/four1",
+          "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "countIn_2BeatCountIn2",
+      "name": "2-beat count-in (alt.)",
+      "cues": [
+        {
+          "id": "countIn/three2",
+          "beat": 0
+        },
+        {
+          "id": "countIn/four2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "countIn_4BeatCountIn2",
+      "name": "4-beat count-in (alt.)",
+      "cues": [
+        {
+          "id": "countIn/one2",
+          "beat": 0
+        },
+        {
+          "id": "countIn/two2",
+          "beat": 1
+        },
+        {
+          "id": "countIn/three2",
+          "beat": 2
+        },
+        {
+          "id": "countIn/four2",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "countIn_8BeatCountIn2",
+      "name": "8-beat count-in (alt.)",
+      "cues": [
+        {
+          "id": "countIn/one2",
+          "beat": 0
+        },
+        {
+          "id": "countIn/two2",
+          "beat": 2
+        },
+        {
+          "id": "countIn/one2",
+          "beat": 4
+        },
+        {
+          "id": "countIn/two2",
+          "beat": 5
+        },
+        {
+          "id": "countIn/three2",
+          "beat": 6
+        },
+        {
+          "id": "countIn/four2",
           "beat": 7
         }
       ]
