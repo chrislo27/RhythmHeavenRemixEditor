@@ -139,6 +139,11 @@
       "name": "scratch-o - loud - 4"
     },
     {
+      "id": "djSchool/yay",
+      "duration": 1,
+      "name": "yay"
+    },
+    {
       "id": "djSchool/letsgo1",
       "deprecatedIDs": [
         "djSchool/letsgo"
