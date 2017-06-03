@@ -172,10 +172,14 @@ object GameRegistry : Disposable {
 			}
 
 			soundCues.filter { sc -> soundCues.none { sc.id == it.introSound } }.forEach { sc ->
-				patterns.add(
-						Pattern(sc.id + "_AUTO-GENERATED", gameObj.gameID!!, "cue: " + sc.name, sc.canAlterDuration,
-								mutableListOf(Pattern.PatternCue(sc.id, gameObj.gameID!!, 0f, 0, sc.duration, 0)),
-								true, mutableListOf()))
+				val pattern = Pattern(sc.id + "_AUTO-GENERATED", gameObj.gameID!!, "cue: " + sc.name, sc.canAlterDuration,
+									  mutableListOf(Pattern.PatternCue(sc.id, gameObj.gameID!!, 0f, 0, sc.duration, 0)),
+									  true, mutableListOf())
+				if (sc.id == "countIn/silence") {
+					patterns.add(0, pattern)
+				} else {
+					patterns += pattern
+				}
 			}
 
 			val iconFh = Gdx.files.internal("$baseDir$gameDef/icon.png")
@@ -240,10 +244,9 @@ object GameRegistry : Disposable {
 
 				l.add(Pattern.PatternCue(sc.id, fh.name(), 0f, 0, sc.duration, 0))
 
-				patterns.add(
-						Pattern(sc.id + "_AUTO-GENERATED", fh.name(), "cue: " +
-								sc.name.replace("custom:\n", ""),
-								sc.canAlterDuration, l, true, mutableListOf()))
+				patterns += Pattern(sc.id + "_AUTO-GENERATED", fh.name(), "cue: " +
+						sc.name.replace("custom:\n", ""),
+									  sc.canAlterDuration, l, true, mutableListOf())
 			}
 
 			game = Game(fh.nameWithoutExtension(), fh.nameWithoutExtension(), soundCues, patterns,
