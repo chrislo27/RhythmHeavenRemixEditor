@@ -304,6 +304,13 @@ object GameRegistry : Disposable {
 						warningCount++
 					}
 
+					if (sc.introSound != null) {
+						if (!gameList.any { g -> g.soundCues.any { it.id == sc.introSound } }) {
+							Main.logger.warn("Intro sound cue ${sc.introSound} in sound cue ${sc.id} doesn't exist")
+							warningCount++
+						}
+					}
+
 					if (checked[sc.id] != null) {
 						Main.logger.warn("Duplicate sound cue " + sc.id)
 						warningCount++

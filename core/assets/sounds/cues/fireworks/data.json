@@ -48,6 +48,11 @@
       "id": "fireworks/bomb4",
       "duration": 1,
       "name": "taiko drum bomb - 4"
+    },
+    {
+      "id": "fireworks/all",
+      "duration": 1,
+      "name": "all fireworks boom"
     }
   ],
   "patterns": [
