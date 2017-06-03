@@ -1,7 +1,7 @@
 {
   "gameID": "bunnyHop",
-  "gameName": "Bunny Hop",
-  "series": "tengoku",
+  "gameName": "Bunny Hop (Megamix)",
+  "series": "megamix",
   "cues": [
     {
       "id": "bunnyHop/start",
