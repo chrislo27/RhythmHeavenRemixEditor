@@ -1,12 +1,23 @@
 {
   "gameID": "sickBeats",
-  "gameName": "Sick Beats (GBA)",
+  "gameName": "Sick Beats",
   "series": "tengoku",
   "cues": [
     {
-      "id": "sickBeats/appear",
+      "id": "sickBeats/appear1",
+      "deprecatedIDs": ["sickBeats/appear"],
       "duration": 1,
-      "name": "appear"
+      "name": "appear - 1"
+    },
+    {
+      "id": "sickBeats/appear2",
+      "duration": 1,
+      "name": "appear - 2"
+    },
+    {
+      "id": "sickBeats/appear3",
+      "duration": 1,
+      "name": "appear - 3"
     },
     {
       "id": "sickBeats/resist",
@@ -14,9 +25,15 @@
       "name": "damage"
     },
     {
-      "id": "sickBeats/stab",
+      "id": "sickBeats/stab1",
+      "deprecatedIDs": ["sickBeats/stab"],
       "duration": 1,
-      "name": "kill"
+      "name": "kill - 1"
+    },
+    {
+      "id": "sickBeats/stab2",
+      "duration": 1,
+      "name": "kill - 2"
     },
     {
       "id": "sickBeats/whoosh",
@@ -26,15 +43,43 @@
   ],
   "patterns": [
     {
-      "id": "sickBeats_blueVirus",
-      "name": "blue virus",
+      "id": "sickBeats_blueVirus1",
+      "name": "blue virus 1",
       "cues": [
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear2",
           "beat": 0
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab1",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "sickBeats_blueVirus2",
+      "name": "blue virus 2",
+      "cues": [
+        {
+          "id": "sickBeats/appear1",
+          "beat": 0
+        },
+        {
+          "id": "sickBeats/stab2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "sickBeats_blueVirus3",
+      "name": "blue virus 3",
+      "cues": [
+        {
+          "id": "sickBeats/appear3",
+          "beat": 0
+        },
+        {
+          "id": "sickBeats/stab2",
           "beat": 1
         }
       ]
@@ -56,12 +101,34 @@
           "beat": 0.375
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear2",
           "beat": 2.375
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab2",
           "beat": 3.375
+        }
+      ]
+    },
+    {
+      "id": "sickBeats_pinkVirus1",
+      "name": "pink virus1",
+      "cues": [
+        {
+          "id": "sickBeats/appear2",
+          "beat": 0
+        },
+        {
+          "id": "sickBeats/resist",
+          "beat": 1
+        },
+        {
+          "id": "sickBeats/appear3",
+          "beat": 2
+        },
+        {
+          "id": "sickBeats/stab2",
+          "beat": 3
         }
       ]
     },
@@ -70,7 +137,7 @@
       "name": "pink virus",
       "cues": [
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear3",
           "beat": 0
         },
         {
@@ -78,11 +145,11 @@
           "beat": 1
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear1",
           "beat": 2
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab1",
           "beat": 3
         }
       ]
@@ -100,7 +167,7 @@
           "beat": 0.1875
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear2",
           "beat": 1.1875
         },
         {
@@ -108,21 +175,21 @@
           "beat": 2.1875
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear2",
           "beat": 3.1875
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab1",
           "beat": 4.1875
         }
       ]
     },
     {
-      "id": "sickBeats_blackVirus",
-      "name": "black virus",
+      "id": "sickBeats_blackVirus1",
+      "name": "black virus 1",
       "cues": [
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear2",
           "beat": 0
         },
         {
@@ -130,7 +197,7 @@
           "beat": 1
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear3",
           "beat": 2
         },
         {
@@ -138,11 +205,41 @@
           "beat": 3
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear1",
           "beat": 4
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab1",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "sickBeats_blackVirus2",
+      "name": "black virus 2",
+      "cues": [
+        {
+          "id": "sickBeats/appear1",
+          "beat": 0
+        },
+        {
+          "id": "sickBeats/resist",
+          "beat": 1
+        },
+        {
+          "id": "sickBeats/appear2",
+          "beat": 2
+        },
+        {
+          "id": "sickBeats/resist",
+          "beat": 3
+        },
+        {
+          "id": "sickBeats/appear3",
+          "beat": 4
+        },
+        {
+          "id": "sickBeats/stab2",
           "beat": 5
         }
       ]
@@ -156,7 +253,7 @@
           "beat": 0
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear1",
           "beat": 2
         },
         {
@@ -164,7 +261,7 @@
           "beat": 3
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear3",
           "beat": 4
         },
         {
@@ -172,11 +269,11 @@
           "beat": 5
         },
         {
-          "id": "sickBeats/appear",
+          "id": "sickBeats/appear3",
           "beat": 6
         },
         {
-          "id": "sickBeats/stab",
+          "id": "sickBeats/stab2",
           "beat": 7
         }
       ]
