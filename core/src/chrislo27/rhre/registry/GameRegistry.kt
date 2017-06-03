@@ -312,7 +312,7 @@ object GameRegistry : Disposable {
 					}
 
 					if (checked[sc.id] != null) {
-						Main.logger.warn("Duplicate sound cue " + sc.id)
+						Main.logger.warn("Duplicate sound cue " + sc.id + " in game " + game.id)
 						warningCount++
 					} else {
 						checked[sc.id] = true
@@ -332,7 +332,7 @@ object GameRegistry : Disposable {
 					}
 
 					if (checked[pat.id] != null) {
-						Main.logger.warn("Duplicate pattern " + pat.id)
+						Main.logger.warn("Duplicate pattern " + pat.id + " in game " + game.id)
 						warningCount++
 					} else {
 						checked[pat.id] = true
