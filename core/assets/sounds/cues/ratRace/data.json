@@ -1,7 +1,7 @@
 {
   "gameID": "ratRace",
-  "gameName": "Rat Race",
-  "series": "tengoku",
+  "gameName": "Rat Race (Megamix)",
+  "series": "megamix",
   "cues": [
     {
       "id": "ratRace/trafficlight",
