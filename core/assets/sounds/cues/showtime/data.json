@@ -4,6 +4,16 @@
   "series": "tengoku",
   "cues": [
     {
+      "id": "showtime/clapping",
+      "duration": 1.0,
+      "name": "crowd - clap"
+    },
+    {
+      "id": "showtime/applause",
+      "duration": 1.0,
+      "name": "crowd - applause"
+    },
+    {
       "id": "showtime/large1",
       "duration": 1.0,
       "name": "large - 1"
@@ -20,7 +30,7 @@
     },
     {
       "id": "showtime/large4",
-      "duration": 2.5,
+      "duration": 1.0,
       "name": "large - 4"
     },
     {
@@ -94,6 +104,32 @@
         {
           "id": "showtime/large4",
           "beat": 5.0
+        },
+        {
+          "id": "showtime/clapping",
+          "beat": 6.0
+        }
+      ]
+    },
+    {
+      "id": "showtime_largePerfect",
+      "name": "large penguin perfect",
+      "cues": [
+        {
+          "id": "showtime/large1",
+          "beat": 0.0
+        },
+        {
+          "id": "showtime/large2",
+          "beat": 2.0
+        },
+        {
+          "id": "showtime/large3",
+          "beat": 4.0
+        },
+        {
+          "id": "showtime/large4",
+          "beat": 5.0
         }
       ]
     },
@@ -116,12 +152,72 @@
         {
           "id": "showtime/medium4",
           "beat": 3.0
+        },
+        {
+          "id": "showtime/clapping",
+          "beat": 4.0
+        }
+      ]
+    },
+    {
+      "id": "showtime_mediumPerfect",
+      "name": "medium penguin perfect",
+      "cues": [
+        {
+          "id": "showtime/medium1",
+          "beat": 0.0
+        },
+        {
+          "id": "showtime/medium2",
+          "beat": 1.0
+        },
+        {
+          "id": "showtime/medium3",
+          "beat": 2.0
+        },
+        {
+          "id": "showtime/medium4",
+          "beat": 3.0
         }
       ]
     },
     {
       "id": "showtime_small",
       "name": "small penguin",
+      "cues": [
+        {
+          "id": "showtime/small1",
+          "beat": 0.0
+        },
+        {
+          "id": "showtime/small2",
+          "beat": 0.66667
+        },
+        {
+          "id": "showtime/small3",
+          "beat": 1.0
+        },
+        {
+          "id": "showtime/small4",
+          "beat": 1.66667
+        },
+        {
+          "id": "showtime/small5",
+          "beat": 2.0
+        },
+        {
+          "id": "showtime/small6",
+          "beat": 3.0
+        },
+        {
+          "id": "showtime/applause",
+          "beat": 4.0
+        }
+      ]
+    },
+    {
+      "id": "showtime_smallPerfect",
+      "name": "small penguin perfect",
       "cues": [
         {
           "id": "showtime/small1",
