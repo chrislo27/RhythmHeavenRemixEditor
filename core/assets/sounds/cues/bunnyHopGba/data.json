@@ -1,0 +1,157 @@
+{
+  "gameID": "bunnyHopGba",
+  "gameName": "Bunny Hop (GBA)",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "bunnyHopGba/start",
+      "duration": 1,
+      "name": "start"
+    },
+    {
+      "id": "bunnyHopGba/hop1",
+      "duration": 1,
+      "name": "hop1"
+    },
+    {
+      "id": "bunnyHopGba/hop2",
+      "duration": 1,
+      "name": "hop2"
+    },
+    {
+      "id": "bunnyHopGba/longJump",
+      "duration": 5,
+      "name": "long jump"
+    },
+    {
+      "id": "bunnyHopGba/longJumpShort",
+      "duration": 2.5,
+      "name": "long jump (short)"
+    },
+    {
+      "id": "bunnyHopGba/longJumpLong",
+      "deprecatedIDs": ["bunnyHop/moonJump"],
+      "duration": 9,
+      "name": "long jump (long)"
+    },
+    {
+      "id": "bunnyHopGba/moon",
+      "duration": 1,
+      "name": "moon"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bunnyHopGba_start",
+      "name": "start",
+      "cues": [
+        {
+          "id": "bunnyHopGba/start",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/start",
+          "beat": 1.0
+        },
+        {
+          "id": "bunnyHopGba/start",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHopGba/start",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHopGba_hopping",
+      "name": "hopping",
+      "cues": [
+        {
+          "id": "bunnyHopGba/hop1",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/hop2",
+          "beat": 1.0
+        },
+        {
+          "id": "bunnyHopGba/hop1",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHopGba/hop2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHopGba_longJump4",
+      "name": "long jump 4 count",
+      "cues": [
+        {
+          "id": "bunnyHopGba/longJump",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/hop1",
+          "beat": 5
+        },
+        {
+          "id": "bunnyHopGba/hop2",
+          "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "bunnyHopGba_longJump8",
+      "name": "long jump 8 count",
+      "cues": [
+        {
+          "id": "bunnyHopGba/longJumpLong",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/hop1",
+          "beat": 9
+        },
+        {
+          "id": "bunnyHopGba/hop2",
+          "beat": 10
+        }
+      ]
+    },
+    {
+      "id": "bunnyHopGba_longJump2",
+      "name": "long jump 2 count",
+      "cues": [
+        {
+          "id": "bunnyHopGba/longJumpShort",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/hop1",
+          "beat": 2.5
+        },
+        {
+          "id": "bunnyHopGba/hop2",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "bunnyHopGba_moon",
+      "name": "moon",
+      "cues": [
+        {
+          "id": "bunnyHopGba/longJump",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHopGba/moon",
+          "beat": 10
+        }
+      ]
+    }
+  ]
+}
