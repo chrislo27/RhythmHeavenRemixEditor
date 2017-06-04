@@ -202,6 +202,8 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// trackers
 		{
+			main.getFontBordered().setUseIntegerPositions(false);
+
 			// music start
 			{
 				float musicToBeats = remix.getTempoChanges().secondsToBeats(remix.getMusicStartTime());
@@ -316,6 +318,8 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getFontBordered().getData().setScale(1);
 				main.getFontBordered().setColor(1, 1, 1, 1);
 			}
+
+			main.getFontBordered().setUseIntegerPositions(true);
 		}
 
 		// beat numbers
