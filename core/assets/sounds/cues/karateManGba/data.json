@@ -29,6 +29,16 @@
       "name": "rock - hit"
     },
     {
+      "id": "karateManGba/soccerHit",
+      "duration": 1,
+      "name": "soccer ball - hit"
+    },
+    {
+      "id": "karateManGba/soccerBreak",
+      "duration": 1,
+      "name": "soccer ball - break"
+    },
+    {
       "id": "karateManGba/lightbulbHit",
       "duration": 1,
       "name": "lightbulb - hit"
@@ -52,6 +62,11 @@
       "id": "karateManGba/ohYeah",
       "duration": 1,
       "name": "oh yeah!"
+    },
+    {
+      "id": "karateManGba/gongSerious",
+      "duration": 1,
+      "name": "serious mode"
     }
   ],
   "patterns": [
@@ -97,6 +112,38 @@
         },
         {
           "id": "karateManGba/rockHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_soccerBall",
+      "name": "soccer ball",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/soccerHit",
+          "beat": 1
+        },
+        {
+          "id": "karateManGba/soccerBreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_remix8",
+      "name": "gong",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/gongSerious",
           "beat": 1
         }
       ]
