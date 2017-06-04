@@ -677,7 +677,9 @@ public class Editor extends InputAdapter implements Disposable {
 			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave." + extension);
 
 			try {
-				final boolean newFile = sibling.file().createNewFile();
+				if (!sibling.file().createNewFile()) {
+					throw new RuntimeException("Failed to create new file!");
+				}
 
 				if (extension.equals("rhre2")) {
 					sibling.writeString(JsonHandler.toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
