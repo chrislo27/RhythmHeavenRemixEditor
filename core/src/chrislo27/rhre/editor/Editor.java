@@ -74,8 +74,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final Map<Series, ScrollValue> scrolls = new HashMap<>();
 	private final Vector3 cameraPickVec3 = new Vector3();
-	public String status;
-	public Tool currentTool = Tool.NORMAL;
+	private String status;
+	private Tool currentTool = Tool.NORMAL;
 	public Remix remix;
 	public FileHandle file = null;
 	public boolean isNormalSave = false;
@@ -109,7 +109,7 @@ public class Editor extends InputAdapter implements Disposable {
 		snappingInterval = 0.25f;
 	}
 
-	public Entity getEntityAtPoint(float x, float y) {
+	private Entity getEntityAtPoint(float x, float y) {
 		camera.unproject(cameraPickVec3.set(x, y, 0));
 		cameraPickVec3.x /= Entity.PX_WIDTH;
 		cameraPickVec3.y /= Entity.PX_HEIGHT;
@@ -118,7 +118,7 @@ public class Editor extends InputAdapter implements Disposable {
 				.findFirst().orElse(null);
 	}
 
-	public Entity getEntityAtMouse() {
+	private Entity getEntityAtMouse() {
 		return getEntityAtPoint(Gdx.input.getX(), Gdx.input.getY());
 	}
 
@@ -677,7 +677,7 @@ public class Editor extends InputAdapter implements Disposable {
 			FileHandle sibling = file.sibling(file.nameWithoutExtension() + ".autosave." + extension);
 
 			try {
-				sibling.file().createNewFile();
+				final boolean newFile = sibling.file().createNewFile();
 
 				if (extension.equals("rhre2")) {
 					sibling.writeString(JsonHandler.toJson(Remix.Companion.writeToJsonObject(remix)), false, "UTF-8");
