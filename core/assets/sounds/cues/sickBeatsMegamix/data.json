@@ -1,7 +1,7 @@
 {
   "gameID": "sickBeatsMegamix",
   "gameName": "Sick Beats (Megamix)",
-  "series": "side",
+  "series": "megamix",
   "cues": [
     {
       "id": "sickBeatsMegamix/appear1",
