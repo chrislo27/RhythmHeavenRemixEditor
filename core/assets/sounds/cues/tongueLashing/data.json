@@ -32,6 +32,16 @@
       "id": "tongueLashing/swallow",
       "duration": 0.5,
       "name": "swallow"
+    },
+    {
+      "id": "tongueLashing/yes",
+      "duration": 0.5,
+      "name": "guy - victory - 1"
+    },
+    {
+      "id": "tongueLashing/laughter",
+      "duration": 0.5,
+      "name": "guy - victory - 2"
     }
   ],
   "patterns": [
@@ -146,6 +156,68 @@
           "id": "tongueLashing/swallow",
           "beat": 3.5,
           "track": 1
+        }
+      ]
+    },
+    {
+      "id": "tongueLashing_redbugshortyes",
+      "name": "short red bug yes",
+      "cues": [
+        {
+          "id": "tongueLashing/red",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/whip",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/gulp",
+          "beat": 3.5,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/swallow",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "tongueLashing/yes",
+          "beat": 4.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "tongueLashing_redbugshortlaughing",
+      "name": "short red bug laugh",
+      "cues": [
+        {
+          "id": "tongueLashing/red",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/whip",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/gulp",
+          "beat": 3.5,
+          "track": 0
+        },
+        {
+          "id": "tongueLashing/swallow",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "tongueLashing/laughter",
+          "beat": 4.0,
+          "track": 0
         }
       ]
     }
