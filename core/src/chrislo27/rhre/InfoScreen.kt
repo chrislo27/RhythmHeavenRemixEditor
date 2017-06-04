@@ -1,6 +1,7 @@
 package chrislo27.rhre
 
 import chrislo27.rhre.PreferenceKeys.AUTOSAVE
+import chrislo27.rhre.PreferenceKeys.CAMERA_TRACK
 import chrislo27.rhre.PreferenceKeys.SHOW_CURRENT_GAME
 import chrislo27.rhre.credits.Credits.createConcatSections
 import chrislo27.rhre.credits.CreditsScreen
@@ -137,6 +138,14 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 					   BG_WIDTH * 0.5f - PADDING,
 					   Align.left, true)
 
+		val cameraTrack = main.preferences.getBoolean(CAMERA_TRACK, false)
+		main.font.draw(main.batch,
+					   "[CYAN]Z[] - " + Localization.get("info.cameraTrack.${if (cameraTrack) "on" else "off"}"),
+					   startX + PADDING,
+					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight * 2,
+					   BG_WIDTH * 0.5f - PADDING,
+					   Align.left, true)
+
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl && main.screen === this) {
 			Gdx.net.openURI(url)
 		}
@@ -159,6 +168,9 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 			main.preferences.flush()
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 			main.preferences.putBoolean(SHOW_CURRENT_GAME, !main.preferences.getBoolean(SHOW_CURRENT_GAME, true))
+			main.preferences.flush()
+		} else if (Gdx.input.isKeyJustPressed(Input.Keys.Z)) {
+			main.preferences.putBoolean(CAMERA_TRACK, !main.preferences.getBoolean(CAMERA_TRACK, false))
 			main.preferences.flush()
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
 			main.transition(Fade(true, Color.rgba8888(0f, 0f, 0f, 1f), 1f),
