@@ -14,6 +14,21 @@
       "name": "hole - 2"
     },
     {
+      "id": "holeInOne/hole3",
+      "duration": 1.0,
+      "name": "hole - 3"
+    },
+    {
+      "id": "holeInOne/hole4",
+      "duration": 1.0,
+      "name": "hole - 4"
+    },
+    {
+      "id": "holeInOne/whale",
+      "duration": 1.0,
+      "name": "whale - practice"
+    },
+    {
       "id": "holeInOne/monkey1",
       "duration": 1.0,
       "name": "monkey - 1"
