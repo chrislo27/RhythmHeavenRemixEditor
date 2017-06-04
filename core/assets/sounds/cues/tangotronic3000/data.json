@@ -24,6 +24,11 @@
       "name": "2-step - 2"
     },
     {
+      "id": "tangotronic3000/2step3",
+      "duration": 0.5,
+      "name": "2-step - 2 (whistle)"
+    },
+    {
       "id": "tangotronic3000/tock",
       "duration": 0.5,
       "name": "3-step - signal"
@@ -75,7 +80,7 @@
   ],
   "patterns": [
     {
-      "id": "tangotronic3000_2StepCorte",
+      "id": "tangotronic3000_2StepCorte1",
       "name": "2-step corte",
       "cues": [
         {
@@ -92,6 +97,28 @@
         },
         {
           "id": "tangotronic3000/2step2",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "tangotronic3000_2StepCorte2",
+      "name": "2-step corte (alternative)",
+      "cues": [
+        {
+          "id": "tangotronic3000/whistle1",
+          "beat": 0
+        },
+        {
+          "id": "tangotronic3000/whistle2",
+          "beat": 0.5
+        },
+        {
+          "id": "tangotronic3000/2step1",
+          "beat": 2
+        },
+        {
+          "id": "tangotronic3000/2step3",
           "beat": 2.5
         }
       ]
