@@ -425,7 +425,7 @@ public class Editor extends InputAdapter implements Disposable {
 				main.getPreferences().getBoolean(PreferenceKeys.SHOW_CURRENT_GAME, true)) {
 			final float x = 4, y = main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4;
 			final Texture icon = remix.getCurrentGame().getIconTexture();
-			main.batch.draw(icon, x, y - icon.getHeight(), 32, 32);
+			main.batch.draw(icon, x, y - 32, 32, 32);
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
 			main.getFontBordered().draw(batch, remix.getCurrentGame().getName(), x * 2 + 32,
