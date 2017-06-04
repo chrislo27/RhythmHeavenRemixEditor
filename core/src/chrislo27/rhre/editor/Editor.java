@@ -428,8 +428,8 @@ public class Editor extends InputAdapter implements Disposable {
 			main.batch.draw(icon, x, y - icon.getHeight(), 32, 32);
 			main.getFontBordered().getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-			main.getFontBordered().draw(batch, remix.getCurrentGame().getName(), x * 2 + icon.getWidth(),
-					y - (icon.getHeight() / 2 - main.getFontBordered().getCapHeight() / 2));
+			main.getFontBordered().draw(batch, remix.getCurrentGame().getName(), x * 2 + 32,
+					y - (16 - main.getFontBordered().getCapHeight() / 2));
 			main.getFontBordered().setColor(1, 1, 1, 1);
 			main.getFontBordered().getData().setScale(1f);
 		}
