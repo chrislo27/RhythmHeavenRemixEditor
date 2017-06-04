@@ -32,6 +32,11 @@
       "id": "rhythmTweezersGba/b",
       "duration": 0.25,
       "name": "long hair - pluck - 2"
+    },
+    {
+      "id": "rhythmTweezersGba/cashier",
+      "duration": 1,
+      "name": "cashier"
     }
   ],
   "patterns": []
