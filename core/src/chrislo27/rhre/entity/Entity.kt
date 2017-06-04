@@ -87,7 +87,9 @@ abstract class Entity(val remix: Remix) {
 	}
 
 	companion object {
+		@JvmField
 		val PX_HEIGHT = 48
+		@JvmField
 		val PX_WIDTH = PX_HEIGHT * 4
 		private val tmp = Color()
 		private val tmp2 = Color()
