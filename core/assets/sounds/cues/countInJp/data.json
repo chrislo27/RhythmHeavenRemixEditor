@@ -1,0 +1,232 @@
+{
+  "gameID": "countInJp",
+  "gameName": "Count-Ins (Japanese)",
+  "cues": [
+    {
+      "id": "countInJp/ichi",
+      "duration": 1.0,
+      "name": "ichi"
+    },
+    {
+      "id": "countInJp/ni",
+      "duration": 1.0,
+      "name": "ni"
+    },
+    {
+      "id": "countInJp/san",
+      "duration": 1.0,
+      "name": "san"
+    },
+    {
+      "id": "countInJp/shi",
+      "duration": 1.0,
+      "name": "shi"
+    },
+    {
+      "id": "countInJp/one",
+      "duration": 1.0,
+      "name": "one"
+    },
+    {
+      "id": "countInJp/two",
+      "duration": 1.0,
+      "name": "two"
+    },
+    {
+      "id": "countInJp/three",
+      "duration": 1.0,
+      "name": "three"
+    },
+    {
+      "id": "countInJp/four",
+      "duration": 1.0,
+      "name": "four"
+    },
+    {
+      "id": "countInJp/hoi1",
+      "duration": 0.5,
+      "name": "hoi - 1"
+    },
+    {
+      "id": "countInJp/hoi2",
+      "duration": 0.5,
+      "name": "hoi - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "countInJp_2BeatCountIn",
+      "deprecatedIDs": [
+        "countinjp_2BeatCountIn"
+      ],
+      "name": "2-beat count-in",
+      "cues": [
+        {
+          "id": "countInJp/san",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/shi",
+          "beat": 1.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJp_2BeatCountInAlt",
+      "deprecatedIDs": [
+        "countinjp_2BeatCountInAlt"
+      ],
+      "name": "2-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJp/three",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/four",
+          "beat": 1.0,
+          "track": 0
+        }
+      ]
+     },
+     {
+      "id": "countInJp_4BeatCountIn",
+      "deprecatedIDs": [
+        "countinjp_4BeatCountIn"
+      ],
+      "name": "4-beat count-in",
+      "cues": [
+        {
+          "id": "countInJp/ichi",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/ni",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/san",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/san",
+          "beat": 3.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJp_4BeatCountInAlt",
+      "deprecatedIDs": [
+        "countinjp_4BeatCountInAlt"
+      ],
+      "name": "4-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJp/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/two",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/three",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/four",
+          "beat": 3.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJp_8BeatCountIn",
+      "deprecatedIDs": [
+        "countinjp_8BeatCountIn"
+      ],
+      "name": "8-beat count-in",
+      "cues": [
+        {
+          "id": "countInJp/ichi",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/ni",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/ichi",
+          "beat": 4.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/ni",
+          "beat": 5.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/san",
+          "beat": 6.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/san",
+          "beat": 7.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJp_8BeatCountInAlt",
+      "deprecatedIDs": [
+        "countinjp_8BeatCountInAlt"
+      ],
+      "name": "8-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJp/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/two",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/two",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/three",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJp/four",
+          "beat": 0.0,
+          "track": 0
+        }
+      ]
+    }
+  ]
+}

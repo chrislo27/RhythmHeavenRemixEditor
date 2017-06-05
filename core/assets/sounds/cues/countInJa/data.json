@@ -1,0 +1,214 @@
+{
+  "gameID": "countInJa",
+  "gameName": "Count-Ins (Japanese)",
+  "cues": [
+    {
+      "id": "countInJa/ichi",
+      "duration": 1.0,
+      "name": "ichi"
+    },
+    {
+      "id": "countInJa/ni",
+      "duration": 1.0,
+      "name": "ni"
+    },
+    {
+      "id": "countInJa/san",
+      "duration": 1.0,
+      "name": "san"
+    },
+    {
+      "id": "countInJa/shi",
+      "duration": 1.0,
+      "name": "shi"
+    },
+    {
+      "id": "countInJa/one",
+      "duration": 1.0,
+      "name": "one"
+    },
+    {
+      "id": "countInJa/two",
+      "duration": 1.0,
+      "name": "two"
+    },
+    {
+      "id": "countInJa/three",
+      "duration": 1.0,
+      "name": "three"
+    },
+    {
+      "id": "countInJa/four",
+      "duration": 1.0,
+      "name": "four"
+    },
+    {
+      "id": "countInJa/hoi1",
+      "duration": 0.5,
+      "name": "hoi - 1"
+    },
+    {
+      "id": "countInJa/hoi2",
+      "duration": 0.5,
+      "name": "hoi - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "countInJa_2BeatCountIn",
+      "name": "2-beat count-in",
+      "cues": [
+        {
+          "id": "countInJa/san",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/shi",
+          "beat": 1.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJa_2BeatCountInAlt",
+      "name": "2-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJa/three",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/four",
+          "beat": 1.0,
+          "track": 0
+        }
+      ]
+     },
+     {
+      "id": "countInJa_4BeatCountIn",
+      "name": "4-beat count-in",
+      "cues": [
+        {
+          "id": "countInJa/ichi",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/ni",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/san",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/san",
+          "beat": 3.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJa_4BeatCountInAlt",
+      "name": "4-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJa/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/two",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/three",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/four",
+          "beat": 3.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJa_8BeatCountIn",
+      "name": "8-beat count-in",
+      "cues": [
+        {
+          "id": "countInJa/ichi",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/ni",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/ichi",
+          "beat": 4.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/ni",
+          "beat": 5.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/san",
+          "beat": 6.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/san",
+          "beat": 7.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "countInJa_8BeatCountInAlt",
+      "name": "8-beat count-in alternate",
+      "cues": [
+        {
+          "id": "countInJa/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/two",
+          "beat": 1.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/one",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/two",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/three",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "countInJa/four",
+          "beat": 0.0,
+          "track": 0
+        }
+      ]
+    }
+  ]
+}
