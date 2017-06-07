@@ -36,8 +36,7 @@
     {
       "id": "tambourine/playerEnd",
       "duration": 1,
-      "name": "player - end turn",
-      "fileExtension": "wav"
+      "name": "player - end turn"
     }
   ],
   "patterns": []
