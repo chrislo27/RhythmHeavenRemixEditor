@@ -1,146 +1,146 @@
 {
-  "gameID": "tapTrial",
-  "gameName": "Tap Trial (Fever)",
-  "series": "fever",
+  "gameID": "tapTrialGba",
+  "gameName": "Tap Trial (GBA)",
+  "series": "tengoku",
   "cues": [
     {
-      "id": "tapTrial/tap",
+      "id": "tapTrialGba/tap",
       "duration": 0.5,
       "name": "tap"
     },
     {
-      "id": "tapTrial/ook",
+      "id": "tapTrialGba/ook",
       "duration": 1,
       "name": "ook"
     },
     {
-      "id": "tapTrial/ookook1",
+      "id": "tapTrialGba/ookook1",
       "duration": 0.5,
       "name": "ook-ook - 1"
     },
     {
-      "id": "tapTrial/ookook2",
+      "id": "tapTrialGba/ookook2",
       "duration": 0.5,
       "name": "ook-ook - 2"
     },
     {
-      "id": "tapTrial/ooki1",
+      "id": "tapTrialGba/ooki1",
       "duration": 0.5,
       "name": "ooki - 1"
     },
     {
-      "id": "tapTrial/ooki2",
+      "id": "tapTrialGba/ooki2",
       "duration": 1.5,
       "name": "ooki - 2"
     },
     {
-      "id": "tapTrial/jumptap1",
+      "id": "tapTrialGba/jumptap1",
       "duration": 1,
       "name": "jump - normal - jump"
     },
     {
-      "id": "tapTrial/jumptap1_tap",
+      "id": "tapTrialGba/jumptap1_tap",
       "duration": 1,
       "name": "jump - normal - land"
     },
     {
-      "id": "tapTrial/jumptap2",
+      "id": "tapTrialGba/jumptap2",
       "duration": 1,
       "name": "jump - final - jump"
     },
     {
-      "id": "tapTrial/jumptap2_tap",
+      "id": "tapTrialGba/jumptap2_tap",
       "duration": 1,
       "name": "jump - final - land"
     }
   ],
   "patterns": [
     {
-      "id": "tapTrial_tap",
+      "id": "tapTrialGba_tap",
       "name": "tap",
       "cues": [
         {
-          "id": "tapTrial/ook",
+          "id": "tapTrialGba/ook",
           "beat": 0.0
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 1.0
         }
       ]
     },
     {
-      "id": "tapTrial_doubletap",
+      "id": "tapTrialGba_doubletap",
       "name": "double tap",
       "cues": [
         {
-          "id": "tapTrial/ookook1",
+          "id": "tapTrialGba/ookook1",
           "beat": 0.0
         },
         {
-          "id": "tapTrial/ookook2",
+          "id": "tapTrialGba/ookook2",
           "beat": 0.5
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 1.0
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 1.5
         }
       ]
     },
     {
-      "id": "tapTrial_tripletap",
+      "id": "tapTrialGba_tripletap",
       "name": "triple tap",
       "cues": [
         {
-          "id": "tapTrial/ooki1",
+          "id": "tapTrialGba/ooki1",
           "beat": 0.0
         },
         {
-          "id": "tapTrial/ooki2",
+          "id": "tapTrialGba/ooki2",
           "beat": 0.5
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 2.0
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 2.5
         },
         {
-          "id": "tapTrial/tap",
+          "id": "tapTrialGba/tap",
           "beat": 3.0
         }
       ]
     },
     {
-      "id": "tapTrial_jumptap",
+      "id": "tapTrialGba_jumptap",
       "name": "jump tap",
       "cues": [
         {
-          "id": "tapTrial/jumptap1",
+          "id": "tapTrialGba/jumptap1",
           "beat": 0.0
         },
         {
-          "id": "tapTrial/jumptap1_tap",
+          "id": "tapTrialGba/jumptap1_tap",
           "beat": 1.0
         }
       ]
     },
     {
-      "id": "tapTrial_finaljumptap",
+      "id": "tapTrialGba_finaljumptap",
       "name": "final jump tap",
       "cues": [
         {
-          "id": "tapTrial/jumptap2",
+          "id": "tapTrialGba/jumptap2",
           "beat": 0.0
         },
         {
-          "id": "tapTrial/jumptap2_tap",
+          "id": "tapTrialGba/jumptap2_tap",
           "beat": 1.0
         }
       ]
