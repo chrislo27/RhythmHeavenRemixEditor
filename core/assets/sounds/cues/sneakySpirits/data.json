@@ -1,6 +1,6 @@
 {
   "gameID": "sneakySpirits",
-  "gameName": "Sneaky Spirits",
+  "gameName": "Sneaky Spirits (GBA)",
   "series": "tengoku",
   "cues": [
     {
@@ -26,6 +26,8 @@
     {
       "id": "sneakySpirits/rain",
       "duration": 3.0,
+      "canAlterDuration": true,
+      "loops": true,
       "name": "no ghost - raining"
     },
     {
