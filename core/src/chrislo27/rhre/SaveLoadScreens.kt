@@ -179,6 +179,7 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 								}
 							}
 
+							es.editor.file = FileHandle(picker.selectedFile)
 							es.editor.isNormalSave = true
 							es.editor.messageHandler.list.add(0,
 															  IconMessage(3f, AssetRegistry.getTexture("ui_save"),
