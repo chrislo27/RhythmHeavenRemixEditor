@@ -1,7 +1,7 @@
 {
   "gameID": "spaceDanceJa",
-  "gameName": "Space Dance (Japanese)",
-  "series": "tengoku",
+  "gameName": "Space Dance (Japanese) (Megamix)",
+  "series": "megamix",
   "cues": [
     {
       "id": "spaceDanceJa/turn1",
