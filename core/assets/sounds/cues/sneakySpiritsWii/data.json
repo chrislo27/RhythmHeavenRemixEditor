@@ -34,11 +34,6 @@
       "id": "sneakySpiritsWii/hit",
       "duration": 0.5,
       "name": "hit"
-    },
-    {
-      "id": "sneakySpiritsWii/rain",
-      "duration": 0.0005,
-      "name": "rain start"
     }
   ],
   "patterns": [

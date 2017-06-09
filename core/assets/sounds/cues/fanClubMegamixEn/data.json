@@ -1,0 +1,316 @@
+{
+  "gameID": "fanClubMegamixEn",
+  "gameName": "Fan Club {Megamix) (English)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "fanClubMegamixEn/singerYeah1",
+      "duration": 1,
+      "name": "singer - yeah - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/singerYeah2",
+      "duration": 1,
+      "name": "singer - yeah - 2"
+    },
+    {
+      "id": "fanClubMegamixEn/singerYeah3",
+      "duration": 1,
+      "name": "singer - yeah - 3"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceYeah",
+      "duration": 1,
+      "name": "audience - yeah"
+    },
+    {
+      "id": "fanClubMegamixEn/singerISuppose1",
+      "duration": 0.25,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/singerISuppose2",
+      "duration": 0.25,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/singerISuppose3",
+      "duration": 1,
+      "name": "singer - i suppose - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceISuppose1",
+      "duration": 1.25,
+      "name": "audience - i suppose - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceISuppose2",
+      "duration": 0.5,
+      "name": "audience - i suppose - 2"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceISuppose3",
+      "duration": 1,
+      "name": "audience - i suppose - 3"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceISuppose4",
+      "duration": 1,
+      "name": "audience - i suppose - 4"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceISupposeJump",
+      "duration": 1,
+      "name": "audience - i suppose - landing"
+    },
+    {
+      "id": "fanClubMegamixEn/singerWonderful1",
+      "duration": 0.5,
+      "name": "singer - wonderful - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/singerWonderful2",
+      "duration": 0.5,
+      "name": "singer - wonderful - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/singerWonderful3",
+      "duration": 1,
+      "name": "singer - wonderful - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceWonderful1",
+      "duration": 1.25,
+      "name": "audience - wonderful - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceWonderful2",
+      "duration": 0.75,
+      "name": "audience - wonderful - 2"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceWonderful3",
+      "duration": 1,
+      "name": "audience - wonderful - 3"
+    },
+    {
+      "id": "fanClubMegamixEn/audienceWonderful4",
+      "duration": 1,
+      "name": "audience - wonderful - 4"
+    },
+    {
+      "id": "fanClubMegamixEn/ohh1",
+      "duration": 2.5,
+      "baseBPM": 143,
+      "name": "ohh - 1"
+    },
+    {
+      "id": "fanClubMegamixEn/ohh2",
+      "duration": 0.5,
+      "name": "ohh - 2"
+    },
+    {
+      "id": "fanClubMegamixEn/ohh3",
+      "duration": 1,
+      "name": "ohh - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "fanClubMegamixEn_yeahYeahYeah",
+      "name": "yeah yeah yeah!",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/singerYeah1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/singerYeah2",
+          "beat": 1
+        },
+        {
+          "id": "fanClubMegamixEn/singerYeah3",
+          "beat": 2
+        },
+        {
+          "id": "fanClubMegamixEn/audienceYeah",
+          "beat": 4
+        },
+        {
+          "id": "fanClubMegamixEn/audienceYeah",
+          "beat": 5
+        },
+        {
+          "id": "fanClubMegamixEn/audienceYeah",
+          "beat": 6
+        },
+        {
+          "id": "fanClubMegamixEn/audienceYeah",
+          "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "fanClubMegamixEn_iSuppose",
+      "name": "I suppose!",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/singerISuppose1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/singerISuppose2",
+          "beat": 0.25
+        },
+        {
+          "id": "fanClubMegamixEn/singerISuppose3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose2",
+          "beat": 3.5
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose4",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "fanClubMegamixEn_iSupposeLanding",
+      "name": "I suppose! - with landing",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/singerISuppose1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/singerISuppose2",
+          "beat": 0.25
+        },
+        {
+          "id": "fanClubMegamixEn/singerISuppose3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose2",
+          "beat": 3.5
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISuppose4",
+          "beat": 5
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISupposeJump",
+          "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "fanClubMegamixEn_wonderful",
+      "name": "wonderful!",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/singerWonderful1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/singerWonderful2",
+          "beat": 0.5
+        },
+        {
+          "id": "fanClubMegamixEn/singerWonderful3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful2",
+          "beat": 3.25
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful4",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "fanClubMegamixEn_wonderfulLanding",
+      "name": "wonderful! - with landing",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/singerWonderful1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/singerWonderful2",
+          "beat": 0.5
+        },
+        {
+          "id": "fanClubMegamixEn/singerWonderful3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful2",
+          "beat": 3.25
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubMegamixEn/audienceWonderful4",
+          "beat": 5
+        },
+        {
+          "id": "fanClubMegamixEn/audienceISupposeJump",
+          "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "fanClubMegamixEn_ohh",
+      "name": "ohh",
+      "cues": [
+        {
+          "id": "fanClubMegamixEn/ohh1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubMegamixEn/ohh2",
+          "beat": 2.5
+        },
+        {
+          "id": "fanClubMegamixEn/ohh3",
+          "beat": 3
+        }
+      ]
+    }
+  ]
+}
