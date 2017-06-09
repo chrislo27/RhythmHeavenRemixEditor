@@ -42,6 +42,11 @@
       "id": "dogNinja/pan2",
       "duration": 1,
       "name": "pan - slice"
+    },
+    {
+      "id": "dogNinja/sign",
+      "duration": 1,
+      "name": "\"Cut everything!\""
     }
   ],
   "patterns": [
