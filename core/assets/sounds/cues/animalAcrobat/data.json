@@ -37,6 +37,21 @@
       "id": "animalAcrobat/ringOfFireCymbal",
       "duration": 2.0,
       "name": "ring of fire"
+    },
+    {
+      "id": "animalAcrobat/ringOfFireCymbalGorilla",
+      "duration": 2.0,
+      "name": "ring of fire - gorilla"
+    },
+    {
+      "id": "animalAcrobat/ringOfFireCymbalRemix",
+      "duration": 2.0,
+      "name": "ring of fire - stomping"
+    },
+    {
+      "id": "animalAcrobat/cymbal",
+      "duration": 1.0,
+      "name": "cymbal"
     }
   ],
   "patterns": [
@@ -99,6 +114,109 @@
           "id": "animalAcrobat/ringOfFireCymbal",
           "beat": 6.0,
           "track": 0
+        }
+      ]
+    },
+    {
+      "id": "animalAcrobat_giraffeGorilla",
+      "name": "giraffe - to gorilla",
+      "cues": [
+        {
+          "id": "animalAcrobat/grab",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/giraffeRelease",
+          "beat": 4.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/ringOfFireCymbalGorilla",
+          "beat": 6.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "animalAcrobat_giraffeLanding",
+      "name": "giraffe - landing",
+      "cues": [
+        {
+          "id": "animalAcrobat/grab",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/giraffeRelease",
+          "beat": 4.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/ringOfFireCymbalRemix",
+          "beat": 6.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "animalAcrobat_giraffeCymbal",
+      "name": "giraffe - next animal",
+      "cues": [
+        {
+          "id": "animalAcrobat/grab",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 2.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/eek!",
+          "beat": 3.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/giraffeRelease",
+          "beat": 4.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/ringOfFireCymbal",
+          "beat": 6.0,
+          "track": 0
+        },
+        {
+          "id": "animalAcrobat/flip",
+          "beat": 7.0,
+          "track": 1
+        },
+        {
+          "id": "animalAcrobat/cymbal",
+          "beat": 8.0,
+          "track": 1
         }
       ]
     },
