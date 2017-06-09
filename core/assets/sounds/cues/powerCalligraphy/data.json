@@ -1,7 +1,7 @@
 {
   "gameID": "powerCalligraphy",
-  "gameName": "Power Calligraphy",
-  "series": "tengoku",
+  "gameName": "Power Calligraphy (Fever)",
+  "series": "fever",
   "cues": [
     {
       "id": "powerCalligraphy/releaseA1",
@@ -339,6 +339,76 @@
         {
           "id": "powerCalligraphy/releaseA2",
           "beat": 10
+        }
+      ]
+    },
+    {
+      "id": "powerCalligraphy_tsurunihamushiKr",
+      "name": "tsuru niha mu shi - (Korean version)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 5.5
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 6
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 6.5
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 7
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 7.5
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 8
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 8.25
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 8.50
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 9
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 11
         }
       ]
     }
