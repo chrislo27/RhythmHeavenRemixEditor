@@ -123,28 +123,28 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 		main.font.data.setScale(1f)
 
 		val autosaveEnabled = main.preferences.getBoolean(AUTOSAVE, true)
-		main.font.draw(main.batch,
+		Main.drawCompressed(main.font, main.batch,
 					   "[CYAN]A[] - " + Localization.get("info.autosave.${if (autosaveEnabled) "on" else "off"}"),
 					   startX + PADDING,
 					   startY + BG_HEIGHT * 0.2f,
 					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left, true)
+					   Align.left)
 
 		val showCurrentGame = main.preferences.getBoolean(SHOW_CURRENT_GAME, true)
-		main.font.draw(main.batch,
+		Main.drawCompressed(main.font, main.batch,
 					   "[CYAN]Q[] - " + Localization.get("info.showCurrentGame.${if (showCurrentGame) "on" else "off"}"),
 					   startX + PADDING,
 					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight,
 					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left, true)
+					   Align.left)
 
 		val cameraTrack = main.preferences.getBoolean(CAMERA_TRACK, false)
-		main.font.draw(main.batch,
+		Main.drawCompressed(main.font, main.batch,
 					   "[CYAN]Z[] - " + Localization.get("info.cameraTrack.${if (cameraTrack) "on" else "off"}"),
 					   startX + PADDING,
 					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight * 2,
 					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left, true)
+					   Align.left)
 
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl && main.screen === this) {
 			Gdx.net.openURI(url)
