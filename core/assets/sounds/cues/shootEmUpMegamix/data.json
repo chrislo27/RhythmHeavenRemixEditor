@@ -1,25 +1,25 @@
 {
-  "gameID": "shootEmUp",
-  "gameName": "Shoot-'em-Up (DS)",
-  "series": "ds",
+  "gameID": "shootEmUpMegamix",
+  "gameName": "Shoot-'em-Up (Megamix)",
+  "series": "megamix",
   "cues": [
     {
-      "id": "shootEmUp/spawn",
+      "id": "shootEmUpMegamix/spawn",
       "duration": 0.5,
       "name": "spawn"
     },
     {
-      "id": "shootEmUp/shoot",
+      "id": "shootEmUpMegamix/shoot",
       "duration": 0.5,
       "name": "shoot"
     },
     {
-      "id": "shootEmUp/commStart",
+      "id": "shootEmUpMegamix/commStart",
       "duration": 0.5,
       "name": "comms start"
     },
     {
-      "id": "shootEmUp/commEnd",
+      "id": "shootEmUpMegamix/commEnd",
       "duration": 0.5,
       "name": "comms end"
     }
