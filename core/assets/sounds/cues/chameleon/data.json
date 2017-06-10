@@ -1,0 +1,111 @@
+{
+  "gameID": "chameleon",
+  "gameName": "Chameleon",
+  "series": "side",
+  "cues": [
+    {
+      "id": "chameleon/flyA1",
+      "duration": 2.5,
+      "name": "fly - near - 1"
+    },
+    {
+      "id": "chameleon/flyA2",
+      "duration": 1.0,
+      "name": "fly - near - 2"
+    },
+    {
+      "id": "chameleon/flyA3",
+      "duration": 1.0,
+      "name": "fly - near - 3"
+    },
+    {
+      "id": "chameleon/flyA4",
+      "duration": 1.0,
+      "name": "fly - near - 4"
+    },
+    {
+      "id": "chameleon/flyA5",
+      "duration": 1.0,
+      "name": "fly - far - eat"
+    },
+    {
+      "id": "chameleon/flyAB1",
+      "duration": 4.0,
+      "name": "fly - far - 1"
+    },
+    {
+      "id": "chameleon/flyAB2",
+      "duration": 1.0,
+      "name": "fly - far - 2"
+    },
+    {
+      "id": "chameleon/flyAB3",
+      "duration": 1.0,
+      "name": "fly - far - 3"
+    },
+    {
+      "id": "chameleon/flyAB4",
+      "duration": 1.0,
+      "name": "fly - far - 4"
+    },
+    {
+      "id": "chameleon/flyAB5",
+      "duration": 1.0,
+      "name": "fly - far - eat"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "chameleon_flyA",
+      "name": "near fly",
+      "cues": [
+        {
+          "id": "chameleon/flyA1",
+          "beat": 0.0
+        },
+        {
+          "id": "chameleon/flyA2",
+          "beat": 2.5
+        },
+        {
+          "id": "chameleon/flyA3",
+          "beat": 3.5
+        },
+        {
+          "id": "chameleon/flyA4",
+          "beat": 4.5
+        },
+        {
+          "id": "chameleon/flyA5",
+          "beat": 5.5
+        }
+      ]
+    },
+    {
+      "id": "chameleon_flyAB",
+      "name": "far fly",
+      "cues": [
+        {
+          "id": "chameleon/flyAB1",
+          "beat": 0.0
+        },
+        {
+          "id": "chameleon/flyAB2",
+          "beat": 4.0
+        },
+        {
+          "id": "chameleon/flyAB3",
+          "beat": 5.0
+        },
+        {
+          "id": "chameleon/flyAB4",
+          "beat": 6.0
+        },
+        {
+          "id": "chameleon/flyAB5",
+          "beat": 7.0
+        }
+      ]
+    }
+  ]
+}
