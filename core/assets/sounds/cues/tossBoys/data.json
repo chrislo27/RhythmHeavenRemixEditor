@@ -6,14 +6,12 @@
     {
       "id": "tossBoys/start",
       "duration": 2,
-      "name": "start",
-      "fileExtension": "wav"
+      "name": "start"
     },
     {
       "id": "tossBoys/stop",
       "duration": 2,
-      "name": "[#FFFF00]kii[]-yan - stop",
-      "fileExtension": "wav"
+      "name": "[#FFFF00]kii[]-yan - stop"
     },
     {
       "id": "tossBoys/redBlue1",
