@@ -1,6 +1,7 @@
 {
   "gameID": "countIn",
   "gameName": "Count-Ins",
+  "notRealGame": true,
   "cues": [
     {
       "id": "countIn/silence",

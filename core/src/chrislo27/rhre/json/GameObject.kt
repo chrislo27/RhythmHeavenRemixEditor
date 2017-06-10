@@ -11,6 +11,7 @@ class GameObject {
 	var patterns: Array<PatternObject>? = null
 
 	var usesGeneratorHelper = false
+	var notRealGame: Boolean = false
 
 	class SoundObject {
 

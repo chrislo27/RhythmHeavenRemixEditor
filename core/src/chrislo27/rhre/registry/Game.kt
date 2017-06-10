@@ -8,7 +8,7 @@ import org.luaj.vm2.LuaValue
 
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
-				val iconIsRawPath: Boolean = false) {
+				val iconIsRawPath: Boolean = false, val notRealGame: Boolean = false) {
 
 	private companion object {
 		val defaultPointerString: String = "➡"

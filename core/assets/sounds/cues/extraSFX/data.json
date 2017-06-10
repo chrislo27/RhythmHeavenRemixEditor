@@ -1,6 +1,7 @@
 {
   "gameID": "extraSFX",
   "gameName": "Extra Sound Effects",
+  "notRealGame": true,
   "cues": [
     {
       "id": "extraSFX/star",
