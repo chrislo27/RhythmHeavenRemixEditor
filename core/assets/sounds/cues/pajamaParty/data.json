@@ -107,6 +107,11 @@
       "id": "pajamaParty/throw7",
       "duration": 0.5,
       "name": "throw - 7"
+    },
+    {
+      "id": "pajamaParty/throw7b",
+      "duration": 0.5,
+      "name": "throw - 7 - (Alternative)"
     }
   ],
   "patterns": [
@@ -214,6 +219,40 @@
         },
         {
           "id": "pajamaParty/throw7",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaParty_throwAlternative",
+      "name": "throw pillow - (alternative)",
+      "cues": [
+        {
+          "id": "pajamaParty/throw1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaParty/throw2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaParty/throw3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaParty/throw4",
+          "beat": 1.5
+        },
+        {
+          "id": "pajamaParty/throw5",
+          "beat": 2.0
+        },
+        {
+          "id": "pajamaParty/throw6",
+          "beat": 3.0
+        },
+        {
+          "id": "pajamaParty/throw7b",
           "beat": 7.0
         }
       ]
