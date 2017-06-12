@@ -43,9 +43,13 @@
       "name": "cylinder - landing"
     },
     {
+      "id": "polyrhythm/disappear",
+      "duration": 0.5,
+      "name": "springs - disappearing"
+    },
+    {
       "id": "polyrhythm/clear",
       "duration": 4,
-      "baseBpm": 129,
       "name": "clear"
     }
   ],
