@@ -4,9 +4,14 @@
   "series": "megamix",
   "cues": [
     {
-      "id": "lumbearjack/sigh",
+      "id": "lumbearjack/sigh1",
       "duration": 3,
-      "name": "bear - sigh"
+      "name": "bear - sigh - 1"
+    },
+    {
+      "id": "lumbearjack/sigh2",
+      "duration": 3,
+      "name": "bear - sigh - 2"
     },
     {
       "id": "lumbearjack/nya",
@@ -69,6 +74,31 @@
       "name": "log - large - 5"
     },
     {
+      "id": "lumbearjack/fridge1",
+      "duration": 1,
+      "name": "fridge - 1"
+    },
+    {
+      "id": "lumbearjack/fridge2",
+      "duration": 1,
+      "name": "fridge - 2"
+    },
+    {
+      "id": "lumbearjack/fridge3",
+      "duration": 1,
+      "name": "fridge - 3"
+    },
+    {
+      "id": "lumbearjack/fridge4",
+      "duration": 1,
+      "name": "fridge - 4"
+    },
+    {
+      "id": "lumbearjack/fridge5",
+      "duration": 2,
+      "name": "fridge - 5"
+    },
+    {
       "id": "lumbearjack/can1",
       "duration": 1,
       "name": "can - 1"
@@ -107,7 +137,7 @@
   ],
   "patterns": [
     {
-      "id": "lumbearjack_small",
+      "id": "lumbearjack_small1",
       "name": "small log",
       "cues": [
         {
@@ -120,6 +150,24 @@
         },
         {
           "id": "lumbearjack/small2",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "lumbearjack_small2",
+      "name": "small log - (alternative)",
+      "cues": [
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/small1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/small2b",
           "beat": 2
         }
       ]
@@ -172,6 +220,36 @@
         },
         {
           "id": "lumbearjack/large5",
+          "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "lumbearjack_fridge",
+      "name": "fridge",
+      "cues": [
+        {
+          "id": "lumbearjack/nya",
+          "beat": 0
+        },
+        {
+          "id": "lumbearjack/fridge1",
+          "beat": 1
+        },
+        {
+          "id": "lumbearjack/fridge2",
+          "beat": 2
+        },
+        {
+          "id": "lumbearjack/fridge3",
+          "beat": 3
+        },
+        {
+          "id": "lumbearjack/fridge4",
+          "beat": 4
+        },
+        {
+          "id": "lumbearjack/fridge5",
           "beat": 5
         }
       ]
