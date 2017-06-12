@@ -13,6 +13,7 @@ import chrislo27.rhre.util.FileChooser
 import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -158,8 +159,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
 						ionium.templates.Main.fillRect(batch, this.x + this.width + PADDING.toFloat(),
-									  this.y - (PADDING * 3).toFloat() - height, -(width + PADDING * 2),
-									  height + PADDING * 2)
+													   this.y - (PADDING * 3).toFloat() - height,
+													   -(width + PADDING * 2),
+													   height + PADDING * 2)
 						main.font.draw(batch, text, this.x + this.width, this.y - PADDING * 2, 0f,
 									   Align.right, false)
 						main.font.data.setScale(1f)
@@ -202,8 +204,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
 						ionium.templates.Main.fillRect(batch, this.x + this.width + PADDING.toFloat(),
-									  this.y - (PADDING * 3).toFloat() - height, -(width + PADDING * 2),
-									  height + PADDING * 2)
+													   this.y - (PADDING * 3).toFloat() - height,
+													   -(width + PADDING * 2),
+													   height + PADDING * 2)
 						main.font.draw(batch, text, this.x + this.width, this.y - PADDING * 2, 0f,
 									   Align.right, false)
 						main.font.data.setScale(1f)
@@ -218,7 +221,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
-			val reset = object : ImageButton(stage, palette, TextureRegion(AssetRegistry.getTexture("ui_resetwindow"))) {
+			val reset = object : ImageButton(stage, palette,
+											 TextureRegion(AssetRegistry.getTexture("ui_resetwindow"))) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
@@ -240,8 +244,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
 						ionium.templates.Main.fillRect(batch, this.x + this.width + PADDING.toFloat(),
-									  this.y - (PADDING * 3).toFloat() - height, -(width + PADDING * 2),
-									  height + PADDING * 2)
+													   this.y - (PADDING * 3).toFloat() - height,
+													   -(width + PADDING * 2),
+													   height + PADDING * 2)
 						main.font.draw(batch, text, this.x + this.width, this.y - PADDING * 2, 0f,
 									   Align.right, false)
 						main.font.data.setScale(1f)
@@ -299,8 +304,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						val height = Utils.getHeight(main.font, text)
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
-						ionium.templates.Main.fillRect(batch, this.x - PADDING, this.y - (PADDING * 3).toFloat() - height,
-									  width + PADDING * 2, height + PADDING * 2)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
@@ -367,8 +373,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						val height = Utils.getHeight(main.font, text)
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
-						ionium.templates.Main.fillRect(batch, this.x - PADDING, this.y - (PADDING * 3).toFloat() - height,
-									  width + PADDING * 2, height + PADDING * 2)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
@@ -442,10 +449,10 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		run {
 			val isMac = System.getProperty("os.name").startsWith("Mac")
 			var pathToApp = main.preferences.getString("audacityLocation",
-															   if (System.getProperty("os.name").startsWith("Windows"))
-																   "C:\\Program Files (x86)\\Audacity\\audacity.exe"
-															   else
-																   null)
+													   if (System.getProperty("os.name").startsWith("Windows"))
+														   "C:\\Program Files (x86)\\Audacity\\audacity.exe"
+													   else
+														   null)
 			var file =
 					if (pathToApp == null) null else File(pathToApp)
 
@@ -502,8 +509,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						val height = Utils.getHeight(main.font, text)
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
-						ionium.templates.Main.fillRect(batch, this.x - PADDING, this.y - (PADDING * 3).toFloat() - height,
-									  width + PADDING * 2, height + PADDING * 2)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
@@ -514,8 +522,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 							val thread = Thread {
 								try {
 									chooser.currentDirectory = if (file == null || !file!!.exists())
-										File(
-												System.getProperty("user.home"), "Desktop")
+										File(System.getProperty("user.home"), "Desktop")
 									else
 										file
 									chooser.isVisible = true
@@ -589,8 +596,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						val height = Utils.getHeight(main.font, text)
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
-						ionium.templates.Main.fillRect(batch, this.x - PADDING, this.y - (PADDING * 3).toFloat() - height,
-									  width + PADDING * 2, height + PADDING * 2)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
@@ -626,8 +634,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						val height = Utils.getHeight(main.font, text)
 
 						batch.setColor(0f, 0f, 0f, 0.75f)
-						ionium.templates.Main.fillRect(batch, this.x - PADDING, this.y - (PADDING * 3).toFloat() - height,
-									  width + PADDING * 2, height + PADDING * 2)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
@@ -643,51 +652,57 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 		run {
 			val paletteSwap = object : TextButton(stage, palette, "editor.button.paletteSwap") {
-				private val palettes = ArrayList<AbstractPalette>()
+				private val palettes = mutableListOf<AbstractPalette>()
+				private val folder: FileHandle by lazy { Gdx.files.local("palettes/") }
+				private var num = 0
 
-				private var num = 1
+				private fun buildExamplePalette() {
+					val example = folder.child("example.json")
+
+					val po = object : PaletteObject() {
+						init {
+							val lp = LightPalette()
+
+							editorBg = PaletteUtils.toHex(lp.editorBg)
+							staffLine = PaletteUtils.toHex(lp.staffLine)
+
+							soundCue = PaletteUtils.toHex(lp.soundCue.bg)
+							stretchableSoundCue = PaletteUtils.toHex(lp.stretchableSoundCue.bg)
+							patternCue = PaletteUtils.toHex(lp.pattern.bg)
+							stretchablePatternCue = PaletteUtils.toHex(lp.stretchablePattern.bg)
+
+							selectionCueTint = PaletteUtils.toHex(lp.selectionTint)
+
+							selectionBg = PaletteUtils.toHex(lp.selectionFill)
+							selectionBorder = PaletteUtils.toHex(lp.selectionBorder)
+
+							beatTracker = PaletteUtils.toHex(lp.beatTracker)
+							bpmTracker = PaletteUtils.toHex(lp.bpmTracker)
+							bpmTrackerSelected = PaletteUtils.toHex(lp.bpmTrackerSelected)
+							musicStartTracker = PaletteUtils.toHex(lp.musicStartTracker)
+
+							cueText = PaletteUtils.toHex(lp.cueText)
+						}
+					}
+
+					example.writeString(JsonHandler.toJson(po, PaletteObject::class.java), false, "UTF-8")
+				}
 
 				init {
+					initialize()
+				}
+
+				private fun initialize() {
+					palettes.clear()
 					palettes.add(LightPalette())
 					palettes.add(DarkPalette())
 					palettes.add(PaletteUtils.getRHRE0Palette())
 
-					val folder = Gdx.files.local("palettes/")
 					if (!folder.exists()) {
 						folder.mkdirs()
 					}
 
-					run {
-						val example = folder.child("example.json")
-
-						val po = object : PaletteObject() {
-							init {
-								val lp = LightPalette()
-
-								editorBg = PaletteUtils.toHex(lp.editorBg)
-								staffLine = PaletteUtils.toHex(lp.staffLine)
-
-								soundCue = PaletteUtils.toHex(lp.soundCue.bg)
-								stretchableSoundCue = PaletteUtils.toHex(lp.stretchableSoundCue.bg)
-								patternCue = PaletteUtils.toHex(lp.pattern.bg)
-								stretchablePatternCue = PaletteUtils.toHex(lp.stretchablePattern.bg)
-
-								selectionCueTint = PaletteUtils.toHex(lp.selectionTint)
-
-								selectionBg = PaletteUtils.toHex(lp.selectionFill)
-								selectionBorder = PaletteUtils.toHex(lp.selectionBorder)
-
-								beatTracker = PaletteUtils.toHex(lp.beatTracker)
-								bpmTracker = PaletteUtils.toHex(lp.bpmTracker)
-								bpmTrackerSelected = PaletteUtils.toHex(lp.bpmTrackerSelected)
-								musicStartTracker = PaletteUtils.toHex(lp.musicStartTracker)
-
-								cueText = PaletteUtils.toHex(lp.cueText)
-							}
-						}
-
-						example.writeString(JsonHandler.toJson(po, PaletteObject::class.java), false, "UTF-8")
-					}
+					buildExamplePalette()
 
 					if (folder.exists() && folder.isDirectory) {
 						val list = folder.list { dir, name ->
@@ -712,8 +727,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 					cycle()
 				}
 
-				private fun cycle() {
-					main.switchPalette(palettes[num], 0.35f)
+				private fun cycle(speed: Float = 0.35f) {
+					main.switchPalette(palettes[num], speed)
 
 					main.preferences.putInteger("palette", num)
 					main.preferences.flush()
@@ -733,6 +748,28 @@ class EditorStageSetup(private val screen: EditorScreen) {
 					getPalette().labelFont.data.setScale(0.5f)
 					super.render(batch, alpha)
 					getPalette().labelFont.data.setScale(1f)
+
+					if (this.stage.isMouseOver(this)) {
+						main.font.data.setScale(0.5f)
+
+						val text = Localization.get("editor.reloadPalettes")
+						val width = Utils.getWidth(main.font, text)
+						val height = Utils.getHeight(main.font, text)
+
+						batch.setColor(0f, 0f, 0f, 0.75f)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
+						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
+						main.font.data.setScale(1f)
+						batch.setColor(1f, 1f, 1f, 1f)
+					}
+
+					if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
+						initialize()
+						num = 0
+						cycle(0.075f)
+					}
 				}
 			}
 
