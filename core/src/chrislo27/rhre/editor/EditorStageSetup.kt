@@ -331,14 +331,14 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			val metronomeFrames: List<TextureRegion> by lazy {
 				val tex = AssetRegistry.getTexture("ui_metronome")
 				val size = 64
-				return@lazy listOf(TextureRegion(tex, 0, 0, size, size),
-								   TextureRegion(tex, size, 0, size, size),
+				return@lazy listOf(TextureRegion(tex, size * 2, 0, size, size),
+								   TextureRegion(tex, size * 3, 0, size, size),
+								   TextureRegion(tex, size * 4, 0, size, size),
+								   TextureRegion(tex, size * 3, 0, size, size),
 								   TextureRegion(tex, size * 2, 0, size, size),
 								   TextureRegion(tex, size, 0, size, size),
 								   TextureRegion(tex, 0, 0, size, size),
-								   TextureRegion(tex, size * 2, 0, -size, size),
-								   TextureRegion(tex, size * 3, 0, -size, size),
-								   TextureRegion(tex, size * 2, 0, -size, size)
+								   TextureRegion(tex, size, 0, size, size)
 								  )
 			}
 
@@ -373,7 +373,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 			stage!!.addActor<ImageButton>(metronome).align(Align.topRight)
 					.setPixelOffset((PADDING * 6 + BUTTON_HEIGHT + BUTTON_HEIGHT * 6).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 4).toFloat(),
+									(BUTTON_HEIGHT).toFloat(),
 									BUTTON_HEIGHT.toFloat())
 
 		}
