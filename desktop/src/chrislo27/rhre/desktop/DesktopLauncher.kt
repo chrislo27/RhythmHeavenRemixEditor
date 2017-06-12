@@ -27,7 +27,7 @@ object DesktopLauncher {
 		config.vSyncEnabled = true
 		config.samples = 0
 		config.initialBackgroundColor = Color.BLACK
-		config.allowSoftwareMode = true
+		config.allowSoftwareMode = false
 		config.audioDeviceSimultaneousSources = 256
 
 		config.inferFromArguments()
