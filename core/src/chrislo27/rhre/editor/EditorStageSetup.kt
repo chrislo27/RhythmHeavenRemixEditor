@@ -356,9 +356,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun render(batch: SpriteBatch, alpha: Float) {
 					if (screen.editor.remix.tickEachBeat) {
 						val time = 1.25f
-						this.textureRegion = metronomeFrames[(MathHelper.getSawtoothWave(System.currentTimeMillis() - start +
-																								 (time / metronomeFrames.size * 1000).toInt(),
-																						 time)
+						this.textureRegion = metronomeFrames[(MathHelper.getSawtoothWave(
+								System.currentTimeMillis() - start + (time / metronomeFrames.size * 1000).toInt(), time)
 								* metronomeFrames.size)
 								.toInt().coerceIn(0, metronomeFrames.size - 1)]
 					} else {
@@ -803,6 +802,21 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			stage!!.addActor<ImageButton>(paletteSwap).align(Align.topLeft)
 					.setPixelOffset((PADDING * 8 + BUTTON_HEIGHT * 7).toFloat(), PADDING.toFloat(),
 									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
+		}
+
+		run {
+			val inspections = object : ImageButton(stage, palette, TextureRegion(AssetRegistry.getTexture("ui_inspections"))) {
+				override fun render(batch: SpriteBatch, alpha: Float) {
+					getPalette().labelFont.data.setScale(0.5f)
+					super.render(batch, alpha)
+					getPalette().labelFont.data.setScale(1f)
+				}
+			}
+
+			stage!!.addActor(inspections).align(Align.topLeft)
+					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
+
 		}
 
 		run {
