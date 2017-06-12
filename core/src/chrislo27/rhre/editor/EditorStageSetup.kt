@@ -767,7 +767,6 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 					if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
 						initialize()
-						num = 0
 						cycle(0.075f)
 					}
 				}
