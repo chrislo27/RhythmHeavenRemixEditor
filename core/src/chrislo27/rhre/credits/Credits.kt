@@ -21,6 +21,7 @@ KHttp
 Gson
 [#000007F]Lua[]J
 Apache Commons IO
+Spark
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
 Rhythm Heaven assets by Nintendo""",
