@@ -68,7 +68,7 @@ project(":core") {
 //        compile "com.github.axet:vget:1.2.6"
 //        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
 //        compile 'com.github.mazine:oauth2-client-kotlin:1.0.2'
-        compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
+//        compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }
