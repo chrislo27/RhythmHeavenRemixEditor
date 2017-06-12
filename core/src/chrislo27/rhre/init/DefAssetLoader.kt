@@ -77,6 +77,7 @@ class DefAssetLoader : IAssetLoader {
 		manager.load(AssetMap.add("ui_fullscreen", "images/ui/icons/fullscreen.png"), Texture::class.java)
 		manager.load(AssetMap.add("ui_palette", "images/ui/icons/palette.png"), Texture::class.java)
 		manager.load(AssetMap.add("ui_metronome", "images/ui/icons/metronome.png"), Texture::class.java)
+		manager.load(AssetMap.add("ui_inspections", "images/ui/icons/inspections.png"), Texture::class.java)
 	}
 
 	override fun addUnmanagedTextures(textures: HashMap<String, Texture>) {
