@@ -24,6 +24,7 @@ import ionium.stage.ui.ImageButton
 import ionium.stage.ui.LocalizationStrategy
 import ionium.stage.ui.TextButton
 import ionium.stage.ui.skin.Palettes
+import ionium.util.MathHelper
 import ionium.util.Utils
 import ionium.util.i18n.Localization
 import java.io.File
@@ -327,24 +328,50 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
-			val metronome = object : TextButton(stage, palette, "editor.button.metronome.off") {
+			val metronomeFrames: List<TextureRegion> by lazy {
+				val tex = AssetRegistry.getTexture("ui_metronome")
+				val size = 64
+				return@lazy listOf(TextureRegion(tex, 0, 0, size, size),
+								   TextureRegion(tex, size, 0, size, size),
+								   TextureRegion(tex, size * 2, 0, size, size),
+								   TextureRegion(tex, size, 0, size, size),
+								   TextureRegion(tex, 0, 0, size, size),
+								   TextureRegion(tex, size * 2, 0, -size, size),
+								   TextureRegion(tex, size * 3, 0, -size, size),
+								   TextureRegion(tex, size * 2, 0, -size, size)
+								  )
+			}
 
+			val metronome = object : ImageButton(stage, palette, metronomeFrames[0]) {
+
+				private var start: Long = 0
 
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
 					screen.editor.remix.tickEachBeat = !screen.editor.remix.tickEachBeat
-					localizationKey = "editor.button.metronome." + if (screen.editor.remix.tickEachBeat) "on" else "off"
+					start = System.currentTimeMillis()
 				}
 
 				override fun render(batch: SpriteBatch, alpha: Float) {
+					if (screen.editor.remix.tickEachBeat) {
+						val time = 1.25f
+						this.textureRegion = metronomeFrames[(MathHelper.getSawtoothWave(System.currentTimeMillis() - start +
+																								 (time / metronomeFrames.size * 1000).toInt(),
+																						 time)
+								* metronomeFrames.size)
+								.toInt().coerceIn(0, metronomeFrames.size - 1)]
+					} else {
+						this.textureRegion = metronomeFrames[0]
+					}
+
 					getPalette().labelFont.data.setScale(0.5f)
 					super.render(batch, alpha)
 					getPalette().labelFont.data.setScale(1f)
 				}
 			}
 
-			stage!!.addActor<TextButton>(metronome).align(Align.topRight)
+			stage!!.addActor<ImageButton>(metronome).align(Align.topRight)
 					.setPixelOffset((PADDING * 6 + BUTTON_HEIGHT + BUTTON_HEIGHT * 6).toFloat(), PADDING.toFloat(),
 									(BUTTON_HEIGHT * 4).toFloat(),
 									BUTTON_HEIGHT.toFloat())
@@ -651,7 +678,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
-			val paletteSwap = object : TextButton(stage, palette, "editor.button.paletteSwap") {
+			val paletteSwap = object : ImageButton(stage, palette,
+												   TextureRegion(AssetRegistry.getTexture("ui_palette"))) {
 				private val palettes = mutableListOf<AbstractPalette>()
 				private val folder: FileHandle by lazy { Gdx.files.local("palettes/") }
 				private var num = 0
@@ -763,18 +791,18 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
 						main.font.data.setScale(1f)
 						batch.setColor(1f, 1f, 1f, 1f)
-					}
 
-					if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
-						initialize()
-						cycle(0.075f)
+						if (Utils.isButtonJustPressed(Input.Buttons.RIGHT)) {
+							initialize()
+							cycle(0.075f)
+						}
 					}
 				}
 			}
 
-			stage!!.addActor<TextButton>(paletteSwap).align(Align.topLeft)
+			stage!!.addActor<ImageButton>(paletteSwap).align(Align.topLeft)
 					.setPixelOffset((PADDING * 8 + BUTTON_HEIGHT * 7).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 5).toFloat(), BUTTON_HEIGHT.toFloat())
+									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
