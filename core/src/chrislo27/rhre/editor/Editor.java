@@ -183,7 +183,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 				Main.fillRect(batch, x * Entity.PX_WIDTH, yOffset, 2, TRACK_COUNT * Entity.PX_HEIGHT);
 
-				if (((selectionGroup != null || trackerMoving > 0) &&
+				if (((selectionGroup != null || trackerMoving > 0 || currentTool == Tool.BPM) &&
 						remix.getPlayingState() == PlayingState.STOPPED) && beatInside == x) {
 					final int numOfLines = ((int) (1 / snappingInterval));
 					for (int i = 0; i < numOfLines; i++) {
@@ -264,11 +264,22 @@ public class Editor extends InputAdapter implements Disposable {
 						continue;
 
 					boolean isSelected = tc == selectedTempoChange;
+					if (isSelected)
+						continue;
 
 					batch.setColor(main.getPalette().getBpmTracker());
-					if (isSelected) {
-						batch.setColor(main.getPalette().getBpmTrackerSelected());
-					}
+					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
+							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
+
+					main.getFontBordered().setColor(batch.getColor());
+					main.getFontBordered()
+							.draw(batch, Localization.get("editor.bpmTracker", String.format("%.1f", tc.getTempo())),
+									tc.getBeat() * Entity.PX_WIDTH + 4,
+									-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
+				}
+				if (selectedTempoChange != null) {
+					final TempoChange tc = selectedTempoChange;
+					batch.setColor(main.getPalette().getBpmTrackerSelected());
 
 					Main.fillRect(batch, tc.getBeat() * Entity.PX_WIDTH, -Entity.PX_HEIGHT, 2,
 							Entity.PX_HEIGHT * (TRACK_COUNT + 1));
@@ -279,14 +290,12 @@ public class Editor extends InputAdapter implements Disposable {
 									tc.getBeat() * Entity.PX_WIDTH + 4,
 									-Entity.PX_HEIGHT + main.getFontBordered().getCapHeight());
 
-					if (isSelected) {
-						main.getFontBordered().setColor(main.getPalette().getBpmTracker());
-						main.getFontBordered().getData().setScale(0.5f);
-						main.getFontBordered().draw(batch, Localization.get("editor.bpmTrackerHint"),
-								tc.getBeat() * Entity.PX_WIDTH - 4,
-								-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2, 0, Align.right, false);
-						main.getFontBordered().getData().setScale(1);
-					}
+					main.getFontBordered().setColor(main.getPalette().getBpmTrackerSelected());
+					main.getFontBordered().getData().setScale(0.5f);
+					main.getFontBordered().draw(batch, Localization.get("editor.bpmTrackerHint"),
+							tc.getBeat() * Entity.PX_WIDTH - 4,
+							-Entity.PX_HEIGHT + main.getFontBordered().getLineHeight() * 2, 0, Align.right, false);
+					main.getFontBordered().getData().setScale(1);
 				}
 				main.getFontBordered().setColor(1, 1, 1, 1);
 				batch.setColor(1, 1, 1, 1);
