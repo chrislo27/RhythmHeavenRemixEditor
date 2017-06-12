@@ -2,7 +2,6 @@
 * [ ] This issue specifically has something to do with RHRE2
 * [ ] I have attempted to [look for similar issues](https://github.com/chrislo27/RhythmHeavenRemixEditor/issues?utf8=%E2%9C%93&q=is%3Aissue)
 already
-* [ ] I have discussed this issue on the Discord server
 
 ### Description
 [insert description of the issue]
