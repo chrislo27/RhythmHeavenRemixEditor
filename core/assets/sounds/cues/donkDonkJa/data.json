@@ -84,6 +84,21 @@
       "name": "deet-deet-doot - 3"
     },
     {
+      "id": "donkDonkJa/deetdeetdootNoBlast1",
+      "duration": 0.666666,
+      "name": "deet-deet-doot (no blast) - 1"
+    },
+    {
+      "id": "donkDonkJa/deetdeetdootNoBlast2",
+      "duration": 0.666666,
+      "name": "deet-deet-doot (no blast) - 2"
+    },
+    {
+      "id": "donkDonkJa/deetdeetdootNoBlast3",
+      "duration": 0.666666,
+      "name": "deet-deet-doot (no blast) - 3"
+    },
+    {
       "id": "donkDonkJa/blastoff",
       "deprecatedIDs": [
         "donkDonkJp/blastoff"
@@ -165,6 +180,24 @@
         },
         {
           "id": "donkDonkJa/deetdeetdoot3",
+          "beat": 1.333333
+        }
+      ]
+    },
+    {
+      "id": "donkDonkJa_deetdeetdootNoBlast",
+      "name": "deet-deet-doot (no blast)",
+      "cues": [
+        {
+          "id": "donkDonkJa/deetdeetdootNoBlast1",
+          "beat": 0.0
+        },
+        {
+          "id": "donkDonkJa/deetdeetdootNoBlast2",
+          "beat": 0.666666
+        },
+        {
+          "id": "donkDonkJa/deetdeetdootNoBlast3",
           "beat": 1.333333
         }
       ]
