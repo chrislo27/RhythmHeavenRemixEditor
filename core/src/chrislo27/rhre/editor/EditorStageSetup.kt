@@ -811,6 +811,12 @@ class EditorStageSetup(private val screen: EditorScreen) {
 					super.render(batch, alpha)
 					getPalette().labelFont.data.setScale(1f)
 				}
+
+				override fun onClickAction(x: Float, y: Float) {
+					super.onClickAction(x, y)
+
+					main.screen = ScreenRegistry.get("inspections")
+				}
 			}
 
 			stage!!.addActor(inspections).align(Align.topLeft)
@@ -838,25 +844,6 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			stage!!.addActor<TextButton>(tapalong).align(Align.topLeft)
 					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 12).toFloat(), PADDING.toFloat(),
 									(BUTTON_HEIGHT * 5 + PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
-		}
-
-		run {
-			val stats = object : TextButton(stage, palette, "editor.button.stats") {
-
-				override fun onClickAction(x: Float, y: Float) {
-					super.onClickAction(x, y)
-				}
-
-				override fun render(batch: SpriteBatch, alpha: Float) {
-					getPalette().labelFont.data.setScale(0.5f)
-					super.render(batch, alpha)
-					getPalette().labelFont.data.setScale(1f)
-				}
-			}
-
-			//			stage.addActor(stats).align(Align.topLeft)
-			//					.setPixelOffset(PADDING * 8 + BUTTON_HEIGHT * 14, PADDING, BUTTON_HEIGHT * 3 + PADDING * 2,
-			//							BUTTON_HEIGHT);
 		}
 	}
 

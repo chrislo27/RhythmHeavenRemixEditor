@@ -221,6 +221,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		reg.add("new", NewScreen(this))
 		reg.add("version", VersionScreen(this))
 		reg.add("script", ScriptLoadingScreen(this))
+		reg.add("inspections", InspectionsScreen(this))
 
 		reg.all.forEach { it.resize(1280, 720) }
 	}
