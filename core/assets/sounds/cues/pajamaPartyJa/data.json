@@ -1,0 +1,248 @@
+{
+  "gameID": "pajamaPartyJa",
+  "gameName": "Pajama Party (Japanese)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "pajamaPartyJa/three1",
+      "duration": 0.5,
+      "name": "three - 1"
+    },
+    {
+      "id": "pajamaPartyJa/three2",
+      "duration": 0.5,
+      "name": "three - 2"
+    },
+    {
+      "id": "pajamaPartyJa/three3",
+      "duration": 0.5,
+      "name": "three - 3"
+    },
+    {
+      "id": "pajamaPartyJa/five1",
+      "duration": 0.5,
+      "name": "five - 1"
+    },
+    {
+      "id": "pajamaPartyJa/five2",
+      "duration": 0.5,
+      "name": "five - 2"
+    },
+    {
+      "id": "pajamaPartyJa/five3",
+      "duration": 0.5,
+      "name": "five - 3"
+    },
+    {
+      "id": "pajamaPartyJa/five4",
+      "duration": 0.5,
+      "name": "five - 4"
+    },
+    {
+      "id": "pajamaPartyJa/five5",
+      "duration": 1.0,
+      "name": "five - 5"
+    },
+    {
+      "id": "pajamaPartyJa/siesta1",
+      "duration": 0.5,
+      "name": "siesta - 1"
+    },
+    {
+      "id": "pajamaPartyJa/siesta2",
+      "duration": 0.5,
+      "name": "siesta - 2"
+    },
+    {
+      "id": "pajamaPartyJa/siesta3",
+      "duration": 0.5,
+      "name": "siesta - 3"
+    },
+    {
+      "id": "pajamaPartyJa/siesta4",
+      "duration": 0.5,
+      "name": "siesta - 4"
+    },
+    {
+      "id": "pajamaPartyJa/siesta5",
+      "duration": 0.5,
+      "name": "siesta - 5"
+    },
+    {
+      "id": "pajamaPartyJa/siesta6",
+      "duration": 0.5,
+      "name": "siesta - 6"
+    },
+    {
+      "id": "pajamaPartyJa/throw1",
+      "duration": 0.5,
+      "name": "throw - 1"
+    },
+    {
+      "id": "pajamaPartyJa/throw2",
+      "duration": 0.5,
+      "name": "throw - 2"
+    },
+    {
+      "id": "pajamaPartyJa/throw3",
+      "duration": 1.0,
+      "name": "throw - 3"
+    },
+    {
+      "id": "pajamaPartyJa/throw4",
+      "duration": 1.0,
+      "name": "throw - 4"
+    },
+    {
+      "id": "pajamaPartyJa/throw5",
+      "duration": 1.0,
+      "name": "throw - 5"
+    },
+    {
+      "id": "pajamaPartyJa/throw6",
+      "duration": 0.5,
+      "name": "throw - 6"
+    },
+    {
+      "id": "pajamaPartyJa/throw6b",
+      "duration": 0.5,
+      "name": "throw - 6 - (alternative)"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pajamaPartyJa_three",
+      "name": "three",
+      "cues": [
+        {
+          "id": "pajamaPartyJa/three1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyJa/three2",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyJa/three3",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyJa_five",
+      "name": "five",
+      "cues": [
+        {
+          "id": "pajamaPartyJa/five1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyJa/five2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyJa/five3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyJa/five4",
+          "beat": 1.5
+        },
+        {
+          "id": "pajamaPartyJa/five5",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyJa_siesta",
+      "name": "siesta",
+      "cues": [
+        {
+          "id": "pajamaPartyJa/siesta1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyJa/siesta2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyJa/siesta3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyJa/siesta4",
+          "beat": 2.5
+        },
+        {
+          "id": "pajamaPartyJa/siesta5",
+          "beat": 4.0
+        },
+        {
+          "id": "pajamaPartyJa/siesta6",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyJa_throw",
+      "name": "throw pillow",
+      "cues": [
+        {
+          "id": "pajamaPartyJa/throw1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyJa/throw2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyJa/throw3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyJa/throw4",
+          "beat": 2.0
+        },
+        {
+          "id": "pajamaPartyJa/throw5",
+          "beat": 3.0
+        },
+        {
+          "id": "pajamaPartyJa/throw6",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyJa_throwAlternative",
+      "name": "throw pillow - (alternative)",
+      "cues": [
+        {
+          "id": "pajamaPartyJa/throw1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyJa/throw2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyJa/throw3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyJa/throw4",
+          "beat": 2.0
+        },
+        {
+          "id": "pajamaPartyJa/throw5",
+          "beat": 3.0
+        },
+        {
+          "id": "pajamaPartyJa/throw6b",
+          "beat": 7.0
+        }
+      ]
+    }
+  ]
+}

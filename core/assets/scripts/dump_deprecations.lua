@@ -3,7 +3,7 @@
 
 remix:removeAllCues()
 
-local games = {"sumoBrothers"}
+local games = {"pajamaParty", "figureFighter"}
 
 for _, g in pairs(games) do
 	local game = registry.games[g]
