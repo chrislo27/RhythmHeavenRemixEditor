@@ -1,0 +1,342 @@
+{
+  "gameID": "pajamaPartyEn",
+  "gameName": "Pajama Party (English)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "pajamaPartyEn/three1",
+      "deprecatedIDs": [
+        "pajamaParty/three1"
+      ],
+      "duration": 0.5,
+      "name": "three - 1"
+    },
+    {
+      "id": "pajamaPartyEn/three2",
+      "deprecatedIDs": [
+        "pajamaParty/three2"
+      ],
+      "duration": 0.5,
+      "name": "three - 2"
+    },
+    {
+      "id": "pajamaPartyEn/three3",
+      "deprecatedIDs": [
+        "pajamaParty/three3"
+      ],
+      "duration": 0.5,
+      "name": "three - 3"
+    },
+    {
+      "id": "pajamaPartyEn/five1",
+      "deprecatedIDs": [
+        "pajamaParty/five1"
+      ],
+      "duration": 0.5,
+      "name": "five - 1"
+    },
+    {
+      "id": "pajamaPartyEn/five2",
+      "deprecatedIDs": [
+        "pajamaParty/five2"
+      ],
+      "duration": 0.5,
+      "name": "five - 2"
+    },
+    {
+      "id": "pajamaPartyEn/five3",
+      "deprecatedIDs": [
+        "pajamaParty/five3"
+      ],
+      "duration": 0.5,
+      "name": "five - 3"
+    },
+    {
+      "id": "pajamaPartyEn/five4",
+      "deprecatedIDs": [
+        "pajamaParty/five4"
+      ],
+      "duration": 0.5,
+      "name": "five - 4"
+    },
+    {
+      "id": "pajamaPartyEn/five5",
+      "deprecatedIDs": [
+        "pajamaParty/five5"
+      ],
+      "duration": 1.0,
+      "name": "five - 5"
+    },
+    {
+      "id": "pajamaPartyEn/siesta1",
+      "deprecatedIDs": [
+        "pajamaParty/siesta1"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 1"
+    },
+    {
+      "id": "pajamaPartyEn/siesta2",
+      "deprecatedIDs": [
+        "pajamaParty/siesta2"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 2"
+    },
+    {
+      "id": "pajamaPartyEn/siesta3",
+      "deprecatedIDs": [
+        "pajamaParty/siesta3"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 3"
+    },
+    {
+      "id": "pajamaPartyEn/siesta4",
+      "deprecatedIDs": [
+        "pajamaParty/siesta4"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 4"
+    },
+    {
+      "id": "pajamaPartyEn/siesta5",
+      "deprecatedIDs": [
+        "pajamaParty/siesta5"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 5"
+    },
+    {
+      "id": "pajamaPartyEn/siesta6",
+      "deprecatedIDs": [
+        "pajamaParty/siesta6"
+      ],
+      "duration": 0.5,
+      "name": "siesta - 6"
+    },
+    {
+      "id": "pajamaPartyEn/throw1",
+      "deprecatedIDs": [
+        "pajamaParty/throw1"
+      ],
+      "duration": 0.5,
+      "name": "throw - 1"
+    },
+    {
+      "id": "pajamaPartyEn/throw2",
+      "deprecatedIDs": [
+        "pajamaParty/throw2"
+      ],
+      "duration": 0.5,
+      "name": "throw - 2"
+    },
+    {
+      "id": "pajamaPartyEn/throw3",
+      "deprecatedIDs": [
+        "pajamaParty/throw3"
+      ],
+      "duration": 0.5,
+      "name": "throw - 3"
+    },
+    {
+      "id": "pajamaPartyEn/throw4",
+      "deprecatedIDs": [
+        "pajamaParty/throw4"
+      ],
+      "duration": 0.5,
+      "name": "throw - 4"
+    },
+    {
+      "id": "pajamaPartyEn/throw5",
+      "deprecatedIDs": [
+        "pajamaParty/throw5"
+      ],
+      "duration": 1.0,
+      "name": "throw - 5"
+    },
+    {
+      "id": "pajamaPartyEn/throw6",
+      "deprecatedIDs": [
+        "pajamaParty/throw6"
+      ],
+      "duration": 1.0,
+      "name": "throw - 6"
+    },
+    {
+      "id": "pajamaPartyEn/throw7",
+      "deprecatedIDs": [
+        "pajamaParty/throw7"
+      ],
+      "duration": 0.5,
+      "name": "throw - 7"
+    },
+    {
+      "id": "pajamaPartyEn/throw7b",
+      "deprecatedIDs": [
+        "pajamaParty/throw7b"
+      ],
+      "duration": 0.5,
+      "name": "throw - 7 - (alternative)"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pajamaPartyEn_three",
+      "deprecatedIDs": [
+        "pajamaParty_three"
+      ],
+      "name": "three",
+      "cues": [
+        {
+          "id": "pajamaPartyEn/three1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyEn/three2",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyEn/three3",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyEn_five",
+      "deprecatedIDs": [
+        "pajamaParty_five"
+      ],
+      "name": "five",
+      "cues": [
+        {
+          "id": "pajamaPartyEn/five1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyEn/five2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyEn/five3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyEn/five4",
+          "beat": 1.5
+        },
+        {
+          "id": "pajamaPartyEn/five5",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyEn_siesta",
+      "deprecatedIDs": [
+        "pajamaParty_siesta"
+      ],
+      "name": "siesta",
+      "cues": [
+        {
+          "id": "pajamaPartyEn/siesta1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyEn/siesta2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyEn/siesta3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyEn/siesta4",
+          "beat": 2.5
+        },
+        {
+          "id": "pajamaPartyEn/siesta5",
+          "beat": 4.0
+        },
+        {
+          "id": "pajamaPartyEn/siesta6",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyEn_throw",
+      "deprecatedIDs": [
+        "pajamaParty_throw"
+      ],
+      "name": "throw pillow",
+      "cues": [
+        {
+          "id": "pajamaPartyEn/throw1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyEn/throw2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyEn/throw3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyEn/throw4",
+          "beat": 1.5
+        },
+        {
+          "id": "pajamaPartyEn/throw5",
+          "beat": 2.0
+        },
+        {
+          "id": "pajamaPartyEn/throw6",
+          "beat": 3.0
+        },
+        {
+          "id": "pajamaPartyEn/throw7",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "pajamaPartyEn_throwAlternative",
+      "deprecatedIDs": [
+        "pajamaParty_throwAlternative"
+      ],
+      "name": "throw pillow - (alternative)",
+      "cues": [
+        {
+          "id": "pajamaPartyEn/throw1",
+          "beat": 0.0
+        },
+        {
+          "id": "pajamaPartyEn/throw2",
+          "beat": 0.5
+        },
+        {
+          "id": "pajamaPartyEn/throw3",
+          "beat": 1.0
+        },
+        {
+          "id": "pajamaPartyEn/throw4",
+          "beat": 1.5
+        },
+        {
+          "id": "pajamaPartyEn/throw5",
+          "beat": 2.0
+        },
+        {
+          "id": "pajamaPartyEn/throw6",
+          "beat": 3.0
+        },
+        {
+          "id": "pajamaPartyEn/throw7b",
+          "beat": 7.0
+        }
+      ]
+    }
+  ]
+}
