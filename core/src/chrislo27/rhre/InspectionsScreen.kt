@@ -22,12 +22,12 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
 		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
-		// left right indicators
+		// left right indicators TODO
 		main.font.draw(main.batch, "◀ Languages", startX + 32, startY + BG_HEIGHT * 0.8f)
 		main.font.draw(main.batch, "Other Stuff ▶", startX + BG_WIDTH - 32, startY + BG_HEIGHT * 0.8f, 0f, Align.right, false)
 		main.font.draw(main.batch, "Current Stuff", startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f, 0f, Align.center, false)
 
-		// dots
+		// dots TODO
 		main.font.draw(main.batch, "◦▪◦", startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f - main.font.lineHeight, 0f, Align.center, false)
 
 		main.batch.end()
@@ -47,7 +47,7 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 		main.batch.begin()
 		StencilMaskUtil.useMask()
 
-		// render adjacent tabs
+		// render adjacent tabs TODO
 		main.batch.setColor(1f, 1f, 1f, 1f)
 		ionium.templates.Main.fillRect(main.batch, 0f, 0f, 2000f, 1000f)
 
