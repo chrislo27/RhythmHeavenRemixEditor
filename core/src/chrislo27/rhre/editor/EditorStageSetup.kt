@@ -819,9 +819,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				}
 			}
 
-//			stage!!.addActor(inspections).align(Align.topLeft)
-//					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
-//									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
+			stage!!.addActor(inspections).align(Align.topLeft)
+					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
 
 		}
 
