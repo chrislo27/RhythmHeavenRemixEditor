@@ -1,208 +1,204 @@
 {
-  "gameID": "splashdownEs",
-  "gameName": "Splashdown (Spanish)",
+  "gameID": "splashdownJa",
+  "gameName": "Splashdown (Japanese)",
   "series": "ds",
   "cues": [
     {
-      "id": "splashdownEs/start",
+      "id": "splashdownJa/start",
       "duration": 1,
       "name": "start"
     },
     {
-      "id": "splashdownEs/descend1",
+      "id": "splashdownJa/descend1",
       "duration": 0.25,
       "name": "descend - others"
     },
     {
-      "id": "splashdownEs/descend2",
+      "id": "splashdownJa/descend2",
       "duration": 0.25,
       "name": "descend - player"
     },
     {
-      "id": "splashdownEs/ascend1",
+      "id": "splashdownJa/ascend1",
       "duration": 0.25,
       "name": "ascend"
     },
     {
-      "id": "splashdownEs/ascend2",
+      "id": "splashdownJa/ascend2",
       "duration": 0.25,
       "name": "ascend - player"
     },
     {
-      "id": "splashdownEs/yeah1",
+      "id": "splashdownJa/yeah1",
       "duration": 1,
       "name": "jump - others"
     },
     {
-      "id": "splashdownEs/yeah2",
+      "id": "splashdownJa/yeah2",
       "duration": 1,
       "name": "jump - player"
     },
     {
-      "id": "splashdownEs/jumpSimultaneous",
+      "id": "splashdownJa/jumpSimultaneous",
       "duration": 0.75,
       "name": "jump - simultaneous"
     },
     {
-      "id": "splashdownEs/spin1",
+      "id": "splashdownJa/spin1",
       "duration": 1,
       "name": "spin - others"
     },
     {
-      "id": "splashdownEs/spin2",
+      "id": "splashdownJa/spin2",
       "duration": 1,
       "name": "spin - player"
     },
     {
-      "id": "splashdownEs/splash",
+      "id": "splashdownJa/splash1",
       "duration": 1,
-      "name": "splash"
+      "name": "splash - 1"
     },
     {
-      "id": "splashdownEs/oooh",
+      "id": "splashdownJa/splash2",
+      "duration": 1,
+      "name": "splash - 2"
+    },
+    {
+      "id": "splashdownJa/oooh",
       "duration": 2,
       "name": "ohhhhh"
     },
     {
-      "id": "splashdownEs/ahiva1",
-      "duration": 0.25,
-      "name": "ahiva - 1"
+      "id": "splashdownJa/alleyoop1",
+      "duration": 0.50,
+      "name": "alley-oop - 1"
     },    
     {
-      "id": "splashdownEs/ahiva2",
-      "duration": 0.25,
-      "name": "ahiva - 2"
-    },
-    {
-      "id": "splashdownEs/ahiva3",
+      "id": "splashdownJa/alleyoop2",
       "duration": 1,
-      "name": "ahiva - 3"
+      "name": "alley-oop - 2"
     }
   ],
   "patterns": [
     {
-      "id": "splashdownEs_descend",
+      "id": "splashdownJa_descend",
       "name": "descend",
       "isStretchable": true,
       "cues": [
         {
-          "id": "splashdownEs/descend1",
+          "id": "splashdownJa/descend1",
           "beat": 0
         },
         {
-          "id": "splashdownEs/descend1",
+          "id": "splashdownJa/descend1",
           "beat": 0.75
         },
         {
-          "id": "splashdownEs/descend2",
+          "id": "splashdownJa/descend2",
           "beat": 1.5
         }
       ]
     },
     {
-      "id": "splashdownEs_ascend",
+      "id": "splashdownJa_ascend",
       "name": "ascend",
       "isStretchable": true,
       "cues": [
         {
-          "id": "splashdownEs/ascend1",
+          "id": "splashdownJa/ascend1",
           "beat": 0
         },
         {
-          "id": "splashdownEs/ascend1",
+          "id": "splashdownJa/ascend1",
           "beat": 0.75
         },
         {
-          "id": "splashdownEs/ascend2",
+          "id": "splashdownJa/ascend2",
           "beat": 1.5
         }
       ]
     },
     {
-      "id": "splashdownEs_jumpOthers",
+      "id": "splashdownJa_jumpOthers",
       "name": "jump - others",
       "cues": [
         {
-          "id": "splashdownEs/yeah1",
+          "id": "splashdownJa/yeah1",
           "beat": 0
         },
         {
-          "id": "splashdownEs/spin1",
+          "id": "splashdownJa/spin1",
           "beat": 1
         },
         {
-          "id": "splashdownEs/splash",
+          "id": "splashdownJa/splash1",
           "beat": 2
         }
       ]
     },
     {
-      "id": "splashdownEs_jumpPlayer",
+      "id": "splashdownJa_jumpPlayer",
       "name": "jump - player",
       "cues": [
         {
-          "id": "splashdownEs/yeah2",
+          "id": "splashdownJa/yeah2",
           "beat": 0
         },
         {
-          "id": "splashdownEs/spin2",
+          "id": "splashdownJa/spin2",
           "beat": 1
         },
         {
-          "id": "splashdownEs/splash",
+          "id": "splashdownJa/splash2",
           "beat": 2
         }
       ]
     },
     {
-      "id": "splashdownEs_simultaneousJump",
+      "id": "splashdownJa_simultaneousJump",
       "name": "simultaneous jump",
       "cues": [
         {
-          "id": "splashdownEs/oooh",
+          "id": "splashdownJa/oooh",
           "beat": 0
         },
         {
-          "id": "splashdownEs/jumpSimultaneous",
+          "id": "splashdownJa/jumpSimultaneous",
           "beat": 2
         },
         {
-          "id": "splashdownEs/spin2",
+          "id": "splashdownJa/spin2",
           "beat": 2.75
         },
         {
-          "id": "splashdownEs/splash",
+          "id": "splashdownJa/splash2",
           "beat": 3.75
         }
       ]
     },
     {
-      "id": "splashdownEs_ahiva",
-      "name": "ahiva!",
+      "id": "splashdownJa_alleyoop",
+      "name": "alley-oop!",
       "cues": [
         {
-          "id": "splashdownEs/oooh",
+          "id": "splashdownJa/oooh",
           "beat": 0
         },
         {
-          "id": "splashdownEs/jumpSimultaneous",
+          "id": "splashdownJa/jumpSimultaneous",
           "beat": 2
         },
         {
-          "id": "splashdownEs/ahiva1",
-          "beat": 2.5
-        },
-        {
-          "id": "splashdownEs/ahiva2",
+          "id": "splashdownJa/alleyoop1",
           "beat": 2.75
         },
         {
-          "id": "splashdownEs/ahiva3",
-          "beat": 3
+          "id": "splashdownJa/alleyoop2",
+          "beat": 3.25
         },
         {
-          "id": "splashdownEs/splash",
-          "beat": 4
+          "id": "splashdownJa/splash2",
+          "beat": 4.25
         }
       ]
     }
