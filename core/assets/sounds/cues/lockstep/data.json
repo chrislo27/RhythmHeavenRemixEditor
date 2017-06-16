@@ -25,7 +25,7 @@
     },
     {
       "id": "lockstep/bkbt_hoi",
-      "duration": 1,
+      "duration": 0.875,
       "name": "onbeat - switch - hoi"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "id": "lockstep/return_ha",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "offbeat - switch - ha"
     }
   ],
@@ -152,6 +152,66 @@
         {
           "id": "lockstep/return_ha",
           "beat": 1.5
+        },
+        {
+          "id": "lockstep/hai",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "lockstep_onToOffSwing",
+      "name": "on to off (swing)",
+      "cues": [
+        {
+          "id": "lockstep/hai",
+          "beat": 0
+        },
+        {
+          "id": "lockstep/hai",
+          "beat": 1
+        },
+        {
+          "id": "lockstep/hai",
+          "beat": 2
+        },
+        {
+          "id": "lockstep/bkbt_ha",
+          "beat": 3
+        },
+        {
+          "id": "lockstep/bkbt_hoi",
+          "beat": 3.625
+        },
+        {
+          "id": "lockstep/bkbt_boh",
+          "beat": 4.5
+        },
+        {
+          "id": "lockstep/bkbt_boh",
+          "beat": 5.5
+        }
+      ]
+    },
+    {
+      "id": "lockstep_offToOnSwing",
+      "name": "off to on (swing)",
+      "cues": [
+        {
+          "id": "lockstep/return_hee",
+          "beat": 0
+        },
+        {
+          "id": "lockstep/return_ha",
+          "beat": 0.625
+        },
+        {
+          "id": "lockstep/return_hee",
+          "beat": 1
+        },
+        {
+          "id": "lockstep/return_ha",
+          "beat": 1.625
         },
         {
           "id": "lockstep/hai",
