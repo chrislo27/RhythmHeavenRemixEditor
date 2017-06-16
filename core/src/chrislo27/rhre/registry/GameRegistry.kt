@@ -191,7 +191,7 @@ object GameRegistry : Disposable {
 			game = Game(gameObj.gameID!!, gameObj.gameName!!, soundCues, patterns,
 						if (gameObj.series == null) Series.UNKNOWN else Series.valueOf(
 								gameObj.series!!.toUpperCase(Locale.ROOT)),
-						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true)
+						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true, gameObj.notRealGame)
 
 			if (!iconFh.exists())
 				Main.logger.warn(game.id + " is missing icon.png")
