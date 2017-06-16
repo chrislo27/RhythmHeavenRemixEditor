@@ -1,0 +1,217 @@
+{
+  "gameID": "marchingOrdersKo",
+  "gameName": "Marching Orders (Megamix) (Korean)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "marchingOrdersKo/attention1",
+      "duration": 0.5,
+      "name": "general - attention 1"
+    },
+    {
+      "id": "marchingOrdersKo/attention2",
+      "duration": 1.5,
+      "name": "general - attention 2"
+    },
+    {
+      "id": "marchingOrdersKo/march1",
+      "duration": 0.5,
+      "name": "general - march 1"
+    },
+    {
+      "id": "marchingOrdersKo/march2",
+      "duration": 0.5,
+      "name": "general - march 2"
+    },
+    {
+      "id": "marchingOrdersKo/march3",
+      "duration": 1,
+      "name": "cadets - start marching"
+    },
+    {
+      "id": "marchingOrdersKo/step1",
+      "duration": 1,
+      "name": "cadets - left step"
+    },
+    {
+      "id": "marchingOrdersKo/step2",
+      "duration": 1,
+      "name": "cadets - right step"
+    },
+    {
+      "id": "marchingOrdersKo/halt1",
+      "duration": 0.25,
+      "name": "general - halt 1"
+    },
+    {
+      "id": "marchingOrdersKo/halt2",
+      "duration": 0.75,
+      "name": "general - halt 2"
+    },
+    {
+      "id": "marchingOrdersKo/halt3",
+      "duration": 1,
+      "name": "cadets - stop marching"
+    },
+    {
+      "id": "marchingOrdersKo/leftFaceTurn1",
+      "duration": 0.5,
+      "name": "general - left face turn 1"
+    },
+    {
+      "id": "marchingOrdersKo/leftFaceTurn2",
+      "duration": 1.5,
+      "name": "general - left face turn 2"
+    },
+    {
+      "id": "marchingOrdersKo/leftFaceTurn3",
+      "duration": 1,
+      "name": "general - left face turn 3"
+    },
+    {
+      "id": "marchingOrdersKo/leftFaceTurn4",
+      "duration": 1,
+      "name": "cadets - left face turn"
+    },
+    {
+      "id": "marchingOrdersKo/rightFaceTurn1",
+      "duration": 0.5,
+      "name": "general - right face turn 1"
+    },
+    {
+      "id": "marchingOrdersKo/rightFaceTurn2",
+      "duration": 1.5,
+      "name": "general - right face turn 2"
+    },
+    {
+      "id": "marchingOrdersKo/rightFaceTurn3",
+      "duration": 1,
+      "name": "general - right face turn 3"
+    },
+    {
+      "id": "marchingOrdersKo/rightFaceTurn4",
+      "duration": 1,
+      "name": "cadets - right face turn"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "marchingOrdersKo_attentionMarch",
+      "name": "attention... march!",
+      "cues": [
+        {
+          "id": "marchingOrdersKo/attention1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersKo/attention2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersKo/march1",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersKo/march2",
+          "beat": 2.5
+        },
+        {
+          "id": "marchingOrdersKo/march3",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "marchingOrdersKo_marching",
+      "name": "marching",
+      "cues": [
+        {
+          "id": "marchingOrdersKo/step1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersKo/step2",
+          "beat": 1.0
+        },
+        {
+          "id": "marchingOrdersKo/step1",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersKo/step2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "marchingOrdersKo_attentionHalt",
+      "name": "attention... halt!",
+      "cues": [
+        {
+          "id": "marchingOrdersKo/attention1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersKo/attention2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersKo/halt1",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersKo/halt2",
+          "beat": 2.25
+        },
+        {
+          "id": "marchingOrdersKo/halt3",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "marchingOrdersKo_leftFaceTurn",
+      "name": "left face turn",
+      "cues": [
+        {
+          "id": "marchingOrdersKo/leftFaceTurn1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersKo/leftFaceTurn2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersKo/leftFaceTurn3",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersKo/leftFaceTurn4",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "marchingOrdersKo_rightFaceTurn",
+      "name": "right face turn",
+      "cues": [
+        {
+          "id": "marchingOrdersKo/rightFaceTurn1",
+          "beat": 0.0
+        },
+        {
+          "id": "marchingOrdersKo/rightFaceTurn2",
+          "beat": 0.5
+        },
+        {
+          "id": "marchingOrdersKo/rightFaceTurn3",
+          "beat": 2.0
+        },
+        {
+          "id": "marchingOrdersKo/rightFaceTurn4",
+          "beat": 3.0
+        }
+      ]
+    }
+  ]
+}
