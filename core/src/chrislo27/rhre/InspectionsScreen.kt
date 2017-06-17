@@ -3,6 +3,7 @@ package chrislo27.rhre
 import chrislo27.rhre.inspections.InspectionTab
 import chrislo27.rhre.inspections.impl.InspTabLanguage
 import chrislo27.rhre.inspections.impl.InspTabSeries
+import chrislo27.rhre.inspections.impl.StatsTab
 import chrislo27.rhre.track.Remix
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -33,6 +34,7 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 	private var dots: String = ""
 	private val tabs: List<InspectionTab> =
 			listOf(
+					StatsTab(),
 					InspTabSeries(),
 					InspTabLanguage()
 				  )
@@ -91,7 +93,6 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 		main.batch.begin()
 		StencilMaskUtil.useMask()
 
-		main.font.setUseIntegerPositions(false)
 		// render adjacent tabs
 		main.camera.unproject(vector.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
 		main.batch.setColor(1f, 1f, 1f, 1f)
@@ -102,8 +103,6 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 			tabs.getOrNull(i)?.render(main, main.batch, tabStartX + xOffset, tabStartY, tabWidth, tabHeight, vector.x,
 									  vector.y)
 		}
-
-		main.font.setUseIntegerPositions(true)
 
 		main.batch.flush()
 		StencilMaskUtil.resetMask()
