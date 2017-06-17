@@ -1,3 +1,5 @@
+<img align="right" src="https://raw.githubusercontent.com/chrislo27/RhythmHeavenRemixEditor2/dev/core/assets/images/icon/icon128.png" height="320" width="320">
+
 # Rhythm Heaven Remix Editor 2
 RHRE 2 - Rhythm Heaven Remix Editor 2 - An audio remix editor for the Rhythm Heaven series
 
