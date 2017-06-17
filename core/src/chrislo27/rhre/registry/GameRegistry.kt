@@ -351,7 +351,7 @@ object GameRegistry : Disposable {
 						warningCount + " warning(s), done in " + ((System.nanoTime() - startTime) / 1_000_000.0) + " ms")
 
 		if (pedantic && warningCount > 0) {
-			throw IllegalStateException("Warnings exist and pedantic mode is on")
+			throw IllegalStateException("Warnings exist in the game registry, please see above")
 		}
 	}
 
