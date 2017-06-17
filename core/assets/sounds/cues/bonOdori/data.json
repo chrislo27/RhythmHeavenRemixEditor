@@ -4,6 +4,11 @@
   "series": "tengoku",
   "cues": [
     {
+      "id": "bonOdori/clap",
+      "duration": 0.5,
+      "name": "clap"
+    },
+    {
       "id": "bonOdori/don1",
       "deprecatedIDs": [
         "bonOdori/dondon1"
