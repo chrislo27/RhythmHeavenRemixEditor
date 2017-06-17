@@ -62,40 +62,44 @@ class StatsTab : InspectionTab() {
 							Localization.get("inspections.stats", cues, patterns, tempoChanges, duration),
 							startX + 32, startY + main.font.lineHeight, width - 64, Align.center)
 
-		var str: String? = null
-		batch.end()
-		main.shapes.begin(ShapeRenderer.ShapeType.Filled)
-		val radius: Float = 100f
-		PieChartRenderer.render(main.shapes, startX + width * 0.333333f, startY + main.font.lineHeight * 3 + radius, radius,
-								gameChart, mouseXPx, mouseYPx, { slice, percent ->
-									str = Localization.get("inspections.stats.percentage", slice.name,
-														   "" + Math.round(
-																   percent * remix.entities.size) + " / " + remix.entities.size,
-														   String.format("%.2f", percent * 100))
-								})
-		PieChartRenderer.render(main.shapes, startX + width * 0.666666f, startY + main.font.lineHeight * 3 + radius, radius,
-								seriesChart, mouseXPx, mouseYPx, { slice, percent ->
-									str = Localization.get("inspections.stats.percentage", slice.name,
-														   "" + Math.round(
-																   percent * remix.entities.size) + " / " + remix.entities.size,
-														   String.format("%.2f", percent * 100))
-								})
-		main.shapes.color = Color.WHITE
-		main.shapes.end()
-		batch.begin()
+		if (gameChart.isEmpty()) {
+			main.font.draw(batch, Localization.get("inspections.stats.none"), startX + 32, startY + height / 2 + main.font.lineHeight, width - 64, Align.center, true)
+		} else {
+			var str: String? = null
+			batch.end()
+			main.shapes.begin(ShapeRenderer.ShapeType.Filled)
+			val radius: Float = 100f
+			PieChartRenderer.render(main.shapes, startX + width * 0.333333f, startY + main.font.lineHeight * 3 + radius, radius,
+									gameChart, mouseXPx, mouseYPx, { slice, percent ->
+										str = Localization.get("inspections.stats.percentage", slice.name,
+															   "" + Math.round(
+																	   percent * remix.entities.size) + " / " + remix.entities.size,
+															   String.format("%.2f", percent * 100))
+									})
+			PieChartRenderer.render(main.shapes, startX + width * 0.666666f, startY + main.font.lineHeight * 3 + radius, radius,
+									seriesChart, mouseXPx, mouseYPx, { slice, percent ->
+										str = Localization.get("inspections.stats.percentage", slice.name,
+															   "" + Math.round(
+																	   percent * remix.entities.size) + " / " + remix.entities.size,
+															   String.format("%.2f", percent * 100))
+									})
+			main.shapes.color = Color.WHITE
+			main.shapes.end()
+			batch.begin()
 
-		main.font.data.setScale(0.75f)
-		Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.gamePercentages"),
-							startX + width * 0.333333f - radius,
-							startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
-		Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.seriesPercentages"),
-							startX + width * 0.666666f - radius,
-							startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
-		main.font.data.setScale(1f)
+			main.font.data.setScale(0.75f)
+			Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.gamePercentages"),
+								startX + width * 0.333333f - radius,
+								startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
+			Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.seriesPercentages"),
+								startX + width * 0.666666f - radius,
+								startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
+			main.font.data.setScale(1f)
 
-		if (str != null) {
-			Main.drawCompressed(main.font, batch, str!!,
-								startX + 32, startY + main.font.lineHeight * 2, width - 64, Align.left)
+			if (str != null) {
+				Main.drawCompressed(main.font, batch, str!!,
+									startX + 32, startY + main.font.lineHeight * 2, width - 64, Align.left)
+			}
 		}
 	}
 
