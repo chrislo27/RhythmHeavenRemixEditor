@@ -175,7 +175,9 @@ $id/count/flipperRollCountS"""
 								 0.25f, false, 0f))
 			}
 			"""$id/count/flopCount1
+$id/count/flopCount1B
 $id/count/flopCount2
+$id/count/flopCount2B
 $id/count/flopCount3
 $id/count/flopCount3B
 $id/count/flopCount4
@@ -204,7 +206,7 @@ $id/count/flopCount4B""".lines().forEach {
 				for (i in 1..count) {
 					val num: String = if (i % 4 == 0) "4" else "${i % 4}"
 					patternCues.add(Pattern.PatternCue(
-							"$id/count/flopCount$num${if ((num == "3" || num == "4") && i > 4) "B" else ""}", id,
+							"$id/count/flopCount$num${if (i > 4) "B" else ""}", id,
 							1f + i, 0, 1f, 0))
 				}
 
