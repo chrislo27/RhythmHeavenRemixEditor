@@ -24,10 +24,10 @@
       "name": "soccer ball - hit"
     },
     {
-      "id": "karateMan/KarateRoaster",
+      "id": "karateMan/roaster",
+      "deprecatedIDs": ["karateMan/KarateRoaster"],
       "duration": 1,
-      "name": "roaster - hit",
-      "fileExtension": "wav"
+      "name": "roaster - hit"
     },
     {
       "id": "karateMan/hit3cue1",
@@ -60,9 +60,14 @@
       "name": "lightbulb - hit"
     },
     {
-      "id": "karateMan/barrelout",
+      "id": "karateMan/barreloutCombos",
+      "deprecatedIDs": ["karateMan/barrelout"],
       "duration": 1,
-      "name": "barrel - out"
+      "name": "barrel - out (Combos!)"
+    },{
+      "id": "karateMan/barreloutKicks",
+      "duration": 1,
+      "name": "barrel - out (Kicks!)"
     },
     {
       "id": "karateMan/punchkick1",
@@ -157,7 +162,7 @@
           "beat": 0
         },
         {
-          "id": "karateMan/KarateRoaster",
+          "id": "karateMan/roaster",
           "beat": 1
         }
       ]
@@ -265,7 +270,7 @@
           "beat": 1
         },
         {
-          "id": "karateMan/barrelout",
+          "id": "karateMan/barreloutKicks",
           "beat": 2
         },
         {
@@ -291,7 +296,7 @@
           "beat": 1
         },
         {
-          "id": "karateMan/barrelout",
+          "id": "karateMan/barreloutCombos",
           "beat": 2
         },
         {
