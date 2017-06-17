@@ -5,6 +5,9 @@ import chrislo27.rhre.track.Remix
 import java.util.*
 
 class InspTabLanguage : GameListingTab() {
+	override val name: String = "inspections.language.title"
+	override val noneText: String = "inspections.language.none"
+
 	override fun populateMap(remix: Remix, list: List<Game>): LinkedHashMap<String, List<Game>> {
 		return list
 				.groupBy { it ->

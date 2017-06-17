@@ -2,6 +2,7 @@ package chrislo27.rhre
 
 import chrislo27.rhre.inspections.InspectionTab
 import chrislo27.rhre.inspections.impl.InspTabLanguage
+import chrislo27.rhre.inspections.impl.InspTabSeries
 import chrislo27.rhre.track.Remix
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -10,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Align
 import ionium.registry.ScreenRegistry
+import ionium.util.Utils
 import ionium.util.i18n.Localization
 import ionium.util.render.StencilMaskUtil
 
@@ -25,11 +27,13 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 		set(value) {
 			field = value
 			targetTab = MathUtils.clamp(targetTab, value - 1f, value + 1f)
+			updateDots()
 		}
 	private var targetTab: Float = currentTab.toFloat()
 	private var dots: String = ""
 	private val tabs: List<InspectionTab> =
 			listOf(
+					InspTabSeries(),
 					InspTabLanguage()
 				  )
 	private val vector: Vector3 = Vector3()
@@ -37,28 +41,33 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 	override fun render(delta: Float) {
 		super.render(delta)
 
-		targetTab = MathUtils.lerp(targetTab, currentTab.toFloat(), (6.4f * Gdx.graphics.deltaTime).coerceAtMost(1f))
+		targetTab = MathUtils.lerp(targetTab, currentTab.toFloat(), (7f * Gdx.graphics.deltaTime).coerceAtMost(1f))
 
 		main.batch.begin()
 
 		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
 		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
+		val centerX = startX + BG_WIDTH / 2
 		val tab: InspectionTab? = tabs.getOrNull(currentTab)
 
 		// left right indicators
-		if (currentTab > 0) {
-			main.font.draw(main.batch, "◀ " + Localization.get(tabs.getOrNull(currentTab - 1)?.name), startX + 32,
-						   startY + BG_HEIGHT * 0.8f)
-		}
-		if (currentTab < tabs.size - 1) {
-			main.font.draw(main.batch, Localization.get(tabs.getOrNull(currentTab + 1)?.name) + " ▶",
-						   startX + BG_WIDTH - 32, startY + BG_HEIGHT * 0.8f, 0f, Align.right,
-						   false)
-		}
 		if (tab != null) {
-			main.font.draw(main.batch, Localization.get(tab.name), startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f,
+			val currentTabName = Localization.get(tab.name)
+			val currentTabNameWidth = Utils.getWidth(main.font, currentTabName)
+			main.font.draw(main.batch, currentTabName, startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f,
 						   0f,
 						   Align.center, false)
+
+			if (currentTab > 0) {
+				Main.drawCompressed(main.font, main.batch, "◀ " + Localization.get(tabs.getOrNull(currentTab - 1)?.name), startX + 32,
+							   startY + BG_HEIGHT * 0.8f, (centerX - currentTabNameWidth / 2) - startX - 32, Align.left)
+			}
+			if (currentTab < tabs.size - 1) {
+				Main.drawCompressed(main.font, main.batch, Localization.get(tabs.getOrNull(currentTab + 1)?.name) + " ▶",
+							   (centerX + currentTabNameWidth / 2),
+									startY + BG_HEIGHT * 0.8f,
+									(startX + BG_WIDTH) - (centerX + currentTabNameWidth / 2) - 32, Align.right)
+			}
 		}
 
 		// dots
@@ -76,12 +85,13 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 		val tabWidth = BG_WIDTH
 		val tabHeight = BG_HEIGHT * 0.65f - main.font.lineHeight * 2
 
-		main.shapes.rect(tabStartX, tabStartY, tabWidth, tabHeight)
+		main.shapes.rect(tabStartX, tabStartY, tabWidth, tabHeight + 64) // +64 is for leeway
 		main.shapes.end()
 
 		main.batch.begin()
 		StencilMaskUtil.useMask()
 
+		main.font.setUseIntegerPositions(false)
 		// render adjacent tabs
 		main.camera.unproject(vector.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
 		main.batch.setColor(1f, 1f, 1f, 1f)
@@ -92,6 +102,8 @@ class InspectionsScreen(m: Main) : NewUIScreen(m) {
 			tabs.getOrNull(i)?.render(main, main.batch, tabStartX + xOffset, tabStartY, tabWidth, tabHeight, vector.x,
 									  vector.y)
 		}
+
+		main.font.setUseIntegerPositions(true)
 
 		main.batch.flush()
 		StencilMaskUtil.resetMask()

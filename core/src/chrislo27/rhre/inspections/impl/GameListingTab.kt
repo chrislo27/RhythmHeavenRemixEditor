@@ -7,13 +7,14 @@ import chrislo27.rhre.registry.Game
 import chrislo27.rhre.track.Remix
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
+import ionium.util.MathHelper
+import ionium.util.Utils
 import ionium.util.i18n.Localization
 import java.util.*
 
 abstract class GameListingTab : InspectionTab() {
-	override val name: String = "inspections.title.language"
-
 	protected var map: LinkedHashMap<String, List<Game>> = linkedMapOf()
+	protected abstract val noneText: String
 
 	protected abstract fun populateMap(remix: Remix, list: List<Game>): LinkedHashMap<String, List<Game>>
 
@@ -24,27 +25,48 @@ abstract class GameListingTab : InspectionTab() {
 	override fun render(main: Main, batch: SpriteBatch, startX: Float, startY: Float, width: Float, height: Float,
 						mouseXPx: Float, mouseYPx: Float) {
 		if (map.isEmpty()) {
-			main.font.draw(batch, Localization.get("inspections.language.none"), startX + 32, startY + height / 2 + main.font.lineHeight, width - 64, Align.center, true)
+			main.font.draw(batch, Localization.get(noneText), startX + 32, startY + height / 2 + main.font.lineHeight, width - 64, Align.center, true)
 		} else {
 			val line: Float = main.font.lineHeight * 1.5f
-			var x: Float = startX + 64
+			val originalX: Float = startX + 32
+			var x: Float = originalX
 			var y: Float = startY + height - 8
+			val longest: Float = Math.min(map.map { Utils.getWidth(main.font, Localization.get(it.key)) }.max() ?: 256f, 256f)
+			var hoveredGame: Game? = null
 			map.forEach { element ->
-				Main.drawCompressed(main.font, batch, Localization.get(element.key), x, y - main.font.capHeight / 2, 256f, Align.left)
+				Main.drawCompressed(main.font, batch, Localization.get(element.key), x, y - main.font.capHeight / 2, longest, Align.left)
 
 				var iconX: Float = 0f
+				val iconSize: Float = 32f
 				element.value.forEachIndexed { i, it ->
-					if (x + iconX + 8 > width) {
+					fun sx() = x + iconX + longest + 32
+
+					if (sx() + iconSize > startX + width) {
 						iconX = 0f
 						y -= line
 					}
 
-					batch.draw(it.iconTexture, x + iconX + 256, y - 32, 32f, 32f)
+					batch.draw(it.iconTexture, sx(), y - iconSize, iconSize, iconSize)
+					if (MathHelper.intersects(sx(), y - iconSize, iconSize, iconSize, mouseXPx, mouseYPx, 1f, 1f)) {
+						hoveredGame = it
+					}
 					iconX += 40f
 				}
 
 				y -= line
-				x = startX + 64
+				x = originalX
+			}
+
+			if (hoveredGame != null) {
+				val game = hoveredGame!!
+				batch.setColor(0f, 0f, 0f, 0.75f)
+
+				val text = game.name
+
+				ionium.templates.Main.fillRect(batch, mouseXPx, mouseYPx, Utils.getWidth(main.font, text) + 16, Utils.getHeight(main.font, text) + 16)
+				batch.setColor(1f, 1f, 1f, 1f)
+				main.font.draw(batch, text, mouseXPx + 8, mouseYPx + 8 + main.font.capHeight)
+
 			}
 		}
 	}
