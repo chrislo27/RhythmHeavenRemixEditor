@@ -43,14 +43,14 @@ class StatsTab : InspectionTab() {
 		gameChart = games.mapIndexed { index, game ->
 			val count: Int = remix.entities.filter { it is HasGame && it.game == game }.count()
 
-			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / games.size, 0.9f, 0.75f)),
+			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / games.size, 1f, 0.85f)),
 									game.name) to count.toFloat()
 		}.sortedBy { it.second }.toMap()
 
 		seriesChart = games.map{it.series}.distinct().mapIndexed { index, series ->
 			val count: Int = remix.entities.filter { it is HasGame && it.game.series == series }.count()
 
-			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / Series.values.size, 0.9f, 0.75f)),
+			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / Series.values.size, 1f, 0.85f)),
 									series.getLocalizedName()) to count.toFloat()
 		}.sortedBy { it.second }.toMap()
 
@@ -66,14 +66,14 @@ class StatsTab : InspectionTab() {
 		batch.end()
 		main.shapes.begin(ShapeRenderer.ShapeType.Filled)
 		val radius: Float = 100f
-		PieChartRenderer.render(main.shapes, startX + width * 0.25f, startY + main.font.lineHeight * 3 + radius, radius,
+		PieChartRenderer.render(main.shapes, startX + width * 0.333333f, startY + main.font.lineHeight * 3 + radius, radius,
 								gameChart, mouseXPx, mouseYPx, { slice, percent ->
 									str = Localization.get("inspections.stats.percentage", slice.name,
 														   "" + Math.round(
 																   percent * remix.entities.size) + " / " + remix.entities.size,
 														   String.format("%.2f", percent * 100))
 								})
-		PieChartRenderer.render(main.shapes, startX + width * 0.5f, startY + main.font.lineHeight * 3 + radius, radius,
+		PieChartRenderer.render(main.shapes, startX + width * 0.666666f, startY + main.font.lineHeight * 3 + radius, radius,
 								seriesChart, mouseXPx, mouseYPx, { slice, percent ->
 									str = Localization.get("inspections.stats.percentage", slice.name,
 														   "" + Math.round(
@@ -86,10 +86,10 @@ class StatsTab : InspectionTab() {
 
 		main.font.data.setScale(0.75f)
 		Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.gamePercentages"),
-							startX + width * 0.25f - radius,
+							startX + width * 0.333333f - radius,
 							startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
 		Main.drawCompressed(main.font, batch, Localization.get("inspections.stats.seriesPercentages"),
-							startX + width * 0.5f - radius,
+							startX + width * 0.666666f - radius,
 							startY + main.font.lineHeight * 6 + radius * 2, radius * 2, Align.center)
 		main.font.data.setScale(1f)
 
