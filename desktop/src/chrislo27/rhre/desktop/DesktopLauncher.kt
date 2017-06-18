@@ -1,6 +1,7 @@
 package chrislo27.rhre.desktop
 
 import chrislo27.rhre.Main
+import chrislo27.rhre.util.console.ConsoleCommands
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import ionium.desktop.ArgumentInferredLwjglAppConfig
@@ -8,6 +9,7 @@ import ionium.desktop.GameLwjglApp
 import ionium.registry.GlobalVariables
 import ionium.registry.lazysound.LazySound
 import ionium.util.Logger
+import kotlin.concurrent.thread
 
 object DesktopLauncher {
 	private var logger: Logger? = null
@@ -42,6 +44,17 @@ object DesktopLauncher {
 		LazySound.forceLoadNow = args.any { s ->
 			s.equals("--force-load-lazy-sounds", ignoreCase = true)
 		}
+
+		thread(isDaemon = true) {
+			while (true) {
+				val input: String = readLine() ?: break
+				val arguments: List<String> = input.split("\\s+".toRegex()).drop(1)
+
+				if (ConsoleCommands.handle(input, arguments))
+					break
+			}
+		}
+
 		GameLwjglApp(main, config, logger)
 	}
 }
