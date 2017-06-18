@@ -44,6 +44,11 @@ class FlipperFlopGeneratorHelper(val id: String) : GeneratorHelper() {
 				SoundCue("$id/flipB2", gameObject.gameID!!, "ogg",
 						 "flip - back - 2", mutableListOf(),
 						 0.5f, false, 0f))
+
+		addedCues.add(
+				SoundCue("$id/roll", gameObject.gameID!!, "ogg",
+						 "roll", mutableListOf(),
+						 0.5f, false, 0f))
 		addedCues.add(
 				SoundCue("$id/uh1", gameObject.gameID!!, "ogg",
 						 "uh - 1", mutableListOf(),
