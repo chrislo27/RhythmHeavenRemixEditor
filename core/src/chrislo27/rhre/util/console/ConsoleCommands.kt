@@ -67,7 +67,7 @@ object ConsoleCommands {
 			}
 
 			else -> {
-				println("Commands: quit/exit, help/?, dumpids, checkids")
+				println("Commands: quit/exit, help/?, dumpids [w], checkids")
 				false
 			}
 		}
