@@ -50,8 +50,12 @@ object DesktopLauncher {
 				val input: String = readLine() ?: break
 				val arguments: List<String> = input.split("\\s+".toRegex()).drop(1)
 
-				if (ConsoleCommands.handle(input, arguments))
-					break
+				try {
+					if (ConsoleCommands.handle(main, input, arguments))
+						break
+				} catch (e: Exception) {
+					e.printStackTrace()
+				}
 			}
 		}
 
