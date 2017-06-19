@@ -1,0 +1,159 @@
+{
+  "gameID": "mrUpbeatGba",
+  "gameName": "Mr. Upbeat (GBA)",
+  "series": "side",
+  "cues": [
+    {
+      "id": "mrUpbeatGba/bip",
+      "duration": 0.5,
+      "name": "count in - bip"
+    },
+    {
+      "id": "mrUpbeatGba/one",
+      "duration": 0.5,
+      "name": "count in - one"
+    },
+    {
+      "id": "mrUpbeatGba/two",
+      "duration": 0.5,
+      "name": "count in - two"
+    },
+    {
+      "id": "mrUpbeatGba/a",
+      "duration": 0.5,
+      "name": "count in - a"
+    },
+    {
+      "id": "mrUpbeatGba/three",
+      "duration": 0.5,
+      "name": "count in - three"
+    },
+    {
+      "id": "mrUpbeatGba/four",
+      "duration": 0.5,
+      "name": "count in - four"
+    },
+    {
+      "id": "mrUpbeatGba/metroL",
+      "duration": 0.5,
+      "name": "metronome - left"
+    },
+    {
+      "id": "mrUpbeatGba/metroR",
+      "duration": 0.5,
+      "name": "metronome - right"
+    },
+    {
+      "id": "mrUpbeatGba/step",
+      "duration": 0.5,
+      "name": "upbeat - step"
+    },
+    {
+      "id": "mrUpbeatGba/ding",
+      "duration": 0.5,
+      "name": "ding"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "mrUpbeatGba_countIn",
+      "name": "count in",
+      "cues": [
+        {
+          "id": "mrUpbeatGba/one",
+          "beat": 0.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 0.5
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 1.5
+        },
+        {
+          "id": "mrUpbeatGba/two",
+          "beat": 2.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 2.5
+        },
+        {
+          "id": "mrUpbeatGba/a",
+          "beat": 3.5
+        },
+        {
+          "id": "mrUpbeatGba/one",
+          "beat": 4.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 4.5
+        },
+        {
+          "id": "mrUpbeatGba/two",
+          "beat": 5.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 5.5
+        },
+        {
+          "id": "mrUpbeatGba/three",
+          "beat": 6.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 6.5
+        },
+        {
+          "id": "mrUpbeatGba/four",
+          "beat": 7.0
+        },
+        {
+          "id": "mrUpbeatGba/bip",
+          "beat": 7.5
+        }
+      ]
+    },
+    {
+      "id": "mrUpbeatGba_pattern",
+      "name": "stepping",
+      "cues": [
+        {
+          "id": "mrUpbeatGba/metroR",
+          "beat": 0.0
+        },
+        {
+          "id": "mrUpbeatGba/step",
+          "beat": 0.5
+        },
+        {
+          "id": "mrUpbeatGba/metroL",
+          "beat": 1.0
+        },
+        {
+          "id": "mrUpbeatGba/step",
+          "beat": 1.5
+        },
+        {
+          "id": "mrUpbeatGba/metroR",
+          "beat": 2.0
+        },
+        {
+          "id": "mrUpbeatGba/step",
+          "beat": 2.5
+        },
+        {
+          "id": "mrUpbeatGba/metroL",
+          "beat": 3.0
+        },
+        {
+          "id": "mrUpbeatGba/step",
+          "beat": 3.5
+        }
+      ]
+    }
+  ]
+}
