@@ -9,6 +9,8 @@ import java.util.*
 object ConsoleCommands {
 
 	fun handle(main: Main, command: String, args: List<String>): Boolean {
+		val idDumpName: String = "idDump" + if (args.isNotEmpty()) "_${args[0]}" else ""
+
 		return when (command.toLowerCase(Locale.ROOT)) {
 			"quit", "exit" -> {
 				Gdx.app.exit()
@@ -29,7 +31,7 @@ object ConsoleCommands {
 					(readLine() ?: throw IllegalArgumentException("Got null for yes/no")))
 						.equals("y", ignoreCase = true)) {
 					println("Writing to preferences...")
-					main.preferences.putString("idDump", allIDs).flush()
+					main.preferences.putString(idDumpName, allIDs).flush()
 				}
 
 				println("\n" + allIDs + "\n\n")
@@ -37,11 +39,11 @@ object ConsoleCommands {
 				false
 			}
 			"checkids" -> {
-				val json = main.preferences.getString("idDump", null) ?: throw IllegalStateException(
+				val json = main.preferences.getString(idDumpName, null) ?: throw IllegalStateException(
 						"Cached ID dump is null")
 				val list: IDDump = JsonHandler.fromJson(json)
 
-				println("Checking game list")
+				println("Checking game list for $idDumpName")
 				list.games.forEach {
 					if (GameRegistry[it] == null) {
 						println("[GAME] Not found: $it")
@@ -84,7 +86,7 @@ object ConsoleCommands {
 			}
 
 			else -> {
-				println("Commands: quit/exit, help/?, dumpids [w], checkids")
+				println("Commands: quit/exit, help/?, dumpids [name] [-w], checkids [name]")
 				false
 			}
 		}
