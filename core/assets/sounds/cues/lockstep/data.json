@@ -52,6 +52,16 @@
       "id": "lockstep/return_ha",
       "duration": 0.375,
       "name": "offbeat - switch - ha"
+    },
+    {
+      "id": "lockstep/return_heeNoStep",
+      "duration": 0.5,
+      "name": "offbeat - switch (no step) - hee"
+    },
+    {
+      "id": "lockstep/return_haNoStep",
+      "duration": 0.375,
+      "name": "offbeat - switch (no step) - ha"
     }
   ],
   "patterns": [
