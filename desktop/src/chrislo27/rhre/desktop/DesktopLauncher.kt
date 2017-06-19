@@ -48,10 +48,10 @@ object DesktopLauncher {
 		thread(isDaemon = true) {
 			while (true) {
 				val input: String = readLine() ?: break
-				val arguments: List<String> = input.split("\\s+".toRegex()).drop(1)
+				val arguments: List<String> = input.split("\\s+".toRegex())
 
 				try {
-					if (ConsoleCommands.handle(main, input, arguments))
+					if (ConsoleCommands.handle(main, arguments.first(), arguments.drop(1)))
 						break
 				} catch (e: Exception) {
 					e.printStackTrace()
