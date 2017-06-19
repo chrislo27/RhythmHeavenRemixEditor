@@ -9,7 +9,7 @@ import java.util.*
 object ConsoleCommands {
 
 	fun handle(main: Main, command: String, args: List<String>): Boolean {
-		val idDumpName: String = "idDump" + if (args.isNotEmpty()) "_${args[0]}" else ""
+		val idDumpName: String = "idDump" + if (args.isNotEmpty() && !args[0].startsWith("-")) "_${args[0]}" else ""
 
 		return when (command.toLowerCase(Locale.ROOT)) {
 			"quit", "exit" -> {
@@ -84,11 +84,23 @@ object ConsoleCommands {
 
 				false
 			}
+			"help" ,"?" -> {
+				println("""Commands:
+quit/exit
+  - Exits the program.
 
-			else -> {
-				println("Commands: quit/exit, help/?, dumpids [name] [-w], checkids [name]")
+help/?
+  - Shows this help message.
+
+dumpids [name] [-w]
+  - Dumps every game, cue, and pattern ID that isn't auto-generated nor custom. The -w flag indicates if it should write to a file without prompting. The name is an optional name that doesn't contain spaces nor starts with a hyphen.
+
+checkids [name]
+  - Runs an ID check from persistent data. The name is optional. This will check deletions and additions of IDs. Deprecations are included.
+""")
 				false
 			}
+			else -> throw IllegalArgumentException("Unknown command, use help to view commands")
 		}
 	}
 
