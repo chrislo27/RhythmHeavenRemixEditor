@@ -235,6 +235,33 @@
       "duration": 1,
       "name": "ok it's on! - solo - 4"
     },
+    {
+      "id": "cheerReaders/okItsOngirls1",
+      "duration": 1,
+      "name": "ok it's on! - girls - 1"
+    },
+    {
+      "id": "cheerReaders/okItsOngirls2",
+      "duration": 1,
+      "name": "ok it's on! - girls - 2"
+    },
+    {
+      "id": "cheerReaders/okItsOngirls3",
+      "duration": 0.000001
+    },
+    {
+      "id": "cheerReaders/okItsOngirls3Loop",
+      "duration": 1,
+      "name": "ok it's on! - girls - 3",
+      "introSound": "cheerReaders/okItsOn3",
+      "canAlterDuration": false,
+      "loops": true
+    },
+    {
+      "id": "cheerReaders/okItsOngirls4",
+      "duration": 1,
+      "name": "ok it's on! - girls - 4"
+    },
 	{
       "id": "cheerReaders/bunchaBooks1",
       "duration": 0.75,
@@ -269,6 +296,76 @@
       "id": "cheerReaders/bunchaBooks7",
       "duration": 1,
       "name": "let's go read a buncha books - 7"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS1",
+      "duration": 0.75,
+      "name": "let's go read a buncha books - solo - 1"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS2",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - solo - 2"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS3",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - solo - 3"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS4",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - solo - 4"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS5",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - solo - 5"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS6",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - solo - 6"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksS7",
+      "duration": 1,
+      "name": "let's go read a buncha books - solo - 7"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls1",
+      "duration": 0.75,
+      "name": "let's go read a buncha books - girls - 1"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls2",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - girls - 2"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls3",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - girls - 3"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls4",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - girls - 4"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls5",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - girls - 5"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls6",
+      "duration": 0.25,
+      "name": "let's go read a buncha books - girls - 6"
+    },
+	{
+      "id": "cheerReaders/bunchaBooksgirls7",
+      "duration": 1,
+      "name": "let's go read a buncha books - girls - 7"
     },
     {
       "id": "cheerReaders/onegirls",
@@ -562,6 +659,28 @@
       ]
     },
     {
+      "id": "cheerReaders_okItsOnGirls",
+      "name": "ok it's on! - girls",
+      "cues": [
+        {
+          "id": "cheerReaders/okItsOngirls1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/okItsOngirls2",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/okItsOngirls3Loop",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/okItsOngirls4",
+          "beat": 3
+        }
+      ]
+    },
+    {
       "id": "cheerReaders_okItsOnLong",
       "name": "ok it's on! - long",
       "cues": [
@@ -613,6 +732,74 @@
         },
 		{
           "id": "cheerReaders/bunchaBooks7",
+          "beat": 2
+        }
+      ]
+    },
+	{
+      "id": "cheerReaders_bunchaBooksS",
+      "name": "let's go read a buncha books! - solo",
+      "cues": [
+        {
+          "id": "cheerReaders/bunchaBooksS1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/bunchaBooksS2",
+          "beat": 0.75
+        },
+		{
+          "id": "cheerReaders/bunchaBooksS3",
+          "beat": 1
+        },
+		{
+          "id": "cheerReaders/bunchaBooksS4",
+          "beat": 1.25
+        },
+		{
+          "id": "cheerReaders/bunchaBooksS5",
+          "beat": 1.5
+        },
+		{
+          "id": "cheerReaders/bunchaBooksS6",
+          "beat": 1.75
+        },
+		{
+          "id": "cheerReaders/bunchaBooksS7",
+          "beat": 2
+        }
+      ]
+    },
+	{
+      "id": "cheerReaders_bunchaBooksGirls",
+      "name": "let's go read a buncha books! - girls",
+      "cues": [
+        {
+          "id": "cheerReaders/bunchaBooksgirls1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/bunchaBooksgirls2",
+          "beat": 0.75
+        },
+		{
+          "id": "cheerReaders/bunchaBooksgirls3",
+          "beat": 1
+        },
+		{
+          "id": "cheerReaders/bunchaBooksgirls4",
+          "beat": 1.25
+        },
+		{
+          "id": "cheerReaders/bunchaBooksgirls5",
+          "beat": 1.5
+        },
+		{
+          "id": "cheerReaders/bunchaBooksgirls6",
+          "beat": 1.75
+        },
+		{
+          "id": "cheerReaders/bunchaBooksgirls7",
           "beat": 2
         }
       ]
