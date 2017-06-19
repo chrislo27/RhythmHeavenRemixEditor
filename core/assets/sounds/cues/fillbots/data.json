@@ -98,6 +98,21 @@
       "id": "fillbots/beep",
       "duration": 1,
       "name": "beep"
+    },
+    {
+      "id": "fillbots/fillErUp1",
+      "duration": 0.25,
+      "name": "practice - fill 'er up! - 1"
+    },
+    {
+      "id": "fillbots/fillErUp2",
+      "duration": 0.25,
+      "name": "practice - fill 'er up! - 2"
+    },
+    {
+      "id": "fillbots/fillErUp3",
+      "duration": 0.5,
+      "name": "practice - fill 'er up! - 3"
     }
   ],
   "patterns": [
@@ -258,6 +273,24 @@
         {
           "id": "fillbots/smallFinish3",
           "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "fillbots_fillErUp",
+      "name": "fill 'er up! (practice)",
+      "cues": [
+        {
+          "id": "fillbots/fillErUp1",
+          "beat": 0
+        },
+        {
+          "id": "fillbots/fillErUp2",
+          "beat": 0.25
+        },
+        {
+          "id": "fillbots/fillErUp3",
+          "beat": 0.5
         }
       ]
     }
