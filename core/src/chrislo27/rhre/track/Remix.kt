@@ -531,7 +531,7 @@ class Remix : ActionHistory<Remix>() {
 
 		if (tickEachBeat && beat.toInt() > lastTickBeat) {
 			lastTickBeat = beat.toInt()
-			GameRegistry["countIn"]!!.getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
+			GameRegistry["countInEn"]!!.getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
 		}
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {
