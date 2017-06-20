@@ -211,6 +211,7 @@ object GameRegistry : Disposable {
 		}
 
 		fun loadCustomSoundFolder(fh: FileHandle) {
+			val nano = System.nanoTime()
 			Main.logger.info("Loading custom sound folder " + fh.name())
 
 			val list = fh.list { f ->
@@ -253,7 +254,7 @@ object GameRegistry : Disposable {
 						Series.CUSTOM, if (icon.exists()) icon.path() else null, true)
 
 			Main.logger.info("Finished loading custom folder " + fh.name() + " with " + soundCues.size + " " +
-									 "cues")
+									 "cues, took ${(System.nanoTime() - nano) / 1000000.0} ms")
 
 			this.games[game.id] = game
 			if (this.gamesBySeries[game.series] == null) {
