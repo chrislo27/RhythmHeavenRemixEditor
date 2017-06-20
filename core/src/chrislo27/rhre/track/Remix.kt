@@ -560,7 +560,7 @@ class Remix : ActionHistory<Remix>() {
 
 			if (!atLeastOne) {
 				currentGame = (entities
-						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && it.game.id != "countIn" } as HasGame?)?.game
+						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && !it.game.notRealGame } as HasGame?)?.game
 			}
 		}
 
