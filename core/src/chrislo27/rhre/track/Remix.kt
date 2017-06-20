@@ -16,6 +16,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
 import ionium.registry.AssetRegistry
+import ionium.registry.lazysound.LazySound
 import ionium.templates.Main
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Job
@@ -39,6 +40,10 @@ class Remix : ActionHistory<Remix>() {
 	val selection: MutableList<Entity> = mutableListOf()
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
+
+	private val metronomeCowbell: LazySound by lazy {
+		GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?: throw RuntimeException("Missing cowbell sound")
+	}
 
 	@Volatile var playingState = PlayingState.STOPPED
 		set(ps) {
@@ -529,9 +534,9 @@ class Remix : ActionHistory<Remix>() {
 			}
 		}
 
-		if (tickEachBeat && beat.toInt() > lastTickBeat) {
+		if (tickEachBeat && beat.toInt() > lastTickBeat && metronomeCowbell.isLoaded) {
 			lastTickBeat = beat.toInt()
-			GameRegistry["countInEn"]!!.getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
+			metronomeCowbell.sound.play(1f, 1.1f, 0f)
 		}
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {
