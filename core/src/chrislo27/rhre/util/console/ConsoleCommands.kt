@@ -32,9 +32,12 @@ object ConsoleCommands {
 						.equals("y", ignoreCase = true)) {
 					println("Writing to preferences...")
 					main.preferences.putString(idDumpName, allIDs).flush()
+					println("Wrote successfully.")
 				}
 
-				println("\n" + allIDs + "\n\n")
+				if (args.contains("-p")) {
+					println("\n" + allIDs + "\n\n")
+				}
 
 				false
 			}
@@ -92,8 +95,11 @@ quit/exit
 help/?
   - Shows this help message.
 
-dumpids [name] [-w]
-  - Dumps every game, cue, and pattern ID that isn't auto-generated nor custom. The -w flag indicates if it should write to a file without prompting. The name is an optional name that doesn't contain spaces nor starts with a hyphen.
+dumpids [name] [-w] [-p]
+  - Dumps every game, cue, and pattern ID that isn't auto-generated nor custom.
+  - The name is an optional name that doesn't contain spaces nor starts with a hyphen.
+  - The -w flag indicates if it should write to a file without prompting.
+  - The -p flag indicates if it should print out the json output.
 
 checkids [name]
   - Runs an ID check from persistent data. The name is optional. This will check deletions and additions of IDs. Deprecations are included.
