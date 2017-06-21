@@ -1,0 +1,264 @@
+{
+  "gameID": "theDazzlesMegamixEn",
+  "gameName": "The Dazzles (Megamix) (English)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "theDazzlesMegamixEn/hold3",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/hold3"
+      ],
+      "duration": 0.5,
+      "name": "hold - three"
+    },
+    {
+      "id": "theDazzlesMegamixEn/hold2",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/hold2"
+      ],
+      "duration": 0.5,
+      "name": "hold - two"
+    },
+    {
+      "id": "theDazzlesMegamixEn/hold1",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/hold1"
+      ],
+      "duration": 0.5,
+      "name": "hold - 1"
+    },
+    {
+      "id": "theDazzlesMegamixEn/holdCrouch",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/holdCrouch"
+      ],
+      "duration": 1.0,
+      "name": "hold - crouch"
+    },
+    {
+      "id": "theDazzlesMegamixEn/crouch",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/crouch"
+      ],
+      "duration": 1.0,
+      "name": "hold - crouch"
+    },
+    {
+      "id": "theDazzlesMegamixEn/posePartner",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/posePartner"
+      ],
+      "duration": 0.5,
+      "name": "partner pose"
+    },
+    {
+      "id": "theDazzlesMegamixEn/posePartnerLong",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/posePartnerLong"
+      ],
+      "duration": 1.0,
+      "name": "partner pose - long"
+    },
+    {
+      "id": "theDazzlesMegamixEn/posePlayer",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/posePlayer"
+      ],
+      "duration": 1.0,
+      "name": "player pose"
+    },
+    {
+      "id": "theDazzlesMegamixEn/posePlayerStars",
+      "deprecatedIDs": [
+        "theDazzlesMegamix/posePlayerStars"
+      ],
+      "duration": 2.0,
+      "name": "player pose - stars"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "theDazzlesMegamixEn_hold",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_hold"
+      ],
+      "name": "hold count in",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/hold3",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/hold2",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/hold1",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/crouch",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_holdCrouch",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_holdCrouch"
+      ],
+      "name": "crouching",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/hold3",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/hold2",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/holdCrouch",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_poseThree",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_poseThree"
+      ],
+      "name": "pose - three",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePlayer",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_poseTwo",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_poseTwo"
+      ],
+      "name": "pose - two",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePlayerStars",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_poseSix1",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_poseSix1"
+      ],
+      "name": "pose - six - diagonal",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.75
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 2.75
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePlayer",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_poseSix2",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_poseSix2"
+      ],
+      "name": "pose - six - columns",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 2.5
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePlayer",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesMegamixEn_poseSix3",
+      "deprecatedIDs": [
+        "theDazzlesMegamix_poseSix3"
+      ],
+      "name": "pose - six",
+      "cues": [
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesMegamixEn/posePlayerStars",
+          "beat": 2.5
+        }
+      ]
+    }
+  ]
+}
