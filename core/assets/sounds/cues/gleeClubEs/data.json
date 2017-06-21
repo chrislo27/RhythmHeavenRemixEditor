@@ -1,0 +1,114 @@
+{
+  "gameID": "gleeClubEs",
+  "gameName": "Glee Club (Spanish)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "gleeClubEs/singBegin",
+      "duration": 0.000001
+    },
+    {
+      "id": "gleeClubEs/singLoop",
+      "canAlterDuration": true,
+      "introSound": "gleeClubEs/singBegin",
+      "canAlterPitch": true,
+      "duration": 1,
+      "name": "sing"
+    },
+    {
+      "id": "gleeClubEs/singEnd",
+      "duration": 0.5,
+      "name": "stop"
+    },
+    {
+      "id": "gleeClubEs/a",
+      "duration": 0.3333,
+      "name": "aralabe - a"
+    },
+    {
+      "id": "gleeClubEs/ra",
+      "duration": 0.6666,
+      "name": "aralabe - ra"
+    },
+    {
+      "id": "gleeClubEs/la",
+      "duration": 0.3333,
+      "name": "aralabe - la"
+    },
+    {
+      "id": "gleeClubEs/be",
+      "duration": 0.6666,
+      "name": "aralabe - be"
+    },
+    {
+      "id": "gleeClubEs/screamBegin",
+      "duration": 0.000001,
+      "canAlterPitch": true
+    },
+    {
+      "id": "gleeClubEs/screamLoop",
+      "duration": 1,
+      "loops": true,
+      "introSound": "gleeClubEs/screamBegin",
+      "canAlterPitch": true,
+      "name": "scream"
+    },
+    {
+      "id": "gleeClubEs/baton",
+      "duration": 1,
+      "name": "baton - lift",
+      "canAlterPitch": true
+    },
+    {
+      "id": "gleeClubEs/batonStop",
+      "duration": 1,
+      "name": "baton - stop"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "gleeClubEs_aralabe",
+      "name": "aralabe!",
+      "cues": [
+        {
+          "id": "gleeClubEs/a",
+          "beat": 0
+        },
+        {
+          "id": "gleeClubEs/ra",
+          "beat": 0.333
+        },
+        {
+          "id": "gleeClubEs/la",
+          "beat": 1
+        },
+        {
+          "id": "gleeClubEs/be",
+          "beat": 1.333
+        },
+        {
+          "id": "gleeClubEs/screamLoop",
+          "beat": 2
+        },
+        {
+          "id": "gleeClubEs/singEnd",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "gleeClubEs_baton",
+      "name": "baton",
+      "cues": [
+        {
+          "id": "gleeClubEs/baton",
+          "beat": 0
+        },
+        {
+          "id": "gleeClubEs/batonStop",
+          "beat": 1
+        }
+      ]
+    }
+  ]
+}
