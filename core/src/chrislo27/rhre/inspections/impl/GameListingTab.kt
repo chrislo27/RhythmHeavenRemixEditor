@@ -62,10 +62,12 @@ abstract class GameListingTab : InspectionTab() {
 				batch.setColor(0f, 0f, 0f, 0.75f)
 
 				val text = game.name
+				val boxwidth = Utils.getWidth(main.font, text) + 16
+				val drawX = Math.min(mouseXPx, startX + width - boxwidth)
 
-				ionium.templates.Main.fillRect(batch, mouseXPx, mouseYPx, Utils.getWidth(main.font, text) + 16, Utils.getHeight(main.font, text) + 16)
+				ionium.templates.Main.fillRect(batch, drawX, mouseYPx, boxwidth, Utils.getHeight(main.font, text) + 16)
 				batch.setColor(1f, 1f, 1f, 1f)
-				main.font.draw(batch, text, mouseXPx + 8, mouseYPx + 8 + main.font.capHeight)
+				main.font.draw(batch, text, drawX + 8, mouseYPx + 8 + main.font.capHeight)
 
 			}
 		}

@@ -355,7 +355,9 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 				override fun render(batch: SpriteBatch, alpha: Float) {
 					if (screen.editor.remix.tickEachBeat) {
-						val time = 1.25f
+						val time = if (screen.editor.remix.playingState == PlayingState.PLAYING)
+							(120f / screen.editor.remix.tempoChanges.getTempoAt(screen.editor.remix.beat))
+						else 1.25f
 						this.textureRegion = metronomeFrames[(MathHelper.getSawtoothWave(
 								System.currentTimeMillis() - start + (time / metronomeFrames.size * 1000).toInt(), time)
 								* metronomeFrames.size)

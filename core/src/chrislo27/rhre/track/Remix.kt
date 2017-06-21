@@ -16,6 +16,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
 import ionium.registry.AssetRegistry
+import ionium.registry.lazysound.LazySound
 import ionium.templates.Main
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Job
@@ -39,6 +40,10 @@ class Remix : ActionHistory<Remix>() {
 	val selection: MutableList<Entity> = mutableListOf()
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
+
+	private val metronomeCowbell: LazySound by lazy {
+		GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?: throw RuntimeException("Missing cowbell sound")
+	}
 
 	@Volatile var playingState = PlayingState.STOPPED
 		set(ps) {
@@ -529,9 +534,9 @@ class Remix : ActionHistory<Remix>() {
 			}
 		}
 
-		if (tickEachBeat && beat.toInt() > lastTickBeat) {
-			lastTickBeat = beat.toInt()
-			GameRegistry["countIn"]!!.getCue("cowbell")?.getSoundObj()?.play(1f, 1.1f, 0f)
+		if (tickEachBeat && Math.floor(beat.toDouble()) > lastTickBeat && metronomeCowbell.isLoaded) {
+			lastTickBeat = Math.floor(beat.toDouble()).toInt()
+			metronomeCowbell.sound.play(1f, 1.1f, 0f)
 		}
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {
@@ -555,31 +560,13 @@ class Remix : ActionHistory<Remix>() {
 
 			if (!atLeastOne) {
 				currentGame = (entities
-						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && it.game.id != "countIn" } as HasGame?)?.game
+						.firstOrNull { it.playbackCompletion == PlaybackCompletion.STARTED && it is HasGame && !it.game.notRealGame } as HasGame?)?.game
 			}
 		}
 
 		if (playingState == PlayingState.PLAYING && beat >= endTime)
 			playingState = PlayingState.STOPPED
 	}
-
-//	fun copy(): Remix {
-//		val new = Remix()
-//
-//		entities.forEach { new.entities.add(it.copy()) }
-//		println(new.entities.size)
-//
-//		new.music = this.music?.copy(music = Gdx.audio.newMusic(this.music?.file), file = this.music!!.file)
-//		new.playbackStart = this.playbackStart
-//		new.musicStartTime = musicStartTime
-//		new.musicVolume = this.musicVolume
-//		new.tempoChanges = this.tempoChanges.copy()
-//
-//		new.updateDurationAndCurrentGame()
-//
-//		return new
-//	}
-
 
 }
 

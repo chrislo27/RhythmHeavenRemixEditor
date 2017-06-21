@@ -1,0 +1,240 @@
+{
+  "gameID": "tossBoysOriginal",
+  "gameName": "Toss Boys (Original L/R Balance)",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "tossBoysOriginal/redBlue1",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoysOriginal/redBlue2",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoysOriginal/redYellow1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoysOriginal/redYellow2",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 2"
+    },
+    {
+      "id": "tossBoysOriginal/redYellow3",
+      "duration": 1,
+      "name": "[#FF0000]aka[]-chan - [#FFFF00]kii[]-yan - 3"
+    },
+    {
+      "id": "tossBoysOriginal/superRed1",
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - start - 1"
+    },
+    {
+      "id": "tossBoysOriginal/superRed2",
+      "duration": 0.75,
+      "name": "[#FF0000]aka[]-chan super - start - 2"
+    },
+    {
+      "id": "tossBoysOriginal/superRedA1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoysOriginal/superRedA2",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoysOriginal/superRedB1",
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 1"
+    },
+    {
+      "id": "tossBoysOriginal/superRedB2",
+      "duration": 0.25,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 2"
+    },
+    {
+      "id": "tossBoysOriginal/superRedB3",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan super - [#FF0000]aka[]-chan - 3"
+    },
+    {
+      "id": "tossBoysOriginal/superRedHit",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - hit"
+    },
+    {
+      "id": "tossBoysOriginal/superRedBlue1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 1"
+    },
+    {
+      "id": "tossBoysOriginal/superRedBlue2",
+      "duration": 1.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#70B5FF]ao[]-kun - 2"
+    },
+    {
+      "id": "tossBoysOriginal/superRedYellow1",
+      "duration": 0.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#FFFF00]kii[]-yan - 1"
+    },
+    {
+      "id": "tossBoysOriginal/superRedYellow2",
+      "duration": 1.5,
+      "name": "[#FF0000]aka[]-chan unused super - [#FFFF00]kii[]-yan - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "tossBoysOriginal_akachanToAokun",
+      "name": "[#FF0000]aka[]-chan to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoysOriginal/redBlue1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoysOriginal/redBlue2",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoysOriginal_akachanToKiiyan",
+      "name": "[#FF0000]aka[]-chan to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoysOriginal/redYellow1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoysOriginal/redYellow2",
+          "beat": 0.5
+        },
+        {
+          "id": "tossBoysOriginal/redYellow3",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "tossBoysOriginal_akachanSuper",
+      "name": "[#FF0000]aka[]-chan super",
+      "cues": [
+        {
+          "id": "tossBoysOriginal/superRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoysOriginal/superRed2",
+          "beat": 0.25
+        },
+        {
+          "id": "tossBoysOriginal/superRedA1",
+          "beat": 1
+        },
+        {
+          "id": "tossBoysOriginal/superRedA2",
+          "beat": 1.5
+        },
+        {
+          "id": "tossBoysOriginal/superRedB1",
+          "beat": 2
+        },
+        {
+          "id": "tossBoysOriginal/superRedB2",
+          "beat": 2.25
+        },
+        {
+          "id": "tossBoysOriginal/superRedB3",
+          "beat": 2.5
+        },
+        {
+          "id": "tossBoysOriginal/superRedA1",
+          "beat": 3
+        },
+        {
+          "id": "tossBoysOriginal/superRedA2",
+          "beat": 3.5
+        },
+        {
+          "id": "tossBoysOriginal/superRedB1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoysOriginal/superRedB2",
+          "beat": 4.25
+        },
+        {
+          "id": "tossBoysOriginal/superRedB3",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoysOriginal_akachanSuperToAokun",
+      "name": "[#FF0000]aka[]-chan unused super to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoysOriginal/superRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoysOriginal/superRed2",
+          "beat": 0.25
+        },
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoysOriginal/superRedBlue1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoysOriginal/superRedBlue2",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "tossBoysOriginal_akachanSuperToKiiyan",
+      "name": "[#FF0000]aka[]-chan unused super to [#FFFF00]kii[]-yan",
+      "cues": [
+        {
+          "id": "tossBoysOriginal/superRed1",
+          "beat": 0
+        },
+        {
+          "id": "tossBoysOriginal/superRed2",
+          "beat": 0.25
+        },
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 1
+        },
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 3
+        },
+        {
+          "id": "tossBoysOriginal/superRedYellow1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoysOriginal/superRedYellow2",
+          "beat": 4.5
+        }
+      ]
+    }
+  ]
+}
