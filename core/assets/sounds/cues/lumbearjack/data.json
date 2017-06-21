@@ -138,6 +138,7 @@
   "patterns": [
     {
       "id": "lumbearjack_small1",
+      "deprecatedIDs": ["lumbearjack_small"],
       "name": "small log",
       "cues": [
         {
