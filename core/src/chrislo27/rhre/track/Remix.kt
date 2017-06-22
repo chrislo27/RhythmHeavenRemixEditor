@@ -41,6 +41,8 @@ class Remix : ActionHistory<Remix>() {
 	var tempoChanges: TempoChanges = TempoChanges(120f)
 		private set
 
+	val beatEventListeners: List<Runnable> = mutableListOf()
+
 	private val metronomeCowbell: LazySound by lazy {
 		GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?: throw RuntimeException("Missing cowbell sound")
 	}
@@ -534,9 +536,12 @@ class Remix : ActionHistory<Remix>() {
 			}
 		}
 
-		if (tickEachBeat && Math.floor(beat.toDouble()) > lastTickBeat && metronomeCowbell.isLoaded) {
+		if (Math.floor(beat.toDouble()) > lastTickBeat) {
 			lastTickBeat = Math.floor(beat.toDouble()).toInt()
-			metronomeCowbell.sound.play(1f, 1.1f, 0f)
+			beatEventListeners.forEach(Runnable::run)
+			if (tickEachBeat && metronomeCowbell.isLoaded) {
+				metronomeCowbell.sound.play(1f, 1.1f, 0f)
+			}
 		}
 
 		if (tempoChanges.getTempoAt(beat) != lastBpm && music?.music != null) {

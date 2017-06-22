@@ -58,6 +58,11 @@ class DefAssetLoader : IAssetLoader {
 		manager.load(AssetMap.add("cannery_tex_whoosh", "credits/cannery/images/whoosh.png"),
 					 Texture::class.java)
 
+		manager.load(AssetMap.add("playyan_walking", "images/playyan/walking.png"),
+					 Texture::class.java)
+		manager.load(AssetMap.add("playyan_jumping", "images/playyan/jumping_26.png"),
+					 Texture::class.java)
+
 		manager.load(AssetMap.add("ui_language", "images/ui/language.png"), Texture::class.java)
 		manager.load(AssetMap.add("ui_audacity", "images/ui/audacity.png"), Texture::class.java)
 		manager.load(AssetMap.add("ui_infobutton", "images/ui/info.png"), Texture::class.java)

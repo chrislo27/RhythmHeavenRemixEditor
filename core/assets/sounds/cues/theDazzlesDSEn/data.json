@@ -1,0 +1,184 @@
+{
+  "gameID": "theDazzlesDSEn",
+  "gameName": "The Dazzles (DS) (English)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "theDazzlesDSEn/hold3","deprecatedIDs":["theDazzles/hold3"],
+      "duration": 0.5,
+      "name": "hold - three"
+    },
+    {
+      "id": "theDazzlesDSEn/hold2","deprecatedIDs":["theDazzles/hold2"],
+      "duration": 0.5,
+      "name": "hold - two"
+    },
+    {
+      "id": "theDazzlesDSEn/hold1","deprecatedIDs":["theDazzles/hold1"],
+      "duration": 0.5,
+      "name": "hold - 1"
+    },
+    {
+      "id": "theDazzlesDSEn/posePartner","deprecatedIDs":["theDazzles/posePartner"],
+      "duration": 0.5,
+      "name": "partner pose"
+    },
+    {
+      "id": "theDazzlesDSEn/posePartnerLong","deprecatedIDs":["theDazzles/posePartnerLong"],
+      "duration": 1.0,
+      "name": "partner pose - long"
+    },
+    {
+      "id": "theDazzlesDSEn/posePlayer","deprecatedIDs":["theDazzles/posePlayer"],
+      "duration": 1.0,
+      "name": "player pose"
+    },
+    {
+      "id": "theDazzlesDSEn/posePlayerStars","deprecatedIDs":["theDazzles/posePlayerStars"],
+      "duration": 2.0,
+      "name": "player pose - stars"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "theDazzlesDSEn_hold","deprecatedIDs":["theDazzles_hold"],
+      "name": "hold count in",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/hold3",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/hold2",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSEn/hold1",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSEn_poseThree","deprecatedIDs":["theDazzles_poseThree"],
+      "name": "pose - three",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePlayer",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSEn_poseTwo","deprecatedIDs":["theDazzles_poseTwo"],
+      "name": "pose - two",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePlayerStars",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSEn_poseSix1","deprecatedIDs":["theDazzles_poseSix1"],
+      "name": "pose - six - diagonal",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.75
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 2.75
+        },
+        {
+          "id": "theDazzlesDSEn/posePlayer",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSEn_poseSix2","deprecatedIDs":["theDazzles_poseSix2"],
+      "name": "pose - six - columns",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesDSEn/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 2.5
+        },
+        {
+          "id": "theDazzlesDSEn/posePlayer",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSEn_poseSix3","deprecatedIDs":["theDazzles_poseSix3"],
+      "name": "pose - six",
+      "cues": [
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesDSEn/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSEn/posePlayer",
+          "beat": 2.5
+        }
+      ]
+    }
+  ]
+}

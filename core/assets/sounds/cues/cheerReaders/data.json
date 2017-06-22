@@ -90,7 +90,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoom2",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - 2"
     },
     {
@@ -100,7 +100,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoom4",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - 4"
     },
     {
@@ -120,7 +120,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoomS2",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - solo - 2"
     },
     {
@@ -130,7 +130,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoomS4",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - solo - 4"
     },
     {
@@ -150,7 +150,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoomgirls2",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - girls - 2"
     },
     {
@@ -160,7 +160,7 @@
     },
     {
       "id": "cheerReaders/rahRahSisBoomBaBoomgirls4",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "rah rah sis boom ba boom - girls - 4"
     },
     {
@@ -603,6 +603,96 @@
         {
           "id": "cheerReaders/rahRahSisBoomBaBoomgirls4",
           "beat": 1.5
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls5",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls6",
+          "beat": 2.5
+        }
+      ]
+    },
+	{
+      "id": "cheerReaders_rahRahSisBoomBaBoomSwing",
+      "name": "rah rah sis boom ba boom! (swing)",
+      "cues": [
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom2",
+          "beat": 0.625
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom3",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom4",
+          "beat": 1.625
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom5",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoom6",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "cheerReaders_rahRahSisBoomBaBoomSSwing",
+      "name": "rah rah sis boom ba boom! - solo (swing)",
+      "cues": [
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS2",
+          "beat": 0.625
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS3",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS4",
+          "beat": 1.625
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS5",
+          "beat": 2
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomS6",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "cheerReaders_rahRahSisBoomBaBoomgirlsSwing",
+      "name": "rah rah sis boom ba boom! - girls (swing)",
+      "cues": [
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls1",
+          "beat": 0
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls2",
+          "beat": 0.625
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls3",
+          "beat": 1
+        },
+        {
+          "id": "cheerReaders/rahRahSisBoomBaBoomgirls4",
+          "beat": 1.625
         },
         {
           "id": "cheerReaders/rahRahSisBoomBaBoomgirls5",

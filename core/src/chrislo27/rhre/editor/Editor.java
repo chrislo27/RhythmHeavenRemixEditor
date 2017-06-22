@@ -334,8 +334,28 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().setColor(main.getPalette().getStaffLine());
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.getFont().draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, 0, Align.center, false);
+				Main.drawCompressed(main.getFont(), batch, x + "", (x - 0.5f) * Entity.PX_WIDTH,
+						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, Entity.PX_WIDTH, Align.center);
+			}
+		}
+
+		// play-yan
+		{
+			if (remix.getPlayingState() == PlayingState.PLAYING && remix.getTickEachBeat()) {
+				final float jumpTime = 0.65f;
+				final float beatPercent = (remix.getBeat() < 0 ? (remix.getBeat() + (float) Math.abs(Math.floor(remix.getBeat()) * 2)) : remix.getBeat()) % 1;
+				if (beatPercent <= jumpTime) {
+					final float jumpSawtooth = beatPercent % 1 / jumpTime;
+					final float jumpTriangle = (jumpSawtooth <= 0.5f ? (jumpSawtooth * 2) : (1f - ((jumpSawtooth - 0.5f) * 2)));
+					final float jumpHeight = (jumpSawtooth <= 0.5f ? (jumpSawtooth * 2) : (jumpTriangle * jumpTriangle));
+
+					batch.draw(AssetRegistry.getTexture("playyan_jumping"), remix.getBeat() * Entity.PX_WIDTH,
+							TRACK_COUNT * Entity.PX_HEIGHT + (Entity.PX_WIDTH * 0.3f) * (jumpHeight), 0, 0, 26, 35);
+				} else {
+					int step = (int) (MathHelper.getSawtoothWave(0.25f) * 4);
+					batch.draw(AssetRegistry.getTexture("playyan_walking"), remix.getBeat() * Entity.PX_WIDTH,
+							TRACK_COUNT * Entity.PX_HEIGHT, step * 26, 0, 26, 35);
+				}
 			}
 		}
 

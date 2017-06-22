@@ -1,0 +1,38 @@
+{
+  "gameID": "mochiPounding",
+  "gameName": "Mochi Pounding",
+  "series": "side",
+  "cues": [
+    {
+      "id": "mochiPounding/redMochi1",
+      "duration": 0.5,
+      "name": "red - mochi pounding - 1"
+    },
+    {
+      "id": "mochiPounding/redMochi2",
+      "duration": 0.5,
+      "name": "red - mochi pounding - 2"
+    },
+    {
+      "id": "mochiPounding/redMochiEnd",
+      "duration": 3.0,
+      "name": "red - ending pounding mochi"
+    },
+    {
+      "id": "mochiPounding/blueMochi1",
+      "duration": 0.5,
+      "name": "blue - mochi pounding - 1"
+    },
+    {
+      "id": "mochiPounding/blueMochi2",
+      "duration": 0.5,
+      "name": "blue - mochi pounding - 2"
+    },
+    {
+      "id": "mochiPounding/blueMochiEnd",
+      "duration": 3.0,
+      "name": "blue - ending pounding mochi"
+    }
+  ],
+  "patterns": []
+}

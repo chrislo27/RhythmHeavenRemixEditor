@@ -9,9 +9,30 @@
       "name": "throw"
     },
     {
-      "id": "samuraiSliceDS/see-saw",
+      "id": "samuraiSliceDS/faster1",
       "duration": 1,
-      "name": "see-saw"
+      "name": "fasterA"
+    },
+    {
+      "id": "samuraiSliceDS/faster2",
+      "duration": 1,
+      "name": "fasterB"
+    },
+    {
+      "id": "samuraiSliceDS/faster3",
+      "duration": 1,
+      "name": "fasterC"
+    },
+    {
+      "id": "samuraiSliceDS/see-sawA",
+      "deprecatedIDs": ["samuraiSliceDS/see-saw"],
+      "duration": 1,
+      "name": "see-sawA"
+    },
+    {
+      "id": "samuraiSliceDS/see-sawB",
+      "duration": 1,
+      "name": "see-sawB"
     },
     {
       "id": "samuraiSliceDS/sliceA",
@@ -39,7 +60,7 @@
           "beat": 0
         },
         {
-          "id": "samuraiSliceDS/see-saw",
+          "id": "samuraiSliceDS/see-sawB",
           "beat": 2
         },
         {
@@ -53,6 +74,52 @@
       ]
     },
     {
+      "id": "samuraiSliceDS_watermelonDouble",
+      "name": "watermelon double",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 1,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawB",
+          "beat": 2,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawA",
+          "beat": 3,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/sliceA",
+          "beat": 4,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 5,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/sliceA",
+          "beat": 5,
+          "track": 0
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 6,
+          "track": 1
+        }
+      ]
+    },
+    {
       "id": "samuraiSliceDS_fish",
       "name": "fish",
       "cues": [
@@ -61,11 +128,11 @@
           "beat": 0
         },
         {
-          "id": "samuraiSliceDS/see-saw",
+          "id": "samuraiSliceDS/see-sawA",
           "beat": 2
         },
         {
-          "id": "samuraiSliceDS/see-saw",
+          "id": "samuraiSliceDS/see-sawB",
           "beat": 4
         },
         {
@@ -79,6 +146,62 @@
       ]
     },
     {
+      "id": "samuraiSliceDS_fishDouble",
+      "name": "fish double",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 1,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawA",
+          "beat": 2,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawB",
+          "beat": 3,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawA",
+          "beat": 4,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawB",
+          "beat": 5,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/sliceB",
+          "beat": 6,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 7,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/sliceB",
+          "beat": 7,
+          "track": 0
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 8,
+          "track": 1
+        }
+      ]
+    },
+    {
       "id": "samuraiSliceDS_demon",
       "name": "demon",
       "cues": [
@@ -87,7 +210,7 @@
           "beat": 0
         },
         {
-          "id": "samuraiSliceDS/see-saw",
+          "id": "samuraiSliceDS/see-sawA",
           "beat": 2
         },
         {
@@ -97,6 +220,52 @@
         {
           "id": "samuraiSliceDS/catch",
           "beat": 7
+        }
+      ]
+    },
+    {
+      "id": "samuraiSliceDS_demonDouble",
+      "name": "demon double",
+      "cues": [
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/throw",
+          "beat": 1,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawB",
+          "beat": 2,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/see-sawB",
+          "beat": 3,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/sliceB",
+          "beat": 6,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 7,
+          "track": 0
+        },
+        {
+          "id": "samuraiSliceDS/sliceA",
+          "beat": 7,
+          "track": 1
+        },
+        {
+          "id": "samuraiSliceDS/catch",
+          "beat": 8,
+          "track": 1
         }
       ]
     }
