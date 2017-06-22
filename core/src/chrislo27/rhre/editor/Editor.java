@@ -334,8 +334,8 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().setColor(main.getPalette().getStaffLine());
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
-				main.getFont().draw(batch, x + "", x * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, 0, Align.center, false);
+				Main.drawCompressed(main.getFont(), batch, x + "", (x - 0.5f) * Entity.PX_WIDTH,
+						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, Entity.PX_WIDTH, Align.center);
 			}
 		}
 
