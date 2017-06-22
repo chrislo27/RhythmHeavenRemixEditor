@@ -15,9 +15,9 @@ already
 
 **Actual behavior:** [insert what actually happened here]
 
-**Stacktrace/error log:** [attach the log file from `logs/log_YYYY-MM-DD_HH-MM-SS.txt here]
-
 **Version affected:** [insert the version of RHRE2 here]
 
+**Stacktrace/error log:** [Did it crash? Attach the log file from `logs/log_YYYY-MM-DD_HH-MM-SS.txt here, otherwise, remove this line]
+
 ### Additional Information
-[insert any other information that may be able to help me with the problem here]
+[optional: insert any other information that may be able to help me with the problem here]
