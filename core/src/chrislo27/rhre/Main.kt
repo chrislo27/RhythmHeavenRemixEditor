@@ -7,6 +7,7 @@ import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.util.HideVersionText
+import chrislo27.rhre.version.RHRE2Version
 import chrislo27.rhre.version.VersionChecker
 import chrislo27.rhre.version.VersionState
 import com.badlogic.gdx.Gdx
@@ -145,7 +146,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	}
 
 	override fun create() {
-		ionium.templates.Main.version = "v2.15.2"
+		ionium.templates.Main.version = RHRE2Version.VERSION.toString()
 
 		SysOutPiper.pipe()
 

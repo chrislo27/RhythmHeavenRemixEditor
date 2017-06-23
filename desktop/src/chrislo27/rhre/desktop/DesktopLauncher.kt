@@ -2,6 +2,7 @@ package chrislo27.rhre.desktop
 
 import chrislo27.rhre.Main
 import chrislo27.rhre.util.console.ConsoleCommands
+import chrislo27.rhre.version.RHRE2Version
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import ionium.desktop.ArgumentInferredLwjglAppConfig
@@ -19,7 +20,7 @@ object DesktopLauncher {
 		val main = Main(logger!!)
 
 		val config = ArgumentInferredLwjglAppConfig(args)
-		config.title = "Rhythm Heaven Remix Editor"
+		config.title = "Rhythm Heaven Remix Editor " + RHRE2Version.VERSION.toString()
 		config.width = GlobalVariables.defaultWidth
 		config.height = GlobalVariables.defaultHeight
 		config.fullscreen = false
