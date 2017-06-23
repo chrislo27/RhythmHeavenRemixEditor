@@ -1,0 +1,143 @@
+{
+  "gameID": "dogNinjaEs",
+  "gameName": "Dog Ninja (DS) (Spanish)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "dogNinjaEs/fruit1",
+      "duration": 1,
+      "name": "fruit - out"
+    },
+    {
+      "id": "dogNinjaEs/fruit2",
+      "duration": 1,
+      "name": "fruit - slice"
+    },
+    {
+      "id": "dogNinjaEs/bone1",
+      "duration": 1,
+      "name": "bone - out"
+    },
+    {
+      "id": "dogNinjaEs/bone2",
+      "duration": 1,
+      "name": "bone - slice"
+    },
+    {
+      "id": "dogNinjaEs/tire1",
+      "duration": 1,
+      "name": "tire - out"
+    },
+    {
+      "id": "dogNinjaEs/tire2",
+      "duration": 1,
+      "name": "tire - slice"
+    },
+    {
+      "id": "dogNinjaEs/pan1",
+      "duration": 1,
+      "name": "pan - out"
+    },
+    {
+      "id": "dogNinjaEs/pan2",
+      "duration": 1,
+      "name": "pan - slice"
+    },
+    {
+      "id": "dogNinjaEs/sign",
+      "duration": 1,
+      "name": "\"Cut everything!\""
+    },
+    {
+      "id": "dogNinjaEs/allaVoy1",
+      "duration": 1,
+      "name": "alla voy - 1"
+    },
+    {
+      "id": "dogNinjaJa/allaVoy2",
+      "duration": 1,
+      "name": "alla voy - 2"
+    },
+    {
+      "id": "dogNinjaJa/allaVoy3",
+      "duration": 1,
+      "name": "alla voy - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "dogNinjaEs_fruit",
+      "name": "fruit",
+      "cues": [
+        {
+          "id": "dogNinjaEs/fruit1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaEs/fruit2",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "dogNinjaEs_bone",
+      "name": "bone",
+      "cues": [
+        {
+          "id": "dogNinjaEs/bone1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaEs/bone2",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "dogNinjaEs_tire",
+      "name": "tire",
+      "cues": [
+        {
+          "id": "dogNinjaEs/tire1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaEs/tire2",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "dogNinjaEs_pan",
+      "name": "pan",
+      "cues": [
+        {
+          "id": "dogNinjaEs/pan1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaEs/pan2",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "dogNinjaEs_allaVoy",
+      "name": "alla voy",
+      "cues": [
+        {
+          "id": "dogNinjaEs/allaVoy1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaEs/allaVoy2",
+          "beat": 0.5
+        },
+        {
+          "id": "dogNinjaEs/allaVoy3",
+          "beat": 1.0
+        }
+      ]
+    }
+  ]
+}
