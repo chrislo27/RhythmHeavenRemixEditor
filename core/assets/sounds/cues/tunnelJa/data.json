@@ -1,0 +1,52 @@
+{
+  "gameID": "tunnelJa",
+  "gameName": "Tunnel (Japanese)",
+  "series": "side",
+  "cues": [
+    {
+      "id": "tunnelJa/one",
+      "duration": 1,
+      "name": "count in - one"
+    },
+    {
+      "id": "tunnelJa/two",
+      "duration": 1,
+      "name": "two"
+    },
+    {
+      "id": "tunnelJa/cowbell",
+      "duration": 1,
+      "name": "cowbell"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "tunnelJa_onetwo",
+      "name": "one, two!",
+      "cues": [
+        {
+          "id": "tunnelJa/one",
+          "beat": 0.0
+        },
+        {
+          "id": "tunnelJa/two",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "tunnelJa_cowbell",
+      "name": "cowbell",
+      "cues": [
+        {
+          "id": "tunnelJa/cowbell",
+          "beat": 0.0
+        },
+        {
+          "id": "tunnelJa/cowbell",
+          "beat": 1.0
+        }
+      ]
+    }
+  ]
+}
