@@ -50,16 +50,16 @@
     },
     {
       "id": "dogNinjaEs/allaVoy1",
-      "duration": 1,
+      "duration": 0.5,
       "name": "alla voy - 1"
     },
     {
-      "id": "dogNinjaJa/allaVoy2",
-      "duration": 1,
+      "id": "dogNinjaEs/allaVoy2",
+      "duration": 0.5,
       "name": "alla voy - 2"
     },
     {
-      "id": "dogNinjaJa/allaVoy3",
+      "id": "dogNinjaEs/allaVoy3",
       "duration": 1,
       "name": "alla voy - 3"
     }
