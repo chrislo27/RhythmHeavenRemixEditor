@@ -55,12 +55,12 @@
     },
     {
       "id": "powerCalligraphy/brush1",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "brush - 1"
     },
     {
       "id": "powerCalligraphy/brush2",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "brush - 2"
     },
     {
@@ -161,6 +161,40 @@
       ]
     },
     {
+      "id": "powerCalligraphy_chikaraSwing",
+      "name": "chikara (力) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 0.625
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 6
+        }
+      ]
+    },
+    {
       "id": "powerCalligraphy_onore",
       "name": "onore (己)",
       "cues": [
@@ -175,6 +209,45 @@
         {
           "id": "powerCalligraphy/brush3",
           "beat": 1.5
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 4,
+          "track": 1
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 6
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphy_onoreSwing",
+      "name": "onore (己) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 1.625
         },
         {
           "id": "powerCalligraphy/brushTap",
@@ -218,6 +291,44 @@
         {
           "id": "powerCalligraphy/brush3",
           "beat": 1.5
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/releaseB1",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphy/releaseB2",
+          "beat": 6
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphy_sunSwing",
+      "name": "sun (寸) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 0.625
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 1.625
         },
         {
           "id": "powerCalligraphy/releaseA1",
@@ -342,6 +453,76 @@
         }
       ]
     },
+	{
+      "id": "powerCalligraphy_tsurunihamushiSwing",
+      "name": "tsuru niha mu shi (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 2.625
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 4.625
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 5.625
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 6
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 6.625
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 7
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 7.25
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 7.5
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 8
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 10
+        }
+      ]
+    },
     {
       "id": "powerCalligraphy_tsurunihamushiKr",
       "name": "tsuru niha mu shi - (Korean version)",
@@ -389,6 +570,76 @@
         {
           "id": "powerCalligraphy/brush1",
           "beat": 7.5
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 8
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 8.25
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 8.50
+        },
+        {
+          "id": "powerCalligraphy/releaseA1",
+          "beat": 9
+        },
+        {
+          "id": "powerCalligraphy/releaseA2",
+          "beat": 11
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphy_tsurunihamushiKrSwing",
+      "name": "tsuru niha mu shi - (Korean version) - (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphy/brushTap",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphy/brush3",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 5.625
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 6
+        },
+        {
+          "id": "powerCalligraphy/brush2",
+          "beat": 6.625
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 7
+        },
+        {
+          "id": "powerCalligraphy/brush1",
+          "beat": 7.625
         },
         {
           "id": "powerCalligraphy/brush3",
