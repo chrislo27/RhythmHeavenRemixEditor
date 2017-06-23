@@ -1,0 +1,159 @@
+{
+  "gameID": "rhythmTestWii",
+  "gameName": "Rhythm Test (Fever)",
+  "series": "side",
+  "cues": [
+    {
+      "id": "rhythmTestWii/pressToBeat",
+      "duration": 1,
+      "name": "press to the beat"
+    },
+    {
+      "id": "rhythmTestWii/wait",
+      "duration": 1,
+      "name": "wait"
+    },
+    {
+      "id": "rhythmTestWii/waitPress",
+      "duration": 1,
+      "name": "press after waiting"
+    },
+    {
+      "id": "rhythmTestWii/signs1",
+      "duration": 1,
+      "name": "test in progress - 1"
+    },
+    {
+      "id": "rhythmTestWii/signs2",
+      "duration": 1,
+      "name": "test in progress - 2"
+    },
+    {
+      "id": "rhythmTestWii/signs3",
+      "duration": 1,
+      "name": "test in progress - 3"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "rhythmTestWii_pressToBeat",
+      "name": "pressing to the beat",
+      "cues": [
+        {
+          "id": "rhythmTestWii/pressToBeat",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmTestWii/pressToBeat",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmTestWii/pressToBeat",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmTestWii/pressToBeat",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "rhythmTestWii_waitFour",
+      "name": "wait (four)",
+      "cues": [
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmTestWii/waitPress",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "rhythmTestWii_waitEight",
+      "name": "wait (eight)",
+      "cues": [
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 3.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 4.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 5.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 6.0
+        },
+        {
+          "id": "rhythmTestWii/waitPress",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "rhythmTestWii_signs",
+      "name": "test in progress",
+      "cues": [
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmTestWii/signs1",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmTestWii/signs2",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmTestWii/signs3",
+          "beat": 3.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 4.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 5.0
+        },
+        {
+          "id": "rhythmTestWii/wait",
+          "beat": 6.0
+        },
+        {
+          "id": "rhythmTestWii/waitPress",
+          "beat": 7.0
+        }
+      ]
+    }
+  ]
+}
