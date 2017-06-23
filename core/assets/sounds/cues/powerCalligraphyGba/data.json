@@ -55,12 +55,12 @@
     },
     {
       "id": "powerCalligraphyGba/brush1",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "brush - 1"
     },
     {
       "id": "powerCalligraphyGba/brush2",
-      "duration": 0.5,
+      "duration": 0.375,
       "name": "brush - 2"
     },
     {
@@ -161,6 +161,40 @@
       ]
     },
     {
+      "id": "powerCalligraphyGba_chikaraSwing",
+      "name": "chikara (力) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 0.625
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA2",
+          "beat": 6
+        }
+      ]
+    },
+    {
       "id": "powerCalligraphyGba_onore",
       "name": "onore (己)",
       "cues": [
@@ -175,6 +209,45 @@
         {
           "id": "powerCalligraphyGba/brush3",
           "beat": 1.5
+        },
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 4,
+          "track": 1
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA2",
+          "beat": 6
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphyGba_onoreSwing",
+      "name": "onore (己) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 1.625
         },
         {
           "id": "powerCalligraphyGba/brushTap",
@@ -218,6 +291,44 @@
         {
           "id": "powerCalligraphyGba/brush3",
           "beat": 1.5
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA1",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA2",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphyGba/releaseB1",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphyGba/releaseB2",
+          "beat": 6
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphyGba_sunSwing",
+      "name": "sun (寸) (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 0.625
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 1.625
         },
         {
           "id": "powerCalligraphyGba/releaseA1",
@@ -319,6 +430,76 @@
         {
           "id": "powerCalligraphyGba/brush1",
           "beat": 6.5
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 7
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 7.25
+        },
+        {
+          "id": "powerCalligraphyGba/brushTap",
+          "beat": 7.5
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA1",
+          "beat": 8
+        },
+        {
+          "id": "powerCalligraphyGba/releaseA2",
+          "beat": 10
+        }
+      ]
+    },
+	{
+      "id": "powerCalligraphyGba_tsurunihamushiSwing",
+      "name": "tsuru niha mu shi (swing)",
+      "cues": [
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 0
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 1
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 2
+        },
+        {
+          "id": "powerCalligraphyGba/brush3",
+          "beat": 2.625
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 3
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 4
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 4.625
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 5
+        },
+        {
+          "id": "powerCalligraphyGba/brush2",
+          "beat": 5.625
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 6
+        },
+        {
+          "id": "powerCalligraphyGba/brush1",
+          "beat": 6.625
         },
         {
           "id": "powerCalligraphyGba/brush3",
