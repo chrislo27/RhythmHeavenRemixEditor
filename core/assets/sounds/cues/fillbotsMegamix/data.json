@@ -80,9 +80,108 @@
       "id": "fillbotsMegamix/beep",
       "duration": 1,
       "name": "beep"
+    },
+    {
+      "id": "fillbotsMegamix/monitorOn",
+      "duration": 1,
+      "name": "intro - monitor on"
+    },
+    {
+      "id": "fillbotsMegamix/text1",
+      "duration": 0.2,
+      "name": "intro - texting - 1"
+    },
+    {
+      "id": "fillbotsMegamix/text2",
+      "duration": 0.2,
+      "name": "intro - texting - 2"
+    },
+    {
+      "id": "fillbotsMegamix/textBeep1",
+      "duration": 0.2,
+      "name": "intro - texting with a beep - 1"
+    },
+    {
+      "id": "fillbotsMegamix/textBeep2",
+      "duration": 0.2,
+      "name": "intro - texting with a beep - 2"
+    },
+    {
+      "id": "fillbotsMegamix/textBeep3",
+      "duration": 0.2,
+      "name": "intro - texting with a beep - 3"
+    },
+    {
+      "id": "fillbotsMegamix/monitorOff",
+      "duration": 1,
+      "name": "intro - monitor off"
     }
   ],
   "patterns": [
+    {
+      "id": "fillbotsMegamix_intro1",
+      "name": "intro (Japanese)",
+      "cues": [
+        {
+          "id": "fillbotsMegamix/monitorOn",
+          "beat": 0
+        },
+        {
+          "id": "fillbotsMegamix/text1",
+          "beat": 1.5
+        },
+        {
+          "id": "fillbotsMegamix/text1",
+          "beat": 2.15
+        },
+        {
+          "id": "fillbotsMegamix/text2",
+          "beat": 2.85
+        },
+        {
+          "id": "fillbotsMegamix/text1",
+          "beat": 5
+        },
+        {
+          "id": "fillbotsMegamix/text1",
+          "beat": 5.35
+        },
+        {
+          "id": "fillbotsMegamix/text2",
+          "beat": 5.90
+        },
+        {
+          "id": "fillbotsMegamix/monitorOff",
+          "beat": 10
+        }
+      ]
+    },
+    {
+      "id": "fillbotsMegamix_intro2",
+      "name": "intro (non-Japanese)",
+      "cues": [
+        {
+          "id": "fillbotsMegamix/monitorOn",
+          "beat": 0
+        },
+        {
+          "id": "fillbotsMegamix/textBeep1",
+          "beat": 1.5
+        },
+        {
+          "id": "fillbotsMegamix/textBeep2",
+          "beat": 1.85
+        },
+        {
+          "id": "fillbotsMegamix/textBeep3",
+          "beat": 2.15
+        },
+        {
+          "id": "fillbotsMegamix/monitorOff",
+          "beat": 10
+        }
+      ]
+    },
     {
       "id": "fillbotsMegamix_mediumRobot",
       "name": "medium robot",
