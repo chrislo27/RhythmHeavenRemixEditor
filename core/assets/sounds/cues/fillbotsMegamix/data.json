@@ -115,6 +115,21 @@
       "id": "fillbotsMegamix/monitorOff",
       "duration": 1,
       "name": "intro - monitor off"
+    },
+    {
+      "id": "fillbotsMegamix/fillErUp1",
+      "duration": 0.25,
+      "name": "practice - fill 'er up! - 1"
+    },
+    {
+      "id": "fillbotsMegamix/fillErUp2",
+      "duration": 0.25,
+      "name": "practice - fill 'er up! - 2"
+    },
+    {
+      "id": "fillbotsMegamix/fillErUp3",
+      "duration": 0.5,
+      "name": "practice - fill 'er up! - 3"
     }
   ],
   "patterns": [
@@ -339,6 +354,24 @@
         {
           "id": "fillbotsMegamix/smallFinish3",
           "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "fillbotsMegamix_fillErUp",
+      "name": "fill 'er up! (practice)",
+      "cues": [
+        {
+          "id": "fillbotsMegamix/fillErUp1",
+          "beat": 0
+        },
+        {
+          "id": "fillbotsMegamix/fillErUp2",
+          "beat": 0.25
+        },
+        {
+          "id": "fillbotsMegamix/fillErUp3",
+          "beat": 0.5
         }
       ]
     }
