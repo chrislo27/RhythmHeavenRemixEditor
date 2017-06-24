@@ -11,7 +11,7 @@ object SeriesList {
 													 Series("fever", true),
 													 Series("megamix", true),
 													 Series("side", true),
-													 Series("custom", true))
+													 Series("custom", false))
 	var map: Map<String, Series> = list.associateBy(Series::name)
 		private set
 
