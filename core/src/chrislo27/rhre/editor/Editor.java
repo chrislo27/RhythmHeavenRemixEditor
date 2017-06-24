@@ -64,6 +64,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
 	private static final float AUTOSAVE_PERIOD = 60f;
+	private static final String[] ARROWS = {"▲", "▼", "△", "▽"};
 	public final OrthographicCamera camera = new OrthographicCamera();
 	public final MessageHandler messageHandler = new MessageHandler();
 	private final Main main;
@@ -102,7 +103,7 @@ public class Editor extends InputAdapter implements Disposable {
 		remix = new Remix();
 
 		for (Series s : Series.values)
-			scrolls.put(s, new ScrollValue(0, 0, 0));
+			scrolls.put(s, new ScrollValue(0, 0, 0,0));
 		snappingInterval = 0.25f;
 	}
 
@@ -485,21 +486,42 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(1, 1, 1, 1);
 		}
 
+		final float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.getFontBordered().getCapHeight() * 0.5f;
+
 		// picker icons
 		{
-			for (int i = 0, count = 0; i < GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(); i++) {
+			final int maxVisible = ICON_COUNT_X * ICON_COUNT_Y;
+			for (int start = scrolls.get(currentSeries).getGameScroll() * ICON_COUNT_X,  i = start, count = 0;
+				 i < Math.min(GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(), start + maxVisible);
+				 i++, count++) {
 				Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).get(i);
 
 				batch.draw(game.getIconTexture(), getIconX(count), getIconY(count), GAME_ICON_SIZE, GAME_ICON_SIZE);
 
-				if (count == scrolls.get(currentSeries).getGame()) {
+				if (i == scrolls.get(currentSeries).getGame()) {
 					final int offset = 3;
 					batch.draw(AssetRegistry.getTexture("icon_selector_fever"), getIconX(count) - offset,
 							getIconY(count) - offset, GAME_ICON_SIZE + offset * 2, GAME_ICON_SIZE + offset * 2);
 				}
-
-				count++;
 			}
+
+			String arrow = ARROWS[0];
+			main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
+
+			if (scrolls.get(currentSeries).getGameScroll() == 0) {
+				arrow = ARROWS[2];
+			}
+			main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f - GAME_ICON_PADDING,
+					middle + PICKER_HEIGHT * 0.5f - main.getFontBordered().getCapHeight(), 0, Align.right, false);
+
+			arrow = ARROWS[1];
+			if (scrolls.get(currentSeries).getGameScroll() == scrolls.get(currentSeries).getMaxGameScroll()) {
+				arrow = ARROWS[3];
+			}
+			main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f - GAME_ICON_PADDING,
+					middle - PICKER_HEIGHT * 0.5f + 12, 0, Align.right, false);
+
+			main.getFontBordered().setColor(1, 1, 1, 1);
 		}
 
 		// pattern list
@@ -521,8 +543,6 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFontBordered().setColor(1, 1, 1, 1);
 			Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 					.get(scrolls.get(currentSeries).getGame());
-
-			float middle = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f + main.getFontBordered().getCapHeight() * 0.5f;
 
 			scrolls.values().forEach(ScrollValue::update);
 
@@ -546,10 +566,10 @@ public class Editor extends InputAdapter implements Disposable {
 					List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 							.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
-					String arrow = "▲";
+					String arrow = ARROWS[0];
 
 					if (scrolls.get(currentSeries).getPattern() == 0) {
-						arrow = "△";
+						arrow = ARROWS[2];
 						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
 					}
 					main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING,
@@ -557,9 +577,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 					main.getFontBordered().setColor(0.65f, 1, 1, 1);
 
-					arrow = "▼";
+					arrow = ARROWS[1];
 					if (scrolls.get(currentSeries).getPattern() == list.size() - 1) {
-						arrow = "▽";
+						arrow = ARROWS[3];
 						main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
 					}
 					main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f + GAME_ICON_PADDING,
@@ -1363,6 +1383,8 @@ public class Editor extends InputAdapter implements Disposable {
 				scrolls.get(currentSeries).setPattern(
 						MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
 				return true;
+			} else {
+				scrolls.get(currentSeries).setGameScroll(MathUtils.clamp(scrolls.get(currentSeries).getGameScroll() + amount, 0, scrolls.get(currentSeries).getMaxGameScroll()));
 			}
 		} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (currentTool == Tool.NORMAL) {

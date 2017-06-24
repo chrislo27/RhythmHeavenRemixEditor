@@ -1,7 +1,5 @@
 package chrislo27.rhre.util
 
-import chrislo27.rhre.editor.Editor
-
 object CustomSoundUtil {
 
 	const val DURATION = 0.5f
@@ -34,9 +32,6 @@ Each sound will be limited to these factors:
   * You will be able to stretch the cues.
   * You will be able to change the duration of the cues.
   * The cues will not loop. If you want them to loop, you will have to manually add a game using the JSON files.
-
-You can have at most ${Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y} custom games.
-If you have too many they WILL NOT show up!
 
 It is advised that you generate JSON versions of the custom games for more flexibility.
 
