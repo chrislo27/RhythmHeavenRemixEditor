@@ -175,7 +175,7 @@ object GameRegistry : Disposable {
 				val pattern = Pattern(sc.id + "_AUTO-GENERATED", gameObj.gameID!!, "cue: " + sc.name, sc.canAlterDuration,
 									  mutableListOf(Pattern.PatternCue(sc.id, gameObj.gameID!!, 0f, 0, sc.duration, 0)),
 									  true, mutableListOf())
-				if (sc.id == "countIn/silence") {
+				if (sc.id.endsWith("/silence")) {
 					patterns.add(0, pattern)
 				} else {
 					patterns += pattern
