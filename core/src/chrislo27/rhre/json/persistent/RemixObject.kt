@@ -12,9 +12,11 @@ class RemixObject {
 	var musicAssociation: String? = null
 
 	var version: String? = null
-	val versionNumber by lazy {
-		RHRE2Version.fromString(version ?: throw IllegalStateException("Attempt to compute version number when version is null")).numericalValue
+	val versionNumber: Int?
+	get() {
+		return RHRE2Version.fromString(version ?: return null).numericalValue
 	}
+
 	var entities: MutableList<EntityObject>? = null
 
 	var playbackStart: Float = 0f

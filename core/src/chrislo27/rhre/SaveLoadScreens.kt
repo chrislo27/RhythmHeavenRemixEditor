@@ -326,7 +326,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 			main.font.setColor(1f, 1f, 1f, 1f)
 			main.biggerFont.setColor(1f, 1f, 1f, 1f)
 
-			if (remixObj!!.versionNumber >= RHRE2Version.VERSION.numericalValue) {
+			if (remixObj!!.versionNumber!! >= RHRE2Version.VERSION.numericalValue) {
 				main.font.setColor(0f, 1f, 0f, 1f)
 			} else {
 				main.font.color = Color.ORANGE
