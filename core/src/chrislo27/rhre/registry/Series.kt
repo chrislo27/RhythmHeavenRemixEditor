@@ -48,7 +48,11 @@ object SeriesList {
 
 data class Series(val name: String, val builtIn: Boolean = false) {
 
-	fun getLocalizedName(): String = if (builtIn) Localization.get("series." + name) else name
+	private val idToName: String by lazy {
+		name.replace("_", " ")
+	}
+
+	fun getLocalizedName(): String = if (builtIn) Localization.get("series." + name) else idToName
 
 	val luaValue: LuaValue by lazy {
 		LuaValue.valueOf(name)
