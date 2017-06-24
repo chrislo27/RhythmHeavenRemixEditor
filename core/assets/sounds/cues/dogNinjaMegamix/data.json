@@ -42,6 +42,21 @@
       "id": "dogNinjaMegamix/pan2",
       "duration": 1,
       "name": "pan - slice"
+    },
+    {
+      "id": "dogNinjaMegamix/dokkoisho1",
+      "duration": 0.5,
+      "name": "dokkoisho - 1"
+    },
+    {
+      "id": "dogNinjaMegamix/dokkoisho2",
+      "duration": 0.5,
+      "name": "dokkoisho - 2"
+    },
+    {
+      "id": "dogNinjaMegamix/dokkoisho3",
+      "duration": 1,
+      "name": "dokkoisho - 3"
     }
   ],
   "patterns": [
@@ -97,6 +112,24 @@
         },
         {
           "id": "dogNinjaMegamix/pan2",
+          "beat": 1.0
+        }
+      ]
+    },
+    {
+      "id": "dogNinjaMegamix_dokkoisho",
+      "name": "dokkoisho",
+      "cues": [
+        {
+          "id": "dogNinjaMegamix/dokkoisho1",
+          "beat": 0.0
+        },
+        {
+          "id": "dogNinjaMegamix/dokkoisho2",
+          "beat": 0.5
+        },
+        {
+          "id": "dogNinjaMegamix/dokkoisho3",
           "beat": 1.0
         }
       ]
