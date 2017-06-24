@@ -53,12 +53,12 @@
     {
       "id": "rockers/two",
       "duration": 1,
-      "name": "count - 1"
+      "name": "count - 2"
     },
     {
       "id": "rockers/three",
       "duration": 1,
-      "name": "count - 1"
+      "name": "count - 3"
     }
   ],
   "patterns": [
