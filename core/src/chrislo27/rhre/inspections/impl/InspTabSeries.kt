@@ -14,6 +14,6 @@ class InspTabSeries : GameListingTab() {
 					return@groupBy it.series
 				}
 				.mapKeysTo(linkedMapOf()) { entry ->
-					"series." + entry.key.i10nKey
+					"series." + entry.key.name
 				}
 	}}

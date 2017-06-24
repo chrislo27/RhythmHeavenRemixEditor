@@ -78,7 +78,7 @@ public class Editor extends InputAdapter implements Disposable {
 	float snappingInterval;
 	private String status;
 	private Tool currentTool = Tool.NORMAL;
-	private Series currentSeries = Series.TENGOKU;
+	private Series currentSeries = SeriesList.TENGOKU;
 	/**
 	 * null = not selecting
 	 */
@@ -102,7 +102,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		remix = new Remix();
 
-		for (Series s : Series.values)
+		for (Series s : SeriesList.list)
 			scrolls.put(s, new ScrollValue(0, 0, 0,0));
 		snappingInterval = 0.25f;
 	}
@@ -417,9 +417,9 @@ public class Editor extends InputAdapter implements Disposable {
 							.viewportWidth,
 					EditorStageSetup.BAR_HEIGHT);
 			// series buttons
-			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, Series.values.length * GAME_ICON_SIZE,
+			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, SeriesList.list.size() * GAME_ICON_SIZE,
 					OVERVIEW_HEIGHT);
-			for (int i = 0; i < Series.values.length; i++) {
+			for (int i = 0; i < SeriesList.list.size(); i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
 						OVERVIEW_HEIGHT, 1);
@@ -432,15 +432,15 @@ public class Editor extends InputAdapter implements Disposable {
 					Align.left);
 
 			// series buttons
-			for (int i = 0; i < Series.values.length; i++) {
-//				main.font.draw(batch, Series.values[i].getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
+			for (int i = 0; i < SeriesList.list.size(); i++) {
+//				main.font.draw(batch, SeriesList.list.get(i).getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
 //						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
 //						0, Align.center, false);
 
-				batch.draw(AssetRegistry.getTexture("series_icon_" + Series.values[i].name()), i * GAME_ICON_SIZE,
+				batch.draw(AssetRegistry.getTexture("series_icon_" + SeriesList.list.get(i).getName()), i * GAME_ICON_SIZE,
 						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
-				if (Series.values[i] == currentSeries) {
+				if (SeriesList.list.get(i) == currentSeries) {
 					batch.setColor(1, 1, 1, 1);
 					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
 							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
@@ -604,7 +604,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// minimap
 		{
-			final float startX = Series.values.length * GAME_ICON_SIZE;
+			final float startX = SeriesList.list.size() * GAME_ICON_SIZE;
 			final float startY = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT;
 			final float mapWidth = main.camera.viewportWidth - (startX + Tool.values.length * GAME_ICON_SIZE);
 			final float duration = Math.max(remix.getDuration(), remix.getEndTime());
@@ -1042,8 +1042,8 @@ public class Editor extends InputAdapter implements Disposable {
 						}
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
-						if (i < Series.values.length && i >= 0) {
-							status += " - " + Localization.get("editor.lookingAt", Series.values[i].getLocalizedName
+						if (i < SeriesList.list.size() && i >= 0) {
+							status += " - " + Localization.get("editor.lookingAt", SeriesList.list.get(i).getLocalizedName
 									());
 						}
 					}
@@ -1204,12 +1204,12 @@ public class Editor extends InputAdapter implements Disposable {
 			} else if (main.getInputY() >=
 					main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
 				// series
-				if (main.getInputX() <= Series.values.length * GAME_ICON_SIZE) {
+				if (main.getInputX() <= SeriesList.list.size() * GAME_ICON_SIZE) {
 					int i = main.getInputX() / GAME_ICON_SIZE;
-					if (i < Series.values.length) {
-						if (GameRegistry.INSTANCE.getGamesBySeries().get(Series.values[i]) != null &&
-								GameRegistry.INSTANCE.getGamesBySeries().get(Series.values[i]).size() > 0)
-							currentSeries = Series.values[i];
+					if (i < SeriesList.list.size()) {
+						if (GameRegistry.INSTANCE.getGamesBySeries().get(SeriesList.list.get(i)) != null &&
+								GameRegistry.INSTANCE.getGamesBySeries().get(SeriesList.list.get(i)).size() > 0)
+							currentSeries = SeriesList.list.get(i);
 					}
 				}
 

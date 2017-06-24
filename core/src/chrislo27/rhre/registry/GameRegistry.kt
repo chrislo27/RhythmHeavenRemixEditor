@@ -183,13 +183,12 @@ object GameRegistry : Disposable {
 
 			val iconFh = Gdx.files.internal("$baseDir$gameDef/icon.png")
 
-			if (isCustom) {
-				gameObj.series = Series.CUSTOM.name
+			if (isCustom && gameObj.series == null) {
+				gameObj.series = SeriesList.CUSTOM.name
 			}
 
 			game = Game(gameObj.gameID!!, gameObj.gameName!!, soundCues, patterns,
-						if (gameObj.series == null) Series.UNKNOWN else Series.valueOf(
-								gameObj.series!!.toUpperCase(Locale.ROOT)),
+						if (gameObj.series == null) SeriesList.UNKNOWN else SeriesList.getOrPut(gameObj.series!!),
 						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true, gameObj.notRealGame)
 
 			if (!iconFh.exists())
@@ -250,7 +249,7 @@ object GameRegistry : Disposable {
 			}
 
 			game = Game(fh.nameWithoutExtension(), fh.nameWithoutExtension(), soundCues, patterns,
-						Series.CUSTOM, if (icon.exists()) icon.path() else null, true)
+						SeriesList.CUSTOM, if (icon.exists()) icon.path() else null, true)
 
 			Main.logger.info("Finished loading custom folder " + fh.name() + " with " + soundCues.size + " " +
 									 "cues, took ${(System.nanoTime() - nano) / 1000000.0} ms")
@@ -343,7 +342,7 @@ object GameRegistry : Disposable {
 			}
 		}
 
-		val numAreCustom = this.gameList.filter { it.series == Series.CUSTOM }.count()
+		val numAreCustom = this.gameList.filter { it.series == SeriesList.CUSTOM }.count()
 		Main.logger.info(
 				"Loaded " + this.gameList.size + " games (" +
 						(this.gameList.size - numAreCustom) + " databased, $numAreCustom custom game(s)) with " +
@@ -371,6 +370,13 @@ class CueAssetLoader : IAssetLoader {
 										  if (g.iconIsRawPath) g.icon else "sounds/cues/" + g.id + "/icon.png"),
 						 Texture::class.java)
 		}
+
+		SeriesList.list.forEach {
+			val path = "series/${it.name}.png"
+
+			manager.load(AssetMap.add("series_icon_${it.name}",
+									  if (Gdx.files.local(path).exists()) path else "series/unknown.png"),
+											   Texture::class.java) }
 
 	}
 

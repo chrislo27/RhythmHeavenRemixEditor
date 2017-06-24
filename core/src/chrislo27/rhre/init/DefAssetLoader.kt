@@ -1,7 +1,6 @@
 package chrislo27.rhre.init
 
 import chrislo27.rhre.editor.Editor
-import chrislo27.rhre.registry.Series
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Texture
@@ -18,10 +17,6 @@ class DefAssetLoader : IAssetLoader {
 
 		for (t in Editor.Tool.values()) {
 			manager.load(AssetMap.add("tool_icon_" + t.name, "images/tool/" + t.name + ".png"), Texture::class.java)
-		}
-
-		for (s in Series.values()) {
-			manager.load(AssetMap.add("series_icon_" + s.name, "images/series/" + s.name + ".png"), Texture::class.java)
 		}
 
 		manager.load(AssetMap.add("baristron", "images/baristron.png"), Texture::class.java)

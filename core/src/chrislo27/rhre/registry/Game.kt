@@ -41,7 +41,7 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 		return AssetRegistry.getTexture(iconTextureID)
 	}
 
-	fun isCustom() = series == Series.CUSTOM
+	fun isCustom() = series == SeriesList.CUSTOM
 
 	fun getPattern(id: String): Pattern? {
 		return patterns.find { it.id == "${this.id}_$id" }

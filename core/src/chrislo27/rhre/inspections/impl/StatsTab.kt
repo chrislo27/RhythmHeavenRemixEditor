@@ -5,7 +5,7 @@ import chrislo27.rhre.entity.HasGame
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
 import chrislo27.rhre.inspections.InspectionTab
-import chrislo27.rhre.registry.Series
+import chrislo27.rhre.registry.SeriesList
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.PieChartRenderer
 import chrislo27.rhre.util.Slice
@@ -50,7 +50,7 @@ class StatsTab : InspectionTab() {
 		seriesChart = games.map{it.series}.distinct().mapIndexed { index, series ->
 			val count: Int = remix.entities.filter { it is HasGame && it.game.series == series }.count()
 
-			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / Series.values.size, 1f, 0.85f)),
+			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / SeriesList.list.size, 1f, 0.85f)),
 									series.getLocalizedName()) to count.toFloat()
 		}.sortedBy { it.second }.toMap()
 

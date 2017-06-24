@@ -36,6 +36,7 @@ Each sound will be limited to these factors:
 It is advised that you generate JSON versions of the custom games for more flexibility.
 
 You can use data.json files if you need to quickly test databasing.
+You can also make custom series. Put a png image file in a series/ folder relative to the jar file with the same name as the series ID.
 
 Supported audio formats are ogg, wav, and mp3.
 
