@@ -10,6 +10,7 @@ import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.FileChooser
 import chrislo27.rhre.util.JsonHandler
 import chrislo27.rhre.util.message.IconMessage
+import chrislo27.rhre.version.RHRE2Version
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
@@ -325,7 +326,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 			main.font.setColor(1f, 1f, 1f, 1f)
 			main.biggerFont.setColor(1f, 1f, 1f, 1f)
 
-			if (remixObj!!.version == ionium.templates.Main.version) {
+			if (remixObj!!.versionNumber >= RHRE2Version.VERSION.numericalValue) {
 				main.font.setColor(0f, 1f, 0f, 1f)
 			} else {
 				main.font.color = Color.ORANGE
