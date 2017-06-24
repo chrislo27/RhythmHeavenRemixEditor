@@ -1,0 +1,166 @@
+{
+  "gameID": "boardMeetingJa",
+  "gameName": "Board Meeting (Japanese)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "boardMeetingJa/startPrepare",
+      "duration": 1.0,
+      "name": "start - prepare"
+    },
+    {
+      "id": "boardMeetingJa/start1",
+      "duration": 1.0,
+      "name": "start - single"
+    },
+    {
+      "id": "boardMeetingJa/spin1Loop",
+      "canAlterDuration": true,
+      "introSound": "boardMeetingJa/start1",
+      "duration": 1.0,
+      "loops": true,
+      "name": "spinning - start - 1"
+    },
+    {
+      "id": "boardMeetingJa/start2",
+      "duration": 1.0,
+      "name": "start - 2"
+    },
+    {
+      "id": "boardMeetingJa/spin2Loop",
+      "canAlterDuration": true,
+      "introSound": "boardMeetingJa/start2",
+      "duration": 1.0,
+      "loops": true,
+      "name": "spinning - start - 2"
+    },
+    {
+      "id": "boardMeetingJa/start3",
+      "duration": 1.0,
+      "name": "start - 3"
+    },
+    {
+      "id": "boardMeetingJa/spin3Loop",
+      "canAlterDuration": true,
+      "introSound": "boardMeetingJa/start3",
+      "duration": 1.0,
+      "loops": true,
+      "name": "spinning - start - 3"
+    },
+    {
+      "id": "boardMeetingJa/start4",
+      "duration": 1.0,
+      "name": "start - 4"
+    },
+    {
+      "id": "boardMeetingJa/spin4Loop",
+      "canAlterDuration": true,
+      "introSound": "boardMeetingJa/start4",
+      "duration": 1.0,
+      "loops": true,
+      "name": "spinning - start - 4"
+    },
+    {
+      "id": "boardMeetingJa/stop",
+      "duration": 0.5,
+      "name": "stop"
+    },
+    {
+      "id": "boardMeetingJa/stopPlayer",
+      "duration": 0.5,
+      "name": "stop - player"
+    },
+    {
+      "id": "boardMeetingJa/startTogether",
+      "duration": 1.0,
+      "name": "start - together"
+    },
+    {
+      "id": "boardMeetingJa/spinTogether",
+      "duration": 1.0,
+      "canAlterDuration": true,
+      "name": "spinning - start - together"
+    },
+    {
+      "id": "boardMeetingJa/abStop1",
+      "duration": 0.66666,
+      "name": "assistant - one"
+    },
+    {
+      "id": "boardMeetingJa/abStop2",
+      "duration": 0.33333,
+      "name": "assistant - two"
+    },
+    {
+      "id": "boardMeetingJa/abStop3",
+      "duration": 0.5,
+      "name": "assistant - three"
+    },
+    {
+      "id": "boardMeetingJa/abStop4",
+      "duration": 1.0,
+      "name": "stop - together"
+    },
+    {
+      "id": "boardMeetingJa/abStopM1",
+      "duration": 0.66666,
+      "name": "monkey - one"
+    },
+    {
+      "id": "boardMeetingJa/abStopM2",
+      "duration": 0.33333,
+      "name": "monkey - two"
+    },
+    {
+      "id": "boardMeetingJa/abStopM3",
+      "duration": 0.5,
+      "name": "monkey - three"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "boardMeetingJa_assistant",
+      "name": "assistant - stop",
+      "cues": [
+        {
+          "id": "boardMeetingJa/abStop1",
+          "beat": 0.0
+        },
+        {
+          "id": "boardMeetingJa/abStop2",
+          "beat": 0.66667
+        },
+        {
+          "id": "boardMeetingJa/abStop3",
+          "beat": 1.0
+        },
+        {
+          "id": "boardMeetingJa/abStop4",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "boardMeetingJa_monkey",
+      "name": "monkey - stop",
+      "cues": [
+        {
+          "id": "boardMeetingJa/abStopM1",
+          "beat": 0.0
+        },
+        {
+          "id": "boardMeetingJa/abStopM2",
+          "beat": 0.66667
+        },
+        {
+          "id": "boardMeetingJa/abStopM3",
+          "beat": 1.0
+        },
+        {
+          "id": "boardMeetingJa/abStop4",
+          "beat": 2.0
+        }
+      ]
+    }
+  ]
+}
