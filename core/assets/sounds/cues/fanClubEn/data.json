@@ -41,7 +41,7 @@
         "fanClub/singerISuppose1"
       ],
       "duration": 0.5,
-      "name": "singer - i suppose - 1"
+      "name": "singer - I suppose - 1"
     },
     {
       "id": "fanClubEn/singerISuppose2",
@@ -49,7 +49,7 @@
         "fanClub/singerISuppose2"
       ],
       "duration": 0.5,
-      "name": "singer - i suppose - 1"
+      "name": "singer - I suppose - 1"
     },
     {
       "id": "fanClubEn/singerISuppose3",
@@ -57,7 +57,7 @@
         "fanClub/singerISuppose3"
       ],
       "duration": 1,
-      "name": "singer - i suppose - 1"
+      "name": "singer - I suppose - 1"
     },
     {
       "id": "fanClubEn/audienceISuppose1",
@@ -65,7 +65,7 @@
         "fanClub/audienceISuppose1"
       ],
       "duration": 1.25,
-      "name": "audience - i suppose - 1"
+      "name": "audience - I suppose - 1"
     },
     {
       "id": "fanClubEn/audienceISuppose2",
@@ -73,7 +73,7 @@
         "fanClub/audienceISuppose2"
       ],
       "duration": 0.75,
-      "name": "audience - i suppose - 2"
+      "name": "audience - I suppose - 2"
     },
     {
       "id": "fanClubEn/audienceISuppose3",
@@ -81,7 +81,7 @@
         "fanClub/audienceISuppose3"
       ],
       "duration": 1,
-      "name": "audience - i suppose - 3"
+      "name": "audience - I suppose - 3"
     },
     {
       "id": "fanClubEn/audienceISuppose4",
@@ -89,7 +89,7 @@
         "fanClub/audienceISuppose4"
       ],
       "duration": 1,
-      "name": "audience - i suppose - 4"
+      "name": "audience - I suppose - 4"
     },
     {
       "id": "fanClubEn/ohh1",
@@ -160,7 +160,7 @@
       "deprecatedIDs": [
         "fanClub_iSuppose"
       ],
-      "name": "i suppose!",
+      "name": "I suppose!",
       "cues": [
         {
           "id": "fanClubEn/singerISuppose1",
