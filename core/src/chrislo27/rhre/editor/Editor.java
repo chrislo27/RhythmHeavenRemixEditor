@@ -506,17 +506,20 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 
 			String arrow = ARROWS[0];
-			main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
+			main.getFontBordered().setColor(1, 1, 1, 1);
 
 			if (scrolls.get(currentSeries).getGameScroll() == 0) {
 				arrow = ARROWS[2];
+				main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
 			}
 			main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f - GAME_ICON_PADDING,
 					middle + PICKER_HEIGHT * 0.5f - main.getFontBordered().getCapHeight(), 0, Align.right, false);
 
 			arrow = ARROWS[1];
+			main.getFontBordered().setColor(1, 1, 1, 1);
 			if (scrolls.get(currentSeries).getGameScroll() == scrolls.get(currentSeries).getMaxGameScroll()) {
 				arrow = ARROWS[3];
+				main.getFontBordered().setColor(0.75f, 0.75f, 0.75f, 1);
 			}
 			main.getFontBordered().draw(batch, arrow, main.camera.viewportWidth * 0.5f - GAME_ICON_PADDING,
 					middle - PICKER_HEIGHT * 0.5f + 12, 0, Align.right, false);
@@ -1183,22 +1186,29 @@ public class Editor extends InputAdapter implements Disposable {
 								dir = 1;
 							}
 
-							List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
-									.get(scrolls.get(currentSeries).getGame()).getPatterns();
-
-							scrolls.get(currentSeries).setPattern(
-									MathUtils.clamp(scrolls.get(currentSeries).getPattern() + dir, 0, list.size() -
-											1));
+							scrollPatterns(dir);
 						}
 					}
 				} else {
-					// game picker
-					List<Game> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries);
-					int icon = getIconIndex(main.getInputX(), (int) main.camera.viewportHeight - main.getInputY());
+					if (main.getInputX() >= main.camera.viewportWidth * 0.475f) {
+						int dir;
+						if (main.camera.viewportHeight - main.getInputY() >
+								MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f) {
+							dir = -1;
+						} else {
+							dir = 1;
+						}
 
-					if (icon < list.size() && icon >= 0) {
-						scrolls.get(currentSeries).setGame(icon);
-						scrolls.get(currentSeries).setPattern(0);
+						scrollGames(dir);
+					} else {
+						// game picker
+						List<Game> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries);
+						int icon = getIconIndex(main.getInputX(), (int) main.camera.viewportHeight - main.getInputY());
+
+						if (icon < list.size() && icon >= 0) {
+							scrolls.get(currentSeries).setGame(icon);
+							scrolls.get(currentSeries).setPattern(0);
+						}
 					}
 				}
 			} else if (main.getInputY() >=
@@ -1372,20 +1382,29 @@ public class Editor extends InputAdapter implements Disposable {
 		return false;
 	}
 
+	private void scrollGames(int amount){
+		scrolls.get(currentSeries).setGameScroll(MathUtils.clamp(scrolls.get(currentSeries).getGameScroll() + amount,
+				0, scrolls.get(currentSeries).getMaxGameScroll()));
+	}
+
+	private void scrollPatterns(int amount) {
+		List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
+				.get(scrolls.get(currentSeries).getGame()).getPatterns();
+
+		scrolls.get(currentSeries).setPattern(
+				MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
+	}
+
 	@Override
 	public boolean scrolled(int amount) {
 
 		if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
 			if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
-				List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
-						.get(scrolls.get(currentSeries).getGame()).getPatterns();
-
-				scrolls.get(currentSeries).setPattern(
-						MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
-				return true;
+				scrollPatterns(amount);
 			} else {
-				scrolls.get(currentSeries).setGameScroll(MathUtils.clamp(scrolls.get(currentSeries).getGameScroll() + amount, 0, scrolls.get(currentSeries).getMaxGameScroll()));
+				scrollGames(amount);
 			}
+			return true;
 		} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
