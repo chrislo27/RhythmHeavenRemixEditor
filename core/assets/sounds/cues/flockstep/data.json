@@ -24,6 +24,26 @@
       "name": "step - 4"
     },
     {
+      "id": "flockstep/stepMigration1",
+      "duration": 0.5,
+      "name": "step - 1 - migration"
+    },
+    {
+      "id": "flockstep/stepMigration2",
+      "duration": 0.5,
+      "name": "step - 2 - migration"
+    },
+    {
+      "id": "flockstep/stepMigration3",
+      "duration": 0.5,
+      "name": "step - 3 - migration"
+    },
+    {
+      "id": "flockstep/stepMigration4",
+      "duration": 0.5,
+      "name": "step - 4 - migration"
+    },
+    {
       "id": "flockstep/jump1",
       "duration": 0.5,
       "name": "jump - 1"
@@ -57,6 +77,41 @@
       "id": "flockstep/jump7",
       "duration": 1.0,
       "name": "jump - 7"
+    },
+    {
+      "id": "flockstep/jumpMigration1",
+      "duration": 0.5,
+      "name": "jump - 1 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration2",
+      "duration": 0.25,
+      "name": "jump - 2 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration3",
+      "duration": 0.25,
+      "name": "jump - 3 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration4",
+      "duration": 0.5,
+      "name": "jump - 4 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration5",
+      "duration": 0.5,
+      "name": "jump - 5 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration6",
+      "duration": 1.0,
+      "name": "jump - 6 - migration"
+    },
+    {
+      "id": "flockstep/jumpMigration7",
+      "duration": 1.0,
+      "name": "jump - 7 - migration"
     }
   ],
   "patterns": [
@@ -99,6 +154,44 @@
       ]
     },
     {
+      "id": "flockstep_marchMigration",
+      "name": "march (migration)",
+      "cues": [
+        {
+          "id": "flockstep/stepMigration1",
+          "beat": 0.0
+        },
+        {
+          "id": "flockstep/stepMigration2",
+          "beat": 0.5
+        },
+        {
+          "id": "flockstep/stepMigration3",
+          "beat": 1.0
+        },
+        {
+          "id": "flockstep/stepMigration4",
+          "beat": 1.5
+        },
+        {
+          "id": "flockstep/stepMigration1",
+          "beat": 2.0
+        },
+        {
+          "id": "flockstep/stepMigration2",
+          "beat": 2.5
+        },
+        {
+          "id": "flockstep/stepMigration3",
+          "beat": 3.0
+        },
+        {
+          "id": "flockstep/stepMigration4",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
       "id": "flockstep_jump",
       "name": "jump",
       "cues": [
@@ -128,6 +221,40 @@
         },
         {
           "id": "flockstep/jump7",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "flockstep_jumpMigration",
+      "name": "jump (migration)",
+      "cues": [
+        {
+          "id": "flockstep/jumpMigration1",
+          "beat": 0.0
+        },
+        {
+          "id": "flockstep/jumpMigration2",
+          "beat": 0.5
+        },
+        {
+          "id": "flockstep/jumpMigration3",
+          "beat": 0.75
+        },
+        {
+          "id": "flockstep/jumpMigration4",
+          "beat": 1.0
+        },
+        {
+          "id": "flockstep/jumpMigration5",
+          "beat": 1.5
+        },
+        {
+          "id": "flockstep/jumpMigration6",
+          "beat": 2.0
+        },
+        {
+          "id": "flockstep/jumpMigration7",
           "beat": 3.0
         }
       ]
