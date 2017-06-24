@@ -69,7 +69,7 @@ class EditorScreen(m: Main) : Updateable<Main>(m) {
 			if (main.oldSize.third) {
 				Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
 			} else {
-				println("resizing: " + main.oldSize)
+				ionium.templates.Main.logger.info("Resizing window from ${main.oldSize}")
 				Gdx.graphics.setWindowedMode(main.oldSize.first, main.oldSize.second)
 			}
 		}
