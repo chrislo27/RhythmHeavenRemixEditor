@@ -49,6 +49,27 @@
       "id": "moaiDooWop/pah2",
       "duration": 0.5,
       "name": "right - pah"
+    },
+	{
+      "id": "moaiDooWop/d3",
+      "duration": 0.000001
+    },
+    {
+      "id": "moaiDooWop/ooo3",
+      "duration": 1,
+      "name": "middle (unused) - doo",
+      "canAlterDuration": true,
+      "introSound": "moaiDooWop/d3"
+    },
+    {
+      "id": "moaiDooWop/wop3",
+      "duration": 0.5,
+      "name": "middle (unused) - wop"
+    },
+    {
+      "id": "moaiDooWop/pah3",
+      "duration": 0.5,
+      "name": "middle (unused) - pah"
     }
   ],
   "patterns": []
