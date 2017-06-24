@@ -539,7 +539,7 @@ class Remix : ActionHistory<Remix>() {
 		if (Math.floor(beat.toDouble()) > lastTickBeat) {
 			lastTickBeat = Math.floor(beat.toDouble()).toInt()
 			beatEventListeners.forEach(Runnable::run)
-			if (tickEachBeat && metronomeCowbell.isLoaded) {
+			if (tickEachBeat) {
 				metronomeCowbell.sound.play(1f, 1.1f, 0f)
 			}
 		}
