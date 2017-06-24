@@ -1,0 +1,202 @@
+{
+  "gameID": "packingPestsEn",
+  "gameName": "Packing Pests (English)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "packingPestsEn/candy1",
+      "deprecatedIDs": [
+        "packingPests/candy1"
+      ],
+      "duration": 0.5,
+      "name": "candy - throw"
+    },
+    {
+      "id": "packingPestsEn/candy2",
+      "deprecatedIDs": [
+        "packingPests/candy2"
+      ],
+      "duration": 0.5,
+      "name": "candy - grab"
+    },
+    {
+      "id": "packingPestsEn/spider1",
+      "deprecatedIDs": [
+        "packingPests/spider1"
+      ],
+      "duration": 0.5,
+      "name": "spider - throw"
+    },
+    {
+      "id": "packingPestsEn/spider2",
+      "deprecatedIDs": [
+        "packingPests/spider2"
+      ],
+      "duration": 0.5,
+      "name": "spider - slap"
+    },
+    {
+      "id": "packingPestsEn/doubleup1",
+      "deprecatedIDs": [
+        "packingPests/doubleup1"
+      ],
+      "duration": 0.45833,
+      "name": "double-"
+    },
+    {
+      "id": "packingPestsEn/doubleup2",
+      "deprecatedIDs": [
+        "packingPests/doubleup2"
+      ],
+      "duration": 0.25,
+      "name": "-up"
+    },
+    {
+      "id": "packingPestsEn/ding",
+      "deprecatedIDs": [
+        "packingPests/ding"
+      ],
+      "duration": 0.5,
+      "name": "ding"
+    },
+    {
+      "id": "packingPestsEn/dingHm",
+      "deprecatedIDs": [
+        "packingPests/dingcandy",
+        "packingPestsEn/dingHm"
+      ],
+      "duration": 0.5,
+      "name": "ding - hm"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "packingPestsEn_pattern",
+      "deprecatedIDs": [
+        "packingPests_pattern"
+      ],
+      "name": "pattern",
+      "cues": [
+        {
+          "id": "packingPestsEn/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsEn/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsEn/spider1",
+          "beat": 2.0
+        },
+        {
+          "id": "packingPestsEn/spider2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "packingPestsEn_double",
+      "deprecatedIDs": [
+        "packingPests_double"
+      ],
+      "name": "double-up",
+      "cues": [
+        {
+          "id": "packingPestsEn/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsEn/doubleup1",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "packingPestsEn/doubleup2",
+          "beat": 0.45833,
+          "track": 1
+        },
+        {
+          "id": "packingPestsEn/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsEn/spider1",
+          "beat": 1.5
+        },
+        {
+          "id": "packingPestsEn/spider2",
+          "beat": 2.5
+        },
+        {
+          "id": "packingPestsEn/spider1",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "packingPestsEn/spider2",
+          "beat": 3.5,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "packingPestsEn_pattern2",
+      "deprecatedIDs": [
+        "packingPests_pattern2"
+      ],
+      "name": "offbeat pattern",
+      "cues": [
+        {
+          "id": "packingPestsEn/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsEn/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsEn/spider1",
+          "beat": 1.5
+        },
+        {
+          "id": "packingPestsEn/spider2",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "packingPestsEn_dingpattern",
+      "deprecatedIDs": [
+        "packingPests_dingpattern"
+      ],
+      "name": "ding pattern",
+      "cues": [
+        {
+          "id": "packingPestsEn/ding",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsEn/dingHm",
+          "beat": 0.5
+        },
+        {
+          "id": "packingPestsEn/candy1",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsEn/candy2",
+          "beat": 2.0
+        },
+        {
+          "id": "packingPestsEn/spider1",
+          "beat": 2.5
+        },
+        {
+          "id": "packingPestsEn/spider2",
+          "beat": 3.5
+        }
+      ]
+    }
+  ]
+}

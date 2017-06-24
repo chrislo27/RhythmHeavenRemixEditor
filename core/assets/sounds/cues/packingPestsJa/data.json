@@ -1,0 +1,165 @@
+{
+  "gameID": "packingPestsJa",
+  "gameName": "Packing Pests (Japanese)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "packingPestsJa/candy1",
+      "duration": 0.5,
+      "name": "candy - throw"
+    },
+    {
+      "id": "packingPestsJa/candy2",
+      "duration": 0.5,
+      "name": "candy - grab"
+    },
+    {
+      "id": "packingPestsJa/spider1",
+      "duration": 0.5,
+      "name": "spider - throw"
+    },
+    {
+      "id": "packingPestsJa/spider2",
+      "duration": 0.5,
+      "name": "spider - slap"
+    },
+    {
+      "id": "packingPestsJa/ikuze1",
+      "duration": 0.45833,
+      "name": "iku-"
+    },
+    {
+      "id": "packingPestsJa/ikuze2",
+      "duration": 0.25,
+      "name": "-ze"
+    },
+    {
+      "id": "packingPestsJa/ding",
+      "duration": 0.5,
+      "name": "ding"
+    },
+    {
+      "id": "packingPestsJa/dingHm",
+      "duration": 0.5,
+      "name": "ding - hm"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "packingPestsJa_pattern",
+      "name": "pattern",
+      "cues": [
+        {
+          "id": "packingPestsJa/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsJa/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsJa/spider1",
+          "beat": 2.0
+        },
+        {
+          "id": "packingPestsJa/spider2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "packingPestsJa_ikuze",
+      "name": "ikuze!",
+      "cues": [
+        {
+          "id": "packingPestsJa/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsJa/ikuze1",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "packingPestsJa/ikuze2",
+          "beat": 0.45833,
+          "track": 1
+        },
+        {
+          "id": "packingPestsJa/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsJa/spider1",
+          "beat": 1.5
+        },
+        {
+          "id": "packingPestsJa/spider2",
+          "beat": 2.5
+        },
+        {
+          "id": "packingPestsJa/spider1",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "packingPestsJa/spider2",
+          "beat": 3.5,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "packingPestsJa_pattern2",
+      "name": "offbeat pattern",
+      "cues": [
+        {
+          "id": "packingPestsJa/candy1",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsJa/candy2",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsJa/spider1",
+          "beat": 1.5
+        },
+        {
+          "id": "packingPestsJa/spider2",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "packingPestsJa_dingpattern",
+      "name": "ding pattern",
+      "cues": [
+        {
+          "id": "packingPestsJa/ding",
+          "beat": 0.0
+        },
+        {
+          "id": "packingPestsJa/dingHm",
+          "beat": 0.5
+        },
+        {
+          "id": "packingPestsJa/candy1",
+          "beat": 1.0
+        },
+        {
+          "id": "packingPestsJa/candy2",
+          "beat": 2.0
+        },
+        {
+          "id": "packingPestsJa/spider1",
+          "beat": 2.5
+        },
+        {
+          "id": "packingPestsJa/spider2",
+          "beat": 3.5
+        }
+      ]
+    }
+  ]
+}
