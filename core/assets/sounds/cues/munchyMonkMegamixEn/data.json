@@ -1,0 +1,152 @@
+{
+  "gameID": "munchyMonkMegamixEn",
+  "gameName": "Munchy Monk (Megamix) (English)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "munchyMonkMegamixEn/gulp",
+      "duration": 0.5,
+      "name": "gulp"
+    },
+    {
+      "id": "munchyMonkMegamixEn/one",
+      "duration": 1,
+      "name": "one"
+    },
+    {
+      "id": "munchyMonkMegamixEn/try",
+      "duration": 0.5,
+      "name": "two - try"
+    },
+    {
+      "id": "munchyMonkMegamixEn/two",
+      "duration": 0.5,
+      "name": "two - two!"
+    },
+    {
+      "id": "munchyMonkMegamixEn/three",
+      "duration": 1,
+      "name": "three - three"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulp3-1",
+      "duration": 1,
+      "name": "three - go - 1"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulp3-2",
+      "duration": 1,
+      "name": "three - go - 2"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulp3-3",
+      "duration": 1,
+      "name": "three - go - 3"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulp2-1",
+      "duration": 0.5,
+      "name": "try two - go - 1"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulp2-2",
+      "duration": 1,
+      "name": "try two - go - 2"
+    },
+    {
+      "id": "munchyMonkMegamixEn/gulping",
+      "duration": 0.5,
+      "name": "gulp!"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "munchyMonkMegamixEn_one",
+      "name": "one",
+      "cues": [
+        {
+          "id": "munchyMonkMegamixEn/one",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp",
+          "beat": 1
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 1.25,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "munchyMonkMegamixEn_trytwo",
+      "name": "try two",
+      "cues": [
+        {
+          "id": "munchyMonkMegamixEn/try",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonkMegamixEn/two",
+          "beat": 0.5
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp2-1",
+          "beat": 1.5
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 1.75,
+          "track": 1
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp2-2",
+          "beat": 2
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 2.25,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "munchyMonkMegamixEn_three",
+      "name": "three",
+      "cues": [
+        {
+          "id": "munchyMonkMegamixEn/three",
+          "beat": 0
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp3-1",
+          "beat": 1
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 1.25,
+          "track": 1
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp3-2",
+          "beat": 2
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 2.25,
+          "track": 1
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulp3-3",
+          "beat": 3
+        },
+        {
+          "id": "munchyMonkMegamixEn/gulping",
+          "beat": 3.25,
+          "track": 1
+        }
+      ]
+    }
+  ]
+}
