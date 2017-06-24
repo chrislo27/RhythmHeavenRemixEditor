@@ -1,6 +1,5 @@
 package chrislo27.rhre.registry
 
-import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.json.GameObject
 import chrislo27.rhre.util.CustomSoundUtil
 import chrislo27.rhre.util.JsonHandler
@@ -279,13 +278,12 @@ object GameRegistry : Disposable {
 
 		// warnings
 		var warningCount: Int = 0
-		// more than what's visible
-		numberPerSeries.filter { (_, v) -> v > Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y }.forEach { k, v ->
-			Main.logger.warn("")
-			Main.logger.warn("Series $k has $v games, but the maximum is ${Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y}")
-			Main.logger.warn("")
-			warningCount++
-		}
+//		numberPerSeries.filter { (_, v) -> v > Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y }.forEach { k, v ->
+//			Main.logger.warn("")
+//			Main.logger.warn("Series $k has $v games, but the maximum is ${Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y}")
+//			Main.logger.warn("")
+//			warningCount++
+//		}
 		// missing sound cues in patterns
 		gameList.forEach { game ->
 			game.patterns.forEach { pattern ->
