@@ -201,7 +201,7 @@
     {
       "id": "bigRockFinishEn_countIn4Fast",
       "deprecatedIDs": [
-        "bigRockFinish_countIn4"
+        "bigRockFinish_countIn4Fast"
       ],
       "name": "count in - 4 beats - fast",
       "cues": [
