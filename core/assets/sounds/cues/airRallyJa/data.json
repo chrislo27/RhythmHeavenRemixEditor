@@ -39,6 +39,16 @@
       "name": "forthington - hit"
     },
     {
+      "id": "airRallyJa/hitBaxterFarther",
+      "duration": 0.5,
+      "name": "baxter - hit - farther"
+    },
+    {
+      "id": "airRallyJa/hitForthFarther",
+      "duration": 0.5,
+      "name": "forthington - hit - farther"
+    },
+    {
       "id": "airRallyJa/hitBaxterFar",
       "duration": 0.5,
       "name": "baxter - hit - far"
@@ -47,6 +57,16 @@
       "id": "airRallyJa/hitForthFar",
       "duration": 0.5,
       "name": "forthington - hit - far"
+    },
+    {
+      "id": "airRallyJa/hitBaxterFurther",
+      "duration": 0.5,
+      "name": "baxter - hit - further"
+    },
+    {
+      "id": "airRallyJa/hitForthFurther",
+      "duration": 0.5,
+      "name": "forthington - hit - further"
     },
     {
       "id": "airRallyJa/baBumBumBum1",
@@ -77,6 +97,31 @@
       "id": "airRallyJa/baBumBumBum4",
       "duration": 0.5,
       "name": "ba bum bum bum - 4"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFarther1",
+      "duration": 0.5,
+      "name": "ba bum bum bum - farther - 1"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFarther2",
+      "duration": 0.5,
+      "name": "ba bum bum bum - farther - 2"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFarther3",
+      "duration": 0.5,
+      "name": "ba bum bum bum - farther - 3"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFarther4",
+      "duration": 0.75,
+      "name": "ba bum bum bum - farther - 4"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFartherHit",
+      "duration": 0.5,
+      "name": "ba bum bum bum - farther - hit"
     },
     {
       "id": "airRallyJa/baBumBumBumFar1",
@@ -122,6 +167,11 @@
       "id": "airRallyJa/baBumBumBumFurther4",
       "duration": 0.75,
       "name": "ba bum bum bum - further - 4"
+    },
+    {
+      "id": "airRallyJa/baBumBumBumFurtherHit",
+      "duration": 0.5,
+      "name": "ba bum bum bum - further - hit"
     }
   ],
   "patterns": [
@@ -184,6 +234,28 @@
       ]
     },
     {
+      "id": "airRallyJa_rallyFarther",
+      "name": "rally - farther",
+      "cues": [
+        {
+          "id": "airRallyJa/hitForthFarther",
+          "beat": 0.0
+        },
+        {
+          "id": "airRallyJa/hitBaxterFarther",
+          "beat": 1.0
+        },
+        {
+          "id": "airRallyJa/hitForthFarther",
+          "beat": 2.0
+        },
+        {
+          "id": "airRallyJa/hitBaxterFarther",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
       "id": "airRallyJa_rallyFar",
       "name": "rally - far",
       "cues": [
@@ -201,6 +273,28 @@
         },
         {
           "id": "airRallyJa/hitBaxterFar",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "airRallyJa_rallyFurther",
+      "name": "rally - farthest",
+      "cues": [
+        {
+          "id": "airRallyJa/hitForthFurther",
+          "beat": 0.0
+        },
+        {
+          "id": "airRallyJa/hitBaxterFurther",
+          "beat": 1.0
+        },
+        {
+          "id": "airRallyJa/hitForthFurther",
+          "beat": 2.0
+        },
+        {
+          "id": "airRallyJa/hitBaxterFurther",
           "beat": 3.0
         }
       ]
@@ -276,6 +370,32 @@
       ]
     },
     {
+      "id": "airRallyJa_baBumBumBumFarther",
+      "name": "ba bum bum bum - farther",
+      "cues": [
+        {
+          "id": "airRallyJa/baBumBumBumFarther1",
+          "beat": 0.0
+        },
+        {
+          "id": "airRallyJa/baBumBumBumFarther2",
+          "beat": 0.5
+        },
+        {
+          "id": "airRallyJa/baBumBumBumFarther3",
+          "beat": 1.5
+        },
+        {
+          "id": "airRallyJa/baBumBumBumFarther4",
+          "beat": 2.5
+        },
+        {
+          "id": "airRallyJa/baBumBumBumFartherHit",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
       "id": "airRallyJa_baBumBumBumFar",
       "name": "ba bum bum bum - far",
       "cues": [
@@ -322,7 +442,7 @@
           "beat": 2.5
         },
         {
-          "id": "airRallyJa/baBumBumBumFarHit",
+          "id": "airRallyJa/baBumBumBumFurtherHit",
           "beat": 4.5
         }
       ]
