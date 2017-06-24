@@ -1,6 +1,6 @@
 {
   "gameID": "fanClubEn",
-  "gameName": "Fan Club (English)",
+  "gameName": "Fan Club (DS) (English)",
   "series": "ds",
   "cues": [
     {
@@ -90,6 +90,11 @@
       ],
       "duration": 1,
       "name": "audience - I suppose - 4"
+    },
+    {
+      "id": "fanClubEn/landing",
+      "duration": 1,
+      "name": "audience - i suppose - landing"
     },
     {
       "id": "fanClubEn/ohh1",
@@ -189,6 +194,44 @@
         {
           "id": "fanClubEn/audienceISuppose4",
           "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "fanClubEn_iSupposeLanding",
+      "name": "I suppose! - with landing",
+      "cues": [
+        {
+          "id": "fanClubEn/singerISuppose1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubEn/singerISuppose2",
+          "beat": 0.5
+        },
+        {
+          "id": "fanClubEn/singerISuppose3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubEn/audienceISuppose1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubEn/audienceISuppose2",
+          "beat": 3.25
+        },
+        {
+          "id": "fanClubEn/audienceISuppose3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubEn/audienceISuppose4",
+          "beat": 5
+        },
+        {
+          "id": "fanClubEn/landing",
+          "beat": 6
         }
       ]
     },
