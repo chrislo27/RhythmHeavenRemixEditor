@@ -4,11 +4,6 @@
   "series": "tengoku",
   "cues": [
     {
-      "id": "spaceball/alien",
-      "duration": 5,
-      "name": "AAAAHHHHHH"
-    },
-    {
       "id": "spaceball/shoot",
       "duration": 1,
       "name": "shoot"

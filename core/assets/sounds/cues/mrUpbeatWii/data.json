@@ -1,0 +1,115 @@
+{
+  "gameID": "mrUpbeatWii",
+  "gameName": "Mr. Upbeat (Fever)",
+  "series": "side",
+  "cues": [
+    {
+      "id": "mrUpbeatWii/bip",
+      "deprecatedIDs": [
+        "mrUpbeat/bip"
+      ],
+      "duration": 0.5,
+      "name": "count in - bip"
+    },
+    {
+      "id": "mrUpbeatWii/metroL",
+      "deprecatedIDs": [
+        "mrUpbeat/metroL"
+      ],
+      "duration": 0.5,
+      "name": "metronome - left"
+    },
+    {
+      "id": "mrUpbeatWii/metroR",
+      "deprecatedIDs": [
+        "mrUpbeat/metroR"
+      ],
+      "duration": 0.5,
+      "name": "metronome - right"
+    },
+    {
+      "id": "mrUpbeatWii/step",
+      "deprecatedIDs": [
+        "mrUpbeat/step"
+      ],
+      "duration": 0.5,
+      "name": "upbeat - step"
+    },
+    {
+      "id": "mrUpbeatWii/applause",
+      "deprecatedIDs": [
+        "mrUpbeat/applause"
+      ],
+      "duration": 0.5,
+      "name": "ding and applause"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "mrUpbeatWii_countIn",
+      "deprecatedIDs": [
+        "mrUpbeat_countIn"
+      ],
+      "name": "count in",
+      "cues": [
+        {
+          "id": "mrUpbeatWii/bip",
+          "beat": 0.0
+        },
+        {
+          "id": "mrUpbeatWii/bip",
+          "beat": 1.0
+        },
+        {
+          "id": "mrUpbeatWii/bip",
+          "beat": 2.0
+        },
+        {
+          "id": "mrUpbeatWii/bip",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "mrUpbeatWii_pattern",
+      "deprecatedIDs": [
+        "mrUpbeat_pattern"
+      ],
+      "name": "stepping",
+      "cues": [
+        {
+          "id": "mrUpbeatWii/metroR",
+          "beat": 0.0
+        },
+        {
+          "id": "mrUpbeatWii/step",
+          "beat": 0.5
+        },
+        {
+          "id": "mrUpbeatWii/metroL",
+          "beat": 1.0
+        },
+        {
+          "id": "mrUpbeatWii/step",
+          "beat": 1.5
+        },
+        {
+          "id": "mrUpbeatWii/metroR",
+          "beat": 2.0
+        },
+        {
+          "id": "mrUpbeatWii/step",
+          "beat": 2.5
+        },
+        {
+          "id": "mrUpbeatWii/metroL",
+          "beat": 3.0
+        },
+        {
+          "id": "mrUpbeatWii/step",
+          "beat": 3.5
+        }
+      ]
+    }
+  ]
+}

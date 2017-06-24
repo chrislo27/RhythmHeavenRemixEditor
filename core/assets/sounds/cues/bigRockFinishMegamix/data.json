@@ -197,6 +197,7 @@
     {
       "id": "bigRockFinishMegamix_strum",
       "name": "strum",
+      "isStretchable": true,
       "cues": [
         {
           "id": "bigRockFinishMegamix/strum",

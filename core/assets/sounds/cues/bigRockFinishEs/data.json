@@ -1,0 +1,146 @@
+{
+  "gameID": "bigRockFinishEs",
+  "gameName": "Big Rock Finish (DS) (Spanish)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "bigRockFinishEs/uno",
+      "duration": 1.0,
+      "name": "count in - uno"
+    },
+    {
+      "id": "bigRockFinishEs/dos",
+      "duration": 1.0,
+      "name": "count in - dos"
+    },
+    {
+      "id": "bigRockFinishEs/tres",
+      "duration": 1.0,
+      "name": "count in - tres"
+    },
+    {
+      "id": "bigRockFinishEs/y",
+      "duration": 1.0,
+      "name": "count in - y"
+    },
+    {
+      "id": "bigRockFinishEs/strum",
+      "duration": 1.0,
+      "canAlterPitch": true,
+      "name": "ghost - strum"
+    },
+    {
+      "id": "bigRockFinishEs/strumFinal",
+      "duration": 2.0,
+      "canAlterPitch": true,
+      "name": "ghost - last strum"
+    },
+    {
+      "id": "bigRockFinishEs/yeah",
+      "duration": 1.0,
+      "name": "yeah"
+    },
+    {
+      "id": "bigRockFinishEs/yeahFinal",
+      "duration": 2.0,
+      "name": "last yeah"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bigRockFinishEs_countIn8",
+      "name": "count in - 8 beats",
+      "cues": [
+        {
+          "id": "bigRockFinishEs/uno",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinishEs/dos",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinishEs/uno",
+          "beat": 4.0
+        },
+        {
+          "id": "bigRockFinishEs/dos",
+          "beat": 5.0
+        },
+        {
+          "id": "bigRockFinishEs/tres",
+          "beat": 6.0
+        },
+        {
+          "id": "bigRockFinishEs/y",
+          "beat": 7.0
+        }
+      ]
+    },
+    {
+      "id": "bigRockFinishEs_countIn4",
+      "name": "count in - 4 beats",
+      "cues": [
+        {
+          "id": "bigRockFinishEs/uno",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinishEs/dos",
+          "beat": 1.0
+        },
+        {
+          "id": "bigRockFinishEs/tres",
+          "beat": 2.0
+        },
+        {
+          "id": "bigRockFinishEs/y",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bigRockFinishEs_strum",
+      "name": "strum",
+      "isStretchable": true,
+      "cues": [
+        {
+          "id": "bigRockFinishEs/strum",
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinishEs/yeah",
+          "track": 1,
+          "beat": 0.0
+        },
+        {
+          "id": "bigRockFinishEs/strum",
+          "beat": 1.5
+        },
+        {
+          "id": "bigRockFinishEs/yeah",
+          "track": 1,
+          "beat": 1.5
+        },
+        {
+          "id": "bigRockFinishEs/strum",
+          "beat": 3.0
+        },
+        {
+          "id": "bigRockFinishEs/yeah",
+          "track": 1,
+          "beat": 3.0
+        },
+        {
+          "id": "bigRockFinishEs/strumFinal",
+          "beat": 4.0
+        },
+        {
+          "id": "bigRockFinishEs/yeahFinal",
+          "track": 1,
+          "beat": 4.0
+        }
+      ]
+    }
+  ]
+}

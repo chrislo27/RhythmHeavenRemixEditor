@@ -5,6 +5,9 @@
   "cues": [
     {
       "id": "spaceballMegamix/alien",
+      "deprecatedIDs": [
+        "spaceball/alien"
+      ],
       "duration": 5,
       "name": "AAAAHHHHHH"
     },
