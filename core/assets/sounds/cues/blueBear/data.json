@@ -6,26 +6,22 @@
     {
       "id": "blueBear/donutOut",
       "duration": 1,
-      "name": "donut - out",
-      "fileExtension": "wav"
+      "name": "donut - out"
     },
     {
       "id": "blueBear/donutChomp",
       "duration": 1,
-      "name": "donut - chomp",
-      "fileExtension": "wav"
+      "name": "donut - chomp"
     },
     {
       "id": "blueBear/cakeOut",
       "duration": 2,
-      "name": "cake - out",
-      "fileExtension": "wav"
+      "name": "cake - out"
     },
     {
       "id": "blueBear/cakeChomp",
       "duration": 1,
-      "name": "cake - chomp",
-      "fileExtension": "wav"
+      "name": "cake - chomp"
     }
   ],
   "patterns": [
