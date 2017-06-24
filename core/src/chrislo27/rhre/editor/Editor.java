@@ -1016,6 +1016,9 @@ public class Editor extends InputAdapter implements Disposable {
 								status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
 						} else if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 							status += " - " + Localization.get("editor.scrollPatterns");
+							if (game.getPatterns().get(scrolls.get(currentSeries).getPattern()).getCues().get(0).getId().equals("extraSFX/star")) {
+								status += " - " + Localization.get("editor.scrollPatterns.star");
+							}
 						}
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
@@ -1365,12 +1368,12 @@ public class Editor extends InputAdapter implements Disposable {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
 					int[] old = remix.getSelection().stream().mapToInt(Entity::getSemitone).toArray();
-					boolean anyChanged = remix.getSelection().stream()
-							.map(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE)).distinct().findAny()
-							.orElse(false); // CANNOT SHORT CIRCUIT
-
-					if (anyChanged) {
-						remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));
+					remix.getSelection().stream().filter(Entity::isRepitchable).forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
+					for (int i = 0; i < remix.getSelection().size(); i++) {
+						if (remix.getSelection().get(i).getSemitone() != old[i]) {
+							remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));
+							break;
+						}
 					}
 					return true;
 				}
