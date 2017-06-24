@@ -15,20 +15,31 @@ object VersionChecker {
 	@Volatile var versionState: VersionState = VersionState.GETTING
 		private set
 	@Volatile var shouldShowOnInit: Boolean = true
-	private set
+		private set
 
 	@Volatile
 	var releaseObject: ReleaseObject? = null
 		private set
 
+	@Volatile
+	var githubVersion: RHRE2Version? = null
+		private set
+
+	private var gettingVersion: Boolean = false
+
 	init {
-		thread(isDaemon = true) {
-			getVersion()
-		}
+		thread(isDaemon = true, block = this::getVersion)
 	}
 
 	@Synchronized
 	private fun getVersion() {
+		if (gettingVersion) {
+			if (versionState == VersionState.GETTING) {
+				throw IllegalStateException("Attempt to get version when still in progress")
+			}
+			throw IllegalStateException("Version is already gotten")
+		}
+		gettingVersion = true
 		try {
 			Main.logger.info("Getting version from $url...")
 			val nano = System.nanoTime()
@@ -36,9 +47,9 @@ object VersionChecker {
 			releaseObject = JsonHandler.fromJson(jsonText, ReleaseObject::class.java)
 			val release: ReleaseObject = releaseObject!!
 			Main.githubVersion = release.tag_name
-			val isSame: Boolean = release.tag_name == Main.version
-			versionState =
-					if (isSame)
+			githubVersion = RHRE2Version.fromStringOrNull(release.tag_name ?: "")
+			versionState = if (githubVersion == null) VersionState.FAILED else
+					if (githubVersion!!.numericalValue <= RHRE2Version.VERSION.numericalValue)
 						VersionState.UP_TO_DATE
 					else
 						VersionState.AVAILABLE
@@ -56,7 +67,7 @@ object VersionChecker {
 			}
 
 			Main.logger.info(
-					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: ${Main.githubVersion}")
+					"Version gotten successfully! Took ${(System.nanoTime() - nano) / 1000000f} ms | State: $versionState | GitHub version: $githubVersion (num: ${githubVersion?.numericalValue})")
 		} catch (e: Exception) {
 			Main.logger.warn("Failed to get version!")
 			versionState = VersionState.FAILED

@@ -1,6 +1,7 @@
 package chrislo27.rhre.json.persistent
 
 import chrislo27.rhre.track.MusicData
+import chrislo27.rhre.version.RHRE2Version
 import com.badlogic.gdx.files.FileHandle
 
 class RemixObject {
@@ -11,6 +12,9 @@ class RemixObject {
 	var musicAssociation: String? = null
 
 	var version: String? = null
+	val versionNumber by lazy {
+		RHRE2Version.fromString(version ?: throw IllegalStateException("Attempt to compute version number when version is null")).numericalValue
+	}
 	var entities: MutableList<EntityObject>? = null
 
 	var playbackStart: Float = 0f
