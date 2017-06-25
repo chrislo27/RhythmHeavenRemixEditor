@@ -1435,6 +1435,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 						selectedTempoChange = null;
 					}
+					return true;
 				}
 			}
 		}
