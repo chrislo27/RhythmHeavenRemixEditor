@@ -4,6 +4,22 @@
   "series": "ds",
   "cues": [
     {
+      "id": "airboarderEs/adelante1",
+      "duration": 6.5,
+      "baseBpm": 160,
+      "name": "yeah... adelante! - 1"
+    },
+    {
+      "id": "airboarderEs/adelante2",
+      "duration": 0.75,
+      "name": "yeah... adelante! - 2"
+    },
+    {
+      "id": "airboarderEs/adelante3",
+      "duration": 0.5,
+      "name": "yeah... adelante! - 3"
+    },
+    {
       "id": "airboarderEs/hup",
       "duration": 1,
       "name": "ready"
@@ -25,6 +41,24 @@
     }
   ],
   "patterns": [
+    {
+      "id": "airboarderEs_adelante",
+      "name": "yeah... adelante!",
+      "cues": [
+        {
+          "id": "airboarderEs/adelante1",
+          "beat": 0
+        },
+        {
+          "id": "airboarderEs/adelante2",
+          "beat": 6.5
+        },
+        {
+          "id": "airboarderEs/adelante3",
+          "beat": 7.25
+        }
+      ]
+    },
     {
       "id": "airboarderEs_crouch",
       "name": "crouch",
