@@ -32,7 +32,7 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 		private @Volatile var inviteBacking: String? = null
 		val invite: String
 			get() {
-				return inviteBacking ?: if (isChecking == -1) "[failed to get invite]" else "[getting...]"
+				return (inviteBacking) ?: if (isChecking == -1) "[failed to get invite]" else "[getting...]"
 			}
 
 		init {
@@ -96,14 +96,16 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 							BG_WIDTH * 0.4f,
 							Align.center)
 
-//		main.font.data.setScale(0.75f)
-//		main.font.draw(main.batch,
-//					   Localization.get("info.discord", invite),
-//					   startX + BG_WIDTH * 0.05f,
-//					   startY + BG_HEIGHT * 0.675f,
-//					   BG_WIDTH * 0.4f,
-//					   Align.center, true)
-//		main.font.data.setScale(1f)
+		if (!invite.isBlank()) {
+			main.font.data.setScale(0.75f)
+			main.font.draw(main.batch,
+						   Localization.get("info.discord", invite),
+						   startX + BG_WIDTH * 0.05f,
+						   startY + BG_HEIGHT * 0.675f,
+						   BG_WIDTH * 0.4f,
+						   Align.center, true)
+			main.font.data.setScale(1f)
+		}
 
 		Main.drawCompressed(main.font, main.batch, Localization.get("info.tocredits"),
 							startX + PADDING,
