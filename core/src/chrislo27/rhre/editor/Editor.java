@@ -638,7 +638,7 @@ public class Editor extends InputAdapter implements Disposable {
 			for (Entity e : remix.getEntities()) {
 				Color c = main.getPalette().getSoundCue().getBg();
 				if (e.isStretchable())
-					main.getPalette().getStretchableSoundCue().getBg();
+					c = main.getPalette().getStretchableSoundCue().getBg();
 				if (e instanceof PatternEntity) {
 					c = main.getPalette().getPattern().getBg();
 
