@@ -375,7 +375,7 @@ class CueAssetLoader : IAssetLoader {
 			val path = "series/${it.name}.png"
 
 			manager.load(AssetMap.add("series_icon_${it.name}",
-									  if (Gdx.files.local(path).exists()) path else "series/unknown.png"),
+									  if (Gdx.files.internal(path).exists()) path else "series/unknown.png"),
 											   Texture::class.java) }
 
 	}
