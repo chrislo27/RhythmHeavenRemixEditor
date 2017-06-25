@@ -1039,7 +1039,7 @@ public class Editor extends InputAdapter implements Disposable {
 								status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
 						} else if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 							status += " - " + Localization.get("editor.scrollPatterns");
-							if (game.getPatterns().get(scrolls.get(currentSeries).getPattern()).getCues().get(0).getId().equals("extraSFX/star")) {
+							if (game.getPatterns().get(scrolls.get(currentSeries).getPattern()).getCues().get(0).isSkillStar()) {
 								status += " - " + Localization.get("editor.scrollPatterns.star");
 							}
 						}

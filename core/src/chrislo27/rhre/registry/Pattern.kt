@@ -26,6 +26,9 @@ class Pattern(val id: String, val gameID: String, val name: String, val isStretc
 	data class PatternCue(val id: String, val gameID: String, val beat: Float, val track: Int, val duration: Float,
 						  val semitone: Int) {
 
+		val isSkillStar: Boolean by lazy {
+			id == "extraSFX/star"
+		}
 		val luaValue: LuaValue by lazy {
 			val l = LuaValue.tableOf()
 
