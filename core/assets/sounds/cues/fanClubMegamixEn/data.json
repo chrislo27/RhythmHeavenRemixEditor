@@ -64,41 +64,6 @@
       "name": "audience - I suppose - landing"
     },
     {
-      "id": "fanClubMegamixEn/singerWonderful1",
-      "duration": 0.5,
-      "name": "singer - wonderful - 1"
-    },
-    {
-      "id": "fanClubMegamixEn/singerWonderful2",
-      "duration": 0.5,
-      "name": "singer - wonderful - 1"
-    },
-    {
-      "id": "fanClubMegamixEn/singerWonderful3",
-      "duration": 1,
-      "name": "singer - wonderful - 1"
-    },
-    {
-      "id": "fanClubMegamixEn/audienceWonderful1",
-      "duration": 1.25,
-      "name": "audience - wonderful - 1"
-    },
-    {
-      "id": "fanClubMegamixEn/audienceWonderful2",
-      "duration": 0.75,
-      "name": "audience - wonderful - 2"
-    },
-    {
-      "id": "fanClubMegamixEn/audienceWonderful3",
-      "duration": 1,
-      "name": "audience - wonderful - 3"
-    },
-    {
-      "id": "fanClubMegamixEn/audienceWonderful4",
-      "duration": 1,
-      "name": "audience - wonderful - 4"
-    },
-    {
       "id": "fanClubMegamixEn/ohh1",
       "duration": 2.5,
       "baseBPM": 143,
@@ -214,78 +179,6 @@
         },
         {
           "id": "fanClubMegamixEn/audienceISuppose4",
-          "beat": 5
-        },
-        {
-          "id": "fanClubMegamixEn/audienceISupposeJump",
-          "beat": 6
-        }
-      ]
-    },
-    {
-      "id": "fanClubMegamixEn_wonderful",
-      "name": "wonderful!",
-      "cues": [
-        {
-          "id": "fanClubMegamixEn/singerWonderful1",
-          "beat": 0
-        },
-        {
-          "id": "fanClubMegamixEn/singerWonderful2",
-          "beat": 0.5
-        },
-        {
-          "id": "fanClubMegamixEn/singerWonderful3",
-          "beat": 1
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful1",
-          "beat": 2
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful2",
-          "beat": 3.25
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful3",
-          "beat": 4
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful4",
-          "beat": 5
-        }
-      ]
-    },
-    {
-      "id": "fanClubMegamixEn_wonderfulLanding",
-      "name": "wonderful! - with landing",
-      "cues": [
-        {
-          "id": "fanClubMegamixEn/singerWonderful1",
-          "beat": 0
-        },
-        {
-          "id": "fanClubMegamixEn/singerWonderful2",
-          "beat": 0.5
-        },
-        {
-          "id": "fanClubMegamixEn/singerWonderful3",
-          "beat": 1
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful1",
-          "beat": 2
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful2",
-          "beat": 3.25
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful3",
-          "beat": 4
-        },
-        {
-          "id": "fanClubMegamixEn/audienceWonderful4",
           "beat": 5
         },
         {
