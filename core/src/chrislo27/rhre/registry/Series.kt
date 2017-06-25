@@ -11,7 +11,7 @@ object SeriesList {
 													 Series("fever", true),
 													 Series("megamix", true),
 													 Series("side", true),
-													 Series("custom", false))
+													 Series("custom", false, hasLocalizedName = true))
 	var map: Map<String, Series> = list.associateBy(Series::name)
 		private set
 
@@ -46,13 +46,13 @@ object SeriesList {
 	}
 }
 
-data class Series(val name: String, val builtIn: Boolean = false) {
+data class Series(val name: String, val builtIn: Boolean = false, val hasLocalizedName: Boolean = builtIn) {
 
 	private val idToName: String by lazy {
 		name.replace("_", " ")
 	}
 
-	fun getLocalizedName(): String = if (builtIn) Localization.get("series." + name) else idToName
+	fun getLocalizedName(): String = if (hasLocalizedName) Localization.get("series." + name) else idToName
 
 	val luaValue: LuaValue by lazy {
 		LuaValue.valueOf(name)
