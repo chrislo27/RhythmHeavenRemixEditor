@@ -1478,6 +1478,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public void getDebugStrings(Array<String> array) {
 		array.add("autosaveTimer: " + timeUntilAutosave);
 		array.add("selTempoChange: " + selectedTempoChange);
+		array.add("entities: " + remix.getEntities().size());
 	}
 
 	public enum Tool {
