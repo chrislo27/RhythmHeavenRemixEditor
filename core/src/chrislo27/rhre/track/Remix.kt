@@ -425,6 +425,7 @@ class Remix : ActionHistory<Remix>() {
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
 		startTime = entities.fold(Float.MAX_VALUE,
 								  { value, entity -> Math.min(value, entity.bounds.x) })
+		entities.sortBy { it.bounds.x }
 	}
 
 	fun getBeatBounce(): Float {
