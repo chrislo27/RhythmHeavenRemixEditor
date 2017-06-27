@@ -3,6 +3,7 @@
 * [ ] I have attempted to [look for similar issues](https://github.com/chrislo27/RhythmHeavenRemixEditor/issues?utf8=%E2%9C%93&q=is%3Aissue)
 already
 * [ ] This is a REAL issue, reasonable feature consideration, or question, and not purely personal preference
+* [ ] I have filled out this issue template knowing if I remove it the issue will immediately become invalid and will be closed
 
 ### Description
 [insert description of the issue]
