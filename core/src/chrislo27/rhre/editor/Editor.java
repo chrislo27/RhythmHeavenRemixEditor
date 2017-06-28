@@ -146,7 +146,6 @@ public class Editor extends InputAdapter implements Disposable {
 		}
 
 		// entities
-		// don't replace with foreach call b/c of performance
 		{
 			Rectangle.tmp.set((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH,
 					(camera.position.y - camera.viewportHeight * 0.5f) / Entity.PX_HEIGHT,
@@ -1147,45 +1146,48 @@ public class Editor extends InputAdapter implements Disposable {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		if (button == Input.Buttons.LEFT && pointer == 0 && remix.getPlayingState() == PlayingState.STOPPED) {
+		if (button == Input.Buttons.LEFT && pointer == 0) {
 			if (main.getInputY() >= main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT)) {
 				if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 					if (currentTool == Tool.NORMAL) {
 						if (main.getInputX() >= main.camera.viewportWidth * 0.525f) {
-							// drag new pattern
-							remix.getSelection().clear();
-							selectionGroup = null;
+							if (remix.getPlayingState() == PlayingState.STOPPED) {
+								// drag new pattern
+								remix.getSelection().clear();
+								selectionGroup = null;
 
-							Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
-									.get(scrolls.get(currentSeries).getGame());
-							Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
+								Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
+										.get(scrolls.get(currentSeries).getGame());
+								Pattern p = game.getPatterns().get(scrolls.get(currentSeries).getPattern());
 
-							Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
-									game.getSoundCues().stream()
-											.filter(it -> it.getId().equals(p.getCues().get(0).getId())).findFirst()
-											.orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
+								Entity en = p.getCues().size() == 1 ? new SoundEntity(this.remix,
+										game.getSoundCues().stream()
+												.filter(it -> it.getId().equals(p.getCues().get(0).getId()))
+												.findFirst()
+												.orElse(null), 0, 0, 0) : new PatternEntity(this.remix, p);
 
-							en.attemptLoadSounds();
+								en.attemptLoadSounds();
 
-							if (DebugSetting.debug && en instanceof HasGame) {
-								// load entire game sounds
-								HasGame hasGame = (HasGame) en;
-								Main.logger.debug("Loading every sound for " + hasGame.getGame().getId());
-								final long nano = System.nanoTime();
-								hasGame.getGame().getSoundCues().forEach(SoundCue::attemptLoadSounds);
-								Main.logger.debug("Loaded all of " + hasGame.getGame().getId() + ", took " +
-										((System.nanoTime() - nano) / 1_000_000f) + " ms");
+								if (DebugSetting.debug && en instanceof HasGame) {
+									// load entire game sounds
+									HasGame hasGame = (HasGame) en;
+									Main.logger.debug("Loading every sound for " + hasGame.getGame().getId());
+									final long nano = System.nanoTime();
+									hasGame.getGame().getSoundCues().forEach(SoundCue::attemptLoadSounds);
+									Main.logger.debug("Loaded all of " + hasGame.getGame().getId() + ", took " +
+											((System.nanoTime() - nano) / 1_000_000f) + " ms");
+								}
+
+								remix.getEntities().add(en);
+								remix.getSelection().add(en);
+
+								final List<Rectangle> oldPos = new ArrayList<>();
+								remix.getSelection().stream()
+										.map(e -> new Rectangle(e.getBounds().x, e.getBounds().y, e.getBounds().width,
+												e.getBounds().height)).forEachOrdered(oldPos::add);
+								selectionGroup = new SelectionGroup(remix.getSelection(), oldPos,
+										remix.getSelection().get(0), new Vector2(0, 0), true);
 							}
-
-							remix.getEntities().add(en);
-							remix.getSelection().add(en);
-
-							final List<Rectangle> oldPos = new ArrayList<>();
-							remix.getSelection().stream()
-									.map(e -> new Rectangle(e.getBounds().x, e.getBounds().y, e.getBounds().width,
-											e.getBounds().height)).forEachOrdered(oldPos::add);
-							selectionGroup = new SelectionGroup(remix.getSelection(), oldPos,
-									remix.getSelection().get(0), new Vector2(0, 0), true);
 						} else {
 							int dir;
 							if (main.camera.viewportHeight - main.getInputY() >
@@ -1242,7 +1244,7 @@ public class Editor extends InputAdapter implements Disposable {
 						currentTool = tools[icon];
 					}
 				}
-			} else {
+			} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 				if (currentTool == Tool.NORMAL) {
 					Entity possible = getEntityAtPoint(Gdx.input.getX(), Gdx.input.getY());
 					camera.unproject(cameraPickVec3.set(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -1456,8 +1458,7 @@ public class Editor extends InputAdapter implements Disposable {
 	@Override
 	public boolean keyDown(int keycode) {
 
-		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9 &&
-				remix.getPlayingState() == PlayingState.STOPPED) {
+		if (keycode >= Input.Keys.NUM_1 && keycode <= Input.Keys.NUM_9) {
 			int index = keycode - Input.Keys.NUM_1;
 
 			if (index < Tool.values.length)
