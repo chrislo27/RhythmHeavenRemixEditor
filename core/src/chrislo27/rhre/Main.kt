@@ -104,6 +104,8 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 	var versionStringLength: Float = 0f
 		private set
+	var lastVersion: String? = null
+		private set
 
 	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
 		return if ((VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit) || DebugSetting.debug)
@@ -156,6 +158,12 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 				InternalFileHandleResolver()))
 
 		preferences = Gdx.app.getPreferences("RHRE2")
+		// old preferences
+		if (preferences.getBoolean(PreferenceKeys.OLD_AUTOSAVE, false)) {
+			preferences.putInteger(PreferenceKeys.AUTOSAVE_INTERVAL, 0)
+		}
+		preferences.putString(PreferenceKeys.LAST_VERSION, RHRE2Version.VERSION.toString()).flush()
+		lastVersion = RHRE2Version.VERSION.toString()
 
 		oldSize = Triple(preferences.getInteger("width", 1280).takeUnless { it <= 0 } ?: 1280,
 						 preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,

@@ -63,7 +63,6 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
-	private static final float AUTOSAVE_PERIOD = 60f;
 	private static final String[] ARROWS = {"▲", "▼", "△", "▽"};
 	public final OrthographicCamera camera = new OrthographicCamera();
 	public final MessageHandler messageHandler = new MessageHandler();
@@ -90,7 +89,7 @@ public class Editor extends InputAdapter implements Disposable {
 	private boolean isCursorStretching = false;
 	private int isStretching = 0;
 	private TempoChange selectedTempoChange;
-	private float timeUntilAutosave = AUTOSAVE_PERIOD;
+	private float timeUntilAutosave = 0f;
 	private boolean didMoveCamera = false;
 	private int trackerMoving = 0; // 0 - none, 1 - playback, 2 - music
 	private float lastTrackerPos = 0f;
@@ -103,7 +102,7 @@ public class Editor extends InputAdapter implements Disposable {
 		remix = new Remix();
 
 		for (Series s : SeriesList.list)
-			scrolls.put(s, new ScrollValue(0, 0, 0,0));
+			scrolls.put(s, new ScrollValue(0, 0, 0, 0));
 		snappingInterval = 0.25f;
 	}
 
@@ -336,7 +335,8 @@ public class Editor extends InputAdapter implements Disposable {
 			for (int x = (int) ((camera.position.x - camera.viewportWidth * 0.5f) / Entity.PX_WIDTH);
 				 x * Entity.PX_WIDTH < camera.position.x + camera.viewportWidth * 0.5f; x++) {
 				Main.drawCompressed(main.getFont(), batch, x + "", (x - 0.5f) * Entity.PX_WIDTH,
-						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, Entity.PX_WIDTH, Align.center);
+						TRACK_COUNT * Entity.PX_HEIGHT + main.getFont().getCapHeight() + 4, Entity.PX_WIDTH,
+						Align.center);
 			}
 		}
 
@@ -344,11 +344,17 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			if (remix.getPlayingState() == PlayingState.PLAYING && remix.getTickEachBeat()) {
 				final float jumpTime = 0.65f;
-				final float beatPercent = (remix.getBeat() < 0 ? (remix.getBeat() + (float) Math.abs(Math.floor(remix.getBeat()) * 2)) % 1 : remix.getBeat()) % 1;
+				final float beatPercent = (remix.getBeat() < 0
+						? (remix.getBeat() + (float) Math.abs(Math.floor(remix.getBeat()) * 2)) % 1
+						: remix.getBeat()) % 1;
 				if (beatPercent <= jumpTime) {
 					final float jumpSawtooth = beatPercent / jumpTime;
-					final float jumpTriangle = (jumpSawtooth <= 0.5f ? (jumpSawtooth * 2) : (1f - ((jumpSawtooth - 0.5f) * 2)));
-					final float jumpHeight = (jumpSawtooth <= 0.5f ? (jumpSawtooth * 2) : (jumpTriangle * jumpTriangle));
+					final float jumpTriangle = (jumpSawtooth <= 0.5f
+							? (jumpSawtooth * 2)
+							: (1f - ((jumpSawtooth - 0.5f) * 2)));
+					final float jumpHeight = (jumpSawtooth <= 0.5f
+							? (jumpSawtooth * 2)
+							: (jumpTriangle * jumpTriangle));
 
 					batch.draw(AssetRegistry.getTexture("playyan_jumping"), remix.getBeat() * Entity.PX_WIDTH,
 							TRACK_COUNT * Entity.PX_HEIGHT + (Entity.PX_WIDTH * 0.3f) * (jumpHeight), 0, 0, 26, 35);
@@ -433,12 +439,13 @@ public class Editor extends InputAdapter implements Disposable {
 
 			// series buttons
 			for (int i = 0; i < SeriesList.list.size(); i++) {
-//				main.font.draw(batch, SeriesList.list.get(i).getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE * 0.5f,
+//				main.font.draw(batch, SeriesList.list.get(i).getShorthand(), i * GAME_ICON_SIZE + GAME_ICON_SIZE *
+// 0.5f,
 //						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT * 0.5f + main.font.getCapHeight() * 0.5f,
 //						0, Align.center, false);
 
-				batch.draw(AssetRegistry.getTexture("series_icon_" + SeriesList.list.get(i).getName()), i * GAME_ICON_SIZE,
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+				batch.draw(AssetRegistry.getTexture("series_icon_" + SeriesList.list.get(i).getName()),
+						i * GAME_ICON_SIZE, MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
 
 				if (SeriesList.list.get(i) == currentSeries) {
 					batch.setColor(1, 1, 1, 1);
@@ -491,9 +498,9 @@ public class Editor extends InputAdapter implements Disposable {
 		// picker icons
 		{
 			final int maxVisible = ICON_COUNT_X * ICON_COUNT_Y;
-			for (int start = scrolls.get(currentSeries).getGameScroll() * ICON_COUNT_X,  i = start, count = 0;
-				 i < Math.min(GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(), start + maxVisible);
-				 i++, count++) {
+			for (int start = scrolls.get(currentSeries).getGameScroll() * ICON_COUNT_X, i = start, count = 0; i <
+					Math.min(GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).size(),
+							start + maxVisible); i++, count++) {
 				Game game = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries).get(i);
 
 				batch.draw(game.getIconTexture(), getIconX(count), getIconY(count), GAME_ICON_SIZE, GAME_ICON_SIZE);
@@ -709,8 +716,9 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		} else if (remix.getPlayingState() == PlayingState.STOPPED && file != null) {
 			if (timeUntilAutosave <= 0) {
-				timeUntilAutosave = AUTOSAVE_PERIOD;
-				if (main.getPreferences().getBoolean(PreferenceKeys.AUTOSAVE, true)) {
+				final int autosavePeriod = main.getPreferences().getInteger(PreferenceKeys.AUTOSAVE_INTERVAL, 0);
+				timeUntilAutosave = Math.max(autosavePeriod, 1) * 60;
+				if (autosavePeriod >= 1) {
 					autosave();
 				}
 			}
@@ -1039,15 +1047,16 @@ public class Editor extends InputAdapter implements Disposable {
 								status += " - " + Localization.get("editor.lookingAt", list.get(icon).getName());
 						} else if (main.getInputX() >= main.camera.viewportWidth * 0.5f) {
 							status += " - " + Localization.get("editor.scrollPatterns");
-							if (game.getPatterns().get(scrolls.get(currentSeries).getPattern()).getCues().get(0).isSkillStar()) {
+							if (game.getPatterns().get(scrolls.get(currentSeries).getPattern()).getCues().get(0)
+									.isSkillStar()) {
 								status += " - " + Localization.get("editor.scrollPatterns.star");
 							}
 						}
 					} else {
 						int i = main.getInputX() / GAME_ICON_SIZE;
 						if (i < SeriesList.list.size() && i >= 0) {
-							status += " - " + Localization.get("editor.lookingAt", SeriesList.list.get(i).getLocalizedName
-									());
+							status += " - " +
+									Localization.get("editor.lookingAt", SeriesList.list.get(i).getLocalizedName());
 						}
 					}
 				} else {
@@ -1192,8 +1201,8 @@ public class Editor extends InputAdapter implements Disposable {
 				} else {
 					if (main.getInputX() >= main.camera.viewportWidth * 0.475f) {
 						int dir;
-						if (main.camera.viewportHeight - main.getInputY() >
-								MESSAGE_BAR_HEIGHT + PICKER_HEIGHT * 0.5f) {
+						if (main.camera.viewportHeight - main.getInputY() > MESSAGE_BAR_HEIGHT + PICKER_HEIGHT *
+								0.5f) {
 							dir = -1;
 						} else {
 							dir = 1;
@@ -1382,17 +1391,18 @@ public class Editor extends InputAdapter implements Disposable {
 		return false;
 	}
 
-	private void scrollGames(int amount){
-		scrolls.get(currentSeries).setGameScroll(MathUtils.clamp(scrolls.get(currentSeries).getGameScroll() + amount,
-				0, scrolls.get(currentSeries).getMaxGameScroll()));
+	private void scrollGames(int amount) {
+		scrolls.get(currentSeries).setGameScroll(MathUtils.clamp(scrolls.get(currentSeries).getGameScroll() +
+						amount, 0,
+				scrolls.get(currentSeries).getMaxGameScroll()));
 	}
 
 	private void scrollPatterns(int amount) {
 		List<Pattern> list = GameRegistry.INSTANCE.getGamesBySeries().get(currentSeries)
 				.get(scrolls.get(currentSeries).getGame()).getPatterns();
 
-		scrolls.get(currentSeries).setPattern(
-				MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
+		scrolls.get(currentSeries)
+				.setPattern(MathUtils.clamp(scrolls.get(currentSeries).getPattern() + amount, 0, list.size() - 1));
 	}
 
 	@Override
@@ -1409,7 +1419,8 @@ public class Editor extends InputAdapter implements Disposable {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
 					int[] old = remix.getSelection().stream().mapToInt(Entity::getSemitone).toArray();
-					remix.getSelection().stream().filter(Entity::isRepitchable).forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
+					remix.getSelection().stream().filter(Entity::isRepitchable)
+							.forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
 					for (int i = 0; i < remix.getSelection().size(); i++) {
 						if (remix.getSelection().get(i).getSemitone() != old[i]) {
 							remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));

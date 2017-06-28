@@ -1,6 +1,6 @@
 package chrislo27.rhre
 
-import chrislo27.rhre.PreferenceKeys.AUTOSAVE
+import chrislo27.rhre.PreferenceKeys.AUTOSAVE_INTERVAL
 import chrislo27.rhre.PreferenceKeys.CAMERA_TRACK
 import chrislo27.rhre.PreferenceKeys.SHOW_CURRENT_GAME
 import chrislo27.rhre.credits.Credits.createConcatSections
@@ -27,6 +27,8 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 	override var bottomInstructions: String = "info.instructions"
 
 	companion object {
+		private val AUTOSAVE_TIMINGS: List<Int> = listOf(0, 1, 2, 3, 4, 5, 10, 15)
+
 		private @Volatile var isChecking: Int = 0
 
 		private @Volatile var inviteBacking: String? = null
@@ -124,29 +126,31 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 
 		main.font.data.setScale(1f)
 
-		val autosaveEnabled = main.preferences.getBoolean(AUTOSAVE, true)
+		val autosaveInterval: Int = main.preferences.getInteger(AUTOSAVE_INTERVAL, 1)
 		Main.drawCompressed(main.font, main.batch,
-					   "[CYAN]A[] - " + Localization.get("info.autosave.${if (autosaveEnabled) "on" else "off"}"),
-					   startX + PADDING,
-					   startY + BG_HEIGHT * 0.2f,
-					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left)
+							"[CYAN]A[] - " + Localization.get(
+									"info.autosave.${if (autosaveInterval > 0) "on" else "off"}", autosaveInterval),
+							startX + PADDING,
+							startY + BG_HEIGHT * 0.2f,
+							BG_WIDTH * 0.5f - PADDING,
+							Align.left)
 
 		val showCurrentGame = main.preferences.getBoolean(SHOW_CURRENT_GAME, true)
 		Main.drawCompressed(main.font, main.batch,
-					   "[CYAN]Q[] - " + Localization.get("info.showCurrentGame.${if (showCurrentGame) "on" else "off"}"),
-					   startX + PADDING,
-					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight,
-					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left)
+							"[CYAN]Q[] - " + Localization.get(
+									"info.showCurrentGame.${if (showCurrentGame) "on" else "off"}"),
+							startX + PADDING,
+							startY + BG_HEIGHT * 0.2f + main.font.lineHeight,
+							BG_WIDTH * 0.5f - PADDING,
+							Align.left)
 
 		val cameraTrack = main.preferences.getBoolean(CAMERA_TRACK, false)
 		Main.drawCompressed(main.font, main.batch,
-					   "[CYAN]Z[] - " + Localization.get("info.cameraTrack.${if (cameraTrack) "on" else "off"}"),
-					   startX + PADDING,
-					   startY + BG_HEIGHT * 0.2f + main.font.lineHeight * 2,
-					   BG_WIDTH * 0.5f - PADDING,
-					   Align.left)
+							"[CYAN]Z[] - " + Localization.get("info.cameraTrack.${if (cameraTrack) "on" else "off"}"),
+							startX + PADDING,
+							startY + BG_HEIGHT * 0.2f + main.font.lineHeight * 2,
+							BG_WIDTH * 0.5f - PADDING,
+							Align.left)
 
 		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && hoveringOverUrl && main.screen === this) {
 			Gdx.net.openURI(url)
@@ -166,7 +170,13 @@ class InfoScreen(m: Main) : NewUIScreen(m) {
 				main.screen = ScreenRegistry.get("version")
 			}
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			main.preferences.putBoolean(AUTOSAVE, !main.preferences.getBoolean(AUTOSAVE, true))
+			val old = main.preferences.getInteger(AUTOSAVE_INTERVAL, 1)
+			val curIndex = AUTOSAVE_TIMINGS.indexOf(old)
+			var nextIndex = curIndex + 1
+			if (nextIndex !in 0 until AUTOSAVE_TIMINGS.size) {
+				nextIndex = 0
+			}
+			main.preferences.putInteger(AUTOSAVE_INTERVAL, AUTOSAVE_TIMINGS[nextIndex])
 			main.preferences.flush()
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
 			main.preferences.putBoolean(SHOW_CURRENT_GAME, !main.preferences.getBoolean(SHOW_CURRENT_GAME, true))
