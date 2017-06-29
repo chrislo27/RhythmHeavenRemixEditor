@@ -133,7 +133,6 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 					JFileChooser.APPROVE_OPTION -> {
 						persistDirectory(main, "lastSaveDirectory", picker.currentDirectory)
 
-						val handle = FileHandle(picker.selectedFile)
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 						if (picker.fileFilter === dataFileFilter) {
@@ -145,6 +144,7 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 								picker.selectedFile = File(picker.selectedFile.canonicalPath + ".brhre2")
 							}
 						}
+						val handle = FileHandle(picker.selectedFile)
 						try {
 							val obj: RemixObject = Remix.writeToJsonObject(es.editor.remix)
 
