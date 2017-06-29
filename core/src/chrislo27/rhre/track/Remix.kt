@@ -124,6 +124,9 @@ class Remix : ActionHistory<Remix>() {
 		private set
 	var startTime: Float = 0f
 		private set
+	/**
+	 * In beats
+	 */
 	var duration: Float = endTime - startTime
 		get() {
 			return endTime - startTime

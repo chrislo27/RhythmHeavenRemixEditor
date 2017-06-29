@@ -75,6 +75,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public Remix remix;
 	public FileHandle file = null;
 	public boolean isNormalSave = false;
+	public boolean inPresentationMode = true;
 	float snappingInterval;
 	private String status;
 	private Tool currentTool = Tool.NORMAL;
@@ -215,7 +216,7 @@ public class Editor extends InputAdapter implements Disposable {
 								musicToBeats * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 3));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
-						String.format("%1$02d:%2$02.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
+						String.format("%1$02d:%2$06.3f", (int) (Math.abs(remix.getMusicStartTime()) / 60),
 								Math.abs(remix.getMusicStartTime()) % 60)), musicToBeats * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 3) + main.getFontBordered().getLineHeight());
 				main.getFontBordered()
@@ -246,7 +247,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 				float start = remix.getTempoChanges().beatsToSeconds(remix.getPlaybackStart());
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
-						String.format("%1$02d:%2$02.3f", (int) (Math.abs(start) / 60), Math.abs(start) % 60)),
+						String.format("%1$02d:%2$06.3f", (int) (Math.abs(start) / 60), Math.abs(start) % 60)),
 						remix.getPlaybackStart() * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - (main.getFontBordered().getCapHeight() * 6));
 				main.getFontBordered().getData().setScale(1);
@@ -315,7 +316,7 @@ public class Editor extends InputAdapter implements Disposable {
 								remix.getBeat() * Entity.PX_WIDTH + 4, Entity.PX_HEIGHT * (TRACK_COUNT + 2));
 				main.getFontBordered().getData().setScale(0.5f);
 				main.getFontBordered().draw(batch, Localization.get("editor.beatTrackerSec",
-						String.format("%1$02d:%2$02.3f", (int) (Math.abs(beatInSeconds) / 60),
+						String.format("%1$02d:%2$06.3f", (int) (Math.abs(beatInSeconds) / 60),
 								Math.abs(beatInSeconds) % 60)), remix.getBeat() * Entity.PX_WIDTH + 4,
 						Entity.PX_HEIGHT * (TRACK_COUNT + 2) - main.getFontBordered().getLineHeight() * 2);
 				main.getFontBordered()
@@ -456,17 +457,11 @@ public class Editor extends InputAdapter implements Disposable {
 			main.getFont().getData().setScale(1);
 		}
 
-		if (remix.getCurrentGame() != null &&
-				main.getPreferences().getBoolean(PreferenceKeys.SHOW_CURRENT_GAME, true)) {
-			final float x = 4, y = main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4;
-			final Texture icon = remix.getCurrentGame().getIconTexture();
-			main.batch.draw(icon, x, y - 32, 32, 32);
-			main.getFontBordered().getData().setScale(0.75f);
-//			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-			main.getFontBordered().draw(batch, remix.getCurrentGame().getName(), x * 2 + 32,
-					y - (16 - main.getFontBordered().getCapHeight() / 2));
-			main.getFontBordered().setColor(1, 1, 1, 1);
-			main.getFontBordered().getData().setScale(1f);
+		final boolean shouldShowCurrentGame = main.getPreferences().getBoolean(PreferenceKeys.SHOW_CURRENT_GAME, true);
+
+		// current game display
+		if (remix.getCurrentGame() != null && shouldShowCurrentGame && !inPresentationMode) {
+			renderCurrentGameDisplay(batch, camera.viewportWidth * 0.5f - 4);
 		}
 
 		// tool icons
@@ -696,23 +691,74 @@ public class Editor extends InputAdapter implements Disposable {
 			}
 		}
 
+		// FIXME
+		inPresentationMode = !DebugSetting.debug;
+
 		// made with text
-		if (DebugSetting.debug && remix.getPlayingState() == PlayingState.PLAYING) {
+		if (inPresentationMode) {
 			// FIXME
+			final float beat =
+					remix.getPlayingState() == PlayingState.STOPPED ? remix.getPlaybackStart() : remix.getBeat();
 			final Color bg = main.getPalette().getEditorBg();
+			final Color inverted = main.getPalette().getInvertedEditorBg();
+			final int COVER_HEIGHT = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT;
 			batch.setColor(bg);
-			Main.fillRect(batch, 0, 0, camera.viewportWidth, MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT);
+			Main.fillRect(batch, 0, 0, camera.viewportWidth, COVER_HEIGHT);
 			batch.setColor(1f, 1f, 1f, 1f);
 
-			batch.setProjectionMatrix(camera.combined);
 //			main.getFont().getData().setScale(0.75f);
-			main.getFont().setColor(1f - bg.r, 1f - bg.g, 1f - bg.b, 0.5f);
+			main.getFont().setColor(inverted.r, inverted.g, inverted.b, inverted.a * 0.5f);
 			Main.drawCompressed(main.getFont(), batch, "Made using Rhythm Heaven Remix Editor 2\nhttps://github" +
-							".com/chrislo27/RhythmHeavenRemixEditor2", camera.position.x - camera.viewportWidth / 2,
-					-main.getFont().getCapHeight() - 96, camera.viewportWidth, Align.center);
+							".com/chrislo27/RhythmHeavenRemixEditor2", 0, PICKER_HEIGHT / 2, camera.viewportWidth,
+					Align.center);
 			main.getFont().setColor(1f, 1f, 1f, 1f);
 			main.getFont().getData().setScale(1f);
-			batch.setProjectionMatrix(main.camera.combined);
+
+			batch.setColor(inverted);
+			final float barWidth = camera.viewportWidth * 0.65f;
+			final float barHeight = 16;
+			final float barY = PICKER_HEIGHT / 2 + 32;
+			final int barBorder = 2;
+
+			// bar
+			Main.drawRect(batch, camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2, barY - barBorder * 2,
+					barWidth + barBorder * 4, barHeight + barBorder * 4, barBorder);
+			Main.fillRect(batch, camera.viewportWidth / 2f - barWidth / 2f, barY,
+					barWidth * MathUtils.clamp(beat / remix.getDuration(), 0f, 1f), barHeight);
+
+			main.getFont().setColor(inverted);
+
+			// current time and duration
+			final float durationInSeconds = remix.getTempoChanges().beatsToSeconds(remix.getDuration());
+			final float beatsInSeconds = remix.getTempoChanges().beatsToSeconds(beat);
+			final String durationStr = (int) (Math.abs(durationInSeconds) / 60) + ":" +
+					String.format("%02d", (int) (Math.abs(durationInSeconds) % 60));
+			final String beatStr = (beatsInSeconds < 0 ? "-" : "") + (int) (Math.abs(beatsInSeconds) / 60) + ":" +
+					String.format("%02d", (int) (Math.abs(beatsInSeconds) % 60));
+			Main.drawCompressed(main.getFont(), batch, durationStr,
+					camera.viewportWidth / 2f + barWidth / 2f + barBorder * 5, barY + main.getFont().getCapHeight(),
+					camera.viewportWidth * 0.5f - barWidth * 0.5f - barBorder * 7, Align.left);
+			Main.drawCompressed(main.getFont(), batch, beatStr, barBorder * 2, barY + main.getFont().getCapHeight(),
+					camera.viewportWidth * 0.5f - barWidth * 0.5f - barBorder * 7, Align.right);
+
+			// current game
+			if (shouldShowCurrentGame) {
+				main.getFontBordered().setColor(inverted);
+				renderCurrentGameDisplay(batch, camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2,
+						barY + 48 + barBorder * 4, barWidth * 0.5f);
+				main.getFontBordered().setColor(1, 1, 1, 1);
+			}
+
+			// BPM
+			main.getFont().getData().setScale(0.75f);
+			Main.drawCompressed(main.getFont(), batch, String.format("%.1f", remix.getTempoChanges().getTempoAt(beat)) + " BPM",
+					camera.viewportWidth * 0.5f + barWidth * 0.25f,
+					barY + 48 + barBorder * 4 - (16 - main.getFont().getCapHeight() / 2),
+					barWidth * 0.25f, Align.right);
+			main.getFont().getData().setScale(1f);
+
+			main.getFont().setColor(1, 1, 1, 1);
+			batch.setColor(1, 1, 1, 1);
 		}
 
 		batch.end();
@@ -1440,8 +1486,7 @@ public class Editor extends InputAdapter implements Disposable {
 		} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
-					List<Entity> pitchable = remix.getSelection().stream()
-							.filter(Entity::isRepitchable)
+					List<Entity> pitchable = remix.getSelection().stream().filter(Entity::isRepitchable)
 							.collect(Collectors.toList());
 					int[] old = new int[pitchable.size()];
 					boolean dirty = false;
@@ -1515,6 +1560,24 @@ public class Editor extends InputAdapter implements Disposable {
 		array.add("autosaveTimer: " + timeUntilAutosave);
 		array.add("selTempoChange: " + selectedTempoChange);
 		array.add("entities: " + remix.getEntities().size());
+	}
+
+	private void renderCurrentGameDisplay(SpriteBatch batch, float width) {
+		renderCurrentGameDisplay(batch, 4, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4, width);
+	}
+
+	private void renderCurrentGameDisplay(SpriteBatch batch, float x, float y, float width) {
+		if (remix.getCurrentGame() == null)
+			return;
+		width -= 36;
+		final Texture icon = remix.getCurrentGame().getIconTexture();
+		main.batch.draw(icon, x, y - 32, 32, 32);
+		main.getFontBordered().getData().setScale(0.75f);
+//			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
+		Main.drawCompressed(main.getFontBordered(), batch, remix.getCurrentGame().getName(), x + 36,
+				y - (16 - main.getFontBordered().getCapHeight() / 2), width, Align.left);
+		main.getFontBordered().setColor(1, 1, 1, 1);
+		main.getFontBordered().getData().setScale(1f);
 	}
 
 	public enum Tool {
