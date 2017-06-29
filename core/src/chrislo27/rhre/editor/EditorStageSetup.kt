@@ -127,7 +127,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					main.setScreen(ScreenRegistry.get("info"))
+					main.screen = ScreenRegistry.get("info")
 				}
 			}
 
@@ -432,7 +432,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					main.setScreen(ScreenRegistry.get("new"))
+					main.screen = ScreenRegistry.get("new")
 				}
 			}
 
@@ -448,7 +448,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					main.setScreen(ScreenRegistry.get("load"))
+					main.screen = ScreenRegistry.get("load")
 				}
 			}
 
@@ -591,7 +591,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					main.setScreen(ScreenRegistry.get("script"))
+					main.screen = ScreenRegistry.get("script")
 				}
 			}
 
