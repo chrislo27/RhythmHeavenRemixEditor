@@ -66,6 +66,16 @@
       ],
       "duration": 0.5,
       "name": "saw - short - 2"
+    },
+    {
+      "id": "seesawEn/beginning",
+      "duration": 0.5,
+      "name": "beginning jump"
+    },
+    {
+      "id": "seesawEn/explosionEnd",
+      "duration": 2,
+      "name": "explosion end"
     }
   ],
   "patterns": [
