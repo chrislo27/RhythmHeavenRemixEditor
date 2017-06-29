@@ -385,7 +385,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
 
-					main.setScreen(ScreenRegistry.get("music"))
+					main.screen = ScreenRegistry.get("music")
 				}
 
 				override fun render(batch: SpriteBatch, alpha: Float) {
@@ -420,8 +420,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			}
 
 			stage!!.addActor<TextButton>(music).align(Align.topRight)
-					.setPixelOffset((PADDING * 7 + BUTTON_HEIGHT + BUTTON_HEIGHT * 10).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 6 + PADDING * 3).toFloat(),
+					.setPixelOffset((PADDING * 7 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT * 9 + PADDING * 3).toFloat(),
 									BUTTON_HEIGHT.toFloat())
 
 		}
