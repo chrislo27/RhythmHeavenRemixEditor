@@ -59,9 +59,9 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int MESSAGE_BAR_HEIGHT = 12;
 	private static final int GAME_TAB_HEIGHT = 24;
 	private static final int PICKER_HEIGHT = ICON_COUNT_Y * (GAME_ICON_PADDING + GAME_ICON_SIZE) + GAME_ICON_PADDING;
-	private static final int OVERVIEW_HEIGHT = 32;
+	private static final int MINIMAP_HEIGHT = 32;
 	private static final int STAFF_START_Y =
-			MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + OVERVIEW_HEIGHT + 32;
+			MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + MINIMAP_HEIGHT + 32;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
@@ -429,11 +429,11 @@ public class Editor extends InputAdapter implements Disposable {
 					EditorStageSetup.BAR_HEIGHT);
 			// series buttons
 			Main.fillRect(batch, 0, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, SeriesList.list.size() * GAME_ICON_SIZE,
-					OVERVIEW_HEIGHT);
+					MINIMAP_HEIGHT);
 			for (int i = 0; i < SeriesList.list.size(); i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
-						OVERVIEW_HEIGHT, 1);
+						MINIMAP_HEIGHT, 1);
 			}
 			batch.setColor(1, 1, 1, 1);
 			main.getFont().setColor(1, 1, 1, 1);
@@ -450,12 +450,12 @@ public class Editor extends InputAdapter implements Disposable {
 //						0, Align.center, false);
 
 				batch.draw(AssetRegistry.getTexture("series_icon_" + SeriesList.list.get(i).getName()),
-						i * GAME_ICON_SIZE, MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+						i * GAME_ICON_SIZE, MESSAGE_BAR_HEIGHT + PICKER_HEIGHT, GAME_ICON_SIZE, MINIMAP_HEIGHT);
 
 				if (SeriesList.list.get(i) == currentSeries) {
 					batch.setColor(1, 1, 1, 1);
 					batch.draw(AssetRegistry.getTexture("icon_selector_tengoku"), i * GAME_ICON_SIZE,
-							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, MINIMAP_HEIGHT);
 				}
 			}
 			main.getFont().getData().setScale(1);
@@ -472,21 +472,21 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			batch.setColor(0, 0, 0, 0.5f);
 			Main.fillRect(batch, main.camera.viewportWidth, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT,
-					-Tool.values.length * GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+					-Tool.values.length * GAME_ICON_SIZE, MINIMAP_HEIGHT);
 			final float start = main.camera.viewportWidth - Tool.values.length * GAME_ICON_SIZE;
 			for (int i = 0; i < Tool.values.length; i++) {
 				batch.setColor(0.65f, 0.65f, 0.65f, 1);
 				Main.drawRect(batch, start + i * GAME_ICON_SIZE, PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE,
-						OVERVIEW_HEIGHT, 1);
+						MINIMAP_HEIGHT, 1);
 				batch.setColor(1, 1, 1, 1);
 
 				batch.draw(AssetRegistry.getTexture("tool_icon_" + Tool.values[i].name()), start + i * GAME_ICON_SIZE,
-						PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+						PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, MINIMAP_HEIGHT);
 
 				if (Tool.values[i] == currentTool) {
 					batch.setColor(1, 1, 1, 1);
 					batch.draw(AssetRegistry.getTexture("icon_selector_fever"), start + i * GAME_ICON_SIZE,
-							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, OVERVIEW_HEIGHT);
+							PICKER_HEIGHT + MESSAGE_BAR_HEIGHT, GAME_ICON_SIZE, MINIMAP_HEIGHT);
 				}
 			}
 			batch.setColor(1, 1, 1, 1);
@@ -618,16 +618,16 @@ public class Editor extends InputAdapter implements Disposable {
 			final float mapWidth = main.camera.viewportWidth - (startX + Tool.values.length * GAME_ICON_SIZE);
 			final float duration = Math.max(remix.getDuration(), remix.getEndTime());
 			final float ENTITY_WIDTH = duration == 0 ? mapWidth : mapWidth / duration;
-			final float ENTITY_HEIGHT = (OVERVIEW_HEIGHT / TRACK_COUNT);
+			final float ENTITY_HEIGHT = (MINIMAP_HEIGHT / TRACK_COUNT);
 
 			batch.setColor(0, 0, 0, 0.5f);
-			Main.fillRect(batch, startX, startY, mapWidth, OVERVIEW_HEIGHT);
+			Main.fillRect(batch, startX, startY, mapWidth, MINIMAP_HEIGHT);
 
 			batch.end();
 			StencilMaskUtil.prepareMask();
 			main.shapes.setProjectionMatrix(main.camera.combined);
 			main.shapes.begin(ShapeRenderer.ShapeType.Filled);
-			main.shapes.rect(startX, startY, mapWidth, OVERVIEW_HEIGHT);
+			main.shapes.rect(startX, startY, mapWidth, MINIMAP_HEIGHT);
 			main.shapes.end();
 
 			batch.begin();
@@ -671,11 +671,11 @@ public class Editor extends InputAdapter implements Disposable {
 			float camW = camera.viewportWidth / Entity.PX_WIDTH * ENTITY_WIDTH;
 
 			if (duration > 0)
-				Main.drawRect(batch, startX + camX - camW / 2, startY, camW, OVERVIEW_HEIGHT, 2);
+				Main.drawRect(batch, startX + camX - camW / 2, startY, camW, MINIMAP_HEIGHT, 2);
 
 			if (remix.getSweepLoadProgress() > 0 && remix.getSweepLoadProgress() < 1) {
 				batch.setColor(0.75f, 1, 0.75f, 0.25f);
-				Main.fillRect(batch, startX, startY, mapWidth * remix.getSweepLoadProgress(), OVERVIEW_HEIGHT);
+				Main.fillRect(batch, startX, startY, mapWidth * remix.getSweepLoadProgress(), MINIMAP_HEIGHT);
 				batch.setColor(1, 1, 1, 1);
 			}
 
@@ -686,7 +686,7 @@ public class Editor extends InputAdapter implements Disposable {
 					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
 				if (main.getInputX() > startX && main.getInputX() < startX + mapWidth) {
 					if (main.camera.viewportHeight - main.getInputY() > startY &&
-							main.camera.viewportHeight - main.getInputY() < startY + OVERVIEW_HEIGHT) {
+							main.camera.viewportHeight - main.getInputY() < startY + MINIMAP_HEIGHT) {
 						float percent = (main.getInputX() - startX) / mapWidth;
 						percent *= duration;
 						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
@@ -702,7 +702,7 @@ public class Editor extends InputAdapter implements Disposable {
 					remix.getPlayingState() == PlayingState.STOPPED ? remix.getPlaybackStart() : remix.getBeat();
 			final Color bg = main.getPalette().getEditorBg();
 			final Color inverted = main.getPalette().getInvertedEditorBg();
-			final int COVER_HEIGHT = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT;
+			final int COVER_HEIGHT = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + MINIMAP_HEIGHT;
 			batch.setColor(bg);
 			Main.fillRect(batch, 0, 0, camera.viewportWidth, COVER_HEIGHT);
 			batch.setColor(1f, 1f, 1f, 1f);
@@ -1101,7 +1101,7 @@ public class Editor extends InputAdapter implements Disposable {
 						(DebugSetting.debug ? (" [GRAY](" + game.getId() + ")[]") : "");
 
 				if (main.camera.viewportHeight - main.getInputY() <=
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT) {
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + MINIMAP_HEIGHT) {
 					if (main.camera.viewportHeight - main.getInputY() <= MESSAGE_BAR_HEIGHT + PICKER_HEIGHT) {
 						if (main.getInputX() <=
 								GAME_ICON_PADDING + ICON_COUNT_X * (GAME_ICON_PADDING + GAME_ICON_SIZE)) {
@@ -1167,7 +1167,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 			if (selectedTempoChange == null) {
 				if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && main.camera.viewportHeight - main.getInputY() >
-						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT &&
+						MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + MINIMAP_HEIGHT &&
 						main.getInputY() > EditorStageSetup.BAR_HEIGHT) {
 					TempoChange tc = new TempoChange(beatPos, remix.getTempoChanges().getTempoAt(beatPos),
 							remix.getTempoChanges());
@@ -1290,7 +1290,7 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				}
 			} else if (main.getInputY() >=
-					main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT)) {
+					main.camera.viewportHeight - (MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + MINIMAP_HEIGHT)) {
 				// series
 				if (main.getInputX() <= SeriesList.list.size() * GAME_ICON_SIZE) {
 					int i = main.getInputX() / GAME_ICON_SIZE;
