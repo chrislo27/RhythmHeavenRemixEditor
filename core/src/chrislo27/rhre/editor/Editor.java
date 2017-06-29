@@ -711,8 +711,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 //			main.getFont().getData().setScale(0.75f);
 			main.getFont().setColor(inverted.r, inverted.g, inverted.b, inverted.a * 0.5f);
-			Main.drawCompressed(main.getFont(), batch, Localization.get("editor.madewith") + "\nhttps://github" +
-							".com/chrislo27/RhythmHeavenRemixEditor2", 0, PICKER_HEIGHT / 2, camera.viewportWidth,
+			Main.drawCompressed(main.getFont(), batch, Localization.get("editor.madewith") +
+							"\nhttps://github.com/chrislo27/RhythmHeavenRemixEditor2",
+					0, PICKER_HEIGHT / 2, camera.viewportWidth,
 					Align.center);
 			main.getFont().setColor(1f, 1f, 1f, 1f);
 			main.getFont().getData().setScale(1f);
