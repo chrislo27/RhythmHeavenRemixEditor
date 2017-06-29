@@ -395,8 +395,9 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 				es.editor.remix?.music?.dispose()
 				es.editor.remix = Remix.readFromJsonObject(remixObj!!)
 				es.editor.file = remixObj?.fileHandle
+				es.editor.camera.position.x = es.editor.remix.playbackStart
 
-				main.screen = ScreenRegistry.get("editor")
+				main.screen = es
 			}
 		}
 	}
