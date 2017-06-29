@@ -19,9 +19,8 @@ object Credits {
 			"technologies" to """[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games, LWJGL
 KHttp
 Gson
-[#000007F]Lua[]J
+[#00007F]Lua[]J
 Apache Commons IO
-Unlockstep font
 [#FF8900]Kotlin[] by JetBrains
 [#B07219]Java[] by Oracle
 Rhythm Heaven assets by Nintendo""",
