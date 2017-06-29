@@ -18,6 +18,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
@@ -708,7 +709,7 @@ public class Editor extends InputAdapter implements Disposable {
 
 //			main.getFont().getData().setScale(0.75f);
 			main.getFont().setColor(inverted.r, inverted.g, inverted.b, inverted.a * 0.5f);
-			Main.drawCompressed(main.getFont(), batch, "Made using Rhythm Heaven Remix Editor 2\nhttps://github" +
+			Main.drawCompressed(main.getFont(), batch, Localization.get("editor.madewith") + "\nhttps://github" +
 							".com/chrislo27/RhythmHeavenRemixEditor2", 0, PICKER_HEIGHT / 2, camera.viewportWidth,
 					Align.center);
 			main.getFont().setColor(1f, 1f, 1f, 1f);
@@ -743,10 +744,10 @@ public class Editor extends InputAdapter implements Disposable {
 
 			// current game
 			if (shouldShowCurrentGame) {
-				main.getFontBordered().setColor(inverted);
-				renderCurrentGameDisplay(batch, camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2,
+				batch.setColor(1, 1, 1, 1);
+				renderCurrentGameDisplay(batch, main.getFont(), camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2,
 						barY + 48 + barBorder * 4, barWidth * 0.5f);
-				main.getFontBordered().setColor(1, 1, 1, 1);
+				batch.setColor(inverted);
 			}
 
 			// BPM
@@ -1563,21 +1564,20 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	private void renderCurrentGameDisplay(SpriteBatch batch, float width) {
-		renderCurrentGameDisplay(batch, 4, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4, width);
+		renderCurrentGameDisplay(batch, main.getFontBordered(), 4, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4, width);
 	}
 
-	private void renderCurrentGameDisplay(SpriteBatch batch, float x, float y, float width) {
+	private void renderCurrentGameDisplay(SpriteBatch batch, BitmapFont font, float x, float y, float width) {
 		if (remix.getCurrentGame() == null)
 			return;
 		width -= 36;
 		final Texture icon = remix.getCurrentGame().getIconTexture();
 		main.batch.draw(icon, x, y - 32, 32, 32);
-		main.getFontBordered().getData().setScale(0.75f);
+		font.getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-		Main.drawCompressed(main.getFontBordered(), batch, remix.getCurrentGame().getName(), x + 36,
-				y - (16 - main.getFontBordered().getCapHeight() / 2), width, Align.left);
-		main.getFontBordered().setColor(1, 1, 1, 1);
-		main.getFontBordered().getData().setScale(1f);
+		Main.drawCompressed(font, batch, remix.getCurrentGame().getName(), x + 36,
+				y - (16 - font.getCapHeight() / 2), width, Align.left);
+		font.getData().setScale(1f);
 	}
 
 	public enum Tool {
