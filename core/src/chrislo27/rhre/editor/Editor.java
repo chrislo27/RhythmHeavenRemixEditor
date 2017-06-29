@@ -636,7 +636,6 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.setColor(main.getPalette().getStaffLine());
 			for (int i = 0; i < TRACK_COUNT + 1; i++) {
 				Main.fillRect(batch, startX, startY + i * ENTITY_HEIGHT, mapWidth, 1);
-
 			}
 
 			batch.setColor(1, 1, 1, 1);
@@ -682,14 +681,18 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.flush();
 			StencilMaskUtil.resetMask();
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && duration > 0 && selectionOrigin == null &&
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && selectionOrigin == null &&
 					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
 				if (main.getInputX() > startX && main.getInputX() < startX + mapWidth) {
 					if (main.camera.viewportHeight - main.getInputY() > startY &&
 							main.camera.viewportHeight - main.getInputY() < startY + MINIMAP_HEIGHT) {
-						float percent = (main.getInputX() - startX) / mapWidth;
-						percent *= duration;
-						camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
+						if (duration > 0) {
+							float percent = (main.getInputX() - startX) / mapWidth;
+							percent *= duration;
+							camera.position.x = (percent + Math.min(remix.getStartTime(), 0)) * Entity.PX_WIDTH;
+						} else {
+							camera.position.x = 0f;
+						}
 					}
 				}
 			}
@@ -697,7 +700,6 @@ public class Editor extends InputAdapter implements Disposable {
 
 		// made with text
 		if (inPresentationMode) {
-			// FIXME
 			final float beat =
 					remix.getPlayingState() == PlayingState.STOPPED ? remix.getPlaybackStart() : remix.getBeat();
 			final Color bg = main.getPalette().getEditorBg();
