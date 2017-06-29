@@ -302,10 +302,15 @@ object GameRegistry : Disposable {
 					"Joined all ${coroutines.size} coroutines in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
 		}
 
-		gameList.sortBy(Game::id)
-		gamesBySeries.values.forEach { list ->
-			list as MutableList
-			list.sortBy(Game::id)
+		synchronized(gameList) {
+			gameList.sortBy(Game::id)
+		}
+
+		synchronized(gamesBySeries) {
+			gamesBySeries.values.forEach { list ->
+				list as MutableList
+				list.sortBy(Game::id)
+			}
 		}
 
 		loadingState = false
