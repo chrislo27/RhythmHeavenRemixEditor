@@ -133,6 +133,7 @@ class TapalongScreen(m: Main) : NewUIScreen(m) {
 		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
 		es.editor.remix.music?.music?.isLooping = true
 		es.editor.remix.music?.music?.play()
+		es.editor.remix.music?.music?.position = Math.max(0f, es.editor.remix.tempoChanges.beatsToSeconds(es.editor.remix.playbackStart) - es.editor.remix.musicStartTime)
 	}
 
 	override fun hide() {
