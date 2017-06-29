@@ -177,6 +177,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		Localization.instance().loadFromSettings(preferences)
 
+		GameRegistry.load()
 		super.create()
 
 		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
@@ -214,8 +215,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun prepareStates() {
 		super.prepareStates()
 
-//		GameRegistry.coroutinesToUse = 0
-		GameRegistry.load()
 		AssetRegistry.instance().addAssetLoader(GameRegistry.newAssetLoader())
 
 		val reg = ScreenRegistry.instance()
