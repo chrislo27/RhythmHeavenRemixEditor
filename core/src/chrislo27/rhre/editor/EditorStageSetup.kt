@@ -828,6 +828,27 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
+			val present = object : TextButton(stage, palette, "editor.button.present") {
+
+				override fun onClickAction(x: Float, y: Float) {
+					super.onClickAction(x, y)
+
+					screen.editor.inPresentationMode = !screen.editor.inPresentationMode
+				}
+
+				override fun render(batch: SpriteBatch, alpha: Float) {
+					getPalette().labelFont.data.setScale(0.5f)
+					super.render(batch, alpha)
+					getPalette().labelFont.data.setScale(1f)
+				}
+			}
+
+			stage!!.addActor<TextButton>(present).align(Align.topLeft)
+					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT * 4 - PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
+		}
+
+		run {
 			val tapalong = object : TextButton(stage, palette, "editor.button.tapalong") {
 
 				override fun onClickAction(x: Float, y: Float) {
