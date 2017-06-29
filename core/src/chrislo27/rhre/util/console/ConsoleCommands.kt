@@ -3,6 +3,7 @@ package chrislo27.rhre.util.console
 import chrislo27.rhre.Main
 import chrislo27.rhre.registry.*
 import chrislo27.rhre.util.JsonHandler
+import chrislo27.rhre.version.RHRE2Version
 import com.badlogic.gdx.Gdx
 import java.util.*
 
@@ -87,6 +88,16 @@ object ConsoleCommands {
 
 				false
 			}
+			"version" -> {
+				val version: RHRE2Version = if (args.isEmpty())
+					RHRE2Version.VERSION
+				else
+					RHRE2Version.fromString(args.first())
+
+				println("$version - ${version.numericalValue}")
+
+				false
+			}
 			"help" ,"?" -> {
 				println("""Commands:
 quit/exit
@@ -103,6 +114,9 @@ dumpids [name] [-w] [-p]
 
 checkids [name]
   - Runs an ID check from persistent data. The name is optional. This will check deletions and additions of IDs. Deprecations are included.
+
+version [version]
+  - Shows the numeric form of the version. Defaults to current version.
 """)
 				false
 			}
