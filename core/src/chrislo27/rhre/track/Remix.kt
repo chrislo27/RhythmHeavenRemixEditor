@@ -428,6 +428,10 @@ class Remix : ActionHistory<Remix>() {
 								{ value, entity -> Math.max(value, entity.bounds.x + entity.bounds.width) })
 		startTime = entities.fold(Float.MAX_VALUE,
 								  { value, entity -> Math.min(value, entity.bounds.x) })
+		if (entities.isEmpty()) {
+			endTime = 0f
+			startTime = 0f
+		}
 		entities.sortBy { it.bounds.x }
 	}
 
