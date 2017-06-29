@@ -1,14 +1,15 @@
 package chrislo27.rhre.palette
 
 import chrislo27.rhre.json.PaletteObject
+import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
-import com.google.gson.Gson
 import java.util.*
 
 abstract class AbstractPalette {
 
 	abstract val editorBg: Color
+	val invertedEditorBg: Color by lazy { Color(1f - editorBg.r, 1f - editorBg.g, 1f - editorBg.b, editorBg.a) }
 	abstract val staffLine: Color
 
 	abstract val soundCue: EntityColors
@@ -29,6 +30,7 @@ abstract class AbstractPalette {
 
 	fun lerp(a: AbstractPalette, b: AbstractPalette, amt: Float) {
 		editorBg.set(a.editorBg).lerp(b.editorBg, amt)
+		invertedEditorBg.set(a.invertedEditorBg).lerp(b.invertedEditorBg, amt)
 		staffLine.set(a.staffLine).lerp(b.staffLine, amt)
 		soundCue.set(a.soundCue).lerp(b.soundCue, amt)
 		stretchableSoundCue.set(a.stretchableSoundCue).lerp(b.stretchableSoundCue, amt)
@@ -89,9 +91,7 @@ abstract class CustomPalette : LightPalette()
 
 object PaletteUtils {
 
-	private val gson: Gson = Gson()
-
-	private val rhre0Palette: PaletteObject = gson.fromJson("""{
+	private val rhre0Palette: PaletteObject = JsonHandler.fromJson("""{
   "editorBg": "#FFA57F",
   "staffLine": "#000000",
   "soundCue": "#CFB8AF",
