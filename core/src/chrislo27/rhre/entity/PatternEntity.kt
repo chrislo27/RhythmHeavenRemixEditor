@@ -178,7 +178,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 						  se.bounds.height * Entity.Companion.PX_HEIGHT, 1f)
 		}
 
-		batch.setColor(1f, 1f, 1f, 0.25f)
+		batch.setColor(1f, 1f, 1f, 0.5f)
 		batch.draw(AssetRegistry.getTexture(iconId),
 				   bounds.getX() * Entity.Companion.PX_WIDTH + Editor.GAME_ICON_PADDING,
 				   bounds.getY() * Entity.Companion.PX_HEIGHT + bounds.getHeight() * Entity.Companion.PX_HEIGHT.toFloat() * 0.5f - Editor.GAME_ICON_SIZE * 0.5f,
