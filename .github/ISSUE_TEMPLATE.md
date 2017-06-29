@@ -6,9 +6,10 @@ already
 * [ ] I have filled out this issue template knowing if I remove it the issue will immediately become invalid and will be closed
 
 ### Description
-[insert description of the issue]
+[insert description of the issue/suggestion]
 
 ### Steps to Reproduce the Problem
+[you can remove everything past the description if this isn't a bug/issue]
 1. [First step]
 2. [Second step]
 
