@@ -76,7 +76,7 @@ public class Editor extends InputAdapter implements Disposable {
 	public Remix remix;
 	public FileHandle file = null;
 	public boolean isNormalSave = false;
-	public boolean inPresentationMode = true;
+	public boolean inPresentationMode = false;
 	float snappingInterval;
 	private String status;
 	private Tool currentTool = Tool.NORMAL;
