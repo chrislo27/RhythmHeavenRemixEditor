@@ -844,8 +844,8 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			}
 
 			stage!!.addActor<TextButton>(present).align(Align.topLeft)
-					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 8).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 4 - PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
+					.setPixelOffset((PADDING * 10 + BUTTON_HEIGHT * 9).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT * 3 - PADDING * 2).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
