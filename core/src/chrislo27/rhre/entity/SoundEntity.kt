@@ -61,7 +61,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 		val old = semitone
 		semitone = MathUtils.clamp(semitone + semitoneChange, min, max)
 
-		return semitone == old
+		return semitone != old
 	}
 
 	override fun copy(): SoundEntity {

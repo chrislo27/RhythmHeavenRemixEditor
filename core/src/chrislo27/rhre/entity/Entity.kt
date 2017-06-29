@@ -23,6 +23,9 @@ abstract class Entity(val remix: Remix) {
 
 	}
 
+	/**
+	 * Returns true if the pitch changed.
+	 */
 	open fun adjustPitch(semitoneChange: Int, min: Int, max: Int): Boolean {
 		return false
 	}
