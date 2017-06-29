@@ -308,13 +308,11 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
 
-		var ttfParam: FreeTypeFontGenerator.FreeTypeFontParameter
-
 		fun getParam(): FreeTypeFontGenerator.FreeTypeFontParameter {
 			val param = FreeTypeFontGenerator.FreeTypeFontParameter()
 			param.magFilter = Texture.TextureFilter.Nearest
 			param.minFilter = Texture.TextureFilter.Linear
-			param.genMipMaps = true
+			param.genMipMaps = false
 			param.incremental = true
 			param.size = 24
 			param.characters = fontCharsToLoad
@@ -323,37 +321,46 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		val downScale: Float = 0.6f
 
-		ttfParam = getParam()
-		font = ttfGenerator.generateFont(ttfParam)
-		font.data.markupEnabled = true
+		run {
+			val ttfParam = getParam()
+			font = ttfGenerator.generateFont(ttfParam)
+			font.data.markupEnabled = true
 //		font.setUseIntegerPositions(false)
-		font.setFixedWidthGlyphs("0123456789")
-		font.data.setLineHeight(font.data.lineHeight * downScale)
+			font.setFixedWidthGlyphs("0123456789")
+			font.data.setLineHeight(font.data.lineHeight * downScale)
+		}
 
-		ttfParam = getParam()
-		ttfParam.size *= 4
-		biggerFont = ttfGenerator.generateFont(ttfParam)
-		biggerFont.data.markupEnabled = true
+		run {
+			val ttfParam = getParam()
+			ttfParam.size *= 4
+			biggerFont = ttfGenerator.generateFont(ttfParam)
+			biggerFont.data.markupEnabled = true
 //		biggerFont.setUseIntegerPositions(false)
-		biggerFont.setFixedWidthGlyphs("0123456789")
-		biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
+			biggerFont.setFixedWidthGlyphs("0123456789")
+			biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
+		}
 
-		ttfParam = getParam()
-		ttfParam.borderWidth = 1.5f
-		fontBordered = ttfGenerator.generateFont(ttfParam)
-		fontBordered.data.markupEnabled = true
+		run {
+			val ttfParam = getParam()
+			ttfParam.borderWidth = 1.5f
+			fontBordered = ttfGenerator.generateFont(ttfParam)
+			fontBordered.data.markupEnabled = true
 //		fontBordered.setUseIntegerPositions(false)
-		fontBordered.setFixedWidthGlyphs("0123456789")
-		fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
+			fontBordered.setFixedWidthGlyphs("0123456789")
+			fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
+		}
 
-		ttfParam = getParam()
-		ttfParam.borderWidth = 1.5f * 4f
-		ttfParam.size *= 4
-		biggerFontBordered = ttfGenerator.generateFont(ttfParam)
-		biggerFontBordered.data.markupEnabled = true
+		run {
+			val ttfParam = getParam()
+			ttfParam.borderWidth = 1.5f * 4f
+			ttfParam.size *= 4
+			biggerFontBordered = ttfGenerator.generateFont(ttfParam)
+			biggerFontBordered.data.markupEnabled = true
 //		biggerFontBordered.setUseIntegerPositions(false)
-		biggerFontBordered.setFixedWidthGlyphs("0123456789")
-		biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
+			biggerFontBordered.setFixedWidthGlyphs("0123456789")
+			biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
+		}
+
 	}
 
 	override fun resize(width: Int, height: Int) {
