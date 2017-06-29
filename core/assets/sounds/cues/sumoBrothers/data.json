@@ -120,9 +120,6 @@
     {
       "id": "sumoBrothers_pose",
       "name": "pose",
-      "deprecatedIDs": [
-        "sumoBrothers/pose"
-      ],
       "cues": [
         {
           "id": "sumoBrothers/posesignalLoop",

@@ -24,8 +24,11 @@
       "name": "soccer ball - hit"
     },
     {
-      "id": "karateManMegamixEn/roaster",
-      "deprecatedIDs": ["karateMan/KarateRoaster"],
+      "id": "karateManMegamixEn/cookingPot",
+      "deprecatedIDs": [
+        "karateMan/KarateRoaster",
+        "karateMan/roaster"
+      ],
       "duration": 1,
       "name": "roaster - hit"
     },
@@ -42,7 +45,7 @@
     {
       "id": "karateManMegamixEn/rock",
       "duration": 1,
-     "name": "rock - hit"
+      "name": "rock - hit"
     },
     {
       "id": "karateManMegamixEn/bulbout",
@@ -54,43 +57,45 @@
       "duration": 1,
       "name": "lightbulb - hit"
     },
-	{
+    {
       "id": "karateManMegamixEn/bulbbreak",
       "duration": 1,
       "name": "lightbulb - break (unused)"
     },
-	{
+    {
       "id": "karateManMegamixEn/bombhit",
       "duration": 1,
       "name": "bomb - hit (unused)"
     },
-	{
+    {
       "id": "karateManMegamixEn/bombbreak",
       "duration": 1,
       "name": "bomb - break (unused)"
     },
-	{
+    {
       "id": "karateManMegamixEn/alienhit",
       "duration": 1,
       "name": "alien - hit (unused)"
     },
     {
       "id": "karateManMegamixEn/barreloutCombos",
-      "deprecatedIDs": ["karateMan/barrelout"],
       "duration": 1,
       "name": "barrel - out (Combos!)"
-    },{
+    },
+    {
       "id": "karateManMegamixEn/barreloutKicks",
       "duration": 1,
       "name": "barrel - out (Kicks!)"
     },
     {
       "id": "karateManMegamixEn/punchkick1",
+      "deprecatedIDs": ["karateMan/punchkick1"],
       "duration": 0.75,
       "name": "kick - punch"
     },
     {
       "id": "karateManMegamixEn/punchkick2",
+      "deprecatedIDs": ["karateMan/punchkick2"],
       "duration": 0.75,
       "name": "kick - kick!"
     },
@@ -207,15 +212,18 @@
       ]
     },
     {
-      "id": "karateManMegamixEn_roaster",
-      "name": "roaster",
+      "id": "karateManMegamixEn_cookingPot",
+      "deprecatedIDs": [
+        "karateMan_roaster"
+      ],
+      "name": "cooking pot",
       "cues": [
         {
           "id": "karateManMegamixEn/potout",
           "beat": 0
         },
         {
-          "id": "karateManMegamixEn/roaster",
+          "id": "karateManMegamixEn/cookingPot",
           "beat": 1
         }
       ]
@@ -262,6 +270,7 @@
     },
     {
       "id": "karateManMegamixEn_kick",
+      "deprecatedIDs": ["karateMan_kick"],
       "name": "kick",
       "cues": [
         {
@@ -373,6 +382,7 @@
     },
     {
       "id": "karateManMegamixEn_lightbulbUnused",
+      "deprecatedIDs": ["karateMan_lightbulbUnused"],
       "name": "lightbulb (alternate, unused)",
       "cues": [
         {
@@ -409,6 +419,7 @@
     },
     {
       "id": "karateManMegamixEn_alien",
+      "deprecatedIDs": ["karateMan_alien"],
       "name": "alien (unused)",
       "cues": [
         {

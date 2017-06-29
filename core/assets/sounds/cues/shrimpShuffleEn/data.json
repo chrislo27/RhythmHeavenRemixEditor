@@ -140,9 +140,6 @@
   "patterns": [
     {
       "id": "shrimpShuffleEn_together",
-      "deprecatedIDs": [
-        "shrimpShuffleEn/to"
-      ],
       "name": "together",
       "cues": [
         {

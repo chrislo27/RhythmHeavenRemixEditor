@@ -15,6 +15,7 @@
     },
     {
       "id": "karateMan/pothit",
+	  "deprecatedIDs": ["karateMan/roaster", "karateMan/bulbbreak", "karateMan/alienhit"],
       "duration": 1,
       "name": "pot - hit"
     },
@@ -55,18 +56,9 @@
     },
     {
       "id": "karateMan/barrelout",
+	  "deprecatedIDs": ["karateMan/barreloutCombos", "karateMan/barreloutKicks"],
       "duration": 1,
       "name": "barrel - out"
-    },
-    {
-      "id": "karateMan/punchkick1",
-      "duration": 0.75,
-      "name": "kick - punch"
-    },
-    {
-      "id": "karateMan/punchkick2",
-      "duration": 0.75,
-      "name": "kick - kick!"
     },
     {
       "id": "karateMan/punchy1",
@@ -102,6 +94,7 @@
   "patterns": [
     {
       "id": "karateMan_pot",
+	  "deprecatedIDs": ["karateMan/alien", "karateMan/roaster"],
       "name": "pot",
       "cues": [
         {
@@ -234,6 +227,7 @@
     },
 	{
       "id": "karateMan_lightbulb",
+	  "deprecatedIDs": ["karateMan/lightbulbUnused"],
       "name": "lightbulb (standalone)",
       "cues": [
         {
@@ -248,6 +242,7 @@
     },
     {
       "id": "karateMan_combo",
+	  "deprecatedIDs": ["karateMan/kick"],
       "name": "combo",
       "cues": [
         {

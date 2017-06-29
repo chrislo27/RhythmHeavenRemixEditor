@@ -388,6 +388,30 @@ object GameRegistry : Disposable {
 				}
 			}
 
+			// deprecations for IDs that still exist
+			run {
+				val allIDs: List<String> = gameList.flatMap { game ->
+					listOf(game.soundCues.map(SoundCue::id),
+						   game.patterns.map(Pattern::id)).flatten()
+				}
+				gameList.forEach { game ->
+					game.soundCues.filter { it.deprecated.isNotEmpty() }.forEach { sc ->
+						val any = sc.deprecated.filter { it in allIDs }
+						if (any.any()) {
+							Main.logger.warn("Sound ID ${sc.id}'s deprecations still exist - $any")
+							warningCount++
+						}
+					}
+					game.patterns.filter { it.deprecated.isNotEmpty() }.forEach { pat ->
+						val any = pat.deprecated.filter { it in allIDs }
+						if (any.any()) {
+							Main.logger.warn("Pattern ID ${pat.id}'s deprecations still exist - $any")
+							warningCount++
+						}
+					}
+				}
+			}
+
 			Main.logger.info("Completed warning checks in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
 
 			delay(50) // allow logger to catch up
