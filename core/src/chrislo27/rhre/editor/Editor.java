@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
@@ -379,9 +380,9 @@ public class Editor extends InputAdapter implements Disposable {
 				batch.setColor(1, 1, 1, 1);
 
 				main.getBiggerFont().getData().setScale(0.5f);
-				main.getBiggerFont().setColor(0.75f, 0.5f, 0.5f, 0.6f * a);
+				main.getBiggerFont().setColor(0.75f, 0.5f, 0.5f, 1f * a);
 				main.getBiggerFont().draw(batch, Localization.get("editor.delete"), camera.position.x,
-						-main.getBiggerFont().getCapHeight(), 0, Align.center, false);
+						-main.getBiggerFont().getLineHeight() + Entity.PX_HEIGHT, 0, Align.center, false);
 				main.getBiggerFont().getData().setScale(1);
 				main.getBiggerFont().setColor(1, 1, 1, 1);
 			}
@@ -693,6 +694,25 @@ public class Editor extends InputAdapter implements Disposable {
 					}
 				}
 			}
+		}
+
+		// made with text
+		if (DebugSetting.debug && remix.getPlayingState() == PlayingState.PLAYING) {
+			// FIXME
+			final Color bg = main.getPalette().getEditorBg();
+			batch.setColor(bg);
+			Main.fillRect(batch, 0, 0, camera.viewportWidth, MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + OVERVIEW_HEIGHT);
+			batch.setColor(1f, 1f, 1f, 1f);
+
+			batch.setProjectionMatrix(camera.combined);
+//			main.getFont().getData().setScale(0.75f);
+			main.getFont().setColor(1f - bg.r, 1f - bg.g, 1f - bg.b, 0.5f);
+			Main.drawCompressed(main.getFont(), batch, "Made using Rhythm Heaven Remix Editor 2\nhttps://github" +
+							".com/chrislo27/RhythmHeavenRemixEditor2", camera.position.x - camera.viewportWidth / 2,
+					-main.getFont().getCapHeight() - 96, camera.viewportWidth, Align.center);
+			main.getFont().setColor(1f, 1f, 1f, 1f);
+			main.getFont().getData().setScale(1f);
+			batch.setProjectionMatrix(main.camera.combined);
 		}
 
 		batch.end();
@@ -1420,14 +1440,18 @@ public class Editor extends InputAdapter implements Disposable {
 		} else if (remix.getPlayingState() == PlayingState.STOPPED) {
 			if (currentTool == Tool.NORMAL) {
 				if (remix.getSelection().size() > 0 && remix.getSelection().stream().anyMatch(Entity::isRepitchable)) {
-					int[] old = remix.getSelection().stream().mapToInt(Entity::getSemitone).toArray();
-					remix.getSelection().stream().filter(Entity::isRepitchable)
-							.forEach(e -> e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE));
-					for (int i = 0; i < remix.getSelection().size(); i++) {
-						if (remix.getSelection().get(i).getSemitone() != old[i]) {
-							remix.addActionWithoutMutating(new ActionPitchChange(old, remix.getSelection()));
-							break;
-						}
+					List<Entity> pitchable = remix.getSelection().stream()
+							.filter(Entity::isRepitchable)
+							.collect(Collectors.toList());
+					int[] old = new int[pitchable.size()];
+					boolean dirty = false;
+					for (int i = 0; i < pitchable.size(); i++) {
+						Entity e = pitchable.get(i);
+						old[i] = e.getSemitone();
+						dirty |= e.adjustPitch(-amount, -MAX_SEMITONE, MAX_SEMITONE);
+					}
+					if (dirty) {
+						remix.addActionWithoutMutating(new ActionPitchChange(old, pitchable));
 					}
 					return true;
 				}
