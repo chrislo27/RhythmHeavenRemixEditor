@@ -59,6 +59,16 @@
       "duration": 1,
       "name": "lightbulb - hit"
     },
+	{
+      "id": "karateMan/bulbbreak",
+      "duration": 1,
+      "name": "lightbulb - break (unused)"
+    },
+	{
+      "id": "karateMan/alienhit",
+      "duration": 1,
+      "name": "alien - hit (unused)"
+    },
     {
       "id": "karateMan/barreloutCombos",
       "deprecatedIDs": ["karateMan/barrelout"],
@@ -254,6 +264,52 @@
         {
           "id": "karateMan/rock",
           "beat": 5.5
+        }
+      ]
+    },
+	{
+      "id": "karateMan_lightbulb",
+      "name": "lightbulb (standalone)",
+      "cues": [
+        {
+          "id": "karateMan/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/bulbhit",
+          "beat": 1
+        }
+      ]
+    },
+	{
+      "id": "karateMan_lightbulbUnused",
+      "name": "lightbulb (alternate, unused)",
+      "cues": [
+        {
+          "id": "karateMan/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/bulbhit",
+          "beat": 1
+        },
+		{
+          "id": "karateMan/bulbbreak",
+          "beat": 2
+        }
+      ]
+    },
+	{
+      "id": "karateMan_alien",
+      "name": "alien (unused)",
+      "cues": [
+        {
+          "id": "karateMan/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/alienhit",
+          "beat": 1
         }
       ]
     },
