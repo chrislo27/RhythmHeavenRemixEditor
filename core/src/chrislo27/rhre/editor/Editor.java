@@ -360,9 +360,8 @@ public class Editor extends InputAdapter implements Disposable {
 		{
 			if (remix.getPlayingState() == PlayingState.PLAYING && remix.getTickEachBeat()) {
 				final float jumpTime = 0.65f;
-				final float beatPercent = (remix.getBeat() < 0
-						? (remix.getBeat() + (float) Math.abs(Math.floor(remix.getBeat()) * 2)) % 1
-						: remix.getBeat()) % 1;
+				final float beat = remix.getBeat();
+				final float beatPercent = (beat + (float) Math.abs(Math.floor(beat) * 2)) % 1;
 				if (beatPercent <= jumpTime) {
 					final float jumpSawtooth = beatPercent / jumpTime;
 					final float jumpTriangle = (jumpSawtooth <= 0.5f
