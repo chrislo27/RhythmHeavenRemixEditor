@@ -1,0 +1,79 @@
+{
+  "gameID": "pirateCrew",
+  "gameName": "Pirate Crew",
+  "series": "side",
+  "cues": [
+    {
+      "id": "pirateCrew/row",
+      "duration": 0.5,
+      "name": "rowing"
+    },
+    {
+      "id": "pirateCrew/rowPower",
+      "duration": 0.75,
+      "name": "rowing with power"
+    },
+    {
+      "id": "pirateCrew/everybodyRow1",
+      "duration": 0.75,
+      "name": "everybody row - 1"
+    },
+    {
+      "id": "pirateCrew/everybodyRow2",
+      "duration": 0.25,
+      "name": "everybody row - 2"
+    },
+    {
+      "id": "pirateCrew/everybodyRow3",
+      "duration": 0.25,
+      "name": "everybody row - 3"
+    },
+    {
+      "id": "pirateCrew/everybodyRow4",
+      "duration": 0.25,
+      "name": "everybody row - 4"
+    },
+    {
+      "id": "pirateCrew/everybodyRow5",
+      "duration": 1.5,
+      "name": "everybody row - 5"
+    },
+    {
+      "id": "pirateCrew/pirateYeah",
+      "duration": 1.5,
+      "name": "pirates - yeah"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "pirateCrew_jackieRow",
+      "name": "everybody row!",
+      "cues": [
+        {
+          "id": "pirateCrew/everybodyRow1",
+          "beat": 0.
+        },
+        {
+          "id": "pirateCrew/everybodyRow2",
+          "beat": 0.75
+        },
+        {
+          "id": "pirateCrew/everybodyRow3",
+          "beat": 1.
+        },
+        {
+          "id": "pirateCrew/everybodyRow4",
+          "beat": 1.25
+        },
+        {
+          "id": "pirateCrew/everybodyRow5",
+          "beat": 1.50
+        },
+        {
+          "id": "pirateCrew/pirateYeah",
+          "beat": 3.
+        }
+      ]
+    }
+  ]
+}
