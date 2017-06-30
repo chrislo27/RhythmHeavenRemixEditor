@@ -1,0 +1,219 @@
+{
+  "gameID": "theDazzlesDSKo",
+  "gameName": "The Dazzles (DS) (Korean)",
+  "series": "ds",
+  "cues": [
+    {
+      "id": "theDazzlesDSKo/hold4",
+      "duration": 0.5,
+      "name": "hold - three"
+    },
+    {
+      "id": "theDazzlesDSKo/hold3",
+      "duration": 0.5,
+      "name": "hold - two"
+    },
+    {
+      "id": "theDazzlesDSKo/hold2",
+      "duration": 0.5,
+      "name": "hold - 1"
+    },
+    {
+      "id": "theDazzlesDSKo/hold1",
+      "duration":1.0,
+      "name": "hold - crouch"
+    },
+    {
+      "id": "theDazzlesDSKo/posePartner",
+      "duration": 0.5,
+      "name": "partner pose"
+    },
+    {
+      "id": "theDazzlesDSKo/posePartnerLong",
+      "duration": 1.0,
+      "name": "partner pose - long"
+    },
+    {
+      "id": "theDazzlesDSKo/posePlayer",
+      "duration": 1.0,
+      "name": "player pose"
+    },
+    {
+      "id": "theDazzlesDSKo/posePlayerStars",
+      "duration": 2.0,
+      "name": "player pose - stars"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "theDazzlesDSKo_hold",
+      "name": "hold count in",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/hold4",
+          "beat": 0.0,
+          "track": 1
+        },
+        {
+          "id": "theDazzlesDSKo/hold3",
+          "beat": 1.0,
+          "track": 1
+        },
+        {
+          "id": "theDazzlesDSKo/hold2",
+          "beat": 2.0,
+          "track": 1
+        },
+        {
+          "id": "theDazzlesDSKo/hold1",
+          "beat": 2.0,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_holdCrouch",
+      "name": "hold count in and crouch",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/hold4",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/hold3",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSKo/hold2",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSKo/hold1",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_poseThree",
+      "name": "pose - three",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePlayer",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_poseTwo",
+      "name": "pose - two",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/posePartnerLong",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePlayerStars",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_poseSix1",
+      "name": "pose - six - diagonal",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.75
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 2.75
+        },
+        {
+          "id": "theDazzlesDSKo/posePlayer",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_poseSix2",
+      "name": "pose - six - columns",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesDSKo/posePartnerLong",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 2.5
+        },
+        {
+          "id": "theDazzlesDSKo/posePlayer",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "theDazzlesDSKo_poseSix3",
+      "name": "pose - six",
+      "cues": [
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 0.5
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 1.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 1.5
+        },
+        {
+          "id": "theDazzlesDSKo/posePartner",
+          "beat": 2.0
+        },
+        {
+          "id": "theDazzlesDSKo/posePlayer",
+          "beat": 2.5
+        }
+      ]
+    }
+  ]
+}

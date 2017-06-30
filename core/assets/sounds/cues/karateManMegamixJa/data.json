@@ -1,0 +1,563 @@
+{
+  "gameID": "karateManMegamixJa",
+  "gameName": "Karate Man (Megamix) (Japanese)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "karateManMegamixJa/potout",
+      "duration": 1,
+      "name": "pot - out"
+    },
+    {
+      "id": "karateManMegamixJa/offbeatpotout",
+      "duration": 1,
+      "name": "pot - offbeat out"
+    },
+    {
+      "id": "karateManMegamixJa/pothit",
+      "duration": 1,
+      "name": "pot - hit"
+    },
+    {
+      "id": "karateManMegamixJa/soccerHit",
+      "duration": 1,
+      "name": "soccer ball - hit"
+    },
+    {
+      "id": "karateManMegamixJa/cookingPot",
+      "duration": 1,
+      "name": "roaster - hit"
+    },
+    {
+      "id": "karateManMegamixJa/hit3cue1",
+      "duration": 0.5,
+      "name": "hit"
+    },
+    {
+      "id": "karateManMegamixJa/hit3cue2",
+      "duration": 0.5,
+      "name": "3!"
+    },
+    {
+      "id": "karateManMegamixJa/hit4",
+      "duration": 0.5,
+      "name": "4!"
+    },
+    {
+      "id": "karateManMegamixJa/rock",
+      "duration": 1,
+      "name": "rock - hit"
+    },
+    {
+      "id": "karateManMegamixJa/bulbout",
+      "duration": 1,
+      "name": "lightbulb - out"
+    },
+    {
+      "id": "karateManMegamixJa/bulbhit",
+      "duration": 1,
+      "name": "lightbulb - hit"
+    },
+    {
+      "id": "karateManMegamixJa/bulbbreak",
+      "duration": 1,
+      "name": "lightbulb - break (unused)"
+    },
+    {
+      "id": "karateManMegamixJa/bombhit",
+      "duration": 1,
+      "name": "bomb - hit (unused)"
+    },
+    {
+      "id": "karateManMegamixJa/bombbreak",
+      "duration": 1,
+      "name": "bomb - break (unused)"
+    },
+    {
+      "id": "karateManMegamixJa/alienhit",
+      "duration": 1,
+      "name": "alien - hit (unused)"
+    },
+    {
+      "id": "karateManMegamixJa/bigpothit",
+      "duration": 1,
+      "name": "pot - hit (unused)"
+    },
+    {
+      "id": "karateManMegamixJa/barreloutCombos",
+      "duration": 1,
+      "name": "barrel - out (Combos!)"
+    },
+    {
+      "id": "karateManMegamixJa/barreloutKicks",
+      "duration": 1,
+      "name": "barrel - out (Kicks!)"
+    },
+    {
+      "id": "karateManMegamixJa/punchkick1",
+      "duration": 0.5,
+      "name": "kick - pun"
+    },
+    {
+      "id": "karateManMegamixJa/punchkick2",
+      "duration": 0.25,
+      "name": "kick - ch"
+    },
+    {
+      "id": "karateManMegamixJa/punchkick3",
+      "duration": 0.75,
+      "name": "kick - kick!"
+    },
+    {
+      "id": "karateManMegamixJa/punchy1",
+      "duration": 0.25,
+      "name": "combo - 1"
+    },
+    {
+      "id": "karateManMegamixJa/punchy2",
+      "duration": 0.25,
+      "name": "combo - 2"
+    },
+    {
+      "id": "karateManMegamixJa/punchy3",
+      "duration": 0.25,
+      "name": "combo - 3"
+    },
+    {
+      "id": "karateManMegamixJa/punchy4",
+      "duration": 0.25,
+      "name": "combo - 4"
+    },
+    {
+      "id": "karateManMegamixJa/ko",
+      "duration": 0.5,
+      "name": "combo - 5"
+    },
+    {
+      "id": "karateManMegamixJa/pow",
+      "duration": 1.5,
+      "name": "combo - 6"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "karateManMegamixJa_pot",
+      "name": "pot",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_offbeatpot",
+      "name": "offbeat pot",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/offbeatpotout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_doublePot",
+      "name": "double pot (Senior)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/offbeatpotout",
+          "beat": 0.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 1.5,
+          "track": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_soccer ball",
+      "name": "soccer ball",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/soccerHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_rock",
+      "name": "rock",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/rock",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_cookingPot",
+      "name": "cooking pot",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/cookingPot",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_hit3",
+      "name": "hit 3!",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/hit3cue1",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/hit3cue2",
+          "beat": 0.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/rock",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_hit4",
+      "name": "hit 4! (unused)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/hit4",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/hit3cue2",
+          "beat": 0.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 1.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/pothit",
+          "beat": 4.5
+        },
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 4.5,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/rock",
+          "beat": 5.5
+        }
+      ]
+    },
+	{
+      "id": "karateManMegamixJa_kickSolo",
+      "name": "kick (standalone)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/barreloutKicks",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/punchkick1",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/punchkick2",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManMegamixJa/punchkick3",
+          "beat": 1.75
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_kick",
+      "name": "kick",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/barreloutKicks",
+          "beat": 2
+        },
+        {
+          "id": "karateManMegamixJa/punchkick1",
+          "beat": 3
+        },
+        {
+          "id": "karateManMegamixJa/punchkick2",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManMegamixJa/punchkick3",
+          "beat": 3.75
+        }
+      ]
+    },
+	{
+      "id": "karateManMegamixJa_comboSolo",
+      "name": "combo (standalone)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/barreloutCombos",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/punchy1",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/punchy2",
+          "beat": 1.25
+        },
+        {
+          "id": "karateManMegamixJa/punchy3",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManMegamixJa/punchy4",
+          "beat": 1.75
+        },
+        {
+          "id": "karateManMegamixJa/ko",
+          "beat": 2
+        },
+        {
+          "id": "karateManMegamixJa/pow",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_combo",
+      "name": "combo",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/barreloutCombos",
+          "beat": 2
+        },
+        {
+          "id": "karateManMegamixJa/punchy1",
+          "beat": 3
+        },
+        {
+          "id": "karateManMegamixJa/punchy2",
+          "beat": 3.25
+        },
+        {
+          "id": "karateManMegamixJa/punchy3",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManMegamixJa/punchy4",
+          "beat": 3.75
+        },
+        {
+          "id": "karateManMegamixJa/ko",
+          "beat": 4
+        },
+        {
+          "id": "karateManMegamixJa/pow",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_comboSenior",
+      "name": "combo (Senior)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/bulbout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/barreloutCombos",
+          "beat": 1,
+          "track": 1
+        },
+        {
+          "id": "karateManMegamixJa/punchy1",
+          "beat": 2
+        },
+        {
+          "id": "karateManMegamixJa/punchy2",
+          "beat": 2.25
+        },
+        {
+          "id": "karateManMegamixJa/punchy3",
+          "beat": 2.5
+        },
+        {
+          "id": "karateManMegamixJa/punchy4",
+          "beat": 2.75
+        },
+        {
+          "id": "karateManMegamixJa/ko",
+          "beat": 3
+        },
+        {
+          "id": "karateManMegamixJa/pow",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_lightbulbUnused",
+      "name": "lightbulb (alternate, unused)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bulbhit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/bulbbreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_bomb",
+      "name": "bomb (unused)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bombhit",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixJa/bombbreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_alien",
+      "name": "alien (unused)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/alienhit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManMegamixJa_potGBA",
+      "name": "pot - GBA version (unused)",
+      "cues": [
+        {
+          "id": "karateManMegamixJa/potout",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixJa/bigpothit",
+          "beat": 1
+        }
+      ]
+    }
+  ]
+}
