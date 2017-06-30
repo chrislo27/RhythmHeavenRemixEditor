@@ -4,6 +4,16 @@
   "series": "megamix",
   "cues": [
     {
+      "id": "superSamuraiSlice/princessKidnapped",
+      "duration": 5,
+      "name": "start - girl kidnapped"
+    },
+    {
+      "id": "superSamuraiSlice/princessRescued",
+      "duration": 5,
+      "name": "ending - thank you"
+    },
+    {
       "id": "superSamuraiSlice/appear",
       "duration": 0.5,
       "name": "demon - appear"
