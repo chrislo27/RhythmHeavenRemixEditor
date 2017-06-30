@@ -18,7 +18,7 @@ object PieChartRenderer {
 
 
 	fun render(shape: ShapeRenderer, x: Float, y: Float, radius: Float, data: Map<Slice, Float>, mouseX: Float,
-			   mouseY: Float, onHover: ((Slice, Float) -> Unit)? = null,
+			   mouseY: Float, onHover: ((Map.Entry<Slice, Float>, Float) -> Unit)? = null,
 			   startingDegree: Float = 0f, degreesPerSegment: Int = 6) {
 		val total = data.map { it.value }.sum()
 
@@ -47,7 +47,7 @@ object PieChartRenderer {
 				for (it in data) {
 					val degreePiece: Float = it.value / total * 360
 					if (angle in (currentDegree + startingDegree)..(currentDegree + startingDegree + degreePiece)) {
-						onHover(it.key, it.value / total)
+						onHover(it, it.value / total)
 						break
 					}
 

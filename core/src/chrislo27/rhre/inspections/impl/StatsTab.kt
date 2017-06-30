@@ -41,17 +41,21 @@ class StatsTab : InspectionTab() {
 		val games = remix.entities.filterIsInstance(HasGame::class.java).map(HasGame::game).distinct()
 
 		gameChart = games.mapIndexed { index, game ->
-			val count: Int = remix.entities.filter { it is HasGame && it.game == game }.count()
+			val count: Float = remix.entities.filter { it is HasGame && it.game == game }
+					.map { remix.tempoChanges.beatsToSeconds(it.bounds.x + it.bounds.width) - remix.tempoChanges.beatsToSeconds(it.bounds.x)}
+					.sum()
 
 			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / games.size, 1f, 0.85f)),
-									game.name) to count.toFloat()
+									game.name) to count
 		}.sortedBy { it.second }.toMap()
 
 		seriesChart = games.map{it.series}.distinct().mapIndexed { index, series ->
-			val count: Int = remix.entities.filter { it is HasGame && it.game.series == series }.count()
+			val count: Float = remix.entities.filter { it is HasGame && it.game.series == series }
+					.map { remix.tempoChanges.beatsToSeconds(it.bounds.x + it.bounds.width) - remix.tempoChanges.beatsToSeconds(it.bounds.x)}
+					.sum()
 
 			return@mapIndexed Slice(Color().set(Utils.HSBtoRGBA8888(index.toFloat() / SeriesList.list.size, 1f, 0.85f)),
-									series.getLocalizedName()) to count.toFloat()
+									series.getLocalizedName()) to count
 		}.sortedBy { it.second }.toMap()
 
 	}
@@ -71,16 +75,14 @@ class StatsTab : InspectionTab() {
 			val radius: Float = 100f
 			PieChartRenderer.render(main.shapes, startX + width * 0.333333f, startY + main.font.lineHeight * 3 + radius, radius,
 									gameChart, mouseXPx, mouseYPx, { slice, percent ->
-										str = Localization.get("inspections.stats.percentage", slice.name,
-															   "" + Math.round(
-																	   percent * remix.entities.size) + " / " + remix.entities.size,
+										str = Localization.get("inspections.stats.percentage", slice.key.name,
+															   String.format("%.2f", slice.value) + " / " + remix.duration,
 															   String.format("%.2f", percent * 100))
 									})
 			PieChartRenderer.render(main.shapes, startX + width * 0.666666f, startY + main.font.lineHeight * 3 + radius, radius,
 									seriesChart, mouseXPx, mouseYPx, { slice, percent ->
-										str = Localization.get("inspections.stats.percentage", slice.name,
-															   "" + Math.round(
-																	   percent * remix.entities.size) + " / " + remix.entities.size,
+										str = Localization.get("inspections.stats.percentage", slice.key.name,
+															   String.format("%.2f", slice.value) + " / " + remix.duration,
 															   String.format("%.2f", percent * 100))
 									})
 			main.shapes.color = Color.WHITE

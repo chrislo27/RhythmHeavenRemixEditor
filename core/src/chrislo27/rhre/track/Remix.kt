@@ -45,8 +45,11 @@ class Remix : ActionHistory<Remix>(), Disposable {
 
 	val beatEventListeners: List<Runnable> = mutableListOf()
 
-	private val metronomeCowbell: LazySound by lazy {
-		GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?: throw RuntimeException("Missing cowbell sound")
+	private val metronomeSFX: List<LazySound> by lazy {
+		listOf(
+				GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?:
+						throw RuntimeException("Missing metronome sound")
+			  )
 	}
 
 	@Volatile var playingState = PlayingState.STOPPED
@@ -553,7 +556,7 @@ class Remix : ActionHistory<Remix>(), Disposable {
 			lastTickBeat = Math.floor(beat.toDouble()).toInt()
 			beatEventListeners.forEach(Runnable::run)
 			if (tickEachBeat) {
-				metronomeCowbell.sound.play(1f, 1.1f, 0f)
+				metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size].sound.play(1f, 1.1f, 0f)
 			}
 		}
 
