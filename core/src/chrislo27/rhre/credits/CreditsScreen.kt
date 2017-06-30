@@ -161,7 +161,7 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 
 	init {
 		remix.music = MusicData(AssetRegistry.getMusic("cannery_music_song"),
-								Gdx.files.local("credits/cannery/music/Cannery.ogg"))
+								Gdx.files.local("credits/cannery/music/Cannery.ogg"), "Cannery.ogg")
 		remix.playbackStart = -1f
 
 		remix.entities.filter { it is PatternEntity && it.id == "cannery_can" }.forEach {

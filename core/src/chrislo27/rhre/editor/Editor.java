@@ -60,8 +60,8 @@ public class Editor extends InputAdapter implements Disposable {
 	private static final int GAME_TAB_HEIGHT = 24;
 	private static final int PICKER_HEIGHT = ICON_COUNT_Y * (GAME_ICON_PADDING + GAME_ICON_SIZE) + GAME_ICON_PADDING;
 	private static final int MINIMAP_HEIGHT = 32;
-	private static final int STAFF_START_Y =
-			MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + MINIMAP_HEIGHT + 32;
+	private static final int STAFF_START_Y = MESSAGE_BAR_HEIGHT + PICKER_HEIGHT + GAME_TAB_HEIGHT + MINIMAP_HEIGHT +
+			32;
 	private static final int ICON_START_Y = PICKER_HEIGHT + MESSAGE_BAR_HEIGHT - GAME_ICON_PADDING - GAME_ICON_SIZE;
 	private static final int PATTERNS_ABOVE_BELOW = 2;
 	private static final float STRETCHABLE_AREA = 16f / Entity.PX_WIDTH;
@@ -73,11 +73,11 @@ public class Editor extends InputAdapter implements Disposable {
 	private final Vector3 vec3Tmp2 = new Vector3();
 	private final Map<Series, ScrollValue> scrolls = new HashMap<>();
 	private final Vector3 cameraPickVec3 = new Vector3();
-	public Remix remix;
 	public FileHandle file = null;
 	public boolean isNormalSave = false;
 	public boolean inPresentationMode = false;
 	float snappingInterval;
+	private Remix remix;
 	private String status;
 	private Tool currentTool = Tool.NORMAL;
 	private Series currentSeries = SeriesList.TENGOKU;
@@ -102,11 +102,22 @@ public class Editor extends InputAdapter implements Disposable {
 		camera.setToOrtho(false, 1280, 720);
 		camera.position.x = 0.333f * camera.viewportWidth;
 
-		remix = new Remix();
+		setRemix(new Remix());
 
 		for (Series s : SeriesList.list)
 			scrolls.put(s, new ScrollValue(0, 0, 0, 0));
 		snappingInterval = 0.25f;
+	}
+
+	public Remix getRemix() {
+		return remix;
+	}
+
+	public void setRemix(Remix remix) {
+		if (this.remix != null) {
+			this.remix.dispose();
+		}
+		this.remix = remix;
 	}
 
 	private Entity getEntityAtPoint(float x, float y) {
@@ -681,8 +692,8 @@ public class Editor extends InputAdapter implements Disposable {
 			batch.flush();
 			StencilMaskUtil.resetMask();
 
-			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && selectionOrigin == null &&
-					selectionGroup == null && remix.getPlayingState() != PlayingState.PLAYING) {
+			if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && selectionOrigin == null && selectionGroup == null &&
+					remix.getPlayingState() != PlayingState.PLAYING) {
 				if (main.getInputX() > startX && main.getInputX() < startX + mapWidth) {
 					if (main.camera.viewportHeight - main.getInputY() > startY &&
 							main.camera.viewportHeight - main.getInputY() < startY + MINIMAP_HEIGHT) {
@@ -711,10 +722,9 @@ public class Editor extends InputAdapter implements Disposable {
 
 //			main.getFont().getData().setScale(0.75f);
 			main.getFont().setColor(inverted.r, inverted.g, inverted.b, inverted.a * 0.5f);
-			Main.drawCompressed(main.getFont(), batch, Localization.get("editor.madewith") +
-							"\nhttps://github.com/chrislo27/RhythmHeavenRemixEditor2",
-					0, PICKER_HEIGHT / 2, camera.viewportWidth,
-					Align.center);
+			Main.drawCompressed(main.getFont(), batch,
+					Localization.get("editor.madewith") + "\nhttps://github.com/chrislo27/RhythmHeavenRemixEditor2", 0,
+					PICKER_HEIGHT / 2, camera.viewportWidth, Align.center);
 			main.getFont().setColor(1f, 1f, 1f, 1f);
 			main.getFont().getData().setScale(1f);
 
@@ -748,17 +758,19 @@ public class Editor extends InputAdapter implements Disposable {
 			// current game
 			if (shouldShowCurrentGame) {
 				batch.setColor(1, 1, 1, 1);
-				renderCurrentGameDisplay(batch, main.getFont(), camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2,
-						barY + 48 + barBorder * 4, barWidth * 0.5f);
+				renderCurrentGameDisplay(batch, main.getFont(),
+						camera.viewportWidth / 2f - barWidth / 2f - barBorder * 2, barY + 48 + barBorder * 4,
+						barWidth * 0.5f);
 				batch.setColor(inverted);
 			}
 
 			// BPM
 			main.getFont().getData().setScale(0.75f);
-			Main.drawCompressed(main.getFont(), batch, String.format("%.1f", remix.getTempoChanges().getTempoAt(beat)) + " BPM",
+			Main.drawCompressed(main.getFont(), batch,
+					String.format("%.1f", remix.getTempoChanges().getTempoAt(beat)) + " BPM",
 					camera.viewportWidth * 0.5f + barWidth * 0.25f,
-					barY + 48 + barBorder * 4 - (16 - main.getFont().getCapHeight() / 2),
-					barWidth * 0.25f, Align.right);
+					barY + 48 + barBorder * 4 - (16 - main.getFont().getCapHeight() / 2), barWidth * 0.25f,
+					Align.right);
 			main.getFont().getData().setScale(1f);
 
 			main.getFont().setColor(1, 1, 1, 1);
@@ -1567,7 +1579,8 @@ public class Editor extends InputAdapter implements Disposable {
 	}
 
 	private void renderCurrentGameDisplay(SpriteBatch batch, float width) {
-		renderCurrentGameDisplay(batch, main.getFontBordered(), 4, main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4, width);
+		renderCurrentGameDisplay(batch, main.getFontBordered(), 4,
+				main.camera.viewportHeight - EditorStageSetup.BAR_HEIGHT - 4, width);
 	}
 
 	private void renderCurrentGameDisplay(SpriteBatch batch, BitmapFont font, float x, float y, float width) {
@@ -1578,8 +1591,8 @@ public class Editor extends InputAdapter implements Disposable {
 		main.batch.draw(icon, x, y - 32, 32, 32);
 		font.getData().setScale(0.75f);
 //			main.getFontBordered().setColor(1f, 0.25f, 0.25f, 1);
-		Main.drawCompressed(font, batch, remix.getCurrentGame().getName(), x + 36,
-				y - (16 - font.getCapHeight() / 2), width, Align.left);
+		Main.drawCompressed(font, batch, remix.getCurrentGame().getName(), x + 36, y - (16 - font.getCapHeight() / 2),
+				width, Align.left);
 		font.getData().setScale(1f);
 	}
 

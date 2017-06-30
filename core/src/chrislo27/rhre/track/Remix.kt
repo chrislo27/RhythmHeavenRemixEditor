@@ -11,6 +11,7 @@ import chrislo27.rhre.registry.Game
 import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.script.luaobj.LuaRemix
 import chrislo27.rhre.util.JsonHandler
+import chrislo27.rhre.version.RHRE2Version
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle
@@ -26,6 +27,7 @@ import org.luaj.vm2.LuaValue
 import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.nio.charset.Charset
 import java.util.zip.ZipEntry
@@ -34,7 +36,7 @@ import java.util.zip.ZipOutputStream
 import javax.sound.midi.*
 
 
-class Remix : ActionHistory<Remix>() {
+class Remix : ActionHistory<Remix>(), Disposable {
 
 	val entities: MutableList<Entity> = mutableListOf()
 	val selection: MutableList<Entity> = mutableListOf()
@@ -157,7 +159,7 @@ class Remix : ActionHistory<Remix>() {
 			with(remix) {
 				val obj = RemixObject()
 
-				obj.version = ionium.templates.Main.version
+				obj.version = RHRE2Version.VERSION.toString()
 
 				obj.musicStartTime = musicStartTime
 				obj.playbackStart = playbackStart
@@ -254,7 +256,7 @@ class Remix : ActionHistory<Remix>() {
 		fun writeToZipStream(remix: Remix, stream: ZipOutputStream) {
 			stream.putNextEntry(ZipEntry("data.json"))
 			val json = writeToJsonObject(remix)
-			json.musicAssociation = remix.music?.file?.name()
+			json.musicAssociation = remix.music?.originalFileName
 			stream.write(JsonHandler.toJson(json).toByteArray(Charset.forName("UTF-8")))
 			stream.closeEntry()
 
@@ -262,6 +264,11 @@ class Remix : ActionHistory<Remix>() {
 				stream.putNextEntry(ZipEntry(json.musicAssociation))
 
 				val music = remix.music!!
+
+				if (!music.file.exists()) {
+					throw FileNotFoundException(music.file.file().absolutePath)
+				}
+
 				val reader = music.file.read(2048)
 				val buf = ByteArray(2048)
 
@@ -304,9 +311,7 @@ class Remix : ActionHistory<Remix>() {
 			if (obj.musicAssociation != null) {
 				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
-				val tempFile: File = File(tmpFolder.absolutePath, obj.musicAssociation)
-				tempFile.deleteOnExit()
-				tmpFolder.deleteOnExit()
+				val tempFile: File = File(tmpFolder.absolutePath, "music-${System.currentTimeMillis()}.${obj.musicAssociation!!.substringAfterLast('.', "music")}")
 
 				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation) ?: throw RuntimeException(
 						"Music file not found!")
@@ -327,7 +332,7 @@ class Remix : ActionHistory<Remix>() {
 				out.close()
 
 				val handle: FileHandle = FileHandle(tempFile)
-				obj.musicData = MusicData(Gdx.audio.newMusic(handle), handle)
+				obj.musicData = MusicData(Gdx.audio.newMusic(handle), handle, obj.musicAssociation!!)
 			}
 			zipFile.close()
 			return obj
@@ -581,6 +586,10 @@ class Remix : ActionHistory<Remix>() {
 			playingState = PlayingState.STOPPED
 	}
 
+	override fun dispose() {
+		music?.dispose()
+	}
+
 }
 
 enum class PlayingState {
@@ -591,9 +600,12 @@ enum class PlaybackCompletion {
 	WAITING, STARTED, FINISHED;
 }
 
-data class MusicData(val music: Music, val file: FileHandle) : Disposable {
+data class MusicData(val music: Music, val file: FileHandle, val originalFileName: String) : Disposable {
+
+	private var reader = file.reader()
 
 	override fun dispose() {
 		music.dispose()
+		reader.close()
 	}
 }

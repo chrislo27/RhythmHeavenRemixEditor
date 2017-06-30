@@ -89,7 +89,7 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 
 		main.font.draw(main.batch,
 					   Localization.get(
-							   "musicScreen.current") + "\n" + (es.editor.remix?.music?.file?.name() ?: Localization.get(
+							   "musicScreen.current") + "\n" + (es.editor.remix?.music?.originalFileName ?: Localization.get(
 							   "musicScreen.noMusic")),
 					   startX + PADDING,
 					   startY + BG_HEIGHT * 0.75f,
@@ -151,7 +151,7 @@ class MusicScreen(m: Main) : NewUIScreen(m), InputProcessor {
 						val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
 						try {
-							val md = MusicData(Gdx.audio.newMusic(handle), handle)
+							val md = MusicData(Gdx.audio.newMusic(handle), handle, handle.name())
 							es.editor.remix.music = md
 						} catch (e: Exception) {
 							failedToLoad = e.toString()

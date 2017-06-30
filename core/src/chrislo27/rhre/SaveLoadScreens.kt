@@ -393,7 +393,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 			if (remixObj != null) {
 				val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 				es.editor.remix?.music?.dispose()
-				es.editor.remix = Remix.readFromJsonObject(remixObj!!)
+				es.editor.setRemix(Remix.readFromJsonObject(remixObj!!))
 				es.editor.file = remixObj?.fileHandle
 				es.editor.camera.position.x = es.editor.remix.playbackStart
 
@@ -566,7 +566,7 @@ class NewScreen(m: Main) : NewUIScreen(m) {
 		} else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
 			val es = ScreenRegistry.get("editor", EditorScreen::class.java)
 
-			es.editor.remix = Remix()
+			es.editor.setRemix(Remix())
 			es.editor.file = null
 			es.editor.camera.position.set(0f, 0f, 0f)
 
