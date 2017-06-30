@@ -240,6 +240,40 @@
         }
       ]
     },
+	{
+      "id": "karateMan_comboSolo",
+      "name": "combo (standalone)",
+      "cues": [
+        {
+          "id": "karateMan/barrelout",
+          "beat": 0
+        },
+        {
+          "id": "karateMan/punchy1",
+          "beat": 1
+        },
+        {
+          "id": "karateMan/punchy2",
+          "beat": 1.25
+        },
+        {
+          "id": "karateMan/punchy3",
+          "beat": 1.5
+        },
+        {
+          "id": "karateMan/punchy4",
+          "beat": 1.75
+        },
+        {
+          "id": "karateMan/ko",
+          "beat": 2
+        },
+        {
+          "id": "karateMan/pow",
+          "beat": 2.5
+        }
+      ]
+    },
     {
       "id": "karateMan_combo",
 	  "deprecatedIDs": ["karateMan/kick"],

@@ -268,6 +268,24 @@
         }
       ]
     },
+	{
+      "id": "karateManMegamixEn_kickSolo",
+      "name": "kick (standalone)",
+      "cues": [
+        {
+          "id": "karateManMegamixEn/barreloutKicks",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixEn/punchkick1",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixEn/punchkick2",
+          "beat": 1.75
+        }
+      ]
+    },
     {
       "id": "karateManMegamixEn_kick",
       "deprecatedIDs": ["karateMan_kick"],
@@ -292,6 +310,40 @@
         {
           "id": "karateManMegamixEn/punchkick2",
           "beat": 3.75
+        }
+      ]
+    },
+	{
+      "id": "karateManMegamixEn_comboSolo",
+      "name": "combo (standalone)",
+      "cues": [
+        {
+          "id": "karateManMegamixEn/barreloutCombos",
+          "beat": 0
+        },
+        {
+          "id": "karateManMegamixEn/punchy1",
+          "beat": 1
+        },
+        {
+          "id": "karateManMegamixEn/punchy2",
+          "beat": 1.25
+        },
+        {
+          "id": "karateManMegamixEn/punchy3",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManMegamixEn/punchy4",
+          "beat": 1.75
+        },
+        {
+          "id": "karateManMegamixEn/ko",
+          "beat": 2
+        },
+        {
+          "id": "karateManMegamixEn/pow",
+          "beat": 2.5
         }
       ]
     },

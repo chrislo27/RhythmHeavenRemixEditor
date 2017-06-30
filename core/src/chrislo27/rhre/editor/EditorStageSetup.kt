@@ -828,7 +828,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 		}
 
 		run {
-			val present = object : TextButton(stage, palette, "editor.button.present") {
+			val present = object : ImageButton(stage, palette, TextureRegion(AssetRegistry.getTexture("ui_presentation_mode"))) {
 
 				override fun onClickAction(x: Float, y: Float) {
 					super.onClickAction(x, y)
@@ -840,12 +840,28 @@ class EditorStageSetup(private val screen: EditorScreen) {
 					getPalette().labelFont.data.setScale(0.5f)
 					super.render(batch, alpha)
 					getPalette().labelFont.data.setScale(1f)
+
+					if (this.stage.isMouseOver(this)) {
+						main.font.data.setScale(0.5f)
+
+						val text = Localization.get("editor.button.presentationMode")
+						val width = Utils.getWidth(main.font, text)
+						val height = Utils.getHeight(main.font, text)
+
+						batch.setColor(0f, 0f, 0f, 0.75f)
+						ionium.templates.Main.fillRect(batch, this.x - PADDING,
+													   this.y - (PADDING * 3).toFloat() - height,
+													   width + PADDING * 2, height + PADDING * 2)
+						main.font.draw(batch, text, this.x, this.y - PADDING * 2)
+						main.font.data.setScale(1f)
+						batch.setColor(1f, 1f, 1f, 1f)
+					}
 				}
 			}
 
-			stage!!.addActor<TextButton>(present).align(Align.topLeft)
+			stage!!.addActor<ImageButton>(present).align(Align.topLeft)
 					.setPixelOffset((PADDING * 10 + BUTTON_HEIGHT * 9).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 3 - PADDING * 2).toFloat(), BUTTON_HEIGHT.toFloat())
+									(BUTTON_HEIGHT).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 
 		run {
