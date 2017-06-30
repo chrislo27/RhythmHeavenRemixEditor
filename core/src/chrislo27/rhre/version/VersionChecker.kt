@@ -49,10 +49,10 @@ object VersionChecker {
 			Main.githubVersion = release.tag_name
 			githubVersion = RHRE2Version.fromStringOrNull(release.tag_name ?: "")
 			versionState = if (githubVersion == null) VersionState.FAILED else
-					if (githubVersion!!.numericalValue <= RHRE2Version.VERSION.numericalValue)
-						VersionState.UP_TO_DATE
-					else
+					if (RHRE2Version.VERSION.numericalValue < githubVersion!!.numericalValue)
 						VersionState.AVAILABLE
+					else
+						VersionState.UP_TO_DATE
 
 			if (Main.version.matches("v(?:.+)-.*".toRegex(RegexOption.IGNORE_CASE))) {
 				shouldShowOnInit = false
