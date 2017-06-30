@@ -15,7 +15,6 @@ import ionium.registry.AssetRegistry
 import ionium.templates.Main
 import ionium.util.Utils
 import java.util.*
-import java.util.function.Consumer
 
 class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame {
 
@@ -122,6 +121,8 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		var changed = false
 
 		for (se in internal) {
+			if (!se.isRepitchable)
+				continue
 			se.semitone += semitoneChange
 
 			if (se.semitone < min || se.semitone > max) {
@@ -203,7 +204,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 
 	override fun reset() {
 		super.reset()
-		internal.forEach(Consumer<SoundEntity> { it.reset() })
+		internal.forEach(SoundEntity::reset)
 	}
 
 	override fun onStart(delta: Float, intendedStart: Float) {
