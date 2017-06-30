@@ -11,7 +11,7 @@ class RHRE2Version(val major: Int, val minor: Int, val patch: Int, val suffix: S
 
 	companion object {
 		const val MAX_PART_VALUE: Int = 0xFF
-		val VERSION: RHRE2Version = RHRE2Version(2, 16, 0)
+		val VERSION: RHRE2Version = RHRE2Version(2, 16, 1, "SNAPSHOT_20170630")
 		val REGEX: Regex = "v(\\d+).(\\d+).(\\d+)(-.+)?".toRegex()
 
 		fun fromNumberOrNull(numerical: Int, suffix: String = ""): RHRE2Version? {
