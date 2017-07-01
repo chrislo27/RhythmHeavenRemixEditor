@@ -156,6 +156,11 @@ object GameRegistry : Disposable {
 					throw RuntimeException(
 							"Sound cue ID " + so.id + " doesn't start with game definition ID (${gameObj.gameID})")
 				}
+				if (so.deprecatedIDs?.isNotEmpty() ?: false) {
+					if (so.deprecatedIDs!!.any { !it.startsWith(gameObj.gameID!!) })
+						throw RuntimeException(
+								"Sound cue ID " + so.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				}
 				soundCues.add(SoundCue(so.id!!, gameObj.gameID!!, so.fileExtension,
 									   so.name ?: so.id!!,
 									   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
