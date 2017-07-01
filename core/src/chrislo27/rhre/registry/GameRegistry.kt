@@ -314,7 +314,7 @@ object GameRegistry : Disposable {
 		}
 
 		loadingState = false
-		val numAreCustom = this.gameList.filter { it.series == SeriesList.CUSTOM }.count()
+		val numAreCustom = this.gameList.filter(Game::isCustom).count()
 		Main.logger.info(
 				"Loaded " + this.gameList.size + " games (" +
 						(this.gameList.size - numAreCustom) + " databased, $numAreCustom custom game(s)), done in " + ((System.nanoTime() - startTime) / 1_000_000.0) + " ms" +
