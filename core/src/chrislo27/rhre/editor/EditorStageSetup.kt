@@ -129,6 +129,28 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 					main.screen = ScreenRegistry.get("info")
 				}
+
+				override fun render(batch: SpriteBatch?, alpha: Float) {
+					super.render(batch, alpha)
+
+					if (batch != null && this.stage.isMouseOver(this)) {
+						main.font.data.setScale(0.5f)
+
+						val text = Localization.get("info.title")
+						val width = Utils.getWidth(main.font, text)
+						val height = Utils.getHeight(main.font, text)
+
+						batch.setColor(0f, 0f, 0f, 0.75f)
+						ionium.templates.Main.fillRect(batch, this.x + this.width + PADDING.toFloat(),
+													   this.y - (PADDING * 3).toFloat() - height,
+													   -(width + PADDING * 2),
+													   height + PADDING * 2)
+						main.font.draw(batch, text, this.x + this.width, this.y - PADDING * 2, 0f,
+									   Align.right, false)
+						main.font.data.setScale(1f)
+						batch?.setColor(1f, 1f, 1f, 1f)
+					}
+				}
 			}
 
 			stage!!.addActor<ImageButton>(info).align(Align.topRight).setPixelOffset(PADDING.toFloat(),
