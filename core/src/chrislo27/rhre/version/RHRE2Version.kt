@@ -14,6 +14,22 @@ class RHRE2Version(val major: Int, val minor: Int, val patch: Int, val suffix: S
 		val VERSION: RHRE2Version = RHRE2Version(2, 16, 1, "SNAPSHOT_20170701a")
 		val REGEX: Regex = "v(\\d+).(\\d+).(\\d+)(-.+)?".toRegex()
 
+//		init {
+//			val snapshotRegex = "SNAPSHOT_(\\d\\d\\d\\d)(\\d\\d)(\\d\\d).".toRegex()
+//			if (VERSION.suffix.matches(snapshotRegex)) {
+//				val match = snapshotRegex.matchEntire(VERSION.suffix)!!
+//				val now = LocalDate.now()
+//
+//				if (match.groupValues[1] != now.year.toString()) {
+//					IllegalArgumentException("Current version $VERSION has the wrong date").printStackTrace()
+//				} else if (match.groupValues[2].toInt() != now.month.value) {
+//					IllegalArgumentException("Current version $VERSION has the wrong date").printStackTrace()
+//				} else if (match.groupValues[3].toInt() != now.dayOfMonth) {
+//					IllegalArgumentException("Current version $VERSION has the wrong date").printStackTrace()
+//				}
+//			}
+//		}
+
 		fun fromNumberOrNull(numerical: Int, suffix: String = ""): RHRE2Version? {
 			return RHRE2Version((numerical ushr 16) and 0xFF, (numerical ushr 8) and 0xFF, numerical and 0xFF, suffix)
 		}
