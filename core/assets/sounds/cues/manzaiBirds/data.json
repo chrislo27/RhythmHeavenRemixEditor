@@ -29,6 +29,18 @@
       "baseBpm": 95
     },
     {
+      "id": "manzaiBirds/applause1",
+      "duration": 1,
+      "name": "audience - 1",
+      "baseBpm": 95
+    },
+    {
+      "id": "manzaiBirds/applause2",
+      "duration": 1,
+      "name": "audience - 2",
+      "baseBpm": 95
+    },
+    {
       "id": "manzaiBirds/gameover",
       "duration": 1,
       "name": "trapdoor opening"
