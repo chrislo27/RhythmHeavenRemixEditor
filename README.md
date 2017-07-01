@@ -13,9 +13,9 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 ## Screenshots
 
 (in order of Light, Dark, RHRE0)
-![Different palettes thirds screenshot](http://i.imgur.com/yu4rjfq.png "Customizable palettes with intuitive design")
+![Different palettes thirds screenshot](https://raw.githubusercontent.com/chrislo27/RhythmHeavenRemixEditor2/dev/.github/rhre2palettes.png "Customizable palettes")
 
-![Load screen](http://i.imgur.com/cNleYRU.png "Load screen")
+![Load screen](http://i.imgur.com/kBakmN9.png "Load screen")
 
 #### Lua scripting support
 
@@ -23,7 +23,7 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 
 #### Includes a way to find the BPM (tempo) of a song -- without leaving the editor
 
-![Tapalong screen](http://i.imgur.com/XefcYPM.png "Tap to the rhythm to find the BPM")
+![Tapalong screen](http://i.imgur.com/HBGGtZA.png "Tap to the rhythm to find the BPM")
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
 
