@@ -113,6 +113,26 @@
       "id": "fillbots/fillErUp3",
       "duration": 0.5,
       "name": "practice - fill 'er up! - 3"
+    },
+    {
+      "id": "fillbots/hai",
+      "duration": 0.5,
+      "name": "practice - hai!"
+    },
+    {
+      "id": "fillbots/aGenDar1",
+      "duration": 0.25,
+      "name": "practice - agendar! - 1"
+    },
+    {
+      "id": "fillbots/aGenDar2",
+      "duration": 0.25,
+      "name": "practice - agendar! - 2"
+    },
+    {
+      "id": "fillbots/aGenDar3",
+      "duration": 0.5,
+      "name": "practice - agendar! - 3"
     }
   ],
   "patterns": [
@@ -278,7 +298,7 @@
     },
     {
       "id": "fillbots_fillErUp",
-      "name": "fill 'er up! (practice)",
+      "name": "fill 'er up! (practice - English)",
       "cues": [
         {
           "id": "fillbots/fillErUp1",
@@ -290,6 +310,24 @@
         },
         {
           "id": "fillbots/fillErUp3",
+          "beat": 0.5
+        }
+      ]
+    },
+    {
+      "id": "fillbots_aGenDar",
+      "name": "agendar! (practice - Spanish)",
+      "cues": [
+        {
+          "id": "fillbots/aGenDar1",
+          "beat": 0
+        },
+        {
+          "id": "fillbots/aGenDar2",
+          "beat": 0.25
+        },
+        {
+          "id": "fillbots/aGenDar3",
           "beat": 0.5
         }
       ]
