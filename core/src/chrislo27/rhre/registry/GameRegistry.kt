@@ -203,7 +203,8 @@ object GameRegistry : Disposable {
 
 			game = Game(gameObj.gameID!!, gameObj.gameName!!, soundCues, patterns,
 						if (gameObj.series == null) SeriesList.UNKNOWN else SeriesList.getOrPut(gameObj.series!!),
-						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true, gameObj.notRealGame)
+						if (iconFh.exists()) "$baseDir$gameDef/icon.png" else null, true, gameObj.notRealGame,
+						gameObj.priority)
 
 			if (!iconFh.exists())
 				Main.logger.warn(game.id + " is missing icon.png")
@@ -302,13 +303,13 @@ object GameRegistry : Disposable {
 		}
 
 		synchronized(gameList) {
-			gameList.sortBy(Game::id)
+			gameList.sort()
 		}
 
 		synchronized(gamesBySeries) {
 			gamesBySeries.values.forEach { list ->
 				list as MutableList
-				list.sortBy(Game::id)
+				list.sort()
 			}
 		}
 

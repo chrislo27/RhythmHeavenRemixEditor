@@ -8,7 +8,15 @@ import org.luaj.vm2.LuaValue
 
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 				val patterns: List<Pattern>, val series: Series, val icon: String?,
-				val iconIsRawPath: Boolean = false, val notRealGame: Boolean = false) {
+				val iconIsRawPath: Boolean = false, val notRealGame: Boolean = false, val priority: Int = 0) : Comparable<Game> {
+
+	override fun compareTo(other: Game): Int {
+		if (other.priority == this.priority) {
+			return this.id.compareTo(other.id)
+		} else {
+			return other.priority - this.priority
+		}
+	}
 
 	private companion object {
 		val defaultPointerString: String = "➡"

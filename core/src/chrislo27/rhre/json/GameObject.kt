@@ -6,6 +6,8 @@ class GameObject {
 	var gameName: String? = null
 	var series: String? = null
 
+	var priority: Int = 0
+
 	var cues: Array<SoundObject>? = null
 
 	var patterns: Array<PatternObject>? = null

@@ -1,6 +1,7 @@
 {
   "gameID": "cannery",
   "gameName": "Cannery",
+  "priority": -1,
   "cues": [
     {
       "id": "cannery/ding",

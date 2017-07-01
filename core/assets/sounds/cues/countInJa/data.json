@@ -2,6 +2,7 @@
   "gameID": "countInJa",
   "gameName": "Count-Ins (Japanese)",
   "notRealGame": true,
+  "priority": 1,
   "cues": [
     {
       "id": "countInJa/oneJa",

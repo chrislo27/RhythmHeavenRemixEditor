@@ -1,6 +1,7 @@
 {
   "gameID": "mountainManuever",
   "gameName": "Mountain Manuever",
+  "priority": -1,
   "cues": [
     {
       "id": "mountainManuever/toot",
