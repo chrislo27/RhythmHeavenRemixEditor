@@ -12,6 +12,11 @@
       "id": "ninjaBodyguard/cut",
       "duration": 0.25,
       "name": "cut"
+    },
+    {
+      "id": "ninjaBodyguard/ninjaIntro",
+      "duration": 35,
+      "name": "introduction"
     }
   ],
   "patterns": []

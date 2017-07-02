@@ -20,23 +20,31 @@
     },
     {
       "id": "nightWalk/jump1",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - flower"
     },
     {
       "id": "nightWalk/jump2",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - lollipop"
     },
     {
       "id": "nightWalk/jump3",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - umbrella"
     },
     {
-      "id": "nightWalk/jumpUmbrella",
-      "duration": 1.0,
-      "name": "jump UP - umbrella / end"
+      "id": "nightWalk/jumpUmbrella1",
+	  "deprecatedIDs": [
+        "nightWalk/jumpUmbrella"
+      ],
+      "duration": 0.25,
+      "name": "jump UP - umbrella / end - 1"
+    },
+	{
+      "id": "nightWalk/jumpUmbrella2",
+      "duration": 0.25,
+      "name": "jump UP - umbrella / end - 2"
     },
     {
       "id": "nightWalk/disappear",
@@ -50,19 +58,19 @@
       "name": "walking",
       "cues": [
         {
-          "id": "nightWalk/walk1",
+          "id": "nightWalk/walk2",
           "beat": 0.0
         },
         {
-          "id": "nightWalk/walk2",
+          "id": "nightWalk/walk1",
           "beat": 0.5
         },
         {
-          "id": "nightWalk/walk1",
+          "id": "nightWalk/walk2",
           "beat": 1.0
         },
         {
-          "id": "nightWalk/walk2",
+          "id": "nightWalk/walk1",
           "beat": 1.5
         }
       ]
@@ -138,7 +146,7 @@
     },
     {
       "id": "nightWalk_jumpUmbrella1",
-      "name": "three flowers, one umbrella (same level)",
+      "name": "three flowers, one umbrella - same level",
       "cues": [
         {
           "id": "nightWalk/jump1",
@@ -160,7 +168,7 @@
     },
     {
       "id": "nightWalk_jumpUmbrella2",
-      "name": "three flowers, one umbrella (up a level)",
+      "name": "three flowers, one umbrella - up a level",
       "cues": [
         {
           "id": "nightWalk/jump1",
@@ -174,14 +182,17 @@
           "id": "nightWalk/jump1",
           "beat": 2
         },
+		{
+          "id": "nightWalk/jumpUmbrella1",
+          "beat": 2.5
+        },
+		{
+		  "id": "nightWalk/jumpUmbrella2",
+		  "beat": 2.75
+		},
         {
           "id": "nightWalk/jump3",
           "beat": 3
-        },
-        {
-          "id": "nightWalk/jumpUmbrella",
-          "beat": 3,
-          "track": 1
         }
       ]
     },

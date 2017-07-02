@@ -1,0 +1,46 @@
+{
+  "gameID": "ladyCupid",
+  "gameName": "Lady Cupid",
+  "series": "side",
+  "cues": [
+    {
+      "id": "ladyCupid/arrowShoot",
+      "duration": 0.5,
+      "name": "arrow"
+    },
+    {
+      "id": "ladyCupid/blockHit",
+      "duration": 1.0,
+      "name": "block hit"
+    },
+    {
+      "id": "ladyCupid/bombHit",
+      "duration": 4.0,
+      "name": "bomb hit"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "ladyCupid_4Blocks",
+      "name": "hit four blocks",
+      "cues": [
+        {
+          "id": "ladyCupid/blockHit",
+          "beat": 0
+        },
+        {
+          "id": "ladyCupid/blockHit",
+          "beat": 1
+        },
+        {
+          "id": "ladyCupid/blockHit",
+          "beat": 2
+        },
+        {
+          "id": "ladyCupid/bombHit",
+          "beat": 3
+        }
+      ]
+    }
+  ]
+}

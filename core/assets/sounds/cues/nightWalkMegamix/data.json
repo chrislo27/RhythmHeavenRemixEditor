@@ -20,24 +20,33 @@
     },
     {
       "id": "nightWalkMegamix/jump1",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - flower"
     },
     {
       "id": "nightWalkMegamix/jump2",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - lollipop"
     },
     {
       "id": "nightWalkMegamix/jump3",
-      "duration": 1.0,
+      "duration": 0.5,
       "name": "jump - umbrella"
     },
     {
-      "id": "nightWalkMegamix/jumpUmbrella",
-      "duration": 1.0,
-      "name": "jump UP - umbrella / end"
+      "id": "nightWalkMegamix/jumpUmbrella1",
+	  "deprecatedIDs": [
+        "nightWalk/jumpUmbrella",
+        "nightWalkMegamix/jumpUmbrella"
+      ],
+      "duration": 0.25,
+      "name": "jump UP - umbrella / end - 1"
     },
+	{
+	  "id": "nightWalkMegamix/jumpUmbrella2",
+	  "duration": 0.25,
+	  "name": "jump UP - umbrella / end - 2"
+	},
     {
       "id": "nightWalkMegamix/disappear",
       "duration": 1.0,
@@ -138,7 +147,7 @@
     },
     {
       "id": "nightWalkMegamix_jumpUmbrella1",
-      "name": "three flowers, one umbrella (same level)",
+      "name": "three flowers, one umbrella - same level",
       "cues": [
         {
           "id": "nightWalkMegamix/jump1",
@@ -160,7 +169,7 @@
     },
     {
       "id": "nightWalkMegamix_jumpUmbrella2",
-      "name": "three flowers, one umbrella (up a level)",
+      "name": "three flowers, one umbrella - up a level",
       "cues": [
         {
           "id": "nightWalkMegamix/jump1",
@@ -174,20 +183,23 @@
           "id": "nightWalkMegamix/jump1",
           "beat": 2
         },
+		{
+          "id": "nightWalkMegamix/jumpUmbrella1",
+          "beat": 2.5
+        },
+		{
+		  "id": "nightWalkMegamix/jumpUmbrella2",
+		  "beat": 2.75
+		},
         {
           "id": "nightWalkMegamix/jump3",
           "beat": 3
-        },
-        {
-          "id": "nightWalkMegamix/jumpUmbrella",
-          "beat": 2.5,
-          "track": 1
         }
       ]
     },
     {
       "id": "nightWalkMegamix_jumpUmbrella3",
-      "name": "three lollipops, one umbrella (same level)",
+      "name": "three lollipops, one umbrella - same level",
       "cues": [
         {
           "id": "nightWalkMegamix/jump2",
@@ -209,7 +221,7 @@
     },
     {
       "id": "nightWalkMegamix_jumpUmbrella4",
-      "name": "three lollipops, one umbrella (up a level)",
+      "name": "three lollipops, one umbrella - up a level",
       "cues": [
         {
           "id": "nightWalkMegamix/jump2",
@@ -223,14 +235,17 @@
           "id": "nightWalkMegamix/jump2",
           "beat": 2
         },
+		{
+          "id": "nightWalkMegamix/jumpUmbrella1",
+          "beat": 2.5
+        },
+		{
+          "id": "nightWalkMegamix/jumpUmbrella2",
+          "beat": 2.75
+        },
         {
           "id": "nightWalkMegamix/jump3",
           "beat": 3
-        },
-        {
-          "id": "nightWalkMegamix/jumpUmbrella",
-          "beat": 2.5,
-          "track": 1
         }
       ]
     },

@@ -40,8 +40,13 @@
     },
     {
       "id": "nightWalkFever/roll6",
-      "duration": 1.75,
+      "duration": 0.25,
       "name": "roll6"
+    },
+	{
+      "id": "nightWalkFever/roll7",
+      "duration": 1.5,
+      "name": "roll7"
     }
   ],
   "patterns": [
@@ -94,7 +99,11 @@
         {
           "id": "nightWalkFever/roll6",
           "beat": 1.25
-        }
+        },
+		{
+		  "id": "nightWalkFever/roll7",
+		  "beat": 1.5
+		}
       ]
     }
   ]

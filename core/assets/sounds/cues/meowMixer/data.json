@@ -1,0 +1,204 @@
+{
+  "gameID": "meowMixer",
+  "gameName": "Meow Mixer",
+  "series": "side",
+  "cues": [
+    {
+      "id": "meowMixer/right",
+      "duration": 1,
+      "name": "right"
+    },
+    {
+      "id": "meowMixer/up",
+      "duration": 1,
+      "name": "up"
+    },
+    {
+      "id": "meowMixer/down",
+      "duration": 1,
+      "name": "down"
+    },
+    {
+      "id": "meowMixer/a1",
+      "duration": 0.5,
+      "name": "A - 1"
+    },
+    {
+      "id": "meowMixer/a2",
+      "duration": 0.5,
+      "name": "A - 2"
+    },
+    {
+      "id": "meowMixer/a3",
+      "duration": 0.5,
+      "name": "A - 3"
+    },
+    {
+      "id": "meowMixer/a4",
+      "duration": 0.5,
+      "name": "A - 4"
+    },
+    {
+      "id": "meowMixer/a5",
+      "duration": 0.5,
+      "name": "A - 5"
+    },
+    {
+      "id": "meowMixer/a6",
+      "duration": 0.5,
+      "name": "A - 6"
+    },
+    {
+      "id": "meowMixer/a7",
+      "duration": 0.5,
+      "name": "A - 7"
+    },
+    {
+      "id": "meowMixer/a8",
+      "duration": 0.5,
+      "name": "A - 8"
+    },
+    {
+      "id": "meowMixer/b1",
+      "duration": 0.5,
+      "name": "B - 1"
+    },
+    {
+      "id": "meowMixer/b2",
+      "duration": 0.5,
+      "name": "B - 2"
+    },
+    {
+      "id": "meowMixer/b3",
+      "duration": 0.5,
+      "name": "B - 3"
+    },
+    {
+      "id": "meowMixer/b4",
+      "duration": 0.5,
+      "name": "B - 4"
+    },
+    {
+      "id": "meowMixer/b5",
+      "duration": 0.5,
+      "name": "B - 5"
+    },
+    {
+      "id": "meowMixer/b6",
+      "duration": 0.5,
+      "name": "B - 6"
+    },
+    {
+      "id": "meowMixer/b7",
+      "duration": 0.5,
+      "name": "B - 7"
+    },
+    {
+      "id": "meowMixer/b8",
+      "duration": 0.5,
+      "name": "B - 8"
+    },
+    {
+      "id": "meowMixer/left1",
+      "duration": 0.5,
+      "name": "left - 1"
+    },
+    {
+      "id": "meowMixer/left2",
+      "duration": 0.5,
+      "name": "left - 2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "meowMixer_a",
+      "name": "A",
+      "cues": [
+        {
+          "id": "meowMixer/a1",
+          "beat": 0.0
+        },
+        {
+          "id": "meowMixer/a2",
+          "beat": 0.5
+        },
+        {
+          "id": "meowMixer/a3",
+          "beat": 1.0
+        },
+        {
+          "id": "meowMixer/a4",
+          "beat": 1.5
+        },
+        {
+          "id": "meowMixer/a5",
+          "beat": 2.0
+        },
+        {
+          "id": "meowMixer/a6",
+          "beat": 2.5
+        },
+        {
+          "id": "meowMixer/a7",
+          "beat": 3.0
+        },
+        {
+          "id": "meowMixer/a8",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "meowMixer_b",
+      "name": "B",
+      "cues": [
+        {
+          "id": "meowMixer/b1",
+          "beat": 0.0
+        },
+        {
+          "id": "meowMixer/b2",
+          "beat": 0.5
+        },
+        {
+          "id": "meowMixer/b3",
+          "beat": 1.0
+        },
+        {
+          "id": "meowMixer/b4",
+          "beat": 1.5
+        },
+        {
+          "id": "meowMixer/b5",
+          "beat": 2.0
+        },
+        {
+          "id": "meowMixer/b6",
+          "beat": 2.5
+        },
+        {
+          "id": "meowMixer/b7",
+          "beat": 3.0
+        },
+        {
+          "id": "meowMixer/b8",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "meowMixer_left",
+      "name": "left",
+      "cues": [
+        {
+          "id": "meowMixer/left1",
+          "beat": 0.0
+        },
+        {
+          "id": "meowMixer/left2",
+          "beat": 0.5
+        }
+      ]
+    }
+  ]
+}
