@@ -5,32 +5,41 @@
   "cues": [
     {
       "id": "builtToScaleFever/right",
-      "deprecatedIDs":["builtToScaleFever/1"],
+      "deprecatedIDs": [
+        "builtToScaleFever/1"
+      ],
       "duration": 1,
       "name": "rightmost"
     },
     {
       "id": "builtToScaleFever/middleRight",
-      "deprecatedIDs":["builtToScaleFever/2"],
+      "deprecatedIDs": [
+        "builtToScaleFever/2"
+      ],
       "duration": 1,
       "name": "middle-right (player)"
     },
     {
       "id": "builtToScaleFever/middleLeft",
-      "deprecatedIDs":["builtToScaleFever/3"],
+      "deprecatedIDs": [
+        "builtToScaleFever/3"
+      ],
       "duration": 1,
       "name": "middle-left"
     },
     {
       "id": "builtToScaleFever/left",
-      "deprecatedIDs":["builtToScaleFever/4"],
+      "deprecatedIDs": [
+        "builtToScaleFever/4"
+      ],
       "duration": 1,
       "name": "leftmost"
     },
     {
       "id": "builtToScaleFever/prepare",
-      "duration": 1,
-      "name": "prepare"
+      "duration": 2.25,
+      "name": "prepare",
+      "baseBpm": 120.0
     },
     {
       "id": "builtToScaleFever/shoot",
@@ -73,7 +82,7 @@
         },
         {
           "id": "builtToScaleFever/prepare",
-          "beat": 6,
+          "beat": 5,
           "track": 1
         },
         {
@@ -104,7 +113,7 @@
         },
         {
           "id": "builtToScaleFever/prepare",
-          "beat": 3,
+          "beat": 2,
           "track": 1
         },
         {
@@ -127,7 +136,7 @@
         },
         {
           "id": "builtToScaleFever/prepare",
-          "beat": 1,
+          "beat": 0,
           "track": 1
         },
         {
