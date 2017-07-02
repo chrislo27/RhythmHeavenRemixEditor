@@ -36,7 +36,6 @@
     {
       "id": "nightWalkMegamix/jumpUmbrella1",
 	  "deprecatedIDs": [
-        "nightWalk/jumpUmbrella",
         "nightWalkMegamix/jumpUmbrella"
       ],
       "duration": 0.25,
