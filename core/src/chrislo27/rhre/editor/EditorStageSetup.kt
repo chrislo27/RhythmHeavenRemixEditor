@@ -904,19 +904,16 @@ class EditorStageSetup(private val screen: EditorScreen) {
 			}
 
 			stage!!.addActor<TextButton>(tapalong).align(Align.topLeft)
-					.setPixelOffset((PADDING * 9 + BUTTON_HEIGHT * 12).toFloat(), PADDING.toFloat(),
-									(BUTTON_HEIGHT * 5 + PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
+					.setPixelOffset((PADDING * 11 + BUTTON_HEIGHT * 10).toFloat(), PADDING.toFloat(),
+									(BUTTON_HEIGHT * 7 - PADDING).toFloat(), BUTTON_HEIGHT.toFloat())
 		}
 	}
 
 	companion object {
 
-		@JvmField
-		val BUTTON_HEIGHT = 32
-		@JvmField
-		val PADDING = 4
-		@JvmField
-		val BAR_HEIGHT = BUTTON_HEIGHT + PADDING * 2
+		const val BUTTON_HEIGHT = 32
+		const val PADDING = 4
+		const val BAR_HEIGHT = BUTTON_HEIGHT + PADDING * 2
 
 	}
 
