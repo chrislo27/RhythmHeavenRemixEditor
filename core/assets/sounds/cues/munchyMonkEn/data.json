@@ -30,7 +30,7 @@
     {
       "id": "munchyMonkEn/two",
       "deprecatedIDs": [
-        "munchyMonk/one"
+        "munchyMonk/two"
       ],
       "duration": 0.5,
       "name": "two - two!"
@@ -38,7 +38,7 @@
     {
       "id": "munchyMonkEn/three",
       "deprecatedIDs": [
-        "munchyMonk/gulp"
+        "munchyMonk/three"
       ],
       "duration": 1,
       "name": "three - three"

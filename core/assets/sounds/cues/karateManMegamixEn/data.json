@@ -26,8 +26,7 @@
     {
       "id": "karateManMegamixEn/cookingPot",
       "deprecatedIDs": [
-        "karateMan/KarateRoaster",
-        "karateMan/roaster"
+        "karateMan/KarateRoaster"
       ],
       "duration": 1,
       "name": "roaster - hit"

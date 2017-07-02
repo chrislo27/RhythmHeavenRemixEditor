@@ -150,7 +150,6 @@
       "id": "karateManFeverEn_pot",
       "deprecatedIDs": [
         "karateMan/alien",
-        "karateMan/roaster",
         "karateMan_pot"
       ],
       "name": "pot",
