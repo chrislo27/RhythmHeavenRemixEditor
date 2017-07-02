@@ -91,23 +91,19 @@
       "cues": [
         {
           "id": "ratRaceGba/trafficlight",
-          "beat": 0.0,
-          "track": 1
+          "beat": 0.0
         },
         {
           "id": "ratRaceGba/trafficlight",
-          "beat": 1.0,
-          "track": 1
+          "beat": 1.0
         },
         {
           "id": "ratRaceGba/trafficlight",
-          "beat": 2.0,
-          "track": 1
+          "beat": 2.0
         },
         {
           "id": "ratRaceGba/start",
-          "beat": 3.0,
-          "track": 0
+          "beat": 3.0
         }
       ]
     }
