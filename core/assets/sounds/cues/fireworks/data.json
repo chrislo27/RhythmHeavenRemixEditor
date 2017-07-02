@@ -76,7 +76,7 @@
     {
       "id": "fireworks/bombhai",
       "duration": 1,
-      "name": "taiko drum bomb - counting - Go!"
+      "name": "taiko drum bomb - counting - go!"
     },
     {
       "id": "fireworks/one",
@@ -121,7 +121,7 @@
     },
     {
       "id": "fireworks_fireworkpractice",
-      "name": "rhythm rocket (practice)",
+      "name": "rhythm rocket - practice",
       "cues": [
         {
           "id": "fireworks/fireworkichi",
@@ -138,6 +138,47 @@
         {
           "id": "fireworks/fireworkhai",
           "beat": 3
+        }
+      ]
+    },
+	{
+      "id": "fireworks_fireworkremix5",
+      "name": "rhythm rocket - remix 5",
+      "cues": [
+        {
+          "id": "fireworks/one",
+          "beat": 0,
+          "track": 1
+        },
+        {
+          "id": "fireworks/two",
+          "beat": 2,
+          "track": 1
+        },
+        {
+          "id": "fireworks/firework1",
+          "beat": 4,
+          "track": 0
+        },
+        {
+          "id": "fireworks/one",
+          "beat": 4,
+          "track": 1
+        },
+        {
+          "id": "fireworks/two",
+          "beat": 5,
+          "track": 1
+        },
+        {
+          "id": "fireworks/three",
+          "beat": 6,
+          "track": 1
+        },
+        {
+          "id": "fireworks/hey",
+          "beat": 7,
+          "track": 1
         }
       ]
     },
@@ -161,7 +202,7 @@
     },
     {
       "id": "fireworks_quickshotpractice",
-      "name": "spirit sparkler (practice)",
+      "name": "spirit sparkler - practice",
       "cues": [
         {
           "id": "fireworks/quickshot1",
@@ -201,7 +242,7 @@
     },
     {
       "id": "fireworks_taikobombpractice",
-      "name": "taiko drum bomb (practice)",
+      "name": "taiko drum bomb - practice",
       "cues": [
         {
           "id": "fireworks/bomb1",
@@ -218,47 +259,6 @@
         {
           "id": "fireworks/bombhai",
           "beat": 2
-        }
-      ]
-    },
-    {
-      "id": "fireworks_fireworkremix5",
-      "name": "rhythm rocket (remix 5)",
-      "cues": [
-        {
-          "id": "fireworks/one",
-          "beat": 0,
-          "track": 1
-        },
-        {
-          "id": "fireworks/two",
-          "beat": 1,
-          "track": 1
-        },
-        {
-          "id": "fireworks/firework1",
-          "beat": 2,
-          "track": 0
-        },
-        {
-          "id": "fireworks/one",
-          "beat": 2,
-          "track": 1
-        },
-        {
-          "id": "fireworks/two",
-          "beat": 3,
-          "track": 1
-        },
-        {
-          "id": "fireworks/three",
-          "beat": 4,
-          "track": 1
-        },
-        {
-          "id": "fireworks/hey",
-          "beat": 5,
-          "track": 1
         }
       ]
     }
