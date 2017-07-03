@@ -16,6 +16,7 @@ object DesktopLauncher {
 	private var logger: Logger? = null
 
 	@JvmStatic fun main(args: Array<String>) {
+		System.setProperty("file.encoding", "UTF-8")
 		logger = Logger("", com.badlogic.gdx.utils.Logger.DEBUG)
 		val main = Main(logger!!)
 
