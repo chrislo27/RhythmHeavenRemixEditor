@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 
 object JsonHandler {
@@ -29,6 +30,7 @@ object JsonHandler {
 				.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
 				.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
 				.registerModule(AfterburnerModule())
+				.registerModule(KotlinModule())
 	}
 
 //	@JvmStatic
