@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import ionium.registry.AssetRegistry
 import ionium.util.MathHelper
 import org.luaj.vm2.LuaValue
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 
 data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
@@ -67,6 +68,8 @@ data class Game(val id: String, val name: String, val soundCues: List<SoundCue>,
 		l.set("series", series.luaValue)
 		l.set("cues", LuaValue.listOf(soundCues.map { it.luaValue }.toTypedArray()))
 		l.set("patterns", LuaValue.listOf(patterns.map { it.luaValue }.toTypedArray()))
+		l.set("priority", priority)
+		l.set("isRealGame", CoerceJavaToLua.coerce(!notRealGame))
 
 		return@lazy l
 	}
