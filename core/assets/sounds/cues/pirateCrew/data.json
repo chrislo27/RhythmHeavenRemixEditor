@@ -51,7 +51,7 @@
       "cues": [
         {
           "id": "pirateCrew/everybodyRow1",
-          "beat": 0.
+          "beat": 0
         },
         {
           "id": "pirateCrew/everybodyRow2",
@@ -59,7 +59,7 @@
         },
         {
           "id": "pirateCrew/everybodyRow3",
-          "beat": 1.
+          "beat": 1
         },
         {
           "id": "pirateCrew/everybodyRow4",
@@ -71,7 +71,7 @@
         },
         {
           "id": "pirateCrew/pirateYeah",
-          "beat": 3.
+          "beat": 3
         }
       ]
     }

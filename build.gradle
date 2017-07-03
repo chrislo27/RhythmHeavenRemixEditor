@@ -64,7 +64,7 @@ project(":core") {
         compile "org.luaj:luaj-jse:3.0.1"
 //        compile "com.github.orsjb:beads:29d342e"
 //        compile "com.github.axet:vget:1.2.6"
-//        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
+        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
 //        compile 'com.github.mazine:oauth2-client-kotlin:1.0.2'
 //        compile "com.sparkjava:spark-kotlin:1.0.0-alpha"
 

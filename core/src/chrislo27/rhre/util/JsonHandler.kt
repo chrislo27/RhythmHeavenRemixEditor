@@ -1,27 +1,51 @@
 package chrislo27.rhre.util
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.fasterxml.jackson.annotation.JsonAutoDetect
+import com.fasterxml.jackson.annotation.PropertyAccessor
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 
 
 object JsonHandler {
 
-//	val OBJECT_MAPPER = createObjectMapper()
-	val GSON: Gson = createObjectMapper()
+	val OBJECT_MAPPER: ObjectMapper = createObjectMapper()
+//	val GSON: Gson = createObjectMapper()
 
 	@JvmStatic
-	fun createObjectMapper(): Gson {
-		return GsonBuilder().setPrettyPrinting().create()
+	fun createObjectMapper(): ObjectMapper {
+		return ObjectMapper()
+				.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
+				.enable(SerializationFeature.WRITE_NULL_MAP_VALUES)
+				.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
+				.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+				.enable(SerializationFeature.INDENT_OUTPUT)
+				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+				.enable(JsonParser.Feature.ALLOW_COMMENTS)
+				.enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
+				.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
+				.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+				.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+				.registerModule(AfterburnerModule())
 	}
+
+//	@JvmStatic
+//	fun createObjectMapper(): Gson {
+//		return GsonBuilder().setPrettyPrinting().create()
+//	}
 
 	@JvmStatic
 	inline fun <reified T> fromJson(json: String): T {
-		return GSON.fromJson(json, T::class.java)
+		return OBJECT_MAPPER.readValue(json, T::class.java)
+//		return GSON.fromJson(json, T::class.java)
 	}
 
 	@JvmStatic
 	fun <T> fromJson(json: String, clazz: Class<T>): T {
-		return GSON.fromJson(json, clazz)
+		return OBJECT_MAPPER.readValue(json, clazz)
+//		return GSON.fromJson(json, clazz)
 	}
 
 //	@JvmStatic
@@ -36,12 +60,14 @@ object JsonHandler {
 
 	@JvmStatic
 	fun toJson(obj: Any): String {
-		return GSON.toJson(obj)
+		return OBJECT_MAPPER.writeValueAsString(obj)
+//		return GSON.toJson(obj)
 	}
 
 	@JvmStatic
 	fun <T> toJson(obj: Any, clazz: Class<T>): String {
-		return GSON.toJson(obj, clazz)
+		return OBJECT_MAPPER.writeValueAsString(clazz.cast(obj))
+//		return GSON.toJson(obj, clazz)
 	}
 
 }
