@@ -30,7 +30,7 @@
     },
     {
       "id": "rapMen/sanji",
-      "duration": 0.75,
+      "duration": 0.5,
       "name": "sanji"
     },
     {
@@ -60,12 +60,12 @@
     },
     {
       "id": "rapMen/okaeri3",
-      "duration": 0.125,
+      "duration": 0.0625,
       "name": "okaeri masu ka - ri"
     },
     {
       "id": "rapMen/okaeri4",
-      "duration": 0.75,
+      "duration": 0.5625,
       "name": "okaeri masu ka - masu"
     },
     {
@@ -180,12 +180,12 @@
     },
     {
       "id": "rapMen/tanoshii2",
-      "duration": 0.375,
+      "duration": 0.25,
       "name": "tanoshii - nosh"
     },
     {
       "id": "rapMen/tanoshii3",
-      "duration": 0.375,
+      "duration": 0.5,
       "name": "tanoshii - ii"
     },
     {
@@ -339,19 +339,19 @@
         },
         {
           "id": "rapMen/ji",
-          "beat": 1.5
+          "beat": 1.25
         },
         {
           "id": "rapMen/desu",
-          "beat": 1.75
+          "beat": 1.5
         },
         {
           "id": "rapMen/ka",
-          "beat": 2.35
+          "beat": 2
         },
         {
           "id": "rapMen/uh",
-          "beat": 3.35
+          "beat": 3
         }
       ]
     },
@@ -366,15 +366,15 @@
         },
         {
           "id": "rapMen/oyatsudesuka1",
-          "beat": 0.75
-        },
-        {
-          "id": "rapMen/oyatsudesuka2",
           "beat": 0.875
         },
         {
+          "id": "rapMen/oyatsudesuka2",
+          "beat": 1.0
+        },
+        {
           "id": "rapMen/desu",
-          "beat": 1.375
+          "beat": 1.5
         },
         {
           "id": "rapMen/ka",
@@ -408,15 +408,15 @@
         },
         {
           "id": "rapMen/okaeri4",
-          "beat": 1.5
+          "beat": 1.438
         },
         {
           "id": "rapMen/okaeri5",
-          "beat": 2.25
+          "beat": 2
         },
         {
           "id": "rapMen/uh",
-          "beat": 3.25
+          "beat": 3
         }
       ]
     },
@@ -618,7 +618,7 @@
         },
         {
           "id": "rapMen/tanoshii3",
-          "beat": 0.625
+          "beat": 0.5
         },
         {
           "id": "rapMen/kamone1",
