@@ -314,7 +314,9 @@ class Remix : ActionHistory<Remix>(), Disposable {
 			if (obj.musicAssociation != null) {
 				val tmpFolder = Gdx.files.local("tmpMusic/").file()
 				tmpFolder.mkdir()
-				val tempFile: File = File(tmpFolder.absolutePath, "music-${System.currentTimeMillis()}.${obj.musicAssociation!!.substringAfterLast('.', "music")}")
+				val tempFile: File = File(tmpFolder.absolutePath,
+										  "music-${System.currentTimeMillis()}.${obj.musicAssociation!!.substringAfterLast(
+												  '.', "music")}")
 
 				val musicEntry: ZipEntry = zipFile.getEntry(obj.musicAssociation) ?: throw RuntimeException(
 						"Music file not found!")
@@ -350,7 +352,8 @@ class Remix : ActionHistory<Remix>(), Disposable {
 			obj.metadata = RemixObject.MetadataObject()
 			obj.playbackStart = 0f
 
-			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float, val track: Int)
+			data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float,
+								 val track: Int)
 
 			var trackNum: Int = 0
 			val points: List<NotePoint> = sequence.tracks.flatMap { track ->
@@ -376,7 +379,8 @@ class Remix : ActionHistory<Remix>(), Disposable {
 						when (command) {
 							ShortMessage.NOTE_ON -> {
 								endNote()
-								current = NotePoint(event.tick * beatsPerTick, 0f, semitone, message.data2 / 127f, trackNum)
+								current = NotePoint(event.tick * beatsPerTick, 0f, semitone, message.data2 / 127f,
+													trackNum)
 							}
 							ShortMessage.NOTE_OFF -> {
 								endNote()
@@ -464,18 +468,15 @@ class Remix : ActionHistory<Remix>(), Disposable {
 						return@flatMap it.internal
 					}
 					return@flatMap listOf(it)
-				}.distinctBy { it.id }.filter(Entity::needsToBeLoaded)
+				}.distinctBy(Entity::id).filter(Entity::needsToBeLoaded)
 				val coroutines = mutableListOf<Job>()
-				val idsPerCoroutine: Int = 64 // 145, 74, 49
 
 				val nano = System.nanoTime()
-				(0..cachedEntities.size - 1 step idsPerCoroutine).mapTo(coroutines) {
+				(0..cachedEntities.size - 1).mapTo(coroutines) {
 					launch(CommonPool) {
-						for (index in it..Math.min(it + idsPerCoroutine, cachedEntities.size - 1)) {
-							cachedEntities[index].attemptLoadSounds()
-							sweepLoadCount++
-							sweepLoadProgress = sweepLoadCount.toFloat() / cachedEntities.size
-						}
+						cachedEntities[it].attemptLoadSounds()
+						sweepLoadCount++
+						sweepLoadProgress = sweepLoadCount.toFloat() / cachedEntities.size
 					}
 				}
 
