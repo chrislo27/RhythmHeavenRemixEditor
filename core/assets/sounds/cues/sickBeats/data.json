@@ -44,6 +44,7 @@
   "patterns": [
     {
       "id": "sickBeats_blueVirus1",
+      "deprecatedIDs": ["sickBeats_blueVirus"],
       "name": "blue virus 1",
       "cues": [
         {

@@ -81,6 +81,7 @@
   "patterns": [
     {
       "id": "tangotronic3000_2StepCorte1",
+      "deprecatedIDs": ["tangotronic3000_2StepCorte"],
       "name": "2-step corte",
       "cues": [
         {
