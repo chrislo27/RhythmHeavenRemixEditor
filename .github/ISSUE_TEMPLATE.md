@@ -20,7 +20,7 @@ already
 
 **Version affected:** [insert the version of RHRE2 here]
 
-**Stacktrace/error log:** [Did it crash? Attach the log file from `logs/log_YYYY-MM-DD_HH-MM-SS.txt here, otherwise, remove this line]
+**Stacktrace/error log:** [Attach the log file from `logs/log_YYYY-MM-DD_HH-MM-SS.txt here because it contains important system information]
 
 ### Additional Information
 [optional: insert any other information that may be able to help me with the problem here]
