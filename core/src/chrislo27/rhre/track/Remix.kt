@@ -8,7 +8,7 @@ import chrislo27.rhre.entity.SoundEntity
 import chrislo27.rhre.json.persistent.RemixObject
 import chrislo27.rhre.oopsies.ActionHistory
 import chrislo27.rhre.registry.Game
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.script.luaobj.LuaRemix
 import chrislo27.rhre.util.JsonHandler
 import chrislo27.rhre.version.RHRE2Version
@@ -47,7 +47,7 @@ class Remix : ActionHistory<Remix>(), Disposable {
 
 	private val metronomeSFX: List<LazySound> by lazy {
 		listOf(
-				GameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?:
+				OldGameRegistry["countInEn"]!!.getCue("cowbell")?.getLazySoundObj() ?:
 						throw RuntimeException("Missing metronome sound")
 			  )
 	}
@@ -192,7 +192,7 @@ class Remix : ActionHistory<Remix>(), Disposable {
 				}
 
 				obj.metadata = metadata ?: RemixObject.MetadataObject()
-				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != GameRegistry["countIn"] }
+				obj.metadata.gamesUsed = entities.filter { it is HasGame && it.game != OldGameRegistry["countIn"] }
 						.map {
 							it as HasGame
 							return@map it.game.name
@@ -214,7 +214,7 @@ class Remix : ActionHistory<Remix>(), Disposable {
 				val e: Entity
 
 				if (it.isPattern) {
-					e = PatternEntity(remix, GameRegistry.getPattern(it.id!!)!!)
+					e = PatternEntity(remix, OldGameRegistry.getPattern(it.id!!)!!)
 
 					e.bounds.x = it.beat
 					e.bounds.y = it.level.toFloat()
@@ -223,10 +223,10 @@ class Remix : ActionHistory<Remix>(), Disposable {
 					e.adjustPitch(it.semitone, -128, 128)
 				} else {
 					if (it.width == 0f) {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id!!)!!, it.beat, it.level,
+						e = SoundEntity(remix, OldGameRegistry.getCue(it.id!!)!!, it.beat, it.level,
 										it.semitone)
 					} else {
-						e = SoundEntity(remix, GameRegistry.getCue(it.id!!)!!, it.beat, it.level, it.width,
+						e = SoundEntity(remix, OldGameRegistry.getCue(it.id!!)!!, it.beat, it.level, it.width,
 										it.semitone)
 					}
 

@@ -5,7 +5,7 @@ import chrislo27.rhre.FileFilters.bundledFileFilter
 import chrislo27.rhre.FileFilters.dataFileFilter
 import chrislo27.rhre.FileFilters.midiFileFilter
 import chrislo27.rhre.json.persistent.RemixObject
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.FileChooser
 import chrislo27.rhre.util.JsonHandler
@@ -435,9 +435,9 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 
 			val missingEntities = obj.entities!!.filter { entity ->
 				if (entity.isPattern) {
-					GameRegistry.getPattern(entity.id!!) == null
+					OldGameRegistry.getPattern(entity.id!!) == null
 				} else {
-					GameRegistry.getCue(entity.id!!) == null
+					OldGameRegistry.getCue(entity.id!!) == null
 				}
 			}
 

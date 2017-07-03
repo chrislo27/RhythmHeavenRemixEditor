@@ -2,7 +2,7 @@ package chrislo27.rhre.script.luaobj
 
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.track.Remix
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LuaValue
@@ -24,7 +24,7 @@ class LuaEntity(globals: Globals, remix: Remix, private val entity: Entity) : Lu
 		this.set("id", id)
 		this.set("isPattern", LuaValue.valueOf(isPattern))
 		this.set("semitone", semitone)
-		this.set("gameID", if (isPattern) GameRegistry.getPattern(id)!!.gameID else GameRegistry.getCue(id)!!.gameID)
+		this.set("gameID", if (isPattern) OldGameRegistry.getPattern(id)!!.gameID else OldGameRegistry.getCue(id)!!.gameID)
 	}
 
 }

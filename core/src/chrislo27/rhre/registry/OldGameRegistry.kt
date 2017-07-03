@@ -21,12 +21,7 @@ import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.CopyOnWriteArrayList
 
-object GameRegistry : Disposable {
-
-//	/**
-//	 * 0 for normal loading
-//	 */
-//	@Volatile var coroutinesToUse: Int = 0
+object OldGameRegistry : Disposable {
 
 	val games: Map<String, Game> = ConcurrentHashMap()
 	val gameList: List<Game> = CopyOnWriteArrayList()
@@ -289,8 +284,8 @@ object GameRegistry : Disposable {
 			for (c in coroutines) {
 				val game: Game = c.await() ?: continue
 
-				GameRegistry.games as MutableMap
-				GameRegistry.games[game.id] = game
+				OldGameRegistry.games as MutableMap
+				OldGameRegistry.games[game.id] = game
 				if (gamesBySeries[game.series] == null) {
 					gamesBySeries[game.series] = mutableListOf()
 				}
@@ -448,11 +443,11 @@ object GameRegistry : Disposable {
 class CueAssetLoader : IAssetLoader {
 	override fun addManagedAssets(manager: AssetManager) {
 		runBlocking {
-			while (GameRegistry.loadingState) {
+			while (OldGameRegistry.loadingState) {
 				delay(50L)
 			}
 
-			GameRegistry.games.values.forEach { g ->
+			OldGameRegistry.games.values.forEach { g ->
 				g.soundCues.forEach { sc ->
 					val path = (sc.soundFolder ?: "sounds/cues/") + sc.id + "." +
 							sc.fileExtension

@@ -1,6 +1,6 @@
 package chrislo27.rhre.script
 
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.track.Remix
 import org.luaj.vm2.Globals
 import org.luaj.vm2.LuaValue
@@ -24,7 +24,7 @@ object ScriptSandbox {
 		val globals = getBaseGlobals()
 
 		globals.set("remix", remix.getLuaValue(globals))
-		globals.set("registry", GameRegistry.luaValue)
+		globals.set("registry", OldGameRegistry.luaValue)
 //		globals.set("rhre2utils", LuaRHRE2Utils(globals, remix))
 
 		LuaC.install(globals)

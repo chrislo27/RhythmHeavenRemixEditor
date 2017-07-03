@@ -4,7 +4,7 @@ import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.entity.Entity
 import chrislo27.rhre.entity.PatternEntity
 import chrislo27.rhre.entity.SoundEntity
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.track.TempoChange
 import org.luaj.vm2.*
@@ -119,7 +119,7 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 					throw LuaError("Args is wrong number (5 or 6)")
 
 				val id = args.arg(2).tostring().toString()
-				if (GameRegistry.getCue(id) == null && GameRegistry.getPattern(id) == null)
+				if (OldGameRegistry.getCue(id) == null && OldGameRegistry.getPattern(id) == null)
 					throw LuaError("Unknown ID: $id")
 
 				val beat: Float = args.arg(3).tofloat()
@@ -131,17 +131,17 @@ class LuaRemix(globals: Globals, remix: Remix) : LuaObj(globals, remix) {
 				if (duration in 0f..0.125f)
 					throw LuaError("Duration out of range (> 0.125): " + duration)
 
-				val isPattern = GameRegistry.getPattern(id) != null
+				val isPattern = OldGameRegistry.getPattern(id) != null
 				val entity: Entity
 				if (isPattern) {
-					entity = PatternEntity(remix, GameRegistry.getPattern(id)!!)
+					entity = PatternEntity(remix, OldGameRegistry.getPattern(id)!!)
 					if (duration >= 0.125f) {
 						val old = entity.bounds.width
 						entity.bounds.width = duration
 						entity.onLengthChange(old)
 					}
 				} else {
-					val cue = GameRegistry.getCue(id)
+					val cue = OldGameRegistry.getCue(id)
 					if (duration < 0) {
 						entity = SoundEntity(remix, cue!!, beat, track - 1, 0)
 					} else {

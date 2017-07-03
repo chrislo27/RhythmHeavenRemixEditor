@@ -3,7 +3,7 @@ package chrislo27.rhre.entity
 import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.registry.Game
-import chrislo27.rhre.registry.GameRegistry
+import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.registry.Pattern
 import chrislo27.rhre.track.PlaybackCompletion
 import chrislo27.rhre.track.Remix
@@ -36,7 +36,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 		this.internal = ArrayList<SoundEntity>()
 
 		pattern.cues.forEach { c ->
-			val sc = GameRegistry.getCue(c.id)
+			val sc = OldGameRegistry.getCue(c.id)
 
 			//			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
@@ -78,7 +78,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 
 		isRepitchable = internal.stream().anyMatch { se -> se.cue.canAlterPitch }
 		val id = pattern.cues[0].id
-		game = GameRegistry[id.substring(0, id.indexOf('/'))]!!
+		game = OldGameRegistry[id.substring(0, id.indexOf('/'))]!!
 		iconId = "gameIcon_" + internal[0].cue.id.substring(0, internal[0].cue.id.indexOf('/'))
 	}
 
