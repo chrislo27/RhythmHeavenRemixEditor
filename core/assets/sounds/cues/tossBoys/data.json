@@ -228,6 +228,31 @@
       "id": "tossBoys/superYellowFinish",
       "duration": 1,
       "name": "[#FFFF00]kii[]-yan super - finish"
+    },
+	{
+      "id": "tossBoys/superYellowUnusedRed1",
+      "duration": 0.25,
+      "name": "[#FFFF00]kii[]-yan unused super - [#FF0000]aka[]-chan - 1"
+    },
+	{
+      "id": "tossBoys/superYellowUnusedRed2",
+      "duration": 0.25,
+      "name": "[#FFFF00]kii[]-yan unused super - [#FF0000]aka[]-chan - 2"
+    },
+	{
+      "id": "tossBoys/superYellowUnusedRed3",
+      "duration": 1.5,
+      "name": "[#FFFF00]kii[]-yan unused super - [#FF0000]aka[]-chan - 3"
+    },
+	{
+      "id": "tossBoys/superYellowUnusedBlue1",
+      "duration": 0.5,
+      "name": "[#FFFF00]kii[]-yan unused super - [#70B5FF]ao[]-kun - 1"
+    },
+	{
+      "id": "tossBoys/superYellowUnusedBlue2",
+      "duration": 1.5,
+      "name": "[#FFFF00]kii[]-yan unused super - [#70B5FF]ao[]-kun - 2"
     }
   ],
   "patterns": [
@@ -556,6 +581,62 @@
         {
           "id": "tossBoys/superYellowFinish",
           "beat": 2
+        }
+      ]
+    },
+	{
+      "id": "tossBoys_kiiyanUnusedSuperToAkachan",
+      "name": "[#FFFF00]kii[]-yan unused super to [#FF0000]aka[]-chan",
+      "cues": [
+        {
+          "id": "tossBoys/superYellowStart",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superYellowFinish",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superYellowFinish",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superYellowUnusedRed1",
+          "beat": 4
+        },
+		{
+          "id": "tossBoys/superYellowUnusedRed2",
+          "beat": 4.25
+        },
+        {
+          "id": "tossBoys/superYellowUnusedRed3",
+          "beat": 4.5
+        }
+      ]
+    },
+	{
+      "id": "tossBoys_kiiyanUnusedSuperToAokun",
+      "name": "[#FFFF00]kii[]-yan unused super to [#70B5FF]ao[]-kun",
+      "cues": [
+        {
+          "id": "tossBoys/superYellowStart",
+          "beat": 0
+        },
+        {
+          "id": "tossBoys/superYellowFinish",
+          "beat": 1
+        },
+        {
+          "id": "tossBoys/superYellowFinish",
+          "beat": 3
+        },
+        {
+          "id": "tossBoys/superYellowUnusedBlue1",
+          "beat": 4
+        },
+        {
+          "id": "tossBoys/superYellowUnusedBlue2",
+          "beat": 4.5
         }
       ]
     }
