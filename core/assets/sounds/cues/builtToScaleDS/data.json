@@ -5,13 +5,13 @@
   "cues": [
     {
       "id": "builtToScaleDS/c",
-      "duration": 0.25,
+      "duration": 0.5,
       "name": "note",
       "canAlterPitch": true
     },
     {
       "id": "builtToScaleDS/pew",
-      "duration": 0.25,
+      "duration": 0.5,
       "name": "launch"
     }
   ],
@@ -45,10 +45,16 @@
           "beat": 4,
           "semitone": 7
         },
+		{
+          "id": "builtToScaleDS/c",
+          "beat": 4,
+		  "track": 1,
+          "semitone": 12
+        },
         {
           "id": "builtToScaleDS/pew",
           "beat": 4,
-          "track": 1
+          "track": 2
         }
       ]
     }
