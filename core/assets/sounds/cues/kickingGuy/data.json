@@ -1,6 +1,7 @@
 {
   "gameID": "kickingGuy",
   "gameName": "Kicking Guy",
+  "priority": -1,
   "cues": [
     {
       "id": "kickingGuy/cowbell",
