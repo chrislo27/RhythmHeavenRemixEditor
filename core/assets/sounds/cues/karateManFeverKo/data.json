@@ -1,0 +1,316 @@
+{
+  "gameID": "karateManFeverKo",
+  "gameName": "Karate Man (Fever) (Korean)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "karateManFeverKo/potOut",
+      "duration": 1,
+      "name": "pot - out"
+    },
+    {
+      "id": "karateManFeverKo/offbeatPotOut",
+      "duration": 1,
+      "name": "pot - offbeat out"
+    },
+    {
+      "id": "karateManFeverKo/potHit",
+      "duration": 1,
+      "name": "pot - hit"
+    },
+    {
+      "id": "karateManFeverKo/soccerHit",
+      "duration": 1,
+      "name": "soccer ball - hit"
+    },
+    {
+      "id": "karateManFeverKo/hit3cue1",
+      "duration": 0.5,
+      "name": "hit"
+    },
+    {
+      "id": "karateManFeverKo/hit3cue2",
+      "duration": 0.5,
+      "name": "3!"
+    },
+    {
+      "id": "karateManFeverKo/hit4",
+      "duration": 0.5,
+      "name": "4!"
+    },
+    {
+      "id": "karateManFeverKo/rock",
+      "duration": 1,
+      "name": "rock - hit"
+    },
+    {
+      "id": "karateManFeverKo/bulbOut",
+      "duration": 1,
+      "name": "lightbulb - out"
+    },
+    {
+      "id": "karateManFeverKo/bulbHit",
+      "duration": 1,
+      "name": "lightbulb - hit"
+    },
+    {
+      "id": "karateManFeverKo/barrelOut",
+      "duration": 1,
+      "name": "barrel - out"
+    },
+    {
+      "id": "karateManFeverKo/punchy1",
+      "duration": 0.25,
+      "name": "combo - 1"
+    },
+    {
+      "id": "karateManFeverKo/punchy2",
+      "duration": 0.25,
+      "name": "combo - 2"
+    },
+    {
+      "id": "karateManFeverKo/punchy3",
+      "duration": 0.25,
+      "name": "combo - 3"
+    },
+    {
+      "id": "karateManFeverKo/punchy4",
+      "duration": 0.25,
+      "name": "combo - 4"
+    },
+    {
+      "id": "karateManFeverKo/ko",
+      "duration": 0.5,
+      "name": "combo - 5"
+    },
+    {
+      "id": "karateManFeverKo/pow",
+      "duration": 1.5,
+      "name": "combo - 6"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "karateManFeverKo_pot",
+      "name": "pot",
+      "cues": [
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManFeverKo_offbeatpot",
+      "name": "offbeat pot",
+      "cues": [
+        {
+          "id": "karateManFeverKo/offbeatPotOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManFeverKo_soccer ball",
+      "name": "soccer ball",
+      "cues": [
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/soccerHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManFeverKo_hit3",
+      "name": "hit 3!",
+      "cues": [
+        {
+          "id": "karateManFeverKo/hit3cue1",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/hit3cue2",
+          "beat": 0.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/rock",
+          "beat": 4.5
+        }
+      ]
+    },
+    {
+      "id": "karateManFeverKo_hit4",
+      "name": "hit 4!",
+      "cues": [
+        {
+          "id": "karateManFeverKo/hit4",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/hit3cue2",
+          "beat": 0.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 1.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 2.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 2.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 3.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/potHit",
+          "beat": 4.5
+        },
+        {
+          "id": "karateManFeverKo/potOut",
+          "beat": 4.5,
+          "track": 1
+        },
+        {
+          "id": "karateManFeverKo/rock",
+          "beat": 5.5
+        }
+      ]
+    },
+	{
+      "id": "karateManFeverKo_lightbulb",
+      "name": "lightbulb (standalone)",
+      "cues": [
+        {
+          "id": "karateManFeverKo/bulbOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/bulbHit",
+          "beat": 1
+        }
+      ]
+    },
+	{
+      "id": "karateManFeverKo_comboSolo",
+      "name": "combo (standalone)",
+      "cues": [
+        {
+          "id": "karateManFeverKo/barrelOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/punchy1",
+          "beat": 1
+        },
+        {
+          "id": "karateManFeverKo/punchy2",
+          "beat": 1.25
+        },
+        {
+          "id": "karateManFeverKo/punchy3",
+          "beat": 1.5
+        },
+        {
+          "id": "karateManFeverKo/punchy4",
+          "beat": 1.75
+        },
+        {
+          "id": "karateManFeverKo/ko",
+          "beat": 2
+        },
+        {
+          "id": "karateManFeverKo/pow",
+          "beat": 2.5
+        }
+      ]
+    },
+    {
+      "id": "karateManFeverKo_combo",
+      "name": "combo",
+      "cues": [
+        {
+          "id": "karateManFeverKo/bulbOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManFeverKo/bulbHit",
+          "beat": 1
+        },
+        {
+          "id": "karateManFeverKo/barrelOut",
+          "beat": 2
+        },
+        {
+          "id": "karateManFeverKo/punchy1",
+          "beat": 3
+        },
+        {
+          "id": "karateManFeverKo/punchy2",
+          "beat": 3.25
+        },
+        {
+          "id": "karateManFeverKo/punchy3",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManFeverKo/punchy4",
+          "beat": 3.75
+        },
+        {
+          "id": "karateManFeverKo/ko",
+          "beat": 4
+        },
+        {
+          "id": "karateManFeverKo/pow",
+          "beat": 4.5
+        }
+      ]
+    }
+  ]
+}
