@@ -1,6 +1,7 @@
 package chrislo27.rhre.util.console
 
 import chrislo27.rhre.Main
+import chrislo27.rhre.json.GameObject
 import chrislo27.rhre.registry.*
 import chrislo27.rhre.util.JsonHandler
 import chrislo27.rhre.version.RHRE2Version
@@ -98,6 +99,13 @@ object ConsoleCommands {
 
 				false
 			}
+			"rename" -> {
+				if (args.first() == args[1]) {
+					throw IllegalArgumentException("No name change detected")
+				}
+				rename(args.first(), args[1])
+				false
+			}
 			"help" ,"?" -> {
 				println("""Commands:
 quit/exit
@@ -117,11 +125,43 @@ checkids [name]
 
 version [version]
   - Shows the numeric form of the version. Defaults to current version.
+
+rename <gameID> <newGameID>
+  - Renames a game, adding deprecations where necessary.
 """)
 				false
 			}
-			else -> throw IllegalArgumentException("Unknown command, use help to view commands")
+			else -> throw IllegalArgumentException("Unknown command \"$command\", use help to view commands")
 		}
+	}
+
+	private fun rename(original: String, new: String) {
+		val obj: GameObject = JsonHandler.fromJson(Gdx.files.local("sounds/cues/$original/data.json").readString("UTF-8"))
+
+		obj.gameID = new
+		obj.cues?.forEach { so ->
+			so.deprecatedIDs = arrayOf()
+			val list = so.deprecatedIDs!!.toMutableList()
+			list += so.id!!
+			so.deprecatedIDs = list.toTypedArray()
+
+			so.id = new + "/" + so.id!!.substringAfter('/')
+		}
+
+		obj.patterns?.forEach { po ->
+			po.deprecatedIDs = arrayOf()
+			val list = po.deprecatedIDs!!.toMutableList()
+			list += po.id!!
+			po.deprecatedIDs = list.toTypedArray()
+
+			po.id = new + "_" + po.id!!.substringAfter('_')
+
+			po.cues?.forEach {
+				it.id = new + "/" + it.id!!.substringAfter('/')
+			}
+		}
+
+		println(JsonHandler.toJson(obj))
 	}
 
 	private data class IDDump(var games: List<String>, var sfx: List<String>, var patterns: List<String>)
