@@ -54,6 +54,12 @@ class EditorStageSetup(private val screen: EditorScreen) {
 
 					screen.editor.remix.playingState = (PlayingState.PLAYING)
 				}
+
+				override fun render(batch: SpriteBatch?, alpha: Float) {
+					super.render(batch, alpha)
+
+					this.isEnabled = screen.editor.remix.playingState != PlayingState.PLAYING
+				}
 			}
 			stage!!.addActor<ImageButton>(playRemix)
 
@@ -74,6 +80,12 @@ class EditorStageSetup(private val screen: EditorScreen) {
 						screen.editor.remix.playingState = (PlayingState.PAUSED)
 				}
 
+				override fun render(batch: SpriteBatch?, alpha: Float) {
+					super.render(batch, alpha)
+
+					this.isEnabled = screen.editor.remix.playingState == PlayingState.PLAYING
+				}
+
 			}
 
 			pauseRemix.color.set(0.75f, 0.75f, 0.25f, 1f)
@@ -90,6 +102,12 @@ class EditorStageSetup(private val screen: EditorScreen) {
 					super.onClickAction(x, y)
 
 					screen.editor.remix.playingState = (PlayingState.STOPPED)
+				}
+
+				override fun render(batch: SpriteBatch?, alpha: Float) {
+					super.render(batch, alpha)
+
+					this.isEnabled = screen.editor.remix.playingState != PlayingState.STOPPED
 				}
 
 			}
@@ -636,7 +654,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun render(batch: SpriteBatch, alpha: Float) {
 					super.render(batch, alpha)
 
-					this.isEnabled = screen.editor.remix.canUndo()
+					this.isEnabled = screen.editor.remix.canUndo() && screen.editor.remix.playingState == PlayingState.STOPPED
 
 					if (this.stage.isMouseOver(this)) {
 						main.font.data.setScale(0.5f)
@@ -674,7 +692,7 @@ class EditorStageSetup(private val screen: EditorScreen) {
 				override fun render(batch: SpriteBatch, alpha: Float) {
 					super.render(batch, alpha)
 
-					this.isEnabled = screen.editor.remix.canRedo()
+					this.isEnabled = screen.editor.remix.canRedo() && screen.editor.remix.playingState == PlayingState.STOPPED
 
 					if (this.stage.isMouseOver(this)) {
 						main.font.data.setScale(0.5f)
