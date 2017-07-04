@@ -152,7 +152,7 @@ object GameRegistry : Disposable, IAssetLoader {
 +=================+
 | REGISTRY ERRORS |
 +=================+
-$errorCount errors found
+$errorCount errors found in ${errors.distinctBy(GameParseError::game).size} games
 
 """)
 
@@ -262,7 +262,7 @@ $errorCount errors found
 				return createErrorResult()
 			}
 			if (so.id!!.getBaseIDFromCue() != gameID) {
-				err("Sound cue ID " + so.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				err("Sound cue ID " + so.id + " doesn't start with game ID")
 				return@forEach
 			}
 			soundCues.add(SoundCue(so.id!!, gameID, so.fileExtension,
@@ -279,13 +279,20 @@ $errorCount errors found
 				return createErrorResult()
 			}
 			if (po.id!!.getBaseIDFromPattern() != gameID) {
-				err("Pattern definition ID " + po.id + " doesn't start with game definition ID (${gameObj.gameID})")
-				return@forEach
+				err("Pattern definition ID " + po.id + " doesn't start with game ID")
 			}
 			val p: Pattern
 			val patternCues = po.cues!!.map { pc ->
-				Pattern.PatternCue(pc.id!!, gameID, pc.beat, pc.track, pc.duration!!, pc.semitone!!)
-			}
+				if (pc.id == null) {
+					err("Pattern ${po.id} has a pattern cue without an ID")
+					return@map null
+				}
+				if (pc.id!!.getBaseIDFromCue() != gameID) {
+					err("Pattern cue ${pc.id} doesn't start with game ID")
+					return@map null
+				}
+				return@map Pattern.PatternCue(pc.id!!, gameID, pc.beat, pc.track, pc.duration!!, pc.semitone!!)
+			}.filterNotNull()
 
 			p = Pattern(po.id!!, gameID, po.name!!, po.isStretchable, patternCues, false,
 						po.deprecatedIDs?.toMutableList() ?: mutableListOf())
