@@ -327,6 +327,11 @@ ${warnings.first.size} warnings
 				err("Sound cue ID " + so.id + " doesn't start with game ID")
 				return@forEach
 			}
+			if (so.introSound != null) {
+				if (so.introSound!!.getBaseIDFromCue() != gameID) {
+					err("Sound cue ID " + so.id + "'s intro sound (${so.introSound}) doesn't start with game ID")
+				}
+			}
 			soundCues.add(SoundCue(so.id!!, gameID, so.fileExtension,
 								   so.name ?: so.id!!,
 								   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
