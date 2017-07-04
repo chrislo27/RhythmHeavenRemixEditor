@@ -1,5 +1,6 @@
 package chrislo27.rhre.registry
 
+import chrislo27.rhre.json.GameObject
 import chrislo27.rhre.util.CustomSoundUtil
 import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
@@ -13,6 +14,8 @@ import ionium.registry.lazysound.LazySound
 import ionium.templates.Main
 import ionium.util.AssetMap
 import kotlinx.coroutines.experimental.*
+import org.luaj.vm2.LuaValue
+import org.luaj.vm2.lib.jse.CoerceJavaToLua
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -25,6 +28,43 @@ object GameRegistry : Disposable, IAssetLoader {
 	val gameList: List<Game> = mutableListOf()
 	val gamesBySeries: Map<Series, List<Game>> = mutableMapOf()
 	val allowedSoundTypes: List<String> = listOf("ogg", "wav", "mp3")
+
+	val luaValue: LuaValue by lazy {
+		val l = LuaValue.tableOf()
+
+		l.set("games", LuaValue.tableOf(
+				games.flatMap { listOf(CoerceJavaToLua.coerce(it.key), it.value.luaValue) }.toTypedArray()))
+		l.set("cues", LuaValue.tableOf(
+				games.values.flatMap(Game::soundCues).flatMap {
+					listOf(CoerceJavaToLua.coerce(it.id), it.luaValue)
+				}.toTypedArray()))
+		l.set("patterns", LuaValue.tableOf(
+				games.values.flatMap(Game::patterns).flatMap {
+					listOf(CoerceJavaToLua.coerce(it.id), it.luaValue)
+				}.toTypedArray()))
+
+		return@lazy l
+	}
+
+	operator fun get(id: String): Game? {
+		return games[id]
+	}
+
+	fun getCue(id: String): SoundCue? {
+		return gameList.map {
+			it.soundCues.filter {
+				it.id == id || it.deprecated.contains(id)
+			}.firstOrNull()
+		}.filterNotNull().firstOrNull()
+	}
+
+	fun getPattern(id: String): Pattern? {
+		return gameList.map {
+			it.patterns.filter {
+				it.id == id || it.deprecated.contains(id)
+			}.firstOrNull()
+		}.filterNotNull().firstOrNull()
+	}
 
 	/**
 	 * @return Execution time in milliseconds
@@ -65,7 +105,7 @@ object GameRegistry : Disposable, IAssetLoader {
 		}
 
 		// load
-		val coroutines: MutableList<Deferred<GameParseResult>> = mutableListOf()
+		val coroutines: MutableList<Deferred<GameParseResult?>> = mutableListOf()
 		gameIDs.forEach { id ->
 			coroutines += async(CommonPool) {
 				return@async loadGameDefinition(id, "sounds/cues/", false)
@@ -81,7 +121,7 @@ object GameRegistry : Disposable, IAssetLoader {
 				return@async if (it.child("data.json").exists()) {
 					loadGameDefinition(id, customFolderHandle.path() + "/", true)
 				} else {
-					loadCustomSoundFolder(it)
+					loadCustomSoundFolder(it, customFolderHandle)
 				}
 			}
 		}
@@ -90,15 +130,16 @@ object GameRegistry : Disposable, IAssetLoader {
 		val errors: MutableList<GameParseError> = mutableListOf()
 		runBlocking {
 			for (c in coroutines) {
-				val result: GameParseResult = c.await()
+				val result: GameParseResult = c.await() ?: continue
 
-				if (result.error != null) {
-					errors += result.error
+				if (result.errors.isNotEmpty()) {
+					errors.addAll(result.errors)
 				} else if (result.game == null) {
 					// should never happen
 					throw IllegalStateException("Result of parsing has both the game and error being null")
 				} else {
 					gameList += result.game
+					Main.logger.debug("${result.game.id} finished in ${result.timeMs} ms")
 				}
 			}
 		}
@@ -106,19 +147,38 @@ object GameRegistry : Disposable, IAssetLoader {
 		// kill if errors found
 		val errorCount = errors.size
 		if (errorCount > 0) {
-			val builder = StringBuilder().append('\n')
+			val builder = StringBuilder()
+			builder.append("""
++=================+
+| REGISTRY ERRORS |
++=================+
+$errorCount errors found
+
+""")
+
+			errors.distinctBy(GameParseError::game).forEach { error ->
+				builder.append(error.game).append("\n")
+				errors.filter { it.game == error.game}
+						.forEach {
+							builder.append(" > ${it.message}\n")
+						}
+				builder.append("\n")
+			}
 
 			Main.logger.error(builder.toString())
 			val timeTaken: Double = timeTaken()
 			Main.logger.error(
 					"Failed to complete game registry loading due to $errorCount errors ($timeTaken ms elapsed)")
 			loadState = LoadState.LOADED
-			// TODO Gdx.app.exit()
+			Gdx.app.exit()
 			return timeTaken
 		}
 
 		// sort
 		gameList.sort()
+		synchronized(games) {
+			gameList.associateByTo(games, Game::id)
+		}
 		synchronized(gamesBySeries) {
 			gamesBySeries.clear()
 			gameList.groupByTo((gamesBySeries as MutableMap<Series, MutableList<Game>>), Game::series)
@@ -129,8 +189,8 @@ object GameRegistry : Disposable, IAssetLoader {
 		launch(CommonPool) {
 			if (checkWarnings()) {
 				Main.logger.error(
-						"Failed to complete game registry loading due to warnings - see above (this should only happen in dev)")
-				// TODO Gdx.app.exit()
+						"Failed to complete game registry loading due to warnings - see above (this should only happen in development)")
+				Gdx.app.exit()
 			}
 		}
 
@@ -145,14 +205,168 @@ object GameRegistry : Disposable, IAssetLoader {
 		return timeTaken
 	}
 
-	private fun loadGameDefinition(gameID: String, baseDir: String, isCustom: Boolean): GameParseResult {
-		// FIXME
-		return GameParseResult(null, GameParseError(gameID, "todo"))
+	private fun String.getBaseIDFromCue(): String? {
+		if (!this.contains('/'))
+			return null
+		return this.substringBefore('/')
 	}
 
-	private fun loadCustomSoundFolder(fh: FileHandle): GameParseResult {
-		// FIXME
-		return GameParseResult(null, GameParseError("thing", "todo"))
+	private fun String.getBaseIDFromPattern(): String? {
+		if (!this.contains('_') || this.contains('/'))
+			return null
+		return this.substringBefore('_')
+	}
+
+	private fun loadGameDefinition(gameID: String, baseDir: String, isCustom: Boolean): GameParseResult {
+		val nano = System.nanoTime()
+		val timeElapsed: Double by lazy {(System.nanoTime() - nano) / 1_000_000.0}
+		val errorList = mutableListOf<GameParseError>()
+		fun err(msg: String) {
+			errorList += GameParseError(gameID, msg)
+		}
+		fun createErrorResult() = GameParseResult(null, errorList, timeElapsed)
+		val fh = Gdx.files.local("$baseDir$gameID/data.json")
+		if (!fh.exists()) {
+			err("The data.json file doesn't exist")
+			return createErrorResult()
+		}
+		val gameObj: GameObject = JsonHandler.fromJson(fh.readString("UTF-8"))
+		val game: Game
+		val patterns: MutableList<Pattern> = mutableListOf()
+		val soundCues: MutableList<SoundCue> = mutableListOf()
+
+		if (gameObj.gameID != gameID) {
+			err("The ID specified in the data (${gameObj.gameID}) doesn't match what should've been parsed ($gameID)")
+			return createErrorResult()
+		}
+
+		if (gameObj.gameName == null) {
+			err("Missing gameName field")
+			return createErrorResult()
+		}
+
+		if (gameObj.usesGeneratorHelper) {
+			val gh = GeneratorHelpers.map[gameID]
+
+			if (gh == null) {
+				err("GeneratorHelper not found")
+				return createErrorResult()
+			} else {
+				gh.process(fh, gameObj, patterns, soundCues)
+			}
+		}
+
+		gameObj.cues?.forEach { so ->
+			if (so.id == null) {
+				err("A cue object has no ID")
+				return createErrorResult()
+			}
+			if (so.id!!.getBaseIDFromCue() != gameID) {
+				err("Sound cue ID " + so.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				return@forEach
+			}
+			soundCues.add(SoundCue(so.id!!, gameID, so.fileExtension,
+								   so.name ?: so.id!!,
+								   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
+								   so.canAlterPitch, so.pan, so.canAlterDuration, so.introSound, so.baseBpm,
+								   so.loops ?: so.canAlterDuration,
+								   if (isCustom) baseDir else null))
+		} ?: err("Cues not found")
+
+		gameObj.patterns?.forEach { po ->
+			if (po.id == null) {
+				err("A pattern object has no ID")
+				return createErrorResult()
+			}
+			if (po.id!!.getBaseIDFromPattern() != gameID) {
+				err("Pattern definition ID " + po.id + " doesn't start with game definition ID (${gameObj.gameID})")
+				return@forEach
+			}
+			val p: Pattern
+			val patternCues = po.cues!!.map { pc ->
+				Pattern.PatternCue(pc.id!!, gameID, pc.beat, pc.track, pc.duration!!, pc.semitone!!)
+			}
+
+			p = Pattern(po.id!!, gameID, po.name!!, po.isStretchable, patternCues, false,
+						po.deprecatedIDs?.toMutableList() ?: mutableListOf())
+
+			patterns.add(p)
+		} ?: err("Patterns not found")
+
+		soundCues.filter { sc -> soundCues.none { sc.id == it.introSound } }.forEach { sc ->
+			val pattern = Pattern(sc.id + "_AUTO-GENERATED", gameID, "cue: " + sc.name,
+								  sc.canAlterDuration,
+								  mutableListOf(Pattern.PatternCue(sc.id, gameID, 0f, 0, sc.duration, 0)),
+								  true, mutableListOf())
+			if (sc.id.endsWith("/silence")) {
+				patterns.add(0, pattern)
+			} else {
+				patterns += pattern
+			}
+		}
+
+		val iconFh = Gdx.files.internal("$baseDir$gameID/icon.png")
+
+		if (isCustom && gameObj.series == null) {
+			gameObj.series = SeriesList.CUSTOM.name
+		}
+
+		game = Game(gameID, gameObj.gameName!!, soundCues, patterns,
+					if (gameObj.series == null) SeriesList.UNKNOWN else SeriesList.getOrPut(gameObj.series!!),
+					if (iconFh.exists()) "$baseDir$gameID/icon.png" else null, true, gameObj.notRealGame,
+					gameObj.priority)
+
+		if (!iconFh.exists())
+			Main.logger.warn(game.id + " is missing icon.png")
+
+		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null, errorList, timeElapsed)
+	}
+
+	private fun loadCustomSoundFolder(fh: FileHandle, customFolder: FileHandle): GameParseResult? {
+		val nano = System.nanoTime()
+		val timeElapsed: Double by lazy {(System.nanoTime() - nano) / 1_000_000.0}
+		val errorList = mutableListOf<GameParseError>()
+		val id = fh.nameWithoutExtension()
+		fun err(msg: String) {
+			errorList += GameParseError(id, msg)
+		}
+		fun createErrorResult() = GameParseResult(null, errorList, timeElapsed)
+		val list = fh.list { f ->
+			allowedSoundTypes.contains(f.extension.toLowerCase(Locale.ROOT))
+		}
+
+		if (list.isEmpty()) {
+			return null
+		}
+
+		val game: Game
+		val patterns: MutableList<Pattern> = mutableListOf()
+		val soundCues: MutableList<SoundCue> = mutableListOf()
+		val icon = fh.child("icon.png")
+
+		list.forEach { soundFh ->
+			val sc = SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(), fh.name(),
+							  soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(),
+							  listOf(),
+							  CustomSoundUtil.DURATION, true, 0f, true, null,
+							  0f, false, customFolder.path() + "/")
+			soundCues.add(sc)
+		}
+
+		soundCues.forEach { sc ->
+			val l = mutableListOf<Pattern.PatternCue>()
+
+			l.add(Pattern.PatternCue(sc.id, fh.name(), 0f, 0, sc.duration, 0))
+
+			patterns += Pattern(sc.id + "_AUTO-GENERATED", fh.name(), "cue: " +
+					sc.name.replace("custom:\n", ""),
+								sc.canAlterDuration, l, true, mutableListOf())
+		}
+
+		game = Game(id, id, soundCues, patterns,
+					SeriesList.CUSTOM, if (icon.exists()) icon.path() else null, true)
+
+		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null, errorList, timeElapsed)
 	}
 
 	private fun checkWarnings(): Boolean {
@@ -182,7 +396,7 @@ object GameRegistry : Disposable, IAssetLoader {
 					}
 
 					if (sc.introSound != null) {
-						if (!OldGameRegistry.gameList.any { g -> g.soundCues.any { it.id == sc.introSound } }) {
+						if (!GameRegistry.gameList.any { g -> g.soundCues.any { it.id == sc.introSound } }) {
 							Main.logger.warn("Intro sound cue ${sc.introSound} in sound cue ${sc.id} doesn't exist")
 							warningCount++
 						}
@@ -314,13 +528,13 @@ object GameRegistry : Disposable, IAssetLoader {
 		NOT_LOADING, LOADING, LOADED
 	}
 
-	private data class GameParseResult(val game: Game?, val error: GameParseError?) {
+	private data class GameParseResult(val game: Game?, val errors: MutableList<GameParseError>, val timeMs: Double) {
 		init {
-			if (game == null && error == null) {
-				throw IllegalArgumentException("Both game and error are null")
+			if (game == null && errors.isEmpty()) {
+				throw IllegalArgumentException("Both game and errors are null/empty")
 			}
-			if (game != null && error != null) {
-				throw IllegalArgumentException("Both game and error are not null")
+			if (game != null && errors.isNotEmpty()) {
+				throw IllegalArgumentException("Both game and errors are not null/empty")
 			}
 		}
 	}

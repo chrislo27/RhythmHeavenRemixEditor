@@ -4,7 +4,7 @@ import chrislo27.rhre.Main
 import chrislo27.rhre.editor.Editor
 import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.registry.Game
-import chrislo27.rhre.registry.OldGameRegistry
+import chrislo27.rhre.registry.GameRegistry
 import chrislo27.rhre.registry.SoundCue
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.track.Semitones
@@ -42,7 +42,7 @@ class SoundEntity(remix: Remix, val cue: SoundCue, beat: Float, level: Int, dura
 	init {
 		this.bounds.set(beat, level.toFloat(), duration, 1f)
 
-		game = OldGameRegistry[cue.id.substring(0, cue.id.indexOf('/'))]!!
+		game = GameRegistry[cue.id.substring(0, cue.id.indexOf('/'))]!!
 		isFillbotsFill = cue.id == "fillbots/water" || cue.id == "fillbotsMegamix/water"
 	}
 

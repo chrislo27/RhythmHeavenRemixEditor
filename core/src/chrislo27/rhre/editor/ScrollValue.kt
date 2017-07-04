@@ -1,6 +1,6 @@
 package chrislo27.rhre.editor
 
-import chrislo27.rhre.registry.OldGameRegistry
+import chrislo27.rhre.registry.GameRegistry
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.math.MathUtils
 
@@ -11,7 +11,7 @@ data class ScrollValue(var game: Int, var pattern: Int, var gameScroll: Int = 0,
 	}
 
 	fun getMaxGameScroll(): Int {
-		return OldGameRegistry.gamesBySeries.size / (Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y)
+		return GameRegistry.gamesBySeries.size / (Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y)
 	}
 
 }

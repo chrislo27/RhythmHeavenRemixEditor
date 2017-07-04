@@ -6,7 +6,6 @@ import chrislo27.rhre.palette.AbstractPalette
 import chrislo27.rhre.palette.DarkPalette
 import chrislo27.rhre.palette.LightPalette
 import chrislo27.rhre.registry.GameRegistry
-import chrislo27.rhre.registry.OldGameRegistry
 import chrislo27.rhre.util.HideVersionText
 import chrislo27.rhre.version.RHRE2Version
 import chrislo27.rhre.version.VersionChecker
@@ -178,7 +177,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
 		Localization.instance().loadFromSettings(preferences)
 
-		OldGameRegistry.load()
+		GameRegistry.load()
 		GameRegistry.load()
 		super.create()
 
@@ -217,7 +216,6 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 	override fun prepareStates() {
 		super.prepareStates()
 
-		AssetRegistry.instance().addAssetLoader(OldGameRegistry.newAssetLoader())
 		AssetRegistry.instance().addAssetLoader(GameRegistry)
 
 		val reg = ScreenRegistry.instance()
@@ -388,7 +386,7 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 		ttfGenerator.dispose()
 
 		preferences.flush()
-		OldGameRegistry.dispose()
+		GameRegistry.dispose()
 		GameRegistry.dispose()
 	}
 }

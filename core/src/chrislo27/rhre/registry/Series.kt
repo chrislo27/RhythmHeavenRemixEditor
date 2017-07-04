@@ -40,7 +40,7 @@ object SeriesList {
 		list as MutableList
 		list.add(s)
 
-		Main.logger.warn("Added a new series: " + s)
+		Main.logger.info("Added a new series: " + s)
 
 		update()
 	}

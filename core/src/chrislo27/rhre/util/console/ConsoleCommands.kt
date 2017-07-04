@@ -18,7 +18,7 @@ object ConsoleCommands {
 				true
 			}
 			"dumpids" -> {
-				val filteredGames = OldGameRegistry.gameList.filter { it.series != SeriesList.CUSTOM }
+				val filteredGames = GameRegistry.gameList.filter { it.series != SeriesList.CUSTOM }
 				val allIDs: String = JsonHandler.toJson(IDDump(
 						filteredGames.map(Game::id),
 						filteredGames.flatMap(Game::soundCues).map(SoundCue::id),
@@ -49,25 +49,25 @@ object ConsoleCommands {
 
 				println("Checking game list for $idDumpName")
 				list.games.forEach {
-					if (OldGameRegistry[it] == null) {
+					if (GameRegistry[it] == null) {
 						println("[GAME] Not found: $it")
 					}
 				}
 				println("\nChecking SFX list")
 				list.sfx.forEach {
-					if (OldGameRegistry.getCue(it) == null) {
+					if (GameRegistry.getCue(it) == null) {
 						println("[SFX] Not found: $it")
 					}
 				}
 				println("\nChecking pattern list")
 				list.patterns.forEach {
-					if (OldGameRegistry.getPattern(it) == null) {
+					if (GameRegistry.getPattern(it) == null) {
 						println("[PATTERN] Not found: $it")
 					}
 				}
 				println()
 				println("Checking for new additions")
-				val filteredGames = OldGameRegistry.gameList.filter { it.series.builtIn }
+				val filteredGames = GameRegistry.gameList.filter { it.series.builtIn }
 				filteredGames.map(Game::id).forEach {
 					if (!list.games.contains(it)) {
 						println("[NEW GAME] $it")
