@@ -287,7 +287,7 @@ ${warnings.first.size} warnings
 		}
 
 		fun createErrorResult() = GameParseResult(null, errorList, timeElapsed)
-		val fh = Gdx.files.local("$baseDir$gameID/data.json")
+		val fh = Gdx.files.internal("$baseDir$gameID/data.json")
 		if (!fh.exists()) {
 			err("The data.json file doesn't exist")
 			return createErrorResult()
