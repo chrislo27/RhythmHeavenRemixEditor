@@ -105,12 +105,13 @@ object GameRegistry : Disposable, IAssetLoader {
 		// kill if errors found
 		val errorCount = errors.size
 		if (errorCount > 0) {
-			// TODO format errors
+			val builder = StringBuilder().append('\n')
 
+			Main.logger.error(builder.toString())
 			val timeTaken: Double = timeTaken()
-			Main.logger.info("Failed to complete game registry loading due to $errorCount errors ($timeTaken ms elapsed)")
+			Main.logger.error("Failed to complete game registry loading due to $errorCount errors ($timeTaken ms elapsed)")
 			loadState = LoadState.LOADED
-			Gdx.app.exit()
+			// TODO Gdx.app.exit()
 			return timeTaken
 		}
 
@@ -124,7 +125,10 @@ object GameRegistry : Disposable, IAssetLoader {
 
 		// warning check
 		launch(CommonPool) {
-			checkWarnings()
+			if (checkWarnings()) {
+				Main.logger.error("Failed to complete game registry loading due to warnings - see above (this should only happen in dev)")
+				// TODO Gdx.app.exit()
+			}
 		}
 
 		// finishing
@@ -147,8 +151,9 @@ object GameRegistry : Disposable, IAssetLoader {
 		return GameParseResult(null, GameParseError("thing", "todo"))
 	}
 
-	private fun checkWarnings() {
+	private fun checkWarnings(): Boolean {
 		// TODO
+		return false
 	}
 
 	@Synchronized override fun dispose() {
