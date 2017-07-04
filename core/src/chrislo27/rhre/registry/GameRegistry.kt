@@ -27,6 +27,10 @@ object GameRegistry : Disposable, IAssetLoader {
 	val games: Map<String, Game> = mutableMapOf()
 	val gameList: List<Game> = mutableListOf()
 	val gamesBySeries: Map<Series, List<Game>> = mutableMapOf()
+	val cueMap: Map<String, SoundCue> = mutableMapOf()
+	val patternMap: Map<String, Pattern> = mutableMapOf()
+	private val cueMapDeprecations: Map<String, SoundCue> = mutableMapOf()
+	private val patternMapDeprecations: Map<String, Pattern> = mutableMapOf()
 	val allowedSoundTypes: List<String> = listOf("ogg", "wav", "mp3")
 
 	val luaValue: LuaValue by lazy {
@@ -51,19 +55,11 @@ object GameRegistry : Disposable, IAssetLoader {
 	}
 
 	fun getCue(id: String): SoundCue? {
-		return gameList.map {
-			it.soundCues.filter {
-				it.id == id || it.deprecated.contains(id)
-			}.firstOrNull()
-		}.filterNotNull().firstOrNull()
+		return cueMapDeprecations[id]
 	}
 
 	fun getPattern(id: String): Pattern? {
-		return gameList.map {
-			it.patterns.filter {
-				it.id == id || it.deprecated.contains(id)
-			}.firstOrNull()
-		}.filterNotNull().firstOrNull()
+		return patternMapDeprecations[id]
 	}
 
 	/**
@@ -85,6 +81,10 @@ object GameRegistry : Disposable, IAssetLoader {
 		this.games as MutableMap
 		this.gameList as MutableList
 		this.gamesBySeries as MutableMap
+		this.cueMap as MutableMap
+		this.patternMap as MutableMap
+		this.cueMapDeprecations as MutableMap
+		this.patternMapDeprecations as MutableMap
 
 		// make debug folder idk why this is here actually
 		val debugFolder = Gdx.files.local("debug/")
@@ -140,6 +140,48 @@ object GameRegistry : Disposable, IAssetLoader {
 				} else {
 					gameList += result.game
 //					Main.logger.debug("${result.game.id} finished in ${result.timeMs} ms")
+
+					result.game.soundCues.forEach { sc ->
+						if (cueMap.containsKey(sc.id)) {
+							errors += GameParseError(result.game.id, "Duplicate sound cue ID ${sc.id} (already assigned in ${cueMap[sc.id]?.gameID})")
+						} else {
+							cueMap[sc.id] = sc
+						}
+						if (cueMapDeprecations.containsKey(sc.id) && cueMapDeprecations[sc.id]!!.id != sc.id) {
+							errors += GameParseError(result.game.id, "Duplicate sound cue ID ${sc.id} (already assigned in ${cueMap[sc.id]?.gameID})")
+						} else {
+							cueMapDeprecations[sc.id] = sc
+						}
+						sc.deprecated.forEach {
+							if (cueMapDeprecations.containsKey(it)) {
+								errors += GameParseError(result.game.id,
+														 "Duplicate deprecation of sound cue ID ${sc.id} (already assigned by ${cueMapDeprecations[it]?.id})")
+							} else {
+								cueMapDeprecations[it] = sc
+							}
+						}
+					}
+
+					result.game.patterns.forEach { pattern ->
+						if (patternMap.containsKey(pattern.id)) {
+							errors += GameParseError(result.game.id, "Duplicate pattern ID ${pattern.id} (already assigned in ${patternMap[pattern.id]?.gameID})")
+						} else {
+							patternMap[pattern.id] = pattern
+						}
+						if (patternMapDeprecations.containsKey(pattern.id) && patternMapDeprecations[pattern.id]!!.id != pattern.id) {
+							errors += GameParseError(result.game.id, "Duplicate pattern ID ${pattern.id} (already assigned in ${patternMap[pattern.id]?.gameID})")
+						} else {
+							patternMapDeprecations[pattern.id] = pattern
+						}
+						pattern.deprecated.forEach {
+							if (patternMapDeprecations.containsKey(it)) {
+								errors += GameParseError(result.game.id,
+														 "Duplicate deprecation of pattern ID ${pattern.id} (already assigned by ${patternMapDeprecations[it]?.id})")
+							} else {
+								patternMapDeprecations[it] = pattern
+							}
+						}
+					}
 				}
 			}
 		}
@@ -158,7 +200,7 @@ $errorCount errors found in ${errors.distinctBy(GameParseError::game).size} game
 
 			errors.distinctBy(GameParseError::game).forEach { error ->
 				builder.append(error.game).append("\n")
-				errors.filter { it.game == error.game}
+				errors.filter { it.game == error.game }
 						.forEach {
 							builder.append(" > ${it.message}\n")
 						}
@@ -238,11 +280,12 @@ ${warnings.first.size} warnings
 
 	private fun loadGameDefinition(gameID: String, baseDir: String, isCustom: Boolean): GameParseResult {
 		val nano = System.nanoTime()
-		val timeElapsed: Double by lazy {(System.nanoTime() - nano) / 1_000_000.0}
+		val timeElapsed: Double by lazy { (System.nanoTime() - nano) / 1_000_000.0 }
 		val errorList = mutableListOf<GameParseError>()
 		fun err(msg: String) {
 			errorList += GameParseError(gameID, msg)
 		}
+
 		fun createErrorResult() = GameParseResult(null, errorList, timeElapsed)
 		val fh = Gdx.files.local("$baseDir$gameID/data.json")
 		if (!fh.exists()) {
@@ -345,17 +388,20 @@ ${warnings.first.size} warnings
 		if (!iconFh.exists())
 			Main.logger.warn(game.id + " is missing icon.png")
 
-		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null, errorList, timeElapsed)
+		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null,
+																												 errorList,
+																												 timeElapsed)
 	}
 
 	private fun loadCustomSoundFolder(fh: FileHandle, customFolder: FileHandle): GameParseResult? {
 		val nano = System.nanoTime()
-		val timeElapsed: Double by lazy {(System.nanoTime() - nano) / 1_000_000.0}
+		val timeElapsed: Double by lazy { (System.nanoTime() - nano) / 1_000_000.0 }
 		val errorList = mutableListOf<GameParseError>()
 		val id = fh.nameWithoutExtension()
 		fun err(msg: String) {
 			errorList += GameParseError(id, msg)
 		}
+
 		fun createErrorResult() = GameParseResult(null, errorList, timeElapsed)
 		val list = fh.list { f ->
 			allowedSoundTypes.contains(f.extension.toLowerCase(Locale.ROOT))
@@ -392,7 +438,9 @@ ${warnings.first.size} warnings
 		game = Game(id, id, soundCues, patterns,
 					SeriesList.CUSTOM, if (icon.exists()) icon.path() else null, true)
 
-		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null, errorList, timeElapsed)
+		return if (errorList.isEmpty()) GameParseResult(game, mutableListOf(), timeElapsed) else GameParseResult(null,
+																												 errorList,
+																												 timeElapsed)
 	}
 
 	private fun checkWarnings(): Pair<List<String>, Double> {
@@ -402,67 +450,20 @@ ${warnings.first.size} warnings
 		this.gameList.forEach { game ->
 			game.patterns.forEach { pattern ->
 				pattern.cues.forEach { patternCue ->
-					if (this.gameList.none { g -> g.soundCues.any { sc -> patternCue.id == sc.id } }) {
+					if (getCue(patternCue.id) == null) {
 						warnings +=
 								"Pattern " + pattern.id + " has a pattern cue " + patternCue.id + " with no matching sound cue"
 					}
 				}
 			}
 		}
-		// duplicate check
+		// intro sound cue check
 		run {
-			val checked = mutableMapOf<String, Boolean>()
-			val checkedDeprecations = mutableMapOf<String, String>()
 			this.gameList.forEach { game ->
 				game.soundCues.forEach { sc ->
-					if (!sc.id.startsWith(game.id + "/")) {
-						warnings += "Sound cue ${sc.id} is in game ${game.id}"
-					}
-
 					if (sc.introSound != null) {
-						if (!GameRegistry.gameList.any { g -> g.soundCues.any { it.id == sc.introSound } }) {
+						if (getCue(sc.introSound) == null) {
 							warnings += "Intro sound cue ${sc.introSound} in sound cue ${sc.id} doesn't exist"
-						}
-					}
-
-					if (checked[sc.id] != null) {
-						warnings += "Duplicate sound cue " + sc.id + " in game " + game.id
-					} else {
-						checked[sc.id] = true
-					}
-
-					sc.deprecated.forEach {
-						if (checkedDeprecations[it] != null) {
-							warnings +=
-									"Duplicate deprecation $it in sound cue ${sc.id} (first existed in ${checkedDeprecations[it]})"
-						} else {
-							checkedDeprecations[it] = sc.id
-						}
-					}
-				}
-				game.patterns.forEach { pat ->
-					if (!pat.autoGenerated && !pat.id.startsWith(game.id + "_")) {
-						warnings += "Pattern cue ${pat.id} is in game ${game.id}"
-					}
-
-					pat.cues.forEach { pc ->
-						if (!pc.id.startsWith(game.id + "/")) {
-							warnings +="Pattern cue ${pc.id} in pattern ${pat.id} is in game ${game.id}"
-						}
-					}
-
-					if (checked[pat.id] != null) {
-						warnings += "Duplicate pattern " + pat.id + " in game " + game.id
-					} else {
-						checked[pat.id] = true
-					}
-
-					pat.deprecated.forEach {
-						if (checkedDeprecations[it] != null) {
-							warnings +=
-									"Duplicate deprecation $it in pattern ${pat.id} (first existed in ${checkedDeprecations[it]})"
-						} else {
-							checkedDeprecations[it] = pat.id
 						}
 					}
 				}
