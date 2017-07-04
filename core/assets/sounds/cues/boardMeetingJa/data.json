@@ -84,37 +84,22 @@
     {
       "id": "boardMeetingJa/abStop1",
       "duration": 0.66666,
-      "name": "assistant - one"
+      "name": "assistant - ish"
     },
     {
       "id": "boardMeetingJa/abStop2",
       "duration": 0.33333,
-      "name": "assistant - two"
+      "name": "assistant - o"
     },
     {
       "id": "boardMeetingJa/abStop3",
       "duration": 0.5,
-      "name": "assistant - three"
+      "name": "assistant - ni"
     },
     {
       "id": "boardMeetingJa/abStop4",
       "duration": 1.0,
       "name": "stop - together"
-    },
-    {
-      "id": "boardMeetingJa/abStopM1",
-      "duration": 0.66666,
-      "name": "monkey - one"
-    },
-    {
-      "id": "boardMeetingJa/abStopM2",
-      "duration": 0.33333,
-      "name": "monkey - two"
-    },
-    {
-      "id": "boardMeetingJa/abStopM3",
-      "duration": 0.5,
-      "name": "monkey - three"
     }
   ],
   "patterns": [
@@ -132,28 +117,6 @@
         },
         {
           "id": "boardMeetingJa/abStop3",
-          "beat": 1.0
-        },
-        {
-          "id": "boardMeetingJa/abStop4",
-          "beat": 2.0
-        }
-      ]
-    },
-    {
-      "id": "boardMeetingJa_monkey",
-      "name": "monkey - stop",
-      "cues": [
-        {
-          "id": "boardMeetingJa/abStopM1",
-          "beat": 0.0
-        },
-        {
-          "id": "boardMeetingJa/abStopM2",
-          "beat": 0.66667
-        },
-        {
-          "id": "boardMeetingJa/abStopM3",
           "beat": 1.0
         },
         {

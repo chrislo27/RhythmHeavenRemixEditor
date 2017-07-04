@@ -155,7 +155,7 @@ object GameRegistry : Disposable, IAssetLoader {
 						sc.deprecated.forEach {
 							if (cueMapDeprecations.containsKey(it)) {
 								errors += GameParseError(result.game.id,
-														 "Duplicate deprecation of sound cue ID ${sc.id} (already assigned by ${cueMapDeprecations[it]?.id})")
+														 "Duplicate deprecation of sound cue ID $it (already assigned to ${cueMapDeprecations[it]?.id})")
 							} else {
 								cueMapDeprecations[it] = sc
 							}
@@ -176,7 +176,7 @@ object GameRegistry : Disposable, IAssetLoader {
 						pattern.deprecated.forEach {
 							if (patternMapDeprecations.containsKey(it)) {
 								errors += GameParseError(result.game.id,
-														 "Duplicate deprecation of pattern ID ${pattern.id} (already assigned by ${patternMapDeprecations[it]?.id})")
+														 "Duplicate deprecation of pattern ID $it (already assigned to ${patternMapDeprecations[it]?.id})")
 							} else {
 								patternMapDeprecations[it] = pattern
 							}
