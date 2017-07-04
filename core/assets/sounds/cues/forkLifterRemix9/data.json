@@ -1,0 +1,82 @@
+{
+  "gameID": "forkLifterRemix9",
+  "gameName": "Fork Lifter (Fever Remix 9)",
+  "series": "fever",
+  "cues": [
+    {
+      "id": "forkLifterRemix9/flickPrepare",
+      "duration": 0.5,
+      "name": "pea - prepare flick"
+    },
+    {
+      "id": "forkLifterRemix9/flick",
+      "duration": 0.5,
+      "name": "pea - flick"
+    },
+    {
+      "id": "forkLifterRemix9/zoom",
+      "duration": 0.5,
+      "name": "pea - zoom"
+    },
+    {
+      "id": "forkLifterRemix9/stab",
+      "duration": 0.5,
+      "name": "pea - stab"
+    },
+    {
+      "id": "forkLifterRemix9/gulp",
+      "duration": 1.0,
+      "name": "gulp"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "forkLifterRemix9_onePea",
+      "name": "single pea",
+      "cues": [
+        {
+          "id": "forkLifterRemix9/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifterRemix9/zoom",
+          "beat": 1.5
+        },
+        {
+          "id": "forkLifterRemix9/stab",
+          "beat": 2.0
+        }
+      ]
+    },
+    {
+      "id": "forkLifterRemix9_twoPeas",
+      "name": "two peas",
+      "cues": [
+        {
+          "id": "forkLifterRemix9/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifterRemix9/flick",
+          "beat": 1.0
+        },
+        {
+          "id": "forkLifterRemix9/zoom",
+          "beat": 1.5
+        },
+        {
+          "id": "forkLifterRemix9/stab",
+          "beat": 2.0
+        },
+        {
+          "id": "forkLifterRemix9/zoom",
+          "beat": 2.5
+        },
+        {
+          "id": "forkLifterRemix9/stab",
+          "beat": 3.0
+        }
+      ]
+    }
+  ]
+}

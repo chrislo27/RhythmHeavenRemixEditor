@@ -72,14 +72,19 @@
       "deprecatedIDs": [
         "karateManDS/punchkick1"
       ],
-      "duration": 0.75,
-      "name": "kick - punch"
+      "duration": 0.5,
+      "name": "kick - pun"
     },
     {
       "id": "karateManDSEn/punchkick2",
       "deprecatedIDs": [
         "karateManDS/punchkick2"
       ],
+      "duration": 0.25,
+      "name": "kick - ch"
+    },
+    {
+      "id": "karateManDSEn/punchkick3",
       "duration": 0.75,
       "name": "kick - kick!"
     }
@@ -187,6 +192,10 @@
         },
         {
           "id": "karateManDSEn/punchkick2",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManDSEn/punchkick3",
           "beat": 3.75
         }
       ]

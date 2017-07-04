@@ -45,11 +45,16 @@
     },
     {
       "id": "karateManDSJa/punchkick1",
-      "duration": 0.75,
-      "name": "kick - punch"
+      "duration": 0.5,
+      "name": "kick - pun"
+    },
+	{
+      "id": "karateManDSJa/punchkick2",
+      "duration": 0.25,
+      "name": "kick - ch"
     },
     {
-      "id": "karateManDSJa/punchkick2",
+      "id": "karateManDSJa/punchkick3",
       "duration": 0.75,
       "name": "kick - kick!"
     }
@@ -143,8 +148,12 @@
           "id": "karateManDSJa/punchkick1",
           "beat": 3
         },
-        {
+		{
           "id": "karateManDSJa/punchkick2",
+          "beat": 3.5
+        },
+        {
+          "id": "karateManDSJa/punchkick3",
           "beat": 3.75
         }
       ]
