@@ -35,7 +35,7 @@
     },
     {
       "id": "animalAcrobat/ringOfFireCymbal",
-      "duration": 2.0,
+      "duration": 1.0,
       "name": "ring of fire"
     },
     {
@@ -211,12 +211,12 @@
         {
           "id": "animalAcrobat/flip",
           "beat": 7.0,
-          "track": 1
+          "track": 0
         },
         {
           "id": "animalAcrobat/cymbal",
           "beat": 8.0,
-          "track": 1
+          "track": 0
         }
       ]
     },

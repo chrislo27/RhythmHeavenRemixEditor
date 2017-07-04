@@ -29,6 +29,11 @@
       "name": "gulp"
     },
     {
+      "id": "forkLifter/burger",
+      "duration": 1.0,
+      "name": "burger"
+    },
+    {
       "id": "forkLifter/sigh",
       "duration": 2.0,
       "name": "sigh"
@@ -76,6 +81,81 @@
         {
           "id": "forkLifter/zoom",
           "beat": 2.5
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "forkLifter_twoPeasFast",
+      "name": "two peas (faster)",
+      "cues": [
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.5
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 1.25
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 1.75
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 1.75,
+		  "track": 1
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 2.25
+        }
+      ]
+    },
+    {
+      "id": "forkLifter_threePeas",
+      "name": "three peas",
+      "cues": [
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.0
+        },
+        {
+          "id": "forkLifter/flick",
+          "beat": 0.5
+        },
+        {
+          "id": "forkLifter/flick",
+          "beat": 1.0
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 1.5
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 2.0
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 2.0,
+		  "track": 1
+        },
+        {
+          "id": "forkLifter/stab",
+          "beat": 2.5
+        },
+        {
+          "id": "forkLifter/zoom",
+          "beat": 2.5,
+		  "track": 1
         },
         {
           "id": "forkLifter/stab",

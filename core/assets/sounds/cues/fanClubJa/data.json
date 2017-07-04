@@ -1,6 +1,6 @@
 {
   "gameID": "fanClubJa",
-  "gameName": "Fan Club (Japanese)",
+  "gameName": "Fan Club (DS) (Japanese)",
   "series": "ds",
   "cues": [
     {
@@ -98,6 +98,11 @@
       ],
       "duration": 1,
       "name": "audience - kamone - 4b"
+    },
+    {
+      "id": "fanClubJa/landing",
+      "duration": 1,
+      "name": "audience - kamone - landing"
     }
   ],
   "patterns": [
@@ -172,6 +177,44 @@
         {
           "id": "fanClubJa/kamoneClap4",
           "beat": 5
+        }
+      ]
+    },
+    {
+      "id": "fanClubJa_kamoneLanding",
+      "name": "kamone! - with landing",
+      "cues": [
+        {
+          "id": "fanClubJa/kamone1",
+          "beat": 0
+        },
+        {
+          "id": "fanClubJa/kamone2",
+          "beat": 0.5
+        },
+        {
+          "id": "fanClubJa/kamone3",
+          "beat": 1
+        },
+        {
+          "id": "fanClubJa/kamoneClap1",
+          "beat": 2
+        },
+        {
+          "id": "fanClubJa/kamoneClap2",
+          "beat": 3.5
+        },
+        {
+          "id": "fanClubJa/kamoneClap3",
+          "beat": 4
+        },
+        {
+          "id": "fanClubJa/kamoneClap4",
+          "beat": 5
+        },
+        {
+          "id": "fanClubJa/landing",
+          "beat": 6
         }
       ]
     }

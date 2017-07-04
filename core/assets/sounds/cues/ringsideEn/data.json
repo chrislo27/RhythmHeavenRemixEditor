@@ -4,6 +4,14 @@
   "series": "fever",
   "cues": [
     {
+      "id": "ringsideEn/poseAnd",
+      "deprecatedIDs": [
+        "ringside/poseAnd"
+      ],
+      "duration": 0.5,
+      "name": "pose for the fans - and"
+    },
+    {
       "id": "ringsideEn/wubba1-1",
       "deprecatedIDs": [
         "ringside/wubba1-1"
@@ -338,14 +346,6 @@
       ],
       "duration": 0.5,
       "name": "you go big guy - muscles - 2"
-    },
-    {
-      "id": "ringsideEn/poseAnd",
-      "deprecatedIDs": [
-        "ringside/poseAnd"
-      ],
-      "duration": 0.5,
-      "name": "pose for the fans - and"
     },
     {
       "id": "ringsideEn/pose1",
