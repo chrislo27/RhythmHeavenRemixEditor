@@ -67,7 +67,7 @@
   "patterns": [
     {
       "id": "fanClubMegamixJa_haiHaiHai",
-      "name": "hai hai hai!",
+      "name": "yeah yeah yeah!",
       "cues": [
         {
           "id": "fanClubMegamixJa/hai1",
@@ -101,7 +101,7 @@
     },
     {
       "id": "fanClubMegamixJa_kamone",
-      "name": "kamone!",
+      "name": "I suppose!",
       "cues": [
         {
           "id": "fanClubMegamixJa/kamone1",
@@ -135,7 +135,7 @@
     },
     {
       "id": "fanClubMegamixJa_kamoneLanding",
-      "name": "kamone! - with landing",
+      "name": "I suppose! - with landing",
       "cues": [
         {
           "id": "fanClubMegamixJa/kamone1",

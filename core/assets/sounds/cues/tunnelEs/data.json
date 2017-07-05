@@ -22,7 +22,7 @@
   "patterns": [
     {
       "id": "tunnelEs_undos",
-      "name": "uno, dos!",
+      "name": "one, two!",
       "cues": [
         {
           "id": "tunnelEs/uno",

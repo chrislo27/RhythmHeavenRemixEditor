@@ -92,7 +92,7 @@
   "patterns": [
     {
       "id": "spaceDanceGba_turnright1",
-      "name": "dancers - turn right",
+      "name": "dancers - and pose",
       "cues": [
         {
           "id": "spaceDanceGba/turn1",
@@ -146,7 +146,7 @@
     },
     {
       "id": "spaceDanceGba_turnright2",
-      "name": "gramps - turn right",
+      "name": "gramps - and pose",
       "cues": [
         {
           "id": "spaceDanceGba/turn2",

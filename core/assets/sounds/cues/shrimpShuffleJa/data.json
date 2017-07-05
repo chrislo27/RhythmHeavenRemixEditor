@@ -87,7 +87,7 @@
   "patterns": [
     {
       "id": "shrimpShuffleJa_asore",
-      "name": "asore",
+      "name": "together",
       "cues": [
         {
           "id": "shrimpShuffleJa/a",
@@ -129,7 +129,7 @@
     },
     {
       "id": "shrimpShuffleJa_ebisea",
-      "name": "ebi sea",
+      "name": "ABC",
       "cues": [
         {
           "id": "shrimpShuffleJa/a",
@@ -217,7 +217,7 @@
     },
     {
       "id": "shrimpShuffleJa_pausedEbisea",
-      "name": "paused ebi sea",
+      "name": "paused ABC",
       "cues": [
         {
           "id": "shrimpShuffleJa/ah",

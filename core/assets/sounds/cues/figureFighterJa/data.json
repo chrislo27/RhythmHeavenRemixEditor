@@ -209,7 +209,7 @@
     },
     {
       "id": "figureFighterJa_dododon",
-      "name": "do do don!",
+      "name": "go go go!",
       "cues": [
         {
           "id": "figureFighterJa/go1",
@@ -239,7 +239,7 @@
     },
     {
       "id": "figureFighterJa_dododonApplause",
-      "name": "do do don! applause",
+      "name": "go go go! applause",
       "cues": [
         {
           "id": "figureFighterJa/go1",

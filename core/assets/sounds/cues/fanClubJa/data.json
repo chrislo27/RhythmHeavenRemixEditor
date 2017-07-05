@@ -111,7 +111,7 @@
       "deprecatedIDs": [
         "fanClubJp_haiHaiHai"
       ],
-      "name": "hai hai hai!",
+      "name": "yeah yeah yeah!",
       "cues": [
         {
           "id": "fanClubJa/hai1",
@@ -148,7 +148,7 @@
       "deprecatedIDs": [
         "fanClubJp_kamone"
       ],
-      "name": "kamone!",
+      "name": "I suppose!",
       "cues": [
         {
           "id": "fanClubJa/kamone1",
@@ -182,7 +182,7 @@
     },
     {
       "id": "fanClubJa_kamoneLanding",
-      "name": "kamone! - with landing",
+      "name": "I suppose! - with landing",
       "cues": [
         {
           "id": "fanClubJa/kamone1",

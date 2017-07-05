@@ -120,7 +120,7 @@
     },
     {
       "id": "frogHopMegamixEs_menear",
-      "name": "menear",
+      "name": "yahoo",
       "cues": [
         {
           "id": "frogHopMegamixEs/menear1",
@@ -152,7 +152,7 @@
     },
     {
       "id": "frogHopMegamixEs_yeyeye",
-      "name": "ye ye ye",
+      "name": "yeah yeah yeah",
       "cues": [
         {
           "id": "frogHopMegamixEs/ye1",
@@ -192,7 +192,7 @@
     },
     {
       "id": "frogHopMegamixEs_aGirar",
-      "name": "a girar",
+      "name": "spin it boys!",
       "cues": [
         {
           "id": "frogHopMegamixEs/aGirar1",

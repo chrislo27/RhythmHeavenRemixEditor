@@ -102,7 +102,7 @@
   "patterns": [
     {
       "id": "munchyMonkWiiJa_haiYa",
-      "name": "hai ya!",
+      "name": "one egg!",
       "cues": [
         {
           "id": "munchyMonkWiiJa/haiya1",
@@ -128,7 +128,7 @@
     },
     {
       "id": "munchyMonkWiiJa_tenkomori",
-      "name": "tenkomori!",
+      "name": "handful of peas!",
       "cues": [
         {
           "id": "munchyMonkWiiJa/peas1",
@@ -184,7 +184,7 @@
     },
 	{
       "id": "munchyMonkWiiJa_tenkomoriLong",
-      "name": "tenkomori! - long",
+      "name": "handful of peas! - long",
       "cues": [
         {
           "id": "munchyMonkWiiJa/peas1",
