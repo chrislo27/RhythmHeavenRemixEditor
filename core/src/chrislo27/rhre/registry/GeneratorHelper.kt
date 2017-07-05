@@ -401,7 +401,7 @@ manzaiBirds/umette_umena"""
 			addedCues.add(
 					SoundCue(it, gameObject.gameID!!, "ogg", it.replace("manzaiBirds/", "").replace("_", " "),
 							 mutableListOf(), 2.5f, false,
-							 0f, true, null, 95f, false, null))
+							 0f, canAlterDuration = true, introSound = null, baseBpm = 95f, loops = false))
 		}
 
 		addedCues.forEach {

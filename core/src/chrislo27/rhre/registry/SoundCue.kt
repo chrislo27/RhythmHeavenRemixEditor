@@ -9,9 +9,8 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua
 
 class SoundCue(val id: String, val gameID: String, val fileExtension: String = "ogg", val name: String,
 			   val deprecated: List<String> = mutableListOf(), val duration: Float,
-			   canAlterPitch: Boolean, val pan: Float, val canAlterDuration: Boolean = false,
-			   val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false,
-			   val soundFolder: String? = null) {
+			   canAlterPitch: Boolean, val pan: Float, val soundFolder: String = "sounds/cues/", val canAlterDuration: Boolean = false,
+			   val introSound: String? = null, val baseBpm: Float = 0f, val loops: Boolean = false) {
 
 	val canAlterPitch: Boolean = canAlterPitch
 		get() {

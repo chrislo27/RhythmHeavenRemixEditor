@@ -332,12 +332,17 @@ ${warnings.first.size} warnings
 					err("Sound cue ID " + so.id + "'s intro sound (${so.introSound}) doesn't start with game ID")
 				}
 			}
-			soundCues.add(SoundCue(so.id!!, gameID, so.fileExtension,
-								   so.name ?: so.id!!,
-								   so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
-								   so.canAlterPitch, so.pan, so.canAlterDuration, so.introSound, so.baseBpm,
-								   so.loops ?: so.canAlterDuration,
-								   if (isCustom) baseDir else null))
+			val sc = SoundCue(so.id!!, gameID, so.fileExtension,
+							  so.name ?: so.id!!,
+							  so.deprecatedIDs?.toMutableList() ?: mutableListOf(), so.duration,
+							  so.canAlterPitch, so.pan, baseDir, so.canAlterDuration, so.introSound, so.baseBpm,
+							  so.loops ?: so.canAlterDuration)
+			soundCues.add(sc)
+
+			val handle = Gdx.files.internal("${sc.soundFolder}${sc.id}.${sc.fileExtension}")
+			if (!handle.exists()) {
+				err("Sound cue ${so.id} has no sound (file doesn't exist)")
+			}
 		} ?: err("Cues not found")
 
 		gameObj.patterns?.forEach { po ->
@@ -425,8 +430,9 @@ ${warnings.first.size} warnings
 			val sc = SoundCue(fh.nameWithoutExtension() + "/" + soundFh.nameWithoutExtension(), fh.name(),
 							  soundFh.extension(), "custom:\n" + soundFh.nameWithoutExtension(),
 							  listOf(),
-							  CustomSoundUtil.DURATION, true, 0f, true, null,
-							  0f, false, customFolder.path() + "/")
+							  CustomSoundUtil.DURATION, true, 0f, customFolder.path() + "/",
+							  true, null,
+							  0f, false)
 			soundCues.add(sc)
 		}
 
@@ -516,7 +522,7 @@ ${warnings.first.size} warnings
 
 		games.values.forEach { g ->
 			g.soundCues.forEach { sc ->
-				val path = (sc.soundFolder ?: "sounds/cues/") + sc.id + "." +
+				val path = (sc.soundFolder) + sc.id + "." +
 						sc.fileExtension
 				manager.load(AssetMap.add("soundCue_" + sc.id, path), LazySound::class.java)
 			}
