@@ -1,0 +1,119 @@
+{
+  "gameID": "blueBirdsMegamixEs",
+  "gameName": "Blue Birds (Megamix) (Spanish)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "blueBirdsMegamixEs/peckyourbeak1",
+      "duration": 0.5,
+      "name": "peck your beak - peck"
+    },
+    {
+      "id": "blueBirdsMegamixEs/peckyourbeak2",
+      "duration": 0.5,
+      "name": "peck your beak - your"
+    },
+    {
+      "id": "blueBirdsMegamixEs/peckyourbeak3",
+      "duration": 0.5,
+      "name": "peck your beak - beak"
+    },
+    {
+      "id": "blueBirdsMegamixEs/peck",
+      "duration": 0.5,
+      "name": "peck"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretchoutyourneck1",
+      "duration": 0.75,
+      "name": "stretch out your neck - stretch"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretchoutyourneck2",
+      "duration": 0.75,
+      "name": "stretch out your neck - out"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretchoutyourneck3",
+      "duration": 0.5,
+      "name": "stretch out your neck - your"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretchoutyourneck4",
+      "duration": 1,
+      "name": "stretch out your neck - neck"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretch1",
+      "duration": 1,
+      "name": "stretch1"
+    },
+    {
+      "id": "blueBirdsMegamixEs/stretch2",
+      "duration": 0.5,
+      "name": "stretch2"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "blueBirdsMegamixEs_peckyourbeak",
+      "name": "peck your beak",
+      "cues": [
+        {
+          "id": "blueBirdsMegamixEs/peckyourbeak1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsMegamixEs/peckyourbeak2",
+          "beat": 0.5
+        },
+        {
+          "id": "blueBirdsMegamixEs/peckyourbeak3",
+          "beat": 1
+        },
+        {
+          "id": "blueBirdsMegamixEs/peck",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsMegamixEs/peck",
+          "beat": 2.5
+        },
+        {
+          "id": "blueBirdsMegamixEs/peck",
+          "beat": 3
+        }
+      ]
+    },
+    {
+      "id": "blueBirdsMegamixEs_stretchoutyourneck",
+      "name": "stretch out your neck",
+      "cues": [
+        {
+          "id": "blueBirdsMegamixEs/stretchoutyourneck1",
+          "beat": 0
+        },
+        {
+          "id": "blueBirdsMegamixEs/stretchoutyourneck2",
+          "beat": 0.75
+        },
+        {
+          "id": "blueBirdsMegamixEs/stretchoutyourneck3",
+          "beat": 1.5
+        },
+        {
+          "id": "blueBirdsMegamixEs/stretchoutyourneck4",
+          "beat": 2
+        },
+        {
+          "id": "blueBirdsMegamixEs/stretch1",
+          "beat": 3
+        },
+        {
+          "id": "blueBirdsMegamixEs/stretch2",
+          "beat": 4
+        }
+      ]
+    }
+  ]
+}
