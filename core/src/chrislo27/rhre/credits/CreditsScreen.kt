@@ -10,6 +10,7 @@ import chrislo27.rhre.track.MusicData
 import chrislo27.rhre.track.PlayingState
 import chrislo27.rhre.track.Remix
 import chrislo27.rhre.util.HideVersionText
+import chrislo27.rhre.util.JsonHandler
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Colors
@@ -17,7 +18,6 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.google.gson.Gson
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.screen.Updateable
@@ -156,8 +156,8 @@ class CreditsScreen(m: Main) : Updateable<Main>(m), HideVersionText {
 	var currentString: Triple<String, String, Float> = Triple("", "", 0f)
 
 	val remix: Remix = Remix.readFromJsonObject(
-			Gson().fromJson(Gdx.files.internal("credits/cannery/cannery.rhre2").readString("UTF-8"),
-							RemixObject::class.java))
+			JsonHandler.fromJson(Gdx.files.internal("credits/cannery/cannery.rhre2").readString("UTF-8"),
+								 RemixObject::class.java))
 
 	init {
 		remix.music = MusicData(AssetRegistry.getMusic("cannery_music_song"),
