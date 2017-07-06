@@ -17,8 +17,6 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Array
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import ionium.registry.AssetRegistry
 import ionium.registry.ScreenRegistry
 import ionium.util.Utils
@@ -159,7 +157,8 @@ class SaveScreen(m: Main) : NewUIScreen(m) {
 								for (i in 1..MAX_ZIP_ATTEMPTS) {
 									var zipFile: ZipFile? = null
 									try {
-										val zipStream: ZipOutputStream = ZipOutputStream(FileOutputStream(picker.selectedFile))
+										val zipStream: ZipOutputStream = ZipOutputStream(
+												FileOutputStream(picker.selectedFile))
 
 										Remix.writeToZipStream(es.editor.remix, zipStream)
 
@@ -423,8 +422,7 @@ class LoadScreen(m: Main) : NewUIScreen(m) {
 			if (picker.fileFilter === midiFileFilter) {
 				obj = Remix.readFromMidiSequence(MidiSystem.getSequence(file))
 			} else if (file.extension == "rhre2") {
-				val gson: Gson = GsonBuilder().create()
-				obj = gson.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
+				obj = JsonHandler.fromJson(handle.readString("UTF-8"), RemixObject::class.java)
 			} else {
 				val zipFile: ZipFile = ZipFile(file)
 				obj = Remix.readFromZipStream(zipFile)
