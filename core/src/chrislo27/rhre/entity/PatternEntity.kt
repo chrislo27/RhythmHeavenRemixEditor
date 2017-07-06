@@ -41,7 +41,7 @@ class PatternEntity(remix: Remix, val pattern: Pattern) : Entity(remix), HasGame
 			//			Main.logger.debug("Initializing pattern - loading " + pc.getId() + " " + sc);
 
 			internal.add(SoundEntity(remix, sc!!, c.beat, c.track,
-									 if (sc!!.canAlterDuration && c.duration > 0) c.duration else sc.duration,
+									 if (c.duration > 0) c.duration else sc.duration,
 									 c.semitone))
 		}
 
