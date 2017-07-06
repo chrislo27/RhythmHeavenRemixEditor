@@ -15,7 +15,7 @@
     },
     {
       "id": "splashdownEs/descend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "descend - player"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "id": "splashdownEs/ascend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "ascend - player"
     },
     {
@@ -40,7 +40,7 @@
     },
     {
       "id": "splashdownEs/jumpSimultaneous",
-      "duration": 0.75,
+      "duration": 0.5,
       "name": "jump - simultaneous"
     },
     {
@@ -178,7 +178,7 @@
     },
     {
       "id": "splashdownEs_ahiva",
-      "name": "alley-oop!",
+      "name": "ahiva!",
       "cues": [
         {
           "id": "splashdownEs/oooh",

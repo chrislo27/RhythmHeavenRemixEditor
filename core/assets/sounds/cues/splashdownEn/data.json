@@ -21,7 +21,7 @@
     },
     {
       "id": "splashdownEn/descend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "descend - player"
     },
     {
@@ -34,7 +34,7 @@
     },
     {
       "id": "splashdownEn/ascend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "ascend - player"
     },
     {
@@ -55,7 +55,7 @@
     },
     {
       "id": "splashdownEn/jumpSimultaneous",
-      "duration": 0.75,
+      "duration": 0.5,
       "name": "jump - simultaneous"
     },
     {
