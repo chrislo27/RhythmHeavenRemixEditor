@@ -11,7 +11,7 @@
     },
     {
       "id": "bouncyRoad/cymbal",
-      "duration": 0.25,
+      "duration": 0.5,
       "name": "cymbal",
       "canAlterPitch": true
     },

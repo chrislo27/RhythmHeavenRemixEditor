@@ -15,7 +15,7 @@
     },
     {
       "id": "splashdownJa/descend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "descend - player"
     },
     {
@@ -25,7 +25,7 @@
     },
     {
       "id": "splashdownJa/ascend2",
-      "duration": 0.25,
+      "duration": 0.75,
       "name": "ascend - player"
     },
     {
@@ -190,15 +190,15 @@
         },
         {
           "id": "splashdownJa/alleyoop1",
-          "beat": 2.75
+          "beat": 2.5
         },
         {
           "id": "splashdownJa/alleyoop2",
-          "beat": 3.25
+          "beat": 3
         },
         {
           "id": "splashdownJa/splash2",
-          "beat": 4.25
+          "beat": 4
         }
       ]
     }
