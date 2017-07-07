@@ -68,7 +68,7 @@
       "duration": 1,
       "name": "rhythm rocket - counting - go!"
     },
-    { 
+    {
       "id": "fireworks/quickshothai",
       "duration": 1,
       "name": "spirit sparkler - counting - go!"
@@ -141,7 +141,7 @@
         }
       ]
     },
-	{
+    {
       "id": "fireworks_fireworkremix5",
       "name": "rhythm rocket - remix 5",
       "cues": [

@@ -119,7 +119,8 @@
     {
       "id": "countInEn_2BeatCountIn",
       "deprecatedIDs": [
-        "countin_2BeatCountIn", "countIn_2BeatCountIn"
+        "countin_2BeatCountIn",
+        "countIn_2BeatCountIn"
       ],
       "name": "2-beat count-in",
       "cues": [
@@ -136,7 +137,8 @@
     {
       "id": "countInEn_4BeatCountIn",
       "deprecatedIDs": [
-        "countin_4BeatCountIn", "countIn_4BeatCountIn"
+        "countin_4BeatCountIn",
+        "countIn_4BeatCountIn"
       ],
       "name": "4-beat count-in",
       "cues": [
@@ -161,7 +163,8 @@
     {
       "id": "countInEn_8BeatCountIn",
       "deprecatedIDs": [
-        "countin_8BeatCountIn", "countIn_8BeatCountIn"
+        "countin_8BeatCountIn",
+        "countIn_8BeatCountIn"
       ],
       "name": "8-beat count-in",
       "cues": [
@@ -193,7 +196,9 @@
     },
     {
       "id": "countInEn_2BeatCountIn2",
-      "deprecatedIDs": ["countIn_2BeatCountIn2"],
+      "deprecatedIDs": [
+        "countIn_2BeatCountIn2"
+      ],
       "name": "2-beat count-in (alt.)",
       "cues": [
         {
@@ -208,7 +213,9 @@
     },
     {
       "id": "countInEn_4BeatCountIn2",
-      "deprecatedIDs": ["countIn_4BeatCountIn2"],
+      "deprecatedIDs": [
+        "countIn_4BeatCountIn2"
+      ],
       "name": "4-beat count-in (alt.)",
       "cues": [
         {
@@ -231,7 +238,9 @@
     },
     {
       "id": "countInEn_8BeatCountIn2",
-      "deprecatedIDs": ["countIn_8BeatCountIn2"],
+      "deprecatedIDs": [
+        "countIn_8BeatCountIn2"
+      ],
       "name": "8-beat count-in (alt.)",
       "cues": [
         {
@@ -263,7 +272,8 @@
     {
       "id": "countInEn_4BeatCountInCowbell",
       "deprecatedIDs": [
-        "countin_4BeatCountInCowbell", "countIn_4BeatCountInCowbell"
+        "countin_4BeatCountInCowbell",
+        "countIn_4BeatCountInCowbell"
       ],
       "name": "4-beat count-in (cowbell)",
       "cues": [
@@ -288,7 +298,8 @@
     {
       "id": "countInEn_8BeatCountInCowbell",
       "deprecatedIDs": [
-        "countin_8BeatCountInCowbell", "countIn_8BeatCountInCowbell"
+        "countin_8BeatCountInCowbell",
+        "countIn_8BeatCountInCowbell"
       ],
       "name": "8-beat count-in (cowbell)",
       "cues": [

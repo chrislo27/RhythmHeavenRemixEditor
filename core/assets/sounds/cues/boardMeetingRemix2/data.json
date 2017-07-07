@@ -83,10 +83,10 @@
     },
     {
       "id": "boardMeetingRemix2/abStop1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "boardMeeting/abStopM1",
-		"boardMeetingEn/abStopM1",
-		"boardMeetingJa/abStopM1"
+        "boardMeetingEn/abStopM1",
+        "boardMeetingJa/abStopM1"
       ],
       "duration": 0.5,
       "name": "assistant - one"
@@ -95,8 +95,8 @@
       "id": "boardMeetingRemix2/abStop2",
       "deprecatedIDs": [
         "boardMeeting/abStopM2",
-		"boardMeetingEn/abStopM2",
-		"boardMeetingJa/abStopM2"
+        "boardMeetingEn/abStopM2",
+        "boardMeetingJa/abStopM2"
       ],
       "duration": 0.25,
       "name": "assistant - two"
@@ -105,18 +105,18 @@
       "id": "boardMeetingRemix2/abStop3",
       "deprecatedIDs": [
         "boardMeeting/abStopM3",
-		"boardMeetingEn/abStopM3",
-		"boardMeetingJa/abStopM3"
+        "boardMeetingEn/abStopM3",
+        "boardMeetingJa/abStopM3"
       ],
       "duration": 0.75,
       "name": "assistant - three"
     },
     {
       "id": "boardMeetingRemix2/abStop4",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "boardMeeting/abStopM4",
-		"boardMeetingEn/abStopM4",
-		"boardMeetingJa/abStopM4"
+        "boardMeetingEn/abStopM4",
+        "boardMeetingJa/abStopM4"
       ],
       "duration": 1.0,
       "name": "stop - together"
@@ -125,10 +125,10 @@
   "patterns": [
     {
       "id": "boardMeetingRemix2_assistant",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "boardMeeting_monkey",
-		"boardMeetingEn_monkey",
-		"boardMeetingJa_monkey"
+        "boardMeetingEn_monkey",
+        "boardMeetingJa_monkey"
       ],
       "name": "assistant - stop",
       "cues": [

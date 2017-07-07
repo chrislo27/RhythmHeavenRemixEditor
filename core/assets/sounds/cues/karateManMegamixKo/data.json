@@ -269,7 +269,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixKo_kickSolo",
       "name": "kick (standalone)",
       "cues": [
@@ -321,7 +321,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixKo_comboSolo",
       "name": "combo (standalone)",
       "cues": [

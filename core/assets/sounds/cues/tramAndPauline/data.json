@@ -5,25 +5,33 @@
   "cues": [
     {
       "id": "tramAndPauline/jumpPauline",
-      "deprecatedIDs": ["tramAndPauline/paulineJump"],
+      "deprecatedIDs": [
+        "tramAndPauline/paulineJump"
+      ],
       "duration": 1.0,
       "name": "pauline jump"
     },
     {
       "id": "tramAndPauline/transformPauline",
-      "deprecatedIDs": ["tramAndPauline/paulineTransform"],
+      "deprecatedIDs": [
+        "tramAndPauline/paulineTransform"
+      ],
       "duration": 1.0,
       "name": "pauline transform"
     },
     {
       "id": "tramAndPauline/jumpTram",
-      "deprecatedIDs": ["tramAndPauline/tramJump"],
+      "deprecatedIDs": [
+        "tramAndPauline/tramJump"
+      ],
       "duration": 1.0,
       "name": "tram jump"
     },
     {
       "id": "tramAndPauline/transformTram",
-      "deprecatedIDs": ["tramAndPauline/tramTransform"],
+      "deprecatedIDs": [
+        "tramAndPauline/tramTransform"
+      ],
       "duration": 1.0,
       "name": "tram transform"
     }

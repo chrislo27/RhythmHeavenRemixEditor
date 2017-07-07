@@ -125,7 +125,9 @@
     },
     {
       "id": "lumbearjack/baseballBat2",
-      "deprecatedIDs": ["lumbearjack/bat"],
+      "deprecatedIDs": [
+        "lumbearjack/bat"
+      ],
       "duration": 1,
       "name": "baseball bat - 2"
     },
@@ -138,7 +140,9 @@
   "patterns": [
     {
       "id": "lumbearjack_small1",
-      "deprecatedIDs": ["lumbearjack_small"],
+      "deprecatedIDs": [
+        "lumbearjack_small"
+      ],
       "name": "small log",
       "cues": [
         {

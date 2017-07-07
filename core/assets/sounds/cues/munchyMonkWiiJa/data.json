@@ -43,7 +43,7 @@
       "duration": 0.5,
       "name": "tenkomori - ri!"
     },
-	{
+    {
       "id": "munchyMonkWiiJa/peas4Bang",
       "duration": 0.5,
       "name": "tenkomori - ri! - bang"
@@ -73,22 +73,22 @@
       "duration": 0.25,
       "name": "tenkomori - blow5"
     },
-	{
+    {
       "id": "munchyMonkWiiJa/peas10",
       "duration": 0.25,
       "name": "tenkomori - blow6"
     },
-	{
+    {
       "id": "munchyMonkWiiJa/peas11",
       "duration": 0.25,
       "name": "tenkomori - blow7"
     },
-	{
+    {
       "id": "munchyMonkWiiJa/peas12",
       "duration": 0.25,
       "name": "tenkomori - blow8"
     },
-	{
+    {
       "id": "munchyMonkWiiJa/peas13",
       "duration": 0.25,
       "name": "tenkomori - blow9"
@@ -182,7 +182,7 @@
         }
       ]
     },
-	{
+    {
       "id": "munchyMonkWiiJa_tenkomoriLong",
       "name": "handful of peas! - long",
       "cues": [
@@ -231,7 +231,7 @@
           "beat": 3.0,
           "track": 0
         },
-		{
+        {
           "id": "munchyMonkWiiJa/peas10",
           "beat": 3.25,
           "track": 0

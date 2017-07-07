@@ -10,7 +10,9 @@
     },
     {
       "id": "secondContact/success1",
-      "deprecatedIDs": ["secondContact/success"],
+      "deprecatedIDs": [
+        "secondContact/success"
+      ],
       "duration": 0.5,
       "name": "turn success 1"
     },

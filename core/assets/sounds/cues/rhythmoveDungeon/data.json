@@ -70,8 +70,8 @@
           "track": 1
         }
       ]
-     },
-     {
+    },
+    {
       "id": "rhythmoveDungeon_right",
       "name": "right",
       "cues": [
@@ -85,8 +85,8 @@
           "track": 1
         }
       ]
-     },
-     {
+    },
+    {
       "id": "rhythmoveDungeon_left",
       "name": "left",
       "cues": [
@@ -100,6 +100,6 @@
           "track": 1
         }
       ]
-     }
+    }
   ]
 }

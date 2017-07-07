@@ -48,7 +48,7 @@
       "duration": 0.5,
       "name": "kick - pun"
     },
-	{
+    {
       "id": "karateManDSJa/punchkick2",
       "duration": 0.25,
       "name": "kick - ch"
@@ -148,7 +148,7 @@
           "id": "karateManDSJa/punchkick1",
           "beat": 3
         },
-		{
+        {
           "id": "karateManDSJa/punchkick2",
           "beat": 3.5
         },

@@ -35,17 +35,17 @@
     },
     {
       "id": "nightWalkMegamix/jumpUmbrella1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "nightWalkMegamix/jumpUmbrella"
       ],
       "duration": 0.25,
       "name": "jump UP - umbrella / end - 1"
     },
-	{
-	  "id": "nightWalkMegamix/jumpUmbrella2",
-	  "duration": 0.25,
-	  "name": "jump UP - umbrella / end - 2"
-	},
+    {
+      "id": "nightWalkMegamix/jumpUmbrella2",
+      "duration": 0.25,
+      "name": "jump UP - umbrella / end - 2"
+    },
     {
       "id": "nightWalkMegamix/disappear",
       "duration": 1.0,
@@ -179,14 +179,14 @@
           "id": "nightWalkMegamix/jump1",
           "beat": 2
         },
-		{
+        {
           "id": "nightWalkMegamix/jumpUmbrella1",
           "beat": 2.5
         },
-		{
-		  "id": "nightWalkMegamix/jumpUmbrella2",
-		  "beat": 2.75
-		},
+        {
+          "id": "nightWalkMegamix/jumpUmbrella2",
+          "beat": 2.75
+        },
         {
           "id": "nightWalkMegamix/jump3",
           "beat": 3
@@ -231,11 +231,11 @@
           "id": "nightWalkMegamix/jump2",
           "beat": 2
         },
-		{
+        {
           "id": "nightWalkMegamix/jumpUmbrella1",
           "beat": 2.5
         },
-		{
+        {
           "id": "nightWalkMegamix/jumpUmbrella2",
           "beat": 2.75
         },

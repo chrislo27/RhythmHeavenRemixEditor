@@ -5,7 +5,7 @@
   "cues": [
     {
       "id": "seesawEn/seeLong1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/seeLong1"
       ],
       "duration": 1.0,
@@ -13,7 +13,7 @@
     },
     {
       "id": "seesawEn/seeLong2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/seeLong2"
       ],
       "duration": 1.0,
@@ -21,7 +21,7 @@
     },
     {
       "id": "seesawEn/seeShort1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/seeShort1"
       ],
       "duration": 0.5,
@@ -29,7 +29,7 @@
     },
     {
       "id": "seesawEn/seeShort2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/seeShort2"
       ],
       "duration": 0.5,
@@ -37,7 +37,7 @@
     },
     {
       "id": "seesawEn/sawLong1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/sawLong1"
       ],
       "duration": 1.0,
@@ -45,7 +45,7 @@
     },
     {
       "id": "seesawEn/sawLong2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/sawLong2"
       ],
       "duration": 1.0,
@@ -53,7 +53,7 @@
     },
     {
       "id": "seesawEn/sawShort1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/sawShort1"
       ],
       "duration": 0.5,
@@ -61,7 +61,7 @@
     },
     {
       "id": "seesawEn/sawShort2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw/sawShort2"
       ],
       "duration": 0.5,
@@ -81,7 +81,7 @@
   "patterns": [
     {
       "id": "seesawEn_longLong",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw_longLong"
       ],
       "name": "long long",
@@ -106,7 +106,7 @@
     },
     {
       "id": "seesawEn_shortShort",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw_shortShort"
       ],
       "name": "short short",
@@ -131,7 +131,7 @@
     },
     {
       "id": "seesawEn_longShort",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw_longShort"
       ],
       "name": "long short",
@@ -156,7 +156,7 @@
     },
     {
       "id": "seesawEn_shortLong",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "seesaw_shortLong"
       ],
       "name": "short long",

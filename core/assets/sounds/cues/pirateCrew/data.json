@@ -231,12 +231,12 @@
         {
           "id": "pirateCrew/rowPower",
           "beat": 0.0,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "pirateCrew/pirateYeahRight",
           "beat": 0.5,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "pirateCrew/row",
@@ -249,12 +249,12 @@
         {
           "id": "pirateCrew/rowPower",
           "beat": 4.0,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "pirateCrew/pirateYeahRight",
           "beat": 4.5,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "pirateCrew/row",

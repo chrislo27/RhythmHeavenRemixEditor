@@ -96,12 +96,18 @@
       "name": "stop"
     },
     {
-      "id": "boardMeetingEn/stopPlayer","deprecatedIDs":["boardMeeting/stopPlayer"],
+      "id": "boardMeetingEn/stopPlayer",
+      "deprecatedIDs": [
+        "boardMeeting/stopPlayer"
+      ],
       "duration": 0.5,
       "name": "stop - player"
     },
     {
-      "id": "boardMeetingEn/startTogether","deprecatedIDs":["boardMeeting/startTogether"],
+      "id": "boardMeetingEn/startTogether",
+      "deprecatedIDs": [
+        "boardMeeting/startTogether"
+      ],
       "duration": 1.0,
       "name": "start - together"
     },
@@ -150,7 +156,10 @@
   ],
   "patterns": [
     {
-      "id": "boardMeetingEn_assistant","deprecatedIDs":["boardMeeting_assistant"],
+      "id": "boardMeetingEn_assistant",
+      "deprecatedIDs": [
+        "boardMeeting_assistant"
+      ],
       "name": "assistant - stop",
       "cues": [
         {

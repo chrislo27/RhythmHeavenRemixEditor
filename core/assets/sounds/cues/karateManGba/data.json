@@ -28,7 +28,7 @@
       "duration": 0.5,
       "name": "pot - break"
     },
-	{
+    {
       "id": "karateManGba/soccerHit",
       "duration": 0.5,
       "name": "soccer ball - hit"
@@ -38,7 +38,7 @@
       "duration": 0.5,
       "name": "soccer ball - break"
     },
-	{
+    {
       "id": "karateManGba/lightbulbHit",
       "duration": 0.5,
       "name": "lightbulb - hit"
@@ -170,7 +170,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManGba_remix8",
       "name": "gong - serious mode",
       "cues": [

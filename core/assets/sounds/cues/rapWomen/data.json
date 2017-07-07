@@ -58,7 +58,7 @@
       "duration": 0.25,
       "name": "naisho desu ka - desu"
     },
-	{
+    {
       "id": "rapWomen/naishodesuka4",
       "duration": 0.25,
       "name": "naisho desu ka - ka?"
@@ -93,7 +93,7 @@
       "duration": 0.25,
       "name": "kare no oyatsu dane - no"
     },
-	{
+    {
       "id": "rapWomen/kare4",
       "duration": 0.25,
       "name": "kare no oyatsu dane - o"
@@ -248,7 +248,7 @@
       "duration": 0.25,
       "name": "dare ni mo - da"
     },
-	{
+    {
       "id": "rapWomen/darenimo2",
       "duration": 0.188,
       "name": "dare ni mo - re"
@@ -373,7 +373,7 @@
           "id": "rapWomen/naishodesuka3",
           "beat": 0.5
         },
-		{
+        {
           "id": "rapWomen/naishodesuka4",
           "beat": 0.75
         },
@@ -400,7 +400,7 @@
           "id": "rapWomen/kare3",
           "beat": 0.5
         },
-		{
+        {
           "id": "rapWomen/kare4",
           "beat": 0.75
         },
@@ -706,7 +706,7 @@
           "id": "rapWomen/darenimo1",
           "beat": 0.0
         },
-		{
+        {
           "id": "rapWomen/darenimo2",
           "beat": 0.25
         },

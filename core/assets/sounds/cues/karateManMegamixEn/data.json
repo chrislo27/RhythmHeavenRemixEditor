@@ -88,13 +88,17 @@
     },
     {
       "id": "karateManMegamixEn/punchkick1",
-      "deprecatedIDs": ["karateMan/punchkick1"],
+      "deprecatedIDs": [
+        "karateMan/punchkick1"
+      ],
       "duration": 0.75,
       "name": "kick - punch"
     },
     {
       "id": "karateManMegamixEn/punchkick2",
-      "deprecatedIDs": ["karateMan/punchkick2"],
+      "deprecatedIDs": [
+        "karateMan/punchkick2"
+      ],
       "duration": 0.75,
       "name": "kick - kick!"
     },
@@ -267,7 +271,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixEn_kickSolo",
       "name": "kick (standalone)",
       "cues": [
@@ -287,7 +291,9 @@
     },
     {
       "id": "karateManMegamixEn_kick",
-      "deprecatedIDs": ["karateMan_kick"],
+      "deprecatedIDs": [
+        "karateMan_kick"
+      ],
       "name": "kick",
       "cues": [
         {
@@ -312,7 +318,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixEn_comboSolo",
       "name": "combo (standalone)",
       "cues": [
@@ -433,7 +439,9 @@
     },
     {
       "id": "karateManMegamixEn_lightbulbUnused",
-      "deprecatedIDs": ["karateMan_lightbulbUnused"],
+      "deprecatedIDs": [
+        "karateMan_lightbulbUnused"
+      ],
       "name": "lightbulb (alternate, unused)",
       "cues": [
         {
@@ -470,7 +478,9 @@
     },
     {
       "id": "karateManMegamixEn_alien",
-      "deprecatedIDs": ["karateMan_alien"],
+      "deprecatedIDs": [
+        "karateMan_alien"
+      ],
       "name": "alien (unused)",
       "cues": [
         {

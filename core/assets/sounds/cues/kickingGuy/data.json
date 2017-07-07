@@ -8,17 +8,17 @@
       "duration": 1,
       "name": "cowbell"
     },
-	{
+    {
       "id": "kickingGuy/hit",
       "duration": 0.5,
       "name": "hit"
     },
-	{
+    {
       "id": "kickingGuy/hereWeGo1",
       "duration": 0.5,
       "name": "here we go - 1"
     },
-	{
+    {
       "id": "kickingGuy/hereWeGo2",
       "duration": 0.5,
       "name": "here we go - 2"
@@ -74,7 +74,7 @@
         }
       ]
     },
-	{
+    {
       "id": "kickingGuy_triple",
       "name": "here we go!",
       "cues": [
@@ -94,11 +94,11 @@
           "id": "kickingGuy/hit",
           "beat": 2
         },
-		{
+        {
           "id": "kickingGuy/hit",
           "beat": 2.5
         },
-		{
+        {
           "id": "kickingGuy/hit",
           "beat": 3
         }

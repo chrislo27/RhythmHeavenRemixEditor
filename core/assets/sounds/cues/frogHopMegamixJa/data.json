@@ -28,7 +28,7 @@
       "duration": 1,
       "name": "shake"
     },
-	{
+    {
       "id": "frogHopMegamixJa/yahoo1",
       "duration": 0.5,
       "name": "yahoo - lead - ya-"
@@ -38,7 +38,7 @@
       "duration": 0.5,
       "name": "yahoo - lead - -hoo!"
     },
-	{
+    {
       "id": "frogHopMegamixJa/yahoo3",
       "duration": 0.5,
       "name": "yahoo - backup - ya-"
@@ -118,7 +118,7 @@
         }
       ]
     },
-	{
+    {
       "id": "frogHopMegamixJa_yahoo",
       "name": "yahoo",
       "cues": [

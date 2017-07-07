@@ -40,9 +40,9 @@
     },
     {
       "id": "tossBoysOriginal/superRedA1",
-	  "deprecatedIDs": [
-	    "tossBoysOriginal/superRedB1",
-		"tossBoysOriginal/superRedB2",
+      "deprecatedIDs": [
+        "tossBoysOriginal/superRedB1",
+        "tossBoysOriginal/superRedB2",
         "tossBoysOriginal/superRedB3"
       ],
       "duration": 0.5,
@@ -124,14 +124,14 @@
           "id": "tossBoysOriginal/superRed2",
           "beat": 0.25
         }
-	  ]
+      ]
     },
     {
       "id": "tossBoysOriginal_akachanSuperAokun",
       "name": "[#FF0000]A[]-[#70B5FF]B[] dual toss - [#70B5FF]ao-kun[]",
-	  "deprecatedIDs": [
-	    "tossBoysOriginal_akachanSuper"
-	  ],
+      "deprecatedIDs": [
+        "tossBoysOriginal_akachanSuper"
+      ],
       "cues": [
         {
           "id": "tossBoysOriginal/superRedA1",
@@ -159,9 +159,9 @@
           "id": "tossBoysOriginal/superRedHit",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoysOriginal_akachanUnusedSuperTwoHits",
       "name": "[#FF0000]red[] blur toss (unused) - two hits",
       "cues": [
@@ -173,9 +173,9 @@
           "id": "tossBoysOriginal/superRedHit",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoysOriginal_akachanSuperToAokun",
       "name": "[#FF0000]red[] blur toss (unused) to [#70B5FF]ao[]-kun",
       "cues": [
@@ -189,14 +189,14 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoysOriginal_akachanSuperToAokunWithHit",
       "name": "[#FF0000]red[] blur toss (unused) to [#70B5FF]ao[]-kun with extra hit",
       "cues": [
-	    {
-		  "id": "tossBoysOriginal/superRedHit",
-		  "beat": 0
-		},
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 0
+        },
         {
           "id": "tossBoysOriginal/superRedBlue1",
           "beat": 1
@@ -221,14 +221,14 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoysOriginal_akachanSuperToKiiyanWithHit",
       "name": "[#FF0000]red[] blur toss (unused) to [#FFFF00]kii[]-yan with extra hit",
       "cues": [
-	    {
-		  "id": "tossBoysOriginal/superRedHit",
-		  "beat": 0
-		},
+        {
+          "id": "tossBoysOriginal/superRedHit",
+          "beat": 0
+        },
         {
           "id": "tossBoysOriginal/superRedYellow1",
           "beat": 1

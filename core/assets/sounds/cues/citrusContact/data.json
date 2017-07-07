@@ -50,19 +50,25 @@
     },
     {
       "id": "citrusContact/reporter1",
-      "deprecatedIDs": ["secondContact/reporter1"],
+      "deprecatedIDs": [
+        "secondContact/reporter1"
+      ],
       "duration": 0.5,
       "name": "reporter - 1"
     },
     {
       "id": "citrusContact/reporter2",
-      "deprecatedIDs": ["secondContact/reporter2"],
+      "deprecatedIDs": [
+        "secondContact/reporter2"
+      ],
       "duration": 0.5,
       "name": "reporter - 2"
     },
     {
       "id": "citrusContact/reporter3",
-      "deprecatedIDs": ["secondContact/reporter3"],
+      "deprecatedIDs": [
+        "secondContact/reporter3"
+      ],
       "duration": 0.5,
       "name": "reporter - 3"
     },

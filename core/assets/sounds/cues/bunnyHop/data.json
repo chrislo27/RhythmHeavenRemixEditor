@@ -30,7 +30,9 @@
     },
     {
       "id": "bunnyHop/longJumpLong",
-      "deprecatedIDs": ["bunnyHop/moonJump"],
+      "deprecatedIDs": [
+        "bunnyHop/moonJump"
+      ],
       "duration": 9,
       "name": "long jump (long)"
     },

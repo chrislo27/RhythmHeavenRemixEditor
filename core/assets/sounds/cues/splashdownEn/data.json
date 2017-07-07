@@ -94,7 +94,7 @@
       ],
       "duration": 0.25,
       "name": "alley-oop - 1"
-    },    
+    },
     {
       "id": "splashdownEn/alleyoop2",
       "duration": 0.25,
@@ -133,7 +133,7 @@
       "id": "splashdownEn_ascend",
       "deprecatedIDs": [
         "splashdown_ascend"
-      ],      
+      ],
       "name": "ascend",
       "isStretchable": true,
       "cues": [

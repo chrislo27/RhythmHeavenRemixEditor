@@ -20,7 +20,9 @@
     },
     {
       "id": "superSamuraiSlice/appearWater",
-      "deprecatedIDs": ["superSamuraiSlice/appearwater"],
+      "deprecatedIDs": [
+        "superSamuraiSlice/appearwater"
+      ],
       "duration": 1.0,
       "name": "demon - appear - water splash"
     },
@@ -86,7 +88,9 @@
     },
     {
       "id": "superSamuraiSlice/mrEagleFlight",
-      "deprecatedIDs": ["superSamuraiSlice/mrEagleflight"],
+      "deprecatedIDs": [
+        "superSamuraiSlice/mrEagleflight"
+      ],
       "duration": 1.5,
       "name": "mr. eagle"
     }

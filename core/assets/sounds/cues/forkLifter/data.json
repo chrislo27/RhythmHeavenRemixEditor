@@ -111,7 +111,7 @@
         {
           "id": "forkLifter/zoom",
           "beat": 1.75,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "forkLifter/stab",
@@ -146,7 +146,7 @@
         {
           "id": "forkLifter/zoom",
           "beat": 2.0,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "forkLifter/stab",
@@ -155,7 +155,7 @@
         {
           "id": "forkLifter/zoom",
           "beat": 2.5,
-		  "track": 1
+          "track": 1
         },
         {
           "id": "forkLifter/stab",

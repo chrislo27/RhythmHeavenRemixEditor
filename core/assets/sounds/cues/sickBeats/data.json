@@ -5,7 +5,9 @@
   "cues": [
     {
       "id": "sickBeats/appear1",
-      "deprecatedIDs": ["sickBeats/appear"],
+      "deprecatedIDs": [
+        "sickBeats/appear"
+      ],
       "duration": 1,
       "name": "appear - 1"
     },
@@ -26,7 +28,9 @@
     },
     {
       "id": "sickBeats/stab1",
-      "deprecatedIDs": ["sickBeats/stab"],
+      "deprecatedIDs": [
+        "sickBeats/stab"
+      ],
       "duration": 1,
       "name": "kill - 1"
     },
@@ -44,7 +48,9 @@
   "patterns": [
     {
       "id": "sickBeats_blueVirus1",
-      "deprecatedIDs": ["sickBeats_blueVirus"],
+      "deprecatedIDs": [
+        "sickBeats_blueVirus"
+      ],
       "name": "blue virus 1",
       "cues": [
         {

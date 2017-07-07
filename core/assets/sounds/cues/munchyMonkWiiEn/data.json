@@ -5,7 +5,7 @@
   "cues": [
     {
       "id": "munchyMonkWiiEn/blow",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/blow"
       ],
       "duration": 0.5,
@@ -13,7 +13,7 @@
     },
     {
       "id": "munchyMonkWiiEn/gulp",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/gulp"
       ],
       "duration": 0.5,
@@ -21,7 +21,7 @@
     },
     {
       "id": "munchyMonkWiiEn/oneegg1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/oneegg1"
       ],
       "duration": 1.0,
@@ -29,7 +29,7 @@
     },
     {
       "id": "munchyMonkWiiEn/oneegg2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/oneegg2"
       ],
       "duration": 1.0,
@@ -37,7 +37,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas1"
       ],
       "duration": 0.5,
@@ -45,7 +45,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas2"
       ],
       "duration": 0.25,
@@ -53,7 +53,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas3",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas3"
       ],
       "duration": 0.25,
@@ -61,20 +61,20 @@
     },
     {
       "id": "munchyMonkWiiEn/peas4",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas4"
       ],
       "duration": 0.5,
       "name": "handful of peas - peas!"
     },
-	{
+    {
       "id": "munchyMonkWiiEn/peas4Bang",
       "duration": 0.5,
       "name": "handful of peas - peas! - bang"
     },
     {
       "id": "munchyMonkWiiEn/peas5",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas5"
       ],
       "duration": 0.25,
@@ -82,7 +82,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas6",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas6"
       ],
       "duration": 0.25,
@@ -90,7 +90,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas7",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas7"
       ],
       "duration": 0.25,
@@ -98,7 +98,7 @@
     },
     {
       "id": "munchyMonkWiiEn/peas8",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas8"
       ],
       "duration": 0.25,
@@ -106,35 +106,35 @@
     },
     {
       "id": "munchyMonkWiiEn/peas9",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peas9"
       ],
       "duration": 0.25,
       "name": "handful of peas - blow5"
     },
-	{
+    {
       "id": "munchyMonkWiiEn/peas10",
       "duration": 0.25,
       "name": "handful of peas - blow6"
     },
-	{
+    {
       "id": "munchyMonkWiiEn/peas11",
       "duration": 0.25,
       "name": "handful of peas - blow7"
     },
-	{
+    {
       "id": "munchyMonkWiiEn/peas12",
       "duration": 0.25,
       "name": "handful of peas - blow8"
     },
-	{
+    {
       "id": "munchyMonkWiiEn/peas13",
       "duration": 0.25,
       "name": "handful of peas - blow9"
     },
     {
       "id": "munchyMonkWiiEn/peasgulp",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii/peasgulp"
       ],
       "duration": 0.5,
@@ -144,7 +144,7 @@
   "patterns": [
     {
       "id": "munchyMonkWiiEn_oneEgg",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii_oneEgg"
       ],
       "name": "one egg!",
@@ -173,7 +173,7 @@
     },
     {
       "id": "munchyMonkWiiEn_handfulOfPeas",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "munchyMonkWii_handfulOfPeas"
       ],
       "name": "handful of peas!",
@@ -230,7 +230,7 @@
         }
       ]
     },
-	{
+    {
       "id": "munchyMonkWiiEn_handfulOfPeasLong",
       "name": "handful of peas! - long",
       "cues": [
@@ -279,7 +279,7 @@
           "beat": 3.0,
           "track": 0
         },
-		{
+        {
           "id": "munchyMonkWiiEn/peas10",
           "beat": 3.25,
           "track": 0

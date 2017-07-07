@@ -233,7 +233,7 @@
         }
       ]
     },
-	{
+    {
       "id": "powerCalligraphy_onoreSwing",
       "name": "onore (己) (swing)",
       "cues": [
@@ -310,7 +310,7 @@
         }
       ]
     },
-	{
+    {
       "id": "powerCalligraphy_sunSwing",
       "name": "sun (寸) (swing)",
       "cues": [
@@ -453,7 +453,7 @@
         }
       ]
     },
-	{
+    {
       "id": "powerCalligraphy_tsurunihamushiSwing",
       "name": "tsuru niha mu shi (swing)",
       "cues": [
@@ -593,7 +593,7 @@
         }
       ]
     },
-	{
+    {
       "id": "powerCalligraphy_tsurunihamushiKrSwing",
       "name": "tsuru niha mu shi - (Korean version) - (swing)",
       "cues": [

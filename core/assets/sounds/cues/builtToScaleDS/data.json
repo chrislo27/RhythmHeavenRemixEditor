@@ -46,10 +46,10 @@
           "duration": 1,
           "semitone": 7
         },
-		{
+        {
           "id": "builtToScaleDS/c",
           "beat": 4,
-		  "track": 1,
+          "track": 1,
           "duration": 1,
           "semitone": 12
         },

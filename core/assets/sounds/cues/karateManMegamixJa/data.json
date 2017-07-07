@@ -324,7 +324,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixJa_kickSolo",
       "name": "kick (standalone)",
       "cues": [
@@ -376,7 +376,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManMegamixJa_comboSolo",
       "name": "combo (standalone)",
       "cues": [

@@ -35,13 +35,13 @@
     },
     {
       "id": "nightWalk/jumpUmbrella1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "nightWalk/jumpUmbrella"
       ],
       "duration": 0.25,
       "name": "jump UP - umbrella / end - 1"
     },
-	{
+    {
       "id": "nightWalk/jumpUmbrella2",
       "duration": 0.25,
       "name": "jump UP - umbrella / end - 2"
@@ -182,14 +182,14 @@
           "id": "nightWalk/jump1",
           "beat": 2
         },
-		{
+        {
           "id": "nightWalk/jumpUmbrella1",
           "beat": 2.5
         },
-		{
-		  "id": "nightWalk/jumpUmbrella2",
-		  "beat": 2.75
-		},
+        {
+          "id": "nightWalk/jumpUmbrella2",
+          "beat": 2.75
+        },
         {
           "id": "nightWalk/jump3",
           "beat": 3

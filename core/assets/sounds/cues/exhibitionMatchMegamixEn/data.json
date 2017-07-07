@@ -5,7 +5,7 @@
   "cues": [
     {
       "id": "exhibitionMatchMegamixEn/stance",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/stance"
       ],
       "duration": 1,
@@ -13,7 +13,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn/throw",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/throw"
       ],
       "duration": 1,
@@ -21,7 +21,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn/hit1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/hit"
       ],
       "duration": 1,
@@ -29,7 +29,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn/hit2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/hit2"
       ],
       "duration": 1,
@@ -37,7 +37,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn/hit3",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/hit3"
       ],
       "duration": 1,
@@ -45,7 +45,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn/hitHomerun",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix/hitHomerun"
       ],
       "duration": 4,
@@ -55,7 +55,7 @@
   "patterns": [
     {
       "id": "exhibitionMatchMegamixEn_pitch1",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix_pitch1"
       ],
       "name": "pitch 1",
@@ -76,7 +76,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn_pitch2",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix_pitch2"
       ],
       "name": "pitch 2",
@@ -97,7 +97,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn_pitch3",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix_pitch3"
       ],
       "name": "pitch 3",
@@ -118,7 +118,7 @@
     },
     {
       "id": "exhibitionMatchMegamixEn_homerun",
-	  "deprecatedIDs": [
+      "deprecatedIDs": [
         "exhibitionMatchMegamix_homerun"
       ],
       "name": "home run",

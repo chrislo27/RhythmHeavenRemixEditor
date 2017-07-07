@@ -38,185 +38,193 @@
     {
       "id": "rhythmRally_slowrally",
       "name": "slow rally",
-      "deprecatedIDs": ["rhythmrally_slowrally"],
+      "deprecatedIDs": [
+        "rhythmrally_slowrally"
+      ],
       "cues": [
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 0.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 2.0
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 4.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 6.0
-       }
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 4.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 6.0
+        }
       ]
     },
     {
       "id": "rhythmRally_normalrally",
       "name": "normal rally",
-      "deprecatedIDs": ["rhythmrally_normalrally"],
+      "deprecatedIDs": [
+        "rhythmrally_normalrally"
+      ],
       "cues": [
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 0.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 1.0
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 2.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 3.0
-       }
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 3.0
+        }
       ]
     },
     {
       "id": "rhythmRally_fastrally",
       "name": "fast rally",
-      "deprecatedIDs": ["rhythmrally_fastrally"],
+      "deprecatedIDs": [
+        "rhythmrally_fastrally"
+      ],
       "cues": [
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 0.0
-       },
-       {
-        "id": "rhythmRally/tink",
-        "beat": 0.5
-       },
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 1.0
-       },
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 2.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 2.5
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 3.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 4.0
-       }
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmRally/tink",
+          "beat": 0.5
+        },
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 2.5
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 3.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 4.0
+        }
       ]
     },
     {
       "id": "rhythmRally_turborally",
       "name": "turbo rally",
-      "deprecatedIDs": ["rhythmrally_turborally"],
+      "deprecatedIDs": [
+        "rhythmrally_turborally"
+      ],
       "cues": [
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 0.0
-       },
-       {
-        "id": "rhythmRally/tink",
-        "beat": 0.5
-       },
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 1.0
-       },
-       {
-        "id": "rhythmRally/tink",
-        "beat": 1.5
-       },
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 2.0
-       },
-       {
-        "id": "rhythmRally/tink",
-        "beat": 2.5
-       },
-       {
-        "id": "rhythmRally/tonk",
-        "beat": 3.0
-       },
-       {
-        "id": "rhythmRally/tink",
-        "beat": 3.5
-       },
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 4.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 4.5
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 5.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 5.5
-       },
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 6.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 6.5
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 7.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 7.5
-       },
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 8.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 8.5
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 9.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 9.5
-       },
-       {
-        "id": "rhythmRally/hit1",
-        "beat": 10.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 10.5
-       },
-       {
-        "id": "rhythmRally/hit3",
-        "beat": 11.0
-       },
-       {
-        "id": "rhythmRally/hit2",
-        "beat": 11.5
-       }
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 0.0
+        },
+        {
+          "id": "rhythmRally/tink",
+          "beat": 0.5
+        },
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 1.0
+        },
+        {
+          "id": "rhythmRally/tink",
+          "beat": 1.5
+        },
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 2.0
+        },
+        {
+          "id": "rhythmRally/tink",
+          "beat": 2.5
+        },
+        {
+          "id": "rhythmRally/tonk",
+          "beat": 3.0
+        },
+        {
+          "id": "rhythmRally/tink",
+          "beat": 3.5
+        },
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 4.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 4.5
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 5.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 5.5
+        },
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 6.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 6.5
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 7.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 7.5
+        },
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 8.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 8.5
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 9.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 9.5
+        },
+        {
+          "id": "rhythmRally/hit1",
+          "beat": 10.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 10.5
+        },
+        {
+          "id": "rhythmRally/hit3",
+          "beat": 11.0
+        },
+        {
+          "id": "rhythmRally/hit2",
+          "beat": 11.5
+        }
       ]
     }
   ]

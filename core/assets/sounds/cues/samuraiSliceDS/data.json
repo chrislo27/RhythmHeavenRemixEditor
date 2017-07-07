@@ -25,7 +25,9 @@
     },
     {
       "id": "samuraiSliceDS/see-sawA",
-      "deprecatedIDs": ["samuraiSliceDS/see-saw"],
+      "deprecatedIDs": [
+        "samuraiSliceDS/see-saw"
+      ],
       "duration": 1,
       "name": "see-sawA"
     },

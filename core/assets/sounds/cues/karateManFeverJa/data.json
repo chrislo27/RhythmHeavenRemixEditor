@@ -222,7 +222,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManFeverJa_lightbulb",
       "name": "lightbulb (standalone)",
       "cues": [
@@ -236,7 +236,7 @@
         }
       ]
     },
-	{
+    {
       "id": "karateManFeverJa_comboSolo",
       "name": "combo (standalone)",
       "cues": [

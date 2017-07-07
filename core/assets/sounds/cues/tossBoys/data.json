@@ -110,7 +110,7 @@
       "id": "tossBoys/superRedA2",
       "duration": 0.5,
       "name": "[#FF0000]A[]-[#70B5FF]B[] dual toss - [#70B5FF]ao[]-kun - 1"
-	},
+    },
     {
       "id": "tossBoys/superRedB1",
       "duration": 0.333,
@@ -229,27 +229,27 @@
       "duration": 1,
       "name": "[#FFFF00]yellow[] lightning toss - finish"
     },
-	{
+    {
       "id": "tossBoys/superYellowUnusedRed1",
       "duration": 0.25,
       "name": "[#FFFF00]yellow[] blur toss (unused) - [#FF0000]aka[]-chan - 1"
     },
-	{
+    {
       "id": "tossBoys/superYellowUnusedRed2",
       "duration": 0.25,
       "name": "[#FFFF00]yellow[] blur toss (unused) - [#FF0000]aka[]-chan - 2"
     },
-	{
+    {
       "id": "tossBoys/superYellowUnusedRed3",
       "duration": 1.5,
       "name": "[#FFFF00]yellow[] blur toss (unused) - [#FF0000]aka[]-chan - 3"
     },
-	{
+    {
       "id": "tossBoys/superYellowUnusedBlue1",
       "duration": 0.5,
       "name": "[#FFFF00]yellow[] blur toss (unused) - [#70B5FF]ao[]-kun - 1"
     },
-	{
+    {
       "id": "tossBoys/superYellowUnusedBlue2",
       "duration": 1.5,
       "name": "[#FFFF00]yellow[] blur toss (unused) - [#70B5FF]ao[]-kun - 2"
@@ -364,14 +364,14 @@
           "id": "tossBoys/superRed2",
           "beat": 0.25
         }
-	  ]
+      ]
     },
     {
       "id": "tossBoys_akachanSuperAokun",
       "name": "[#FF0000]A[]-[#70B5FF]B[] dual toss - [#70B5FF]ao-kun[]",
-	  "deprecatedIDs": [
-	    "tossBoys_akachanSuper"
-	  ],
+      "deprecatedIDs": [
+        "tossBoys_akachanSuper"
+      ],
       "cues": [
         {
           "id": "tossBoys/superRedA1",
@@ -383,7 +383,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_akachanSuperAkachan",
       "name": "[#FF0000]A[]-[#70B5FF]B[] dual toss - [#FF0000]aka-chan[]",
       "cues": [
@@ -416,10 +416,10 @@
         {
           "id": "tossBoys/superBlueHit",
           "beat": 1
-		}
+        }
       ]
     },
-	{
+    {
       "id": "tossBoys_aokunSuperTwoHits",
       "name": "[#70B5FF]blue[] blur toss - two hits",
       "cues": [
@@ -430,10 +430,10 @@
         {
           "id": "tossBoys/superBlueHit",
           "beat": 1
-		}
+        }
       ]
     },
-	{
+    {
       "id": "tossBoys_aokunSuperToAkachan",
       "name": "[#70B5FF]blue[] blur toss to [#FF0000]aka[]-chan",
       "deprecatedIDs": [
@@ -454,7 +454,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_aokunSuperToAkachanWithHit",
       "name": "[#70B5FF]blue[] blur toss to [#FF0000]aka[]-chan with extra hit",
       "cues": [
@@ -476,7 +476,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_aokunSuperToKiiyan",
       "name": "[#70B5FF]blue[] blur toss to [#FFFF00]kii[]-yan",
       "cues": [
@@ -559,7 +559,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_akachanUnusedSuperStart",
       "name": "[#FF0000]red[] blur toss (unused) - start",
       "cues": [
@@ -575,9 +575,9 @@
           "id": "tossBoys/superRedHit",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoys_akachanUnusedSuperTwoHits",
       "name": "[#FF0000]red[] blur toss (unused) - two hits",
       "cues": [
@@ -589,9 +589,9 @@
           "id": "tossBoys/superRedHit",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoys_akachanSuperToAokun",
       "name": "[#FF0000]red[] blur toss (unused) to [#70B5FF]ao[]-kun",
       "cues": [
@@ -605,14 +605,14 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_akachanSuperToAokunWithHit",
       "name": "[#FF0000]red[] blur toss (unused) to [#70B5FF]ao[]-kun with extra hit",
       "cues": [
-	    {
-		  "id": "tossBoys/superRedHit",
-		  "beat": 0
-		},
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 0
+        },
         {
           "id": "tossBoys/superRedBlue1",
           "beat": 1
@@ -637,14 +637,14 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_akachanSuperToKiiyanWithHit",
       "name": "[#FF0000]red[] blur toss (unused) to [#FFFF00]kii[]-yan with extra hit",
       "cues": [
-	    {
-		  "id": "tossBoys/superRedHit",
-		  "beat": 0
-		},
+        {
+          "id": "tossBoys/superRedHit",
+          "beat": 0
+        },
         {
           "id": "tossBoys/superRedYellow1",
           "beat": 1
@@ -655,7 +655,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_kiiyanUnusedSuperStart",
       "name": "[#FFFF00]yellow[] blur toss (unused) - start",
       "cues": [
@@ -667,9 +667,9 @@
           "id": "tossBoys/superYellowFinish",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoys_kiiyanUnusedSuperTwoHits",
       "name": "[#FFFF00]yellow[] blur toss (unused) - two hits",
       "cues": [
@@ -681,9 +681,9 @@
           "id": "tossBoys/superYellowFinish",
           "beat": 1
         }
-	  ]
-	},
-	{
+      ]
+    },
+    {
       "id": "tossBoys_kiiyanUnusedSuperToAkachan",
       "name": "[#FFFF00]yellow[] blur toss (unused) to [#FF0000]aka[]-chan with extra hit",
       "cues": [
@@ -691,7 +691,7 @@
           "id": "tossBoys/superYellowUnusedRed1",
           "beat": 0
         },
-		{
+        {
           "id": "tossBoys/superYellowUnusedRed2",
           "beat": 0.25
         },
@@ -701,11 +701,11 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_kiiyanUnusedSuperToAkachanWithHit",
       "name": "[#FFFF00]yellow[] blur toss (unused) to [#FF0000]aka[]-chan",
       "cues": [
-	    {
+        {
           "id": "tossBoys/superYellowFinish",
           "beat": 0
         },
@@ -713,7 +713,7 @@
           "id": "tossBoys/superYellowUnusedRed1",
           "beat": 1
         },
-		{
+        {
           "id": "tossBoys/superYellowUnusedRed2",
           "beat": 1.25
         },
@@ -723,7 +723,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_kiiyanUnusedSuperToAokun",
       "name": "[#FFFF00]yellow[] blur toss (unused) to [#70B5FF]ao[]-kun",
       "cues": [
@@ -737,7 +737,7 @@
         }
       ]
     },
-	{
+    {
       "id": "tossBoys_kiiyanUnusedSuperToAokunWithHit",
       "name": "[#FFFF00]yellow[] blur toss (unused) to [#70B5FF]ao[]-kun with extra hit",
       "cues": [
