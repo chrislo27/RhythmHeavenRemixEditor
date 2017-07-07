@@ -11,7 +11,7 @@
     },
     {
       "id": "builtToScaleDS/pew",
-      "duration": 0.5,
+      "duration": 1,
       "name": "launch"
     }
   ],
@@ -43,12 +43,14 @@
         {
           "id": "builtToScaleDS/c",
           "beat": 4,
+          "duration": 1,
           "semitone": 7
         },
 		{
           "id": "builtToScaleDS/c",
           "beat": 4,
 		  "track": 1,
+          "duration": 1,
           "semitone": 12
         },
         {

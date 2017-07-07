@@ -35,7 +35,8 @@
         },
         {
           "id": "clappyTrio/clap",
-          "beat": 2.0
+          "beat": 2.0,
+          "duration": 1.0
         }
       ]
     },
@@ -58,7 +59,8 @@
         },
         {
           "id": "clappyTrio/clap",
-          "beat": 3.0
+          "beat": 3.0,
+          "duration": 1.0
         }
       ]
     }
