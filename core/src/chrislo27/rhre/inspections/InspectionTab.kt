@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 abstract class InspectionTab {
 
-	abstract val name: String
+    abstract val name: String
 
-	abstract fun initialize(remix: Remix)
+    abstract fun initialize(remix: Remix)
 
-	abstract fun render(main: Main, batch: SpriteBatch, startX: Float, startY: Float, width: Float, height: Float, mouseXPx: Float, mouseYPx: Float)
+    abstract fun render(main: Main, batch: SpriteBatch, startX: Float, startY: Float, width: Float, height: Float,
+                        mouseXPx: Float, mouseYPx: Float)
 
 }

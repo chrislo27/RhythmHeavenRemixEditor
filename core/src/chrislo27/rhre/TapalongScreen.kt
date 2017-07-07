@@ -11,146 +11,147 @@ import ionium.util.Utils
 import ionium.util.i18n.Localization
 
 class TapalongScreen(m: Main) : NewUIScreen(m) {
-	override var icon: String = "ui_tapper"
-	override var title: String = "editor.button.tapalong"
-	override var bottomInstructions: String = "tapalong.instructions"
+    override var icon: String = "ui_tapper"
+    override var title: String = "editor.button.tapalong"
+    override var bottomInstructions: String = "tapalong.instructions"
 
-	private var lastTapTime: Long = System.currentTimeMillis()
-	private var averageBpm: Float = 0.0f
-	private var combinedTotal: Long = 0
-	private var numOfTaps: Long = 0
+    private var lastTapTime: Long = System.currentTimeMillis()
+    private var averageBpm: Float = 0.0f
+    private var combinedTotal: Long = 0
+    private var numOfTaps: Long = 0
 
-	private val AUTO_RESET_TIME: Long = 3 * 1000
+    private val AUTO_RESET_TIME: Long = 3 * 1000
 
-	init {
-		instructionsParams = arrayOf("${AUTO_RESET_TIME / 1000}")
-	}
+    init {
+        instructionsParams = arrayOf("${AUTO_RESET_TIME / 1000}")
+    }
 
-	override fun render(delta: Float) {
-		super.render(delta)
+    override fun render(delta: Float) {
+        super.render(delta)
 
-		main.batch.begin()
+        main.batch.begin()
 
-		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
-		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
+        val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+        val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
 
-		main.font.setColor(1f, 1f, 1f, 1f)
+        main.font.setColor(1f, 1f, 1f, 1f)
 
-		main.biggerFont.setColor(1f, 1f, 1f, 1f)
-		main.biggerFont.draw(main.batch,
-							 if (numOfTaps == 1L)
-								 Localization.get("tapalong.firstBeat")
-							 else
-								 Math.round(averageBpm).toString(),
-							 startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.5f + main.biggerFont.capHeight, 0f,
-							 Align.center, false)
+        main.biggerFont.setColor(1f, 1f, 1f, 1f)
+        main.biggerFont.draw(main.batch,
+                             if (numOfTaps == 1L)
+                                 Localization.get("tapalong.firstBeat")
+                             else
+                                 Math.round(averageBpm).toString(),
+                             startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.5f + main.biggerFont.capHeight, 0f,
+                             Align.center, false)
 
-		val scale = if (System.currentTimeMillis() - lastTapTime < 150L) {
-			1f + (1f - ((System.currentTimeMillis() - lastTapTime) / 150f)) * 0.5f
-		} else {
-			1f
-		}
-		val size = 128f * scale
-		main.batch.draw(AssetRegistry.getTexture("ui_beattapper"),
-						startX + BG_WIDTH * 0.5f - size * 0.5f,
-						startY + BG_HEIGHT * 0.2f + 64f - size * 0.5f,
-						size, size)
+        val scale = if (System.currentTimeMillis() - lastTapTime < 150L) {
+            1f + (1f - ((System.currentTimeMillis() - lastTapTime) / 150f)) * 0.5f
+        } else {
+            1f
+        }
+        val size = 128f * scale
+        main.batch.draw(AssetRegistry.getTexture("ui_beattapper"),
+                        startX + BG_WIDTH * 0.5f - size * 0.5f,
+                        startY + BG_HEIGHT * 0.2f + 64f - size * 0.5f,
+                        size, size)
 
-		if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && MathHelper.isPointInRectangle(
-				startX + BG_WIDTH * 0.5f - size * 0.5f,
-				startY + BG_HEIGHT * 0.2f + 64f - size * 0.5f,
-				size, size, main.getInputX() * 1f, main.camera.viewportHeight - main.getInputY())) {
-			handleBeatInput()
-		}
+        if (Utils.isButtonJustPressed(Input.Buttons.LEFT) && MathHelper.isPointInRectangle(
+                startX + BG_WIDTH * 0.5f - size * 0.5f,
+                startY + BG_HEIGHT * 0.2f + 64f - size * 0.5f,
+                size, size, main.getInputX() * 1f, main.camera.viewportHeight - main.getInputY())) {
+            handleBeatInput()
+        }
 
-		main.font.draw(main.batch, Localization.get("tapalong.average", "$averageBpm"),
-					   startX + BG_WIDTH * 0.2f,
-					   startY + BG_HEIGHT * 0.35f, 0f, Align.center, false)
-		main.font.draw(main.batch, Localization.get("tapalong.numOfTaps", "$numOfTaps"),
-					   startX + BG_WIDTH * 0.8f,
-					   startY + BG_HEIGHT * 0.35f, 0f, Align.center, false)
+        main.font.draw(main.batch, Localization.get("tapalong.average", "$averageBpm"),
+                       startX + BG_WIDTH * 0.2f,
+                       startY + BG_HEIGHT * 0.35f, 0f, Align.center, false)
+        main.font.draw(main.batch, Localization.get("tapalong.numOfTaps", "$numOfTaps"),
+                       startX + BG_WIDTH * 0.8f,
+                       startY + BG_HEIGHT * 0.35f, 0f, Align.center, false)
 
-		main.batch.end()
-	}
+        main.batch.end()
+    }
 
-	override fun renderUpdate() {
-		if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-			handleBeatInput()
-		}
+    override fun renderUpdate() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            handleBeatInput()
+        }
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.R)) reset()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) reset()
 
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) main.screen = ScreenRegistry.get("editor")
-	}
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) main.screen = ScreenRegistry.get("editor")
+    }
 
-	private fun handleBeatInput() {
-		if (System.currentTimeMillis() - AUTO_RESET_TIME > lastTapTime) {
-			reset()
-		}
+    private fun handleBeatInput() {
+        if (System.currentTimeMillis() - AUTO_RESET_TIME > lastTapTime) {
+            reset()
+        }
 
-		numOfTaps++
+        numOfTaps++
 
-		if (numOfTaps > 1) {
-			combinedTotal += (System.currentTimeMillis() - lastTapTime)
-		}
+        if (numOfTaps > 1) {
+            combinedTotal += (System.currentTimeMillis() - lastTapTime)
+        }
 
-		lastTapTime = System.currentTimeMillis()
+        lastTapTime = System.currentTimeMillis()
 
-		calcAvg()
-	}
+        calcAvg()
+    }
 
-	private fun reset() {
-		// reset
-		numOfTaps = 0
-		combinedTotal = 0
-		averageBpm = 0.0f
-	}
+    private fun reset() {
+        // reset
+        numOfTaps = 0
+        combinedTotal = 0
+        averageBpm = 0.0f
+    }
 
-	private fun calcAvg() {
-		if (numOfTaps <= 1) {
-			averageBpm = 0.0f
-			return@calcAvg
-		}
+    private fun calcAvg() {
+        if (numOfTaps <= 1) {
+            averageBpm = 0.0f
+            return@calcAvg
+        }
 
-		val averageSec: Float = (((combinedTotal.toFloat() / (numOfTaps - 1)) / 1000.0f))
+        val averageSec: Float = (((combinedTotal.toFloat() / (numOfTaps - 1)) / 1000.0f))
 
-		averageBpm = 60f / averageSec
-	}
+        averageBpm = 60f / averageSec
+    }
 
-	override fun tickUpdate() {
+    override fun tickUpdate() {
 
-	}
+    }
 
-	override fun getDebugStrings(array: Array<String>?) {
+    override fun getDebugStrings(array: Array<String>?) {
 
-	}
+    }
 
-	override fun resize(width: Int, height: Int) {
+    override fun resize(width: Int, height: Int) {
 
-	}
+    }
 
-	override fun show() {
-		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
-		es.editor.remix.music?.music?.isLooping = true
-		es.editor.remix.music?.music?.play()
-		es.editor.remix.music?.music?.position = Math.max(0f, es.editor.remix.tempoChanges.beatsToSeconds(es.editor.remix.playbackStart) - es.editor.remix.musicStartTime)
-	}
+    override fun show() {
+        val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
+        es.editor.remix.music?.music?.isLooping = true
+        es.editor.remix.music?.music?.play()
+        es.editor.remix.music?.music?.position = Math.max(0f, es.editor.remix.tempoChanges.beatsToSeconds(
+                es.editor.remix.playbackStart) - es.editor.remix.musicStartTime)
+    }
 
-	override fun hide() {
-		val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
-		es.editor.remix.music?.music?.isLooping = false
-		es.editor.remix.music?.music?.stop()
-	}
+    override fun hide() {
+        val es: EditorScreen = ScreenRegistry.get("editor", EditorScreen::class.java)
+        es.editor.remix.music?.music?.isLooping = false
+        es.editor.remix.music?.music?.stop()
+    }
 
-	override fun pause() {
+    override fun pause() {
 
-	}
+    }
 
-	override fun resume() {
+    override fun resume() {
 
-	}
+    }
 
-	override fun dispose() {
+    override fun dispose() {
 
-	}
+    }
 }

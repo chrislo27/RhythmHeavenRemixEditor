@@ -15,34 +15,34 @@ import org.luaj.vm2.lib.jse.JseMathLib
 
 object ScriptSandbox {
 
-	fun runScriptInRemix(remix: Remix, script: String) {
-		val chunk = parseChunk(remix, script)
-		chunk.call()
-	}
+    fun runScriptInRemix(remix: Remix, script: String) {
+        val chunk = parseChunk(remix, script)
+        chunk.call()
+    }
 
-	fun parseChunk(remix: Remix, script: String): LuaValue {
-		val globals = getBaseGlobals()
+    fun parseChunk(remix: Remix, script: String): LuaValue {
+        val globals = getBaseGlobals()
 
-		globals.set("remix", remix.getLuaValue(globals))
-		globals.set("registry", GameRegistry.luaValue)
+        globals.set("remix", remix.getLuaValue(globals))
+        globals.set("registry", GameRegistry.luaValue)
 //		globals.set("rhre2utils", LuaRHRE2Utils(globals, remix))
 
-		LuaC.install(globals)
+        LuaC.install(globals)
 
-		return globals.load(script)
-	}
+        return globals.load(script)
+    }
 
-	fun getBaseGlobals(): Globals {
-		val globals = Globals()
+    fun getBaseGlobals(): Globals {
+        val globals = Globals()
 
-		globals.load(JseBaseLib())
-		globals.load(PackageLib())
-		globals.load(Bit32Lib())
-		globals.load(TableLib())
-		globals.load(StringLib())
-		globals.load(JseMathLib())
+        globals.load(JseBaseLib())
+        globals.load(PackageLib())
+        globals.load(Bit32Lib())
+        globals.load(TableLib())
+        globals.load(StringLib())
+        globals.load(JseMathLib())
 
-		return globals
-	}
+        return globals
+    }
 
 }

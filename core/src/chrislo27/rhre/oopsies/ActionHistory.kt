@@ -10,71 +10,71 @@ import java.util.*
 @Suppress("UNCHECKED_CAST")
 open class ActionHistory<SELF : ActionHistory<SELF>>(val maxItems: Int = 128) {
 
-	private fun createDeque(): Deque<ReversibleAction<SELF>> {
-		return ArrayDeque()
-	}
+    private fun createDeque(): Deque<ReversibleAction<SELF>> {
+        return ArrayDeque()
+    }
 
-	private val undos: Deque<ReversibleAction<SELF>> = createDeque()
-	private val redos: Deque<ReversibleAction<SELF>> = createDeque()
+    private val undos: Deque<ReversibleAction<SELF>> = createDeque()
+    private val redos: Deque<ReversibleAction<SELF>> = createDeque()
 
-	/**
-	 * Mutate this object, adding the action on the undo stack, and clearing all redos.
-	 */
-	fun mutate(action: ReversibleAction<SELF>) {
-		addActionWithoutMutating(action)
+    /**
+     * Mutate this object, adding the action on the undo stack, and clearing all redos.
+     */
+    fun mutate(action: ReversibleAction<SELF>) {
+        addActionWithoutMutating(action)
 
-		action.redo(this as SELF)
-	}
+        action.redo(this as SELF)
+    }
 
-	/**
-	 * Adds an action without calling the redo method of the action.
-	 */
-	fun addActionWithoutMutating(action: ReversibleAction<SELF>) {
-		redos.clear()
-		undos.push(action)
-	}
+    /**
+     * Adds an action without calling the redo method of the action.
+     */
+    fun addActionWithoutMutating(action: ReversibleAction<SELF>) {
+        redos.clear()
+        undos.push(action)
+    }
 
-	fun ensureCapacity() {
-		if (maxItems > 0) {
-			if (undos.size > maxItems) {
-				undos.removeLast()
-			}
+    fun ensureCapacity() {
+        if (maxItems > 0) {
+            if (undos.size > maxItems) {
+                undos.removeLast()
+            }
 
-			if (redos.size > maxItems) {
-				redos.removeLast()
-			}
-		}
-	}
+            if (redos.size > maxItems) {
+                redos.removeLast()
+            }
+        }
+    }
 
-	fun undo(): Boolean {
-		if (!canUndo()) return false
+    fun undo(): Boolean {
+        if (!canUndo()) return false
 
-		val action = undos.pop()
-		action.undo(this as SELF)
+        val action = undos.pop()
+        action.undo(this as SELF)
 
-		redos.push(action)
+        redos.push(action)
 
-		return true
-	}
+        return true
+    }
 
-	fun redo(): Boolean {
-		if (!canRedo()) return false
+    fun redo(): Boolean {
+        if (!canRedo()) return false
 
-		val action = redos.pop()
-		action.redo(this as SELF)
+        val action = redos.pop()
+        action.redo(this as SELF)
 
-		undos.push(action)
+        undos.push(action)
 
-		return true
-	}
+        return true
+    }
 
-	fun canUndo() = undos.size > 0
+    fun canUndo() = undos.size > 0
 
-	fun canRedo() = redos.size > 0
+    fun canRedo() = redos.size > 0
 
-	fun clear() {
-		undos.clear()
-		redos.clear()
-	}
+    fun clear() {
+        undos.clear()
+        redos.clear()
+    }
 
 }

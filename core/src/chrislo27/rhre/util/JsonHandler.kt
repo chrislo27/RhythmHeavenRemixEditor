@@ -12,43 +12,43 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 object JsonHandler {
 
-	val OBJECT_MAPPER: ObjectMapper = createObjectMapper()
+    val OBJECT_MAPPER: ObjectMapper = createObjectMapper()
 //	val GSON: Gson = createObjectMapper()
 
-	@JvmStatic
-	fun createObjectMapper(): ObjectMapper {
-		return ObjectMapper()
-				.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
-				.enable(SerializationFeature.WRITE_NULL_MAP_VALUES)
-				.enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
-				.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
-				.enable(SerializationFeature.INDENT_OUTPUT)
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-				.enable(JsonParser.Feature.ALLOW_COMMENTS)
-				.enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
-				.enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
-				.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
-				.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
-				.registerModule(AfterburnerModule())
-				.registerModule(KotlinModule())
-	}
+    @JvmStatic
+    fun createObjectMapper(): ObjectMapper {
+        return ObjectMapper()
+                .enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
+                .enable(SerializationFeature.WRITE_NULL_MAP_VALUES)
+                .enable(DeserializationFeature.USE_JAVA_ARRAY_FOR_JSON_ARRAY)
+                .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                .enable(SerializationFeature.INDENT_OUTPUT)
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+                .enable(JsonParser.Feature.ALLOW_COMMENTS)
+                .enable(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES)
+                .enable(JsonParser.Feature.ALLOW_SINGLE_QUOTES)
+                .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
+                .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+                .registerModule(AfterburnerModule())
+                .registerModule(KotlinModule())
+    }
 
 //	@JvmStatic
 //	fun createObjectMapper(): Gson {
 //		return GsonBuilder().setPrettyPrinting().create()
 //	}
 
-	@JvmStatic
-	inline fun <reified T> fromJson(json: String): T {
-		return OBJECT_MAPPER.readValue(json, T::class.java)
+    @JvmStatic
+    inline fun <reified T> fromJson(json: String): T {
+        return OBJECT_MAPPER.readValue(json, T::class.java)
 //		return GSON.fromJson(json, T::class.java)
-	}
+    }
 
-	@JvmStatic
-	fun <T> fromJson(json: String, clazz: Class<T>): T {
-		return OBJECT_MAPPER.readValue(json, clazz)
+    @JvmStatic
+    fun <T> fromJson(json: String, clazz: Class<T>): T {
+        return OBJECT_MAPPER.readValue(json, clazz)
 //		return GSON.fromJson(json, clazz)
-	}
+    }
 
 //	@JvmStatic
 //	inline fun <reified T> fromJson(json: ByteArray): T {
@@ -60,16 +60,16 @@ object JsonHandler {
 //		return GSON.fromJson(json, clazz)
 //	}
 
-	@JvmStatic
-	fun toJson(obj: Any): String {
-		return OBJECT_MAPPER.writeValueAsString(obj)
+    @JvmStatic
+    fun toJson(obj: Any): String {
+        return OBJECT_MAPPER.writeValueAsString(obj)
 //		return GSON.toJson(obj)
-	}
+    }
 
-	@JvmStatic
-	fun <T> toJson(obj: Any, clazz: Class<T>): String {
-		return OBJECT_MAPPER.writeValueAsString(clazz.cast(obj))
+    @JvmStatic
+    fun <T> toJson(obj: Any, clazz: Class<T>): String {
+        return OBJECT_MAPPER.writeValueAsString(clazz.cast(obj))
 //		return GSON.toJson(obj, clazz)
-	}
+    }
 
 }

@@ -17,129 +17,132 @@ import ionium.util.i18n.Localization
 import ionium.util.render.StencilMaskUtil
 
 class InspectionsScreen(m: Main) : NewUIScreen(m) {
-	override var icon: String = "ui_biginspections"
-	override var title: String = "inspections.title"
-	override var bottomInstructions: String = "inspections.instructions"
+    override var icon: String = "ui_biginspections"
+    override var title: String = "inspections.title"
+    override var bottomInstructions: String = "inspections.instructions"
 
-	private val remix: Remix
-		get() = ScreenRegistry.get("editor", EditorScreen::class.java).editor.remix
+    private val remix: Remix
+        get() = ScreenRegistry.get("editor", EditorScreen::class.java).editor.remix
 
-	private var currentTab: Int = 0
-		set(value) {
-			field = value
-			targetTab = MathUtils.clamp(targetTab, value - 1f, value + 1f)
-			updateDots()
-		}
-	private var targetTab: Float = currentTab.toFloat()
-	private var dots: String = ""
-	private val tabs: List<InspectionTab> =
-			listOf(
-					StatsTab(),
-					InspTabSeries(),
-					InspTabLanguage()
-				  )
-	private val vector: Vector3 = Vector3()
+    private var currentTab: Int = 0
+        set(value) {
+            field = value
+            targetTab = MathUtils.clamp(targetTab, value - 1f, value + 1f)
+            updateDots()
+        }
+    private var targetTab: Float = currentTab.toFloat()
+    private var dots: String = ""
+    private val tabs: List<InspectionTab> =
+            listOf(
+                    StatsTab(),
+                    InspTabSeries(),
+                    InspTabLanguage()
+                  )
+    private val vector: Vector3 = Vector3()
 
-	override fun render(delta: Float) {
-		super.render(delta)
+    override fun render(delta: Float) {
+        super.render(delta)
 
-		targetTab = MathUtils.lerp(targetTab, currentTab.toFloat(), (7f * Gdx.graphics.deltaTime).coerceAtMost(1f))
+        targetTab = MathUtils.lerp(targetTab, currentTab.toFloat(), (7f * Gdx.graphics.deltaTime).coerceAtMost(1f))
 
-		main.batch.begin()
+        main.batch.begin()
 
-		val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
-		val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
-		val centerX = startX + BG_WIDTH / 2
-		val tab: InspectionTab? = tabs.getOrNull(currentTab)
+        val startX = main.camera.viewportWidth * 0.5f - BG_WIDTH * 0.5f
+        val startY = main.camera.viewportHeight * 0.5f - BG_HEIGHT * 0.5f
+        val centerX = startX + BG_WIDTH / 2
+        val tab: InspectionTab? = tabs.getOrNull(currentTab)
 
-		// left right indicators
-		if (tab != null) {
-			val currentTabName = Localization.get(tab.name)
-			val currentTabNameWidth = Utils.getWidth(main.font, currentTabName)
-			main.font.draw(main.batch, currentTabName, startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f,
-						   0f,
-						   Align.center, false)
+        // left right indicators
+        if (tab != null) {
+            val currentTabName = Localization.get(tab.name)
+            val currentTabNameWidth = Utils.getWidth(main.font, currentTabName)
+            main.font.draw(main.batch, currentTabName, startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f,
+                           0f,
+                           Align.center, false)
 
-			if (currentTab > 0) {
-				Main.drawCompressed(main.font, main.batch, "◀ " + Localization.get(tabs.getOrNull(currentTab - 1)?.name), startX + 32,
-							   startY + BG_HEIGHT * 0.8f, (centerX - currentTabNameWidth / 2) - startX - 32, Align.left)
-			}
-			if (currentTab < tabs.size - 1) {
-				Main.drawCompressed(main.font, main.batch, Localization.get(tabs.getOrNull(currentTab + 1)?.name) + " ▶",
-							   (centerX + currentTabNameWidth / 2),
-									startY + BG_HEIGHT * 0.8f,
-									(startX + BG_WIDTH) - (centerX + currentTabNameWidth / 2) - 32, Align.right)
-			}
-		}
+            if (currentTab > 0) {
+                Main.drawCompressed(main.font, main.batch,
+                                    "◀ " + Localization.get(tabs.getOrNull(currentTab - 1)?.name), startX + 32,
+                                    startY + BG_HEIGHT * 0.8f, (centerX - currentTabNameWidth / 2) - startX - 32,
+                                    Align.left)
+            }
+            if (currentTab < tabs.size - 1) {
+                Main.drawCompressed(main.font, main.batch,
+                                    Localization.get(tabs.getOrNull(currentTab + 1)?.name) + " ▶",
+                                    (centerX + currentTabNameWidth / 2),
+                                    startY + BG_HEIGHT * 0.8f,
+                                    (startX + BG_WIDTH) - (centerX + currentTabNameWidth / 2) - 32, Align.right)
+            }
+        }
 
-		// dots
-		main.font.draw(main.batch, dots, startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f - main.font.lineHeight,
-					   0f, Align.center, false)
+        // dots
+        main.font.draw(main.batch, dots, startX + BG_WIDTH * 0.5f, startY + BG_HEIGHT * 0.8f - main.font.lineHeight,
+                       0f, Align.center, false)
 
-		main.batch.end()
+        main.batch.end()
 
-		StencilMaskUtil.prepareMask()
-		main.shapes.projectionMatrix = main.camera.combined
-		main.shapes.begin(ShapeRenderer.ShapeType.Filled)
+        StencilMaskUtil.prepareMask()
+        main.shapes.projectionMatrix = main.camera.combined
+        main.shapes.begin(ShapeRenderer.ShapeType.Filled)
 
-		val tabStartX = startX
-		val tabStartY = startY + BG_HEIGHT * 0.15f
-		val tabWidth = BG_WIDTH
-		val tabHeight = BG_HEIGHT * 0.65f - main.font.lineHeight * 2
+        val tabStartX = startX
+        val tabStartY = startY + BG_HEIGHT * 0.15f
+        val tabWidth = BG_WIDTH
+        val tabHeight = BG_HEIGHT * 0.65f - main.font.lineHeight * 2
 
-		main.shapes.rect(tabStartX, tabStartY, tabWidth, tabHeight + 64) // +64 is for leeway
-		main.shapes.end()
+        main.shapes.rect(tabStartX, tabStartY, tabWidth, tabHeight + 64) // +64 is for leeway
+        main.shapes.end()
 
-		main.batch.begin()
-		StencilMaskUtil.useMask()
+        main.batch.begin()
+        StencilMaskUtil.useMask()
 
-		// render adjacent tabs
-		main.camera.unproject(vector.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
-		main.batch.setColor(1f, 1f, 1f, 1f)
-		for (i in Math.max(0, currentTab - 1)..Math.min(tabs.size - 1, currentTab + 1)) {
-			val relativePosition: Int = i - currentTab
-			val xOffset: Float = (currentTab - targetTab + relativePosition) * main.camera.viewportWidth
+        // render adjacent tabs
+        main.camera.unproject(vector.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f))
+        main.batch.setColor(1f, 1f, 1f, 1f)
+        for (i in Math.max(0, currentTab - 1)..Math.min(tabs.size - 1, currentTab + 1)) {
+            val relativePosition: Int = i - currentTab
+            val xOffset: Float = (currentTab - targetTab + relativePosition) * main.camera.viewportWidth
 
-			tabs.getOrNull(i)?.render(main, main.batch, tabStartX + xOffset, tabStartY, tabWidth, tabHeight, vector.x,
-									  vector.y)
-		}
+            tabs.getOrNull(i)?.render(main, main.batch, tabStartX + xOffset, tabStartY, tabWidth, tabHeight, vector.x,
+                                      vector.y)
+        }
 
-		main.batch.flush()
-		StencilMaskUtil.resetMask()
+        main.batch.flush()
+        StencilMaskUtil.resetMask()
 
-		main.batch.end()
-	}
+        main.batch.end()
+    }
 
-	override fun renderUpdate() {
-		super.renderUpdate()
-		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-			main.screen = ScreenRegistry.get("editor")
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-			if (currentTab > 0)
-				currentTab--
-		} else if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-			if (currentTab < tabs.size - 1)
-				currentTab++
-		}
-	}
+    override fun renderUpdate() {
+        super.renderUpdate()
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            main.screen = ScreenRegistry.get("editor")
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+            if (currentTab > 0)
+                currentTab--
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+            if (currentTab < tabs.size - 1)
+                currentTab++
+        }
+    }
 
-	override fun show() {
-		super.show()
-		val remix = remix
-		tabs.forEach {
-			it.initialize(remix)
-		}
+    override fun show() {
+        super.show()
+        val remix = remix
+        tabs.forEach {
+            it.initialize(remix)
+        }
 
-		updateDots()
-	}
+        updateDots()
+    }
 
-	private fun updateDots() {
-		val builder = StringBuilder()
+    private fun updateDots() {
+        val builder = StringBuilder()
 
-		for (i in 0 until tabs.size) {
-			builder.append(if (i == currentTab) "▪" else "◦")
-		}
+        for (i in 0 until tabs.size) {
+            builder.append(if (i == currentTab) "▪" else "◦")
+        }
 
-		dots = builder.toString()
-	}
+        dots = builder.toString()
+    }
 }

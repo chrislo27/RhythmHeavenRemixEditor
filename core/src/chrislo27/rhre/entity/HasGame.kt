@@ -4,6 +4,6 @@ import chrislo27.rhre.registry.Game
 
 interface HasGame {
 
-	val game: Game
+    val game: Game
 
 }

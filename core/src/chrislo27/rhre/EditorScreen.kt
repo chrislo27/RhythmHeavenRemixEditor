@@ -12,95 +12,95 @@ import ionium.stage.Stage
 
 class EditorScreen(m: Main) : Updateable<Main>(m) {
 
-	val editor: Editor by lazy {
-		Editor(main)
-	}
-	var stage: Stage? = null
-		private set
-	private var stageSetup: EditorStageSetup? = null
-	private var first = true
+    val editor: Editor by lazy {
+        Editor(main)
+    }
+    var stage: Stage? = null
+        private set
+    private var stageSetup: EditorStageSetup? = null
+    private var first = true
 
-	override fun render(delta: Float) {
-		attemptMakeEditor()
+    override fun render(delta: Float) {
+        attemptMakeEditor()
 
-		editor.render(main.batch)
-		stage?.render(main.batch)
+        editor.render(main.batch)
+        stage?.render(main.batch)
 
-	}
+    }
 
-	override fun renderUpdate() {
-		editor.inputUpdate()
-		editor.renderUpdate()
-	}
+    override fun renderUpdate() {
+        editor.inputUpdate()
+        editor.renderUpdate()
+    }
 
-	override fun tickUpdate() {
+    override fun tickUpdate() {
 
-	}
+    }
 
-	override fun getDebugStrings(array: Array<String>) {
-		editor.getDebugStrings(array)
-	}
+    override fun getDebugStrings(array: Array<String>) {
+        editor.getDebugStrings(array)
+    }
 
-	override fun resize(width: Int, height: Int) {
-		stage?.onResize(main.camera.viewportWidth.toInt(), main.camera.viewportHeight.toInt())
-	}
+    override fun resize(width: Int, height: Int) {
+        stage?.onResize(main.camera.viewportWidth.toInt(), main.camera.viewportHeight.toInt())
+    }
 
-	private fun attemptMakeEditor() {
-		if (stageSetup == null) {
-			stageSetup = EditorStageSetup(this)
-			stage = stageSetup!!.stage
-		}
-	}
+    private fun attemptMakeEditor() {
+        if (stageSetup == null) {
+            stageSetup = EditorStageSetup(this)
+            stage = stageSetup!!.stage
+        }
+    }
 
-	override fun show() {
-		attemptMakeEditor()
+    override fun show() {
+        attemptMakeEditor()
 
-		if (Gdx.input.inputProcessor is InputMultiplexer) {
-			val plex = Gdx.input.inputProcessor as InputMultiplexer
+        if (Gdx.input.inputProcessor is InputMultiplexer) {
+            val plex = Gdx.input.inputProcessor as InputMultiplexer
 
-			stage!!.addSelfToInputMultiplexer(plex)
-			plex.addProcessor(editor)
-		}
+            stage!!.addSelfToInputMultiplexer(plex)
+            plex.addProcessor(editor)
+        }
 
-		stage!!.onResize(main.camera.viewportWidth.toInt(), main.camera.viewportHeight.toInt())
+        stage!!.onResize(main.camera.viewportWidth.toInt(), main.camera.viewportHeight.toInt())
 
-		if (first) {
-			first = false
-			if (main.oldSize.third) {
-				Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
-			} else {
-				ionium.templates.Main.logger.info("Resizing window from ${main.oldSize}")
-				Gdx.graphics.setWindowedMode(main.oldSize.first, main.oldSize.second)
-			}
-		}
-	}
+        if (first) {
+            first = false
+            if (main.oldSize.third) {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
+            } else {
+                ionium.templates.Main.logger.info("Resizing window from ${main.oldSize}")
+                Gdx.graphics.setWindowedMode(main.oldSize.first, main.oldSize.second)
+            }
+        }
+    }
 
-	override fun hide() {
-		AssetRegistry.instance().stopAllMusic()
-		AssetRegistry.instance().stopAllSound()
+    override fun hide() {
+        AssetRegistry.instance().stopAllMusic()
+        AssetRegistry.instance().stopAllSound()
 
-		editor.remix.music?.music?.stop()
-		editor.remix.playingState = (PlayingState.STOPPED)
+        editor.remix.music?.music?.stop()
+        editor.remix.playingState = (PlayingState.STOPPED)
 
-		if (Gdx.input.inputProcessor is InputMultiplexer && stage != null) {
-			Gdx.app.postRunnable {
-				val plex = Gdx.input.inputProcessor as InputMultiplexer
+        if (Gdx.input.inputProcessor is InputMultiplexer && stage != null) {
+            Gdx.app.postRunnable {
+                val plex = Gdx.input.inputProcessor as InputMultiplexer
 
-				stage!!.removeSelfFromInputMultiplexer(plex)
-				plex.removeProcessor(editor)
-			}
-		}
-	}
+                stage!!.removeSelfFromInputMultiplexer(plex)
+                plex.removeProcessor(editor)
+            }
+        }
+    }
 
-	override fun pause() {
+    override fun pause() {
 
-	}
+    }
 
-	override fun resume() {
+    override fun resume() {
 
-	}
+    }
 
-	override fun dispose() {
-		editor.dispose()
-	}
+    override fun dispose() {
+        editor.dispose()
+    }
 }

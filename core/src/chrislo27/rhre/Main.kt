@@ -42,351 +42,351 @@ import java.util.*
 
 class Main(l: Logger) : ionium.templates.Main(l) {
 
-	lateinit var biggerFont: BitmapFont
-		private set
-	lateinit var biggerFontBordered: BitmapFont
-		private set
-	lateinit var font: BitmapFont
-		private set
-	lateinit var fontBordered: BitmapFont
-		private set
+    lateinit var biggerFont: BitmapFont
+        private set
+    lateinit var biggerFontBordered: BitmapFont
+        private set
+    lateinit var font: BitmapFont
+        private set
+    lateinit var fontBordered: BitmapFont
+        private set
 
-	private var lastPalette: AbstractPalette = LightPalette()
-	private var toSwitchPalette: AbstractPalette = lastPalette
-	private val currentPalette: AbstractPalette = LightPalette()
-	private var paletteLerp: Vector2 = Vector2()
+    private var lastPalette: AbstractPalette = LightPalette()
+    private var toSwitchPalette: AbstractPalette = lastPalette
+    private val currentPalette: AbstractPalette = LightPalette()
+    private var paletteLerp: Vector2 = Vector2()
 
-	fun getInputX(): Int {
-		return camera.unproject(inputProj.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)).x.toInt()
-	}
+    fun getInputX(): Int {
+        return camera.unproject(inputProj.set(Gdx.input.x.toFloat(), Gdx.input.y.toFloat(), 0f)).x.toInt()
+    }
 
-	fun getInputY(): Int {
-		return (camera.unproject(
-				inputProj.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), 0f)).y).toInt()
-	}
+    fun getInputY(): Int {
+        return (camera.unproject(
+                inputProj.set(Gdx.input.x.toFloat(), (Gdx.graphics.height - Gdx.input.y).toFloat(), 0f)).y).toInt()
+    }
 
-	fun getPalette(): AbstractPalette {
-		return currentPalette
-	}
+    fun getPalette(): AbstractPalette {
+        return currentPalette
+    }
 
-	fun switchPalette(newPalette: AbstractPalette, interpolation: Float) {
-		paletteLerp.x = interpolation
-		paletteLerp.y = 0f
+    fun switchPalette(newPalette: AbstractPalette, interpolation: Float) {
+        paletteLerp.x = interpolation
+        paletteLerp.y = 0f
 
-		if (interpolation <= 0)
-			paletteLerp.y = 1f
+        if (interpolation <= 0)
+            paletteLerp.y = 1f
 
-		lastPalette = toSwitchPalette
-		toSwitchPalette = newPalette
+        lastPalette = toSwitchPalette
+        toSwitchPalette = newPalette
 
-		updatePalette()
-	}
+        updatePalette()
+    }
 
-	private fun updatePalette() {
-		currentPalette.lerp(lastPalette, toSwitchPalette, paletteLerp.y)
-	}
+    private fun updatePalette() {
+        currentPalette.lerp(lastPalette, toSwitchPalette, paletteLerp.y)
+    }
 
-	lateinit var preferences: Preferences
-		private set
-	lateinit var horizontalResize: Cursor
-		private set
-	lateinit var oldSize: Triple<Int, Int, Boolean>
-		private set
+    lateinit var preferences: Preferences
+        private set
+    lateinit var horizontalResize: Cursor
+        private set
+    lateinit var oldSize: Triple<Int, Int, Boolean>
+        private set
 
-	private val inputProj: Vector3 = Vector3()
+    private val inputProj: Vector3 = Vector3()
 
-	private lateinit var ttfGenerator: FreeTypeFontGenerator
-	private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS +
-			"éàèùâêîôûçëïüáéíóú¿¡ñ" +
-			SpecialCharactersList.getJapaneseKana() +
-			"レ力、己寸心" + // These characters are for Power Calligraphy
-			"◉☂"
+    private lateinit var ttfGenerator: FreeTypeFontGenerator
+    private var fontCharsToLoad: String = FreeTypeFontGenerator.DEFAULT_CHARS +
+            "éàèùâêîôûçëïüáéíóú¿¡ñ" +
+            SpecialCharactersList.getJapaneseKana() +
+            "レ力、己寸心" + // These characters are for Power Calligraphy
+            "◉☂"
 
-	var versionStringLength: Float = 0f
-		private set
-	var lastVersion: String? = null
-		private set
+    var versionStringLength: Float = 0f
+        private set
+    var lastVersion: String? = null
+        private set
 
-	override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
-		return if ((VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit) || DebugSetting.debug)
-			ScreenRegistry.get("version")
-		else
-			ScreenRegistry.get("editor")
-	}
+    override fun getScreenToSwitchToAfterLoadingAssets(): Screen {
+        return if ((VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit) || DebugSetting.debug)
+            ScreenRegistry.get("version")
+        else
+            ScreenRegistry.get("editor")
+    }
 
-	override fun getAssetLoadingScreenToUse(): Screen {
-		return ScreenRegistry.get("assetloading")
-	}
+    override fun getAssetLoadingScreenToUse(): Screen {
+        return ScreenRegistry.get("assetloading")
+    }
 
-	companion object {
+    companion object {
 
-		val languagesList: List<NamedLocale> = mutableListOf(
-				NamedLocale("English", Locale("")),
-				NamedLocale("Français (French)", Locale("fr")),
-				NamedLocale("Español (Spanish)", Locale("es"))
-															)
-		val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
+        val languagesList: List<NamedLocale> = mutableListOf(
+                NamedLocale("English", Locale("")),
+                NamedLocale("Français (French)", Locale("fr")),
+                NamedLocale("Español (Spanish)", Locale("es"))
+                                                            )
+        val languagesMap: Map<String, NamedLocale> = languagesList.associate { it.locale.toString() to it }
 
-		init {
-			Localization.DEFAULT_LOCALE = languagesMap[""]
-		}
+        init {
+            Localization.DEFAULT_LOCALE = languagesMap[""]
+        }
 
-		@JvmStatic
-		fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float,
-						   align: Int) {
-			val textWidth = Utils.getWidth(font, text)
-			val oldScaleX = font.data.scaleX
+        @JvmStatic
+        fun drawCompressed(font: BitmapFont, batch: SpriteBatch, text: String, x: Float, y: Float, width: Float,
+                           align: Int) {
+            val textWidth = Utils.getWidth(font, text)
+            val oldScaleX = font.data.scaleX
 
-			if (textWidth > width) {
-				font.data.scaleX = (width / textWidth) * oldScaleX
-			}
+            if (textWidth > width) {
+                font.data.scaleX = (width / textWidth) * oldScaleX
+            }
 
-			font.draw(batch, text, x, y, width, align, false)
+            font.draw(batch, text, x, y, width, align, false)
 
-			font.data.scaleX = oldScaleX
-		}
-	}
+            font.data.scaleX = oldScaleX
+        }
+    }
 
-	override fun create() {
-		ionium.templates.Main.version = RHRE2Version.VERSION.toString()
+    override fun create() {
+        ionium.templates.Main.version = RHRE2Version.VERSION.toString()
 
-		SysOutPiper.pipe()
+        SysOutPiper.pipe()
 
-		GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
-		VersionChecker
-		AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
-				InternalFileHandleResolver()))
+        GlobalVariables.versionUrl = null // Deprecated - use new versioning instead
+        VersionChecker
+        AssetRegistry.instance().assetManager.setLoader(LazySound::class.java, LazySoundLoader(
+                InternalFileHandleResolver()))
 
-		preferences = Gdx.app.getPreferences("RHRE2")
-		// old preferences
-		if (preferences.getBoolean(PreferenceKeys.OLD_AUTOSAVE, false)) {
-			preferences.putInteger(PreferenceKeys.AUTOSAVE_INTERVAL, 0)
-		}
-		preferences.putString(PreferenceKeys.LAST_VERSION, RHRE2Version.VERSION.toString()).flush()
-		lastVersion = RHRE2Version.VERSION.toString()
+        preferences = Gdx.app.getPreferences("RHRE2")
+        // old preferences
+        if (preferences.getBoolean(PreferenceKeys.OLD_AUTOSAVE, false)) {
+            preferences.putInteger(PreferenceKeys.AUTOSAVE_INTERVAL, 0)
+        }
+        preferences.putString(PreferenceKeys.LAST_VERSION, RHRE2Version.VERSION.toString()).flush()
+        lastVersion = RHRE2Version.VERSION.toString()
 
-		oldSize = Triple(preferences.getInteger("width", 1280).takeUnless { it <= 0 } ?: 1280,
-						 preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,
-						 preferences.getBoolean("fullscreen", false))
+        oldSize = Triple(preferences.getInteger("width", 1280).takeUnless { it <= 0 } ?: 1280,
+                         preferences.getInteger("height", 720).takeUnless { it <= 0 } ?: 720,
+                         preferences.getBoolean("fullscreen", false))
 
-		languagesList.forEachIndexed { i, it ->
-			if (i > 0) {
-				Localization.instance().addBundle(it)
-			}
-		}
+        languagesList.forEachIndexed { i, it ->
+            if (i > 0) {
+                Localization.instance().addBundle(it)
+            }
+        }
 
-		Localization.instance().loadFromSettings(preferences)
+        Localization.instance().loadFromSettings(preferences)
 
-		GameRegistry.load()
-		GameRegistry.load()
-		super.create()
+        GameRegistry.load()
+        GameRegistry.load()
+        super.create()
 
-		Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
+        Gdx.graphics.setTitle(ionium.templates.Main.getTitle())
 
-		AssetRegistry.instance().addAssetLoader(DefAssetLoader())
+        AssetRegistry.instance().addAssetLoader(DefAssetLoader())
 
-		DebugSetting.showFPS = false
+        DebugSetting.showFPS = false
 
-		horizontalResize = Gdx.graphics
-				.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
+        horizontalResize = Gdx.graphics
+                .newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")), 16, 8)
 
-		val scripts = listOf("stats", "debug", "dump_deprecations")
-		val scriptsDir = Gdx.files.local("scripts/examples/")
-		scriptsDir.mkdirs()
-		scripts.forEach {
-			val master = Gdx.files.internal("scripts/$it.lua")
-			val child = scriptsDir.child("$it.lua")
-			if (!child.exists() || child.readString("UTF-8") != master.readString("UTF-8"))
-				master.copyTo(child)
-		}
+        val scripts = listOf("stats", "debug", "dump_deprecations")
+        val scriptsDir = Gdx.files.local("scripts/examples/")
+        scriptsDir.mkdirs()
+        scripts.forEach {
+            val master = Gdx.files.internal("scripts/$it.lua")
+            val child = scriptsDir.child("$it.lua")
+            if (!child.exists() || child.readString("UTF-8") != master.readString("UTF-8"))
+                master.copyTo(child)
+        }
 
-		val tmpMusic = Gdx.files.local("tmpMusic/").file()
-		if (tmpMusic.exists() && tmpMusic.isDirectory) {
-			tmpMusic.deleteRecursively()
-		}
+        val tmpMusic = Gdx.files.local("tmpMusic/").file()
+        if (tmpMusic.exists() && tmpMusic.isDirectory) {
+            tmpMusic.deleteRecursively()
+        }
 
-		val debugFolder = Gdx.files.local("debug/")
-		debugFolder.mkdirs()
-	}
+        val debugFolder = Gdx.files.local("debug/")
+        debugFolder.mkdirs()
+    }
 
-	override fun setScreen(scr: Screen?) {
-		super.setScreen(scr)
-	}
+    override fun setScreen(scr: Screen?) {
+        super.setScreen(scr)
+    }
 
-	override fun prepareStates() {
-		super.prepareStates()
+    override fun prepareStates() {
+        super.prepareStates()
 
-		AssetRegistry.instance().addAssetLoader(GameRegistry)
+        AssetRegistry.instance().addAssetLoader(GameRegistry)
 
-		val reg = ScreenRegistry.instance()
+        val reg = ScreenRegistry.instance()
 
-		reg.add("assetloading", LoadingScreen(this))
-		reg.add("editor", EditorScreen(this))
-		reg.add("tapalong", TapalongScreen(this))
-		reg.add("info", InfoScreen(this))
-		reg.add("music", MusicScreen(this))
-		reg.add("load", LoadScreen(this))
-		reg.add("save", SaveScreen(this))
-		reg.add("new", NewScreen(this))
-		reg.add("version", VersionScreen(this))
-		reg.add("script", ScriptLoadingScreen(this))
-		reg.add("inspections", InspectionsScreen(this))
+        reg.add("assetloading", LoadingScreen(this))
+        reg.add("editor", EditorScreen(this))
+        reg.add("tapalong", TapalongScreen(this))
+        reg.add("info", InfoScreen(this))
+        reg.add("music", MusicScreen(this))
+        reg.add("load", LoadScreen(this))
+        reg.add("save", SaveScreen(this))
+        reg.add("new", NewScreen(this))
+        reg.add("version", VersionScreen(this))
+        reg.add("script", ScriptLoadingScreen(this))
+        reg.add("inspections", InspectionsScreen(this))
 
-		reg.all.forEach { it.resize(1280, 720) }
-	}
+        reg.all.forEach { it.resize(1280, 720) }
+    }
 
-	override fun preRender() {
-		if (paletteLerp.x > 0 && paletteLerp.y < 1) {
-			paletteLerp.y += Gdx.graphics.deltaTime / paletteLerp.x
-			if (paletteLerp.y > 1) {
-				paletteLerp.y = 1f
-			}
-			updatePalette()
-		} else {
-			if (paletteLerp.y != 1f) {
-				paletteLerp.y = 1f
-				updatePalette()
-			}
-		}
+    override fun preRender() {
+        if (paletteLerp.x > 0 && paletteLerp.y < 1) {
+            paletteLerp.y += Gdx.graphics.deltaTime / paletteLerp.x
+            if (paletteLerp.y > 1) {
+                paletteLerp.y = 1f
+            }
+            updatePalette()
+        } else {
+            if (paletteLerp.y != 1f) {
+                paletteLerp.y = 1f
+                updatePalette()
+            }
+        }
 
-		Colors.put("RAINBOW", Main.getRainbow(System.currentTimeMillis(), 2f, 0.8f))
+        Colors.put("RAINBOW", Main.getRainbow(System.currentTimeMillis(), 2f, 0.8f))
 
-		super.preRender()
-	}
+        super.preRender()
+    }
 
-	override fun render() {
-		super.render()
-	}
+    override fun render() {
+        super.render()
+    }
 
-	override fun postRender() {
-		super.postRender()
+    override fun postRender() {
+        super.postRender()
 
-		if (screen !is HideVersionText) {
-			batch.projectionMatrix = camera.combined
-			batch.begin()
-			fontBordered.setColor(1f, 1f, 1f, 1f)
-			fontBordered.data.setScale(0.5f)
-			val str = (if (VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit)
-				Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
-			else
-				ionium.templates.Main.version) +
-					if (LazySound.forceLoadNow)
-						" (force load)"
-					else
-						""
-			versionStringLength = Utils.getWidth(fontBordered, str)
-			fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
-							  Align.right, false)
-			fontBordered.data.setScale(1f)
+        if (screen !is HideVersionText) {
+            batch.projectionMatrix = camera.combined
+            batch.begin()
+            fontBordered.setColor(1f, 1f, 1f, 1f)
+            fontBordered.data.setScale(0.5f)
+            val str = (if (VersionChecker.versionState == VersionState.AVAILABLE && VersionChecker.shouldShowOnInit)
+                Localization.get("versionAvailable", ionium.templates.Main.githubVersion, ionium.templates.Main.version)
+            else
+                ionium.templates.Main.version) +
+                    if (LazySound.forceLoadNow)
+                        " (force load)"
+                    else
+                        ""
+            versionStringLength = Utils.getWidth(fontBordered, str)
+            fontBordered.draw(batch, str, (camera.viewportWidth - 4), fontBordered.capHeight + 2, 0f,
+                              Align.right, false)
+            fontBordered.data.setScale(1f)
 
-			batch.end()
-		}
-	}
+            batch.end()
+        }
+    }
 
-	override fun getDebugStrings(): Array<String> {
-		return super.getDebugStrings()
-	}
+    override fun getDebugStrings(): Array<String> {
+        return super.getDebugStrings()
+    }
 
-	override fun tickUpdate() {
-		super.tickUpdate()
-	}
+    override fun tickUpdate() {
+        super.tickUpdate()
+    }
 
-	override fun inputUpdate() {
-		super.inputUpdate()
+    override fun inputUpdate() {
+        super.inputUpdate()
 
-		if (DebugSetting.debug && Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-			if (getPalette() is DarkPalette) {
-				switchPalette(LightPalette(), 0.75f)
-			} else {
-				switchPalette(DarkPalette(), 0.75f)
-			}
-		}
-	}
+        if (DebugSetting.debug && Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+            if (getPalette() is DarkPalette) {
+                switchPalette(LightPalette(), 0.75f)
+            } else {
+                switchPalette(DarkPalette(), 0.75f)
+            }
+        }
+    }
 
-	override fun loadFont() {
-		super.loadFont()
+    override fun loadFont() {
+        super.loadFont()
 
-		ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
+        ttfGenerator = FreeTypeFontGenerator(Gdx.files.internal("fonts/rodin.otf"))
 
-		fun getParam(): FreeTypeFontGenerator.FreeTypeFontParameter {
-			val param = FreeTypeFontGenerator.FreeTypeFontParameter()
-			param.magFilter = Texture.TextureFilter.Nearest
-			param.minFilter = Texture.TextureFilter.Linear
-			param.genMipMaps = false
-			param.incremental = true
-			param.size = 24
-			param.characters = fontCharsToLoad
-			return param
-		}
+        fun getParam(): FreeTypeFontGenerator.FreeTypeFontParameter {
+            val param = FreeTypeFontGenerator.FreeTypeFontParameter()
+            param.magFilter = Texture.TextureFilter.Nearest
+            param.minFilter = Texture.TextureFilter.Linear
+            param.genMipMaps = false
+            param.incremental = true
+            param.size = 24
+            param.characters = fontCharsToLoad
+            return param
+        }
 
-		val downScale: Float = 0.6f
+        val downScale: Float = 0.6f
 
-		run {
-			val ttfParam = getParam()
-			font = ttfGenerator.generateFont(ttfParam)
-			font.data.markupEnabled = true
+        run {
+            val ttfParam = getParam()
+            font = ttfGenerator.generateFont(ttfParam)
+            font.data.markupEnabled = true
 //		font.setUseIntegerPositions(false)
-			font.setFixedWidthGlyphs("0123456789")
-			font.data.setLineHeight(font.data.lineHeight * downScale)
-		}
+            font.setFixedWidthGlyphs("0123456789")
+            font.data.setLineHeight(font.data.lineHeight * downScale)
+        }
 
-		run {
-			val ttfParam = getParam()
-			ttfParam.size *= 4
-			biggerFont = ttfGenerator.generateFont(ttfParam)
-			biggerFont.data.markupEnabled = true
+        run {
+            val ttfParam = getParam()
+            ttfParam.size *= 4
+            biggerFont = ttfGenerator.generateFont(ttfParam)
+            biggerFont.data.markupEnabled = true
 //		biggerFont.setUseIntegerPositions(false)
-			biggerFont.setFixedWidthGlyphs("0123456789")
-			biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
-		}
+            biggerFont.setFixedWidthGlyphs("0123456789")
+            biggerFont.data.setLineHeight(biggerFont.data.lineHeight * downScale)
+        }
 
-		run {
-			val ttfParam = getParam()
-			ttfParam.borderWidth = 1.5f
-			fontBordered = ttfGenerator.generateFont(ttfParam)
-			fontBordered.data.markupEnabled = true
+        run {
+            val ttfParam = getParam()
+            ttfParam.borderWidth = 1.5f
+            fontBordered = ttfGenerator.generateFont(ttfParam)
+            fontBordered.data.markupEnabled = true
 //		fontBordered.setUseIntegerPositions(false)
-			fontBordered.setFixedWidthGlyphs("0123456789")
-			fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
-		}
+            fontBordered.setFixedWidthGlyphs("0123456789")
+            fontBordered.data.setLineHeight(fontBordered.data.lineHeight * downScale)
+        }
 
-		run {
-			val ttfParam = getParam()
-			ttfParam.borderWidth = 1.5f * 4f
-			ttfParam.size *= 4
-			biggerFontBordered = ttfGenerator.generateFont(ttfParam)
-			biggerFontBordered.data.markupEnabled = true
+        run {
+            val ttfParam = getParam()
+            ttfParam.borderWidth = 1.5f * 4f
+            ttfParam.size *= 4
+            biggerFontBordered = ttfGenerator.generateFont(ttfParam)
+            biggerFontBordered.data.markupEnabled = true
 //		biggerFontBordered.setUseIntegerPositions(false)
-			biggerFontBordered.setFixedWidthGlyphs("0123456789")
-			biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
-		}
+            biggerFontBordered.setFixedWidthGlyphs("0123456789")
+            biggerFontBordered.data.setLineHeight(biggerFontBordered.data.lineHeight * downScale)
+        }
 
-	}
+    }
 
-	override fun resize(width: Int, height: Int) {
-		super.resize(1280, 720)
+    override fun resize(width: Int, height: Int) {
+        super.resize(1280, 720)
 
-		persistWindowSettings()
-	}
+        persistWindowSettings()
+    }
 
-	fun persistWindowSettings() {
-		preferences.putInteger("width", Gdx.graphics.width)
-		preferences.putInteger("height", Gdx.graphics.height)
-		preferences.putBoolean("fullscreen", Gdx.graphics.isFullscreen)
-		preferences.flush()
-	}
+    fun persistWindowSettings() {
+        preferences.putInteger("width", Gdx.graphics.width)
+        preferences.putInteger("height", Gdx.graphics.height)
+        preferences.putBoolean("fullscreen", Gdx.graphics.isFullscreen)
+        preferences.flush()
+    }
 
-	override fun dispose() {
-		super.dispose()
+    override fun dispose() {
+        super.dispose()
 
-		biggerFont.dispose()
-		biggerFontBordered.dispose()
-		font.dispose()
-		fontBordered.dispose()
-		ttfGenerator.dispose()
+        biggerFont.dispose()
+        biggerFontBordered.dispose()
+        font.dispose()
+        fontBordered.dispose()
+        ttfGenerator.dispose()
 
-		preferences.flush()
-		GameRegistry.dispose()
-		GameRegistry.dispose()
-	}
+        preferences.flush()
+        GameRegistry.dispose()
+        GameRegistry.dispose()
+    }
 }
