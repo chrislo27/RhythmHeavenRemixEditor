@@ -387,6 +387,5 @@ class Main(l: Logger) : ionium.templates.Main(l) {
 
         preferences.flush()
         GameRegistry.dispose()
-        GameRegistry.dispose()
     }
 }
