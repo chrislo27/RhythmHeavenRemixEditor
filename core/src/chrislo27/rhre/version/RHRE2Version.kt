@@ -11,7 +11,7 @@ class RHRE2Version(val major: Int, val minor: Int, val patch: Int, val suffix: S
 
     companion object {
         const val MAX_PART_VALUE: Int = 0xFF
-        val VERSION: RHRE2Version = RHRE2Version(2, 17, 0, "RC1")
+        val VERSION: RHRE2Version = RHRE2Version(2, 17, 0)
         val REGEX: Regex = "v(\\d+).(\\d+).(\\d+)(-.+)?".toRegex()
 
 //		init {
