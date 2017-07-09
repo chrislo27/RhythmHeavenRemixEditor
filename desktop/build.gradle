@@ -2,9 +2,9 @@ apply plugin: "java"
 apply plugin: 'kotlin'
 
 sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.java.srcDirs = [ "src/main/kotlin/" ]
 
-project.ext.mainClassName = "chrislo27.rhre.desktop.DesktopLauncher"
+project.ext.mainClassName = "io.github.chrislo27.rhre3.DesktopLauncher"
 project.ext.assetsDir = new File("../core/assets");
 
 task run(dependsOn: classes, type: JavaExec) {
