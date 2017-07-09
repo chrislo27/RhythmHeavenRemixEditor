@@ -1,0 +1,188 @@
+{
+  "gameID": "karateManGba",
+  "gameName": "Karate Man (GBA)",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "karateManGba/ohYeah",
+      "duration": 0.5,
+      "name": "oh yeah!"
+    },
+    {
+      "id": "karateManGba/potOut",
+      "duration": 0.5,
+      "name": "out"
+    },
+    {
+      "id": "karateManGba/potHit",
+      "duration": 0.5,
+      "name": "hit"
+    },
+    {
+      "id": "karateManGba/potHitHighFlow",
+      "duration": 0.5,
+      "name": "pot - hit"
+    },
+    {
+      "id": "karateManGba/potBreak",
+      "duration": 0.5,
+      "name": "pot - break"
+    },
+    {
+      "id": "karateManGba/soccerHit",
+      "duration": 0.5,
+      "name": "soccer ball - hit"
+    },
+    {
+      "id": "karateManGba/soccerBreak",
+      "duration": 0.5,
+      "name": "soccer ball - break"
+    },
+    {
+      "id": "karateManGba/lightbulbHit",
+      "duration": 0.5,
+      "name": "lightbulb - hit"
+    },
+    {
+      "id": "karateManGba/lightbulbBreak",
+      "duration": 0.5,
+      "name": "lightbulb - break"
+    },
+    {
+      "id": "karateManGba/rockHit",
+      "duration": 0.5,
+      "name": "rock - hit"
+    },
+    {
+      "id": "karateManGba/bombHit",
+      "duration": 0.5,
+      "name": "bomb - hit"
+    },
+    {
+      "id": "karateManGba/bombBreak",
+      "duration": 0.5,
+      "name": "bomb - break"
+    },
+    {
+      "id": "karateManGba/gongSerious",
+      "duration": 0.5,
+      "name": "gong - serious mode"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "karateManGba_pot",
+      "name": "hit - low nori",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/potHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_potHighFlow",
+      "name": "pot",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/potHitHighFlow",
+          "beat": 1
+        },
+        {
+          "id": "karateManGba/potBreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_rock",
+      "name": "rock",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/rockHit",
+          "beat": 1
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_soccerBall",
+      "name": "soccer ball",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/soccerHit",
+          "beat": 1
+        },
+        {
+          "id": "karateManGba/soccerBreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_lightbulb",
+      "name": "lightbulb",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/lightbulbHit",
+          "beat": 1
+        },
+        {
+          "id": "karateManGba/lightbulbBreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_bomb",
+      "name": "bomb",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/bombHit",
+          "beat": 1
+        },
+        {
+          "id": "karateManGba/bombBreak",
+          "beat": 2
+        }
+      ]
+    },
+    {
+      "id": "karateManGba_remix8",
+      "name": "gong - serious mode",
+      "cues": [
+        {
+          "id": "karateManGba/potOut",
+          "beat": 0
+        },
+        {
+          "id": "karateManGba/gongSerious",
+          "beat": 1
+        }
+      ]
+    }
+  ]
+}

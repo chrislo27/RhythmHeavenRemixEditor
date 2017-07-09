@@ -1,0 +1,159 @@
+{
+  "gameID": "bunnyHop",
+  "gameName": "Bunny Hop (Megamix)",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "bunnyHop/start",
+      "duration": 1,
+      "name": "start"
+    },
+    {
+      "id": "bunnyHop/hop1",
+      "duration": 1,
+      "name": "hop1"
+    },
+    {
+      "id": "bunnyHop/hop2",
+      "duration": 1,
+      "name": "hop2"
+    },
+    {
+      "id": "bunnyHop/longJump",
+      "duration": 5,
+      "name": "long jump"
+    },
+    {
+      "id": "bunnyHop/longJumpShort",
+      "duration": 2.5,
+      "name": "long jump (short)"
+    },
+    {
+      "id": "bunnyHop/longJumpLong",
+      "deprecatedIDs": [
+        "bunnyHop/moonJump"
+      ],
+      "duration": 9,
+      "name": "long jump (long)"
+    },
+    {
+      "id": "bunnyHop/moon",
+      "duration": 1,
+      "name": "moon"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "bunnyHop_start",
+      "name": "start",
+      "cues": [
+        {
+          "id": "bunnyHop/start",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/start",
+          "beat": 1.0
+        },
+        {
+          "id": "bunnyHop/start",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHop/start",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_hopping",
+      "name": "hopping",
+      "cues": [
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 1.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 2.0
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 3.0
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump4",
+      "name": "long jump 4 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJump",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 5
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 6
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump8",
+      "name": "long jump 8 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJumpLong",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 9
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 10
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_longJump2",
+      "name": "long jump 2 count",
+      "cues": [
+        {
+          "id": "bunnyHop/longJumpShort",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/hop1",
+          "beat": 2.5
+        },
+        {
+          "id": "bunnyHop/hop2",
+          "beat": 3.5
+        }
+      ]
+    },
+    {
+      "id": "bunnyHop_moon",
+      "name": "moon",
+      "cues": [
+        {
+          "id": "bunnyHop/longJumpLong",
+          "beat": 0.0
+        },
+        {
+          "id": "bunnyHop/moon",
+          "beat": 10
+        }
+      ]
+    }
+  ]
+}

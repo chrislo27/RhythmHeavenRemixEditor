@@ -1,0 +1,131 @@
+{
+  "gameID": "secondContact",
+  "gameName": "Second Contact",
+  "series": "megamix",
+  "cues": [
+    {
+      "id": "secondContact/passover",
+      "duration": 0.5,
+      "name": "turn passover"
+    },
+    {
+      "id": "secondContact/success1",
+      "deprecatedIDs": [
+        "secondContact/success"
+      ],
+      "duration": 0.5,
+      "name": "turn success 1"
+    },
+    {
+      "id": "secondContact/success2",
+      "duration": 2,
+      "name": "turn success 2"
+    },
+    {
+      "id": "secondContact/alien1",
+      "duration": 0.5,
+      "name": "alien - 1"
+    },
+    {
+      "id": "secondContact/alien2",
+      "duration": 0.5,
+      "name": "alien - 2"
+    },
+    {
+      "id": "secondContact/successBob1",
+      "duration": 0.5,
+      "name": "turn success (Bob) 1"
+    },
+    {
+      "id": "secondContact/successBob2",
+      "duration": 2,
+      "name": "turn success (Bob) 2"
+    },
+    {
+      "id": "secondContact/farmer1",
+      "duration": 0.5,
+      "name": "farmer - 1"
+    },
+    {
+      "id": "secondContact/farmer2",
+      "duration": 0.5,
+      "name": "farmer - 2"
+    },
+    {
+      "id": "secondContact/farmer3",
+      "duration": 0.5,
+      "name": "farmer - 3"
+    },
+    {
+      "id": "secondContact/farmer4",
+      "duration": 0.5,
+      "name": "farmer - 4"
+    },
+    {
+      "id": "secondContact/farmer5",
+      "duration": 0.5,
+      "name": "farmer - 5"
+    },
+    {
+      "id": "secondContact/farmer6",
+      "duration": 0.5,
+      "name": "farmer - 6"
+    },
+    {
+      "id": "secondContact/farmer7",
+      "duration": 0.5,
+      "name": "farmer - 7"
+    },
+    {
+      "id": "secondContact/farmer8",
+      "duration": 0.5,
+      "name": "farmer - 8"
+    },
+    {
+      "id": "secondContact/farmer9",
+      "duration": 0.5,
+      "name": "farmer - 9"
+    },
+    {
+      "id": "secondContact/farmer10",
+      "duration": 0.5,
+      "name": "farmer - 10"
+    }
+  ],
+  "patterns": [
+    {
+      "id": "secondContact_success",
+      "name": "success",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "secondContact/success1",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "secondContact/success2",
+          "beat": 0.5,
+          "track": 0
+        }
+      ]
+    },
+    {
+      "id": "secondContact_successBob",
+      "name": "success (Bob)",
+      "isStretchable": false,
+      "cues": [
+        {
+          "id": "secondContact/successBob1",
+          "beat": 0.0,
+          "track": 0
+        },
+        {
+          "id": "secondContact/successBob2",
+          "beat": 0.5,
+          "track": 0
+        }
+      ]
+    }
+  ]
+}
