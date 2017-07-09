@@ -1,0 +1,57 @@
+{
+  "gameID": "polyrhythm",
+  "gameName": "Polyrhythm",
+  "series": "tengoku",
+  "cues": [
+    {
+      "id": "polyrhythm/aSpring",
+      "deprecatedIDs": [
+        "polyrhythm/side_a"
+      ],
+      "duration": 0.5,
+      "name": "spring - A"
+    },
+    {
+      "id": "polyrhythm/dPadSpring",
+      "deprecatedIDs": [
+        "polyrhythm/side_d"
+      ],
+      "duration": 0.5,
+      "name": "spring - +"
+    },
+    {
+      "id": "polyrhythm/aWidget",
+      "duration": 0.5,
+      "name": "widget - A"
+    },
+    {
+      "id": "polyrhythm/dPadWidget",
+      "duration": 0.5,
+      "name": "widget - +"
+    },
+    {
+      "id": "polyrhythm/retract",
+      "deprecatedIDs": [
+        "polyrhythm/enter"
+      ],
+      "duration": 0.5,
+      "name": "springs - retracting"
+    },
+    {
+      "id": "polyrhythm/land",
+      "duration": 0.5,
+      "name": "cylinder - landing"
+    },
+    {
+      "id": "polyrhythm/disappear",
+      "duration": 0.5,
+      "name": "springs - disappearing"
+    },
+    {
+      "id": "polyrhythm/clear",
+      "duration": 4,
+      "name": "clear"
+    }
+  ],
+  "patterns": []
+}
