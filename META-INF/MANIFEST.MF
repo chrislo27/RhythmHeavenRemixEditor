@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: chrislo27.rhre.desktop.DesktopLauncher
-
