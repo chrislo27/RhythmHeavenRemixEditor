@@ -1,4 +1,4 @@
-<img align="right" src="https://raw.githubusercontent.com/chrislo27/RhythmHeavenRemixEditor2/rhre3/core/assets/images/icon/128.png" height="128" width="128">
+<img align="right" src="https://raw.githubusercontent.com/chrislo27/RhythmHeavenRemixEditor2/rhre3/core/assets/images/icon/256.png" height="256" width="256">
 
 # Rhythm Heaven Remix Editor 3
 RHRE 3 - Rhythm Heaven Remix Editor 3 - An audio remix editor for the Rhythm Heaven series
@@ -16,4 +16,4 @@ TODO
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
 
-RHRE3 logo designed by @GlitchyPSIX. Audacity and the Audacity logo is a trademark of Dominic Mazzoni.
+RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/). Audacity and the Audacity logo is a trademark of Dominic Mazzoni.
