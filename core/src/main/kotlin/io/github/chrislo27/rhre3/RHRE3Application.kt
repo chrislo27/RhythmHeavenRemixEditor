@@ -11,6 +11,7 @@ import io.github.chrislo27.toolboks.font.FreeTypeFont
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
+import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import java.util.*
 
 
@@ -68,8 +69,14 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.postRender()
 
         batch.begin()
+
+        batch.setColor(0.6f, 1f, 0.2f, 1f)
+        batch.fillRect(60f, 60f, 1000f, 600f)
+        batch.setColor(1f, 1f, 1f, 1f)
+
         defaultFont.draw(batch, "RHRE3 first pass", 50f, 50f)
-        defaultFontLarge.draw(batch, "RHRE3 first pass LARGE font", 50f, 500f)
+        defaultBorderedFontLarge.draw(batch, "RHRE3 first pass LARGE font", 50f, 500f)
+
         batch.end()
     }
 
