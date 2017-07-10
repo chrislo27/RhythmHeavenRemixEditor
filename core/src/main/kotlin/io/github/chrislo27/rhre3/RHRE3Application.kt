@@ -8,11 +8,23 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
 import io.github.chrislo27.toolboks.font.FreeTypeFont
+import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
+import java.util.*
 
 
 class RHRE3Application(logger: Logger, logToFile: Boolean)
     : ToolboksGame(logger, logToFile, RHRE3.VERSION, Pair(1280, 720), false) {
+
+    companion object {
+        val languages: List<NamedLocale> =
+                listOf(
+                        NamedLocale("English", Locale("")),
+                        NamedLocale("Français (French)", Locale("fr")),
+                        NamedLocale("Español (Spanish)", Locale("es"))
+                      )
+    }
 
     private val defaultFontLargeKey = "default_font_large"
     private val defaultBorderedFontLargeKey = "default_bordered_font_large"
@@ -26,14 +38,23 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
         this.font!!.setFixedWidthGlyphs("1234567890/\\")
         this.font!!.data.setLineHeight(this.font!!.lineHeight * 0.6f)
+        this.font!!.setUseIntegerPositions(true)
+        this.font!!.data.markupEnabled = true
     }
 
     override fun getTitle(): String =
-            "Rhythm Heaven Remix Editor $version"
+            "Rhythm Heaven Remix Editor $versionString"
 
     override fun create() {
         super.create()
-        Toolboks.LOGGER.info("RHRE3 $version is starting...")
+        Toolboks.LOGGER.info("RHRE3 $versionString is starting...")
+
+        // localization stuff
+        run {
+            Localization.bundles.apply {
+                languages.forEach { add(Localization.createBundle(it)) }
+            }
+        }
 
         // font stuff
         run {
