@@ -42,7 +42,7 @@ object DesktopLauncher {
                     this.allowSoftwareMode = false
                     this.audioDeviceSimultaneousSources = 256
 
-                    val sizes: List<Int> = listOf(128, 64, 32, 24, 16)
+                    val sizes: List<Int> = listOf(512, 256, 128, 64, 32, 24, 16)
 
                     sizes.forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
