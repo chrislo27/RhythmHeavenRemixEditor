@@ -16,4 +16,4 @@ TODO
 
 Rhythm Heaven is not my property - it is the property of Nintendo. This is just a community project and this is free for others to use however they like (abiding by the code's GPL-3.0 license).
 
-Audacity and the Audacity logo is a trademark of Dominic Mazzoni. 
+RHRE3 logo designed by @GlitchyPSIX. Audacity and the Audacity logo is a trademark of Dominic Mazzoni.
