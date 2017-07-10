@@ -9,7 +9,7 @@ import kotlin.concurrent.thread
 
 object DesktopLauncher {
 
-	@JvmStatic fun main(args: Array<String>) {
+    @JvmStatic fun main(args: Array<String>) {
         // TODO console commands
         thread(isDaemon = true) {
             while (true) {
@@ -28,8 +28,8 @@ object DesktopLauncher {
         val logger = Logger()
         val logToFile = true
         val app = RHRE3Application(logger, logToFile)
-		ToolboksDesktopLauncher(app)
-				.editConfig {
+        ToolboksDesktopLauncher(app)
+                .editConfig {
                     this.width = app.emulatedSize.first
                     this.height = app.emulatedSize.second
                     this.title = app.getTitle()
@@ -42,12 +42,13 @@ object DesktopLauncher {
                     this.allowSoftwareMode = false
                     this.audioDeviceSimultaneousSources = 256
 
-                    this.addIcon("images/icon/icon128.png", Files.FileType.Internal)
-                    this.addIcon("images/icon/icon64.png", Files.FileType.Internal)
-                    this.addIcon("images/icon/icon32.png", Files.FileType.Internal)
-                    this.addIcon("images/icon/icon16.png", Files.FileType.Internal)
+                    val sizes: List<Int> = listOf(128, 64, 32, 24, 16)
+
+                    sizes.forEach {
+                        this.addIcon("images/icon/$it.png", Files.FileType.Internal)
+                    }
                 }
                 .launch()
-	}
+    }
 
 }
