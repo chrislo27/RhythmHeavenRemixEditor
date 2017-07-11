@@ -11,7 +11,6 @@ import io.github.chrislo27.toolboks.font.FreeTypeFont
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
-import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import java.util.*
 
 
@@ -27,8 +26,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                       )
     }
 
-    private val defaultFontLargeKey = "default_font_large"
-    private val defaultBorderedFontLargeKey = "default_bordered_font_large"
+    val defaultFontLargeKey = "default_font_large"
+    val defaultBorderedFontLargeKey = "default_bordered_font_large"
 
     val defaultFontLarge: BitmapFont
         get() = fonts[defaultFontLargeKey].font!!
@@ -63,21 +62,15 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts.loadUnloaded()
         }
+
+        // screens
+        run {
+            setScreen(TestScreen(this))
+        }
     }
 
     override fun postRender() {
         super.postRender()
-
-        batch.begin()
-
-        batch.setColor(0.6f, 1f, 0.2f, 1f)
-        batch.fillRect(60f, 60f, 1000f, 600f)
-        batch.setColor(1f, 1f, 1f, 1f)
-
-        defaultFont.draw(batch, "RHRE3 first pass", 50f, 50f)
-        defaultBorderedFontLarge.draw(batch, "RHRE3 first pass LARGE font", 50f, 500f)
-
-        batch.end()
     }
 
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
