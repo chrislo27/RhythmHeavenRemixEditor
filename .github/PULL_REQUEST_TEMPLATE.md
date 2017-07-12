@@ -5,6 +5,7 @@
   * [Screenshot of cues in the editor in force load mode]()
 * [ ] This pull request is merging into **`dev`**
 * [ ] I have filled out this pull request template knowing if I fail to complete it the pull request will immediately become invalid and will be closed
+* [ ] I accept that all pull requests for RHRE2 will be immediately closed
 
 **Issues Fixed:** [Any issues fixed by this pull request]
 
