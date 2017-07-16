@@ -5,4 +5,6 @@ abstract class IdentifiableObject {
 
     lateinit open var id: String
 
+    lateinit open var deprecatedIDs: List<String>
+
 }
