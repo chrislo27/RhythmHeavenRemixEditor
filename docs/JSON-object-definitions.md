@@ -71,7 +71,7 @@ Example (First Contact): `alien - 1`, `alien - 2`, etc.
   "type": "pattern",
   "id": "lowerCamelCaseID",
   "name": "Human-Readable Cue Name",
-  "cues": [
+  "cues": [ // array of PatternCueObjects
     {
       "id": "cueID",
       "beat": 1.0,
