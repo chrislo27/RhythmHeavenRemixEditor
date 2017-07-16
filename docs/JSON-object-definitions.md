@@ -20,6 +20,7 @@ If this game appears in multiple series, for example both in RHDS and Megamix,
 the name of the series used should be in parentheses after the name of the game,
 and the name of the minigame should use the most recent English-localized name.
 Example: `Space Dance (Megamix)` and `Space Dance (GBA)`.
+
 * Series' names are as follows:
     * Rhythm Tengoku - GBA
     * Rhythm Heaven (Gold) - DS
