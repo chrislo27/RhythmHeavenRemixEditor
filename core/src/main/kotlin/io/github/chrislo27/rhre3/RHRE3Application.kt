@@ -5,17 +5,19 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
 import io.github.chrislo27.toolboks.font.FreeTypeFont
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import java.util.*
 
 
 class RHRE3Application(logger: Logger, logToFile: Boolean)
-    : ToolboksGame(logger, logToFile, RHRE3.VERSION, Pair(1280, 720), false) {
+    : ToolboksGame(logger, logToFile, RHRE3.VERSION, RHRE3.DEFAULT_SIZE, false) {
 
     companion object {
         val languages: List<NamedLocale> =
@@ -62,6 +64,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts.loadUnloaded()
         }
+
+        // registry
+        AssetRegistry.addAssetLoader(DefaultAssetLoader())
 
         // screens
         run {
