@@ -78,9 +78,9 @@ The `duration` field is the duration of the cue in beats.
 
 The `stretchable` field is a boolean indicating if the cue can be stretched or not.
 
-The `fileExtension` field is a string indicating the file extension. This
-should NEVER be used unless it is in a custom sound definition - in which
-case it will still print out an error at runtime. Don't use it. Use the ogg format.
+The `fileExtension` field is a string indicating the file extension. This is
+**ONLY** for backwards compatibility, and will print out a warning when used.
+The default format is Ogg Vorbis (file extension `ogg`).
 
 ### `TempoBasedCueObject` subtype
 ```json
