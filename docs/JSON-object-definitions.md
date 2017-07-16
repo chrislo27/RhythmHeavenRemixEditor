@@ -50,7 +50,8 @@ even in other object types, and is always present whenever there is an
   "name": "Human-Readable Cue Name",
   "duration": 1.0,
   // optional fields after this comment
-  "stretchable": false
+  "stretchable": false,
+  "fileExtension": "ogg"
 }
 ```
 
@@ -76,6 +77,10 @@ Example (First Contact): `alien - 1`, `alien - 2`, etc.
 The `duration` field is the duration of the cue in beats.
 
 The `stretchable` field is a boolean indicating if the cue can be stretched or not.
+
+The `fileExtension` field is a string indicating the file extension. This
+should NEVER be used unless it is in a custom sound definition - in which
+case it will still print out an error at runtime. Don't use it. Use the ogg format.
 
 ### `TempoBasedCueObject` subtype
 ```json
