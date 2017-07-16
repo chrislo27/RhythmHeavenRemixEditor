@@ -35,8 +35,7 @@ explained below. It is **very important** that each object type contain
 the `type` field, which is used by the JSON deserializer to determine
 what object type to deserialize at runtime. This is called *polymorphism*.
 
-## Object types
-### `CueObject`
+## `CueObject` structure
 ```json
 {
   "type": "cue",
@@ -66,7 +65,7 @@ Example (First Contact): `alien - 1`, `alien - 2`, etc.
 
 ---
 
-### `PatternObject` and `PatternCueObject`
+## `PatternObject` and `PatternCueObject` structure
 ```json
 {
   "type": "pattern",
