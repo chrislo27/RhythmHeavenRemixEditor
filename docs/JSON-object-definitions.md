@@ -16,10 +16,15 @@ The `id` field is the name of the folder this JSON file is in.
 It should be lowerCamelCase.
 
 The `name` field is a properly Title Case capitalized name. This is in English.
-If this is syllabic (part of a longer sound cue), you should add a hyphen with
-spaces surrounding it to break up words. The program will automatically convert these
-into newlines. **Do not use newline characters.**
-Example (First Contact): `alien - 1`, `alien - 2`, etc.
+If this game appears in multiple series, for example both in RHDS and Megamix,
+the name of the series used should be in parentheses after the name of the game,
+and the name of the minigame should use the most recent English-localized name.
+Example: `Space Dance (Megamix)` and `Space Dance (GBA)`.
+* Series' names are as follows:
+    * Rhythm Tengoku - GBA
+    * Rhythm Heaven (Gold) - DS
+    * Rhythm Heaven Fever - Fever
+    * Rhythm Heaven Megamix - Megamix
 
 The `requiresVersion` field is the minimum version of the program needed to
 parse this file.
@@ -52,7 +57,11 @@ should include them in the path separated by more forward slashes. Example:
 `flipperFlop/appreciation/nice` is the sound file `nice.ogg` inside the folder `appreciation/`
 which has a parent folder of `flipperFlop`.
 
-The `name` field should be a human readable name in English.
+The `name` field is a properly Title Case capitalized name. This is in English.
+If this is syllabic (part of a longer sound cue), you should add a hyphen with
+spaces surrounding it to break up words. The program will automatically convert these
+into newlines. **Do not use newline characters.**
+Example (First Contact): `alien - 1`, `alien - 2`, etc.
 
 ---
 
