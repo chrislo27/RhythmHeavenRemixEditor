@@ -37,6 +37,8 @@ what object type to deserialize at runtime. This is called *polymorphism*.
 A `CueObject` defines a sound to be loaded by the editor. It also contains
 metadata such as the duration and its abilities.
 
+---
+
 ### `PatternObject` and `PatternCueObject`
 ```json
 {
