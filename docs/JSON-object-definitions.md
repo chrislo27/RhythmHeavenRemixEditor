@@ -185,7 +185,7 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
   "deprecatedIDs": [],
   "name": "human-readable cue name",
   "distance": 1.0,
-  "stretchable": false
+  "stretchable": false,
   "cues": [ // ORDERED array of CuePointerObjects
     {
       // see CuePointerObject
@@ -214,7 +214,7 @@ The `CuePointerObjects` used *are in order* and do **NOT** have these fields:
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable cue name",
-  "duration": 2.0
+  "duration": 2.0,
   "cues": [ // ORDERED array of CuePointerObjects
     {
       // see CuePointerObject
