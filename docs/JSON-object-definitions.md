@@ -137,9 +137,8 @@ is used for cues like Screwbot Factory's "whirring" noise.
       "beat": 1.0,
       // optional fields after this comment
       "duration": 1.0,
-      "semitone": 1,
-      "track": 2,
-      "stretchable": false
+      "semitone": 0,
+      "track": 0
     }
   ]
 }
