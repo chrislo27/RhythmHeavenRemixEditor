@@ -130,7 +130,7 @@ is used for cues like Screwbot Factory's "whirring" noise.
   "type": "pattern",
   "id": "lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "Human-Readable Cue Name",
+  "name": "human-readable cue name",
   "cues": [ // array of PatternCueObjects
     {
       "id": "cueID",
