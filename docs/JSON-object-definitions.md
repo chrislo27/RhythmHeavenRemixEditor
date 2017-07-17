@@ -153,7 +153,7 @@ is used for cues like Screwbot Factory's "whirring" noise.
 ```json
 {
   "type": "pattern",
-  "id": "lowerCamelCaseID",
+  "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable cue name",
   "cues": [ // array of CuePointerObjects
@@ -176,3 +176,57 @@ slashes.
 
 The array of `CuePointerObject`s uses the standard cue pointer object fields.
 
+## `EquidistantObject` structure
+
+```json
+{
+  "type": "equidistant",
+  "id": "gameID_lowerCamelCaseID",
+  "deprecatedIDs": [],
+  "name": "human-readable cue name",
+  "distance": 1.0,
+  "stretchable": false
+  "cues": [ // ORDERED array of CuePointerObjects
+    {
+      // see CuePointerObject
+      // fields after this comment DON'T EXIST
+      "beat", "duration", "track"
+    }
+  ]
+}
+```
+
+The `EquidistantObject` represents a pattern where each cue is
+*equidistant* from each other. That is to say, if the `distance` is 2.0
+beats, each cue will be 2.0 beats apart. The `stretchable` field indicates
+if this entity is stretchable or not (ex: Bouncy Road).
+
+See `PatternObject` for the ID and name structure.
+
+The `CuePointerObjects` used *are in order* and do **NOT** have these fields:
+`beat`, `duration`, `track`.
+
+## `KeepTheBeatObject` structure
+
+```json
+{
+  "type": "keepTheBeat",
+  "id": "gameID_lowerCamelCaseID",
+  "deprecatedIDs": [],
+  "name": "human-readable cue name",
+  "duration": 2.0
+  "cues": [ // ORDERED array of CuePointerObjects
+    {
+      // see CuePointerObject
+    }
+  ]
+}
+```
+
+The `KeepTheBeatObject` is similar to the `EquidistantObject`, but it
+repeats over and over (up to its `duration`). This is for things like
+Lockstep marching patterns, or Flipper-Flop.
+
+See `PatternObject` for the ID and name structure.
+
+The `CuePointerObjects` used *are in order* and are not changed.
