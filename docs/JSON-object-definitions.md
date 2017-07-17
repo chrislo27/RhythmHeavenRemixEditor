@@ -51,6 +51,7 @@ even in other object types, and is always present whenever there is an
   "duration": 1.0,
   // optional fields after this comment
   "stretchable": false,
+  "repitchable": false,
   "fileExtension": "ogg"
 }
 ```
@@ -77,6 +78,8 @@ Example (First Contact): `alien - 1`, `alien - 2`, etc.
 The `duration` field is the duration of the cue in beats.
 
 The `stretchable` field is a boolean indicating if the cue can be stretched or not.
+
+The `repitchable` field is a boolean indicating if the cue can have its pitch changed.
 
 The `fileExtension` field is a string indicating the file extension. This is
 **ONLY** for backwards compatibility, and will print out a warning when used.
