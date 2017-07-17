@@ -72,7 +72,7 @@ is inherited.
   "type": "cue",
   "id": "dataObjectID/lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "Human-Readable Cue Name",
+  "name": "human-readable cue name",
   "duration": 1.0,
   // optional fields after this comment
   "stretchable": false,
