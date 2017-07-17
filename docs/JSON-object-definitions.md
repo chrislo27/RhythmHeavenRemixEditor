@@ -39,7 +39,32 @@ what object type to deserialize at runtime. This is called *polymorphism*.
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
 to this current object for older save files. This field is always the same
 even in other object types, and is always present whenever there is an
-`id` field **EXCEPT FOR** `PatternCueObject`s.
+`id` field **EXCEPT FOR** metadata-like objects like `CuePointerObject`.
+
+## `CuePointerObject` structure
+```json
+{
+  "id": "cueID",
+  "beat": 1.0,
+  // optional fields after this comment
+  "duration": 1.0,
+  "semitone": 0,
+  "track": 0
+}
+```
+
+This object is special. First of all, it **doesn't** have deprecated IDs
+like other ID-based objects do. This is specifically an object that
+"points" to a `CueObject`. It's basically the definition for spawning
+cue objects. The usage of this object WILL vary from other object types,
+and if you need more data on what's used/isn't used per object, see the
+specific comments. For example, `PatternObject` (below) uses the base
+implementation of `CuePointerObject`.
+
+As a result, this object will never appear by itself. The fields are similar
+to `CueObject`'s own cues, so you can look there. **Note that** the only
+fields shown here ARE the ones it has, and not every field from `CueObject`
+is inherited.
 
 ## `CueObject` structure
 ```json
@@ -131,14 +156,9 @@ is used for cues like Screwbot Factory's "whirring" noise.
   "id": "lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable cue name",
-  "cues": [ // array of PatternCueObjects
+  "cues": [ // array of CuePointerObjects
     {
-      "id": "cueID",
-      "beat": 1.0,
-      // optional fields after this comment
-      "duration": 1.0,
-      "semitone": 0,
-      "track": 0
+      // see CuePointerObject
     }
   ]
 }
@@ -154,10 +174,5 @@ therefore this ID is `spaceDance_turnRight`. You'll notice this is similar to
 the cue ID naming convention, but it always has underscores and never has forward
 slashes.
 
-A `PatternCueObject` is a cue definition inside of a pattern. Its `id` is
-identical to the `CueObject` ID you intend to use. All settings are also
-identical to whatever `CueObject` has, except some may be omitted. You should
-look in the example to see what fields are allowed. **NOTE**: this object
-does not use the `deprecatedIDs` field as it should always point to the
-most recent ID.
+The array of `CuePointerObject`s uses the standard cue pointer object fields.
 
