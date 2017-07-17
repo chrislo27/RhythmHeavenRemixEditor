@@ -190,7 +190,7 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
     {
       // see CuePointerObject
       // fields after this comment DON'T EXIST
-      "beat", "duration", "track"
+      "beat", "duration"
     }
   ]
 }
@@ -204,7 +204,7 @@ if this entity is stretchable or not (ex: Bouncy Road).
 See `PatternObject` for the ID and name structure.
 
 The `CuePointerObjects` used *are in order* and do **NOT** have these fields:
-`beat`, `duration`, `track`.
+`beat`, `duration`.
 
 ## `KeepTheBeatObject` structure
 
