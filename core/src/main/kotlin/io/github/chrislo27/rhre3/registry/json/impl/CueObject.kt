@@ -17,7 +17,7 @@ open class CueObject : NamedIDObject(), Verifiable {
     var repitchable: Boolean = false
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var fileExtension: String = "ogg"
+    var fileExtension: String = RHRE3.SUPPORTED_SOUND_TYPES.first()
 
     override fun verify(): String? {
         val builder = StringBuilder()
