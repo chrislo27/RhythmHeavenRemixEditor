@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: io.github.chrislo27.rhre3.registry.json.converter.RHRE2Dat
+ aConverterKt
+
