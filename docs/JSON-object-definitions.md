@@ -276,7 +276,7 @@ affects all cues below it. See this image: ![Call and Response object diagram](c
 The `counterparts` array is an array of string arrays. Each internal string array
 has *two or more* cue IDs in it. The first ID is the call ID, and the
 second (or third, fourth, etc) IDs are the possible response IDs for that
-call ID. First Contact will definitely use mutliple response IDs for its
+call ID. First Contact will definitely use multiple response IDs for its
 randomization of speech.
 
 See `PatternObject` for the ID and name structure.
