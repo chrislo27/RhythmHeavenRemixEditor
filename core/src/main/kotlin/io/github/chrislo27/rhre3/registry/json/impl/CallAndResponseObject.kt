@@ -13,6 +13,8 @@ class CallAndResponseObject : NamedIDObject(), Verifiable {
 
     var stretchable: Boolean = false
 
+    lateinit var counterparts: List<List<String>>
+
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var middle: List<CuePointerObject> = listOf()
 
@@ -26,7 +28,19 @@ class CallAndResponseObject : NamedIDObject(), Verifiable {
         name
 
         if (duration <= 0) {
-            builder.append("Duration $duration is negative")
+            builder.append("Duration $duration is negative\n")
+        }
+
+        if (counterparts.isEmpty()) {
+            builder.append("Counterparts array is empty\n")
+        } else {
+            val listOfLess = counterparts.filter { it.size < 2 }
+            if (listOfLess.isNotEmpty()) {
+                builder.append("Certain arrays in the counterparts array don't have enough items:\n")
+                listOfLess.forEach {
+                    builder.append("  -> $it\n")
+                }
+            }
         }
 
         return if (builder.isEmpty()) null else builder.toString()

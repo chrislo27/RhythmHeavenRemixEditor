@@ -250,6 +250,11 @@ The `CuePointerObjects` used *are in order* and are not changed.
   "name": "human-readable cue name",
   "duration": 2.0,
   "stretchable": false,
+  "counterparts": [
+    ["firstID", "secondID"],
+    ["thirdID", "fourthID"],
+    ["callID", "responseID"]
+  ],
   // optional fields after this comment
   "middle": [ // ORDERED array of CuePointerObjects
     {
@@ -267,6 +272,12 @@ The `CuePointerObjects` used *are in order* and are not changed.
 The `CallAndResponseObject` is the keystone object for "follow me" games
 like First Contact, Working Dough, Drummer Duel, or Wizard Waltz. It
 affects all cues below it. See this image: ![Call and Response object diagram](callResponseUmbrella.png)
+
+The `counterparts` array is an array of string arrays. Each internal string array
+has *two or more* cue IDs in it. The first ID is the call ID, and the
+second (or third, fourth, etc) IDs are the possible response IDs for that
+call ID. First Contact will definitely use mutliple response IDs for its
+randomization of speech.
 
 See `PatternObject` for the ID and name structure.
 

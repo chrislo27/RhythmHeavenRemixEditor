@@ -31,11 +31,11 @@ open class CueObject : NamedIDObject(), Verifiable {
         name
 
         if (duration <= 0) {
-            builder.append("Duration $duration is negative")
+            builder.append("Duration $duration is negativ\n")
         }
 
         if (fileExtension !in RHRE3.SUPPORTED_SOUND_TYPES) {
-            builder.append("File extension $fileExtension isn't a supported sound type (${RHRE3.SUPPORTED_SOUND_TYPES})")
+            builder.append("File extension $fileExtension isn't a supported sound type (${RHRE3.SUPPORTED_SOUND_TYPES})\n")
         }
 
         return if (builder.isEmpty()) null else builder.toString()
