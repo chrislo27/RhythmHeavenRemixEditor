@@ -11,6 +11,8 @@ class CallAndResponseObject : NamedIDObject(), Verifiable {
 
     var duration: Float = -1f
 
+    var stretchable: Boolean = false
+
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var middle: List<CuePointerObject> = listOf()
 

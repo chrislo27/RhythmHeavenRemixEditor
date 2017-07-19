@@ -249,6 +249,7 @@ The `CuePointerObjects` used *are in order* and are not changed.
   "deprecatedIDs": [],
   "name": "human-readable cue name",
   "duration": 2.0,
+  "stretchable": false,
   // optional fields after this comment
   "middle": [ // ORDERED array of CuePointerObjects
     {
@@ -276,3 +277,5 @@ of cues put at the end, used for games like First Contact or Rhythm
 Tweezers as the "success" cue.
 
 The `duration` field is the length of **one section** of the object.
+
+The `stretchable` field is a boolean indicating whether or not it is stretchable.
