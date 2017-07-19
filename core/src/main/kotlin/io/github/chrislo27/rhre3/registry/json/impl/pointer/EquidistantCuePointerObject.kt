@@ -11,6 +11,9 @@ class EquidistantCuePointerObject : Verifiable {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var track: Int = 0
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var semitone: Int = 0
+
     override fun verify(): String? {
         val builder = StringBuilder()
 
