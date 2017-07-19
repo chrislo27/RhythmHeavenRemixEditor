@@ -230,3 +230,40 @@ Lockstep marching patterns, or Flipper-Flop.
 See `PatternObject` for the ID and name structure.
 
 The `CuePointerObjects` used *are in order* and are not changed.
+
+## `CallAndResponseObject` structure
+
+```json
+{
+  "type": "callAndResponse",
+  "id": "gameID_lowerCamelCaseID",
+  "deprecatedIDs": [],
+  "name": "human-readable cue name",
+  "duration": 2.0,
+  // optional fields after this comment
+  "middle": [ // ORDERED array of CuePointerObjects
+    {
+      // see CuePointerObject
+    }
+  ],
+  "end": [ // ORDERED array of CuePointerObjects
+    {
+      // see CuePointerObject
+    }
+  ],
+}
+```
+
+The `CallAndResponseObject` is the keystone object for "follow me" games
+like First Contact, Working Dough, Drummer Duel, or Wizard Waltz. It
+affects all cues below it. See this image: ![Call and Response object diagram](callResponseUmbrella.png)
+
+See `PatternObject` for the ID and name structure.
+
+The `CuePointerObjects` used *are in order* and are not changed. `middle`
+is an array of cues that go in between sections. This should be used
+in games like First Contact as the passover cue. `end` is an array
+of cues put at the end, used for games like First Contact or Rhythm
+Tweezers as the "success" cue.
+
+The `duration` field is the length of **one section** of the object.
