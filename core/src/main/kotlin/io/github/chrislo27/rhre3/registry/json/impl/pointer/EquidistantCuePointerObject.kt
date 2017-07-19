@@ -19,7 +19,7 @@ class EquidistantCuePointerObject : Verifiable {
 
         id
         if (track < 0) {
-            builder.append("Track $track is negative")
+            builder.append("Track $track is negative\n")
         }
 
         return if (builder.isEmpty()) null else builder.toString()

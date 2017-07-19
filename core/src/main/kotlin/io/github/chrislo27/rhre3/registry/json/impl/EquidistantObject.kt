@@ -19,11 +19,11 @@ class EquidistantObject : NamedIDObject(), Verifiable {
         name
 
         if (distance <= 0f) {
-            builder.append("Distance $distance is negative")
+            builder.append("Distance $distance is negative\n")
         }
 
         if (cues.isEmpty()) {
-            builder.append("Cues array is empty")
+            builder.append("Cues array is empty\n")
         }
 
         return if (builder.isEmpty()) null else builder.toString()

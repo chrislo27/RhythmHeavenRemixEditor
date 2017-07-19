@@ -17,7 +17,7 @@ class PatternObject : NamedIDObject(), Verifiable {
         name
 
         if (cues.isEmpty()) {
-            builder.append("Cues array is empty")
+            builder.append("Cues array is empty\n")
         }
 
         return if (builder.isEmpty()) null else builder.toString()
