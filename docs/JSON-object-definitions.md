@@ -314,3 +314,6 @@ The `CuePointerObject` is unchanged, but the `beat` field inside
 will be ignored (always zero).
 
 See `PatternObject` for the `id` and `name` fields.
+
+Note that this can't be used for `CallAndResponseObject`s, as
+they have their own mechanism for randomly selecting responses.
