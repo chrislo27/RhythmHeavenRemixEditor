@@ -164,7 +164,7 @@ is used for cues like Screwbot Factory's "whirring" noise.
   "type": "pattern",
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "human-readable cue name",
+  "name": "human-readable pattern name",
   "cues": [ // array of CuePointerObjects
     {
       // see CuePointerObject
@@ -192,7 +192,7 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
   "type": "equidistant",
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "human-readable cue name",
+  "name": "human-readable name",
   "distance": 1.0,
   "stretchable": false,
   "cues": [ // ORDERED array of CuePointerObjects
@@ -222,7 +222,7 @@ The `CuePointerObjects` used *are in order* and do **NOT** have these fields:
   "type": "keepTheBeat",
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "human-readable cue name",
+  "name": "human-readable name",
   "duration": 2.0,
   "cues": [ // ORDERED array of CuePointerObjects
     {
@@ -247,7 +247,7 @@ The `CuePointerObjects` used *are in order* and are not changed.
   "type": "callAndResponse",
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
-  "name": "human-readable cue name",
+  "name": "human-readable name",
   "duration": 2.0,
   "stretchable": false,
   "counterparts": [
@@ -290,3 +290,27 @@ Tweezers as the "success" cue.
 The `duration` field is the length of **one section** of the object.
 
 The `stretchable` field is a boolean indicating whether or not it is stretchable.
+
+## `RandomCueObject` structure
+
+```json
+{
+  "type": "randomCue",
+  "id": "gameID_lowerCamelCaseID",
+  "deprecatedIDs": [],
+  "name": "human-readable name, usually 'random X'",
+  "cues": [ // array of CuePointerObjects
+    {
+      // see CuePointerObject
+      // "beat" field ignored
+    }
+  ]
+}
+```
+
+The `RandomCueObject` is like a pattern except it only chooses one of the
+cues in the `cues` array at random **when first placed**.
+The `CuePointerObject` is unchanged, but the `beat` field inside
+will be ignored (always zero).
+
+See `PatternObject` for the `id` and `name` fields.
