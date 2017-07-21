@@ -240,57 +240,6 @@ See `PatternObject` for the ID and name structure.
 
 The `CuePointerObjects` used *are in order* and are not changed.
 
-## `CallAndResponseObject` structure
-
-```json
-{
-  "type": "callAndResponse",
-  "id": "gameID_lowerCamelCaseID",
-  "deprecatedIDs": [],
-  "name": "human-readable name",
-  "duration": 2.0,
-  "stretchable": false,
-  "counterparts": [
-    ["firstID", "secondID"],
-    ["thirdID", "fourthID"],
-    ["callID", "responseID"]
-  ],
-  // optional fields after this comment
-  "middle": [ // ORDERED array of CuePointerObjects
-    {
-      // see CuePointerObject
-    }
-  ],
-  "end": [ // ORDERED array of CuePointerObjects
-    {
-      // see CuePointerObject
-    }
-  ],
-}
-```
-
-The `CallAndResponseObject` is the keystone object for "follow me" games
-like First Contact, Working Dough, Drummer Duel, or Wizard Waltz. It
-affects all cues below it. See this image: ![Call and Response object diagram](callResponseUmbrella.png)
-
-The `counterparts` array is an array of string arrays. Each internal string array
-has *two or more* cue IDs in it. The first ID is the call ID, and the
-second (or third, fourth, etc) IDs are the possible response IDs for that
-call ID. First Contact will definitely use multiple response IDs for its
-randomization of speech.
-
-See `PatternObject` for the ID and name structure.
-
-The `CuePointerObjects` used *are in order* and are not changed. `middle`
-is an array of cues that go in between sections. This should be used
-in games like First Contact as the passover cue. `end` is an array
-of cues put at the end, used for games like First Contact or Rhythm
-Tweezers as the "success" cue.
-
-The `duration` field is the length of **one section** of the object.
-
-The `stretchable` field is a boolean indicating whether or not it is stretchable.
-
 ## `RandomCueObject` structure
 
 ```json
