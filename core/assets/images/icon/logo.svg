@@ -15,7 +15,9 @@
    id="svg4136"
    inkscape:version="0.91 r13725"
    sodipodi:docname="128.svg"
-   style="enable-background:new">
+   style="enable-background:new"
+   inkscape:export-xdpi="569.43866"
+   inkscape:export-ydpi="569.43866">
   <metadata
      id="metadata4248">
     <rdf:RDF>
@@ -24,7 +26,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -81,7 +83,7 @@
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g5239"
+     inkscape:current-layer="layer6"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -223,33 +225,10 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer6"
-     inkscape:label="Stylus"
-     transform="translate(-0.39277638,-5.5767548)">
-    <path
-       inkscape:connector-curvature="0"
-       d="M 79.099719,87.225117 C 92.871398,80.561122 120.02367,67.49508 120.02367,67.49508 c 0,0 1.26596,-0.333485 2.6361,-0.335203 1.37014,-0.0017 4.2282,1.255499 4.45134,1.857605 0.22311,0.602108 -0.0392,0.97275 -0.50833,1.379998 l -20.55706,8.870921 c 3.69138,-3.88733 17.30066,-9.291162 17.06659,-9.397438 -0.23407,-0.106276 -40.214429,18.969535 -40.214429,18.969535 -5.160352,2.632258 -9.660677,2.945827 -9.660677,2.945827 0,0 0.983072,-1.730952 5.862515,-4.561208 z"
-       id="path4182"
-       style="opacity:1;fill:#000000;fill-opacity:0.55111108;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.55294118"
-       sodipodi:nodetypes="cczzcczccc" />
-  </g>
-  <g
-     inkscape:label="Stylus Shadow"
-     id="g5239"
-     inkscape:groupmode="layer"
-     transform="translate(-0.39277638,-5.5767548)">
-    <path
-       sodipodi:nodetypes="cczzcczccc"
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.57359999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path5241"
-       d="m 77.354325,85.198303 c 9.699997,-9.6 28.824525,-28.422643 28.824525,-28.422643 0,0 0.89168,-0.480411 1.85673,-0.482885 0.96505,-0.0025 2.97811,1.808642 3.13526,2.676023 0.15715,0.867382 -0.0276,1.401321 -0.35803,1.987995 L 96.333572,73.736039 c 2.6,-5.6 12.780988,-12.427876 12.020748,-13.537737 -0.76024,-1.109861 -28.324784,27.327084 -28.324784,27.327084 -3.634662,3.791969 -6.804438,4.243689 -6.804438,4.243689 0,0 0.692421,-2.493568 4.129227,-6.570772 z"
-       inkscape:connector-curvature="0" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Square 1"
-     transform="translate(-0.39277638,-5.5767548)">
+     transform="translate(-0.39277638,-5.5767548)"
+     sodipodi:insensitive="true">
     <g
        transform="translate(0.2813681,-1.1500425)"
        id="g4445"
@@ -302,5 +281,29 @@
        id="path4406-2"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccscsccccccccscscscc" />
+  </g>
+  <g
+     inkscape:label="Stylus Shadow"
+     id="g5239"
+     inkscape:groupmode="layer"
+     transform="translate(-0.39277638,-5.5767548)">
+    <path
+       inkscape:connector-curvature="0"
+       d="M 76.794906,84.970979 C 87.85996,74.79708 109.66955,54.855771 109.66955,54.855771 c 0,0 0.99303,-0.483907 2.03667,-0.426763 1.04365,0.05718 3.11161,2.215155 3.22947,3.198563 0.1178,0.983419 -0.11403,1.571295 -0.50652,2.209331 L 98.005439,73.282818 c 3.147641,-6.124671 13.980001,-14.267893 13.810931,-14.449986 -0.16907,-0.182094 -32.268493,28.91645 -32.268493,28.91645 -4.157856,4.030879 -7.612455,4.341126 -7.612455,4.341126 0,0 0.898444,-2.756087 4.859484,-7.119429 z"
+       id="path4182"
+       style="opacity:1;fill:#000000;fill-opacity:0.55111108;stroke:#000000;stroke-width:0;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.55294118;enable-background:new"
+       sodipodi:nodetypes="cczzcczccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Stylus"
+     transform="translate(-0.39277638,-5.5767548)">
+    <path
+       sodipodi:nodetypes="cczzcczccc"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.57359999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;enable-background:new"
+       id="path5241"
+       d="m 75.658686,85.293336 c 9.699994,-9.6 28.824524,-28.422643 28.824524,-28.422643 0,0 0.89168,-0.480411 1.85673,-0.482885 0.96505,-0.0025 2.97811,1.808642 3.13526,2.676023 0.15715,0.867382 -0.0276,1.401321 -0.35803,1.987995 L 94.63793,73.831072 c 2.6,-5.6 12.78099,-12.427876 12.02075,-13.537737 -0.76024,-1.109861 -28.324783,27.327084 -28.324783,27.327084 -3.634662,3.791969 -6.804438,4.243689 -6.804438,4.243689 0,0 0.692421,-2.493568 4.129227,-6.570772 z"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
