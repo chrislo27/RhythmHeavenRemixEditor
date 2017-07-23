@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -36,6 +37,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     }
 
     fun fetch() {
+        val nano = System.nanoTime()
         repoStatus = RepoStatus.UNKNOWN
         launch(CommonPool) {
             repoStatus = RepoStatus.DOING
@@ -51,6 +53,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 repoStatus = RepoStatus.ERROR
                 label.text = "screen.database.error"
             }
+            val time = (System.nanoTime() - nano) / 1_000_000.0
+            Toolboks.LOGGER.info("Finished fetch/clone in $time ms")
         }
     }
 
