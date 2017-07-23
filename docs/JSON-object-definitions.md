@@ -9,7 +9,9 @@ All `data.json` files for each game are a `DataObject`.
   "deprecatedIDs": [],
   "name": "Human-Readable Name",
   "requiresVersion": "v3.0.0",
-  "objects": []
+  "objects": [],
+  // optional fields after this comment
+  "group": "Human-Readable Name"
 }
 ```
 
@@ -40,6 +42,11 @@ what object type to deserialize at runtime. This is called *polymorphism*.
 to this current object for older save files. This field is always the same
 even in other object types, and is always present whenever there is an
 `id` field **EXCEPT FOR** metadata-like objects like `CuePointerObject`.
+
+The optional `group` field is the full name of the group this data object
+belongs to, if it has variants. For example, `gleeClubEnMegamix` would
+have the group value be `Glee Club (Megamix)` to be grouped with other
+data objects that also have the same group value.
 
 ## `CuePointerObject` structure
 ```json
