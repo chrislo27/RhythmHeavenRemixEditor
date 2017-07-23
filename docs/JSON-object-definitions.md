@@ -87,7 +87,9 @@ is inherited.
   "fileExtension": "ogg",
 
   "introSound": "other/ID",
-  "endingSound": "other/ID2"
+  "endingSound": "other/ID2",
+
+  "
 }
 ```
 
@@ -265,7 +267,7 @@ The `CuePointerObjects` used *are in order* and are not changed.
 ```
 
 The `RandomCueObject` is like a pattern except it only chooses one of the
-cues in the `cues` array at random **when first placed**.
+cues in the `cues` array at random **when played**.
 The `CuePointerObject` is unchanged, but the `beat` field inside
 will be ignored (always zero).
 
