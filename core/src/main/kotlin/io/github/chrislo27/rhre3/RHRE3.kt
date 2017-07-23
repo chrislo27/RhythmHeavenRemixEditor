@@ -12,4 +12,8 @@ object RHRE3 {
 
     val SUPPORTED_SOUND_TYPES = listOf("ogg", "mp3", "wav")
 
+    const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
+    const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
+    const val DATABASE_BRANCH: String = "dev" // FIXME
+
 }

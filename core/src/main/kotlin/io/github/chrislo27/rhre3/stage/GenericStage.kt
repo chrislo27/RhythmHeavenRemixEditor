@@ -1,12 +1,15 @@
 package io.github.chrislo27.rhre3.stage
 
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 
@@ -60,6 +63,8 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
         this.location.set(0f, 0f, 1f, BOTTOM_RATIO.second)
     }
 
+    var drawBackground: Boolean = true
+
     init {
         this.location.screenWidth = SCREEN_WIDTH - PADDING_RATIO.first * 2
         this.location.screenHeight = SCREEN_HEIGHT - PADDING_RATIO.second * 2
@@ -78,6 +83,16 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
 
     override fun render(screen: S, batch: SpriteBatch) {
         val oldColor: Float = batch.packedColor
+        if (drawBackground) {
+            batch.setColor(1f, 1f, 1f, 1f)
+            val tex: Texture = AssetRegistry.get<Texture>("ui_bg")
+            val start: Float = MathHelper.getSawtoothWave(5f) - 1f
+            for (x in (start * tex.width).toInt()..camera.viewportWidth.toInt() step tex.width) {
+                for (y in (start * tex.height).toInt()..camera.viewportHeight.toInt() step tex.height) {
+                    batch.draw(tex, x.toFloat(), y.toFloat())
+                }
+            }
+        }
         batch.setColor(0f, 0f, 0f, 0.65f)
         batch.fillRect(location.realX - PADDING_RATIO.first * camera.viewportWidth,
                        location.realY - PADDING_RATIO.second * camera.viewportHeight,

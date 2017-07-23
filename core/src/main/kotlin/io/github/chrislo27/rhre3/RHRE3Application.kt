@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -14,6 +15,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.ui.UIPalette
 import java.util.*
 
 
@@ -45,6 +48,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         this.font!!.data.markupEnabled = true
     }
 
+    val uiPalette: UIPalette by lazy {
+        UIPalette(fonts[defaultFontKey], fonts[defaultFontLargeKey], 1f,
+                  Color(1f, 1f, 1f, 1f), Color(0f, 0f, 0f, 0.75f),
+                  Color(0f, 0.5f, 0.5f, 0.75f), Color(0.25f, 0.25f, 0.25f, 0.75f))
+    }
+
     override fun getTitle(): String =
             "Rhythm Heaven Remix Editor $versionString"
 
@@ -71,7 +80,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         // screens
         run {
-            setScreen(TestScreen(this))
+            ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
+            ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
+
+            setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
+                              .setNextScreen(ScreenRegistry["databaseUpdate"]))
         }
     }
 
