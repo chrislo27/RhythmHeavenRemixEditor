@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -54,6 +55,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                   Color(0f, 0.5f, 0.5f, 0.75f), Color(0.25f, 0.25f, 0.25f, 0.75f))
     }
 
+    lateinit var preferences: Preferences
+        private set
+
     override fun getTitle(): String =
             "Rhythm Heaven Remix Editor $versionString"
 
@@ -74,6 +78,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
         }
+
+        // preferences
+        preferences = Gdx.app.getPreferences("RHRE3")
 
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
@@ -101,6 +108,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             size = 24
             characters = ""
         }
+    }
+
+    override fun dispose() {
+        super.dispose()
+        preferences.flush()
     }
 
     override fun createDefaultFont(): FreeTypeFont {

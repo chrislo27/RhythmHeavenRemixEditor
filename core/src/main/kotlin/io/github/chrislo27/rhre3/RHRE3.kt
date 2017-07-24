@@ -15,5 +15,6 @@ object RHRE3 {
     const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
     const val DATABASE_BRANCH: String = "dev" // FIXME
+    const val DATABASE_CURRENT_VERSION: String = "https://raw.githubusercontent.com/chrislo27/RHRE-database/$DATABASE_BRANCH/current.json"
 
 }

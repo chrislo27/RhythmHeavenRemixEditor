@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.registry.json.CurrentObject
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -41,25 +43,38 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         repoStatus = RepoStatus.UNKNOWN
         launch(CommonPool) {
             repoStatus = RepoStatus.DOING
+            val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION, -1)
+            main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, -1).flush()
             try {
                 GitHelper.fetchOrClone(ScreenProgressMonitor())
                 repoStatus = RepoStatus.DONE
-            } catch(te: TransportException) {
+                run {
+                    val str = GitHelper.SOUNDS_DIR.child("current.json").readString("UTF-8")
+                    val obj = JsonHandler.fromJson<CurrentObject>(str)
+
+                    if (obj.version < 0)
+                        error("Current database version json object has a negative version of ${obj.version}")
+
+                    main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, obj.version).flush()
+                }
+
+                val time = (System.nanoTime() - nano) / 1_000_000.0
+                Toolboks.LOGGER.info("Finished fetch/clone in $time ms")
+            } catch (te: TransportException) {
                 te.printStackTrace()
-                repoStatus = RepoStatus.NO_INTERNET
-                label.text = "screen.database.transportException"
+                GitHelper.reset()
+                repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
+                label.text = "screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"
             } catch (e: Exception) {
                 e.printStackTrace()
                 repoStatus = RepoStatus.ERROR
                 label.text = "screen.database.error"
             }
-            val time = (System.nanoTime() - nano) / 1_000_000.0
-            Toolboks.LOGGER.info("Finished fetch/clone in $time ms")
         }
     }
 
     private enum class RepoStatus {
-        UNKNOWN, DOING, DONE, ERROR, NO_INTERNET
+        UNKNOWN, DOING, DONE, ERROR, NO_INTERNET_CAN_CONTINUE, NO_INTERNET_CANNOT_CONTINUE
     }
 
     private inner class ScreenProgressMonitor : ProgressMonitor {
@@ -69,6 +84,10 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         var completedTaskWork: Int = 0
         var taskTotalWork: Int = ProgressMonitor.UNKNOWN
         var task: String? = ""
+
+        init {
+            updateLabel()
+        }
 
         private fun updateLabel() {
             label.text = "${task ?: Localization["screen.database.pending"]}\n" +
