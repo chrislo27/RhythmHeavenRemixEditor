@@ -57,6 +57,13 @@ object GameRegistry : Disposable {
 
             objectMap.values.toList()
         }
+        val gameGroupsMap: Map<String, GameGroup> = mutableMapOf()
+        val gameGroupsList: List<GameGroup> by lazy {
+            if (!ready)
+                error("Attempt to map game groups when not ready")
+
+            gameGroupsMap.values.toList()
+        }
 
         private val folders: List<FileHandle> by lazy {
             val list = SFX_FOLDER.list { fh ->
@@ -72,7 +79,7 @@ object GameRegistry : Disposable {
         }
 
         private var index: Int = 0
-        private var overrunTime: Float =0f
+        private var overrunTime: Float = 0f
         var lastLoadedID: String? = null
 
         private fun whenDone() {
@@ -81,6 +88,11 @@ object GameRegistry : Disposable {
             // create
             gameList
             objectList
+
+            gameList.groupBy(Game::group).map {
+                it.key to GameGroup(it.key, it.value)
+            }.associateTo(gameGroupsMap as MutableMap) { it }
+            gameGroupsList
         }
 
         fun loadOne(): Float {
@@ -93,7 +105,8 @@ object GameRegistry : Disposable {
 
             val game: Game = Game(dataObject.id, dataObject.name, Version.fromString(dataObject.requiresVersion),
                                   mutableListOf(),
-                                  Texture(folder.child(ICON_FILENAME)))
+                                  Texture(folder.child(ICON_FILENAME)),
+                                  dataObject.group ?: dataObject.name)
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {
@@ -122,7 +135,8 @@ object GameRegistry : Disposable {
                             obj.introSound, obj.endingSound,
                             obj.responseIDs)
                     is EquidistantObject ->
-                        Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable, obj.cues.mapToDatamodel())
+                        Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable,
+                                    obj.cues.mapToDatamodel())
                     is KeepTheBeatObject ->
                         KeepTheBeat(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration, obj.cues.mapToDatamodel())
                     is PatternObject ->
