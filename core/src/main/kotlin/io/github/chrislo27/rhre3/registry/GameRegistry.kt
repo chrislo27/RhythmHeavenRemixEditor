@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.*
@@ -12,6 +13,7 @@ import io.github.chrislo27.toolboks.version.Version
 object GameRegistry : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"
+    const val ICON_FILENAME: String = "icon.png"
 
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
@@ -88,7 +90,8 @@ object GameRegistry : Disposable {
             val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
 
             val game: Game = Game(dataObject.id, dataObject.name, Version.fromString(dataObject.requiresVersion),
-                                  mutableListOf())
+                                  mutableListOf(),
+                                  Texture(folder.child(ICON_FILENAME)))
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {
