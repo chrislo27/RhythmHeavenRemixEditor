@@ -19,6 +19,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
     override val stage: Stage<RegistryLoadingScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     private val gameIcon: ImageLabel<RegistryLoadingScreen>
     private val gameTitle: TextLabel<RegistryLoadingScreen>
+    private val texRegion: TextureRegion = TextureRegion()
 
     init {
         stage as GenericStage
@@ -64,11 +65,8 @@ class RegistryLoadingScreen(main: RHRE3Application)
         if (texture == null) {
             gameIcon.image = null
         } else {
-            if (gameIcon.image == null) {
-                gameIcon.image = TextureRegion(texture)
-            } else {
-                gameIcon.image!!.setRegion(texture)
-            }
+            texRegion.setRegion(texture)
+            gameIcon.image = texRegion
         }
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
