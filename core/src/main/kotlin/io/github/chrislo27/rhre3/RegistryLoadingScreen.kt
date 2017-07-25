@@ -57,7 +57,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
         val loadOneAtATime = false
 
-        val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(delta)
+        val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(Math.min(delta, 2 / 60f))
         val game: Game? = registryData.gameMap[registryData.lastLoadedID]
 
         val texture = game?.icon

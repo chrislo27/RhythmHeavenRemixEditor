@@ -71,6 +71,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                         } else {
                             if (current.version == lastVersion) {
                                 repoStatus = RepoStatus.DONE
+                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, lastVersion).flush()
                                 return@launch
                             }
                         }
