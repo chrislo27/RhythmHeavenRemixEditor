@@ -72,10 +72,10 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
         this.location.screenY = 0.5f - this.location.screenHeight / 2f
 
         elements.apply {
-            add(titleIcon)
-            add(titleLabel)
             add(bottomStage)
             add(centreStage)
+            add(titleIcon)
+            add(titleLabel)
         }
 
         this.updatePositions()
