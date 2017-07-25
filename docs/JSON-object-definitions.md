@@ -161,8 +161,6 @@ as it does in Fillbots for the filling sound effect.
 {
   "type": "loopingCue",
   // etc...
-  // optional fields after this comment
-  "introSound": "soundCueID"
 }
 ```
 
@@ -170,7 +168,7 @@ This cue subtype loops. It has an optional `introSound` field
 which is the sound cue ID to play **once** at the start of the cue. This
 is used for cues like Screwbot Factory's "whirring" noise.
 
-## `PatternObject` and `PatternCueObject` structure
+## `PatternObject` structure
 ```json
 {
   "type": "pattern",
@@ -210,7 +208,7 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
   "cues": [ // ORDERED array of CuePointerObjects
     {
       // see CuePointerObject
-      // fields after this comment DON'T EXIST
+      // fields after this comment are IGNORED
       "beat", "duration"
     }
   ]
@@ -224,7 +222,7 @@ if this entity is stretchable or not (ex: Bouncy Road).
 
 See `PatternObject` for the ID and name structure.
 
-The `CuePointerObjects` used *are in order* and do **NOT** have these fields:
+The `CuePointerObjects` used *are in order* and do **NOT** use these fields:
 `beat`, `duration`.
 
 ## `KeepTheBeatObject` structure
