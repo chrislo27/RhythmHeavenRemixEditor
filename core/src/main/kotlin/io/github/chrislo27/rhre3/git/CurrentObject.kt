@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.registry.json
+package io.github.chrislo27.rhre3.git
 
 
 class CurrentObject {

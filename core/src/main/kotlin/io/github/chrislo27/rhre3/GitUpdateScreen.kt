@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.git.GitHelper
-import io.github.chrislo27.rhre3.registry.json.CurrentObject
+import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks

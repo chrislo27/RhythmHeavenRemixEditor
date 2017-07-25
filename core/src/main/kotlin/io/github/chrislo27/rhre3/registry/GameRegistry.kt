@@ -2,6 +2,8 @@ package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.registry.json.*
+import io.github.chrislo27.rhre3.util.JsonHandler
 
 
 object GameRegistry {
@@ -50,16 +52,28 @@ object GameRegistry {
 
         private var index: Int = 0
 
-        fun getProgress(): Float {
-            return index.toFloat() / folders.size
-        }
-
         fun loadOne(): Float {
             val folder: FileHandle = folders[index]
             val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
+            val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
+
+            dataObject.objects.map { obj ->
+                return@map when (obj) {
+                    is CueObject -> TODO()
+                    is DataObject -> TODO()
+                    is EquidistantObject -> TODO()
+                    is KeepTheBeatObject -> TODO()
+                    is PatternObject -> TODO()
+                    is RandomCueObject -> TODO()
+                }
+            }
 
             index++
             return getProgress()
+        }
+
+        fun getProgress(): Float {
+            return index.toFloat() / folders.size
         }
 
         fun loadFor(delta: Float): Float {
@@ -68,7 +82,7 @@ object GameRegistry {
 
             do {
                 loadOne()
-            } while ((System.nanoTime() - startNano) / 1_000_000f < msToLoad)
+            } while (getProgress() < 1 && (System.nanoTime() - startNano) / 1_000_000f < msToLoad)
 
             return getProgress()
         }

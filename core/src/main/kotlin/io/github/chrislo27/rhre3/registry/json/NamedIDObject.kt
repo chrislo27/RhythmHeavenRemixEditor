@@ -1,0 +1,105 @@
+package io.github.chrislo27.rhre3.registry.json
+
+import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonTypeName
+
+sealed class NamedIDObject {
+
+    lateinit var id: String
+    lateinit var deprecatedIDs: String
+    lateinit var name: String
+
+}
+
+@JsonTypeName("cue")
+open class CueObject : NamedIDObject() {
+
+    var duration: Float = -1f
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var stretchable: Boolean = false
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var repitchable: Boolean = false
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var fileExtension: String = "ogg"
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var introSound: String? = null
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var endingSound: String? = null
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var responseIDs: List<String> = listOf()
+
+}
+
+class CuePointerObject {
+
+    lateinit var id: String
+    var beat: Float = -1f
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var duration: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var semitone: Int = 0
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var track: Int = 0
+
+}
+
+class DataObject : NamedIDObject() {
+
+    lateinit var version: String
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var group: String? = null
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+    lateinit var objects: List<NamedIDObject>
+
+}
+
+@JsonTypeName("equidistant")
+class EquidistantObject : NamedIDObject() {
+
+    var distance: Float = 0f
+    var stretchable: Boolean = false
+    lateinit var cues: List<CuePointerObject>
+
+}
+
+@JsonTypeName("fillbotsFillCue")
+class FillbotsFillCueObject : CueObject()
+
+@JsonTypeName("keepTheBeat")
+class KeepTheBeatObject : NamedIDObject() {
+
+    var duration: Float = 0f
+    lateinit var cues: List<CuePointerObject>
+
+}
+
+@JsonTypeName("loopingCue")
+class LoopingCueObject : CueObject()
+
+@JsonTypeName("pattern")
+class PatternObject : NamedIDObject() {
+
+    lateinit var cues: List<CuePointerObject>
+
+}
+
+@JsonTypeName("randomCue")
+class RandomCueObject : NamedIDObject() {
+
+    lateinit var cues: List<CuePointerObject>
+
+}
+
+@JsonTypeName("tempoBasedCue")
+class TempoBasedCueObject : CueObject() {
+
+    var baseBpm: Float = 0f
+
+}
