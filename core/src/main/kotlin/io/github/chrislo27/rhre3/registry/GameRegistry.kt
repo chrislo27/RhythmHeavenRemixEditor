@@ -101,8 +101,8 @@ object GameRegistry : Disposable {
                         TempoBasedCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
                                       obj.stretchable, obj.repitchable,
                                       SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
-                                      obj.introSound, obj.endingSound,
-                                      obj.responseIDs)
+                                      obj.introSound, obj.endingSound, obj.responseIDs,
+                                      obj.baseBpm)
                     is FillbotsFillCueObject ->
                         FillbotsFillCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
                                         obj.stretchable, obj.repitchable,
@@ -122,15 +122,17 @@ object GameRegistry : Disposable {
                             obj.introSound, obj.endingSound,
                             obj.responseIDs)
                     is EquidistantObject ->
-                        Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable, obj.cues)
+                        Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable, obj.cues.mapToDatamodel())
                     is KeepTheBeatObject ->
-                        KeepTheBeat(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration, obj.cues)
+                        KeepTheBeat(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration, obj.cues.mapToDatamodel())
                     is PatternObject ->
-                        Pattern(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues)
+                        Pattern(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues.mapToDatamodel())
                     is RandomCueObject ->
-                        RandomCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues)
+                        RandomCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues.mapToDatamodel())
                 }
             }
+
+            DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
 
             (gameMap as MutableMap)[game.id] = game
 
