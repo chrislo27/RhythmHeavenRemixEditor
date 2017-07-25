@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
-import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.git.CurrentObject
+import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
@@ -16,6 +16,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.eclipse.jgit.api.errors.TransportException
@@ -36,9 +37,11 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
         label = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage)
         label.setText("", Align.center, wrapping = true, isLocalization = false)
-        stage.elements += label
+        stage.centreStage.elements += label
 
         stage.updatePositions()
+
+        println("LABEL: " + label.location.realHeight + " compared to stage ${label.stage.location.realHeight}")
     }
 
     fun fetch() {
@@ -51,6 +54,31 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, -1).flush()
             try {
+                run {
+                    label.text = Localization["screen.database.checkingGithub"]
+                    try {
+                        val current = JsonHandler.fromJson<CurrentObject>(
+                                khttp.get(RHRE3.DATABASE_CURRENT_VERSION).text)
+                        Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms")
+                        val ver: Version = Version.fromString(current.requiresVersion)
+
+                        if (ver > RHRE3.VERSION) {
+                            label.text = Localization["screen.database.incompatibleVersion${if (lastVersion >= 0) ".canContinue" else ""}", current.requiresVersion]
+                            repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
+                            Toolboks.LOGGER.info(
+                                    "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
+                            return@launch
+                        } else {
+                            if (current.version == lastVersion) {
+                                repoStatus = RepoStatus.DONE
+                                return@launch
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // let fetch handle the big boy exceptions
+                    }
+                }
                 GitHelper.fetchOrClone(ScreenProgressMonitor())
                 repoStatus = RepoStatus.DONE
                 run {
@@ -69,17 +97,17 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 te.printStackTrace()
                 GitHelper.reset()
                 repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
-                label.text = "screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"
+                label.text = Localization["screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"]
             } catch (e: Exception) {
                 e.printStackTrace()
                 repoStatus = RepoStatus.ERROR
-                label.text = "screen.database.error"
+                label.text = Localization["screen.database.error"]
             }
         }
     }
 
     private enum class RepoStatus {
-        UNKNOWN, DOING, DONE, ERROR, NO_INTERNET_CAN_CONTINUE, NO_INTERNET_CANNOT_CONTINUE
+        UNKNOWN, DOING, DONE, ERROR, NO_INTERNET_CAN_CONTINUE, NO_INTERNET_CANNOT_CONTINUE, INCOMPAT_VERSION
     }
 
     private inner class ScreenProgressMonitor : ProgressMonitor {
@@ -137,7 +165,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     override fun renderUpdate() {
         super.renderUpdate()
 
-        if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE)
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
+                && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
                 || repoStatus == RepoStatus.DONE) {
             toNextScreen()
         }

@@ -1,9 +1,21 @@
 package io.github.chrislo27.rhre3.registry.json
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
 
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes(
+        JsonSubTypes.Type(CueObject::class),
+        JsonSubTypes.Type(TempoBasedCueObject::class),
+        JsonSubTypes.Type(LoopingCueObject::class),
+        JsonSubTypes.Type(FillbotsFillCueObject::class),
+        JsonSubTypes.Type(EquidistantObject::class),
+        JsonSubTypes.Type(KeepTheBeatObject::class),
+        JsonSubTypes.Type(PatternObject::class),
+        JsonSubTypes.Type(RandomCueObject::class)
+             )
 sealed class NamedIDObject {
 
     lateinit var id: String
@@ -36,7 +48,6 @@ class DataObject {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var group: String? = null
 
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
     lateinit var objects: List<NamedIDObject>
 
 }

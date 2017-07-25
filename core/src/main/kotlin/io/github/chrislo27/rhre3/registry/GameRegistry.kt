@@ -29,10 +29,10 @@ object GameRegistry : Disposable {
             return backingData
         }
 
-    fun initialize(): RegistryData {
-        if (!backingData.ready)
-            throw IllegalStateException("Cannot call load when already loading")
+    fun isDataLoading(): Boolean =
+            !backingData.ready
 
+    fun initialize(): RegistryData {
         dispose()
 
         backingData = RegistryData()
@@ -73,6 +73,8 @@ object GameRegistry : Disposable {
 
         private var index: Int = 0
 
+        var lastLoadedID: String? = null
+
         private fun whenDone() {
             ready = true
 
@@ -83,7 +85,7 @@ object GameRegistry : Disposable {
 
         fun loadOne(): Float {
             if (ready)
-                error("Attempt to load when already ready")
+                return 1f
 
             val folder: FileHandle = folders[index]
             val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
@@ -132,6 +134,7 @@ object GameRegistry : Disposable {
 
             (gameMap as MutableMap)[game.id] = game
 
+            lastLoadedID = game.id
             index++
             val progress = getProgress()
 
@@ -147,6 +150,9 @@ object GameRegistry : Disposable {
         }
 
         fun loadFor(delta: Float): Float {
+            if (ready)
+                return 1f
+
             val msToLoad = (delta * 1000f)
             val startNano = System.nanoTime()
 
