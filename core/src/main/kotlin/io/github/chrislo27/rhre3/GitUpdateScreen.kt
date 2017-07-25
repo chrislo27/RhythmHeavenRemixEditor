@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -11,6 +13,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import kotlinx.coroutines.experimental.CommonPool
@@ -39,6 +42,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     }
 
     fun fetch() {
+        if (repoStatus == RepoStatus.DOING)
+            return
         val nano = System.nanoTime()
         repoStatus = RepoStatus.UNKNOWN
         launch(CommonPool) {
@@ -125,6 +130,19 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
     }
 
+    private fun toNextScreen() {
+        main.screen = ScreenRegistry["registryLoad"]
+    }
+
+    override fun renderUpdate() {
+        super.renderUpdate()
+
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER) && repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE)
+                || repoStatus == RepoStatus.DONE) {
+            toNextScreen()
+        }
+    }
+
     override fun show() {
         super.show()
 
@@ -134,6 +152,12 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         }
 
         fetch()
+    }
+
+    override fun hide() {
+        super.hide()
+
+        repoStatus = RepoStatus.UNKNOWN
     }
 
     override fun tickUpdate() {
