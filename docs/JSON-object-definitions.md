@@ -89,7 +89,7 @@ is inherited.
   "introSound": "other/ID",
   "endingSound": "other/ID2",
 
-  "
+  "responseIDs": []
 }
 ```
 
@@ -127,6 +127,9 @@ sounds that should be played at the beginning and end of the main sound cue,
 respectively. Cues that are either intro or ending sounds will not be pickable.
 These are useful for cues like Glee Club, where there is an intro singing sound,
 and an ending sound (mouth shut).
+
+The `responseIDs` array is an array of possible "response" sound IDs for
+use with the call and response/copycat tool.
 
 ### `TempoBasedCueObject` subtype
 ```json
