@@ -1,12 +1,15 @@
 package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.registry.datamodel.*
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.version.Version
 
 
-object GameRegistry {
+object GameRegistry : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"
 
@@ -28,14 +31,30 @@ object GameRegistry {
         if (!backingData.ready)
             throw IllegalStateException("Cannot call load when already loading")
 
+        dispose()
+
         backingData = RegistryData()
         return backingData
     }
 
-    class RegistryData {
+    class RegistryData : Disposable {
 
         @Volatile var ready: Boolean = false
             private set
+        val gameMap: Map<String, Game> = mutableMapOf()
+        val gameList: List<Game> by lazy {
+            if (!ready)
+                error("Attempt to map game list when not ready")
+
+            gameMap.values.toList()
+        }
+        val objectMap: Map<String, Datamodel> = mutableMapOf()
+        val objectList: List<Datamodel> by lazy {
+            if (!ready)
+                error("Attempt to map datamodels when not ready")
+
+            objectMap.values.toList()
+        }
 
         private val folders: List<FileHandle> by lazy {
             val list = SFX_FOLDER.list { fh ->
@@ -44,7 +63,7 @@ object GameRegistry {
             }.toList()
 
             if (list.isEmpty()) {
-                error("No valid sfx folders with data.json inside found")
+                error("No valid sfx folders with $DATA_JSON_FILENAME inside found")
             }
 
             list
@@ -52,24 +71,72 @@ object GameRegistry {
 
         private var index: Int = 0
 
+        private fun whenDone() {
+            ready = true
+
+            // create
+            gameList
+            objectList
+        }
+
         fun loadOne(): Float {
+            if (ready)
+                error("Attempt to load when already ready")
+
             val folder: FileHandle = folders[index]
             val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
             val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
 
-            dataObject.objects.map { obj ->
-                return@map when (obj) {
-                    is CueObject -> TODO()
-                    is DataObject -> TODO()
-                    is EquidistantObject -> TODO()
-                    is KeepTheBeatObject -> TODO()
-                    is PatternObject -> TODO()
-                    is RandomCueObject -> TODO()
+            val game: Game = Game(dataObject.id, dataObject.name, Version.fromString(dataObject.requiresVersion),
+                                  mutableListOf())
+
+            dataObject.objects.mapTo(game.objects as MutableList) { obj ->
+                when (obj) {
+                    is TempoBasedCueObject ->
+                        TempoBasedCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
+                                      obj.stretchable, obj.repitchable,
+                                      SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
+                                      obj.introSound, obj.endingSound,
+                                      obj.responseIDs)
+                    is FillbotsFillCueObject ->
+                        FillbotsFillCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
+                                        obj.stretchable, obj.repitchable,
+                                        SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
+                                        obj.introSound, obj.endingSound,
+                                        obj.responseIDs)
+                    is LoopingCueObject ->
+                        LoopingCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
+                                   obj.stretchable, obj.repitchable,
+                                   SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
+                                   obj.introSound, obj.endingSound,
+                                   obj.responseIDs)
+                    is CueObject ->
+                        Cue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
+                            obj.stretchable, obj.repitchable,
+                            SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
+                            obj.introSound, obj.endingSound,
+                            obj.responseIDs)
+                    is EquidistantObject ->
+                        Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable, obj.cues)
+                    is KeepTheBeatObject ->
+                        KeepTheBeat(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration, obj.cues)
+                    is PatternObject ->
+                        Pattern(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues)
+                    is RandomCueObject ->
+                        RandomCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.cues)
                 }
             }
 
+            (gameMap as MutableMap)[game.id] = game
+
             index++
-            return getProgress()
+            val progress = getProgress()
+
+            if (progress >= 1f) {
+                whenDone()
+            }
+
+            return progress
         }
 
         fun getProgress(): Float {
@@ -93,7 +160,13 @@ object GameRegistry {
             }
         }
 
+        override fun dispose() {
+            gameMap.values.forEach(Disposable::dispose)
+        }
+
     }
 
-
+    override fun dispose() {
+        backingData.dispose()
+    }
 }

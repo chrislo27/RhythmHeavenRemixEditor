@@ -1,0 +1,12 @@
+package io.github.chrislo27.rhre3.registry.datamodel
+
+import com.badlogic.gdx.files.FileHandle
+
+
+class FillbotsFillCue(game: Game, id: String, deprecatedIDs: List<String>, name: String, duration: Float,
+                      stretchable: Boolean, repitchable: Boolean, soundHandle: FileHandle, introSound: String?,
+                      endingSound: String?, responseIDs: List<String>)
+    : Cue(game, id, deprecatedIDs, name, duration,
+          stretchable, repitchable, soundHandle,
+          introSound, endingSound, responseIDs) {
+}

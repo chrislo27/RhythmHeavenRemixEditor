@@ -7,8 +7,37 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 sealed class NamedIDObject {
 
     lateinit var id: String
-    lateinit var deprecatedIDs: String
+    lateinit var deprecatedIDs: List<String>
     lateinit var name: String
+
+}
+
+class CuePointerObject {
+
+    lateinit var id: String
+    var beat: Float = -1f
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var duration: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var semitone: Int = 0
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var track: Int = 0
+
+}
+
+class DataObject {
+
+    lateinit var id: String
+    lateinit var name: String
+
+    lateinit var requiresVersion: String
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var group: String? = null
+
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+    lateinit var objects: List<NamedIDObject>
 
 }
 
@@ -31,32 +60,6 @@ open class CueObject : NamedIDObject() {
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var responseIDs: List<String> = listOf()
-
-}
-
-class CuePointerObject {
-
-    lateinit var id: String
-    var beat: Float = -1f
-
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var duration: Float = 0f
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var semitone: Int = 0
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var track: Int = 0
-
-}
-
-class DataObject : NamedIDObject() {
-
-    lateinit var version: String
-
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var group: String? = null
-
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
-    lateinit var objects: List<NamedIDObject>
 
 }
 

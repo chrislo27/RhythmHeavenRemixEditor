@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
@@ -114,6 +115,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     override fun dispose() {
         super.dispose()
         preferences.flush()
+        GameRegistry.dispose()
     }
 
     override fun createDefaultFont(): FreeTypeFont {

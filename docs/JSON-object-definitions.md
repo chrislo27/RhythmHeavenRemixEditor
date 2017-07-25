@@ -6,7 +6,6 @@ All `data.json` files for each game are a `DataObject`.
 ```json
 {
   "id": "lowerCamelCaseID",
-  "deprecatedIDs": [],
   "name": "Human-Readable Name",
   "requiresVersion": "v3.0.0",
   "objects": [],
@@ -38,15 +37,17 @@ explained below. It is **very important** that each object type contain
 the `type` field, which is used by the JSON deserializer to determine
 what object type to deserialize at runtime. This is called *polymorphism*.
 
-`deprecatedIDs` is an array of old IDs that are no longer used, but refer
-to this current object for older save files. This field is always the same
-even in other object types, and is always present whenever there is an
-`id` field **EXCEPT FOR** metadata-like objects like `CuePointerObject`.
-
 The optional `group` field is the full name of the group this data object
 belongs to, if it has variants. For example, `gleeClubEnMegamix` would
 have the group value be `Glee Club (Megamix)` to be grouped with other
 data objects that also have the same group value.
+
+## Deprecated IDs
+`deprecatedIDs` is an array of old IDs that are no longer used, but refer
+to this current object for older save files. This field is always the same
+even in other object types, and is always present whenever there is an
+`id` field **EXCEPT FOR** metadata-like objects like `CuePointerObject`,
+or `DataObject`.
 
 ## `CuePointerObject` structure
 ```json
