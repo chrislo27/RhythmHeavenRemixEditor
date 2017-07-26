@@ -40,8 +40,6 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         stage.centreStage.elements += label
 
         stage.updatePositions()
-
-        println("LABEL: " + label.location.realHeight + " compared to stage ${label.stage.location.realHeight}")
     }
 
     fun fetch() {

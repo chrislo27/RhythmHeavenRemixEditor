@@ -48,7 +48,6 @@ class RegistryLoadingScreen(main: RHRE3Application)
         stage.updatePositions()
 
         stage.centreStage.updatePositions()
-        println("" + gameTitle.location.realHeight + " compared to stage ${gameTitle.stage.location.realHeight} ${gameTitle.stage.location} ${gameTitle.location}")
 
     }
 
