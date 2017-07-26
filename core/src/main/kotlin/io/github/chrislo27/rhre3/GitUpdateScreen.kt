@@ -69,7 +69,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                                     "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
                             return@launch
                         } else {
-                            if (current.version == lastVersion) {
+                            if (current.version == lastVersion && !Toolboks.debugMode) {
                                 repoStatus = RepoStatus.DONE
                                 main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, lastVersion).flush()
                                 return@launch
