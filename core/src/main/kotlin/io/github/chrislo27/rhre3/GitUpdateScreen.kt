@@ -70,6 +70,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                             if (current.version == lastVersion && !Toolboks.debugMode) {
                                 repoStatus = RepoStatus.DONE
                                 main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, lastVersion).flush()
+                                GitHelper.reset()
                                 return@launch
                             }
                         }
@@ -99,6 +100,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 label.text = Localization["screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"]
             } catch (e: Exception) {
                 e.printStackTrace()
+                GitHelper.reset()
                 repoStatus = RepoStatus.ERROR
                 label.text = Localization["screen.database.error"]
             }
