@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -81,7 +82,8 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
         this.updatePositions()
     }
 
-    override fun render(screen: S, batch: SpriteBatch) {
+    override fun render(screen: S, batch: SpriteBatch,
+                        shapeRenderer: ShapeRenderer) {
         val oldColor: Float = batch.packedColor
         if (drawBackground) {
             batch.setColor(1f, 1f, 1f, 1f)
@@ -110,6 +112,6 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
                        location.realWidth - height * 2,
                        height)
         batch.setColor(oldColor)
-        super.render(screen, batch)
+        super.render(screen, batch, shapeRenderer)
     }
 }

@@ -93,7 +93,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
-                              .setNextScreen(ScreenRegistry["databaseUpdate"]))
+                              .setNextScreen(
+//                                      ScreenRegistry["databaseUpdate"]
+                                            TestScreen(this)
+                                            ))
         }
     }
 
