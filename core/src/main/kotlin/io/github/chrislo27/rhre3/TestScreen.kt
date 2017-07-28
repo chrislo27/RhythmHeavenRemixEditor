@@ -38,8 +38,9 @@ class TestScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Test
         textField.apply {
             this.background = true
             this.textAlign = Align.topLeft
-            this.location.set(screenHeight = 0.5f)
-            this.text = "okdpwadkwad\naowpkdkwadwadwa\nwdiadwwaddddddddddddddddddd\n\n\n\n\ndfdfddf"
+//            this.multiline = true
+            this.location.set(screenHeight = 0.5f, screenWidth = 0.25f)
+            this.text = "ok"
         }
 
         stage.centreStage.elements += textField
