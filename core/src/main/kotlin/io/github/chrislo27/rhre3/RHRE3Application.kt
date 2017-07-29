@@ -23,7 +23,8 @@ import java.util.*
 
 
 class RHRE3Application(logger: Logger, logToFile: Boolean)
-    : ToolboksGame(logger, logToFile, RHRE3.VERSION, RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO) {
+    : ToolboksGame(logger, logToFile, RHRE3.VERSION,
+                   RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 
     companion object {
         val languages: List<NamedLocale> =

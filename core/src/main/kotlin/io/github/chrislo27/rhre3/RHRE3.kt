@@ -9,6 +9,7 @@ object RHRE3 {
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
+    val MINIMUM_SIZE: Pair<Int, Int> = 650 to 360
 
     val SUPPORTED_SOUND_TYPES = listOf("ogg", "mp3", "wav")
 
