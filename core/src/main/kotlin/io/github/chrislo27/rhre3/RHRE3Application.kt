@@ -92,11 +92,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
             ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
             ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
+            ScreenRegistry += "editor" to EditorScreen(this)
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(
-//                                      ScreenRegistry["databaseUpdate"]
-                                            TestScreen(this)
+                                      ScreenRegistry["databaseUpdate"]
+//                                            TestScreen(this)
                                             ))
         }
     }
