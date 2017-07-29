@@ -1,5 +1,6 @@
-package io.github.chrislo27.rhre3
+package io.github.chrislo27.rhre3.screen
 
+import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.EditorStage
 import io.github.chrislo27.toolboks.ToolboksScreen
