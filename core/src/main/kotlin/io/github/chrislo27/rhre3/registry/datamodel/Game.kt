@@ -6,7 +6,7 @@ import io.github.chrislo27.toolboks.version.Version
 
 
 data class Game(val id: String, val name: String, val requiresVersion: Version, val objects: List<Datamodel>,
-                val icon: Texture, val group: String) : Disposable {
+                val icon: Texture, val group: String, val priority: Int) : Disposable {
 
     override fun dispose() {
         objects.forEach(Disposable::dispose)

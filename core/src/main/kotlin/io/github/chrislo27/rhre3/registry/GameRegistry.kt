@@ -106,7 +106,8 @@ object GameRegistry : Disposable {
             val game: Game = Game(dataObject.id, dataObject.name, Version.fromString(dataObject.requiresVersion),
                                   mutableListOf(),
                                   Texture(folder.child(ICON_FILENAME)),
-                                  dataObject.group ?: dataObject.name)
+                                  dataObject.group ?: dataObject.name,
+                                  dataObject.priority)
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {

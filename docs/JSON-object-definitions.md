@@ -10,7 +10,8 @@ All `data.json` files for each game are a `DataObject`.
   "requiresVersion": "v3.0.0",
   "objects": [],
   // optional fields after this comment
-  "group": "Human-Readable Name"
+  "group": "Human-Readable Name",
+  "priority": 0
 }
 ```
 
@@ -41,6 +42,9 @@ The optional `group` field is the full name of the group this data object
 belongs to, if it has variants. For example, `gleeClubEnMegamix` would
 have the group value be `Glee Club (Megamix)` to be grouped with other
 data objects that also have the same group value.
+
+The optional `priority` field is an integer for how the games should
+be sorted. Higher numbers come first, lower numbers come last.
 
 ## Deprecated IDs
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
