@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.AssetRegistryLoadingScreen
@@ -107,6 +108,21 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     override fun postRender() {
+        run {
+            val font = defaultBorderedFont
+            font.data.setScale(0.5f)
+            font.setColor(1f, 1f, 1f, 1f)
+
+            batch.begin()
+            font.draw(batch, RHRE3.VERSION.toString(),
+                      defaultCamera.viewportWidth - (2f / RHRE3.DEFAULT_SIZE.first) * defaultCamera.viewportWidth,
+                      (font.capHeight) + (2f / RHRE3.DEFAULT_SIZE.second) * defaultCamera.viewportHeight,
+                      0f, Align.right, false)
+            batch.end()
+
+            font.data.setScale(1f)
+        }
+
         super.postRender()
     }
 
