@@ -48,7 +48,7 @@ object GameRegistry : Disposable {
             if (!ready)
                 error("Attempt to map game list when not ready")
 
-            gameMap.values.toList()
+            gameMap.values.toList().sortedByName()
         }
         val objectMap: Map<String, Datamodel> = mutableMapOf()
         val objectList: List<Datamodel> by lazy {
