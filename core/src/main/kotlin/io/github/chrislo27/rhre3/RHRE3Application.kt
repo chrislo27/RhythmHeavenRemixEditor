@@ -64,6 +64,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     lateinit var preferences: Preferences
         private set
+    var versionTextWidth: Float = -1f
+        private set
 
     override fun getTitle(): String =
             "Rhythm Heaven Remix Editor $versionString"
@@ -114,10 +116,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             font.setColor(1f, 1f, 1f, 1f)
 
             batch.begin()
-            font.draw(batch, RHRE3.VERSION.toString(),
+            val layout = font.draw(batch, RHRE3.VERSION.toString(),
                       defaultCamera.viewportWidth - (2f / RHRE3.DEFAULT_SIZE.first) * defaultCamera.viewportWidth,
                       (font.capHeight) + (2f / RHRE3.DEFAULT_SIZE.second) * defaultCamera.viewportHeight,
                       0f, Align.right, false)
+            versionTextWidth = layout.width
             batch.end()
 
             font.data.setScale(1f)
