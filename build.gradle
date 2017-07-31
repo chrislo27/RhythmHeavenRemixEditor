@@ -64,6 +64,7 @@ project(":core") {
         compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.8.7"
         compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.7"
         compile "org.eclipse.jgit:org.eclipse.jgit:4.8.0.201706111038-r"
+        compile "org.slf4j:slf4j-nop:1.7.25"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }
