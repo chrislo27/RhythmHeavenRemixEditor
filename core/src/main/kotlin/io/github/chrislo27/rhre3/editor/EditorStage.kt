@@ -21,6 +21,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               1f, Editor.MESSAGE_BAR_HEIGHT / RHRE3.HEIGHT.toFloat())
         }
         elements += messageBarStage
+        this.updatePositions()
         run {
             messageBarStage.updatePositions()
             messageBarStage.elements +=

@@ -115,13 +115,16 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             font.data.setScale(0.5f)
             font.setColor(1f, 1f, 1f, 1f)
 
+            val oldProj = batch.projectionMatrix
+            batch.projectionMatrix = defaultCamera.combined
             batch.begin()
             val layout = font.draw(batch, RHRE3.VERSION.toString(),
-                      defaultCamera.viewportWidth - (2f / RHRE3.DEFAULT_SIZE.first) * defaultCamera.viewportWidth,
-                      (font.capHeight) + (2f / RHRE3.DEFAULT_SIZE.second) * defaultCamera.viewportHeight,
-                      0f, Align.right, false)
+                      0f,
+                      (font.capHeight) + (2f / RHRE3.HEIGHT) * defaultCamera.viewportHeight,
+                      defaultCamera.viewportWidth, Align.right, false)
             versionTextWidth = layout.width
             batch.end()
+            batch.projectionMatrix = oldProj
 
             font.data.setScale(1f)
         }

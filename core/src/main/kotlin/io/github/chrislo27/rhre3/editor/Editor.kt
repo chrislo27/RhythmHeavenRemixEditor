@@ -65,7 +65,4 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     override fun dispose() {
     }
 
-    fun onResize(width: Float, height: Float) {
-        stage.onResize(width, height)
-    }
 }
