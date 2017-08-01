@@ -1,4 +1,4 @@
-# Contributing to RHRE2
+# Contributing to RHRE3
 Firstly, thanks for considering helping me out on this project! I welcome any Pull Requests and Bug Reports. That being said, I have some 
 standards which I enforce in order to keep this project organized, maintainable and high-quality. 
 
@@ -22,6 +22,7 @@ request:
 2. You cannot modify this project's style (i.e. indentation style, bracket style, naming, etc). I'll understand if you do this by accident, but I'll expect you to fix it before I merge the pull request.
 3. Your JSON formatting must be correct (fit the rest of the project's style) and valid.
 4. ALWAYS merge into dev! If you don't merge into dev I will immediately reject your pull request.
+5. If you are updating SFX, please include a zip file of the changed files. This is due to the fact that the SFX database now lives on a separate repository.
 
 ## Credit
 I won't ever take complete credit for something I didn't do or something someone helped me with. I will always credit you in the editor (visible by going to the info screen and then the credits).
