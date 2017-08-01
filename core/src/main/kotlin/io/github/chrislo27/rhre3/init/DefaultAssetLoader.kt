@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.init
 
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 
@@ -21,6 +22,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
                         "images/icon/$it.png")
             }
         }
+        assets[AssetRegistry.bindAsset("ui-icons", "images/ui/ui-icons.pack").first] =
+                TextureAtlas("images/ui/ui-icons.pack")
     }
 
 }

@@ -17,11 +17,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val ICON_SIZE: Float = 32f
         const val ICON_PADDING: Float = 8f
         const val ICON_COUNT_X: Int = 15
-        const val ICON_COUNT_Y: Int = 3
+        const val ICON_COUNT_Y: Int = 4
 
         const val TRACK_COUNT: Int = 5
 
         const val MESSAGE_BAR_HEIGHT: Int = 14
+        const val BUTTON_SIZE: Float = 32f
+        const val BUTTON_PADDING: Float = 4f
+        const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
     }
@@ -41,7 +44,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
      * Pre-stage render.
      */
     fun render() {
-        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1f)
+        Gdx.gl.glClearColor(0.75f, 0.75f, 0.75f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         camera.update()
