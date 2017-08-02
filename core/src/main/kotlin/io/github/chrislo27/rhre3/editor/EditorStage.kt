@@ -18,6 +18,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Game
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 
 
 class EditorStage(parent: UIElement<EditorScreen>?,
@@ -153,7 +154,47 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               screenHeight = Editor.BUTTON_SIZE / RHRE3.HEIGHT)
         }
         elements += buttonBarStage
-        pickerStage = Stage(this, camera).apply {
+        pickerStage = object : Stage<EditorScreen>(this, camera) {
+            override fun scrolled(amount: Int): Boolean {
+                if (isMouseOver()) {
+                    val selection = editor.pickerSelection.currentSelection
+                    when (stage.camera.getInputX()) {
+                        in (location.realX + location.realWidth * 0.5f)..(location.realX + location.realWidth) -> {
+                            val old = selection.getCurrentVariant().pattern
+                            selection.getCurrentVariant().pattern =
+                                    (selection.getCurrentVariant().pattern + amount)
+                                            .coerceIn(0, selection.getCurrentVariant().maxPatternScroll)
+                            if (old != selection.getCurrentVariant().pattern) {
+                                updateSelected()
+                                return true
+                            }
+                        }
+                        in (variantButtons.first().location.realX)..(location.realX + location.realWidth * 0.5f) -> {
+                            val old = selection.getCurrentVariant().variantScroll
+                            selection.getCurrentVariant().variantScroll =
+                                    (selection.getCurrentVariant().variantScroll + amount)
+                                            .coerceIn(0, selection.getCurrentVariant().maxScroll)
+                            if (old != selection.getCurrentVariant().variantScroll) {
+                                updateSelected()
+                                return true
+                            }
+                        }
+                        in (location.realX)..(variantButtons.first().location.realX) -> {
+                            val old = selection.groupScroll
+                            selection.groupScroll =
+                                    (selection.groupScroll + amount)
+                                            .coerceIn(0, selection.maxGroupScroll)
+                            if (old != selection.groupScroll) {
+                                updateSelected()
+                                return true
+                            }
+                        }
+                    }
+                }
+
+                return false
+            }
+        }.apply {
             this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight,
                               screenHeight = ((Editor.ICON_SIZE + Editor.ICON_PADDING) * Editor.ICON_COUNT_Y + Editor.ICON_PADDING) / RHRE3.HEIGHT
                              )
@@ -487,6 +528,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val labelCount = Editor.PATTERN_COUNT
                 val height = 1f / labelCount
                 for (i in 1..labelCount) {
+                    val centre = i == 1 + (labelCount / 2)
+                    val borderedPalette = if (!centre) borderedPalette else borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT))
                     patternLabels +=
                             TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
                                 this.location.set(
@@ -501,6 +544,22 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 this.textWrapping = false
                                 this.text = "text label $i"
                             }
+
+                    if (centre) {
+                        patternAreaStage.elements +=
+                                TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                                    this.location.set(
+                                            screenX = padding2,
+                                            screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
+                                            screenHeight = height,
+                                            screenY = 1f - (height * i)
+                                                     )
+                                    this.isLocalizationKey = false
+                                    this.textAlign = Align.center
+                                    this.textWrapping = false
+                                    this.text = Editor.ARROWS[4]
+                                }
+                    }
                 }
 
                 patternAreaStage.elements.addAll(patternLabels)

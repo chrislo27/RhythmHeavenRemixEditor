@@ -28,7 +28,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
-        val ARROWS: List<String> = listOf("▲", "▼", "△", "▽")
+        val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
+        val SELECTED_TINT: Color = Color(0.65f, 1f, 1f, 1f)
     }
 
     val camera: OrthographicCamera by lazy {

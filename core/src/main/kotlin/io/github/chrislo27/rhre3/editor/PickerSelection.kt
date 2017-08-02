@@ -29,8 +29,9 @@ class PickerSelection {
 
     }
 
-    data class VariantSelection(val group: GameGroup, var variant: Int = 0, var variantScroll: Int = 0,
-                                var pattern: Int = 0) {
+    class VariantSelection(val group: GameGroup, var variant: Int = 0, var variantScroll: Int = 0) {
+        val patterns: MutableMap<Int, Int> = mutableMapOf()
+
         val maxScroll: Int
             get() {
                 return (group.games.size - Editor.ICON_COUNT_Y).coerceAtLeast(0)
@@ -43,7 +44,15 @@ class PickerSelection {
 
         val maxPatternScroll: Int
             get() {
-                return (placeableObjects.size - Editor.PATTERN_COUNT).coerceAtLeast(0)
+                return (placeableObjects.size - 1).coerceAtLeast(0)
+            }
+
+        var pattern: Int
+            get() {
+                return patterns.getOrPut(variant, { 0 })
+            }
+            set(value) {
+                patterns[variant] = value.coerceIn(0, maxPatternScroll)
             }
     }
 
