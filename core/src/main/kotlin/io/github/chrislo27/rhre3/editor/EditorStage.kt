@@ -36,7 +36,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     val topOfMinimapBar: Float
         get() {
-            return minimapBarStage.location.realY + minimapBarStage.location.realHeight
+            return centreAreaStage.location.realY
         }
 
     init {
