@@ -67,7 +67,7 @@ object GitHelper {
         Toolboks.LOGGER.info("Resetting...")
         temporarilyUseRepo(true) {
             val git = Git(this)
-            git.reset()
+            val result = git.reset()
                     .setMode(ResetCommand.ResetType.HARD)
                     .setRef("origin/${RHRE3.DATABASE_BRANCH}")
                     .call()
@@ -80,12 +80,15 @@ object GitHelper {
             temporarilyUseRepo(true) {
                 val git = Git(this)
                 this.directory.resolve("index.lock").delete() // mega naughty
-                git.fetch()
+                val result = git.fetch()
                         .setRemote("origin")
                         .setProgressMonitor(progressMonitor)
-                        .setRefSpecs(RefSpec("refs/heads/${RHRE3.DATABASE_BRANCH}"))
+                        .setRefSpecs(RefSpec("refs/heads/${RHRE3.DATABASE_BRANCH}:refs/remotes/origin/${RHRE3.DATABASE_BRANCH}"))
                         .setCheckFetchedObjects(true)
                         .call()
+                if (!result.messages.isNullOrEmpty()) {
+                    Toolboks.LOGGER.info("Fetch result has messages: ${result.messages}")
+                }
             }
             reset()
         } else {
