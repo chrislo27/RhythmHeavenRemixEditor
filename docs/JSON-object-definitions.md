@@ -9,6 +9,7 @@ All `data.json` files for each game are a `DataObject`.
   "name": "Human-Readable Name",
   "requiresVersion": "v3.0.0",
   "objects": [],
+  "series": "tengoku",
   // optional fields after this comment
   "group": "Human-Readable Name",
   "priority": 0

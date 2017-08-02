@@ -44,6 +44,8 @@ class DataObject {
 
     lateinit var requiresVersion: String
 
+    var series: String? = null
+
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var group: String? = null
 

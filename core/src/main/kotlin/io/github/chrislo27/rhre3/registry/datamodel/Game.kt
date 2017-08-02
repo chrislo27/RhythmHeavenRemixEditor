@@ -2,10 +2,11 @@ package io.github.chrislo27.rhre3.registry.datamodel
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
+import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.toolboks.version.Version
 
 
-data class Game(val id: String, val name: String, val requiresVersion: Version, val objects: List<Datamodel>,
+data class Game(val id: String, val name: String, val series: Series, val requiresVersion: Version, val objects: List<Datamodel>,
                 val icon: Texture, val group: String, val priority: Int) : Disposable {
 
     override fun dispose() {

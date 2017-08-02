@@ -10,7 +10,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 class AssetRegistryLoadingScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, AssetRegistryLoadingScreen>(main) {
 
-    private var nextScreen: ToolboksScreen<*, *>? = null
+    private var nextScreen: (() -> ToolboksScreen<*, *>?)? = null
 
     override fun render(delta: Float) {
         super.render(delta)
@@ -37,13 +37,18 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
         batch.end()
 
         if (progress >= 1f) {
-            main.screen = nextScreen
+            main.screen = nextScreen?.invoke()
         }
     }
 
-    fun setNextScreen(next: ToolboksScreen<*, *>?): AssetRegistryLoadingScreen {
+    fun setNextScreen(next: (() -> ToolboksScreen<*, *>?)?): AssetRegistryLoadingScreen {
         nextScreen = next
         return this
+    }
+
+    override fun show() {
+        super.show()
+        println("ASSET REGISTRY SHOW")
     }
 
     override fun tickUpdate() {

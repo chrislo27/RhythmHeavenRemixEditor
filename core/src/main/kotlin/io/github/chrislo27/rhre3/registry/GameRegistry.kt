@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.*
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.version.Version
+import java.util.*
 
 
 object GameRegistry : Disposable {
@@ -103,7 +104,9 @@ object GameRegistry : Disposable {
             val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
             val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
 
-            val game: Game = Game(dataObject.id, dataObject.name, Version.fromString(dataObject.requiresVersion),
+            val game: Game = Game(dataObject.id, dataObject.name,
+                                  Series.valueOf(dataObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
+                                  Version.fromString(dataObject.requiresVersion),
                                   mutableListOf(),
                                   Texture(folder.child(ICON_FILENAME)),
                                   dataObject.group ?: dataObject.name,

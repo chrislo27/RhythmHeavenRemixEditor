@@ -97,15 +97,19 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // screens
         run {
             ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
-            ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
-            ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
-            ScreenRegistry += "editor" to EditorScreen(this)
+
+            fun addOtherScreens() {
+                ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
+                ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
+                ScreenRegistry += "editor" to EditorScreen(this)
+            }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(
-                                      ScreenRegistry["databaseUpdate"]
-//                                            TestScreen(this)
-                                            ))
+                                      {
+                                          addOtherScreens()
+                                          ScreenRegistry["databaseUpdate"]
+                                      }))
         }
     }
 
@@ -119,9 +123,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             batch.projectionMatrix = defaultCamera.combined
             batch.begin()
             val layout = font.draw(batch, RHRE3.VERSION.toString(),
-                      0f,
-                      (font.capHeight) + (2f / RHRE3.HEIGHT) * defaultCamera.viewportHeight,
-                      defaultCamera.viewportWidth, Align.right, false)
+                                   0f,
+                                   (font.capHeight) + (2f / RHRE3.HEIGHT) * defaultCamera.viewportHeight,
+                                   defaultCamera.viewportWidth, Align.right, false)
             versionTextWidth = layout.width
             batch.end()
             batch.projectionMatrix = oldProj

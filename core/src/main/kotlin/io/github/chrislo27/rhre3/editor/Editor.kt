@@ -16,7 +16,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     companion object {
         const val ICON_SIZE: Float = 32f
         const val ICON_PADDING: Float = 8f
-        const val ICON_COUNT_X: Int = 15
+        const val ICON_COUNT_X: Int = 13
         const val ICON_COUNT_Y: Int = 4
 
         const val TRACK_COUNT: Int = 5
@@ -27,6 +27,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
+        val ARROWS: List<String> = listOf("▲", "▼", "△", "▽")
     }
 
     val camera: OrthographicCamera by lazy {
@@ -39,6 +40,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     val stage: EditorStage = EditorStage(null, stageCamera, main)
     val batch: SpriteBatch
         get() = main.batch
+
+    val pickerSelection: PickerSelection = PickerSelection()
 
     /**
      * Pre-stage render.
