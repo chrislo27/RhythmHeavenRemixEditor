@@ -20,6 +20,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val ICON_COUNT_Y: Int = 4
 
         const val TRACK_COUNT: Int = 5
+        const val PATTERN_COUNT: Int = 5
 
         const val MESSAGE_BAR_HEIGHT: Int = 14
         const val BUTTON_SIZE: Float = 32f

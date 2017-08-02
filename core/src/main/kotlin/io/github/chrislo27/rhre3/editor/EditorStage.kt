@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Game
@@ -36,6 +37,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val variantButtons: List<GameButton>
     val seriesButtons: List<SeriesButton>
     val patternLabels: List<TextLabel<EditorScreen>>
+    val gameScrollButtons: List<Button<EditorScreen>>
+    val variantScrollButtons: List<Button<EditorScreen>>
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
@@ -53,12 +56,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             fun updateSelected() {
                 val selection = editor.pickerSelection.currentSelection
                 val series = editor.pickerSelection.currentSeries
+
+                selection.groups.clear()
+                GameRegistry.data.gameGroupsList
+                        .filter { it.series == series }
+                        .mapTo(selection.groups) { it }
+
                 seriesButtons.forEach {
                     it.selected = series == it.series
                 }
 
                 gameButtons.forEach {
                     it.game = null
+                }
+                gameScrollButtons.forEach {
+
                 }
                 GameRegistry.data.gameGroupsList
                         .filter { it.series == series }
@@ -69,7 +81,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             if (y in 0 until Editor.ICON_COUNT_Y) {
                                 val buttonIndex = y * Editor.ICON_COUNT_X + x
                                 gameButtons[buttonIndex].apply {
-                                    this.game = it.games[selection[index].variant]
+                                    this.game = it.games[selection.getVariant(index).variant]
                                     if (selection.group == index) {
                                         this.selected = true
                                     }
@@ -81,19 +93,35 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     it.game = null
                 }
                 gameButtons.firstOrNull { it.selected && it.game != null }?.also { button ->
-                    val group = GameRegistry.data.gameGroupsMap[button.game!!.group]!!
+                    val group: GameGroup = selection.groups[selection.group]
                     group.games.forEachIndexed { index, game ->
-                        val y = index - selection[selection.group].variantScroll
+                        val y = index - selection.getCurrentVariant().variantScroll
                         if (y in 0 until Editor.ICON_COUNT_Y) {
                             variantButtons[y].apply {
                                 this.game = game
-                                if (selection[selection.group].variant == index) {
+                                if (selection.getCurrentVariant().variant == index) {
                                     this.selected = true
                                 }
                             }
                         }
                     }
                 }
+
+                patternLabels.forEach {
+                    it.text = ""
+                }
+                if (selection.groups.isNotEmpty() && selection.getCurrentVariant().placeableObjects.isNotEmpty()) {
+                    val variant = selection.getCurrentVariant()
+                    val objects = variant.placeableObjects
+
+                    objects.forEachIndexed { index, datamodel ->
+                        val y = 2 + (index - variant.pattern)
+                        if (y in 0 until Editor.PATTERN_COUNT) {
+                            patternLabels[y].text = datamodel.name
+                        }
+                    }
+                }
+
             }
 
             updateSelected()
@@ -110,6 +138,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
         patternLabels = mutableListOf()
+        gameScrollButtons = mutableListOf()
+        variantScrollButtons = mutableListOf()
 
         messageBarStage = Stage(this, camera).apply {
             this.location.set(0f, 0f,
@@ -231,8 +261,84 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             if (y != 0 && y != Editor.ICON_COUNT_Y - 1)
                                 continue
                             val isUp: Boolean = y == 0
-                            val isVariant: Boolean = x == Editor.ICON_COUNT_X + 1
-                            val button = Button(palette, pickerStage, pickerStage).apply {
+                            val isVariant: Boolean = x == Editor.ICON_COUNT_X + 2
+                            val button = object : Button<EditorScreen>(palette, pickerStage, pickerStage) {
+                                override fun render(screen: EditorScreen, batch: SpriteBatch,
+                                                    shapeRenderer: ShapeRenderer) {
+                                    super.render(screen, batch, shapeRenderer)
+                                    val selection = editor.pickerSelection.currentSelection
+                                    val label = this.labels.first() as TextLabel
+                                    if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+                                        if (isUp) {
+                                            label.text = Editor.ARROWS[2]
+                                        } else {
+                                            label.text = Editor.ARROWS[3]
+                                        }
+                                    } else {
+                                        if (isVariant) {
+                                            val current = selection.getCurrentVariant()
+                                            if (isUp) {
+                                                if (current.variantScroll > 0) {
+                                                    label.text = Editor.ARROWS[0]
+                                                } else {
+                                                    label.text = Editor.ARROWS[2]
+                                                }
+                                            } else {
+                                                if (current.variantScroll < current.maxScroll) {
+                                                    label.text = Editor.ARROWS[1]
+                                                } else {
+                                                    label.text = Editor.ARROWS[3]
+                                                }
+                                            }
+                                        } else {
+                                            if (isUp) {
+                                                if (selection.groupScroll > 0) {
+                                                    label.text = Editor.ARROWS[0]
+                                                } else {
+                                                    label.text = Editor.ARROWS[2]
+                                                }
+                                            } else {
+                                                if (selection.groupScroll < selection.maxGroupScroll) {
+                                                    label.text = Editor.ARROWS[1]
+                                                } else {
+                                                    label.text = Editor.ARROWS[3]
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                                    super.onLeftClick(xPercent, yPercent)
+                                    val selection = editor.pickerSelection.currentSelection
+                                    if (isVariant) {
+                                        val current = selection.getCurrentVariant()
+                                        if (isUp) {
+                                            if (current.variantScroll > 0) {
+                                                current.variantScroll--
+                                                updateSelected()
+                                            }
+                                        } else {
+                                            if (current.variantScroll < current.maxScroll) {
+                                                current.variantScroll++
+                                                updateSelected()
+                                            }
+                                        }
+                                    } else {
+                                        if (isUp) {
+                                            if (selection.groupScroll > 0) {
+                                                selection.groupScroll--
+                                                updateSelected()
+                                            }
+                                        } else {
+                                            if (selection.groupScroll < selection.maxGroupScroll) {
+                                                selection.groupScroll++
+                                                updateSelected()
+                                            }
+                                        }
+                                    }
+                                }
+                            }.apply {
                                 this.setLocation(x, y)
                                 this.background = false
                                 this.addLabel(
@@ -250,15 +356,20 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             }
 
                             pickerStage.elements += button
+                            if (isVariant) {
+                                (variantScrollButtons as MutableList) += button
+                            } else {
+                                (gameScrollButtons as MutableList) += button
+                            }
                         } else {
                             val isVariant = x == Editor.ICON_COUNT_X + 1
-                            val button = GameButton(x, y, palette, pickerStage, pickerStage, {_, _ ->
+                            val button = GameButton(x, y, palette, pickerStage, pickerStage, { _, _ ->
                                 this as GameButton
                                 if (visible && this.game != null) {
                                     val selection = editor.pickerSelection.currentSelection
                                     if (isVariant) {
-                                       selection[selection.group].variant =
-                                                y + selection[selection.group].variantScroll
+                                        selection.getVariant(selection.group).variant =
+                                                y + selection.getVariant(selection.group).variantScroll
                                     } else {
                                         selection.group =
                                                 (y + editor.pickerSelection.currentSelection.groupScroll) * Editor.ICON_COUNT_X + x
@@ -285,7 +396,34 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
                 val padding2 = pickerStage.percentageOfWidth(Editor.ICON_PADDING * 2)
 
-                val upButton = Button(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                val upButton = object : Button<EditorScreen>(borderedPalette, patternAreaStage, patternAreaStage) {
+                    override fun render(screen: EditorScreen, batch: SpriteBatch,
+                                        shapeRenderer: ShapeRenderer) {
+                        super.render(screen, batch, shapeRenderer)
+                        val selection = editor.pickerSelection.currentSelection
+                        val label = this.labels.first() as TextLabel
+                        if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+                            label.text = Editor.ARROWS[2]
+                        } else {
+                            val current = selection.getCurrentVariant()
+                            if (current.pattern > 0) {
+                                label.text = Editor.ARROWS[0]
+                            } else {
+                                label.text = Editor.ARROWS[2]
+                            }
+                        }
+                    }
+
+                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                        super.onLeftClick(xPercent, yPercent)
+                        val selection = editor.pickerSelection.currentSelection
+                        val current = selection.getCurrentVariant()
+                        if (current.pattern > 0) {
+                            current.pattern--
+                            updateSelected()
+                        }
+                    }
+                }.apply {
                     this.location.set(screenX = padding2,
                                       screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
                                       screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
@@ -300,7 +438,34 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 this.background = false
                             })
                 }
-                val downButton = Button(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                val downButton = object : Button<EditorScreen>(borderedPalette, patternAreaStage, patternAreaStage) {
+                    override fun render(screen: EditorScreen, batch: SpriteBatch,
+                                        shapeRenderer: ShapeRenderer) {
+                        super.render(screen, batch, shapeRenderer)
+                        val selection = editor.pickerSelection.currentSelection
+                        val label = this.labels.first() as TextLabel
+                        if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+                            label.text = Editor.ARROWS[3]
+                        } else {
+                            val current = selection.getCurrentVariant()
+                            if (current.pattern < current.maxPatternScroll) {
+                                label.text = Editor.ARROWS[1]
+                            } else {
+                                label.text = Editor.ARROWS[3]
+                            }
+                        }
+                    }
+
+                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                        super.onLeftClick(xPercent, yPercent)
+                        val selection = editor.pickerSelection.currentSelection
+                        val current = selection.getCurrentVariant()
+                        if (current.pattern < current.maxPatternScroll) {
+                            current.pattern++
+                            updateSelected()
+                        }
+                    }
+                }.apply {
                     this.location.set(screenX = padding2,
                                       screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
                                       screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
@@ -319,7 +484,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 patternAreaStage.elements += upButton
                 patternAreaStage.elements += downButton
 
-                val labelCount = 5
+                val labelCount = Editor.PATTERN_COUNT
                 val height = 1f / labelCount
                 for (i in 1..labelCount) {
                     patternLabels +=

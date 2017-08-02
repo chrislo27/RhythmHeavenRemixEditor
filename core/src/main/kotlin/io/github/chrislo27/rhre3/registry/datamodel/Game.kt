@@ -9,6 +9,10 @@ import io.github.chrislo27.toolboks.version.Version
 data class Game(val id: String, val name: String, val series: Series, val requiresVersion: Version, val objects: List<Datamodel>,
                 val icon: Texture, val group: String, val groupDefault: Boolean, val priority: Int) : Disposable {
 
+    val placeableObjects: List<Datamodel> by lazy {
+        objects.filter { !it.hidden }.sortedWith(DatamodelComparator)
+    }
+
     override fun dispose() {
         objects.forEach(Disposable::dispose)
     }
