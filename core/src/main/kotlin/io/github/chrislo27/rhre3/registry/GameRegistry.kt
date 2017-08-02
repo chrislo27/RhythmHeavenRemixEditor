@@ -91,7 +91,7 @@ object GameRegistry : Disposable {
             objectList
 
             gameList.groupBy(Game::group).map {
-                it.key to GameGroup(it.key, it.value)
+                it.key to GameGroup(it.key, it.value.sortedWith(GameByNameComparator))
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
         }
@@ -109,7 +109,7 @@ object GameRegistry : Disposable {
                                   Version.fromString(dataObject.requiresVersion),
                                   mutableListOf(),
                                   Texture(folder.child(ICON_FILENAME)),
-                                  dataObject.group ?: dataObject.name,
+                                  dataObject.group ?: dataObject.name, dataObject.groupDefault,
                                   dataObject.priority)
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->

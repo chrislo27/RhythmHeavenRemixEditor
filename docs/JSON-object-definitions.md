@@ -12,6 +12,7 @@ All `data.json` files for each game are a `DataObject`.
   "series": "tengoku",
   // optional fields after this comment
   "group": "Human-Readable Name",
+  "groupDefault": false,
   "priority": 0
 }
 ```
@@ -42,7 +43,8 @@ what object type to deserialize at runtime. This is called *polymorphism*.
 The optional `group` field is the full name of the group this data object
 belongs to, if it has variants. For example, `gleeClubEnMegamix` would
 have the group value be `Glee Club (Megamix)` to be grouped with other
-data objects that also have the same group value.
+data objects that also have the same group value. Games with `groupDefault`
+set to true will appear earlier in the variant list.
 
 The optional `priority` field is an integer for how the games should
 be sorted. Higher numbers come first, lower numbers come last.

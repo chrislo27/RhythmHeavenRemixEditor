@@ -50,6 +50,9 @@ class DataObject {
     var group: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var groupDefault: Boolean = false
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var priority: Int = 0
 
     lateinit var objects: List<NamedIDObject>

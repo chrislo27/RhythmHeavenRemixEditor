@@ -7,7 +7,7 @@ import io.github.chrislo27.toolboks.version.Version
 
 
 data class Game(val id: String, val name: String, val series: Series, val requiresVersion: Version, val objects: List<Datamodel>,
-                val icon: Texture, val group: String, val priority: Int) : Disposable {
+                val icon: Texture, val group: String, val groupDefault: Boolean, val priority: Int) : Disposable {
 
     override fun dispose() {
         objects.forEach(Disposable::dispose)
@@ -30,6 +30,14 @@ object GameByNameComparator : Comparator<Game> {
             return -1
         } else if (o2.priority > o1.priority) {
             return 1
+        }
+
+        if (o1.group == o2.group) {
+            if (o1.groupDefault) {
+                return -1
+            } else if (o2.groupDefault) {
+                return 1
+            }
         }
 
         return o1.name.compareTo(o2.name)
