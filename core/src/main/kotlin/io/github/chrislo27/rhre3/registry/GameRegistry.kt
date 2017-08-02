@@ -63,7 +63,7 @@ object GameRegistry : Disposable {
             if (!ready)
                 error("Attempt to map game groups when not ready")
 
-            gameGroupsMap.values.toList()
+            gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
 
         private val folders: List<FileHandle> by lazy {
@@ -91,7 +91,7 @@ object GameRegistry : Disposable {
             objectList
 
             gameList.groupBy(Game::group).map {
-                it.key to GameGroup(it.key, it.value.sortedWith(GameByNameComparator))
+                it.key to GameGroup(it.key, it.value.sortedWith(GameGroupListComparator))
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
         }
