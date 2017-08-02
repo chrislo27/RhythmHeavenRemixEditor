@@ -69,6 +69,7 @@ object GitHelper {
             val git = Git(this)
             git.reset()
                     .setMode(ResetCommand.ResetType.HARD)
+                    .setRef("origin/${RHRE3.DATABASE_BRANCH}")
                     .call()
         }
     }
