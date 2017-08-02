@@ -11,14 +11,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.rhre3.registry.datamodel.Game
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 
 
 class EditorStage(parent: UIElement<EditorScreen>?,
-                  camera: OrthographicCamera, val main: RHRE3Application)
+                  camera: OrthographicCamera, val main: RHRE3Application, val editor: Editor)
     : Stage<EditorScreen>(parent, camera), Palettable {
 
     override var palette: UIPalette = main.uiPalette.copy(
@@ -33,16 +35,81 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
     val seriesButtons: List<SeriesButton>
+    val patternLabels: List<TextLabel<EditorScreen>>
+
+    val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
+    val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
 
     val topOfMinimapBar: Float
         get() {
             return centreAreaStage.location.realY
         }
 
+    private var isDirty = false
+
+    override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+        super.render(screen, batch, shapeRenderer)
+        if (isDirty && !GameRegistry.isDataLoading()) {
+            fun updateSelected() {
+                val selection = editor.pickerSelection.currentSelection
+                val series = editor.pickerSelection.currentSeries
+                seriesButtons.forEach {
+                    it.selected = series == it.series
+                }
+
+                gameButtons.forEach {
+                    it.game = null
+                }
+                GameRegistry.data.gameGroupsList
+                        .filter { it.series == series }
+                        .forEachIndexed { index, it ->
+                            val x: Int = index % Editor.ICON_COUNT_X
+                            val y: Int = index / Editor.ICON_COUNT_X - selection.groupScroll
+
+                            if (y in 0 until Editor.ICON_COUNT_Y) {
+                                val buttonIndex = y * Editor.ICON_COUNT_X + x
+                                gameButtons[buttonIndex].apply {
+                                    this.game = it.games[selection[index].variant]
+                                    if (selection.group == index) {
+                                        this.selected = true
+                                    }
+                                }
+                            }
+                        }
+
+                variantButtons.forEach {
+                    it.game = null
+                }
+                gameButtons.firstOrNull { it.selected && it.game != null }?.also { button ->
+                    val group = GameRegistry.data.gameGroupsMap[button.game!!.group]!!
+                    group.games.forEachIndexed { index, game ->
+                        val y = index - selection[selection.group].variantScroll
+                        if (y in 0 until Editor.ICON_COUNT_Y) {
+                            variantButtons[y].apply {
+                                this.game = game
+                                if (selection[selection.group].variant == index) {
+                                    this.selected = true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            updateSelected()
+            isDirty = false
+        }
+    }
+
+    fun updateSelected() {
+        isDirty = true
+    }
+
     init {
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
+        patternLabels = mutableListOf()
 
         messageBarStage = Stage(this, camera).apply {
             this.location.set(0f, 0f,
@@ -74,9 +141,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               screenHeight = pickerStage.location.screenHeight,
                               screenX = 0.5f,
                               screenWidth = 0.5f)
-            this.elements += ColourPane(this, this).apply {
-                this.colour.set(0f, 1f, 0f, 0.5f)
-            }
         }
         elements += patternAreaStage
         minimapBarStage = Stage(this, camera).apply {
@@ -107,14 +171,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         this.colour.a = 0.75f
                     }
             messageBarStage.elements +=
-                    object : TextLabel<EditorScreen>(palette, messageBarStage, messageBarStage){
+                    object : TextLabel<EditorScreen>(palette, messageBarStage, messageBarStage) {
                         private var lastVersionTextWidth: Float = -1f
 
                         override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                             super.render(screen, batch, shapeRenderer)
                             if (main.versionTextWidth != lastVersionTextWidth) {
                                 lastVersionTextWidth = main.versionTextWidth
-                                this.location.set(screenWidth = 1f - (main.versionTextWidth / messageBarStage.location.realWidth))
+                                this.location.set(
+                                        screenWidth = 1f - (main.versionTextWidth / messageBarStage.location.realWidth))
                                 this.stage.updatePositions()
                             }
                         }
@@ -130,71 +195,151 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
         }
 
-        // Picker area
-        run picker@ {
-            pickerStage.updatePositions()
-            gameButtons as MutableList
-            variantButtons as MutableList
-
+        run pickerAndCo@ {
             val iconWidth = pickerStage.percentageOfWidth(Editor.ICON_SIZE)
             val iconHeight = pickerStage.percentageOfHeight(Editor.ICON_SIZE)
             val iconWidthPadded = pickerStage.percentageOfWidth(Editor.ICON_SIZE + Editor.ICON_PADDING)
             val iconHeightPadded = pickerStage.percentageOfHeight(Editor.ICON_SIZE + Editor.ICON_PADDING)
             val startX = pickerStage.percentageOfWidth(
-                    ((pickerStage.location.realWidth / 2f) -
-                            (Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_X + 3) -
-                            Editor.ICON_PADDING) / 2f
-                                                      )
+                    (pickerStage.location.realWidth / 2f) -
+                            ((Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_X + 3)
+                                    - Editor.ICON_PADDING)
+                                                      ) / 2f
             val startY = 1f - (pickerStage.percentageOfHeight(
                     (Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_Y - 2) / 2f
-                                                       ))
+                                                             ))
 
-            fun UIElement<*>.setLocation(x: Int, y: Int) {
-                this.location.set(
-                        screenX = startX + iconWidthPadded * x,
-                        screenY = startY - iconHeightPadded * y,
-                        screenWidth = iconWidth,
-                        screenHeight = iconHeight
-                                 )
-            }
+            // Picker area
+            run picker@ {
+                pickerStage.updatePositions()
+                gameButtons as MutableList
+                variantButtons as MutableList
 
-            for (x in 0 until Editor.ICON_COUNT_X + 3) {
-                for (y in 0 until Editor.ICON_COUNT_Y) {
-                   if (x == Editor.ICON_COUNT_X || x == Editor.ICON_COUNT_X + 2) {
-                        if (y != 0 && y != Editor.ICON_COUNT_Y - 1)
-                            continue
-                       val isUp: Boolean = y == 0
-                       val isVariant: Boolean = x == Editor.ICON_COUNT_X + 2
-                       val button = Button(palette, pickerStage, pickerStage).apply {
-                           this.setLocation(x, y)
-                           this.background = false
-                           this.addLabel(
-                                   object : TextLabel<EditorScreen>(palette, this, this.stage){
-                                       override fun getFont(): BitmapFont {
-                                           return main.defaultBorderedFont
-                                       }
-                                   }.apply {
-                                       this.setText(
-                                               if (isUp) Editor.ARROWS[2] else Editor.ARROWS[3],
-                                               Align.center, false, false
-                                                   )
-                                       this.background = false
-                                   })
-                       }
-
-                       pickerStage.elements += button
-                   } else {
-                       val button = GameButton(x, y, palette, pickerStage, pickerStage).apply {
-                           this.setLocation(x, y)
-                       }
-                       gameButtons += button
-                       if (x == Editor.ICON_COUNT_X + 2) {
-                           variantButtons += button
-                       }
-                   }
+                fun UIElement<*>.setLocation(x: Int, y: Int) {
+                    this.location.set(
+                            screenX = startX + iconWidthPadded * x,
+                            screenY = startY - iconHeightPadded * y,
+                            screenWidth = iconWidth,
+                            screenHeight = iconHeight
+                                     )
                 }
+
+
+                for (y in 0 until Editor.ICON_COUNT_Y) {
+                    for (x in 0 until Editor.ICON_COUNT_X + 3) {
+                        if (x == Editor.ICON_COUNT_X || x == Editor.ICON_COUNT_X + 2) {
+                            if (y != 0 && y != Editor.ICON_COUNT_Y - 1)
+                                continue
+                            val isUp: Boolean = y == 0
+                            val isVariant: Boolean = x == Editor.ICON_COUNT_X + 1
+                            val button = Button(palette, pickerStage, pickerStage).apply {
+                                this.setLocation(x, y)
+                                this.background = false
+                                this.addLabel(
+                                        object : TextLabel<EditorScreen>(palette, this, this.stage) {
+                                            override fun getFont(): BitmapFont {
+                                                return main.defaultBorderedFont
+                                            }
+                                        }.apply {
+                                            this.setText(
+                                                    if (isUp) Editor.ARROWS[2] else Editor.ARROWS[3],
+                                                    Align.center, false, false
+                                                        )
+                                            this.background = false
+                                        })
+                            }
+
+                            pickerStage.elements += button
+                        } else {
+                            val isVariant = x == Editor.ICON_COUNT_X + 1
+                            val button = GameButton(x, y, palette, pickerStage, pickerStage, {_, _ ->
+                                this as GameButton
+                                if (visible && this.game != null) {
+                                    val selection = editor.pickerSelection.currentSelection
+                                    if (isVariant) {
+                                       selection[selection.group].variant =
+                                                y + selection[selection.group].variantScroll
+                                    } else {
+                                        selection.group =
+                                                (y + editor.pickerSelection.currentSelection.groupScroll) * Editor.ICON_COUNT_X + x
+                                    }
+                                    updateSelected()
+                                }
+                            }).apply {
+                                this.setLocation(x, y)
+                            }
+                            if (isVariant) {
+                                variantButtons += button
+                            } else {
+                                gameButtons += button
+                            }
+                        }
+                    }
+                }
+                pickerStage.elements.addAll(gameButtons)
+                pickerStage.elements.addAll(variantButtons)
             }
-            pickerStage.elements.addAll(gameButtons)
+
+            run patternArea@ {
+                patternLabels as MutableList
+                val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
+                val padding2 = pickerStage.percentageOfWidth(Editor.ICON_PADDING * 2)
+
+                val upButton = Button(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(screenX = padding2,
+                                      screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
+                                      screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
+                                      screenY = startY)
+                    this.background = false
+                    this.addLabel(
+                            TextLabel(borderedPalette, this, this.stage).apply {
+                                this.setText(
+                                        Editor.ARROWS[2],
+                                        Align.center, false, false
+                                            )
+                                this.background = false
+                            })
+                }
+                val downButton = Button(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(screenX = padding2,
+                                      screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
+                                      screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
+                                      screenY = startY - iconHeightPadded * (Editor.ICON_COUNT_Y - 1))
+                    this.background = false
+                    this.addLabel(
+                            TextLabel(borderedPalette, this, this.stage).apply {
+                                this.setText(
+                                        Editor.ARROWS[3],
+                                        Align.center, false, false
+                                            )
+                                this.background = false
+                            })
+                }
+
+                patternAreaStage.elements += upButton
+                patternAreaStage.elements += downButton
+
+                val labelCount = 5
+                val height = 1f / labelCount
+                for (i in 1..labelCount) {
+                    patternLabels +=
+                            TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                                this.location.set(
+                                        screenHeight = height,
+                                        screenY = 1f - (height * i),
+                                        screenX = upButton.location.screenX + upButton.location.screenWidth +
+                                                padding2
+                                                 )
+                                this.location.set(screenWidth = 1f - (this.location.screenX + padding2))
+                                this.isLocalizationKey = false
+                                this.textAlign = Align.left
+                                this.textWrapping = false
+                                this.text = "text label $i"
+                            }
+                }
+
+                patternAreaStage.elements.addAll(patternLabels)
+            }
         }
 
         // Minimap area
@@ -206,20 +351,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val buttonHeight: Float = 1f
 
             Series.VALUES.forEachIndexed { index, series ->
-                seriesButtons +=
-                        SeriesButton(series, palette, minimapBarStage, minimapBarStage).apply {
-                            this.location.set(
-                                    screenWidth = buttonWidth,
-                                    screenHeight = buttonHeight,
-                                    screenX = index * buttonWidth
-                                             )
-                            this.addLabel(
-                                    ImageLabel(palette, this, this.stage).apply {
-                                        this.image = TextureRegion(AssetRegistry.get<Texture>(series.textureId))
-                                        this.renderType = ImageLabel.ImageRendering.RENDER_FULL
-                                    }
-                                         )
-                        }
+                val tmp = SeriesButton(series, palette, minimapBarStage, minimapBarStage, { x, y ->
+                    editor.pickerSelection.currentSeries = series
+                    updateSelected()
+                }).apply {
+                    this.location.set(
+                            screenWidth = buttonWidth,
+                            screenHeight = buttonHeight,
+                            screenX = index * buttonWidth
+                                     )
+                    this.addLabel(
+                            ImageLabel(palette, this, this.stage).apply {
+                                this.image = TextureRegion(AssetRegistry.get<Texture>(series.textureId))
+                                this.renderType = ImageLabel.ImageRendering.RENDER_FULL
+                            }
+                                 )
+                }
+                seriesButtons += tmp
+
             }
             minimapBarStage.elements.addAll(seriesButtons)
         }
@@ -268,14 +417,73 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         this.updatePositions()
+        this.updateSelected()
     }
 
-    class GameButton(val x: Int, val y: Int,
-                     palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-        : Button<EditorScreen>(palette, parent, stage)
+    abstract inner class SelectableButton(palette: UIPalette, parent: UIElement<EditorScreen>,
+                                          stage: Stage<EditorScreen>,
+                                          val onLeftClickFunc: SelectableButton.(Float, Float) -> Unit = { x, y -> })
+        : Button<EditorScreen>(palette, parent, stage) {
 
-    class SeriesButton(val series: Series,
-                       palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-        : Button<EditorScreen>(palette, parent, stage)
+        val label: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
+            this.renderType = ImageLabel.ImageRendering.RENDER_FULL
+            this.image = TextureRegion(AssetRegistry.missingTexture)
+        }
+
+        var selected: Boolean = false
+            set(value) {
+                val old = field
+                field = value
+                if (field != old) {
+                    this.removeLabel(selectedLabel)
+                    if (field) {
+                        this.addLabel(selectedLabel)
+                        selectedLabel.onResize(this.location.realWidth, this.location.realHeight)
+                    }
+                }
+            }
+        abstract val selectedLabel: ImageLabel<EditorScreen>
+
+        init {
+            addLabel(label)
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            this.onLeftClickFunc(xPercent, yPercent)
+        }
+    }
+
+    open inner class GameButton(val x: Int, val y: Int,
+                                palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
+                                f: SelectableButton.(Float, Float) -> Unit)
+        : SelectableButton(palette, parent, stage, f) {
+
+        var game: Game? = null
+            set(value) {
+                field = value
+                this.visible = field != null
+                if (value != null) {
+                    this.label.image!!.setRegion(value.icon)
+                } else {
+                    this.selected = false
+                }
+            }
+
+        override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
+            this.image = selectorRegion
+        }
+
+    }
+
+    open inner class SeriesButton(val series: Series,
+                                  palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
+                                  onLeftClick: SelectableButton.(Float, Float) -> Unit)
+        : SelectableButton(palette, parent, stage, onLeftClick) {
+
+        override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
+            this.image = selectorRegionSeries
+        }
+    }
 
 }

@@ -13,6 +13,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
         }
+        AssetRegistry.loadAsset<Texture>("ui_selector_fever", "images/selector/fever.png")
+        AssetRegistry.loadAsset<Texture>("ui_selector_tengoku", "images/selector/tengoku.png")
+        AssetRegistry.loadAsset<Texture>("ui_selector_ds", "images/selector/ds.png")
 
         AssetRegistry.loadAsset<Texture>("ui_bg", "images/ui/bg.png")
 
