@@ -48,7 +48,6 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        println("ASSET REGISTRY SHOW")
     }
 
     override fun tickUpdate() {

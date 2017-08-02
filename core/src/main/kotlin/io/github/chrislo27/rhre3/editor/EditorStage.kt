@@ -40,7 +40,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
     init {
-        println("EDITOR STAGE INIT")
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
@@ -59,7 +58,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += buttonBarStage
         pickerStage = Stage(this, camera).apply {
             this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight,
-                              screenHeight = ((Editor.ICON_SIZE + Editor.ICON_PADDING) * Editor.ICON_COUNT_Y) / RHRE3.HEIGHT
+                              screenHeight = ((Editor.ICON_SIZE + Editor.ICON_PADDING) * Editor.ICON_COUNT_Y + Editor.ICON_PADDING) / RHRE3.HEIGHT
                              )
             this.elements += ColourPane(this, this).apply {
                 this.colour.set(Editor.TRANSLUCENT_BLACK)
@@ -141,8 +140,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val iconHeight = pickerStage.percentageOfHeight(Editor.ICON_SIZE)
             val iconWidthPadded = pickerStage.percentageOfWidth(Editor.ICON_SIZE + Editor.ICON_PADDING)
             val iconHeightPadded = pickerStage.percentageOfHeight(Editor.ICON_SIZE + Editor.ICON_PADDING)
-            val startX = pickerStage.percentageOfWidth(Editor.ICON_PADDING) * 0.5f
-            val startY = (1f - pickerStage.percentageOfHeight(Editor.ICON_SIZE + Editor.ICON_PADDING * 0.5f))
+            val startX = pickerStage.percentageOfWidth(
+                    ((pickerStage.location.realWidth / 2f) -
+                            (Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_X + 3) -
+                            Editor.ICON_PADDING) / 2f
+                                                      )
+            val startY = 1f - (pickerStage.percentageOfHeight(
+                    (Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_Y - 2) / 2f
+                                                       ))
 
             fun UIElement<*>.setLocation(x: Int, y: Int) {
                 this.location.set(

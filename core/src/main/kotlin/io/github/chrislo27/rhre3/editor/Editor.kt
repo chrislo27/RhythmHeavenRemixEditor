@@ -15,8 +15,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     companion object {
         const val ICON_SIZE: Float = 32f
-        const val ICON_PADDING: Float = 8f
-        const val ICON_COUNT_X: Int = 13
+        const val ICON_PADDING: Float = 4f
+        const val ICON_COUNT_X: Int = 14
         const val ICON_COUNT_Y: Int = 4
 
         const val TRACK_COUNT: Int = 5
