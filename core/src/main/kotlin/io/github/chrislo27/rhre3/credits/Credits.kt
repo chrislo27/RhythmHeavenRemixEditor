@@ -1,29 +1,48 @@
 package io.github.chrislo27.rhre3.credits
 
+import io.github.chrislo27.rhre3.RHRE3
+
 
 object Credits {
 
-    val list: List<Pair<String, String>> = listOf(
-            "title" to "",
-            "programming" to "chrislo27",
-            "databasing" to "ahemtoday, GuardedLolz, Miracle22, TieSoul, Huebird, ArendAlphaEagle, Armodillomatt12, Eggman199, ChorusSquid, baguette, chrislo27",
-            "localization" to """[RAINBOW]Español (Spanish)[]: GlitchyPSIX, Killble, quantic, David Mismo, (◉.◉)☂, TheGarnet_
-[RAINBOW]Français (French)[]: Gabgab2222, Pengu12345, Lovestep, Dragoneteur, chrislo27""",
-            "sfx" to "F Yeah, Rhythm Heaven! Tumblr, ahemtoday, Haydorf, megaminerzero, Chocolate2890, Whistler_420, TieSoul, Huebird of Happiness, Miracle22, GuardedLolz, TheRhythmKid, Kana, GlitchyPSIX, Mariofan5000",
-            "icons" to "ahemtoday, Whistler_420, Killble, TheNewOrchestra, Altonotone, Pengu12345, fartiliumstation, TheRhythmKid, Chowder, GlitchyPSIX, Miracle22",
-            "uidesign" to "GlitchyPSIX",
-            "misc" to "Pengu12345, ToonLucas22, Strawzzboy64, Chef May, iRonnoc5, The Golden Station\nRhythm Heaven Discord Server",
-            "creditsgame" to "ahemtoday, Serena Strawberry, mistuh_salmon, chrislo27",
-            "technologies" to """[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games, LWJGL
-KHttp
-Jackson (+ Afterburner, Kotlin modules)
-JGit
-Apache Commons IO
-[#FF8900]Kotlin[] by JetBrains
-[#B07219]Java[] by Oracle
-Rhythm Heaven assets by Nintendo""",
-            "you" to ""
-                                                 )
-    val sections: Map<String, String> = list.associate { it }
+    val list: List<Credit> = listOf(
+            "title" crediting RHRE3.GITHUB,
+            "programming" crediting "chrislo27",
+            "localization" crediting "",
+            "sfx" crediting "",
+            "gfx" crediting "GlitchyPSIX",
+            "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_",
+            "rhre2" crediting
+                    "(◉.◉)☂, ahemtoday, Altonotone, ArendAlphaEagle, Armodillomatt12, baguette, Chef May, " +
+                            "Chocolate2890, ChorusSquid, Chowder, David Mismo, Dragoneteur, Eggman199, " +
+                            "fartiliumstation, Gabgab2222, GlitchyPSIX, GuardedLolz, Haydorf, " +
+                            "Huebird of Happiness, iRonnoc5, Kana, Killble, Lovestep, Mariofan5000, megaminerzero, " +
+                            "Miracle22, mistuh_salmon, Pengu12345, quantic, F Yeah, Rhythm Heaven! Tumblr, " +
+                            "Serena Strawberry, Strawzzboy64, The Golden Station, TheGarnet_, TheNewOrchestra, " +
+                            "TheRhythmKid, TieSoul, ToonLucas22, Whistler_420" +
+                            "\n(original) /r/rhythmheaven RH Discord Server",
+            "resources" crediting
+                    "Rhythm Heaven assets by Nintendo\n" +
+                            "[#FF8900]Kotlin[] by JetBrains\n" +
+                            "[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games\n" +
+                            "LWJGL\n" +
+                            "KHttp\n" +
+                            "Jackson\n" +
+                            "JGit\n" +
+                            "Apache Commons IO\n" +
+                            "SLF4J",
+            "you" crediting ""
+                                   )
+
+    private infix fun String.crediting(persons: String): Credit =
+            Credit(this, persons)
+
+    class Credit(val type: String, val persons: String) {
+
+        val localization: String by lazy {
+            "credits.title.$type"
+        }
+
+    }
 
 }
