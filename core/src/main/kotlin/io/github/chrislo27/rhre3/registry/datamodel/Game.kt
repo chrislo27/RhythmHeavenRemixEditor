@@ -25,10 +25,11 @@ object GameByNameComparator : Comparator<Game> {
             return 1
         }
 
+        // higher priorities are first
         if (o1.priority > o2.priority) {
-            return 1
-        } else if (o2.priority > o1.priority) {
             return -1
+        } else if (o2.priority > o1.priority) {
+            return 1
         }
 
         return o1.name.compareTo(o2.name)
