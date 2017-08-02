@@ -83,7 +83,7 @@ object GitHelper {
                 git.fetch()
                         .setRemote("origin")
                         .setProgressMonitor(progressMonitor)
-                        .setRefSpecs(RefSpec("+refs/heads/${RHRE3.DATABASE_BRANCH}"))
+                        .setRefSpecs(RefSpec("refs/heads/${RHRE3.DATABASE_BRANCH}"))
                         .setCheckFetchedObjects(true)
                         .call()
             }
