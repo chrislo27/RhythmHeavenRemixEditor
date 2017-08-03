@@ -10,5 +10,6 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     abstract fun createEntity(): ModelEntity<*>
 
     var hidden: Boolean = false
+    open val pickerName: String = name
 
 }
