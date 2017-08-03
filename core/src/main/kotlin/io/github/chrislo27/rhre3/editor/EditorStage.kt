@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.rhre3.registry.datamodel.Cue
 import io.github.chrislo27.rhre3.registry.datamodel.Game
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -110,6 +111,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                 patternLabels.forEach {
                     it.text = ""
+                    it.textColor = null
                 }
                 if (selection.groups.isNotEmpty() && selection.getCurrentVariant().placeableObjects.isNotEmpty()) {
                     val variant = selection.getCurrentVariant()
@@ -119,6 +121,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val y = 2 + (index - variant.pattern)
                         if (y in 0 until Editor.PATTERN_COUNT) {
                             patternLabels[y].text = datamodel.name
+                            if (y != (Editor.PATTERN_COUNT / 2) && datamodel is Cue) {
+                                patternLabels[y].textColor = Editor.CUE_PATTERN_COLOR
+                            }
                         }
                     }
                 }

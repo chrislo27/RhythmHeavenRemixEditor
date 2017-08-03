@@ -30,6 +30,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
         val SELECTED_TINT: Color = Color(0.65f, 1f, 1f, 1f)
+        val CUE_PATTERN_COLOR: Color = Color(0.65f, 0.65f, 0.65f, 1f)
     }
 
     val camera: OrthographicCamera by lazy {
