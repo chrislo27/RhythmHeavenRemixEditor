@@ -58,8 +58,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     val uiPalette: UIPalette by lazy {
         UIPalette(fonts[defaultFontKey], fonts[defaultFontLargeKey], 1f,
-                  Color(1f, 1f, 1f, 1f), Color(0f, 0f, 0f, 0.75f),
-                  Color(0f, 0.5f, 0.5f, 0.75f), Color(0.25f, 0.25f, 0.25f, 0.75f))
+                  Color(1f, 1f, 1f, 1f),
+                  Color(0f, 0f, 0f, 0.75f),
+                  Color(0.25f, 0.25f, 0.25f, 0.75f),
+                  Color(0f, 0.5f, 0.5f, 0.75f))
     }
 
     lateinit var preferences: Preferences
