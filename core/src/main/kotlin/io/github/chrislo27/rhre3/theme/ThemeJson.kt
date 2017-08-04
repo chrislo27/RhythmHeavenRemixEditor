@@ -11,9 +11,11 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.ser.std.StdSerializer
+import java.util.*
 
 
 @Retention(AnnotationRetention.RUNTIME)
+@Target(AnnotationTarget.FIELD)
 @JacksonAnnotationsInside
 @JsonSerialize(using = LibgdxColorSerializer::class)
 @JsonDeserialize(using = LibgdxColorDeserializer::class)
@@ -39,9 +41,14 @@ class LibgdxColorDeserializer(cl: Class<*>? = null) : StdDeserializer<Color>(cl)
 class LibgdxColorSerializer(cl: Class<Color>? = null) : StdSerializer<Color>(cl) {
 
     override fun serialize(value: Color, gen: JsonGenerator, provider: SerializerProvider) {
-        gen.writeString("#${(value.r * 255).toInt().toString(16)}${(value.g * 255).toInt().toString(
-                16)}${(value.b * 255).toInt().toString(16)}${if (value.a < 1f) (value.a * 255).toInt().toString(
-                16) else ""}")
+        fun String.padZeroes(num: Int = 2): String =
+                this.padStart(num, '0')
+        gen.writeString(("#${(value.r * 255).toInt().toString(16).padZeroes()}" +
+                (value.g * 255).toInt().toString(16).padZeroes() +
+                (value.b * 255).toInt().toString(16).padZeroes() +
+                if (value.a < 1f) (value.a * 255).toInt().toString(16).padZeroes() else ""
+                                )
+                                .toUpperCase(Locale.ROOT))
     }
 
 }

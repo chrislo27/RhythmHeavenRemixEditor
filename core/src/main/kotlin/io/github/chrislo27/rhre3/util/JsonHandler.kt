@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
@@ -19,8 +20,8 @@ object JsonHandler {
     fun createObjectMapper(): ObjectMapper {
         return ObjectMapper()
                 .enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
-                .enable(SerializationFeature.WRITE_NULL_MAP_VALUES)
                 .enable(SerializationFeature.INDENT_OUTPUT)
+                .enable(MapperFeature.USE_ANNOTATIONS)
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 .enable(JsonParser.Feature.ALLOW_COMMENTS)
                 .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)

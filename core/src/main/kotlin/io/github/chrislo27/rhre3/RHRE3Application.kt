@@ -113,6 +113,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                                           ScreenRegistry["databaseUpdate"]
                                       }))
         }
+
     }
 
     override fun postRender() {
