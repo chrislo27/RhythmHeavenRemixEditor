@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.theme.LightTheme
+import io.github.chrislo27.rhre3.theme.Theme
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -45,11 +47,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     val batch: SpriteBatch
         get() = main.batch
 
+    var theme: Theme = LightTheme()
+
     /**
      * Pre-stage render.
      */
     fun render() {
-        Gdx.gl.glClearColor(0.75f, 0.75f, 0.75f, 1f)
+        val bgColour = theme.background
+        Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         camera.update()

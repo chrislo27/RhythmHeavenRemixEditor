@@ -1,6 +1,8 @@
 package io.github.chrislo27.rhre3.theme
 
 import com.badlogic.gdx.graphics.Color
+import com.fasterxml.jackson.annotation.JsonIgnore
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.util.anyUninitializedLateinits
 
 
@@ -21,6 +23,15 @@ abstract class Theme {
                 entities.anyUninitializedLateinits() ||
                 selection.anyUninitializedLateinits())
     }
+
+    var name: String = "<no name>"
+    @field:JsonIgnore open val nameIsLocalization: Boolean = false
+
+    fun getRealName(): String =
+            if (nameIsLocalization)
+                Localization[name]
+            else
+                name
 
     // main elements
     @HexColor lateinit var background: Color
@@ -45,6 +56,7 @@ abstract class Theme {
             timeSignature = Color(0.7f, 0f, 1f, 1f)
         }
     }
+
     lateinit var trackers: TrackersGroup
         protected set
 
@@ -58,6 +70,7 @@ abstract class Theme {
             selectionTint = Color(0f, 0.75f, 0.75f, 1f)
         }
     }
+
     lateinit var entities: EntitiesGroup
         protected set
 
@@ -70,6 +83,7 @@ abstract class Theme {
             selectionBorder = Color(0.1f, 0.85f, 0.85f, 1f)
         }
     }
+
     lateinit var selection: SelectionGroup
         protected set
 
@@ -77,7 +91,11 @@ abstract class Theme {
 
 open class LightTheme : Theme() {
 
-    init { 
+    override val nameIsLocalization: Boolean = true
+
+    init {
+        name = "theme.light"
+
         background = Color(0.925f, 0.925f, 0.925f, 1f)
         trackLine = Color(0.1f, 0.1f, 0.1f, 1f)
 
@@ -102,7 +120,11 @@ open class LightTheme : Theme() {
 
 open class DarkTheme : Theme() {
 
+    override val nameIsLocalization: Boolean = true
+
     init {
+        name = "theme.dark"
+
         background = Color(0.15f, 0.15f, 0.15f, 1f)
         trackLine = Color(0.95f, 0.95f, 0.95f, 1f)
 
@@ -127,7 +149,11 @@ open class DarkTheme : Theme() {
 
 open class RHRE0Theme : Theme() {
 
+    override val nameIsLocalization: Boolean = true
+
     init {
+        name = "theme.rhre0"
+
         background = Color(1f, 165f / 255f, 0.5f, 1f)
         trackLine = Color(0f, 0f, 0f, 1f)
 

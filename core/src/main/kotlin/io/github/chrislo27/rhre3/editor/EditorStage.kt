@@ -223,7 +223,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(screenY = pickerStage.location.screenY + pickerStage.location.screenHeight,
                               screenHeight = Editor.ICON_SIZE / RHRE3.HEIGHT)
             this.elements += ColourPane(this, this).apply {
-                this.colour.set(1f, 0f, 0f, 0.5f)
+                this.colour.set(Editor.TRANSLUCENT_BLACK)
+            }
+            this.elements += ColourPane(this, this).apply {
+                this.colour.set(1f, 1f, 1f, 1f)
+                this.location.set(screenX = 0f, screenWidth = 1f, screenHeight = 0f, pixelY = -1f, pixelHeight = 1f)
             }
         }
         elements += minimapBarStage
@@ -231,9 +235,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
-            this.elements += ColourPane(this, this).apply {
-                this.colour.set(0f, 0f, 1f, 0.5f)
-            }
         }
         elements += centreAreaStage
         this.updatePositions()
