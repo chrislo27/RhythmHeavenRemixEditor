@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Cue
@@ -103,8 +102,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 variantButtons.forEach {
                     it.game = null
                 }
-                gameButtons.firstOrNull { it.selected && it.game != null }?.also { button ->
-                    val group: GameGroup = selection.groups[selection.group]
+                selection.groups.getOrNull(selection.group)?.also { group ->
                     group.games.forEachIndexed { index, game ->
                         val y = index - selection.getCurrentVariant().variantScroll
                         if (y in 0 until Editor.ICON_COUNT_Y) {
