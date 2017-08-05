@@ -20,6 +20,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
+import io.github.chrislo27.toolboks.util.gdxutils.getInputY
+import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import java.util.*
 
 
@@ -47,6 +49,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
     val searchBar: TextField<EditorScreen>
 
+    val hoverTextLabel: TextLabel<EditorScreen>
+
     val topOfMinimapBar: Float
         get() {
             return centreAreaStage.location.realY
@@ -54,8 +58,38 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     private var isDirty = false
 
+    private fun setHoverText(text: String) {
+        hoverTextLabel.visible = true
+        hoverTextLabel.text = text
+        val font = hoverTextLabel.getFont()
+        font.data.setScale(hoverTextLabel.palette.fontScale * hoverTextLabel.fontScaleMultiplier)
+        hoverTextLabel.location.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
+                                    pixelWidth = font.getTextWidth(hoverTextLabel.text) + 6,
+                                    pixelHeight = font.lineHeight)
+        font.data.setScale(1f)
+        hoverTextLabel.onResize(hoverTextLabel.parent!!.location.realWidth, hoverTextLabel.parent!!.location.realHeight)
+    }
+
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+        hoverTextLabel.visible = false
+        pickerStage.elements.filterIsInstance<GameButton>().firstOrNull {
+            if (it.isMouseOver() && it.game != null) {
+                setHoverText(it.game!!.name)
+                return@firstOrNull true
+            }
+
+            false
+        } ?: minimapBarStage.elements.filterIsInstance<SeriesButton>().firstOrNull {
+            if (it.isMouseOver()) {
+                setHoverText(Localization[it.series.localization])
+                return@firstOrNull true
+            }
+
+            false
+        }
+
         super.render(screen, batch, shapeRenderer)
+
         if (isDirty && !GameRegistry.isDataLoading()) {
             fun updateSelected() {
                 val selection = editor.pickerSelection.currentSelection
@@ -244,6 +278,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
         }
         elements += centreAreaStage
+        hoverTextLabel = TextLabel(palette, this, this).apply {
+            this.background = true
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.75f
+            this.textWrapping = false
+            this.visible = false
+            this.alignment = Align.bottomLeft
+            this.textAlign = Align.center
+            this.location.set(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+        }
+        elements += hoverTextLabel
         this.updatePositions()
 
         // Message bar
