@@ -591,9 +591,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 super.render(screen, batch, shapeRenderer)
-                if (textWhenEmpty.isEmpty()) {
-                    updateWhenEmptyText()
-                }
+                this.textWhenEmpty = Localization["picker.search"]
             }
 
             override fun onTextChange(oldText: String) {
@@ -605,13 +603,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 super.onLeftClick(xPercent, yPercent)
                 editor.pickerSelection.isSearching = true
                 updateSelected()
-                updateWhenEmptyText()
-            }
-
-            private fun updateWhenEmptyText() {
-                if (text.isEmpty()) {
-                    this.textWhenEmpty = Localization["picker.search"]
-                }
             }
 
             override fun onRightClick(xPercent: Float, yPercent: Float) {
