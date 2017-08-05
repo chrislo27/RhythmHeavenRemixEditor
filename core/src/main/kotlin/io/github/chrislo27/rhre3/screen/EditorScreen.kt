@@ -12,6 +12,16 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
     override val stage: EditorStage
         get() = editor.stage
 
+    override fun show() {
+        super.show()
+//        (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
+    }
+
+    override fun hide() {
+        super.hide()
+//        (Gdx.input.inputProcessor as? InputMultiplexer)?.removeProcessor(editor)
+    }
+
     override fun render(delta: Float) {
         editor.render()
         super.render(delta)
@@ -25,7 +35,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
-        editor.stage.updatePositions()
+        editor.resize(width, height)
     }
 
     override fun dispose() {
