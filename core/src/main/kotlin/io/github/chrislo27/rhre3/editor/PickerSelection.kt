@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 class PickerSelection {
 
     val seriesMap: MutableMap<Series, SeriesSelection> = mutableMapOf()
+    private val searchSeriesSelection by lazy { SeriesSelection() }
 
     data class SeriesSelection(var group: Int = 0, var groupScroll: Int = 0,
                                val groups: MutableList<GameGroup> = mutableListOf(),
@@ -57,7 +58,16 @@ class PickerSelection {
     }
 
     var currentSeries: Series = Series.TENGOKU
+        set(value) {
+            field = value
+            isSearching = false
+        }
+    var isSearching: Boolean = false
     val currentSelection: SeriesSelection
-        get() = seriesMap.getOrPut(currentSeries, { SeriesSelection() })
+        get() =
+            if (isSearching)
+                searchSeriesSelection
+            else
+                seriesMap.getOrPut(currentSeries, { SeriesSelection() })
 
 }

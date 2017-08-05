@@ -17,9 +17,11 @@ import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Cue
 import io.github.chrislo27.rhre3.registry.datamodel.Game
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
+import java.util.*
 
 
 class EditorStage(parent: UIElement<EditorScreen>?,
@@ -44,6 +46,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
+    val searchBar: TextField<EditorScreen>
 
     val topOfMinimapBar: Float
         get() {
@@ -58,24 +61,30 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             fun updateSelected() {
                 val selection = editor.pickerSelection.currentSelection
                 val series = editor.pickerSelection.currentSeries
+                val isSearching = editor.pickerSelection.isSearching
 
                 selection.groups.clear()
-                GameRegistry.data.gameGroupsList
-                        .filter { it.series == series }
-                        .mapTo(selection.groups) { it }
+                if (isSearching) {
+                    val query = searchBar.text.toLowerCase(Locale.ROOT)
+                    GameRegistry.data.gameGroupsList
+                            .filter {
+                                query in it.name.toLowerCase(Locale.ROOT) ||
+                                        it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
+                            }.mapTo(selection.groups) { it }
+                } else {
+                    GameRegistry.data.gameGroupsList
+                            .filter { it.series == series }
+                            .mapTo(selection.groups) { it }
+                }
 
                 seriesButtons.forEach {
-                    it.selected = series == it.series
+                    it.selected = series == it.series && !isSearching
                 }
 
                 gameButtons.forEach {
                     it.game = null
                 }
-                gameScrollButtons.forEach {
-
-                }
-                GameRegistry.data.gameGroupsList
-                        .filter { it.series == series }
+                selection.groups
                         .forEachIndexed { index, it ->
                             val x: Int = index % Editor.ICON_COUNT_X
                             val y: Int = index / Editor.ICON_COUNT_X - selection.groupScroll
@@ -535,7 +544,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val height = 1f / labelCount
                 for (i in 1..labelCount) {
                     val centre = i == 1 + (labelCount / 2)
-                    val borderedPalette = if (!centre) borderedPalette else borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT))
+                    val borderedPalette = if (!centre) borderedPalette else borderedPalette.copy(
+                            textColor = Color(Editor.SELECTED_TINT))
                     patternLabels +=
                             TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
                                 this.location.set(
@@ -573,6 +583,44 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         // Minimap area
+        searchBar = object : TextField<EditorScreen>(palette, minimapBarStage, minimapBarStage) {
+
+            init {
+                this.textWhenEmptyColor = Color.LIGHT_GRAY
+            }
+
+            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                super.render(screen, batch, shapeRenderer)
+                if (textWhenEmpty.isEmpty()) {
+                    updateWhenEmptyText()
+                }
+            }
+
+            override fun onTextChange(oldText: String) {
+                super.onTextChange(oldText)
+                updateSelected()
+            }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                editor.pickerSelection.isSearching = true
+                updateSelected()
+                updateWhenEmptyText()
+            }
+
+            private fun updateWhenEmptyText() {
+                if (text.isEmpty()) {
+                    this.textWhenEmpty = Localization["picker.search"]
+                }
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                if (hasFocus) {
+                    text = ""
+                }
+            }
+        }
         run minimap@ {
             minimapBarStage.updatePositions()
             seriesButtons as MutableList
@@ -601,6 +649,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             }
             minimapBarStage.elements.addAll(seriesButtons)
+
+            searchBar.apply {
+                val last = seriesButtons.last()
+                this.location.set(screenX = last.location.screenX + last.location.screenWidth,
+                                  screenHeight = 1f)
+                this.location.set(screenWidth = 0.5f - location.screenX)
+            }
+            minimapBarStage.elements += searchBar
         }
 
         // Button bar
