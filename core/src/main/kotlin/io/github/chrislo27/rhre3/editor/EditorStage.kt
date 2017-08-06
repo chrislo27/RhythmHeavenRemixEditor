@@ -48,12 +48,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
     val searchBar: TextField<EditorScreen>
+    val messageLabel: TextLabel<EditorScreen>
 
     val hoverTextLabel: TextLabel<EditorScreen>
 
     val topOfMinimapBar: Float
         get() {
             return centreAreaStage.location.realY
+        }
+    val isTyping: Boolean
+        get() {
+            return searchBar.hasFocus
         }
 
     private var isDirty = false
@@ -95,6 +100,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val selection = editor.pickerSelection.currentSelection
                 val series = editor.pickerSelection.currentSeries
                 val isSearching = editor.pickerSelection.isSearching
+
+                messageLabel.text = ""
 
                 selection.groups.clear()
                 if (isSearching) {
@@ -144,6 +151,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 this.game = game
                                 if (selection.getCurrentVariant().variant == index) {
                                     this.selected = true
+                                    messageLabel.text = game.name
                                 }
                             }
                         }
@@ -191,7 +199,37 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         messageBarStage = Stage(this, camera).apply {
             this.location.set(0f, 0f,
                               1f, Editor.MESSAGE_BAR_HEIGHT / RHRE3.HEIGHT.toFloat())
+
+            this.updatePositions()
+            this.elements +=
+                    ColourPane(this, this).apply {
+                        this.colour.set(Editor.TRANSLUCENT_BLACK)
+                        this.colour.a = 0.75f
+                    }
         }
+        messageLabel = object : TextLabel<EditorScreen>(palette, messageBarStage, messageBarStage) {
+            private var lastVersionTextWidth: Float = -1f
+
+            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                super.render(screen, batch, shapeRenderer)
+                if (main.versionTextWidth != lastVersionTextWidth) {
+                    lastVersionTextWidth = main.versionTextWidth
+                    this.location.set(
+                            screenWidth = 1f - (main.versionTextWidth / messageBarStage.location.realWidth))
+                    this.stage.updatePositions()
+                }
+            }
+        }.apply {
+            this.fontScaleMultiplier = 0.5f
+            this.textAlign = Align.bottomLeft
+            this.textWrapping = false
+            this.location.set(0f, -0.5f,
+                              1f,
+                              1.5f,
+                              pixelWidth = -8f)
+            this.isLocalizationKey = false
+        }
+        messageBarStage.elements += messageLabel
         elements += messageBarStage
         buttonBarStage = Stage(this, camera).apply {
             this.location.set(screenX = (Editor.BUTTON_PADDING / RHRE3.WIDTH),
@@ -293,35 +331,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         // Message bar
         run messageBar@ {
-            messageBarStage.updatePositions()
-            messageBarStage.elements +=
-                    ColourPane(messageBarStage, messageBarStage).apply {
-                        this.colour.set(Editor.TRANSLUCENT_BLACK)
-                        this.colour.a = 0.75f
-                    }
-            messageBarStage.elements +=
-                    object : TextLabel<EditorScreen>(palette, messageBarStage, messageBarStage) {
-                        private var lastVersionTextWidth: Float = -1f
 
-                        override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                            super.render(screen, batch, shapeRenderer)
-                            if (main.versionTextWidth != lastVersionTextWidth) {
-                                lastVersionTextWidth = main.versionTextWidth
-                                this.location.set(
-                                        screenWidth = 1f - (main.versionTextWidth / messageBarStage.location.realWidth))
-                                this.stage.updatePositions()
-                            }
-                        }
-                    }.apply {
-                        this.fontScaleMultiplier = 0.5f
-                        this.textAlign = Align.bottomLeft
-                        this.textWrapping = false
-                        this.location.set(0f, -0.5f,
-                                          1f,
-                                          1.5f,
-                                          pixelWidth = -8f)
-                        this.isLocalizationKey = false
-                    }
         }
 
         run pickerAndCo@ {
