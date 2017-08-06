@@ -403,7 +403,7 @@ manzaiBirds/umette_umena"""
                                              CuePointer("manzaiBirds/haihai1", 3f)
                                                   )))
             game.objects.add(Pattern(game, "manzaiBirds_${it.id}_boing",
-                                     mutableListOf(), it.name,
+                                     mutableListOf(), "${it.name} BOING!",
                                      mutableListOf(
                                              CuePointer(it.id, 0f, 1.5f),
                                              CuePointer("manzaiBirds/boing", 1.5f),
