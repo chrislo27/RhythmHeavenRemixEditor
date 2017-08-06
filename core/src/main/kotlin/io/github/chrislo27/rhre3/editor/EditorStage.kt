@@ -61,7 +61,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             return searchBar.hasFocus
         }
 
-    private var isDirty = false
+    private var isDirty = DirtyType.CLEAN
+
+    enum class DirtyType {
+        CLEAN, DIRTY, SEARCH_DIRTY
+    }
 
     private fun setHoverText(text: String) {
         hoverTextLabel.visible = true
@@ -95,7 +99,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         super.render(screen, batch, shapeRenderer)
 
-        if (isDirty && !GameRegistry.isDataLoading()) {
+        if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
             fun updateSelected() {
                 val selection = editor.pickerSelection.currentSelection
                 val series = editor.pickerSelection.currentSeries
@@ -105,6 +109,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                 selection.groups.clear()
                 if (isSearching) {
+                    if (isDirty == DirtyType.SEARCH_DIRTY) {
+                        selection.variants.clear()
+                        selection.group = 0
+                    }
                     val query = searchBar.text.toLowerCase(Locale.ROOT)
                     GameRegistry.data.gameGroupsList
                             .filter {
@@ -180,12 +188,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             updateSelected()
-            isDirty = false
+            isDirty = DirtyType.CLEAN
         }
     }
 
-    fun updateSelected() {
-        isDirty = true
+    fun updateSelected(type: DirtyType = DirtyType.DIRTY) {
+        isDirty = type
     }
 
     init {
@@ -649,7 +657,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             override fun onTextChange(oldText: String) {
                 super.onTextChange(oldText)
-                updateSelected()
+                updateSelected(DirtyType.SEARCH_DIRTY)
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
