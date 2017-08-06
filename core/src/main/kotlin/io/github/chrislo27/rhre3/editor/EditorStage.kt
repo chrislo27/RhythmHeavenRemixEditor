@@ -111,13 +111,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 if (isDirty == DirtyType.SEARCH_DIRTY) {
                     selection.variants.clear()
                     selection.group = 0
+                    val query = searchBar.text.toLowerCase(Locale.ROOT)
+                    GameRegistry.data.gameGroupsList
+                            .filter {
+                                query in it.name.toLowerCase(Locale.ROOT) ||
+                                        it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
+                            }.mapTo(selection.groups) { it }
                 }
-                val query = searchBar.text.toLowerCase(Locale.ROOT)
-                GameRegistry.data.gameGroupsList
-                        .filter {
-                            query in it.name.toLowerCase(Locale.ROOT) ||
-                                    it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
-                        }.mapTo(selection.groups) { it }
             } else {
                 GameRegistry.data.gameGroupsList
                         .filter { it.series == series }
