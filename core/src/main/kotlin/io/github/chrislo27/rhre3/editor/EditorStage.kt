@@ -100,94 +100,90 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         super.render(screen, batch, shapeRenderer)
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
-            fun updateSelected() {
-                val selection = editor.pickerSelection.currentSelection
-                val series = editor.pickerSelection.currentSeries
-                val isSearching = editor.pickerSelection.isSearching
+            val selection = editor.pickerSelection.currentSelection
+            val series = editor.pickerSelection.currentSeries
+            val isSearching = editor.pickerSelection.isSearching
 
-                messageLabel.text = ""
+            messageLabel.text = ""
 
-                selection.groups.clear()
-                if (isSearching) {
-                    if (isDirty == DirtyType.SEARCH_DIRTY) {
-                        selection.variants.clear()
-                        selection.group = 0
-                    }
-                    val query = searchBar.text.toLowerCase(Locale.ROOT)
-                    GameRegistry.data.gameGroupsList
-                            .filter {
-                                query in it.name.toLowerCase(Locale.ROOT) ||
-                                        it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
-                            }.mapTo(selection.groups) { it }
-                } else {
-                    GameRegistry.data.gameGroupsList
-                            .filter { it.series == series }
-                            .mapTo(selection.groups) { it }
+            selection.groups.clear()
+            if (isSearching) {
+                if (isDirty == DirtyType.SEARCH_DIRTY) {
+                    selection.variants.clear()
+                    selection.group = 0
                 }
-
-                seriesButtons.forEach {
-                    it.selected = series == it.series && !isSearching
-                }
-
-                gameButtons.forEach {
-                    it.game = null
-                }
-                selection.groups
-                        .forEachIndexed { index, it ->
-                            val x: Int = index % Editor.ICON_COUNT_X
-                            val y: Int = index / Editor.ICON_COUNT_X - selection.groupScroll
-
-                            if (y in 0 until Editor.ICON_COUNT_Y) {
-                                val buttonIndex = y * Editor.ICON_COUNT_X + x
-                                gameButtons[buttonIndex].apply {
-                                    this.game = it.games[selection.getVariant(index).variant]
-                                    if (selection.group == index) {
-                                        this.selected = true
-                                    }
-                                }
-                            }
-                        }
-
-                variantButtons.forEach {
-                    it.game = null
-                }
-                selection.groups.getOrNull(selection.group)?.also { group ->
-                    group.games.forEachIndexed { index, game ->
-                        val y = index - selection.getCurrentVariant().variantScroll
-                        if (y in 0 until Editor.ICON_COUNT_Y) {
-                            variantButtons[y].apply {
-                                this.game = game
-                                if (selection.getCurrentVariant().variant == index) {
-                                    this.selected = true
-                                    messageLabel.text = game.name
-                                }
-                            }
-                        }
-                    }
-                }
-
-                patternLabels.forEach {
-                    it.text = ""
-                    it.textColor = null
-                }
-                if (selection.groups.isNotEmpty() && selection.getCurrentVariant().placeableObjects.isNotEmpty()) {
-                    val variant = selection.getCurrentVariant()
-                    val objects = variant.placeableObjects
-
-                    objects.forEachIndexed { index, datamodel ->
-                        val y = 2 + (index - variant.pattern)
-                        if (y in 0 until Editor.PATTERN_COUNT) {
-                            patternLabels[y].text = datamodel.name
-                            if (y != (Editor.PATTERN_COUNT / 2) && datamodel is Cue) {
-                                patternLabels[y].textColor = Editor.CUE_PATTERN_COLOR
-                            }
-                        }
-                    }
-                }
-
+                val query = searchBar.text.toLowerCase(Locale.ROOT)
+                GameRegistry.data.gameGroupsList
+                        .filter {
+                            query in it.name.toLowerCase(Locale.ROOT) ||
+                                    it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
+                        }.mapTo(selection.groups) { it }
+            } else {
+                GameRegistry.data.gameGroupsList
+                        .filter { it.series == series }
+                        .mapTo(selection.groups) { it }
             }
 
-            updateSelected()
+            seriesButtons.forEach {
+                it.selected = series == it.series && !isSearching
+            }
+
+            gameButtons.forEach {
+                it.game = null
+            }
+            selection.groups
+                    .forEachIndexed { index, it ->
+                        val x: Int = index % Editor.ICON_COUNT_X
+                        val y: Int = index / Editor.ICON_COUNT_X - selection.groupScroll
+
+                        if (y in 0 until Editor.ICON_COUNT_Y) {
+                            val buttonIndex = y * Editor.ICON_COUNT_X + x
+                            gameButtons[buttonIndex].apply {
+                                this.game = it.games[selection.getVariant(index).variant]
+                                if (selection.group == index) {
+                                    this.selected = true
+                                }
+                            }
+                        }
+                    }
+
+            variantButtons.forEach {
+                it.game = null
+            }
+            selection.groups.getOrNull(selection.group)?.also { group ->
+                group.games.forEachIndexed { index, game ->
+                    val y = index - selection.getCurrentVariant().variantScroll
+                    if (y in 0 until Editor.ICON_COUNT_Y) {
+                        variantButtons[y].apply {
+                            this.game = game
+                            if (selection.getCurrentVariant().variant == index) {
+                                this.selected = true
+                                messageLabel.text = game.name
+                            }
+                        }
+                    }
+                }
+            }
+
+            patternLabels.forEach {
+                it.text = ""
+                it.textColor = null
+            }
+            if (selection.groups.isNotEmpty() && selection.getCurrentVariant().placeableObjects.isNotEmpty()) {
+                val variant = selection.getCurrentVariant()
+                val objects = variant.placeableObjects
+
+                objects.forEachIndexed { index, datamodel ->
+                    val y = 2 + (index - variant.pattern)
+                    if (y in 0 until Editor.PATTERN_COUNT) {
+                        patternLabels[y].text = datamodel.name
+                        if (y != (Editor.PATTERN_COUNT / 2) && datamodel is Cue) {
+                            patternLabels[y].textColor = Editor.CUE_PATTERN_COLOR
+                        }
+                    }
+                }
+            }
+
             isDirty = DirtyType.CLEAN
         }
     }
