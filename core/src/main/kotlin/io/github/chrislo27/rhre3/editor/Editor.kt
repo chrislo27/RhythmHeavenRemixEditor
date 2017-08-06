@@ -144,7 +144,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         remix.render(batch)
 
         batch.end()
-
         batch.projectionMatrix = main.defaultCamera.combined
         batch.begin()
 
