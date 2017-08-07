@@ -150,7 +150,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.projectionMatrix = main.defaultCamera.combined
         batch.begin()
 
-
         batch.end()
 
     }

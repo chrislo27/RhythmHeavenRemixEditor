@@ -114,30 +114,13 @@ object GameRegistry : Disposable {
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {
-                    is TempoBasedCueObject ->
-                        TempoBasedCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
-                                      obj.stretchable, obj.repitchable,
-                                      SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
-                                      obj.introSound, obj.endingSound, obj.responseIDs,
-                                      obj.baseBpm)
-                    is FillbotsFillCueObject ->
-                        FillbotsFillCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
-                                        obj.stretchable, obj.repitchable,
-                                        SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
-                                        obj.introSound, obj.endingSound,
-                                        obj.responseIDs)
-                    is LoopingCueObject ->
-                        LoopingCue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
-                                   obj.stretchable, obj.repitchable,
-                                   SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
-                                   obj.introSound, obj.endingSound,
-                                   obj.responseIDs)
                     is CueObject ->
                         Cue(game, obj.id, obj.deprecatedIDs, obj.name, obj.duration,
                             obj.stretchable, obj.repitchable,
                             SFX_FOLDER.child("${obj.id}.${obj.fileExtension}"),
                             obj.introSound, obj.endingSound,
-                            obj.responseIDs)
+                            obj.responseIDs,
+                            obj.baseBpm, obj.loops)
                     is EquidistantObject ->
                         Equidistant(game, obj.id, obj.deprecatedIDs, obj.name, obj.distance, obj.stretchable,
                                     obj.cues.mapToDatamodel())

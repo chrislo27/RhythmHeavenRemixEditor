@@ -93,6 +93,8 @@ is inherited.
   "stretchable": false,
   "repitchable": false,
   "fileExtension": "ogg",
+  "loops": false,
+  "baseBpm": 120.0,
 
   "introSound": "other/ID",
   "endingSound": "other/ID2",
@@ -139,42 +141,12 @@ and an ending sound (mouth shut).
 The `responseIDs` array is an array of possible "response" sound IDs for
 use with the call and response/copycat tool.
 
-### `TempoBasedCueObject` subtype
-```json
-{
-  "type": "tempoBasedCue",
-  // etc...
-  "baseBpm": 120.0
-}
-```
-
-This cue subtype has a `baseBpm` field. The sound effect will be pitched
+If `baseBpm` is used, the sound effect will be pitched
 accordingly during playback based on the current tempo relative to the value
 set in `baseBpm`. The duration of the sound relative to the original duration
 will also affect the pitch (only applicable if the cue is `stretchable`).
 
-### `FillbotsFillCueObject` subtype
-```json
-{
-  "type": "fillbotsFillCue",
-  // etc...
-}
-```
-
-This simply indicates that the pitch should be modified during playback,
-as it does in Fillbots for the filling sound effect.
-
-### `LoopingCueObject` subtype
-```json
-{
-  "type": "loopingCue",
-  // etc...
-}
-```
-
-This cue subtype loops. It has an optional `introSound` field
-which is the sound cue ID to play **once** at the start of the cue. This
-is used for cues like Screwbot Factory's "whirring" noise.
+The `loops` field is a boolean indicating if the sound should loop.
 
 ## `PatternObject` structure
 ```json

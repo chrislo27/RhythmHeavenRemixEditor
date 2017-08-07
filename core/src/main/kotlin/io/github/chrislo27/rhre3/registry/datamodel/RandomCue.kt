@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.registry.datamodel
 
-import io.github.chrislo27.rhre3.entity.ModelEntity
-import io.github.chrislo27.rhre3.registry.json.CuePointerObject
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 
 class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
                   val cues: List<CuePointer>)

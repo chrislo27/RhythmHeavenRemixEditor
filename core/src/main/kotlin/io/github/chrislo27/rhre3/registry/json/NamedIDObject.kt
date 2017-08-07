@@ -7,9 +7,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
         JsonSubTypes.Type(CueObject::class),
-        JsonSubTypes.Type(TempoBasedCueObject::class),
-        JsonSubTypes.Type(LoopingCueObject::class),
-        JsonSubTypes.Type(FillbotsFillCueObject::class),
         JsonSubTypes.Type(EquidistantObject::class),
         JsonSubTypes.Type(KeepTheBeatObject::class),
         JsonSubTypes.Type(PatternObject::class),
@@ -59,7 +56,8 @@ class DataObject {
 
 }
 
-sealed class AbstCueObject : NamedIDObject() {
+@JsonTypeName("cue")
+class CueObject : NamedIDObject() {
 
     var duration: Float = -1f
 
@@ -78,10 +76,13 @@ sealed class AbstCueObject : NamedIDObject() {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var responseIDs: List<String> = listOf()
 
-}
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var baseBpm: Float = 0f
 
-@JsonTypeName("cue")
-class CueObject : AbstCueObject()
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var loops: Boolean = false
+
+}
 
 @JsonTypeName("equidistant")
 class EquidistantObject : NamedIDObject() {
@@ -92,9 +93,6 @@ class EquidistantObject : NamedIDObject() {
 
 }
 
-@JsonTypeName("fillbotsFillCue")
-class FillbotsFillCueObject : AbstCueObject()
-
 @JsonTypeName("keepTheBeat")
 class KeepTheBeatObject : NamedIDObject() {
 
@@ -102,9 +100,6 @@ class KeepTheBeatObject : NamedIDObject() {
     lateinit var cues: List<CuePointerObject>
 
 }
-
-@JsonTypeName("loopingCue")
-class LoopingCueObject : AbstCueObject()
 
 @JsonTypeName("pattern")
 class PatternObject : NamedIDObject() {
@@ -117,12 +112,5 @@ class PatternObject : NamedIDObject() {
 class RandomCueObject : NamedIDObject() {
 
     lateinit var cues: List<CuePointerObject>
-
-}
-
-@JsonTypeName("tempoBasedCue")
-class TempoBasedCueObject : AbstCueObject() {
-
-    var baseBpm: Float = 0f
 
 }
