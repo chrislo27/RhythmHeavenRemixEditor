@@ -1,8 +1,9 @@
 package io.github.chrislo27.rhre3.registry.datamodel
 
 import com.badlogic.gdx.files.FileHandle
-import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.lazysound.LazySound
 
 
@@ -31,8 +32,15 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         get() =
             GameRegistry.data.objectMap[endingSound] as Cue?
 
-    override fun createEntity(): ModelEntity<*> {
-        TODO()
+    fun getPitchForBaseBpm(bpm: Float): Float {
+        if (baseBpm <= 0f)
+            return 1f
+
+        return bpm / baseBpm
+    }
+
+    override fun createEntity(remix: Remix): CueEntity {
+        return CueEntity(remix, this)
     }
 
     override fun dispose() {

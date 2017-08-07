@@ -1,7 +1,10 @@
 package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
-import io.github.chrislo27.rhre3.registry.datamodel.*
+import io.github.chrislo27.rhre3.registry.datamodel.Cue
+import io.github.chrislo27.rhre3.registry.datamodel.CuePointer
+import io.github.chrislo27.rhre3.registry.datamodel.Game
+import io.github.chrislo27.rhre3.registry.datamodel.Pattern
 import io.github.chrislo27.rhre3.registry.json.DataObject
 import java.util.*
 
@@ -42,7 +45,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                     Cue(game, it.first, mutableListOf(), it.second,
                         0.5f, false, false,
                         GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf())
+                        null, null, mutableListOf(), 0f, false)
                 }
 
         listOf(
@@ -56,7 +59,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                     Cue(game, it.first, mutableListOf(), it.second,
                         1f, false, false,
                         GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf())
+                        null, null, mutableListOf(), 0f, false)
                 }
 
         listOf(
@@ -67,7 +70,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                     Cue(game, it.first, mutableListOf(), it.second,
                         0.5f, false, false,
                         GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf())
+                        null, null, mutableListOf(), 0f, false)
                 }
 
         game.objects +=
@@ -117,7 +120,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                     if (it in 2..3 || it == 7) 0.5f else if (it == 4 || it == 8) 1f else 0.25f,
                     false, false,
                     GameRegistry.SFX_FOLDER.child("$it.ogg"),
-                    null, null, mutableListOf())
+                    null, null, mutableListOf(), 0f, false)
             }
 
             game.objects +=
@@ -157,7 +160,7 @@ $id/count/flipperRollCountS"""
                         Cue(game, it, mutableListOf(), "count ${it.replace("$id/count/flipperRollCount", "")}",
                             0.25f, false, false,
                             GameRegistry.SFX_FOLDER.child("$id.ogg"),
-                            null, null, mutableListOf())
+                            null, null, mutableListOf(), 0f, false)
             }
             """$id/count/flopCount1
 $id/count/flopCount1B
@@ -171,7 +174,7 @@ $id/count/flopCount4B""".lines().forEach {
                         Cue(game, it, mutableListOf(), "flopping count ${it.replace("$id/count/flopCount", "")}",
                             1f, false, false,
                             GameRegistry.SFX_FOLDER.child("$id.ogg"),
-                            null, null, mutableListOf())
+                            null, null, mutableListOf(), 0f, false)
             }
 
             flipperRollCounts.lines().takeWhile { !it.endsWith("A") }.forEach {
@@ -305,7 +308,7 @@ $id/thwack"""
                         },
                         false, false,
                         GameRegistry.SFX_FOLDER.child("$it.ogg"),
-                        null, null, mutableListOf())
+                        null, null, mutableListOf(), 0f, false)
         }
 
         game.objects +=
@@ -384,12 +387,12 @@ manzaiBirds/umette_umena"""
         game.objects as MutableList
 
         lines.mapTo(addedCues) {
-            TempoBasedCue(game, it, mutableListOf(),
+            Cue(game, it, mutableListOf(),
                           it.replace("manzaiBirds/", "").replace("_", " "),
                           2.5f, false, false,
                           GameRegistry.SFX_FOLDER.child("$it.ogg"),
                           null, null, mutableListOf(),
-                          95f)
+                          95f, false)
         }
 
         game.objects.addAll(addedCues)

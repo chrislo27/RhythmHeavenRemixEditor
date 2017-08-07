@@ -1,9 +1,10 @@
 package io.github.chrislo27.rhre3.entity
 
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.track.Remix
 
 
-abstract class Entity {
+abstract class Entity(val remix: Remix) {
 
     val bounds: Rectangle = Rectangle()
 
