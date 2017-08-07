@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
@@ -54,7 +55,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     val pickerSelection: PickerSelection = PickerSelection()
     var remix: Remix = Remix(camera)
-    val stage: EditorStage = EditorStage(null, stageCamera, main, this)
+    val stage: EditorStage = EditorStage(
+            null, stageCamera, main, this)
     val batch: SpriteBatch
         get() = main.batch
 

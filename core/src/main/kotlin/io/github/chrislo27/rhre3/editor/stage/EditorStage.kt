@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.editor
+package io.github.chrislo27.rhre3.editor.stage
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Cue
@@ -341,8 +342,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         run pickerAndCo@ {
             val iconWidth = pickerStage.percentageOfWidth(Editor.ICON_SIZE)
             val iconHeight = pickerStage.percentageOfHeight(Editor.ICON_SIZE)
-            val iconWidthPadded = pickerStage.percentageOfWidth(Editor.ICON_SIZE + Editor.ICON_PADDING)
-            val iconHeightPadded = pickerStage.percentageOfHeight(Editor.ICON_SIZE + Editor.ICON_PADDING)
+            val iconWidthPadded = pickerStage.percentageOfWidth(
+                    Editor.ICON_SIZE + Editor.ICON_PADDING)
+            val iconHeightPadded = pickerStage.percentageOfHeight(
+                    Editor.ICON_SIZE + Editor.ICON_PADDING)
             val startX = pickerStage.percentageOfWidth(
                     (pickerStage.location.realWidth / 2f) -
                             ((Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_X + 3)
@@ -507,7 +510,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             run patternArea@ {
                 patternLabels as MutableList
                 val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
-                val padding2 = pickerStage.percentageOfWidth(Editor.ICON_PADDING * 2)
+                val padding2 = pickerStage.percentageOfWidth(
+                        Editor.ICON_PADDING * 2)
 
                 val upButton = object : Button<EditorScreen>(borderedPalette, patternAreaStage, patternAreaStage) {
                     override fun render(screen: EditorScreen, batch: SpriteBatch,
@@ -538,8 +542,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
                 }.apply {
                     this.location.set(screenX = padding2,
-                                      screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
-                                      screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
+                                      screenWidth = patternAreaStage.percentageOfWidth(
+                                              Editor.ICON_SIZE),
+                                      screenHeight = patternAreaStage.percentageOfHeight(
+                                              Editor.ICON_SIZE),
                                       screenY = startY)
                     this.background = false
                     this.addLabel(
@@ -580,8 +586,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
                 }.apply {
                     this.location.set(screenX = padding2,
-                                      screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
-                                      screenHeight = patternAreaStage.percentageOfHeight(Editor.ICON_SIZE),
+                                      screenWidth = patternAreaStage.percentageOfWidth(
+                                              Editor.ICON_SIZE),
+                                      screenHeight = patternAreaStage.percentageOfHeight(
+                                              Editor.ICON_SIZE),
                                       screenY = startY - iconHeightPadded * (Editor.ICON_COUNT_Y - 1))
                     this.background = false
                     this.addLabel(
@@ -623,7 +631,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
                                     this.location.set(
                                             screenX = padding2,
-                                            screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE),
+                                            screenWidth = patternAreaStage.percentageOfWidth(
+                                                    Editor.ICON_SIZE),
                                             screenHeight = height,
                                             screenY = 1f - (height * i)
                                                      )
@@ -673,7 +682,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             minimapBarStage.updatePositions()
             seriesButtons as MutableList
 
-            val buttonWidth: Float = minimapBarStage.percentageOfWidth(Editor.ICON_SIZE)
+            val buttonWidth: Float = minimapBarStage.percentageOfWidth(
+                    Editor.ICON_SIZE)
             val buttonHeight: Float = 1f
 
             Series.VALUES.forEachIndexed { index, series ->
@@ -727,14 +737,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
             buttonBarStage.elements +=
                     Button(palette, buttonBarStage, buttonBarStage).apply {
-                        this.location.set(screenWidth = (Editor.BUTTON_SIZE) / stageWidth)
+                        this.location.set(screenWidth = size)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
                             this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("newFile")
                         })
                     }
             buttonBarStage.elements +=
                     Button(palette, buttonBarStage, buttonBarStage).apply {
-                        this.location.set(screenWidth = (Editor.BUTTON_SIZE) / stageWidth,
+                        this.location.set(screenWidth = size,
                                           screenX = size + padding)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
                             this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("openFile")
@@ -742,12 +752,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
             buttonBarStage.elements +=
                     Button(palette, buttonBarStage, buttonBarStage).apply {
-                        this.location.set(screenWidth = (Editor.BUTTON_SIZE) / stageWidth,
+                        this.location.set(screenWidth = size,
                                           screenX = size * 2 + padding * 2)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
                             this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("saveFile")
                         })
                     }
+            val themeButton = ThemeButton(palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 3 + padding * 3)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
+                })
+            }
+            buttonBarStage.elements += themeButton
+            buttonBarStage.elements += themeButton.contextMenu
         }
 
         this.updatePositions()

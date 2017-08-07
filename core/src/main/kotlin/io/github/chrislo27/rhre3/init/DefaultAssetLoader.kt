@@ -20,6 +20,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_bg", "images/ui/bg.png")
 
         AssetRegistry.loadAsset<Texture>("ui_icon_updatesfx", "images/ui/icons/update_sfx.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_palette", "images/ui/icons/palette.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
