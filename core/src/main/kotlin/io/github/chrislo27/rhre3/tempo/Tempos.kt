@@ -49,4 +49,12 @@ class Tempos(val defaultTempo: Float = 120f) : TrackerContainer<TempoChange>() {
 
         return tc.beat + BpmUtils.secondsToBeats(seconds - tc.seconds, tc.bpm)
     }
+
+    fun tempoAt(beat: Float): Float {
+        return map.lowerEntry(beat)?.value?.bpm ?: defaultTempo
+    }
+
+    fun tempoAtSeconds(seconds: Float): Float {
+        return secondsMap.lowerEntry(seconds)?.value?.bpm ?: defaultTempo
+    }
 }
