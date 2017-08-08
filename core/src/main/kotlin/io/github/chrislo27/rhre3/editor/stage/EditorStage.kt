@@ -668,13 +668,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 editor.pickerSelection.isSearching = true
-                updateSelected()
+                updateSelected(DirtyType.SEARCH_DIRTY)
             }
 
             override fun onRightClick(xPercent: Float, yPercent: Float) {
                 super.onRightClick(xPercent, yPercent)
                 if (hasFocus) {
                     text = ""
+                    updateSelected(DirtyType.SEARCH_DIRTY)
                 }
             }
         }
