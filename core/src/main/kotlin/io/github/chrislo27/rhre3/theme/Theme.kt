@@ -62,12 +62,14 @@ abstract class Theme {
 
     open class EntitiesGroup {
         @HexColor lateinit var selectionTint: Color
+        @HexColor lateinit var nameColor: Color
 
         @HexColor lateinit var cue: Color
         @HexColor lateinit var pattern: Color
 
         fun applyDefaults() {
             selectionTint = Color(0f, 0.75f, 0.75f, 1f)
+            nameColor = Color(0f, 0f, 0f, 1f)
         }
     }
 

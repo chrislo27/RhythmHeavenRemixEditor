@@ -44,6 +44,11 @@ class CueEntity(remix: Remix, datamodel: Cue) : ModelEntity<Cue>(remix, datamode
     private var introSoundId: Long = -1L
     private var endingSoundId: Long = -1L
 
+    init {
+        this.bounds.width = cue.duration
+        this.bounds.height = 1f
+    }
+
     override fun getRenderColor(): Color {
         return remix.editor.theme.entities.cue
     }
