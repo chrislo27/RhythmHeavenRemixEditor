@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -100,6 +101,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val beatRange = getBeatRange()
         val font = main.defaultFont
+        val trackYOffset = toScaleY(-TRACK_LINE / 2f)
 
         font.scaleFont()
 
@@ -109,10 +111,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val startX = beatRange.start.toFloat()
             val width = beatRange.endInclusive.toFloat() - startX
             for (i in 0..TRACK_COUNT) {
-                batch.fillRect(startX, i.toFloat(), width,
-                               TRACK_LINE / 720 * camera.viewportHeight)
+                batch.fillRect(startX, trackYOffset + i.toFloat(), width,
+                               toScaleY(TRACK_LINE))
             }
             batch.setColor(1f, 1f, 1f, 1f)
+        }
+
+        remix.entities.forEach {
+            it.render(batch)
         }
 
         // beat lines
@@ -124,20 +130,26 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
                 }
-                batch.fillRect(i.toFloat(), 0f, TRACK_LINE / 1280 * camera.viewportWidth,
-                               TRACK_COUNT + TRACK_LINE / 720 * camera.viewportHeight)
+                batch.fillRect(i.toFloat(), trackYOffset, toScaleX(TRACK_LINE),
+                               TRACK_COUNT + toScaleY(TRACK_LINE))
             }
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
         // beat numbers
-        run beatLines@ {
+        run beatNumbers@ {
             for (i in beatRange) {
                 font.color = theme.trackLine
-                font.drawCompressed(batch, "$i",
-                                    i - ENTITY_WIDTH / 4f,
-                                    TRACK_COUNT + (TRACK_LINE + TRACK_LINE) / 720 * camera.viewportHeight + font.capHeight,
-                                    ENTITY_WIDTH / 2f, Align.center)
+                val width = ENTITY_WIDTH * 0.4f
+                val x = i - width / 2f
+                val y = TRACK_COUNT + toScaleY(TRACK_LINE + TRACK_LINE) + font.capHeight
+                val text = "${Math.abs(i)}"
+                font.drawCompressed(batch, text,
+                                    x, y, width, Align.center)
+                if (i < 0) {
+                    val textWidth = font.getTextWidth(text, width, false)
+                    font.drawCompressed(batch, "-", x - textWidth / 2f, y, ENTITY_WIDTH * 0.2f, Align.right)
+                }
 
                 // TODO time signature based
                 if (Math.floorMod(i, 4) == 0) {
@@ -145,19 +157,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     if (measureNum >= 1) {
                         font.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.5f)
                         font.drawCompressed(batch, "$measureNum",
-                                            toScaleX(i * ENTITY_WIDTH - ENTITY_WIDTH / 4f),
-                                            toScaleY(
-                                                    TRACK_COUNT * ENTITY_HEIGHT + TRACK_LINE + TRACK_LINE) + font.capHeight + font.lineHeight,
-                                            toScaleX(ENTITY_WIDTH / 2f), Align.center)
+                                            x, y + font.lineHeight, width, Align.center)
                     }
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)
 
         }
-
-        // remix
-        remix.render(batch)
 
         font.unscaleFont()
         batch.end()
