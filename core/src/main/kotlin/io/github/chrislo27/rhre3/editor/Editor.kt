@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
@@ -47,7 +48,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     val camera: OrthographicCamera by lazy {
         val c = OrthographicCamera()
-        c.setToOrtho(false, RHRE3.WIDTH.toFloat(), RHRE3.HEIGHT.toFloat())
+        resizeCamera(c)
         c.position.x = 0f
         c.update()
         c
@@ -68,6 +69,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun toScaleY(float: Float): Float =
             (float / RHRE3.HEIGHT) * camera.viewportHeight
 
+    fun BitmapFont.scaleFont() {
+        this.setUseIntegerPositions(false)
+        this.data.setScale(camera.viewportWidth / main.defaultCamera.viewportWidth,
+                           camera.viewportHeight / main.defaultCamera.viewportHeight)
+    }
+
+    fun BitmapFont.unscaleFont() {
+        this.setUseIntegerPositions(true)
+        this.data.setScale(1f)
+    }
+
     fun getBeatRange(): IntRange =
             Math.round((camera.position.x - camera.viewportWidth / 2 * camera.zoom) / toScaleX(
                     ENTITY_WIDTH)) - 1..(Math.round(
@@ -81,9 +93,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
-        camera.position.y = (camera.viewportHeight / 2) -
-                (stage.topOfMinimapBar + (stage.centreAreaStage.location.realHeight / 2) - toScaleY(
-                        (TRACK_COUNT + 1) * ENTITY_HEIGHT / 2f))
+        camera.position.y = 1f
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.begin()
@@ -91,14 +101,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val beatRange = getBeatRange()
         val font = main.defaultFont
 
+        font.scaleFont()
+
         // horizontal track lines
         run trackLines@ {
             batch.color = theme.trackLine
-            val startX = toScaleX(beatRange.start.toFloat() * ENTITY_WIDTH)
-            val width = toScaleX(beatRange.endInclusive.toFloat() * ENTITY_WIDTH) - startX
+            val startX = beatRange.start.toFloat()
+            val width = beatRange.endInclusive.toFloat() - startX
             for (i in 0..TRACK_COUNT) {
-                batch.fillRect(startX, toScaleY(i * ENTITY_HEIGHT), width,
-                               toScaleY(TRACK_LINE))
+                batch.fillRect(startX, i.toFloat(), width,
+                               TRACK_LINE / 720 * camera.viewportHeight)
             }
             batch.setColor(1f, 1f, 1f, 1f)
         }
@@ -112,8 +124,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
                 }
-                batch.fillRect(toScaleX(i * ENTITY_WIDTH), 0f, toScaleX(TRACK_LINE),
-                               toScaleY(TRACK_COUNT * ENTITY_HEIGHT + TRACK_LINE))
+                batch.fillRect(i.toFloat(), 0f, TRACK_LINE / 1280 * camera.viewportWidth,
+                               TRACK_COUNT + TRACK_LINE / 720 * camera.viewportHeight)
             }
             batch.setColor(1f, 1f, 1f, 1f)
         }
@@ -123,9 +135,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             for (i in beatRange) {
                 font.color = theme.trackLine
                 font.drawCompressed(batch, "$i",
-                                    toScaleX(i * ENTITY_WIDTH - ENTITY_WIDTH / 4f),
-                                    toScaleY(TRACK_COUNT * ENTITY_HEIGHT + TRACK_LINE + TRACK_LINE) + font.capHeight,
-                                    toScaleX(ENTITY_WIDTH / 2f), Align.center)
+                                    i - ENTITY_WIDTH / 4f,
+                                    TRACK_COUNT + (TRACK_LINE + TRACK_LINE) / 720 * camera.viewportHeight + font.capHeight,
+                                    ENTITY_WIDTH / 2f, Align.center)
 
                 // TODO time signature based
                 if (Math.floorMod(i, 4) == 0) {
@@ -141,11 +153,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)
+
         }
 
         // remix
         remix.render(batch)
 
+        font.unscaleFont()
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
         batch.begin()
@@ -194,9 +208,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     override fun dispose() {
     }
 
+    private fun resizeCamera(camera: OrthographicCamera) {
+        camera.viewportWidth = 1280f / ENTITY_WIDTH
+        camera.viewportHeight = 720f / ENTITY_HEIGHT
+        camera.update()
+    }
+
     fun resize(width: Int, height: Int) {
         stage.updatePositions()
-        camera.setToOrtho(false, main.defaultCamera.viewportWidth, main.defaultCamera.viewportHeight)
-        camera.update()
+        resizeCamera(camera)
     }
 }

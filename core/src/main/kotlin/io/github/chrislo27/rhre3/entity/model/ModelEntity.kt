@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.entity.model
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
@@ -43,15 +42,15 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
         // filled rect + border
         batch.setColorWithSelectionIfNecessary(color)
-        batch.fillRect(bounds.x * Editor.ENTITY_WIDTH, bounds.y * Editor.ENTITY_HEIGHT,
-                       bounds.width * Editor.ENTITY_WIDTH, bounds.height * Editor.ENTITY_HEIGHT)
+        batch.fillRect(bounds.x, bounds.y,
+                       bounds.width, bounds.height)
         batch.setColorWithSelectionIfNecessary((color.r - 0.25f).coerceIn(0f, 1f),
                                                (color.g - 0.25f).coerceIn(0f, 1f),
                                                (color.b - 0.25f).coerceIn(0f, 1f),
                                                color.a)
-        batch.drawRect(bounds.x * Editor.ENTITY_WIDTH, bounds.y * Editor.ENTITY_HEIGHT,
-                       bounds.width * Editor.ENTITY_WIDTH, bounds.height * Editor.ENTITY_HEIGHT,
-                       BORDER)
+        batch.drawRect(bounds.x, bounds.y,
+                       bounds.width, bounds.height,
+                       remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
 
         batch.setColor(1f, 1f, 1f, 0.5f)
 
