@@ -54,7 +54,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     val pickerSelection: PickerSelection = PickerSelection()
-    var remix: Remix = Remix(camera)
+    var remix: Remix = Remix(camera, this)
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
     val batch: SpriteBatch

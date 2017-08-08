@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.entity.model.cue
 
+import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.Cue
 import io.github.chrislo27.rhre3.track.Remix
@@ -42,6 +43,10 @@ class CueEntity(remix: Remix, datamodel: Cue) : ModelEntity<Cue>(remix, datamode
     private var soundId: Long = -1L
     private var introSoundId: Long = -1L
     private var endingSoundId: Long = -1L
+
+    override fun getRenderColor(): Color {
+        return remix.editor.theme.entities.cue
+    }
 
     override fun onStart() {
         soundId = cue.sound.sound.play(1f, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat)), 0f)
