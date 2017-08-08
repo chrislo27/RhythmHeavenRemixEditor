@@ -100,6 +100,8 @@ object GameRegistry : Disposable {
             if (ready)
                 return 1f
 
+            objectMap as MutableMap
+
             val folder: FileHandle = folders[index]
             val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
             val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
@@ -136,6 +138,9 @@ object GameRegistry : Disposable {
             DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
 
             (gameMap as MutableMap)[game.id] = game
+            game.objects.forEach {
+                objectMap[it.id] = it
+            }
 
             lastLoadedID = game.id
             index++
