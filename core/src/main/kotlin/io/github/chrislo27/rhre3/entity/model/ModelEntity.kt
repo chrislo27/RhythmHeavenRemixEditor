@@ -22,7 +22,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
-        val text = datamodel.name
+        val text = datamodel.newlinedName
         val font = remix.main.defaultFont
         val color = getRenderColor()
         val oldColor = batch.packedColor

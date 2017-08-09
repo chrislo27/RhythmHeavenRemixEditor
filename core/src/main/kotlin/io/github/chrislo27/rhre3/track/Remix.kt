@@ -23,4 +23,32 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     var beat: Float = 0f
         private set
 
+    fun entityUpdate(entity: Entity) {
+        if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
+            if (beat in entity.bounds.x..(entity.bounds.x + entity.bounds.width)) {
+                entity.playbackCompletion = PlaybackCompletion.PLAYING
+                entity.onStart()
+            }
+        }
+
+        if (entity.playbackCompletion == PlaybackCompletion.PLAYING) {
+            entity.whilePlaying()
+            if (entity.isFinished()) {
+                entity.playbackCompletion = PlaybackCompletion.FINISHED
+                entity.onEnd()
+            }
+        }
+    }
+
+    fun timeUpdate(delta: Float) {
+        seconds += delta
+        // TODO music sync
+
+        entities.forEach { entity ->
+            if (entity.playbackCompletion != PlaybackCompletion.FINISHED) {
+                entityUpdate(entity)
+            }
+        }
+    }
+
 }
