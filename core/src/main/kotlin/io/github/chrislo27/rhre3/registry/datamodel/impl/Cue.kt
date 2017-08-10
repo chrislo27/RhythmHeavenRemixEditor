@@ -1,8 +1,10 @@
-package io.github.chrislo27.rhre3.registry.datamodel
+package io.github.chrislo27.rhre3.registry.datamodel.impl
 
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.lazysound.LazySound
 

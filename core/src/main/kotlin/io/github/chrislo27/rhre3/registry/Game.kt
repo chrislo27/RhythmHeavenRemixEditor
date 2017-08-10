@@ -1,8 +1,10 @@
-package io.github.chrislo27.rhre3.registry.datamodel
+package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.DatamodelComparator
 import io.github.chrislo27.toolboks.version.Version
 
 

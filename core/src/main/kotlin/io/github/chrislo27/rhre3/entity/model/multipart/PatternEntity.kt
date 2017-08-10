@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.Pattern
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
 import io.github.chrislo27.rhre3.track.Remix
 
 

@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.cue
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.registry.datamodel.Cue
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.Remix
 
 

@@ -1,9 +1,10 @@
-package io.github.chrislo27.rhre3.registry.datamodel
+package io.github.chrislo27.rhre3.registry.datamodel.impl
 
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.json.CuePointerObject
 
-fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(this)
+fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(
+        this)
 
 fun List<CuePointerObject>.mapToDatamodel(): List<CuePointer> = this.map(::CuePointer)
 

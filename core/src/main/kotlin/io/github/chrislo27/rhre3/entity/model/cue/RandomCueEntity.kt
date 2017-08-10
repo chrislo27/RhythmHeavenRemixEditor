@@ -3,8 +3,8 @@ package io.github.chrislo27.rhre3.entity.model.cue
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.CuePointer
-import io.github.chrislo27.rhre3.registry.datamodel.RandomCue
+import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.registry.datamodel.impl.RandomCue
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.random
 

@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.registry
 
-import io.github.chrislo27.rhre3.registry.datamodel.Game
+import io.github.chrislo27.rhre3.registry.Game
 
 data class GameGroup(val name: String, val games: List<Game>) {
 

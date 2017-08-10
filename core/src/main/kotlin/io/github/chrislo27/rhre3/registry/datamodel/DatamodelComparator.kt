@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.registry.datamodel
 
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+
 
 object DatamodelComparator : Comparator<Datamodel> {
 

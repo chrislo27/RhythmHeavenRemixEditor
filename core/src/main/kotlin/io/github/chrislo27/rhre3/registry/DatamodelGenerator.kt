@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
-import io.github.chrislo27.rhre3.registry.datamodel.Cue
-import io.github.chrislo27.rhre3.registry.datamodel.CuePointer
-import io.github.chrislo27.rhre3.registry.datamodel.Game
-import io.github.chrislo27.rhre3.registry.datamodel.Pattern
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
 import io.github.chrislo27.rhre3.registry.json.DataObject
 import java.util.*
 
@@ -43,9 +43,10 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
               )
                 .mapTo(game.objects) {
                     Cue(game, it.first, mutableListOf(), it.second,
-                        0.5f, false, false,
-                        GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf(), 0f, false)
+                                                                          0.5f, false, false,
+                                                                          GameRegistry.SFX_FOLDER.child(
+                                                                                  it.first + ".ogg"),
+                                                                          null, null, mutableListOf(), 0f, false)
                 }
 
         listOf(
@@ -57,9 +58,10 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
               )
                 .mapTo(game.objects) {
                     Cue(game, it.first, mutableListOf(), it.second,
-                        1f, false, false,
-                        GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf(), 0f, false)
+                                                                          1f, false, false,
+                                                                          GameRegistry.SFX_FOLDER.child(
+                                                                                  it.first + ".ogg"),
+                                                                          null, null, mutableListOf(), 0f, false)
                 }
 
         listOf(
@@ -68,74 +70,109 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
               )
                 .mapTo(game.objects) {
                     Cue(game, it.first, mutableListOf(), it.second,
-                        0.5f, false, false,
-                        GameRegistry.SFX_FOLDER.child(it.first + ".ogg"),
-                        null, null, mutableListOf(), 0f, false)
+                                                                          0.5f, false, false,
+                                                                          GameRegistry.SFX_FOLDER.child(
+                                                                                  it.first + ".ogg"),
+                                                                          null, null, mutableListOf(), 0f, false)
                 }
 
         game.objects +=
-                Pattern(game, "${id}_flippingA", mutableListOf(), "flipping",
-                        mutableListOf(
-                                CuePointer("$id/flip", 0f),
-                                CuePointer("$id/flip", 1f)
-                                     ))
+                Pattern(game, "${id}_flippingA", mutableListOf(),
+                                                                          "flipping",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/flip", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/flip", 1f)
+                                                                                       ))
         game.objects +=
-                Pattern(game, "${id}_flippingB", mutableListOf(), "flipping - back",
-                        mutableListOf(
-                                CuePointer("$id/flipB1", 0f),
-                                CuePointer("$id/flipB2", 1f)
-                                     ))
+                Pattern(game, "${id}_flippingB", mutableListOf(),
+                                                                          "flipping - back",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/flipB1", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/flipB2", 1f)
+                                                                                       ))
         game.objects +=
-                Pattern(game, "${id}_thatsit", mutableListOf(), "that's it!",
-                        mutableListOf(
-                                CuePointer("$id/appreciation/thatsit1", 0f),
-                                CuePointer("$id/appreciation/thatsit2", 0.5f)
-                                     ))
+                Pattern(game, "${id}_thatsit", mutableListOf(),
+                                                                          "that's it!",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/appreciation/thatsit1",
+                                                                                          0f),
+                                                                                  CuePointer(
+                                                                                          "$id/appreciation/thatsit2",
+                                                                                          0.5f)
+                                                                                       ))
 
         game.objects +=
-                Pattern(game, "${id}_triple", mutableListOf(), "triple",
-                        mutableListOf(
-                                CuePointer("$id/ding", 0f),
-                                CuePointer("$id/ding", 0.5f),
-                                CuePointer("$id/ding", 1f),
-                                CuePointer("$id/flip", 2f),
-                                CuePointer("$id/flip", 2.5f),
-                                CuePointer("$id/flip", 3f)
-                                     ))
+                Pattern(game, "${id}_triple", mutableListOf(),
+                                                                          "triple",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 0.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 1f),
+                                                                                  CuePointer(
+                                                                                          "$id/flip", 2f),
+                                                                                  CuePointer(
+                                                                                          "$id/flip", 2.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/flip", 3f)
+                                                                                       ))
         game.objects +=
-                Pattern(game, "${id}_tripleBack", mutableListOf(), "triple - back",
-                        mutableListOf(
-                                CuePointer("$id/ding", 0f),
-                                CuePointer("$id/ding", 0.5f),
-                                CuePointer("$id/ding", 1f),
-                                CuePointer("$id/flipB1", 2f),
-                                CuePointer("$id/flipB2", 2.5f),
-                                CuePointer("$id/flipB1", 3f)
-                                     ))
+                Pattern(game, "${id}_tripleBack", mutableListOf(),
+                                                                          "triple - back",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 0.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/ding", 1f),
+                                                                                  CuePointer(
+                                                                                          "$id/flipB1", 2f),
+                                                                                  CuePointer(
+                                                                                          "$id/flipB2", 2.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/flipB1", 3f)
+                                                                                       ))
 
         run attention@ {
             (1..8).mapTo(game.objects) {
-                Cue(game, "$id/attention/attention$it", mutableListOf(),
-                    "attention - part $it",
-                    if (it in 2..3 || it == 7) 0.5f else if (it == 4 || it == 8) 1f else 0.25f,
-                    false, false,
-                    GameRegistry.SFX_FOLDER.child("$it.ogg"),
-                    null, null, mutableListOf(), 0f, false)
+                Cue(game, "$id/attention/attention$it",
+                                                                      mutableListOf(),
+                                                                      "attention - part $it",
+                                                                      if (it in 2..3 || it == 7) 0.5f else if (it == 4 || it == 8) 1f else 0.25f,
+                                                                      false, false,
+                                                                      GameRegistry.SFX_FOLDER.child("$it.ogg"),
+                                                                      null, null, mutableListOf(), 0f, false)
             }
 
             game.objects +=
                     Pattern(game, "${id}_attention", mutableListOf(),
-                            "attention... company!",
-                            mutableListOf(
-                                    CuePointer("$id/attention/1", 0.0f),
-                                    CuePointer("$id/attention/2", 0.25f),
-                                    CuePointer("$id/attention/3", 0.75f),
-                                    CuePointer("$id/attention/4", 1.25f),
-                                    CuePointer("$id/attention/5", 2.25f),
-                                    CuePointer("$id/attention/6", 2.5f),
-                                    CuePointer("$id/attention/7", 2.75f),
-                                    CuePointer("$id/attention/8", 3.25f)
-                                         ))
+                                                                              "attention... company!",
+                                                                              mutableListOf(
+                                                                                      CuePointer(
+                                                                                              "$id/attention/1", 0.0f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/2", 0.25f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/3", 0.75f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/4", 1.25f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/5", 2.25f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/6", 2.5f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/7", 2.75f),
+                                                                                      CuePointer(
+                                                                                              "$id/attention/8", 3.25f)
+                                                                                           ))
         }
 
         run count@ {
@@ -157,10 +194,13 @@ $id/count/flipperRollCountS"""
 
             flipperRollCounts.lines().forEach {
                 game.objects +=
-                        Cue(game, it, mutableListOf(), "count ${it.replace("$id/count/flipperRollCount", "")}",
-                            0.25f, false, false,
-                            GameRegistry.SFX_FOLDER.child("$id.ogg"),
-                            null, null, mutableListOf(), 0f, false)
+                        Cue(game, it, mutableListOf(),
+                                                                              "count ${it.replace(
+                                                                                      "$id/count/flipperRollCount",
+                                                                                      "")}",
+                                                                              0.25f, false, false,
+                                                                              GameRegistry.SFX_FOLDER.child("$id.ogg"),
+                                                                              null, null, mutableListOf(), 0f, false)
             }
             """$id/count/flopCount1
 $id/count/flopCount1B
@@ -171,10 +211,12 @@ $id/count/flopCount3B
 $id/count/flopCount4
 $id/count/flopCount4B""".lines().forEach {
                 game.objects +=
-                        Cue(game, it, mutableListOf(), "flopping count ${it.replace("$id/count/flopCount", "")}",
-                            1f, false, false,
-                            GameRegistry.SFX_FOLDER.child("$id.ogg"),
-                            null, null, mutableListOf(), 0f, false)
+                        Cue(game, it, mutableListOf(),
+                                                                              "flopping count ${it.replace(
+                                                                                      "$id/count/flopCount", "")}",
+                                                                              1f, false, false,
+                                                                              GameRegistry.SFX_FOLDER.child("$id.ogg"),
+                                                                              null, null, mutableListOf(), 0f, false)
             }
 
             flipperRollCounts.lines().takeWhile { !it.endsWith("A") }.forEach {
@@ -187,27 +229,32 @@ $id/count/flopCount4B""".lines().forEach {
                         CuePointer(it, 0f)
 
                 patternCues +=
-                        CuePointer("$id/count/flipperRollCountA", 0.5f)
+                        CuePointer("$id/count/flipperRollCountA",
+                                                                                     0.5f)
                 patternCues +=
-                        CuePointer("$id/count/flipperRollCountB", 0.75f)
+                        CuePointer("$id/count/flipperRollCountB",
+                                                                                     0.75f)
                 patternCues +=
                         CuePointer("$id/count/flipperRollCountC", 1f)
 
                 if (pluralize) {
                     patternCues +=
-                            CuePointer("$id/count/flipperRollCountS", 1.25f)
+                            CuePointer("$id/count/flipperRollCountS",
+                                                                                         1.25f)
                 }
 
                 for (i in 1..count) {
                     val num: String = if (i % 4 == 0) "4" else "${i % 4}"
                     patternCues +=
-                            CuePointer("$id/count/flopCount$num${if (i > 4) "B" else ""}", 1f + i)
+                            CuePointer(
+                                    "$id/count/flopCount$num${if (i > 4) "B" else ""}", 1f + i)
                 }
 
                 game.objects +=
-                        Pattern(game, "${id}_count_$type", mutableListOf(),
-                                "$type flipper roll${if (pluralize) "s" else ""}!",
-                                patternCues)
+                        Pattern(game, "${id}_count_$type",
+                                                                                  mutableListOf(),
+                                                                                  "$type flipper roll${if (pluralize) "s" else ""}!",
+                                                                                  patternCues)
             }
         }
     }
@@ -294,51 +341,66 @@ $id/thwack"""
         lines.forEach {
             game.objects +=
                     Cue(game, it, mutableListOf(),
-                        it.replace("$id/", "").replace("_", " "),
-                        if (it.endsWith("cloud1")) {
-                            1f
-                        } else if (it.endsWith("cloud2")) {
-                            2f
-                        } else if (it.contains("bom") || it.contains("don")) {
-                            1.5f
-                        } else if (it.contains("turn") || it.contains("spin")) {
-                            1f
-                        } else {
-                            0.5f
-                        },
-                        false, false,
-                        GameRegistry.SFX_FOLDER.child("$it.ogg"),
-                        null, null, mutableListOf(), 0f, false)
+                                                                          it.replace("$id/", "").replace("_", " "),
+                                                                          if (it.endsWith("cloud1")) {
+                                                                              1f
+                                                                          } else if (it.endsWith("cloud2")) {
+                                                                              2f
+                                                                          } else if (it.contains("bom") || it.contains(
+                                                                                  "don")) {
+                                                                              1.5f
+                                                                          } else if (it.contains("turn") || it.contains(
+                                                                                  "spin")) {
+                                                                              1f
+                                                                          } else {
+                                                                              0.5f
+                                                                          },
+                                                                          false, false,
+                                                                          GameRegistry.SFX_FOLDER.child("$it.ogg"),
+                                                                          null, null, mutableListOf(), 0f, false)
         }
 
         game.objects +=
                 Pattern(game, "${id}_startPattern", mutableListOf(),
-                        "starting pattern",
-                        mutableListOf(
-                                CuePointer("$id/ball", 0f),
-                                CuePointer("$id/cube", 1f),
-                                CuePointer("$id/ball", 1.5f),
-                                CuePointer("$id/ball", 2f),
-                                CuePointer("$id/cube", 2.5f)
-                                     ))
+                                                                          "starting pattern",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/cube", 1f),
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 1.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 2f),
+                                                                                  CuePointer(
+                                                                                          "$id/cube", 2.5f)
+                                                                                       ))
         game.objects +=
                 Pattern(game, "${id}_pattern", mutableListOf(),
-                        "pattern",
-                        mutableListOf(
-                                CuePointer("$id/ball", 0f),
-                                CuePointer("$id/ball", 0.5f),
-                                CuePointer("$id/cube", 1.5f),
-                                CuePointer("$id/ball", 2f),
-                                CuePointer("$id/ball", 2.5f),
-                                CuePointer("$id/cube", 3f)
-                                     ))
+                                                                          "pattern",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 0.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/cube", 1.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 2f),
+                                                                                  CuePointer(
+                                                                                          "$id/ball", 2.5f),
+                                                                                  CuePointer(
+                                                                                          "$id/cube", 3f)
+                                                                                       ))
         game.objects +=
                 Pattern(game, "${id}_cloudSpin", mutableListOf(),
-                        "cloud spin",
-                        mutableListOf(
-                                CuePointer("$id/cloud1", 0f),
-                                CuePointer("$id/cloud2", 1f)
-                                     ))
+                                                                          "cloud spin",
+                                                                          mutableListOf(
+                                                                                  CuePointer(
+                                                                                          "$id/cloud1", 0f),
+                                                                                  CuePointer(
+                                                                                          "$id/cloud2", 1f)
+                                                                                       ))
     }
 
 }
@@ -388,11 +450,11 @@ manzaiBirds/umette_umena"""
 
         lines.mapTo(addedCues) {
             Cue(game, it, mutableListOf(),
-                          it.replace("manzaiBirds/", "").replace("_", " "),
-                          2.5f, false, false,
-                          GameRegistry.SFX_FOLDER.child("$it.ogg"),
-                          null, null, mutableListOf(),
-                          95f, false)
+                                                                  it.replace("manzaiBirds/", "").replace("_", " "),
+                                                                  2.5f, false, false,
+                                                                  GameRegistry.SFX_FOLDER.child("$it.ogg"),
+                                                                  null, null, mutableListOf(),
+                                                                  95f, false)
         }
 
         game.objects.addAll(addedCues)
@@ -401,17 +463,28 @@ manzaiBirds/umette_umena"""
             game.objects.add(Pattern(game, "manzaiBirds_${it.id}",
                                      mutableListOf(), it.name,
                                      mutableListOf(
-                                             CuePointer(it.id, 0f, 2.5f),
-                                             CuePointer("manzaiBirds/haihai1", 2.5f),
-                                             CuePointer("manzaiBirds/haihai1", 3f)
-                                                  )))
-            game.objects.add(Pattern(game, "manzaiBirds_${it.id}_boing",
-                                     mutableListOf(), "${it.name} BOING!",
-                                     mutableListOf(
-                                             CuePointer(it.id, 0f, 1.5f),
-                                             CuePointer("manzaiBirds/boing", 1.5f),
-                                             CuePointer("manzaiBirds/donaiyanen", 2.5f)
-                                                  )))
+                                             CuePointer(
+                                                                                                       it.id, 0f, 2.5f),
+                                             CuePointer(
+                                                                                                       "manzaiBirds/haihai1",
+                                                                                                       2.5f),
+                                             CuePointer(
+                                                                                                       "manzaiBirds/haihai1",
+                                                                                                       3f)
+                                                                                                    )))
+            game.objects.add(
+                    Pattern(game, "manzaiBirds_${it.id}_boing",
+                                                                              mutableListOf(), "${it.name} BOING!",
+                                                                              mutableListOf(
+                                                                                      CuePointer(
+                                                                                              it.id, 0f, 1.5f),
+                                                                                      CuePointer(
+                                                                                              "manzaiBirds/boing",
+                                                                                              1.5f),
+                                                                                      CuePointer(
+                                                                                              "manzaiBirds/donaiyanen",
+                                                                                              2.5f)
+                                                                                           )))
         }
     }
 

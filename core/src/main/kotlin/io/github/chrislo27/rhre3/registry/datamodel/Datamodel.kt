@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.registry.datamodel
 
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.track.Remix
 
 
