@@ -35,8 +35,8 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
                 error("Nothing in internal cache")
     }
 
-    override fun updateInternalCache(old: Rectangle) {
-        translateInternal(old, changeWidths = true)
+    override fun updateInternalCache(oldBounds: Rectangle) {
+        translateInternal(oldBounds, changeWidths = true)
     }
 
 }

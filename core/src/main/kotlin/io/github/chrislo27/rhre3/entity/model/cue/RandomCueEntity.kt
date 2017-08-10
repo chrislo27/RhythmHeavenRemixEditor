@@ -26,11 +26,11 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
                 } ?: error("Null returned on randomization")
     }
 
-    override fun updateInternalCache(old: Rectangle) {
+    override fun updateInternalCache(oldBounds: Rectangle) {
         if (internal.isEmpty())
             reroll()
 
-        translateInternal(old)
+        translateInternal(oldBounds)
     }
 
     override fun onStart() {

@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class EquidistantEntity(remix: Remix, datamodel: Equidistant) : MultipartEntity<Equidistant>(remix, datamodel) {
-    override fun updateInternalCache(old: Rectangle) {
+    override fun updateInternalCache(oldBounds: Rectangle) {
         TODO()
     }
 }

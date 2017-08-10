@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat) : MultipartEntity<KeepTheBeat>(remix, datamodel) {
-    override fun updateInternalCache(old: Rectangle) {
+    override fun updateInternalCache(oldBounds: Rectangle) {
         TODO()
     }
 }

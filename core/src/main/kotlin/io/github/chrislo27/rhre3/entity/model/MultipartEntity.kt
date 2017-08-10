@@ -28,13 +28,13 @@ abstract class MultipartEntity<out M : Datamodel>(remix: Remix, datamodel: M) : 
         }
     protected val internal: MutableList<Entity> = mutableListOf()
 
-    protected open fun translateInternal(old: Rectangle, changeWidths: Boolean = false) {
+    protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false) {
         internal.forEach {
-            it.bounds.x = (it.bounds.x - old.x) + bounds.x
-            it.bounds.y = (it.bounds.y - old.y) + bounds.y
+            it.bounds.x = (it.bounds.x - oldBounds.x) + bounds.x
+            it.bounds.y = (it.bounds.y - oldBounds.y) + bounds.y
 
             if (changeWidths) {
-                it.bounds.width = (it.bounds.width / old.width) * bounds.width
+                it.bounds.width = (it.bounds.width / oldBounds.width) * bounds.width
             }
         }
     }
@@ -58,7 +58,7 @@ abstract class MultipartEntity<out M : Datamodel>(remix: Remix, datamodel: M) : 
         }
     }
 
-    abstract fun updateInternalCache(old: Rectangle)
+    abstract fun updateInternalCache(oldBounds: Rectangle)
 
     override fun onBoundsChange(old: Rectangle) {
         super.onBoundsChange(old)
