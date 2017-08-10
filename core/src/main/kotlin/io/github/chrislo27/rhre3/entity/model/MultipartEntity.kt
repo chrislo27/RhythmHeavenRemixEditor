@@ -4,12 +4,15 @@ import chrislo27.rhre.oopsies.ReversibleAction
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 
 
-abstract class MultipartEntity<out M : Datamodel>(remix: Remix, datamodel: M) : ModelEntity<M>(remix, datamodel) {
+abstract class MultipartEntity<out M>(remix: Remix, datamodel: M) : ModelEntity<M>(remix, datamodel)
+        where M : Datamodel, M : ContainerModel {
 
     override var playbackCompletion: PlaybackCompletion = super.playbackCompletion
         get() = super.playbackCompletion
@@ -27,6 +30,12 @@ abstract class MultipartEntity<out M : Datamodel>(remix: Remix, datamodel: M) : 
             }
         }
     protected val internal: MutableList<Entity> = mutableListOf()
+
+    init {
+        this.bounds.height = (1f +
+                (datamodel.cues.maxBy(CuePointer::track)?.track ?: error("No cues in datamodel")))
+                .coerceAtLeast(1f)
+    }
 
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false) {
         internal.forEach {

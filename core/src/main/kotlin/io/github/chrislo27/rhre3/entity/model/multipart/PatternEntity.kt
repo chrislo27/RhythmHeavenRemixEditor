@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
@@ -9,14 +10,11 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class PatternEntity(remix: Remix, datamodel: Pattern)
-    : MultipartEntity<Pattern>(remix, datamodel), IRepitchable {
+    : MultipartEntity<Pattern>(remix, datamodel), IRepitchable, IStretchable {
 
     override var semitone: Int = 0
-    override val canBeRepitched: Boolean by lazy {
-        internal.any {
-            (it as? IRepitchable)?.canBeRepitched == true
-        }
-    }
+    override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)
+    override val isStretchable: Boolean by IStretchable.anyInModel(datamodel)
 
     init {
         datamodel.cues.mapTo(internal) { pointer ->

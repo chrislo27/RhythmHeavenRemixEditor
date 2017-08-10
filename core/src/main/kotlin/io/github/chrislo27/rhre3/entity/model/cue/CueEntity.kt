@@ -2,12 +2,14 @@ package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.Remix
 
 
-class CueEntity(remix: Remix, datamodel: Cue) : ModelEntity<Cue>(remix, datamodel), IRepitchable {
+class CueEntity(remix: Remix, datamodel: Cue)
+    : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable {
 
     companion object {
         /**
@@ -43,6 +45,7 @@ class CueEntity(remix: Remix, datamodel: Cue) : ModelEntity<Cue>(remix, datamode
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
+    override val isStretchable: Boolean = datamodel.stretchable
 
     private var soundId: Long = -1L
     private var introSoundId: Long = -1L

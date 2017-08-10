@@ -5,27 +5,18 @@ import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 
 
-interface IRepitchable {
+interface IStretchable {
 
     companion object {
-//        fun anyInList(list: List<Entity>): Lazy<Boolean> {
-//            return lazy {
-//                list.any {
-//                    (it as? IRepitchable)?.canBeRepitched == true
-//                }
-//            }
-//        }
-
         fun anyInModel(model: ContainerModel): Lazy<Boolean> {
             return lazy {
                 model.cues.any {
-                    (GameRegistry.data.objectMap[it.id] as? Cue)?.repitchable == true
+                    (GameRegistry.data.objectMap[it.id] as? Cue)?.stretchable == true
                 }
             }
         }
     }
 
-    var semitone: Int
-    val canBeRepitched: Boolean
+    val isStretchable: Boolean
 
 }
