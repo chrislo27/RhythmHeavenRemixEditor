@@ -7,6 +7,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
@@ -82,6 +83,15 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 //            font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
 //        }
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
+
+        if (this is IRepitchable) {
+            if (!this.canBeRepitched) {
+                font.setColor(1f, 0f, 0f, 1f)
+            }
+            font.draw(batch, Semitones.getSemitoneName(this.semitone),
+                      bounds.x + 2 * remix.editor.toScaleX(BORDER),
+                      bounds.y + 2 * remix.editor.toScaleY(BORDER) + font.capHeight)
+        }
         font.color = oldFontColor
         font.data.setScale(oldFontSizeX, oldFontSizeY)
     }
