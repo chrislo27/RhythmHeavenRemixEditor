@@ -36,16 +36,11 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
         // TODO optimize?
         internal.clear()
-        var index: Int = 0
-        var cycle: Int = 0
-        while (true) {
+        for (index in 0..(percentage * cues.size).toInt()) {
+            val cycle = index / cues.size
             val remIndex: Int = index % cues.size
             val pointer: CuePointer = cues[remIndex]
-            if (pointer.duration <= 0f)
-                error("Pointer ${pointer.id} has a duration <= 0 (backing duration ${pointer.backingDuration})")
             val beat = pointer.beat + cycle * sequenceLength
-            if (beat > bounds.width)
-                break
 
             internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
                 this.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
@@ -54,10 +49,6 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Missing object ${pointer.id} while trying to populate keep the beat ${datamodel.id}")
-
-            index++
-            if (index % cues.size == 0)
-                cycle++
         }
     }
 
