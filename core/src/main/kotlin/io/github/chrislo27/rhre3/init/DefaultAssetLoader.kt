@@ -19,6 +19,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         AssetRegistry.loadAsset<Texture>("ui_bg", "images/ui/bg.png")
 
+        AssetRegistry.loadAsset<Texture>("tracker_right_tri", "images/ui/tracker_right_triangle.png")
+        AssetRegistry.loadAsset<Texture>("tracker_tri", "images/ui/tracker_triangle.png")
+
         AssetRegistry.loadAsset<Texture>("ui_icon_updatesfx", "images/ui/icons/update_sfx.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_palette", "images/ui/icons/palette.png")
     }

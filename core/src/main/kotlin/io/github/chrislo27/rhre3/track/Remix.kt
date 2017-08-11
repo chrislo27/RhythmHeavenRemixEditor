@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.track
 
-import chrislo27.rhre.oopsies.ActionHistory
+import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor

@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
@@ -15,9 +16,12 @@ import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
+import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -120,7 +124,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         remix.entities.forEach {
-            it.render(batch)
+            if (it.bounds.x + it.bounds.width >= beatRange.start && it.bounds.x <= beatRange.endInclusive) {
+                it.render(batch)
+            }
         }
 
         // beat lines
@@ -144,6 +150,50 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             batch.setColor(1f, 1f, 1f, 1f)
+        }
+
+        // trackers (playback start, music, others)
+        run trackers@ {
+            val triangleHeight = 0.4f
+            val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
+            val font = main.defaultBorderedFont
+            val oldFontColor = font.color
+
+            fun getTrackerTime(beat: Float): String {
+                val sec = remix.tempos.beatsToSeconds(beat)
+                return Localization["tracker.any.time",
+                        "%.3f".format(beat), "%1$02d:%2$06.3f".format((sec / 60).toInt(), sec % 60)]
+            }
+
+            fun renderAboveTracker(textKey: String, controlKey: String, units: Int, beat: Float, color: Color) {
+                val x = beat
+                val y = trackYOffset
+                val height = (TRACK_COUNT + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE)
+                batch.setColor(color.toFloatBits())
+                batch.fillRect(beat, y, toScaleX(TRACK_LINE * 1.5f),
+                               height)
+                batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
+                           x, y + height - triangleHeight, triangleWidth, triangleHeight)
+
+                font.scaleFont()
+                font.scaleMul(0.75f)
+                font.color = batch.color
+                font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                font.drawCompressed(batch, getTrackerTime(beat), x + triangleWidth + 0.05f, y + height, 1f, Align.left)
+
+                val line = font.lineHeight
+                font.scaleMul(0.75f)
+                font.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                font.scaleFont()
+            }
+
+            renderAboveTracker("tracker.music", "tracker.music.controls",
+                               1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart)
+            renderAboveTracker("tracker.playback", "tracker.playback.controls",
+                               0, remix.playbackStart, theme.trackers.playback)
+
+            font.color = oldFontColor
+            font.unscaleFont()
         }
 
         // beat numbers
@@ -172,7 +222,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)
-
         }
 
         font.unscaleFont()
