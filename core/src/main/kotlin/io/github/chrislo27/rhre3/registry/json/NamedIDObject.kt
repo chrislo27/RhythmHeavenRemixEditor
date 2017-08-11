@@ -106,6 +106,9 @@ class PatternObject : NamedIDObject() {
 
     lateinit var cues: List<CuePointerObject>
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var stretchable: Boolean = false
+
 }
 
 @JsonTypeName("randomCue")

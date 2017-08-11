@@ -4,7 +4,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.git.GitHelper
-import io.github.chrislo27.rhre3.registry.datamodel.*
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -43,7 +43,8 @@ object GameRegistry : Disposable {
 
     class RegistryData : Disposable {
 
-        @Volatile var ready: Boolean = false
+        @Volatile
+        var ready: Boolean = false
             private set
         val gameMap: Map<String, Game> = mutableMapOf()
         val gameList: List<Game> by lazy {
@@ -109,45 +110,45 @@ object GameRegistry : Disposable {
             val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
 
             val game: Game = Game(dataObject.id,
-                                                                                                        dataObject.name,
-                                                                                                        Series.valueOf(
-                                                                                                                dataObject.series?.toUpperCase(
-                                                                                                                        Locale.ROOT) ?: Series.OTHER.name),
-                                                                                                        Version.fromString(
-                                                                                                                dataObject.requiresVersion),
-                                                                                                        mutableListOf(),
-                                                                                                        Texture(folder.child(
-                                                                                                                ICON_FILENAME)),
-                                                                                                        dataObject.group ?: dataObject.name,
-                                                                                                        dataObject.groupDefault,
-                                                                                                        dataObject.priority)
+                                  dataObject.name,
+                                  Series.valueOf(
+                                          dataObject.series?.toUpperCase(
+                                                  Locale.ROOT) ?: Series.OTHER.name),
+                                  Version.fromString(
+                                          dataObject.requiresVersion),
+                                  mutableListOf(),
+                                  Texture(folder.child(
+                                          ICON_FILENAME)),
+                                  dataObject.group ?: dataObject.name,
+                                  dataObject.groupDefault,
+                                  dataObject.priority)
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {
                     is CueObject ->
                         Cue(game, obj.id, obj.deprecatedIDs, obj.name,
-                                                                              obj.duration,
-                                                                              obj.stretchable, obj.repitchable,
-                                                                              SFX_FOLDER.child(
-                                                                                      "${obj.id}.${obj.fileExtension}"),
-                                                                              obj.introSound, obj.endingSound,
-                                                                              obj.responseIDs,
-                                                                              obj.baseBpm, obj.loops)
+                            obj.duration,
+                            obj.stretchable, obj.repitchable,
+                            SFX_FOLDER.child(
+                                    "${obj.id}.${obj.fileExtension}"),
+                            obj.introSound, obj.endingSound,
+                            obj.responseIDs,
+                            obj.baseBpm, obj.loops)
                     is EquidistantObject ->
                         Equidistant(game, obj.id, obj.deprecatedIDs,
-                                                                                      obj.name, obj.distance,
-                                                                                      obj.stretchable,
-                                                                                      obj.cues.mapToDatamodel())
+                                    obj.name, obj.distance,
+                                    obj.stretchable,
+                                    obj.cues.mapToDatamodel())
                     is KeepTheBeatObject ->
                         KeepTheBeat(game, obj.id, obj.deprecatedIDs,
-                                                                                      obj.name, obj.duration,
-                                                                                      obj.cues.mapToDatamodel())
+                                    obj.name, obj.duration,
+                                    obj.cues.mapToDatamodel())
                     is PatternObject ->
                         Pattern(game, obj.id, obj.deprecatedIDs,
-                                                                                  obj.name, obj.cues.mapToDatamodel())
+                                obj.name, obj.cues.mapToDatamodel(), obj.stretchable)
                     is RandomCueObject ->
                         RandomCue(game, obj.id, obj.deprecatedIDs,
-                                                                                    obj.name, obj.cues.mapToDatamodel())
+                                  obj.name, obj.cues.mapToDatamodel())
                 }
             }
 

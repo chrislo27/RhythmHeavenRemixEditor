@@ -8,7 +8,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
 
 class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
-              override val cues: List<CuePointer>)
+              override val cues: List<CuePointer>, val stretchable: Boolean)
     : Datamodel(game, id, deprecatedIDs, name), ContainerModel {
 
     val repitchable: Boolean by lazy {

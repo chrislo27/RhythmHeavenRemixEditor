@@ -159,7 +159,9 @@ The `loops` field is a boolean indicating if the sound should loop.
     {
       // see CuePointerObject
     }
-  ]
+  ],
+  // optional fields after this comment
+  "stretchable": false
 }
 ```
 
@@ -172,6 +174,8 @@ If the parent data object's ID is `spaceDance`, and this pattern's ID is `turnRi
 therefore this ID is `spaceDance_turnRight`. You'll notice this is similar to
 the cue ID naming convention, but it always has underscores and never has forward
 slashes.
+
+The optional `stretchable` field indicates if this pattern is stretchable.
 
 The array of `CuePointerObject`s uses the standard cue pointer object fields.
 

@@ -10,11 +10,9 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class EquidistantEntity(remix: Remix, datamodel: Equidistant)
-    : MultipartEntity<Equidistant>(remix, datamodel), IRepitchable, IStretchable {
+    : MultipartEntity<Equidistant>(remix, datamodel), IStretchable {
 
-    override var semitone: Int = 0
-    override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)
-    override val isStretchable: Boolean = true
+    override val isStretchable: Boolean = datamodel.stretchable
 
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)
