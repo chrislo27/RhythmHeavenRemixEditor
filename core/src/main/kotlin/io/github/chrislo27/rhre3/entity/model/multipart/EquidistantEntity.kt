@@ -34,4 +34,11 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
             } ?: error("Object with id ${pointer.id} not found")
         }
     }
+
+    override fun copy(remix: Remix): EquidistantEntity {
+        return EquidistantEntity(remix, datamodel).also {
+            it.bounds.set(this.bounds)
+            it.semitone = this.semitone
+        }
+    }
 }

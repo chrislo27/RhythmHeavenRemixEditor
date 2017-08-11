@@ -27,4 +27,6 @@ abstract class Entity(val remix: Remix) {
 
     abstract fun onEnd()
 
+    abstract fun copy(remix: Remix = this.remix): Entity
+
 }
