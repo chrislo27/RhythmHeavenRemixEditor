@@ -13,15 +13,14 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
-import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
-import io.github.chrislo27.toolboks.util.gdxutils.fillRect
-import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
-import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.*
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -65,10 +64,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             null, stageCamera, main, this)
     val batch: SpriteBatch
         get() = main.batch
-
     var theme: Theme = DarkTheme()
     val subbeatSection = SubbeatSection()
     var snap: Float = 0.25f
+
+    private enum class TrackerMovement {
+        NONE, STILL_DOWN, PLAYBACK, MUSIC
+    }
+    private var movingTracker: TrackerMovement = TrackerMovement.NONE
+    private var lastMovingTrackerPos: Float = -1f
 
     fun toScaleX(float: Float): Float =
             (float / RHRE3.WIDTH) * camera.viewportWidth
@@ -154,18 +158,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // trackers (playback start, music, others)
         run trackers@ {
-            val triangleHeight = 0.4f
-            val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
             val font = main.defaultBorderedFont
             val oldFontColor = font.color
 
             fun getTrackerTime(beat: Float): String {
-                val sec = remix.tempos.beatsToSeconds(beat)
+                val sec = Math.abs(remix.tempos.beatsToSeconds(beat))
                 return Localization["tracker.any.time",
-                        "%.3f".format(beat), "%1$02d:%2$06.3f".format((sec / 60).toInt(), sec % 60)]
+                        "%.3f".format(beat),
+                        (if (beat < 0) "-" else "") +
+                                "%1$02d:%2$06.3f".format((sec / 60).toInt(), sec % 60)]
             }
 
-            fun renderAboveTracker(textKey: String, controlKey: String, units: Int, beat: Float, color: Color) {
+            fun renderAboveTracker(textKey: String, controlKey: String, units: Int, beat: Float, color: Color,
+                                   triangleHeight: Float = 0.4f) {
+                val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
                 val x = beat
                 val y = trackYOffset
                 val height = (TRACK_COUNT + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE)
@@ -265,6 +271,79 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 camera.position.x = 0f
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
                 // TODO
+            }
+        }
+
+        subbeatSection.enabled = false
+        fun setSubbeatSectionToMouse() {
+            subbeatSection.enabled = true
+            subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
+            subbeatSection.end = subbeatSection.start
+        }
+        val isMusicTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
+                (control && Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
+        val isPlaybackTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
+        val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
+        if (movingTracker == TrackerMovement.STILL_DOWN && !isAnyTrackerButtonDown) {
+            movingTracker = TrackerMovement.NONE
+        }
+        when (movingTracker) {
+            Editor.TrackerMovement.NONE -> {
+                if (isMusicTrackerButtonDown) {
+                    movingTracker = TrackerMovement.MUSIC
+                    lastMovingTrackerPos = remix.musicStartSec
+                } else if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !control) {
+                    movingTracker = TrackerMovement.PLAYBACK
+                    lastMovingTrackerPos = remix.playbackStart
+                }
+            }
+            TrackerMovement.STILL_DOWN -> {}
+            Editor.TrackerMovement.MUSIC -> {
+                if (isMusicTrackerButtonDown) {
+                    setSubbeatSectionToMouse()
+                    remix.musicStartSec = remix.tempos.beatsToSeconds(
+                            MathHelper.snapToNearest(remix.camera.getInputX(), snap))
+                } else {
+                    movingTracker = TrackerMovement.STILL_DOWN
+                    val final = remix.musicStartSec
+                    val old = lastMovingTrackerPos
+                    remix.addActionWithoutMutating(object : ReversibleAction<Remix> {
+                        override fun redo(context: Remix) {
+                            remix.musicStartSec = final
+                        }
+                        override fun undo(context: Remix) {
+                            remix.musicStartSec = old
+                        }
+                    })
+                }
+            }
+            Editor.TrackerMovement.PLAYBACK -> {
+                if (isPlaybackTrackerButtonDown) {
+                    setSubbeatSectionToMouse()
+                    remix.playbackStart = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
+                } else {
+                    movingTracker = TrackerMovement.STILL_DOWN
+                    val final = remix.playbackStart
+                    val old = lastMovingTrackerPos
+                    remix.addActionWithoutMutating(object : ReversibleAction<Remix> {
+                        override fun redo(context: Remix) {
+                            remix.playbackStart = final
+                        }
+                        override fun undo(context: Remix) {
+                            remix.playbackStart = old
+                        }
+                    })
+                }
+            }
+        }
+
+        if (control) {
+            if (remix.canRedo() &&
+                    (Gdx.input.isKeyJustPressed(Input.Keys.Y) ||
+                            (shift && Gdx.input.isKeyJustPressed(Input.Keys.Z)))) {
+                remix.redo()
+            } else if (remix.canUndo() && Gdx.input.isKeyJustPressed(Input.Keys.Z) && !shift) {
+                remix.undo()
             }
         }
 
