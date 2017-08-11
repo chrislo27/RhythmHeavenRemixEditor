@@ -68,11 +68,62 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     val subbeatSection = SubbeatSection()
     var snap: Float = 0.25f
 
-    private enum class TrackerMovement {
-        NONE, STILL_DOWN, PLAYBACK, MUSIC
+    sealed class ClickOccupation {
+
+        interface TrackerBased {
+            var finished: Boolean
+            var final: Float
+        }
+
+        object None : ClickOccupation()
+
+        class Playback(val editor: Editor) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
+            val old = editor.remix.playbackStart
+            override var finished: Boolean = false
+            override var final: Float = Float.NaN
+                set(value) {
+                    if (field != Float.NaN) {
+                        error("Attempt to set value when already set to $field")
+                    }
+                    field = value
+                }
+
+            override fun redo(context: Remix) {
+                if (final == Float.NaN)
+                    error("Final value was NaN which is impossible")
+                editor.remix.playbackStart = final
+            }
+
+            override fun undo(context: Remix) {
+                editor.remix.playbackStart = old
+            }
+        }
+        class Music(val editor: Editor) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
+            val old = editor.remix.musicStartSec
+            override var finished: Boolean = false
+            override var final: Float = Float.NaN
+                set(value) {
+                    if (field != Float.NaN) {
+                        error("Attempt to set value when already set to $field")
+                    }
+                    field = value
+                }
+
+            override fun redo(context: Remix) {
+                if (final == Float.NaN)
+                    error("Final value was NaN which is impossible")
+                editor.remix.musicStartSec = final
+            }
+
+            override fun undo(context: Remix) {
+                editor.remix.musicStartSec = old
+            }
+        }
+
+        class SelectionDrag(val editor: Editor) : ClickOccupation()
     }
-    private var movingTracker: TrackerMovement = TrackerMovement.NONE
-    private var lastMovingTrackerPos: Float = -1f
+
+    private var clickOccupation: ClickOccupation = ClickOccupation.None
 
     fun toScaleX(float: Float): Float =
             (float / RHRE3.WIDTH) * camera.viewportWidth
@@ -247,6 +298,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
         val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
                 Input.Keys.CONTROL_RIGHT)
+        val alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(
+                Input.Keys.ALT_RIGHT)
         val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
@@ -280,59 +333,54 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
             subbeatSection.end = subbeatSection.start
         }
-        val isMusicTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
-                (control && Gdx.input.isButtonPressed(Input.Buttons.RIGHT))
-        val isPlaybackTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT)
+
+        val clickOccupation = clickOccupation
+        val isMusicTrackerButtonDown = (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
+                (control && Gdx.input.isButtonPressed(Input.Buttons.RIGHT))) && !shift
+        val isPlaybackTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !control && !shift
         val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
-        if (movingTracker == TrackerMovement.STILL_DOWN && !isAnyTrackerButtonDown) {
-            movingTracker = TrackerMovement.NONE
+        val isDraggingButtonDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT)
+        val isCopying = isDraggingButtonDown && alt
+        if (clickOccupation is ClickOccupation.TrackerBased &&
+                !isAnyTrackerButtonDown && clickOccupation.finished) {
+            this.clickOccupation = ClickOccupation.None
         }
-        when (movingTracker) {
-            Editor.TrackerMovement.NONE -> {
+        when (clickOccupation) {
+            ClickOccupation.None -> {
                 if (isMusicTrackerButtonDown) {
-                    movingTracker = TrackerMovement.MUSIC
-                    lastMovingTrackerPos = remix.musicStartSec
-                } else if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !control) {
-                    movingTracker = TrackerMovement.PLAYBACK
-                    lastMovingTrackerPos = remix.playbackStart
+                    this.clickOccupation = ClickOccupation.Music(this)
+                } else if (isPlaybackTrackerButtonDown && !control) {
+                    this.clickOccupation = ClickOccupation.Playback(this)
+                } else if (isDraggingButtonDown) {
+                    // TODO initialize based on new, move, copy
                 }
             }
-            TrackerMovement.STILL_DOWN -> {}
-            Editor.TrackerMovement.MUSIC -> {
+            is ClickOccupation.Music -> {
                 if (isMusicTrackerButtonDown) {
                     setSubbeatSectionToMouse()
                     remix.musicStartSec = remix.tempos.beatsToSeconds(
                             MathHelper.snapToNearest(remix.camera.getInputX(), snap))
                 } else {
-                    movingTracker = TrackerMovement.STILL_DOWN
-                    val final = remix.musicStartSec
-                    val old = lastMovingTrackerPos
-                    remix.addActionWithoutMutating(object : ReversibleAction<Remix> {
-                        override fun redo(context: Remix) {
-                            remix.musicStartSec = final
-                        }
-                        override fun undo(context: Remix) {
-                            remix.musicStartSec = old
-                        }
-                    })
+                    clickOccupation.finished = true
+                    clickOccupation.final = remix.musicStartSec
+                    remix.addActionWithoutMutating(clickOccupation)
                 }
             }
-            Editor.TrackerMovement.PLAYBACK -> {
+            is ClickOccupation.Playback -> {
                 if (isPlaybackTrackerButtonDown) {
                     setSubbeatSectionToMouse()
                     remix.playbackStart = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
                 } else {
-                    movingTracker = TrackerMovement.STILL_DOWN
-                    val final = remix.playbackStart
-                    val old = lastMovingTrackerPos
-                    remix.addActionWithoutMutating(object : ReversibleAction<Remix> {
-                        override fun redo(context: Remix) {
-                            remix.playbackStart = final
-                        }
-                        override fun undo(context: Remix) {
-                            remix.playbackStart = old
-                        }
-                    })
+                    clickOccupation.finished = true
+                    clickOccupation.final = remix.playbackStart
+                    remix.addActionWithoutMutating(clickOccupation)
+                }
+            }
+            is ClickOccupation.SelectionDrag -> {
+                if (!isDraggingButtonDown) {
+                    // TODO attempt place
+                } else {
+                    // TODO move selection
                 }
             }
         }
