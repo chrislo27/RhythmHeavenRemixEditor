@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.registry.datamodel.impl
 
-import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -13,11 +13,12 @@ class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: Str
     : Datamodel(game, id, deprecatedIDs, name), ContainerModel {
 
     val totalSequenceDuration: Float by lazy {
-        cues.maxBy(CuePointer::beat)?.beat ?: error("No cues in keep the beat")
+        val max = cues.maxBy(CuePointer::beat) ?: error("No cues in keep the beat")
+        max.beat + max.duration
     }
 
-    override fun createEntity(remix: Remix): ModelEntity<*> {
-        TODO()
+    override fun createEntity(remix: Remix): KeepTheBeatEntity {
+        return KeepTheBeatEntity(remix, this)
     }
 
     override fun dispose() {

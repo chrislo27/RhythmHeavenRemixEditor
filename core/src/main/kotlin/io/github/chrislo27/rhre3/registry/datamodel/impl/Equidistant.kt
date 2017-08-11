@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.registry.datamodel.impl
 
-import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -12,8 +12,8 @@ class Equidistant(game: Game, id: String, deprecatedIDs: List<String>, name: Str
                   override val cues: List<CuePointer>)
     : Datamodel(game, id, deprecatedIDs, name), ContainerModel {
 
-    override fun createEntity(remix: Remix): ModelEntity<*> {
-        TODO()
+    override fun createEntity(remix: Remix): EquidistantEntity {
+        return EquidistantEntity(remix, this)
     }
 
     override fun dispose() {
