@@ -63,6 +63,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         get() = main.batch
 
     var theme: Theme = DarkTheme()
+    val subbeatSection = SubbeatSection()
+    var snap: Float = 0.25f
 
     fun toScaleX(float: Float): Float =
             (float / RHRE3.WIDTH) * camera.viewportWidth
@@ -132,6 +134,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
                 batch.fillRect(i.toFloat(), trackYOffset, toScaleX(TRACK_LINE),
                                TRACK_COUNT + toScaleY(TRACK_LINE))
+
+                if (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end) {
+                    batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.35f)
+                    for (j in 1 until Math.round(1f / snap)) {
+                        batch.fillRect(i.toFloat() + snap * j, trackYOffset, toScaleX(TRACK_LINE),
+                                       TRACK_COUNT + toScaleY(TRACK_LINE))
+                    }
+                }
             }
             batch.setColor(1f, 1f, 1f, 1f)
         }
