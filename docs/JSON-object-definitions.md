@@ -213,7 +213,7 @@ The `CuePointerObjects` used *are in order* and do **NOT** use these fields:
   "id": "gameID_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable name",
-  "duration": 2.0,
+  "defaultDuration": 2.0,
   "cues": [ // ORDERED array of CuePointerObjects
     {
       // see CuePointerObject
@@ -223,8 +223,11 @@ The `CuePointerObjects` used *are in order* and do **NOT** use these fields:
 ```
 
 The `KeepTheBeatObject` is similar to the `EquidistantObject`, but it
-repeats over and over (up to its `duration`). This is for things like
-Lockstep marching patterns, or Flipper-Flop.
+repeats over and over. This is for things like
+Lockstep marching patterns, or Flipper-Flop, but is not limited to
+same-beat patterns. This is like a pattern that repeats or is truncated.
+
+The `defaultDuration` field is just the duration when initially placed.
 
 See `PatternObject` for the ID and name structure.
 

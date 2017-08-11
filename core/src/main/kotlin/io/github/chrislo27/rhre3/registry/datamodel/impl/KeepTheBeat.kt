@@ -8,9 +8,13 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: String,
-                  val duration: Float,
+                  val defaultDuration: Float,
                   override val cues: List<CuePointer>)
     : Datamodel(game, id, deprecatedIDs, name), ContainerModel {
+
+    val totalSequenceDuration: Float by lazy {
+        cues.maxBy(CuePointer::beat)?.beat ?: error("No cues in keep the beat")
+    }
 
     override fun createEntity(remix: Remix): ModelEntity<*> {
         TODO()
