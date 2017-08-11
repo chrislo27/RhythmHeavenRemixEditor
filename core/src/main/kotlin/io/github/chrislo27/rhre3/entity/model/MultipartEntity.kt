@@ -99,6 +99,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun onStart() {
+        internal.filter {
+            it.bounds.x + it.bounds.width < remix.beat
+        }.forEach {
+            it.playbackCompletion = PlaybackCompletion.FINISHED
+        }
     }
 
     override fun whilePlaying() {
