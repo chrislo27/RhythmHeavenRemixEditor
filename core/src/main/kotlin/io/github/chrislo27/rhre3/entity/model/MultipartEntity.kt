@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.entity.model
 
-import chrislo27.rhre.oopsies.ReversibleAction
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
+import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
