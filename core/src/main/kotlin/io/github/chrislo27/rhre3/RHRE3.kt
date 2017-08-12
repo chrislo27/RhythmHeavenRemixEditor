@@ -18,4 +18,6 @@ object RHRE3 {
     const val DATABASE_BRANCH: String = "dev" // FIXME
     const val DATABASE_CURRENT_VERSION: String = "https://raw.githubusercontent.com/chrislo27/RHRE-database/$DATABASE_BRANCH/current.json"
 
+    var skipGitScreen: Boolean = false
+
 }

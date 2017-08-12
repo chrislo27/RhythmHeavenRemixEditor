@@ -82,7 +82,6 @@ object GameRegistry : Disposable {
         }
 
         private var index: Int = 0
-        private var overrunTime: Float = 0f
         var lastLoadedID: String? = null
 
         private fun whenDone() {
@@ -178,17 +177,14 @@ object GameRegistry : Disposable {
             if (ready)
                 return 1f
 
-            val msToLoad = (delta * 1000f) - overrunTime
+            val msToLoad = (delta * 1000f)
             val startNano = System.nanoTime()
-
-            overrunTime = 0f
 
             while (getProgress() < 1) {
                 loadOne()
                 val time = (System.nanoTime() - startNano) / 1_000_000f
 
                 if (time >= msToLoad) {
-                    overrunTime = time - msToLoad
                     break
                 }
             }

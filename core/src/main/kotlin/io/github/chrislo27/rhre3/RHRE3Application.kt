@@ -110,8 +110,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                               .setNextScreen(
                                       {
                                           addOtherScreens()
-                                          ScreenRegistry["databaseUpdate"]
+                                          ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
                                       }))
+
         }
 
     }

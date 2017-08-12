@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.desktop
 
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.logging.Logger
@@ -41,6 +42,8 @@ object DesktopLauncher {
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = false
                     this.audioDeviceSimultaneousSources = 256
+
+                    RHRE3.skipGitScreen = "--skip-git" in args
 
                     val sizes: List<Int> = listOf(512, 256, 128, 64, 32, 24, 16)
 

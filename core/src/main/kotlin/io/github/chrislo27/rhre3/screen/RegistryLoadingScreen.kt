@@ -3,8 +3,8 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -60,7 +60,10 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
         val loadOneAtATime = false
 
-        val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(Math.min(delta, 2 / 60f))
+        val numLoaded = registryData.gameMap.size
+        val nano = System.nanoTime()
+        val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
+        println("Loaded ${registryData.gameMap.size - numLoaded} this frame in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
         val game: Game? = registryData.gameMap[registryData.lastLoadedID]
 
         val texture = game?.icon
