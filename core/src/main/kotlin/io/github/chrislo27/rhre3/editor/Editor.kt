@@ -82,8 +82,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             override var finished: Boolean = false
             override var final: Float = Float.NaN
                 set(value) {
-                    if (field != Float.NaN) {
-                        error("Attempt to set value when already set to $field")
+                    if (!java.lang.Float.isNaN(field)) {
+                        error("Attempt to set value to $value when already set to $field")
                     }
                     field = value
                 }
@@ -98,13 +98,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 editor.remix.playbackStart = old
             }
         }
+
         class Music(val editor: Editor) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
             val old = editor.remix.musicStartSec
             override var finished: Boolean = false
             override var final: Float = Float.NaN
                 set(value) {
-                    if (field != Float.NaN) {
-                        error("Attempt to set value when already set to $field")
+                    if (!java.lang.Float.isNaN(field)) {
+                        error("Attempt to set value to $value when already set to $field")
                     }
                     field = value
                 }
@@ -344,47 +345,49 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (clickOccupation is ClickOccupation.TrackerBased &&
                 !isAnyTrackerButtonDown && clickOccupation.finished) {
             this.clickOccupation = ClickOccupation.None
-        }
-        when (clickOccupation) {
-            ClickOccupation.None -> {
-                if (isMusicTrackerButtonDown) {
-                    this.clickOccupation = ClickOccupation.Music(this)
-                } else if (isPlaybackTrackerButtonDown && !control) {
-                    this.clickOccupation = ClickOccupation.Playback(this)
-                } else if (isDraggingButtonDown) {
-                    // TODO initialize based on new, move, copy
+        } else {
+            when (clickOccupation) {
+                ClickOccupation.None -> {
+                    if (isMusicTrackerButtonDown) {
+                        this.clickOccupation = ClickOccupation.Music(this)
+                    } else if (isPlaybackTrackerButtonDown && !control) {
+                        this.clickOccupation = ClickOccupation.Playback(this)
+                    } else if (isDraggingButtonDown) {
+                        // TODO initialize based on new, move, copy
+                    }
                 }
-            }
-            is ClickOccupation.Music -> {
-                if (isMusicTrackerButtonDown) {
-                    setSubbeatSectionToMouse()
-                    remix.musicStartSec = remix.tempos.beatsToSeconds(
-                            MathHelper.snapToNearest(remix.camera.getInputX(), snap))
-                } else {
-                    clickOccupation.finished = true
-                    clickOccupation.final = remix.musicStartSec
-                    remix.addActionWithoutMutating(clickOccupation)
+                is ClickOccupation.Music -> {
+                    if (isMusicTrackerButtonDown) {
+                        setSubbeatSectionToMouse()
+                        remix.musicStartSec = remix.tempos.beatsToSeconds(
+                                MathHelper.snapToNearest(remix.camera.getInputX(), snap))
+                    } else {
+                        clickOccupation.finished = true
+                        clickOccupation.final = remix.musicStartSec
+                        remix.addActionWithoutMutating(clickOccupation)
+                    }
                 }
-            }
-            is ClickOccupation.Playback -> {
-                if (isPlaybackTrackerButtonDown) {
-                    setSubbeatSectionToMouse()
-                    remix.playbackStart = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-                } else {
-                    clickOccupation.finished = true
-                    clickOccupation.final = remix.playbackStart
-                    remix.addActionWithoutMutating(clickOccupation)
+                is ClickOccupation.Playback -> {
+                    if (isPlaybackTrackerButtonDown) {
+                        setSubbeatSectionToMouse()
+                        remix.playbackStart = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
+                    } else {
+                        clickOccupation.finished = true
+                        clickOccupation.final = remix.playbackStart
+                        remix.addActionWithoutMutating(clickOccupation)
+                    }
                 }
-            }
-            is ClickOccupation.SelectionDrag -> {
-                if (!isDraggingButtonDown) {
-                    // TODO attempt place
-                } else {
-                    // TODO move selection
+                is ClickOccupation.SelectionDrag -> {
+                    if (!isDraggingButtonDown) {
+                        // TODO attempt place
+                    } else {
+                        // TODO move selection
+                    }
                 }
             }
         }
 
+        // undo/redo
         if (control) {
             if (remix.canRedo() &&
                     (Gdx.input.isKeyJustPressed(Input.Keys.Y) ||
