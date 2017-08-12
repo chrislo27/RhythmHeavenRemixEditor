@@ -16,6 +16,7 @@ import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -221,7 +222,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 "%1$02d:%2$06.3f".format((sec / 60).toInt(), sec % 60)]
             }
 
-            fun renderAboveTracker(textKey: String, controlKey: String, units: Int, beat: Float, color: Color,
+            fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
                                    triangleHeight: Float = 0.4f) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
                 val x = beat
@@ -236,12 +237,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 font.scaleFont()
                 font.scaleMul(0.75f)
                 font.color = batch.color
-                font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                if (textKey != null) {
+                    font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                }
                 font.drawCompressed(batch, getTrackerTime(beat), x + triangleWidth + 0.05f, y + height, 1f, Align.left)
 
-                val line = font.lineHeight
-                font.scaleMul(0.75f)
-                font.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                if (controlKey != null) {
+                    val line = font.lineHeight
+                    font.scaleMul(0.75f)
+                    font.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                }
+
                 font.scaleFont()
             }
 
@@ -249,6 +255,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart)
             renderAboveTracker("tracker.playback", "tracker.playback.controls",
                                0, remix.playbackStart, theme.trackers.playback)
+            if (remix.playState != PlayState.STOPPED) {
+                renderAboveTracker(null, null, 0, remix.beat,
+                                   theme.trackers.playback, 0f)
+            }
 
             font.color = oldFontColor
             font.unscaleFont()
