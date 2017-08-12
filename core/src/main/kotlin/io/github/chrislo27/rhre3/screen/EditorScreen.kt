@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
@@ -14,12 +16,12 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     override fun show() {
         super.show()
-//        (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
+        (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
     }
 
     override fun hide() {
         super.hide()
-//        (Gdx.input.inputProcessor as? InputMultiplexer)?.removeProcessor(editor)
+        (Gdx.input.inputProcessor as? InputMultiplexer)?.removeProcessor(editor)
     }
 
     override fun render(delta: Float) {

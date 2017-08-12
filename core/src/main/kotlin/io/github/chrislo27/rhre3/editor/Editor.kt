@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.editor
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -25,7 +26,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.*
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
-    : Disposable {
+    : Disposable, InputProcessor {
 
     companion object {
         const val ENTITY_HEIGHT: Float = 48f
@@ -364,6 +365,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         this.clickOccupation = ClickOccupation.Playback(this)
                     } else if (isDraggingButtonDown) {
                         // TODO initialize based on new, move, copy
+                        if (stage.pickerStage.isMouseOver()) {
+                        }
                     }
                 }
                 is ClickOccupation.Music -> {
@@ -408,6 +411,39 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+    }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        println("touch")
+        return true
+    }
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        return false
+    }
+
+    override fun keyDown(keycode: Int): Boolean {
+        return false
+    }
+
+    override fun keyUp(keycode: Int): Boolean {
+        return false
+    }
+
+    override fun scrolled(amount: Int): Boolean {
+        return false
+    }
+
+    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+        return false
+    }
+
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        return false
+    }
+
+    override fun keyTyped(character: Char): Boolean {
+        return false
     }
 
     override fun dispose() {
