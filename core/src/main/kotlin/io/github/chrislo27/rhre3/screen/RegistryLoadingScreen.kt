@@ -63,7 +63,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
         val numLoaded = registryData.gameMap.size
         val nano = System.nanoTime()
         val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
-        println("Loaded ${registryData.gameMap.size - numLoaded} this frame in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
+//        println("Loaded ${registryData.gameMap.size - numLoaded} this frame in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
         val game: Game? = registryData.gameMap[registryData.lastLoadedID]
 
         val texture = game?.icon
