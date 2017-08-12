@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
@@ -61,6 +62,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     val pickerSelection: PickerSelection = PickerSelection()
+    var selection: List<Entity> = listOf()
     var remix: Remix = Remix(camera, this)
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
@@ -101,7 +103,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        class Music(val editor: Editor) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
+        class Music(val editor: Editor, val middleClick: Boolean) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
             val old = editor.remix.musicStartSec
             override var finished: Boolean = false
             override var final: Float = Float.NaN
@@ -143,6 +145,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun BitmapFont.unscaleFont() {
         this.setUseIntegerPositions(true)
         this.data.setScale(1f)
+    }
+
+    private fun setSubbeatSectionToMouse() {
+        subbeatSection.enabled = true
+        subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
+        subbeatSection.end = subbeatSection.start
     }
 
     fun getBeatRange(): IntRange =
@@ -339,63 +347,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        subbeatSection.enabled = false
-        fun setSubbeatSectionToMouse() {
-            subbeatSection.enabled = true
-            subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
-            subbeatSection.end = subbeatSection.start
-        }
-
-        val clickOccupation = clickOccupation
-        val isMusicTrackerButtonDown = (Gdx.input.isButtonPressed(Input.Buttons.MIDDLE) ||
-                (control && Gdx.input.isButtonPressed(Input.Buttons.RIGHT))) && !shift
-        val isPlaybackTrackerButtonDown = Gdx.input.isButtonPressed(Input.Buttons.RIGHT) && !control && !shift
-        val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
-        val isDraggingButtonDown = Gdx.input.isButtonPressed(Input.Buttons.LEFT)
-        val isCopying = isDraggingButtonDown && alt
-        if (clickOccupation is ClickOccupation.TrackerBased &&
-                !isAnyTrackerButtonDown && clickOccupation.finished) {
-            this.clickOccupation = ClickOccupation.None
-        } else {
+        run clickCheck@ {
+            val clickOccupation = clickOccupation
+            subbeatSection.enabled = false
             when (clickOccupation) {
-                ClickOccupation.None -> {
-                    if (isMusicTrackerButtonDown) {
-                        this.clickOccupation = ClickOccupation.Music(this)
-                    } else if (isPlaybackTrackerButtonDown && !control) {
-                        this.clickOccupation = ClickOccupation.Playback(this)
-                    } else if (isDraggingButtonDown) {
-                        // TODO initialize based on new, move, copy
-                        if (stage.pickerStage.isMouseOver()) {
-                        }
-                    }
-                }
                 is ClickOccupation.Music -> {
-                    if (isMusicTrackerButtonDown) {
-                        setSubbeatSectionToMouse()
-                        remix.musicStartSec = remix.tempos.beatsToSeconds(
-                                MathHelper.snapToNearest(remix.camera.getInputX(), snap))
-                    } else {
-                        clickOccupation.finished = true
-                        clickOccupation.final = remix.musicStartSec
-                        remix.addActionWithoutMutating(clickOccupation)
-                    }
+                    setSubbeatSectionToMouse()
+                    remix.musicStartSec = remix.tempos.beatsToSeconds(MathHelper.snapToNearest(camera.getInputX(), snap))
                 }
                 is ClickOccupation.Playback -> {
-                    if (isPlaybackTrackerButtonDown) {
-                        setSubbeatSectionToMouse()
-                        remix.playbackStart = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-                    } else {
-                        clickOccupation.finished = true
-                        clickOccupation.final = remix.playbackStart
-                        remix.addActionWithoutMutating(clickOccupation)
-                    }
-                }
-                is ClickOccupation.SelectionDrag -> {
-                    if (!isDraggingButtonDown) {
-                        // TODO attempt place
-                    } else {
-                        // TODO move selection
-                    }
+                    setSubbeatSectionToMouse()
+                    remix.playbackStart = MathHelper.snapToNearest(camera.getInputX(), snap)
                 }
             }
         }
@@ -414,11 +376,58 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        println("touch")
+        val shift =
+                Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
+        val control =
+                Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
+        val alt =
+                Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
+
+        val isMusicTrackerButtonDown = !(shift || alt) &&
+                ((!control && button == Input.Buttons.MIDDLE) || (button == Input.Buttons.RIGHT && control))
+
+        val isPlaybackTrackerButtonDown = !isMusicTrackerButtonDown &&
+                button == Input.Buttons.RIGHT && !(shift || alt || control)
+
+        val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
+
+        val isDraggingButtonDown = button == Input.Buttons.LEFT && !(control || shift)
+        val isCopying = isDraggingButtonDown && alt
+
+        if (clickOccupation != ClickOccupation.None)
+            return false
+
+        if (stage.centreAreaStage.isMouseOver()) {
+            if (isAnyTrackerButtonDown) {
+                clickOccupation = if (isMusicTrackerButtonDown) {
+                    ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
+                } else {
+                    ClickOccupation.Playback(this)
+                }
+            } else {
+                // TODO drag or select
+            }
+        } else if (stage.pickerStage.isMouseOver()) {
+            // only for new
+        }
+
         return true
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        val clickOccupation = clickOccupation
+        if (clickOccupation is ClickOccupation.Music &&
+                (button == (if (clickOccupation.middleClick) Input.Buttons.MIDDLE else Input.Buttons.RIGHT))) {
+            remix.addActionWithoutMutating(clickOccupation)
+            clickOccupation.final = remix.musicStartSec
+            this.clickOccupation = ClickOccupation.None
+        } else if (clickOccupation is ClickOccupation.Playback &&
+                button == Input.Buttons.RIGHT) {
+            remix.addActionWithoutMutating(clickOccupation)
+            clickOccupation.final = remix.playbackStart
+            this.clickOccupation = ClickOccupation.None
+        }
+
         return false
     }
 
