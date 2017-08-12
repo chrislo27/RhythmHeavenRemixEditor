@@ -404,8 +404,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     private fun resizeCamera(camera: OrthographicCamera) {
-        camera.viewportWidth = 1280f / ENTITY_WIDTH
-        camera.viewportHeight = 720f / ENTITY_HEIGHT
+        camera.viewportWidth = RHRE3.WIDTH / ENTITY_WIDTH
+        camera.viewportHeight = RHRE3.HEIGHT / ENTITY_HEIGHT
         camera.update()
     }
 
