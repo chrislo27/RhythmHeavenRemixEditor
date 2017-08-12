@@ -21,6 +21,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
 import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.lib.ProgressMonitor
@@ -32,6 +33,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
     private val label: TextLabel<GitUpdateScreen>
     private @Volatile var repoStatus: RepoStatus = RepoStatus.UNKNOWN
+    private @Volatile var coroutine: Job? = null
 
     init {
         stage as GenericStage
@@ -50,7 +52,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             return
         val nano = System.nanoTime()
         repoStatus = RepoStatus.UNKNOWN
-        launch(CommonPool) {
+        coroutine = launch(CommonPool) {
             repoStatus = RepoStatus.DOING
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, -1).flush()
@@ -171,7 +173,9 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
         if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
                 && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
-                || repoStatus == RepoStatus.DONE) {
+                || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))) {
+            coroutine?.cancel()
+            coroutine = null
             toNextScreen()
         }
     }
