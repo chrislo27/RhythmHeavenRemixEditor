@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.track
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.tempo.Tempos
@@ -84,6 +85,17 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     }
 
     init {
+    }
+
+    fun getLastPoint(): Float {
+        if (entities.isEmpty())
+            return 0f
+        return if (entities.isNotEmpty() && entities.any { it is EndEntity }) {
+            entities.first { it is EndEntity }.bounds.x
+        } else {
+            val last = entities.maxBy { it.bounds.x + it.bounds.width }!!
+            last.bounds.x + last.bounds.y
+        }
     }
 
     fun entityUpdate(entity: Entity) {
