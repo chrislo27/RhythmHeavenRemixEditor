@@ -604,7 +604,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else {
                 val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
                 if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
-                    val inBounds = remix.entities.filter { it in this.selection }
+                    val inBounds = this.selection
                     val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
                         inBounds.map { it.copy() }
                     else
