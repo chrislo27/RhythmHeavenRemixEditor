@@ -10,12 +10,10 @@ class EntitySelectionAction(val editor: Editor, val old: List<Entity>, val new: 
     : ReversibleAction<Remix> {
 
     override fun redo(context: Remix) {
-        old.forEach { it.isSelected = false }
-        new.forEach { it.isSelected = true }
+        editor.selection = new.toList()
     }
 
     override fun undo(context: Remix) {
-        old.forEach { it.isSelected = true }
-        new.forEach { it.isSelected = false }
+        editor.selection = old.toList()
     }
 }

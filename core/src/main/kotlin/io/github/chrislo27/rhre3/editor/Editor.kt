@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
@@ -48,6 +49,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_SIZE: Float = 32f
         const val BUTTON_PADDING: Float = 4f
         const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
+
+        const val SELECTION_BORDER: Float = 4f
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -138,6 +141,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 val startPoint: Vector2,
                                 val isAdd: Boolean) : ClickOccupation() {
             val oldSelection = editor.selection.toList()
+            val rectangle = Rectangle()
+
+            fun updateRectangle() {
+                val startX = startPoint.x
+                val startY = startPoint.y
+                val width = editor.remix.camera.getInputX() - startX
+                val height = editor.remix.camera.getInputY() - startY
+
+                if (width < 0) {
+                    val abs = Math.abs(width)
+                    rectangle.x = startX - abs
+                    rectangle.width = abs
+                } else {
+                    rectangle.x = startX
+                    rectangle.width = width
+                }
+
+                if (height < 0) {
+                    val abs = Math.abs(height)
+                    rectangle.y = startY - abs
+                    rectangle.height = abs
+                } else {
+                    rectangle.y = startY
+                    rectangle.height = height
+                }
+            }
+
         }
 
         class SelectionDrag(val editor: Editor,
@@ -397,6 +427,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             font.setColor(1f, 1f, 1f, 1f)
         }
 
+        run selectionRectDraw@ {
+            val clickOccupation = clickOccupation
+            if (clickOccupation is ClickOccupation.CreatingSelection) {
+                val oldColor = batch.packedColor
+
+                batch.color = theme.selection.selectionFill
+                batch.fillRect(clickOccupation.rectangle)
+
+                batch.color = theme.selection.selectionBorder
+                batch.drawRect(clickOccupation.rectangle, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+
+                batch.setColor(oldColor)
+            }
+        }
+
         font.unscaleFont()
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
@@ -463,6 +508,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
                     subbeatSection.end = clickOccupation.right
                 }
+                is ClickOccupation.CreatingSelection -> {
+                    clickOccupation.updateRectangle()
+                }
             }
         }
 
@@ -509,7 +557,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     ClickOccupation.Playback(this)
                 }
             } else {
-                // TODO drag/copy or select
+                val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
+                if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
+                    // begin selection move
+                } else {
+                    val clickOccupation = clickOccupation
+                    if (clickOccupation == ClickOccupation.None) {
+                        // begin selection rectangle
+                        val newClick = ClickOccupation.CreatingSelection(this, mouse, shift)
+                        this.clickOccupation = newClick
+                    }
+                }
             }
         } else if (stage.pickerStage.isMouseOver()) {
             // only for new
@@ -555,7 +613,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
              Outcomes:
 
              Correct placement -> results in a place+selection action
-             Invalid placement -> remove, restore selection
+             Invalid placement -> remove, restore old selection
 
              Correct movement  -> results in a move action
              Invalid movement  -> return
@@ -593,6 +651,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             Selections are now actions and can be undone
             Note that a selection change will also have to occur when you drag new things - this is handled
              */
+
+            // finish selection as ACTION
+            clickOccupation.updateRectangle()
+            val selectionRect = clickOccupation.rectangle
+            val newCaptured: List<Entity> = remix.entities.filter { it.bounds.overlaps(selectionRect) }
+            val newSelection: List<Entity> =
+                    if (clickOccupation.isAdd) {
+                        this.selection.toList() + newCaptured
+                    } else {
+                        newCaptured
+                    }
+            if (!this.selection.containsAll(newSelection) ||
+                    (newSelection.size != this.selection.size)) {
+                remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+            }
+            this.clickOccupation = ClickOccupation.None
         }
 
         return false
