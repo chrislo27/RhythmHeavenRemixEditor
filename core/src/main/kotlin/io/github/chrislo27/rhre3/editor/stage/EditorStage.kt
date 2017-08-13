@@ -115,21 +115,25 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             messageLabel.text = ""
 
-            selection.groups.clear()
             if (isSearching) {
-                selection.variants.clear()
-                selection.group = 0
-                val query = searchBar.text.toLowerCase(Locale.ROOT)
-                GameRegistry.data.gameGroupsList
-                        .filter {
-                            query in it.name.toLowerCase(Locale.ROOT) ||
-                                    it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
-                        }.mapTo(selection.groups) { it }
+                if (isDirty == DirtyType.SEARCH_DIRTY) {
+                    selection.variants.clear()
+                    selection.group = 0
+                    val query = searchBar.text.toLowerCase(Locale.ROOT)
+                    GameRegistry.data.gameGroupsList
+                            .filter {
+                                query in it.name.toLowerCase(Locale.ROOT) ||
+                                        it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
+                            }.mapTo(selection.groups) { it }
+                }
             } else {
+                selection.groups.clear()
                 GameRegistry.data.gameGroupsList
                         .filter { it.series == series }
                         .mapTo(selection.groups) { it }
             }
+
+            selection.groups.sortBy { it.games.first() }
 
             seriesButtons.forEach {
                 it.selected = series == it.series && !isSearching
@@ -672,17 +676,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                val hadFocus = hasFocus
                 super.onLeftClick(xPercent, yPercent)
                 editor.pickerSelection.isSearching = true
-                updateSelected(DirtyType.SEARCH_DIRTY)
+                updateSelected(if (!hadFocus) DirtyType.SEARCH_DIRTY else DirtyType.DIRTY)
             }
 
             override fun onRightClick(xPercent: Float, yPercent: Float) {
                 super.onRightClick(xPercent, yPercent)
-                if (hasFocus) {
-                    text = ""
-                    updateSelected(DirtyType.SEARCH_DIRTY)
-                }
+                hasFocus = true
+                text = ""
+                updateSelected(DirtyType.SEARCH_DIRTY)
             }
         }
         run minimap@ {
@@ -752,7 +756,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.tint = Color(0f, 0.5f, 0.055f, 1f)
                 })
             }
-            pauseButton = PlaybackButton(PlayState.PLAYING, palette, buttonBarStage, buttonBarStage).apply {
+            pauseButton = PlaybackButton(PlayState.PAUSED, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenHeight = 1f)
                 this.location.set(screenX = 0.5f - size / 2 - size - padding)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -760,7 +764,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.tint = Color(0.75f, 0.75f, 0.25f, 1f)
                 })
             }
-            stopButton = PlaybackButton(PlayState.PLAYING, palette, buttonBarStage, buttonBarStage).apply {
+            stopButton = PlaybackButton(PlayState.STOPPED, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenHeight = 1f)
                 this.location.set(screenX = 0.5f - size / 2 + size + padding)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -882,5 +886,23 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     open inner class PlaybackButton(val type: PlayState, palette: UIPalette, parent: UIElement<EditorScreen>,
                                     stage: Stage<EditorScreen>) : Button<EditorScreen>(palette, parent, stage) {
 
+        private fun updateEnabledness() {
+            this.enabled = false
+            when (editor.remix.playState) {
+                PlayState.STOPPED -> if (type == PlayState.PLAYING) enabled = true
+                PlayState.PAUSED -> if (type != PlayState.PAUSED) enabled = true
+                PlayState.PLAYING -> if (type != PlayState.PLAYING) enabled = true
+            }
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            editor.remix.playState = type
+        }
+
+        override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+            updateEnabledness()
+            super.render(screen, batch, shapeRenderer)
+        }
     }
 }
