@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
@@ -52,6 +53,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val messageLabel: TextLabel<EditorScreen>
 
     val hoverTextLabel: TextLabel<EditorScreen>
+
+    lateinit var playButton: PlaybackButton
+        private set
+    lateinit var pauseButton: PlaybackButton
+        private set
+    lateinit var stopButton: PlaybackButton
+        private set
 
     val topOfMinimapBar: Float
         get() {
@@ -723,6 +731,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val stageHeight = buttonBarStage.location.realHeight
             val padding = Editor.BUTTON_PADDING / stageWidth
             val size = Editor.BUTTON_SIZE / stageWidth
+
             buttonBarStage.elements +=
                     ColourPane(buttonBarStage, buttonBarStage).apply {
                         this.colour.set(Editor.TRANSLUCENT_BLACK)
@@ -734,6 +743,35 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 screenHeight = 1f + (Editor.BUTTON_PADDING / stageHeight) * 2f
                                          )
                     }
+
+            playButton = PlaybackButton(PlayState.PLAYING, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenHeight = 1f)
+                this.location.set(screenX = 0.5f - size / 2)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("play")
+                    this.tint = Color(0f, 0.5f, 0.055f, 1f)
+                })
+            }
+            pauseButton = PlaybackButton(PlayState.PLAYING, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenHeight = 1f)
+                this.location.set(screenX = 0.5f - size / 2 - size - padding)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("pause")
+                    this.tint = Color(0.75f, 0.75f, 0.25f, 1f)
+                })
+            }
+            stopButton = PlaybackButton(PlayState.PLAYING, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenHeight = 1f)
+                this.location.set(screenX = 0.5f - size / 2 + size + padding)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("stop")
+                    this.tint = Color(242 / 255f, 0.0525f, 0.0525f, 1f)
+                })
+            }
+            buttonBarStage.elements += playButton
+            buttonBarStage.elements += pauseButton
+            buttonBarStage.elements += stopButton
+
             buttonBarStage.elements +=
                     Button(palette, buttonBarStage, buttonBarStage).apply {
                         this.location.set(screenWidth = size)
@@ -767,6 +805,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             buttonBarStage.elements += themeButton
             buttonBarStage.elements += themeButton.contextMenu
+
+
         }
 
         this.updatePositions()
@@ -837,5 +877,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegionSeries
         }
+    }
+
+    open inner class PlaybackButton(val type: PlayState, palette: UIPalette, parent: UIElement<EditorScreen>,
+                                    stage: Stage<EditorScreen>) : Button<EditorScreen>(palette, parent, stage) {
+
     }
 }
