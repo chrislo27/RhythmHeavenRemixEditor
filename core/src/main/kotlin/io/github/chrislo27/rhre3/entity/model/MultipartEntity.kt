@@ -28,7 +28,6 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)
 
     override var playbackCompletion: PlaybackCompletion = super.playbackCompletion
-        get() = super.playbackCompletion
         set(value) {
             field = value
             when (field) {
@@ -91,7 +90,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         if (internal.isEmpty()) {
             return super.isFinished()
         }
-        return internal.all { isFinished() }
+        return internal.all(Entity::isFinished)
     }
 
     override fun getRenderColor(): Color {
