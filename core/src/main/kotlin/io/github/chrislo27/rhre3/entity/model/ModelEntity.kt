@@ -84,7 +84,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 //        }
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
 
-        if (this is IRepitchable) {
+        if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
             if (!this.canBeRepitched) {
                 font.setColor(1f, 0f, 0f, 1f)
             }
