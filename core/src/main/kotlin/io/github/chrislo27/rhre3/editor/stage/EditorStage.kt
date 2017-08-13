@@ -763,6 +763,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 })
+                this.enabled = false
             }
             buttonBarStage.elements += themeButton
             buttonBarStage.elements += themeButton.contextMenu
