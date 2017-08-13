@@ -13,11 +13,19 @@ class EntityMoveAction(val editor: Editor, val entities: List<Entity>, val oldPo
     private val newPos = entities.map { Rectangle(it.bounds) }
 
     override fun redo(context: Remix) {
-        entities.forEachIndexed { i, it -> it.bounds.set(newPos[i]) }
+        entities.forEachIndexed { i, it ->
+            it.updateBounds {
+                it.bounds.set(newPos[i])
+            }
+        }
     }
 
     override fun undo(context: Remix) {
-        entities.forEachIndexed { i, it -> it.bounds.set(oldPos[i]) }
+        entities.forEachIndexed { i, it ->
+            it.updateBounds {
+                it.bounds.set(oldPos[i])
+            }
+        }
     }
 
 }
