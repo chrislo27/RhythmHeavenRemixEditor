@@ -451,29 +451,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                 val oldFontColor = font.color
                 font.color = theme.selection.selectionBorder
-                if (rect.height >= font.capHeight) {
-                    var defaultX = rect.x + toScaleX(SELECTION_BORDER * 1.5f)
-                    var defaultWidth = rect.width - toScaleX(SELECTION_BORDER * 1.5f) * 2
+
+                val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
+                val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
+
+                if (rect.height - toScaleY * 2 >= font.capHeight) {
+                    var defaultX = rect.x + toScaleX
+                    var defaultWidth = rect.width - toScaleX * 2
                     val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
                     if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
                         defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
-                        defaultWidth = (rect.width + rect.x) - defaultX - toScaleX(SELECTION_BORDER * 1.5f)
+                        defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
                     } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
                         defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
                     }
                     if (rect.width >= font.getTextWidth(widthStr)) {
                         font.drawConstrained(batch, widthStr,
                                              defaultX,
-                                             rect.y + rect.height - toScaleY(SELECTION_BORDER * 1.5f),
+                                             rect.y + rect.height - toScaleY,
                                              defaultWidth,
-                                             Math.min(font.lineHeight, rect.height), Align.center)
+                                             font.lineHeight, Align.center)
                     }
                     if (rect.width >= font.getTextWidth(heightStr)) {
                         font.drawConstrained(batch, heightStr,
                                              defaultX,
                                              rect.y + rect.height / 2 + font.capHeight / 2,
                                              defaultWidth,
-                                             Math.min(font.lineHeight, rect.height),
+                                             font.lineHeight,
                                              if (shouldBeLeftAlign) Align.left else Align.right)
                     }
                 }
