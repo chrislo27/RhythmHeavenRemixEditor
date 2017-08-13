@@ -626,7 +626,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
             }
-        } else if (stage.pickerStage.isMouseOver()) {
+        } else if (stage.patternAreaStage.isMouseOver()) {
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
