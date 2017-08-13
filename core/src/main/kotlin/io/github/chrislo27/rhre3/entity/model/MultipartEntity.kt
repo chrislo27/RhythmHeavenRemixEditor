@@ -111,4 +111,12 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override fun onEnd() {
     }
+
+    fun loadInternalSounds() {
+        internal.filterIsInstance<CueEntity>().forEach { it.datamodel.loadSounds() }
+    }
+
+    fun unloadInternalSounds() {
+        internal.filterIsInstance<CueEntity>().forEach { it.datamodel.unloadSounds() }
+    }
 }

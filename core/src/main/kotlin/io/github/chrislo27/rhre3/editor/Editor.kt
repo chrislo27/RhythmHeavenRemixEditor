@@ -21,6 +21,8 @@ import io.github.chrislo27.rhre3.editor.action.EntityRemoveAction
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.MultipartEntity
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.DarkTheme
@@ -433,57 +435,81 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             font.setColor(1f, 1f, 1f, 1f)
         }
 
-        // render selection box
-        run selectionRectDraw@ {
+        // render selection box + delete zone
+        run selectionRectDrawAndDeleteZone@ {
             val clickOccupation = clickOccupation
-            if (clickOccupation is ClickOccupation.CreatingSelection) {
-                val oldColor = batch.packedColor
-                val rect = clickOccupation.rectangle
+            when (clickOccupation) {
+                is ClickOccupation.SelectionDrag -> {
+                    val oldColor = batch.packedColor
+                    val mouseX = remix.camera.getInputX()
+                    val mouseY = remix.camera.getInputY()
+                    val alpha = (1f - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
+                    val left = remix.camera.position.x - remix.camera.viewportWidth / 2
 
-                batch.color = theme.selection.selectionFill
-                batch.fillRect(rect)
+                    batch.setColor(1f, 0f, 0f, 0.25f * alpha)
+                    batch.fillRect(left, 0f,
+                                   remix.camera.viewportWidth, -remix.camera.viewportHeight)
+                    batch.setColor(oldColor)
 
-                batch.color = theme.selection.selectionBorder
-                batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+                    val deleteFont = main.defaultFontLarge
+                    deleteFont.scaleFont()
+                    deleteFont.scaleMul(0.5f)
+                    deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
-                val widthStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.width)
-                val heightStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.height)
+                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, -1f + font.capHeight / 2, remix.camera.viewportWidth, Align.center)
 
-                val oldFontColor = font.color
-                font.color = theme.selection.selectionBorder
-
-                val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
-                val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
-
-                if (rect.height - toScaleY * 2 >= font.capHeight) {
-                    var defaultX = rect.x + toScaleX
-                    var defaultWidth = rect.width - toScaleX * 2
-                    val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
-                    if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
-                        defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
-                        defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
-                    } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
-                        defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
-                    }
-                    if (rect.width >= font.getTextWidth(widthStr)) {
-                        font.drawConstrained(batch, widthStr,
-                                             defaultX,
-                                             rect.y + rect.height - toScaleY,
-                                             defaultWidth,
-                                             font.lineHeight, Align.center)
-                    }
-                    if (rect.width >= font.getTextWidth(heightStr)) {
-                        font.drawConstrained(batch, heightStr,
-                                             defaultX,
-                                             rect.y + rect.height / 2 + font.capHeight / 2,
-                                             defaultWidth,
-                                             font.lineHeight,
-                                             if (shouldBeLeftAlign) Align.left else Align.right)
-                    }
+                    deleteFont.setColor(1f, 1f, 1f, 1f)
+                    deleteFont.unscaleFont()
                 }
-                font.color = oldFontColor
+                is ClickOccupation.CreatingSelection -> {
+                    val oldColor = batch.packedColor
+                    val rect = clickOccupation.rectangle
 
-                batch.setColor(oldColor)
+                    batch.color = theme.selection.selectionFill
+                    batch.fillRect(rect)
+
+                    batch.color = theme.selection.selectionBorder
+                    batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+
+                    val widthStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.width)
+                    val heightStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.height)
+
+                    val oldFontColor = font.color
+                    font.color = theme.selection.selectionBorder
+
+                    val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
+                    val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
+
+                    if (rect.height - toScaleY * 2 >= font.capHeight) {
+                        var defaultX = rect.x + toScaleX
+                        var defaultWidth = rect.width - toScaleX * 2
+                        val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
+                        if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
+                            defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
+                            defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
+                        } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
+                            defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
+                        }
+                        if (rect.width >= font.getTextWidth(widthStr)) {
+                            font.drawConstrained(batch, widthStr,
+                                                 defaultX,
+                                                 rect.y + rect.height - toScaleY,
+                                                 defaultWidth,
+                                                 font.lineHeight, Align.center)
+                        }
+                        if (rect.width >= font.getTextWidth(heightStr)) {
+                            font.drawConstrained(batch, heightStr,
+                                                 defaultX,
+                                                 rect.y + rect.height / 2 + font.capHeight / 2,
+                                                 defaultWidth,
+                                                 font.lineHeight,
+                                                 if (shouldBeLeftAlign) Align.left else Align.right)
+                        }
+                    }
+                    font.color = oldFontColor
+
+                    batch.setColor(oldColor)
+                }
             }
         }
 
@@ -501,6 +527,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun renderUpdate() {
+        remix.timeUpdate(Gdx.graphics.deltaTime)
+
         val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
         val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
                 Input.Keys.CONTROL_RIGHT)
@@ -511,12 +539,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val accelerateCamera = shift || control
         val cameraDelta = toScaleX(ENTITY_WIDTH * 5 * Gdx.graphics.deltaTime * if (accelerateCamera) 5 else 1)
 
+        subbeatSection.enabled = false
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
             Gdx.input.inputProcessor.scrolled(-1)
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN)) {
             Gdx.input.inputProcessor.scrolled(1)
         }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (shift) {
+                when (remix.playState) {
+                    PlayState.STOPPED -> remix.playState = PlayState.PLAYING
+                    PlayState.PAUSED -> remix.playState = PlayState.PLAYING
+                    PlayState.PLAYING -> remix.playState = PlayState.PAUSED
+                }
+            } else {
+                when (remix.playState) {
+                    PlayState.STOPPED -> remix.playState = PlayState.PLAYING
+                    PlayState.PAUSED -> {
+                        remix.playState = PlayState.STOPPED
+                        remix.playState = PlayState.PLAYING
+                    }
+                    PlayState.PLAYING -> remix.playState = PlayState.STOPPED
+                }
+            }
+        }
+
+        if (remix.playState != PlayState.STOPPED)
+            return
 
         run camera@ {
             if (left) {
@@ -535,7 +587,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         run clickCheck@ {
             val clickOccupation = clickOccupation
-            subbeatSection.enabled = false
             when (clickOccupation) {
                 is ClickOccupation.Music -> {
                     setSubbeatSectionToMouse()
@@ -634,6 +685,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
+
+            when (entity) {
+                is CueEntity -> {
+                    entity.datamodel.loadSounds()
+                }
+                is MultipartEntity -> {
+                    entity.loadInternalSounds()
+                }
+            }
 
             val oldSelection = this.selection
             this.selection = listOf(entity)

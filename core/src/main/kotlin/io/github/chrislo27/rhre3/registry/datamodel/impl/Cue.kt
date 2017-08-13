@@ -2,9 +2,9 @@ package io.github.chrislo27.rhre3.registry.datamodel.impl
 
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.lazysound.LazySound
 
@@ -33,6 +33,18 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     val endingSoundCue: Cue?
         get() =
             GameRegistry.data.objectMap[endingSound] as Cue?
+
+    fun loadSounds() {
+        sound.load()
+        introSoundCue?.sound?.load()
+        endingSoundCue?.sound?.load()
+    }
+
+    fun unloadSounds() {
+        sound.unload()
+        introSoundCue?.sound?.unload()
+        endingSoundCue?.sound?.unload()
+    }
 
     fun getPitchForBaseBpm(bpm: Float): Float {
         if (baseBpm <= 0f)
