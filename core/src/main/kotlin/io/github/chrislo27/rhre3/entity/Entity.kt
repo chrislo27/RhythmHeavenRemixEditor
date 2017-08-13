@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.entity
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
@@ -11,7 +12,23 @@ abstract class Entity(val remix: Remix) {
     val tmpUpdateBoundsRect = Rectangle()
     var isSelected: Boolean = false
     val bounds: Rectangle = Rectangle()
+    open val supportsCopying: Boolean = true
     open var playbackCompletion = PlaybackCompletion.WAITING
+
+    protected fun SpriteBatch.setColorWithSelectionIfNecessary(selectionTint: Color, r: Float, g: Float, b: Float, a: Float) {
+        if (isSelected) {
+            this.setColor((r * (1 + selectionTint.r)).coerceIn(0f, 1f),
+                          (g * (1 + selectionTint.g)).coerceIn(0f, 1f),
+                          (b * (1 + selectionTint.b)).coerceIn(0f, 1f),
+                          a)
+        } else {
+            this.setColor(r, g, b, a)
+        }
+    }
+
+    protected fun SpriteBatch.setColorWithSelectionIfNecessary(selectionTint: Color, color: Color) {
+        this.setColorWithSelectionIfNecessary(selectionTint, color.r, color.g, color.b, color.a)
+    }
 
     open fun onBoundsChange(old: Rectangle) {
 

@@ -31,26 +31,11 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val oldFontSizeY = font.data.scaleY
         val selectionTint = remix.editor.theme.entities.selectionTint
 
-        fun SpriteBatch.setColorWithSelectionIfNecessary(r: Float, g: Float, b: Float, a: Float) {
-            if (isSelected) {
-                this.setColor((r * (1 + selectionTint.r)).coerceIn(0f, 1f),
-                              (g * (1 + selectionTint.g)).coerceIn(0f, 1f),
-                              (b * (1 + selectionTint.b)).coerceIn(0f, 1f),
-                              a)
-            } else {
-                this.setColor(r, g, b, a)
-            }
-        }
-
-        fun SpriteBatch.setColorWithSelectionIfNecessary(color: Color) {
-            this.setColorWithSelectionIfNecessary(color.r, color.g, color.b, color.a)
-        }
-
         // filled rect + border
-        batch.setColorWithSelectionIfNecessary(color)
+        batch.setColorWithSelectionIfNecessary(selectionTint, color)
         batch.fillRect(bounds.x, bounds.y,
                        bounds.width, bounds.height)
-        batch.setColorWithSelectionIfNecessary((color.r - 0.25f).coerceIn(0f, 1f),
+        batch.setColorWithSelectionIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
                                                (color.g - 0.25f).coerceIn(0f, 1f),
                                                (color.b - 0.25f).coerceIn(0f, 1f),
                                                color.a)

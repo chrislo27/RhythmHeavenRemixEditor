@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.track
 
-import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
@@ -81,6 +81,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
     private fun setMusicVolume() {
         music?.music?.volume = musicVolumes.getVolume(beat)
+    }
+
+    init {
     }
 
     fun entityUpdate(entity: Entity) {
