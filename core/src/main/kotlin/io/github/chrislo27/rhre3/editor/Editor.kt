@@ -366,7 +366,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val height = (TRACK_COUNT + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE)
                 batch.setColor(color.toFloatBits())
                 batch.fillRect(beat, y, toScaleX(TRACK_LINE * 1.5f),
-                               height)
+                               height - triangleHeight / 2)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
 
@@ -376,7 +376,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (textKey != null) {
                     font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
                 }
-                font.drawCompressed(batch, getTrackerTime(beat), x + triangleWidth + 0.05f, y + height, 1f, Align.left)
+                font.drawCompressed(batch, getTrackerTime(beat), x + triangleWidth + 0.025f, y + height, 1f, Align.left)
 
                 if (controlKey != null) {
                     val line = font.lineHeight
@@ -449,13 +449,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (rect.height >= font.capHeight) {
                     var defaultX = rect.x + toScaleX(SELECTION_BORDER * 1.5f)
                     var defaultWidth = rect.width - toScaleX(SELECTION_BORDER * 1.5f) * 2
-                    var shouldBeLeftAlign = false
+                    val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
                     if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
                         defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
                         defaultWidth = (rect.width + rect.x) - defaultX - toScaleX(SELECTION_BORDER * 1.5f)
                     } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
                         defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
-                        shouldBeLeftAlign = true
                     }
                     if (rect.width >= font.getTextWidth(widthStr)) {
                         font.drawConstrained(batch, widthStr,
