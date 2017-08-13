@@ -51,6 +51,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         const val SELECTION_BORDER: Float = 4f
+        private const val SELECTION_NUMBER_FORMAT_STRING = "%.1f"
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -427,16 +428,52 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             font.setColor(1f, 1f, 1f, 1f)
         }
 
+        // render selection box
         run selectionRectDraw@ {
             val clickOccupation = clickOccupation
             if (clickOccupation is ClickOccupation.CreatingSelection) {
                 val oldColor = batch.packedColor
+                val rect = clickOccupation.rectangle
 
                 batch.color = theme.selection.selectionFill
-                batch.fillRect(clickOccupation.rectangle)
+                batch.fillRect(rect)
 
                 batch.color = theme.selection.selectionBorder
-                batch.drawRect(clickOccupation.rectangle, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+                batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+
+                val widthStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.width)
+                val heightStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.height)
+
+                val oldFontColor = font.color
+                font.color = theme.selection.selectionBorder
+                if (rect.height >= font.capHeight) {
+                    var defaultX = rect.x + toScaleX(SELECTION_BORDER * 1.5f)
+                    var defaultWidth = rect.width - toScaleX(SELECTION_BORDER * 1.5f) * 2
+                    var shouldBeLeftAlign = false
+                    if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
+                        defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
+                        defaultWidth = (rect.width + rect.x) - defaultX - toScaleX(SELECTION_BORDER * 1.5f)
+                    } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
+                        defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
+                        shouldBeLeftAlign = true
+                    }
+                    if (rect.width >= font.getTextWidth(widthStr)) {
+                        font.drawConstrained(batch, widthStr,
+                                             defaultX,
+                                             rect.y + rect.height - toScaleY(SELECTION_BORDER * 1.5f),
+                                             defaultWidth,
+                                             Math.min(font.lineHeight, rect.height), Align.center)
+                    }
+                    if (rect.width >= font.getTextWidth(heightStr)) {
+                        font.drawConstrained(batch, heightStr,
+                                             defaultX,
+                                             rect.y + rect.height / 2 + font.capHeight / 2,
+                                             defaultWidth,
+                                             Math.min(font.lineHeight, rect.height),
+                                             if (shouldBeLeftAlign) Align.left else Align.right)
+                    }
+                }
+                font.color = oldFontColor
 
                 batch.setColor(oldColor)
             }
@@ -646,26 +683,30 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             this.clickOccupation = ClickOccupation.None
             return true
-        } else if (clickOccupation is ClickOccupation.CreatingSelection) {
+        } else if (clickOccupation is ClickOccupation.CreatingSelection &&
+                (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT)) {
             /*
             Selections are now actions and can be undone
             Note that a selection change will also have to occur when you drag new things - this is handled
              */
 
-            // finish selection as ACTION
-            clickOccupation.updateRectangle()
-            val selectionRect = clickOccupation.rectangle
-            val newCaptured: List<Entity> = remix.entities.filter { it.bounds.overlaps(selectionRect) }
-            val newSelection: List<Entity> =
-                    if (clickOccupation.isAdd) {
-                        this.selection.toList() + newCaptured
-                    } else {
-                        newCaptured
-                    }
-            if (!this.selection.containsAll(newSelection) ||
-                    (newSelection.size != this.selection.size)) {
-                remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+            if (button == Input.Buttons.LEFT) {
+                // finish selection as ACTION
+                clickOccupation.updateRectangle()
+                val selectionRect = clickOccupation.rectangle
+                val newCaptured: List<Entity> = remix.entities.filter { it.bounds.overlaps(selectionRect) }
+                val newSelection: List<Entity> =
+                        if (clickOccupation.isAdd) {
+                            this.selection.toList() + newCaptured
+                        } else {
+                            newCaptured
+                        }
+                if (!this.selection.containsAll(newSelection) ||
+                        (newSelection.size != this.selection.size)) {
+                    remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                }
             }
+
             this.clickOccupation = ClickOccupation.None
         }
 
