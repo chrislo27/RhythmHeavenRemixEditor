@@ -173,10 +173,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         class SelectionDrag(val editor: Editor,
                             val mouseOffset: Vector2,
-                            val oldBounds: List<Rectangle>,
                             val isNewOrCopy: Boolean,
                             val oldSelection: List<Entity>)
             : ClickOccupation() {
+
+            val oldBounds: List<Rectangle> = copyBounds(editor.selection)
 
             private val selection: List<Entity>
                 get() = editor.selection
@@ -595,7 +596,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else {
                 val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
                 if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
-                    // begin selection move
+                    // TODO begin selection move
+                    val newSel = remix.entities.filter { mouse in it.bounds && it.isSelected }
+                    val first = newSel.first()
+                    val oldSel = this.selection
+                    val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
+                                              remix.camera.getInputY() - first.bounds.y)
+                    val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
+                                                                 false, oldSel)
+
+                    this.clickOccupation = newClick
                 } else {
                     val clickOccupation = clickOccupation
                     if (clickOccupation == ClickOccupation.None) {
@@ -610,10 +620,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
 
-            val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
-                                                          listOf(Rectangle(entity.bounds)),
-                                                          true, this.selection.toList())
+            val oldSelection = this.selection
             this.selection = listOf(entity)
+            val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
+                                                          true, oldSelection)
+
             selection.setPositionRelativeToMouse()
 
             remix.entities += entity
