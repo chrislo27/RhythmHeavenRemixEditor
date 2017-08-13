@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Rectangle
+import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
@@ -62,7 +64,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     val pickerSelection: PickerSelection = PickerSelection()
-    var selection: List<Entity> = listOf()
     var remix: Remix = Remix(camera, this)
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
@@ -71,6 +72,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     var theme: Theme = DarkTheme()
     val subbeatSection = SubbeatSection()
     var snap: Float = 0.25f
+    var selection: List<Entity> = listOf()
+        set(value) {
+            field.forEach { it.isSelected = false }
+            field = value
+            field.forEach { it.isSelected = true }
+        }
 
     sealed class ClickOccupation {
 
@@ -81,7 +88,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         object None : ClickOccupation()
 
-        class Playback(val editor: Editor) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
+        class Playback(val editor: Editor)
+            : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
             val old = editor.remix.playbackStart
             override var finished: Boolean = false
             override var final: Float = Float.NaN
@@ -103,7 +111,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        class Music(val editor: Editor, val middleClick: Boolean) : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
+        class Music(val editor: Editor, val middleClick: Boolean)
+            : ClickOccupation(), ReversibleAction<Remix>, TrackerBased {
             val old = editor.remix.musicStartSec
             override var finished: Boolean = false
             override var final: Float = Float.NaN
@@ -125,7 +134,94 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        class SelectionDrag(val editor: Editor) : ClickOccupation()
+        class CreatingSelection(val editor: Editor,
+                                val startPoint: Vector2,
+                                val isAdd: Boolean) : ClickOccupation() {
+            val oldSelection = editor.selection.toList()
+        }
+
+        class SelectionDrag(val editor: Editor,
+                            val mouseOffset: Vector2,
+                            val oldBounds: List<Rectangle>,
+                            val isNewOrCopy: Boolean,
+                            val oldSelection: List<Entity>)
+            : ClickOccupation() {
+
+            private val selection: List<Entity>
+                get() = editor.selection
+
+            companion object {
+                fun copyBounds(selection: List<Entity>): List<Rectangle> =
+                        selection.map { Rectangle(it.bounds) }
+            }
+
+            val left: Float
+                get() = selection.minBy { it.bounds.x }?.bounds?.x ?: error("Nothing in selection")
+
+            val right: Float
+                get() {
+                    val right = selection.maxBy { it.bounds.x + it.bounds.width } ?: error("Nothing in selection")
+                    return right.bounds.x + right.bounds.width
+                }
+
+            val top: Float
+                get() {
+                    val highest = selection.maxBy { it.bounds.y } ?: error("Nothing in selection")
+                    return highest.bounds.y + highest.bounds.height
+                }
+
+            val bottom: Float
+                get() = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
+
+            val width: Float by lazy {
+                right - left
+            }
+
+            val height: Int by lazy {
+                Math.round(top - bottom)
+            }
+
+            fun setFirstPosition(x: Float, y: Float) {
+                // reducing object creation due to rapid calling
+                val first = selection.first()
+                val oldFirstPosX = first.bounds.x
+                val oldFirstPosY = first.bounds.y
+                first.updateBounds {
+                    bounds.setPosition(x, y)
+                }
+
+                selection.forEachIndexed { index, entity ->
+                    if (index == 0)
+                        return@forEachIndexed
+                    entity.updateBounds {
+                        bounds.x = (bounds.x - oldFirstPosX) + x
+                        bounds.y = (bounds.y - oldFirstPosY) + y
+                    }
+                }
+            }
+
+            fun setPositionRelativeToMouse(snap: Float = editor.snap, intY: Boolean = true) {
+                val y = editor.remix.camera.getInputY() - mouseOffset.y
+                setFirstPosition(MathHelper.snapToNearest(editor.remix.camera.getInputX() - mouseOffset.x, snap),
+                                 if (intY) Math.round(y).toFloat() else y)
+            }
+
+            fun isPlacementValid(): Boolean {
+                if (isInDeleteZone())
+                    return false
+                if (top > TRACK_COUNT)
+                    return false
+
+                return editor.remix.entities.filter { it !in selection }.all {
+                    selection.all { sel ->
+                        !sel.bounds.overlaps(it.bounds)
+                    }
+                }
+            }
+
+            fun isInDeleteZone(): Boolean = top <= 0f
+
+        }
     }
 
     private var clickOccupation: ClickOccupation = ClickOccupation.None
@@ -343,7 +439,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
                 camera.position.x = 0f
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
-                // TODO
+                // TODO go to end?
             }
         }
 
@@ -353,11 +449,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             when (clickOccupation) {
                 is ClickOccupation.Music -> {
                     setSubbeatSectionToMouse()
-                    remix.musicStartSec = remix.tempos.beatsToSeconds(MathHelper.snapToNearest(camera.getInputX(), snap))
+                    remix.musicStartSec = remix.tempos.beatsToSeconds(
+                            MathHelper.snapToNearest(camera.getInputX(), snap))
                 }
                 is ClickOccupation.Playback -> {
                     setSubbeatSectionToMouse()
                     remix.playbackStart = MathHelper.snapToNearest(camera.getInputX(), snap)
+                }
+                is ClickOccupation.SelectionDrag -> {
+                    clickOccupation.setPositionRelativeToMouse()
+
+                    subbeatSection.enabled = true
+                    subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
+                    subbeatSection.end = clickOccupation.right
                 }
             }
         }
@@ -405,10 +509,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     ClickOccupation.Playback(this)
                 }
             } else {
-                // TODO drag or select
+                // TODO drag/copy or select
             }
         } else if (stage.pickerStage.isMouseOver()) {
             // only for new
+            val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
+            val entity = datamodel.createEntity(remix)
+
+            val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
+                                                          listOf(Rectangle(entity.bounds)),
+                                                          true, this.selection.toList())
+            this.selection = listOf(entity)
+            selection.setPositionRelativeToMouse()
+
+            remix.entities += entity
+
+            this.clickOccupation = selection
         }
 
         return true
@@ -421,11 +537,62 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             remix.addActionWithoutMutating(clickOccupation)
             clickOccupation.final = remix.musicStartSec
             this.clickOccupation = ClickOccupation.None
+            return true
         } else if (clickOccupation is ClickOccupation.Playback &&
                 button == Input.Buttons.RIGHT) {
             remix.addActionWithoutMutating(clickOccupation)
             clickOccupation.final = remix.playbackStart
             this.clickOccupation = ClickOccupation.None
+            return true
+        } else if (clickOccupation is ClickOccupation.SelectionDrag) {
+            val validPlacement = clickOccupation.isPlacementValid()
+            val deleting = clickOccupation.isInDeleteZone()
+
+            /*
+             Placement = drag from picker or copy
+             Movement  = moving existing entities
+
+             Outcomes:
+
+             Correct placement -> results in a place+selection action
+             Invalid placement -> remove, restore selection
+
+             Correct movement  -> results in a move action
+             Invalid movement  -> return
+             Delete movement   -> remove+selection action
+             */
+
+            if (clickOccupation.isNewOrCopy) {
+                if (validPlacement) {
+                    // place+selection action
+                } else {
+                    // delete silently
+                    remix.entities.removeAll(selection)
+                    // restore original selection
+                    selection = clickOccupation.oldSelection
+                }
+            } else {
+                if (validPlacement) {
+                    // move action
+                } else if (deleting) {
+                    // remove+selection action
+                } else {
+                    // revert positions silently
+                    clickOccupation.oldBounds.forEachIndexed { index, rect ->
+                        selection[index].updateBounds {
+                            bounds.set(rect)
+                        }
+                    }
+                }
+            }
+
+            this.clickOccupation = ClickOccupation.None
+            return true
+        } else if (clickOccupation is ClickOccupation.CreatingSelection) {
+            /*
+            Selections are now actions and can be undone
+            Note that a selection change will also have to occur when you drag new things - this is handled
+             */
         }
 
         return false

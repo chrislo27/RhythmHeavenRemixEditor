@@ -55,6 +55,10 @@ class PickerSelection {
             set(value) {
                 patterns[variant] = value.coerceIn(0, maxPatternScroll)
             }
+
+        fun getCurrentPlaceable(): Datamodel? {
+            return placeableObjects.getOrNull(pattern)
+        }
     }
 
     var currentSeries: Series = Series.TENGOKU
