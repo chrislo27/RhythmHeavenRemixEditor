@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.action.EntityMoveAction
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
@@ -679,6 +680,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else {
                 if (validPlacement) {
                     // move action
+                    remix.addActionWithoutMutating(EntityMoveAction(this, clickOccupation.oldSelection, clickOccupation.oldBounds))
                 } else if (deleting) {
                     // remove+selection action
                 } else {
