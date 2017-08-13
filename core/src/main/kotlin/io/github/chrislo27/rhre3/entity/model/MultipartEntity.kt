@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
@@ -10,6 +11,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
@@ -76,6 +78,17 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
                 context.entities.add(original)
             }
 
+        }
+    }
+
+    override fun renderBeforeText(batch: SpriteBatch) {
+        super.renderBeforeText(batch)
+        val batchColor = batch.color
+        batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.35f)
+        internal.forEach {
+            batch.drawRect(it.bounds.x, it.bounds.y,
+                           it.bounds.width, it.bounds.height,
+                           remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
         }
     }
 

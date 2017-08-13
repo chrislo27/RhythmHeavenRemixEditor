@@ -567,6 +567,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+        if (remix.playState == PlayState.PLAYING) {
+            val halfWidth = remix.camera.viewportWidth / 2
+            if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
+                remix.camera.position.x = remix.beat + halfWidth
+            }
+        }
+
         if (remix.playState != PlayState.STOPPED)
             return
 

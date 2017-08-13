@@ -21,6 +21,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     abstract fun getRenderColor(): Color
 
+    protected open fun renderBeforeText(batch: SpriteBatch) {
+
+    }
+
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
         val text = datamodel.newlinedName
@@ -32,16 +36,18 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val selectionTint = remix.editor.theme.entities.selectionTint
 
         // filled rect + border
-        batch.setColorWithSelectionIfNecessary(selectionTint, color)
+        batch.setColorWithTintIfNecessary(selectionTint, color)
         batch.fillRect(bounds.x, bounds.y,
                        bounds.width, bounds.height)
-        batch.setColorWithSelectionIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
-                                               (color.g - 0.25f).coerceIn(0f, 1f),
-                                               (color.b - 0.25f).coerceIn(0f, 1f),
-                                               color.a)
+        batch.setColorWithTintIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
+                                          (color.g - 0.25f).coerceIn(0f, 1f),
+                                          (color.b - 0.25f).coerceIn(0f, 1f),
+                                          color.a)
         batch.drawRect(bounds.x, bounds.y,
                        bounds.width, bounds.height,
                        remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
+
+        renderBeforeText(batch)
 
         batch.setColor(1f, 1f, 1f, 0.5f)
         val iconSizeY = 1f - 4 * (remix.editor.toScaleY(BORDER))
