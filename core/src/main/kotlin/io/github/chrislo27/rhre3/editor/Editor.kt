@@ -16,9 +16,12 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.EntityMoveAction
+import io.github.chrislo27.rhre3.editor.action.EntityPlaceAction
+import io.github.chrislo27.rhre3.editor.action.EntityRemoveAction
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
@@ -175,7 +178,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         class SelectionDrag(val editor: Editor,
                             val mouseOffset: Vector2,
                             val isNewOrCopy: Boolean,
-                            val oldSelection: List<Entity>)
+                            val previousSelection: List<Entity>)
             : ClickOccupation() {
 
             val oldBounds: List<Rectangle> = copyBounds(editor.selection)
@@ -597,14 +600,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else {
                 val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
                 if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
-                    // TODO begin selection move
-                    val newSel = remix.entities.filter { mouse in it.bounds && it.isSelected }
+                    val inBounds = remix.entities.filter { mouse in it.bounds && it.isSelected }
+                    val newSel = if (isCopying)
+                        inBounds.map { it.copy() }
+                    else
+                        inBounds
                     val first = newSel.first()
                     val oldSel = this.selection
                     val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
                                               remix.camera.getInputY() - first.bounds.y)
                     val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
-                                                                 false, oldSel)
+                                                                 isCopying, oldSel)
+                    if (isCopying) {
+                        this.selection = newSel
+                        remix.entities.addAll(newSel)
+                    }
 
                     this.clickOccupation = newClick
                 } else {
@@ -625,7 +635,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             this.selection = listOf(entity)
             val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
                                                           true, oldSelection)
-
             selection.setPositionRelativeToMouse()
 
             remix.entities += entity
@@ -671,18 +680,28 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (clickOccupation.isNewOrCopy) {
                 if (validPlacement) {
                     // place+selection action
+                    remix.addActionWithoutMutating(GroupedAction(listOf(
+                            EntityPlaceAction(this, this.selection),
+                            EntitySelectionAction(this, clickOccupation.previousSelection, this.selection)
+                                                                       )))
                 } else {
                     // delete silently
                     remix.entities.removeAll(selection)
                     // restore original selection
-                    selection = clickOccupation.oldSelection
+                    selection = clickOccupation.previousSelection
                 }
             } else {
                 if (validPlacement) {
                     // move action
-                    remix.addActionWithoutMutating(EntityMoveAction(this, clickOccupation.oldSelection, clickOccupation.oldBounds))
+                    remix.addActionWithoutMutating(EntityMoveAction(this, this.selection, clickOccupation.oldBounds))
                 } else if (deleting) {
                     // remove+selection action
+                    remix.entities.removeAll(this.selection)
+                    remix.addActionWithoutMutating(GroupedAction(listOf(
+                            EntityRemoveAction(this, this.selection, clickOccupation.oldBounds),
+                            EntitySelectionAction(this, clickOccupation.previousSelection, listOf())
+                                                                       )))
+                    this.selection = listOf()
                 } else {
                     // revert positions silently
                     clickOccupation.oldBounds.forEachIndexed { index, rect ->

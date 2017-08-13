@@ -3,7 +3,11 @@ package io.github.chrislo27.rhre3.oopsies
 
 class GroupedAction<A : ActionHistory<A>> : ReversibleAction<A> {
 
-    var list: MutableList<ReversibleAction<A>> = mutableListOf()
+    var list: List<ReversibleAction<A>> = mutableListOf()
+
+    constructor(list: List<ReversibleAction<A>>) {
+        this.list = list
+    }
 
     override fun redo(context: A) {
         list.forEach {
