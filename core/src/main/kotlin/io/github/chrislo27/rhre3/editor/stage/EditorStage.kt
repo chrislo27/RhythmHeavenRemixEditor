@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -25,6 +26,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
+import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
 import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import java.util.*
 
@@ -63,6 +65,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var stopButton: PlaybackButton
         private set
+    lateinit var langButton: Button<EditorScreen>
+        private set
 
     val topOfMinimapBar: Float
         get() {
@@ -86,9 +90,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         font.data.setScale(hoverTextLabel.palette.fontScale * hoverTextLabel.fontScaleMultiplier)
         hoverTextLabel.location.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
                                     pixelWidth = font.getTextWidth(hoverTextLabel.text) + 6,
-                                    pixelHeight = font.lineHeight)
+                                    pixelHeight = font.getTextHeight(text) + font.capHeight)
         hoverTextLabel.location.set(pixelX = Math.min(hoverTextLabel.location.pixelX,
                                                       hoverTextLabel.stage.camera.viewportWidth - hoverTextLabel.location.pixelWidth))
+        val yLimit = hoverTextLabel.stage.camera.viewportHeight - font.capHeight
+        val top = hoverTextLabel.location.pixelY + hoverTextLabel.location.pixelHeight
+        if (top > yLimit) {
+            hoverTextLabel.location.set(pixelY = yLimit - hoverTextLabel.location.pixelHeight)
+        }
         font.data.setScale(1f)
         hoverTextLabel.onResize(hoverTextLabel.parent!!.location.realWidth, hoverTextLabel.parent!!.location.realHeight)
     }
@@ -122,6 +131,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             false
+        } ?: langButton.takeIf {
+            if (it.isMouseOver()) {
+                setHoverText("${Localization.currentBundle.locale.name}\n${Localization["editor.translationsmaynotbeaccurate"]}")
+                true
+            } else {
+                false
+            }
         }
 
         super.render(screen, batch, shapeRenderer)
@@ -848,6 +864,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += themeButton
 
             // right aligned
+            // info button
             buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -860,6 +877,37 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info"))
                 })
             }
+            // language button
+            langButton = object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
+
+                private fun persist() {
+                    main.preferences.putInteger(PreferenceKeys.LANG_INDEX, Localization.currentIndex).flush()
+                }
+
+                init {
+                    Localization.currentIndex = main.preferences.getInteger(PreferenceKeys.LANG_INDEX, 0)
+                                    .coerceIn(0, Localization.bundles.size - 1)
+                }
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    Localization.cycle(1)
+                    persist()
+                }
+
+                override fun onRightClick(xPercent: Float, yPercent: Float) {
+                    super.onRightClick(xPercent, yPercent)
+                    Localization.cycle(-1)
+                    persist()
+                }
+            }.apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 2 + padding))
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_language"))
+                })
+            }
+            buttonBarStage.elements += langButton
         }
 
         this.updatePositions()

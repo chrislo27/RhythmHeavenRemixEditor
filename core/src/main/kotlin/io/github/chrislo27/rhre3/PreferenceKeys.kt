@@ -5,5 +5,6 @@ object PreferenceKeys {
 
     const val DATABASE_VERSION = "databaseVersion"
     const val THEME_INDEX = "themeIndex"
+    const val LANG_INDEX = "languageIndex"
 
 }
