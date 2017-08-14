@@ -110,11 +110,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                               .setNextScreen(
                                       {
                                           addOtherScreens()
+                                          loadWindowSettings()
                                           ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
                                       }))
 
         }
-
     }
 
     override fun postRender() {
@@ -141,7 +141,33 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     fun persistWindowSettings() {
-        // TODO
+        val isFullscreen = Gdx.graphics.isFullscreen
+        if (isFullscreen) {
+            preferences.putString(PreferenceKeys.WINDOW_STATE, "fs")
+        } else {
+            preferences.putString(PreferenceKeys.WINDOW_STATE, "${Gdx.graphics.width}x${Gdx.graphics.height}")
+        }
+
+        preferences.flush()
+    }
+
+    fun loadWindowSettings() {
+        val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE, "${RHRE3.WIDTH}x${RHRE3.HEIGHT}")
+        if (str == "fs") {
+            Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
+        } else {
+            val width: Int
+            val height: Int
+            if (!str.matches("\\d+x\\d+".toRegex())) {
+                width = RHRE3.WIDTH
+                height = RHRE3.HEIGHT
+            } else {
+                width = str.substringBefore('x').toIntOrNull()?.coerceAtLeast(160) ?: RHRE3.WIDTH
+                height = str.substringAfter('x').toIntOrNull()?.coerceAtLeast(90) ?: RHRE3.HEIGHT
+            }
+
+            Gdx.graphics.setWindowedMode(width, height)
+        }
     }
 
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
@@ -159,6 +185,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.dispose()
         preferences.flush()
         GameRegistry.dispose()
+        persistWindowSettings()
     }
 
     override fun createDefaultFont(): FreeTypeFont {

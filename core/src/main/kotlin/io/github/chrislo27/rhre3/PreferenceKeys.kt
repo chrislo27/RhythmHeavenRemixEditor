@@ -7,4 +7,6 @@ object PreferenceKeys {
     const val THEME_INDEX = "themeIndex"
     const val LANG_INDEX = "languageIndex"
 
+    const val WINDOW_STATE = "windowState"
+
 }
