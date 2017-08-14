@@ -830,8 +830,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.enabled = true
             }
             buttonBarStage.elements += themeButton
-
-
         }
 
         this.updatePositions()
