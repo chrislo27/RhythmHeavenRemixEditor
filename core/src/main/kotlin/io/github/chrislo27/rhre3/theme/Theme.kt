@@ -93,7 +93,7 @@ abstract class Theme {
 
 open class LightTheme : Theme() {
 
-    override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.light"
@@ -120,9 +120,19 @@ open class LightTheme : Theme() {
 
 }
 
+object ExampleTheme : LightTheme() {
+
+    @field:JsonIgnore override val nameIsLocalization: Boolean = false
+
+    init {
+        name = "Example Theme"
+    }
+
+}
+
 open class DarkTheme : Theme() {
 
-    override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.dark"
@@ -151,7 +161,7 @@ open class DarkTheme : Theme() {
 
 open class RHRE0Theme : Theme() {
 
-    override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.rhre0"

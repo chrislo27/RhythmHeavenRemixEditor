@@ -75,11 +75,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     val pickerSelection: PickerSelection = PickerSelection()
     var remix: Remix = Remix(camera, this)
+    var theme: Theme = DarkTheme()
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
     val batch: SpriteBatch
         get() = main.batch
-    var theme: Theme = DarkTheme()
     val subbeatSection = SubbeatSection()
     var snap: Float = 0.25f
     var selection: List<Entity> = listOf()
