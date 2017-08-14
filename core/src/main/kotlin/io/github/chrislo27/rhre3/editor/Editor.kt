@@ -88,6 +88,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
             field.forEach { it.isSelected = true }
         }
+    var currentTool: Tool = Tool.NORMAL
 
     sealed class ClickOccupation {
 
@@ -594,25 +595,28 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         run clickCheck@ {
             val clickOccupation = clickOccupation
-            when (clickOccupation) {
-                is ClickOccupation.Music -> {
-                    setSubbeatSectionToMouse()
-                    remix.musicStartSec = remix.tempos.beatsToSeconds(
-                            MathHelper.snapToNearest(camera.getInputX(), snap))
-                }
-                is ClickOccupation.Playback -> {
-                    setSubbeatSectionToMouse()
-                    remix.playbackStart = MathHelper.snapToNearest(camera.getInputX(), snap)
-                }
-                is ClickOccupation.SelectionDrag -> {
-                    clickOccupation.setPositionRelativeToMouse()
+            val tool = currentTool
+            if (tool == Tool.NORMAL) {
+                when (clickOccupation) {
+                    is ClickOccupation.Music -> {
+                        setSubbeatSectionToMouse()
+                        remix.musicStartSec = remix.tempos.beatsToSeconds(
+                                MathHelper.snapToNearest(camera.getInputX(), snap))
+                    }
+                    is ClickOccupation.Playback -> {
+                        setSubbeatSectionToMouse()
+                        remix.playbackStart = MathHelper.snapToNearest(camera.getInputX(), snap)
+                    }
+                    is ClickOccupation.SelectionDrag -> {
+                        clickOccupation.setPositionRelativeToMouse()
 
-                    subbeatSection.enabled = true
-                    subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
-                    subbeatSection.end = clickOccupation.right
-                }
-                is ClickOccupation.CreatingSelection -> {
-                    clickOccupation.updateRectangle()
+                        subbeatSection.enabled = true
+                        subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
+                        subbeatSection.end = clickOccupation.right
+                    }
+                    is ClickOccupation.CreatingSelection -> {
+                        clickOccupation.updateRectangle()
+                    }
                 }
             }
         }
@@ -653,42 +657,45 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return false
 
         if (stage.centreAreaStage.isMouseOver()) {
-            if (isAnyTrackerButtonDown) {
-                clickOccupation = if (isMusicTrackerButtonDown) {
-                    ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
-                } else {
-                    ClickOccupation.Playback(this)
-                }
-            } else {
-                val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
-                if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
-                    val inBounds = this.selection
-                    val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
-                        inBounds.map { it.copy() }
-                    else
-                        inBounds
-                    val first = newSel.first()
-                    val oldSel = this.selection
-                    val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
-                                              remix.camera.getInputY() - first.bounds.y)
-                    val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
-                                                                 isCopying, oldSel)
-                    if (isCopying) {
-                        this.selection = newSel
-                        remix.entities.addAll(newSel)
+            val tool = currentTool
+            if (tool == Tool.NORMAL) {
+                if (isAnyTrackerButtonDown) {
+                    clickOccupation = if (isMusicTrackerButtonDown) {
+                        ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
+                    } else {
+                        ClickOccupation.Playback(this)
                     }
-
-                    this.clickOccupation = newClick
                 } else {
-                    val clickOccupation = clickOccupation
-                    if (clickOccupation == ClickOccupation.None) {
-                        // begin selection rectangle
-                        val newClick = ClickOccupation.CreatingSelection(this, mouse, shift)
+                    val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
+                    if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
+                        val inBounds = this.selection
+                        val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
+                            inBounds.map { it.copy() }
+                        else
+                            inBounds
+                        val first = newSel.first()
+                        val oldSel = this.selection
+                        val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
+                                                  remix.camera.getInputY() - first.bounds.y)
+                        val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
+                                                                     isCopying, oldSel)
+                        if (isCopying) {
+                            this.selection = newSel
+                            remix.entities.addAll(newSel)
+                        }
+
                         this.clickOccupation = newClick
+                    } else {
+                        val clickOccupation = clickOccupation
+                        if (clickOccupation == ClickOccupation.None) {
+                            // begin selection rectangle
+                            val newClick = ClickOccupation.CreatingSelection(this, mouse, shift)
+                            this.clickOccupation = newClick
+                        }
                     }
                 }
             }
-        } else if (stage.patternAreaStage.isMouseOver()) {
+        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.NORMAL) {
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)

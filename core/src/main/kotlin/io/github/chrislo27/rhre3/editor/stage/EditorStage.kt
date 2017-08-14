@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -43,6 +44,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
     val seriesButtons: List<SeriesButton>
+    val toolButtons: List<ToolButton>
     val patternLabels: List<TextLabel<EditorScreen>>
     val gameScrollButtons: List<Button<EditorScreen>>
     val variantScrollButtons: List<Button<EditorScreen>>
@@ -138,6 +140,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             seriesButtons.forEach {
                 it.selected = series == it.series && !isSearching
             }
+            toolButtons.forEach {
+                it.selected = it.tool == editor.currentTool
+            }
 
             gameButtons.forEach {
                 it.game = null
@@ -207,6 +212,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
+        toolButtons = mutableListOf()
         patternLabels = mutableListOf()
         gameScrollButtons = mutableListOf()
         variantScrollButtons = mutableListOf()
@@ -726,6 +732,22 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = 0.5f - location.screenX)
             }
             minimapBarStage.elements += searchBar
+
+            toolButtons as MutableList
+            Tool.VALUES.forEachIndexed { index, tool ->
+                toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage,
+                                          { x, y ->
+                                              editor.currentTool = tool
+                                              updateSelected()
+                                          }).apply {
+                    this.location.set(
+                            screenWidth = buttonWidth,
+                            screenHeight = buttonHeight,
+                            screenX = 1f - Tool.VALUES.size * buttonWidth + index * buttonWidth
+                                     )
+                }
+            }
+            minimapBarStage.elements.addAll(toolButtons)
         }
 
         // Button bar
@@ -903,6 +925,19 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
             updateEnabledness()
             super.render(screen, batch, shapeRenderer)
+        }
+    }
+
+    open inner class ToolButton(val tool: Tool,
+                                palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
+                                onLeftClickFunc: SelectableButton.(Float, Float) -> Unit)
+        : SelectableButton(palette, parent, stage, onLeftClickFunc) {
+        override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
+            this.image = selectorRegion
+        }
+
+        init {
+            label.image = TextureRegion(tool.texture)
         }
     }
 }
