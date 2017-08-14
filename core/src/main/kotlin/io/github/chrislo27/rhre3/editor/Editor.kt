@@ -665,7 +665,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     } else {
                         ClickOccupation.Playback(this)
                     }
-                } else {
+                } else if (isDraggingButtonDown) {
                     val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
                     if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
@@ -695,7 +695,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
             }
-        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.NORMAL) {
+        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.NORMAL && isDraggingButtonDown) {
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
