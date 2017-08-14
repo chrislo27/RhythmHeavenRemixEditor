@@ -95,21 +95,27 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         hoverTextLabel.visible = false
-        pickerStage.elements.filterIsInstance<GameButton>().firstOrNull {
+        pickerStage.elements.firstOrNull {
+            if (it !is GameButton)
+                return@firstOrNull false
             if (it.isMouseOver() && it.game != null) {
                 setHoverText(it.game!!.name)
                 return@firstOrNull true
             }
 
             false
-        } ?: minimapBarStage.elements.filterIsInstance<SeriesButton>().firstOrNull {
+        } ?: minimapBarStage.elements.firstOrNull {
+            if (it !is SeriesButton)
+                return@firstOrNull false
             if (it.isMouseOver()) {
                 setHoverText(Localization[it.series.localization])
                 return@firstOrNull true
             }
 
             false
-        } ?: minimapBarStage.elements.filterIsInstance<ToolButton>().firstOrNull {
+        } ?: minimapBarStage.elements.firstOrNull {
+            if (it !is ToolButton)
+                return@firstOrNull false
             if (it.isMouseOver()) {
                 setHoverText(Localization[it.tool.nameId])
                 return@firstOrNull true
