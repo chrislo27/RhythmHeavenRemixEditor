@@ -108,7 +108,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         hoverTextLabel.visible = false
         elements.firstOrNull {
-            if (it is HasHoverText && it.isMouseOver()) {
+            if (it is HasHoverText && it.isMouseOver() && it.visible) {
                 setHoverText(it.getHoverText())
                 true
             } else false
@@ -117,7 +117,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 false
             } else {
                 it.elements.any {
-                    if (it is HasHoverText && it.isMouseOver()) {
+                    if (it is HasHoverText && it.isMouseOver() && it.visible) {
                         setHoverText(it.getHoverText())
                         true
                     } else false
@@ -871,6 +871,20 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 })
             }
             buttonBarStage.elements += langButton
+            buttonBarStage.elements += FullscreenButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 3 + padding * 2))
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_fullscreen"))
+                })
+            }
+            buttonBarStage.elements += ResetWindowButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 4 + padding * 3))
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
+                })
+            }
         }
 
         this.updatePositions()

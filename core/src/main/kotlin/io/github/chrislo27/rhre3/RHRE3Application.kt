@@ -140,6 +140,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.postRender()
     }
 
+    fun persistWindowSettings() {
+        // TODO
+    }
+
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
         return FreeTypeFontGenerator.FreeTypeFontParameter().apply {
             magFilter = Texture.TextureFilter.Nearest
