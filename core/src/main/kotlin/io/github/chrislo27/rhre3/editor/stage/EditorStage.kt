@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
-import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -65,7 +64,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var stopButton: PlaybackButton
         private set
-    lateinit var langButton: Button<EditorScreen>
+    lateinit var langButton: LangButton
         private set
 
     val topOfMinimapBar: Float
@@ -81,6 +80,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     enum class DirtyType {
         CLEAN, DIRTY, SEARCH_DIRTY
+    }
+
+    interface HasHoverText {
+        fun getHoverText(): String
     }
 
     private fun setHoverText(text: String) {
@@ -104,39 +107,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         hoverTextLabel.visible = false
-        pickerStage.elements.firstOrNull {
-            if (it !is GameButton)
-                return@firstOrNull false
-            if (it.isMouseOver() && it.game != null) {
-                setHoverText(it.game!!.name)
-                return@firstOrNull true
-            }
-
-            false
-        } ?: minimapBarStage.elements.firstOrNull {
-            if (it !is SeriesButton)
-                return@firstOrNull false
-            if (it.isMouseOver()) {
-                setHoverText(Localization[it.series.localization])
-                return@firstOrNull true
-            }
-
-            false
-        } ?: minimapBarStage.elements.firstOrNull {
-            if (it !is ToolButton)
-                return@firstOrNull false
-            if (it.isMouseOver()) {
-                setHoverText(Localization[it.tool.nameId])
-                return@firstOrNull true
-            }
-
-            false
-        } ?: langButton.takeIf {
-            if (it.isMouseOver()) {
-                setHoverText("${Localization.currentBundle.locale.name}\n${Localization["editor.translationsmaynotbeaccurate"]}")
+        elements.firstOrNull {
+            if (it is HasHoverText && it.isMouseOver()) {
+                setHoverText(it.getHoverText())
                 true
-            } else {
+            } else false
+        } ?: elements.firstOrNull {
+            if (it !is Stage) {
                 false
+            } else {
+                it.elements.any {
+                    if (it is HasHoverText && it.isMouseOver()) {
+                        setHoverText(it.getHoverText())
+                        true
+                    } else false
+                }
             }
         }
 
@@ -878,29 +863,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 })
             }
             // language button
-            langButton = object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
-
-                private fun persist() {
-                    main.preferences.putInteger(PreferenceKeys.LANG_INDEX, Localization.currentIndex).flush()
-                }
-
-                init {
-                    Localization.currentIndex = main.preferences.getInteger(PreferenceKeys.LANG_INDEX, 0)
-                                    .coerceIn(0, Localization.bundles.size - 1)
-                }
-
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    Localization.cycle(1)
-                    persist()
-                }
-
-                override fun onRightClick(xPercent: Float, yPercent: Float) {
-                    super.onRightClick(xPercent, yPercent)
-                    Localization.cycle(-1)
-                    persist()
-                }
-            }.apply {
+            langButton = LangButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 2 + padding))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -951,7 +914,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     open inner class GameButton(val x: Int, val y: Int,
                                 palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
                                 f: SelectableButton.(Float, Float) -> Unit)
-        : SelectableButton(palette, parent, stage, f) {
+        : SelectableButton(palette, parent, stage, f), HasHoverText {
 
         var game: Game? = null
             set(value) {
@@ -964,6 +927,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
 
+        override fun getHoverText(): String {
+            return game?.name ?: ""
+        }
+
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegion
         }
@@ -973,7 +940,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     open inner class SeriesButton(val series: Series,
                                   palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
                                   onLeftClick: SelectableButton.(Float, Float) -> Unit)
-        : SelectableButton(palette, parent, stage, onLeftClick) {
+        : SelectableButton(palette, parent, stage, onLeftClick), HasHoverText {
+
+        override fun getHoverText(): String {
+            return Localization[series.localization]
+        }
 
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegionSeries
@@ -981,7 +952,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     open inner class PlaybackButton(val type: PlayState, palette: UIPalette, parent: UIElement<EditorScreen>,
-                                    stage: Stage<EditorScreen>) : Button<EditorScreen>(palette, parent, stage) {
+                                    stage: Stage<EditorScreen>)
+        : Button<EditorScreen>(palette, parent, stage) {
 
         private fun updateEnabledness() {
             this.enabled = false
@@ -1006,9 +978,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     open inner class ToolButton(val tool: Tool,
                                 palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
                                 onLeftClickFunc: SelectableButton.(Float, Float) -> Unit)
-        : SelectableButton(palette, parent, stage, onLeftClickFunc) {
+        : SelectableButton(palette, parent, stage, onLeftClickFunc), HasHoverText {
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegion
+        }
+
+        override fun getHoverText(): String {
+            return Localization[tool.nameId]
         }
 
         init {
