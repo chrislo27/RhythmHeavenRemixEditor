@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
@@ -86,6 +87,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         hoverTextLabel.location.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
                                     pixelWidth = font.getTextWidth(hoverTextLabel.text) + 6,
                                     pixelHeight = font.lineHeight)
+        hoverTextLabel.location.set(pixelX = Math.min(hoverTextLabel.location.pixelX,
+                                                      hoverTextLabel.stage.camera.viewportWidth - hoverTextLabel.location.pixelWidth))
         font.data.setScale(1f)
         hoverTextLabel.onResize(hoverTextLabel.parent!!.location.realWidth, hoverTextLabel.parent!!.location.realHeight)
     }
@@ -102,6 +105,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         } ?: minimapBarStage.elements.filterIsInstance<SeriesButton>().firstOrNull {
             if (it.isMouseOver()) {
                 setHoverText(Localization[it.series.localization])
+                return@firstOrNull true
+            }
+
+            false
+        } ?: minimapBarStage.elements.filterIsInstance<ToolButton>().firstOrNull {
+            if (it.isMouseOver()) {
+                setHoverText(Localization[it.tool.nameId])
                 return@firstOrNull true
             }
 
@@ -830,6 +840,20 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.enabled = true
             }
             buttonBarStage.elements += themeButton
+
+            // right aligned
+            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = ScreenRegistry.getNonNull("info")
+                }
+            }.apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - size)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info"))
+                })
+            }
         }
 
         this.updatePositions()
