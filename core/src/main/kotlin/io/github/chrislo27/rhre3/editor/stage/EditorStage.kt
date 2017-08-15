@@ -885,6 +885,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
                 })
             }
+            buttonBarStage.elements += SnapButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size * 3,
+                                  screenX = 1f - (size * 7 + padding * 4))
+            }
         }
 
         this.updatePositions()

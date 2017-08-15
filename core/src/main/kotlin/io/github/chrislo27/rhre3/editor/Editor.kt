@@ -342,8 +342,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.fillRect(i.toFloat(), trackYOffset, toScaleX(TRACK_LINE),
                                TRACK_COUNT + toScaleY(TRACK_LINE))
 
-                if (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end) {
-                    batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.35f)
+                val flashAnimation = subbeatSection.flashAnimation > 0
+                val actuallyInRange = (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end)
+                if (flashAnimation || actuallyInRange) {
+                    batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
+                                   theme.trackLine.a * 0.35f *
+                                           if(!actuallyInRange) subbeatSection.flashAnimation else 1f)
                     for (j in 1 until Math.round(1f / snap)) {
                         batch.fillRect(i.toFloat() + snap * j, trackYOffset, toScaleX(TRACK_LINE),
                                        TRACK_COUNT + toScaleY(TRACK_LINE))
@@ -351,6 +355,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             batch.setColor(1f, 1f, 1f, 1f)
+
+            if (subbeatSection.flashAnimation > 0) {
+                subbeatSection.flashAnimation -= Gdx.graphics.deltaTime / subbeatSection.flashAnimationSpeed
+                if (subbeatSection.flashAnimation < 0)
+                    subbeatSection.flashAnimation = 0f
+            }
         }
 
         // trackers (playback start, music, others)
