@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor
 
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -59,6 +60,9 @@ class PickerSelection {
         fun getCurrentPlaceable(): Datamodel? {
             return placeableObjects.getOrNull(pattern)
         }
+
+        fun getCurrentGame(): Game? =
+                group.games.getOrNull(variant)
     }
 
     var currentSeries: Series = Series.TENGOKU
