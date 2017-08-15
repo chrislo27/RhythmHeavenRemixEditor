@@ -43,9 +43,7 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        index++
-        if (index >= snapLevels.size)
-            index = 0
+        index = if (index + 1 >= snapLevels.size) 0 else index + 1
         updateAndFlash()
     }
 
