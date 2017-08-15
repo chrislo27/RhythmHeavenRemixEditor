@@ -25,6 +25,7 @@ import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
@@ -58,6 +59,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         const val SELECTION_BORDER: Float = 4f
         private const val SELECTION_NUMBER_FORMAT_STRING = "%.1f"
+
+        private const val MSG_SEPARATOR = " - "
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -264,6 +267,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     private var clickOccupation: ClickOccupation = ClickOccupation.None
+        set(value) {
+            field = value
+            updateMessageLabel()
+        }
 
     fun toScaleX(float: Float): Float =
             (float / RHRE3.WIDTH) * camera.viewportWidth
@@ -347,7 +354,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (flashAnimation || actuallyInRange) {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
                                    theme.trackLine.a * 0.35f *
-                                           if(!actuallyInRange) subbeatSection.flashAnimation else 1f)
+                                           if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
                     for (j in 1 until Math.round(1f / snap)) {
                         batch.fillRect(i.toFloat() + snap * j, trackYOffset, toScaleX(TRACK_LINE),
                                        TRACK_COUNT + toScaleY(TRACK_LINE))
@@ -467,7 +474,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     deleteFont.scaleMul(0.5f)
                     deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
-                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, -1f + font.capHeight / 2, remix.camera.viewportWidth, Align.center)
+                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, -1f + font.capHeight / 2,
+                                              remix.camera.viewportWidth, Align.center)
 
                     deleteFont.setColor(1f, 1f, 1f, 1f)
                     deleteFont.unscaleFont()
@@ -642,6 +650,40 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+    }
+
+    fun updateMessageLabel() {
+        val label = stage.messageLabel
+        val builder = StringBuilder()
+        val clickOccupation = clickOccupation
+
+        fun StringBuilder.separator(): StringBuilder {
+            this.append(MSG_SEPARATOR)
+            return this
+        }
+
+        when (currentTool) {
+            Tool.NORMAL -> {
+                val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant().getCurrentGame()
+                builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
+                if (selection.isNotEmpty()) {
+                    builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
+                }
+                if (clickOccupation is ClickOccupation.CreatingSelection) {
+                    builder.separator().append(Localization["editor.msg.selectionHint", MSG_SEPARATOR])
+                }
+            }
+            Tool.BPM -> {
+            }
+            Tool.MULTIPART_SPLIT -> {
+            }
+            Tool.TIME_SIGNATURE -> {
+            }
+            Tool.MUSIC_VOLUME -> {
+            }
+        }
+
+        label.text = builder.toString()
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

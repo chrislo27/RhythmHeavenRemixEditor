@@ -132,8 +132,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val series = editor.pickerSelection.currentSeries
             val isSearching = editor.pickerSelection.isSearching
 
-            messageLabel.text = ""
-
             if (isSearching) {
                 if (isDirty == DirtyType.SEARCH_DIRTY) {
                     selection.variants.clear()
@@ -191,7 +189,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             this.game = game
                             if (selection.getCurrentVariant().variant == index) {
                                 this.selected = true
-                                messageLabel.text = game.name
                             }
                         }
                     }
@@ -216,6 +213,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
                 }
             }
+
+            editor.updateMessageLabel()
 
             isDirty = DirtyType.CLEAN
         }
@@ -1007,6 +1006,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         init {
             label.image = TextureRegion(tool.texture)
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            editor.updateMessageLabel()
         }
     }
 }
