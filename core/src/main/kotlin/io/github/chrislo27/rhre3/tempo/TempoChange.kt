@@ -9,6 +9,8 @@ class TempoChange(beat: Float, val bpm: Float) : Tracker(beat) {
 
     var seconds: Float = 0f // should be lateinit
 
+    private val renderText = "♩=${String.format("%.1f", bpm)}"
+
     override fun toString(): String {
         return "[beat=$beat,bpm=$bpm,seconds=$seconds]"
     }
@@ -18,6 +20,6 @@ class TempoChange(beat: Float, val bpm: Float) : Tracker(beat) {
     }
 
     override fun getRenderText(): String {
-        return "${String.format("%.1f", bpm)} BPM"
+        return renderText
     }
 }

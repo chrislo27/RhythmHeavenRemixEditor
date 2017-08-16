@@ -62,6 +62,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private const val SELECTION_NUMBER_FORMAT_STRING = "%.1f"
 
         private const val MSG_SEPARATOR = " - "
+        private const val ZERO_BEAT_SYMBOL = "♩"
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -439,7 +440,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val width = ENTITY_WIDTH * 0.4f
                 val x = i - width / 2f
                 val y = TRACK_COUNT + toScaleY(TRACK_LINE + TRACK_LINE) + font.capHeight
-                val text = "${Math.abs(i)}"
+                val text = if (i == 0) ZERO_BEAT_SYMBOL else "${Math.abs(i)}"
                 font.drawCompressed(batch, text,
                                     x, y, width, Align.center)
                 if (i < 0) {

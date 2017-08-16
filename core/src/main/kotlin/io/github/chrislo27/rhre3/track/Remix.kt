@@ -11,6 +11,8 @@ import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
@@ -22,15 +24,20 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
     val entities: MutableList<Entity> = mutableListOf()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
-    val tempos: Tempos = run {
-        val t = Tempos()
-        trackers += t
-        t
+    val timeSignatures: TimeSignatures = run {
+        val ts = TimeSignatures()
+        trackers += ts
+        ts
     }
     val musicVolumes: MusicVolumes = run {
         val mv = MusicVolumes()
         trackers += mv
         mv
+    }
+    val tempos: Tempos = run {
+        val t = Tempos()
+        trackers += t
+        t
     }
 
     var seconds: Float = 0f
@@ -91,6 +98,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         musicVolumes.add(MusicVolumeChange(3f, 86))
         tempos.add(TempoChange(0f, 128f))
         tempos.add(TempoChange(3f, 192f))
+        timeSignatures.add(TimeSignature(2f, 4, 4))
     }
 
     fun getLastPoint(): Float {

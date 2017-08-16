@@ -53,7 +53,7 @@ abstract class Theme {
             musicStart = Color(1f, 0f, 0f, 1f)
             tempoChange = Color(0.4f, 0.4f, 0.9f, 1f)
             musicVolume = Color(1f, 0.4f, 0f, 1f)
-            timeSignature = Color(0.7f, 0f, 1f, 1f)
+            timeSignature = Color(1f, 2016f / 255f, 0f, 1f)
         }
     }
 
