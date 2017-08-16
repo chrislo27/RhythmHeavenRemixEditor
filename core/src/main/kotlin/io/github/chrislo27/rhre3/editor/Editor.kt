@@ -347,12 +347,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // beat lines
         run beatLines@ {
             for (i in beatRange) {
-                // TODO time signature based
-                if (i % 4 == 0) {
-                    batch.color = theme.trackLine
-                } else {
+                batch.color = theme.trackLine
+                if (remix.timeSignatures.getMeasurePart(i.toFloat()) > 0) {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
                 }
+
                 val xOffset = toScaleX(TRACK_LINE) / -2
                 batch.fillRect(i.toFloat() + xOffset, trackYOffset, toScaleX(TRACK_LINE),
                                TRACK_COUNT + toScaleY(TRACK_LINE))
@@ -448,14 +447,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     font.drawCompressed(batch, "-", x - textWidth / 2f, y, ENTITY_WIDTH * 0.2f, Align.right)
                 }
 
-                // TODO time signature based
-                if (Math.floorMod(i, 4) == 0) {
-                    val measureNum = i / 4 + 1
-                    if (measureNum >= 1) {
-                        font.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.5f)
-                        font.drawCompressed(batch, "$measureNum",
-                                            x, y + font.lineHeight, width, Align.center)
-                    }
+                val measureNum = remix.timeSignatures.getMeasure(i.toFloat())
+                if (measureNum >= 1 && remix.timeSignatures.getMeasurePart(i.toFloat()) == 0) {
+                    font.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.5f)
+                    font.drawCompressed(batch, "$measureNum",
+                                        x, y + font.lineHeight, width, Align.center)
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)

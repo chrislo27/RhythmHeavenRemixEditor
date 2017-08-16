@@ -95,7 +95,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 //        musicVolumes.add(MusicVolumeChange(3f, 86))
 //        tempos.add(TempoChange(0f, 128f))
 //        tempos.add(TempoChange(3f, 192f))
-//        timeSignatures.add(TimeSignature(2f, 4, 4))
+//        timeSignatures.add(TimeSignature(0, 2))
+//        timeSignatures.add(TimeSignature(2, 3))
+//        timeSignatures.add(TimeSignature(5, 4))
     }
 
     fun getLastPoint(): Float {
