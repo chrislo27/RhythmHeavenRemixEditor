@@ -40,7 +40,7 @@ object DesktopLauncher {
                     this.resizable = true
                     this.vSyncEnabled = true
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
-                    this.allowSoftwareMode = false
+                    this.allowSoftwareMode = true
                     this.audioDeviceSimultaneousSources = 256
 
                     RHRE3.skipGitScreen = "--skip-git" in args
