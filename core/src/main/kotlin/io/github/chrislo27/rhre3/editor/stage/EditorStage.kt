@@ -134,6 +134,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             if (isSearching) {
                 if (isDirty == DirtyType.SEARCH_DIRTY) {
+                    selection.groups.clear()
                     selection.variants.clear()
                     selection.group = 0
                     val query = searchBar.text.toLowerCase(Locale.ROOT)
