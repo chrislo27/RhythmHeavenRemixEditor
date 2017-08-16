@@ -710,6 +710,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (stage.centreAreaStage.isMouseOver()) {
             val tool = currentTool
+            val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
             if (tool == Tool.NORMAL) {
                 if (isAnyTrackerButtonDown) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
@@ -718,7 +719,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
                     if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
                         val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
@@ -743,6 +743,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             // begin selection rectangle
                             val newClick = ClickOccupation.CreatingSelection(this, mouse, shift)
                             this.clickOccupation = newClick
+                        }
+                    }
+                }
+            } else if (tool == Tool.MULTIPART_SPLIT) {
+                if (isDraggingButtonDown) {
+                    val firstMultipart: MultipartEntity<*>? =
+                            remix.entities.firstOrNull { mouse in it.bounds } as? MultipartEntity<*>?
+                    if (firstMultipart != null) {
+                        if (firstMultipart.canSplitWithoutColliding()) {
+                            remix.mutate(firstMultipart.createSplittingAction())
                         }
                     }
                 }
@@ -875,6 +885,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun keyDown(keycode: Int): Boolean {
+        when (keycode) {
+            in Input.Keys.NUM_0..Input.Keys.NUM_9 -> {
+                val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
+                if (number in 0 until Tool.VALUES.size) {
+                    currentTool = Tool.VALUES[number]
+                    stage.updateSelected()
+                }
+            }
+        }
+
         return false
     }
 

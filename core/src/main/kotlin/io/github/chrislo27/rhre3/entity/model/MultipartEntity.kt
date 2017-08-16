@@ -62,7 +62,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         }
     }
 
-    open fun createSplittingAction(): ReversibleAction<Remix> {
+    fun createSplittingAction(): ReversibleAction<Remix> {
         return object : ReversibleAction<Remix> {
 
             val original = this@MultipartEntity
@@ -78,6 +78,14 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
                 context.entities.add(original)
             }
 
+        }
+    }
+
+    fun canSplitWithoutColliding(): Boolean {
+        return remix.entities.filter { it !== this && it !in internal }.none { target ->
+            internal.any {
+                it.bounds.overlaps(target.bounds)
+            }
         }
     }
 
