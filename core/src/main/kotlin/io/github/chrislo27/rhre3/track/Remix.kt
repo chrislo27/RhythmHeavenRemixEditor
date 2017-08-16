@@ -6,12 +6,9 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
-import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
-import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
-import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -94,11 +91,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     }
 
     init {
-        musicVolumes.add(MusicVolumeChange(1f, 95))
-        musicVolumes.add(MusicVolumeChange(3f, 86))
-        tempos.add(TempoChange(0f, 128f))
-        tempos.add(TempoChange(3f, 192f))
-        timeSignatures.add(TimeSignature(2f, 4, 4))
+//        musicVolumes.add(MusicVolumeChange(1f, 95))
+//        musicVolumes.add(MusicVolumeChange(3f, 86))
+//        tempos.add(TempoChange(0f, 128f))
+//        tempos.add(TempoChange(3f, 192f))
+//        timeSignatures.add(TimeSignature(2f, 4, 4))
     }
 
     fun getLastPoint(): Float {
@@ -143,6 +140,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
             if (oldPosition != position) {
                 seconds = position
+            }
+
+            val musicVolume = musicVolumes.getPercentageVolume(beat)
+            if (musicVolume != music.music.volume) {
+                music.music.volume = musicVolume
             }
         }
 
