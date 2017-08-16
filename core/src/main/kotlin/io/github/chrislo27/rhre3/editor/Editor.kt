@@ -30,6 +30,7 @@ import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -302,8 +303,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun getBeatRange(): IntRange =
             Math.round((camera.position.x - camera.viewportWidth / 2 * camera.zoom) / toScaleX(
-                    ENTITY_WIDTH)) - 1..(Math.round(
-                    (camera.position.x + camera.viewportWidth / 2 * camera.zoom) / toScaleX(ENTITY_WIDTH)) + 1)
+                    ENTITY_WIDTH)) - 4..(Math.round(
+                    (camera.position.x + camera.viewportWidth / 2 * camera.zoom) / toScaleX(ENTITY_WIDTH)) + 4)
 
     /**
      * Pre-stage render.
@@ -351,7 +352,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
                 }
-                batch.fillRect(i.toFloat(), trackYOffset, toScaleX(TRACK_LINE),
+                val xOffset = toScaleX(TRACK_LINE) / -2
+                batch.fillRect(i.toFloat() + xOffset, trackYOffset, toScaleX(TRACK_LINE),
                                TRACK_COUNT + toScaleY(TRACK_LINE))
 
                 val flashAnimation = subbeatSection.flashAnimation > 0
@@ -361,7 +363,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                    theme.trackLine.a * 0.35f *
                                            if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
                     for (j in 1 until Math.round(1f / snap)) {
-                        batch.fillRect(i.toFloat() + snap * j, trackYOffset, toScaleX(TRACK_LINE),
+                        batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(TRACK_LINE),
                                        TRACK_COUNT + toScaleY(TRACK_LINE))
                     }
                 }
@@ -391,11 +393,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
                                    triangleHeight: Float = 0.4f) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
-                val x = beat
+                val x = beat - toScaleX(TRACK_LINE * 1.5f) / 2
                 val y = trackYOffset
                 val height = (TRACK_COUNT + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE)
                 batch.setColor(color.toFloatBits())
-                batch.fillRect(beat, y, toScaleX(TRACK_LINE * 1.5f),
+                batch.fillRect(x, y, toScaleX(TRACK_LINE * 1.5f),
                                height - triangleHeight / 2)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
@@ -456,6 +458,41 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)
+        }
+
+        // bottom trackers
+        run trackers@ {
+            val font = main.defaultBorderedFont
+            font.scaleFont()
+
+            val triHeight = 0.5f
+            val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
+            val triangle = AssetRegistry.get<Texture>("tracker_tri")
+
+            remix.trackers.forEachIndexed { cindex, container ->
+                val level = remix.trackers.size - cindex - 1
+                val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
+                container.getBackingMap().values.forEachIndexed { index, tracker: Tracker ->
+                    if (tracker.beat in beatRange) {
+                        val oldBatch = batch.packedColor
+                        val trackerColor = tracker.getColor(theme)
+                        val lineWidth = 1f
+
+                        batch.color = trackerColor
+                        batch.fillRect(tracker.beat - toScaleX(lineWidth / 2), y, toScaleX(lineWidth), -y - toScaleY(TRACK_LINE))
+                        batch.draw(triangle, tracker.beat - triWidth / 2, y - triHeight, triWidth, triHeight)
+                        batch.setColor(oldBatch)
+
+                        val oldFontColor = font.color
+                        font.color = trackerColor
+                        font.draw(batch, tracker.getRenderText(),
+                                  tracker.beat + triWidth / 2, y - triHeight + font.capHeight + toScaleY(2f))
+                        font.color = oldFontColor
+                    }
+                }
+            }
+
+            font.unscaleFont()
         }
 
         // render selection box + delete zone

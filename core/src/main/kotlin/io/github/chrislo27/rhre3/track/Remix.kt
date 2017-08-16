@@ -6,8 +6,10 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
+import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
+import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -81,10 +83,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         }
 
     private fun setMusicVolume() {
-        music?.music?.volume = musicVolumes.getVolume(beat)
+        music?.music?.volume = musicVolumes.getPercentageVolume(beat)
     }
 
     init {
+        musicVolumes.add(MusicVolumeChange(1f, 95))
+        musicVolumes.add(MusicVolumeChange(3f, 86))
+        tempos.add(TempoChange(0f, 128f))
+        tempos.add(TempoChange(3f, 192f))
     }
 
     fun getLastPoint(): Float {
