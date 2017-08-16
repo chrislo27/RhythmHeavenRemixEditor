@@ -92,6 +92,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field.forEach { it.isSelected = true }
         }
     var currentTool: Tool = Tool.NORMAL
+    private val mouseVector: Vector2 = Vector2()
+        get() {
+            field.set(remix.camera.getInputX(), remix.camera.getInputY())
+            return field
+        }
 
     sealed class ClickOccupation {
 
@@ -557,6 +562,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
         val cameraDelta = toScaleX(ENTITY_WIDTH * 5 * Gdx.graphics.deltaTime * if (accelerateCamera) 5 else 1)
+        val mouseVector = mouseVector
 
         subbeatSection.enabled = false
 
@@ -590,6 +596,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val halfWidth = remix.camera.viewportWidth / 2
             if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
                 remix.camera.position.x = remix.beat + halfWidth
+            }
+        }
+
+        when (currentTool) {
+            Tool.MULTIPART_SPLIT -> {
+                updateMessageLabel()
+            }
+            else -> {
             }
         }
 
@@ -676,6 +690,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             Tool.BPM -> {
             }
             Tool.MULTIPART_SPLIT -> {
+                builder.append(Localization["editor.msg.multipartSplit"])
+                if (remix.playState == PlayState.STOPPED) {
+                    val multipart = getMultipartOnMouse()
+                    if (multipart != null) {
+                        if (!multipart.canSplitWithoutColliding()) {
+                            builder.separator().append(Localization["editor.msg.cannotSplit"])
+                        }
+                    }
+                }
             }
             Tool.TIME_SIGNATURE -> {
             }
@@ -686,7 +709,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         label.text = builder.toString()
     }
 
+    private fun getMultipartOnMouse(): MultipartEntity<*>? {
+        val mouseVector = mouseVector
+        return remix.entities.firstOrNull { mouseVector in it.bounds } as? MultipartEntity<*>?
+    }
+
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        val mouseVector = mouseVector
         val shift =
                 Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
         val control =
@@ -705,12 +734,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val isDraggingButtonDown = button == Input.Buttons.LEFT && !(control || shift)
         val isCopying = isDraggingButtonDown && alt
 
-        if (clickOccupation != ClickOccupation.None)
+        if (clickOccupation != ClickOccupation.None || remix.playState != PlayState.STOPPED)
             return false
 
         if (stage.centreAreaStage.isMouseOver()) {
             val tool = currentTool
-            val mouse = Vector2(remix.camera.getInputX(), remix.camera.getInputY())
             if (tool == Tool.NORMAL) {
                 if (isAnyTrackerButtonDown) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
@@ -719,7 +747,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    if (remix.entities.any { mouse in it.bounds && it.isSelected }) {
+                    if (remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
                         val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
                             inBounds.map { it.copy() }
@@ -741,15 +769,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val clickOccupation = clickOccupation
                         if (clickOccupation == ClickOccupation.None) {
                             // begin selection rectangle
-                            val newClick = ClickOccupation.CreatingSelection(this, mouse, shift)
+                            val newClick = ClickOccupation.CreatingSelection(this, Vector2(mouseVector), shift)
                             this.clickOccupation = newClick
                         }
                     }
                 }
             } else if (tool == Tool.MULTIPART_SPLIT) {
                 if (isDraggingButtonDown) {
-                    val firstMultipart: MultipartEntity<*>? =
-                            remix.entities.firstOrNull { mouse in it.bounds } as? MultipartEntity<*>?
+                    val firstMultipart: MultipartEntity<*>? = getMultipartOnMouse()
                     if (firstMultipart != null) {
                         if (firstMultipart.canSplitWithoutColliding()) {
                             remix.mutate(firstMultipart.createSplittingAction())
