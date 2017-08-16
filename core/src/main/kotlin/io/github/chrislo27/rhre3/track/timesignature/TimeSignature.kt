@@ -5,7 +5,7 @@ import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.tracker.Tracker
 
 
-class TimeSignature(beat: Float) : Tracker(beat) {
+class TimeSignature(beat: Int) : Tracker(beat.toFloat()) {
 
     var upper: Int = 4
         set(value) {
@@ -20,7 +20,7 @@ class TimeSignature(beat: Float) : Tracker(beat) {
 
     private var renderText: String = ""
 
-    constructor(beat: Float, upper: Int, lower: Int) : this(beat) {
+    constructor(beat: Int, upper: Int, lower: Int) : this(beat) {
         this.upper = upper
         this.lower = lower
     }
