@@ -39,9 +39,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     private val cue: Cue = datamodel
-    private val isFillbotsFill: Boolean by lazy {
-        cue.id == "fillbots/water" || cue.id == "fillbotsMegamix/water"
-    }
+    private val isFillbotsFill: Boolean = cue.id == "fillbots/water" || cue.id == "fillbotsMegamix/water"
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
