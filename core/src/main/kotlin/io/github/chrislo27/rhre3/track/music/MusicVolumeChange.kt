@@ -1,7 +1,9 @@
 package io.github.chrislo27.rhre3.track.music
 
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.tracker.Tracker
 
 
@@ -16,6 +18,21 @@ class MusicVolumeChange(beat: Float, volume: Int) : Tracker(beat) {
 
     init {
         this.volume = volume
+    }
+
+    override fun onScroll(remix: Remix, amount: Int, shift: Boolean,
+                          control: Boolean) {
+        remix.mutate(object : ReversibleAction<Remix> {
+            val oldVol = volume
+
+            override fun redo(context: Remix) {
+                volume += amount * if (control) 5 else 1
+            }
+
+            override fun undo(context: Remix) {
+                volume = oldVol
+            }
+        })
     }
 
     override fun getColor(theme: Theme): Color {

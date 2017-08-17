@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.tracker
 import java.util.*
 
 
-open class TrackerContainer<T : Tracker> {
+abstract class TrackerContainer<T : Tracker> {
 
     protected val map: NavigableMap<Float, T> = TreeMap()
 
