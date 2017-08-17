@@ -3,10 +3,7 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
@@ -22,6 +19,7 @@ import io.github.chrislo27.rhre3.editor.action.EntityRemoveAction
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
@@ -104,6 +102,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field.set(remix.camera.getInputX(), remix.camera.getInputY())
             return field
         }
+    private var wasStretchCursor = false
 
     sealed class ClickOccupation {
 
@@ -196,10 +195,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         class SelectionDrag(val editor: Editor,
                             val mouseOffset: Vector2,
                             val isNewOrCopy: Boolean,
-                            val previousSelection: List<Entity>)
+                            val previousSelection: List<Entity>,
+                            val stretchType: StretchRegion)
             : ClickOccupation() {
 
             val oldBounds: List<Rectangle> = copyBounds(editor.selection)
+
+            val isStretching: Boolean by lazy { !isNewOrCopy && stretchType != StretchRegion.NONE }
 
             private val selection: List<Entity>
                 get() = editor.selection
@@ -311,6 +313,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             Math.round((camera.position.x - camera.viewportWidth / 2 * camera.zoom) / toScaleX(
                     ENTITY_WIDTH)) - 4..(Math.round(
                     (camera.position.x + camera.viewportWidth / 2 * camera.zoom) / toScaleX(ENTITY_WIDTH)) + 4)
+
+    fun getStretchRegionForStretchable(beat: Float, entity: Entity): StretchRegion {
+        if (entity !is IStretchable)
+            return StretchRegion.NONE
+
+        if (!entity.isStretchable)
+            return StretchRegion.NONE
+
+        if (beat in entity.bounds.x..entity.bounds.x + IStretchable.STRETCH_AREA) {
+            return StretchRegion.LEFT
+        }
+
+        val right = entity.bounds.x + entity.bounds.width
+
+        if (beat in right - IStretchable.STRETCH_AREA..right) {
+            return StretchRegion.RIGHT
+        }
+
+        return StretchRegion.NONE
+    }
+
+    fun canStretchEntity(mouseVector: Vector2, it: Entity): Boolean {
+        return it is IStretchable && it.isSelected &&
+                mouseVector.y in it.bounds.y..it.bounds.y + it.bounds.height &&
+                getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
+    }
 
     /**
      * Pre-stage render.
@@ -654,6 +682,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+        run stretchCursor@ {
+            val shouldStretch = this.selection.size == 1 && remix.entities.any {
+                canStretchEntity(mouseVector, it)
+            }
+
+            if (wasStretchCursor && !shouldStretch) {
+                Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
+            } else if (!wasStretchCursor && shouldStretch) {
+                Gdx.graphics.setCursor(AssetRegistry["cursor_horizontal_resize"])
+            }
+            wasStretchCursor = shouldStretch
+        }
+
         if (remix.playState != PlayState.STOPPED)
             return
 
@@ -676,18 +717,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val clickOccupation = clickOccupation
             val tool = currentTool
             if (tool == Tool.NORMAL) {
+                val nearestBeat = MathHelper.snapToNearest(camera.getInputX(), snap)
                 when (clickOccupation) {
                     is ClickOccupation.Music -> {
                         setSubbeatSectionToMouse()
-                        remix.musicStartSec = remix.tempos.beatsToSeconds(
-                                MathHelper.snapToNearest(camera.getInputX(), snap))
+                        remix.musicStartSec = remix.tempos.beatsToSeconds(nearestBeat)
                     }
                     is ClickOccupation.Playback -> {
                         setSubbeatSectionToMouse()
-                        remix.playbackStart = MathHelper.snapToNearest(camera.getInputX(), snap)
+                        remix.playbackStart = nearestBeat
                     }
                     is ClickOccupation.SelectionDrag -> {
-                        clickOccupation.setPositionRelativeToMouse()
+                        if (clickOccupation.isStretching) {
+                            val entity = this.selection.first()
+                            val oldBound = clickOccupation.oldBounds.first()
+                            entity.updateBounds {
+                                if (clickOccupation.stretchType == StretchRegion.LEFT) {
+                                    val rightSide = oldBound.x + oldBound.width
+
+                                    entity.bounds.x = (nearestBeat).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
+                                    entity.bounds.width = rightSide - entity.bounds.x
+                                } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
+                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(IStretchable.MIN_STRETCH)
+                                }
+                            }
+                        } else {
+                            clickOccupation.setPositionRelativeToMouse()
+                        }
 
                         subbeatSection.enabled = true
                         subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
@@ -735,7 +791,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
                 if (selection.isNotEmpty()) {
                     builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
+
+                    if (selection.size == 1) {
+                        val first = selection.first()
+                        if (first is IStretchable && first.isStretchable) {
+                            builder.separator().append(Localization["editor.msg.stretchable"])
+                        }
+                    }
                 }
+
                 if (clickOccupation is ClickOccupation.CreatingSelection) {
                     builder.separator().append(Localization["editor.msg.selectionHint", MSG_SEPARATOR])
                 }
@@ -827,8 +891,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val oldSel = this.selection
                         val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
                                                   remix.camera.getInputY() - first.bounds.y)
+                        val stretchRegion = if (newSel.size == 1 && first is IStretchable && !isCopying)
+                            getStretchRegionForStretchable(remix.camera.getInputX(), first) else StretchRegion.NONE
                         val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
-                                                                     isCopying, oldSel)
+                                                                     isCopying, oldSel, stretchRegion)
                         if (isCopying) {
                             this.selection = newSel
                             remix.entities.addAll(newSel)
@@ -914,7 +980,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldSelection = this.selection
             this.selection = listOf(entity)
             val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
-                                                          true, oldSelection)
+                                                          true, oldSelection, StretchRegion.NONE)
             selection.setPositionRelativeToMouse()
 
             remix.entities += entity

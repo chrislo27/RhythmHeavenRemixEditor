@@ -1,6 +1,8 @@
 package io.github.chrislo27.rhre3.init
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.github.chrislo27.rhre3.registry.Series
@@ -47,6 +49,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         }
         assets[AssetRegistry.bindAsset("ui-icons", "images/ui/ui-icons.pack").first] =
                 TextureAtlas("images/ui/ui-icons.pack")
+        assets["cursor_horizontal_resize"] =
+                Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")),
+                                       16, 8)
     }
 
 }
