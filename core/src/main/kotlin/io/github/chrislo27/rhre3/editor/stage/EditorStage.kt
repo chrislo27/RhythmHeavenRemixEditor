@@ -763,6 +763,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenHeight = buttonHeight,
                             screenX = 1f - Tool.VALUES.size * buttonWidth + index * buttonWidth
                                      )
+                    this.background = false
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
