@@ -849,6 +849,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.enabled = true
             }
             buttonBarStage.elements += themeButton
+            buttonBarStage.elements += UndoRedoButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 4 + padding * 4)
+            }
+            buttonBarStage.elements += UndoRedoButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 5 + padding * 5)
+            }
 
             // right aligned
             // info button
