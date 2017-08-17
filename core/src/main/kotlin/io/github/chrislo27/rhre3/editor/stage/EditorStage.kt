@@ -821,7 +821,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     Button(palette, buttonBarStage, buttonBarStage).apply {
                         this.location.set(screenWidth = size)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                            this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("newFile")
+                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_new_button"))
                         })
                     }
             buttonBarStage.elements +=
@@ -829,7 +829,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         this.location.set(screenWidth = size,
                                           screenX = size + padding)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                            this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("openFile")
+                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_load_button"))
                         })
                     }
             buttonBarStage.elements +=
@@ -837,7 +837,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         this.location.set(screenWidth = size,
                                           screenX = size * 2 + padding * 2)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                            this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("saveFile")
+                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_save_button"))
                         })
                     }
             val themeButton = ThemeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
@@ -869,7 +869,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - size)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info"))
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info_button"))
                 })
             }
             // language button
