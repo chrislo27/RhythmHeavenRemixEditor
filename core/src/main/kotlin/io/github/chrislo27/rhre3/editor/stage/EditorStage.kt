@@ -890,6 +890,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size * 3,
                                   screenX = 1f - (size * 7 + padding * 4))
             }
+            buttonBarStage.elements += MetronomeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 8 + padding * 5))
+            }
         }
 
         this.updatePositions()

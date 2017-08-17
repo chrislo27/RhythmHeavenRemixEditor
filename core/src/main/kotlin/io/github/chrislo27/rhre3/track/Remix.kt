@@ -6,11 +6,14 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
+import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 
@@ -49,6 +52,19 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     var musicStartSec: Float = 0f
     var music: MusicData? = null
     private var lastMusicPosition: Float = -1f
+    var metronome: Boolean = false
+        set(value) {
+            field = value
+            lastTickBeat = beat.toInt()
+        }
+    private var lastTickBeat = Int.MIN_VALUE
+
+    private val metronomeSFX: List<LazySound> by lazy {
+        listOf(
+                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?:
+                        throw RuntimeException("Missing metronome sound")
+              )
+    }
 
     var playState: PlayState = PlayState.STOPPED
         set(value) {
@@ -76,6 +92,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                                 it.playbackCompletion = PlaybackCompletion.WAITING
                             }
                         }
+
+                        lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
                     }
                     if (music != null) {
                         music.music.play()
@@ -153,6 +171,16 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         entities.forEach { entity ->
             if (entity.playbackCompletion != PlaybackCompletion.FINISHED) {
                 entityUpdate(entity)
+            }
+        }
+
+        if (Math.floor(beat.toDouble()) > lastTickBeat) {
+            lastTickBeat = Math.floor(beat.toDouble()).toInt()
+            if (metronome) {
+                val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
+                metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size].sound.play(1f,
+                                                                                        if (isStartOfMeasure) 1.5f else 1.1f,
+                                                                                        0f)
             }
         }
     }

@@ -15,6 +15,8 @@ abstract class Theme {
                         DarkTheme(),
                         RHRE0Theme()
                       )
+
+        val DEFAULT_NAME = "<no name>"
     }
 
     fun isAllInitialized(): Boolean {
@@ -24,7 +26,7 @@ abstract class Theme {
                 selection.anyUninitializedLateinits())
     }
 
-    var name: String = "<no name>"
+    var name: String = DEFAULT_NAME
     @field:JsonIgnore open val nameIsLocalization: Boolean = false
 
     fun getRealName(): String =

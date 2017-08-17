@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.theme.ExampleTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
@@ -16,11 +17,15 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 
 class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                   stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage) {
+    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     private var index: Int = 0
 
     private lateinit var themes: List<Theme>
+
+    override fun getHoverText(): String {
+        return Localization["editor.palette", themes[index].getRealName()]
+    }
 
     private fun reloadPalettes(fromPrefs: Boolean) {
         index = if (!fromPrefs) 0 else editor.main.preferences.getInteger(PreferenceKeys.THEME_INDEX, 0)
@@ -31,10 +36,13 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         folder.mkdirs()
         val files = folder.list(".json").filter { it.nameWithoutExtension() != "example" }
         Toolboks.LOGGER.info("Found ${files.size} json palette files, attempting to read")
-        files.forEach {
+        files.forEachIndexed { index, it ->
             Toolboks.LOGGER.info("Attempting to parse ${it.name()}")
             try {
                 val themeObj: Theme = JsonHandler.fromJson(it.readString("UTF-8"))
+                if (!themeObj.nameIsLocalization && themeObj.name == Theme.DEFAULT_NAME) {
+                    themeObj.name = "Custom Palette ${index + 1}"
+                }
                 themes += themeObj
                 Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
             } catch (e: Exception) {
