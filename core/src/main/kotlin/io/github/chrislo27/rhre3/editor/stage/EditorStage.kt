@@ -21,7 +21,6 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
-import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
@@ -862,12 +861,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             // right aligned
             // info button
-            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.screen = ScreenRegistry.getNonNull("info")
-                }
-            }.apply {
+            buttonBarStage.elements += InfoButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = 1f - size)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
