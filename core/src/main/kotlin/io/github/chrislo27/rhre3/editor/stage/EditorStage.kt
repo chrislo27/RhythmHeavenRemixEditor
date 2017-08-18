@@ -253,7 +253,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 super.render(screen, batch, shapeRenderer)
                 if (main.versionTextWidth != lastVersionTextWidth) {
                     lastVersionTextWidth = main.versionTextWidth
-                    this.location.set(screenX = messageBarStage.percentageOfWidth(2f))
+                    this.location.set(screenX = messageBarStage.percentageOfWidth(2f),
+                                      screenY = messageBarStage.percentageOfHeight(2f))
                     this.location.set(
                             screenWidth = 1f - (main.versionTextWidth / messageBarStage.location.realWidth + this.location.screenX))
                     this.stage.updatePositions()
@@ -263,7 +264,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.fontScaleMultiplier = 0.5f
             this.textAlign = Align.bottomLeft
             this.textWrapping = false
-            this.location.set(0f, -0.5f,
+            this.location.set(0f, 0f,
                               1f,
                               1.5f,
                               pixelWidth = -8f)
