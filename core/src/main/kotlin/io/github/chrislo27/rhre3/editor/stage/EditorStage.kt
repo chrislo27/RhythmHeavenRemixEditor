@@ -858,6 +858,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = size * 5 + padding * 5)
             }
+            buttonBarStage.elements += MusicButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 6 + padding * 6)
+            }
 
             // right aligned
             // info button

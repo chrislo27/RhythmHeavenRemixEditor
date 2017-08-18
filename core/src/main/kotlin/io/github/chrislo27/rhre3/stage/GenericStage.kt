@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
@@ -62,6 +63,23 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
     var bottomStage: Stage<S> = Stage(this, camera).apply {
         this.alignment = Align.bottomLeft
         this.location.set(0f, 0f, 1f, BOTTOM_RATIO.second)
+    }
+
+    var onBackButtonClick: () -> Unit = {}
+    val backButton: Button<S> = object : Button<S>(palette, bottomStage, bottomStage) {
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            onBackButtonClick()
+        }
+    }.apply {
+        this.visible = false
+        this.stage.updatePositions()
+        this.location.set(screenHeight = 1f)
+        this.location.set(screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
+        this.addLabel(ImageLabel(palette, this, this.stage).apply {
+            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_back"))
+        })
+        bottomStage.elements += this
     }
 
     var drawBackground: Boolean = true

@@ -75,7 +75,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
         }
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
-        if (progress >= 1f && !Toolboks.debugMode) { // FIXME
+        if (progress >= 1f && !Toolboks.debugMode) {
             main.screen = ScreenRegistry["editor"]
         }
     }

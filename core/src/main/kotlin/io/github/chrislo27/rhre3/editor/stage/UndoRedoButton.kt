@@ -19,7 +19,7 @@ class UndoRedoButton(val editor: Editor, val undo: Boolean, palette: UIPalette, 
 
     init {
         addLabel(ImageLabel(palette, this, stage).apply {
-            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_undo")).apply {
+            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_back")).apply {
                 this.flip(!undo, false)
             }
         })

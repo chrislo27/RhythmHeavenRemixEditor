@@ -10,10 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.screen.AssetRegistryLoadingScreen
-import io.github.chrislo27.rhre3.screen.EditorScreen
-import io.github.chrislo27.rhre3.screen.GitUpdateScreen
-import io.github.chrislo27.rhre3.screen.RegistryLoadingScreen
+import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
@@ -112,6 +109,7 @@ class RHRE3Application(nativeFileChooser: NativeFileChooser, logger: Logger, log
                 ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
                 ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
                 ScreenRegistry += "editor" to EditorScreen(this)
+                ScreenRegistry += "musicSelect" to MusicSelectScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")

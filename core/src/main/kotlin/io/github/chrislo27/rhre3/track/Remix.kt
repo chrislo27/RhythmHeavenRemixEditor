@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import kotlin.properties.Delegates
 
 
 class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<Remix>() {
@@ -65,6 +66,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                         throw RuntimeException("Missing metronome sound")
               )
     }
+    var isMusicMuted: Boolean by Delegates.observable(false) { prop, old, new ->
+        setMusicVolume()
+    }
 
     var playState: PlayState = PlayState.STOPPED
         set(value) {
@@ -105,7 +109,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         }
 
     private fun setMusicVolume() {
-        music?.music?.volume = musicVolumes.getPercentageVolume(beat)
+        music?.music?.volume = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
     }
 
     init {

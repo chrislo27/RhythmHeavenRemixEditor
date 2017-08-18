@@ -38,10 +38,13 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_warn", "images/ui/icons/warn.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_language", "images/ui/icons/language3.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_metronome", "images/ui/icons/metronome.png")
-        AssetRegistry.loadAsset<Texture>("ui_icon_undo", "images/ui/icons/undo.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_back", "images/ui/icons/back.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_new_button", "images/ui/icons/new_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_load_button", "images/ui/icons/load_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_save_button", "images/ui/icons/save_button.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_songchoose", "images/ui/icons/songchoose.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_music_button", "images/ui/icons/music_button.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_music_button_muted", "images/ui/icons/music_button_muted.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
