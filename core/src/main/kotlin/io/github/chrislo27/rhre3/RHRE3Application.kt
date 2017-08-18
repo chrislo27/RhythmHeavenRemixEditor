@@ -24,10 +24,11 @@ import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
+import net.spookygames.gdx.nativefilechooser.NativeFileChooser
 import java.util.*
 
 
-class RHRE3Application(logger: Logger, logToFile: Boolean)
+class RHRE3Application(nativeFileChooser: NativeFileChooser, logger: Logger, logToFile: Boolean)
     : ToolboksGame(logger, logToFile, RHRE3.VERSION,
                    RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 
@@ -38,6 +39,13 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                         NamedLocale("Français (French)", Locale("fr")),
                         NamedLocale("Español (Spanish)", Locale("es"))
                       )
+
+        lateinit var nativeFileChooser: NativeFileChooser
+            private set
+    }
+
+    init {
+        Companion.nativeFileChooser = nativeFileChooser
     }
 
     val defaultFontLargeKey = "default_font_large"

@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -34,10 +35,16 @@ import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
+import net.spookygames.gdx.nativefilechooser.NativeFileChooserCallback
+import net.spookygames.gdx.nativefilechooser.NativeFileChooserConfiguration
+import java.io.FilenameFilter
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -740,7 +747,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     entity.bounds.x = (nearestBeat).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
                                     entity.bounds.width = rightSide - entity.bounds.x
                                 } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(IStretchable.MIN_STRETCH)
+                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(
+                                            IStretchable.MIN_STRETCH)
                                 }
                             }
                         } else {
@@ -772,6 +780,44 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 remix.redo()
             } else if (remix.canUndo() && Gdx.input.isKeyJustPressed(Input.Keys.Z) && !shift) {
                 remix.undo()
+            }
+        }
+
+        // FIXME
+        if (Toolboks.debugMode) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                val fileChooser = RHRE3Application.nativeFileChooser
+                // Configure
+                val conf = NativeFileChooserConfiguration()
+
+                // Starting from user's dir
+                conf.directory = Gdx.files.absolute(System.getProperty("user.home"))
+
+                // Filter out all files which do not have the .ogg extension and are not of an audio MIME type - belt and braces
+                conf.mimeFilter = "audio/*"
+                conf.nameFilter = FilenameFilter { dir, name -> name.endsWith("ogg") }
+
+                // Add a nice title
+                conf.title = "Choose audio file"
+
+                launch(CommonPool) {
+                    fileChooser.chooseFile(conf, object : NativeFileChooserCallback {
+                        override fun onFileChosen(file: FileHandle) {
+                            // Do stuff with file, yay!
+                            println("Chose $file")
+                        }
+
+                        override fun onCancellation() {
+                            // Warn user how rude it can be to cancel developer's effort
+                            println("cancelled")
+                        }
+
+                        override fun onError(exception: Exception) {
+                            // Handle error (hint: use exception type)
+                            exception.printStackTrace()
+                        }
+                    })
+                }
             }
         }
 
@@ -929,7 +975,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     else -> error("Tool $tool not supported")
                 }
                 val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-                val canPlace = if (tool == Tool.TIME_SIGNATURE) MathUtils.isEqual(Math.round(beat).toFloat(), beat, snap / 2) else true
+                val canPlace = if (tool == Tool.TIME_SIGNATURE) MathUtils.isEqual(Math.round(beat).toFloat(), beat,
+                                                                                  snap / 2) else true
 
                 if (button == Input.Buttons.RIGHT && tracker != null) {
                     remix.mutate(
@@ -938,7 +985,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     TrackerExistenceAction(remix, remix.tempos, tracker as TempoChange, true)
                                 }
                                 Tool.MUSIC_VOLUME -> {
-                                    TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange, true)
+                                    TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange,
+                                                           true)
                                 }
                                 Tool.TIME_SIGNATURE -> {
                                     TrackerExistenceAction(remix, remix.timeSignatures, tracker as TimeSignature, true)
@@ -954,12 +1002,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 }
                                 Tool.MUSIC_VOLUME -> {
                                     TrackerExistenceAction(remix, remix.musicVolumes,
-                                                           MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)), false)
+                                                           MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)),
+                                                           false)
                                 }
                                 Tool.TIME_SIGNATURE -> {
                                     TrackerExistenceAction(remix, remix.timeSignatures,
                                                            TimeSignature(beat.toInt(),
-                                                                remix.timeSignatures.getTimeSignature(beat)?.upper ?: 4), false)
+                                                                         remix.timeSignatures.getTimeSignature(
+                                                                                 beat)?.upper ?: 4), false)
                                 }
                                 else -> error("Tracker placement not supported: $tool")
                             })

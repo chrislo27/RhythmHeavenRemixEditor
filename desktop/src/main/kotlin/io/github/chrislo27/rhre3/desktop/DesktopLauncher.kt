@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.logging.Logger
+import net.spookygames.gdx.nativefilechooser.desktop.DesktopFileChooser
 import kotlin.concurrent.thread
 
 object DesktopLauncher {
@@ -28,7 +29,7 @@ object DesktopLauncher {
 
         val logger = Logger()
         val logToFile = true
-        val app = RHRE3Application(logger, logToFile)
+        val app = RHRE3Application(DesktopFileChooser(), logger, logToFile)
         ToolboksDesktopLauncher(app)
                 .editConfig {
                     this.width = app.emulatedSize.first
