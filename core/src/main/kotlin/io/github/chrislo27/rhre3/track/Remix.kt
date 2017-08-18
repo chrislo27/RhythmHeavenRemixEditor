@@ -74,7 +74,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             when (field) {
                 PlayState.STOPPED -> {
                     AssetRegistry.stopAllSounds()
-                    music?.music?.stop()
+                    music?.music?.pause()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -95,7 +95,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
                         lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
                     }
-                    if (music != null) {
+                    if (music != null && seconds >= musicStartSec) {
                         music.music.play()
                         setMusicVolume()
                         music.music.position = seconds - musicStartSec
@@ -109,13 +109,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     }
 
     init {
-//        musicVolumes.add(MusicVolumeChange(1f, 95))
-//        musicVolumes.add(MusicVolumeChange(3f, 86))
-//        tempos.add(TempoChange(0f, 128f))
-//        tempos.add(TempoChange(3f, 192f))
-//        timeSignatures.add(TimeSignature(0, 2))
-//        timeSignatures.add(TimeSignature(2, 3))
-//        timeSignatures.add(TimeSignature(5, 4))
     }
 
     fun getLastPoint(): Float {
@@ -154,17 +147,23 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
         seconds += delta
         if (music != null) {
-            val oldPosition = lastMusicPosition
-            val position = music.music.position
-            lastMusicPosition = position
-
-            if (oldPosition != position) {
-                seconds = position
+            if (!music.music.isPlaying && seconds >= musicStartSec) {
+                music.music.play()
+                music.music.position = seconds - musicStartSec
             }
+            if (music.music.isPlaying) {
+                val oldPosition = lastMusicPosition
+                val position = music.music.position
+                lastMusicPosition = position
 
-            val musicVolume = musicVolumes.getPercentageVolume(beat)
-            if (musicVolume != music.music.volume) {
-                music.music.volume = musicVolume
+                if (oldPosition != position) {
+                    seconds = position
+                }
+
+                val musicVolume = musicVolumes.getPercentageVolume(beat)
+                if (musicVolume != music.music.volume) {
+                    music.music.volume = musicVolume
+                }
             }
         }
 

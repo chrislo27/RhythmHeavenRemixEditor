@@ -66,6 +66,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var langButton: LangButton
         private set
+    lateinit var jumpToField: JumpToField
+        private set
 
     val topOfMinimapBar: Float
         get() {
@@ -73,7 +75,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     val isTyping: Boolean
         get() {
-            return searchBar.hasFocus
+            return searchBar.hasFocus || jumpToField.hasFocus
         }
 
     private var isDirty = DirtyType.CLEAN
@@ -903,6 +905,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 8 + padding * 5))
             }
+            jumpToField = JumpToField(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size * 4,
+                                  screenX = 1f - (size * 12 + padding * 6))
+                this.textAlign = Align.center
+                this.background = true
+            }
+            buttonBarStage.elements += jumpToField
         }
 
         this.updatePositions()
