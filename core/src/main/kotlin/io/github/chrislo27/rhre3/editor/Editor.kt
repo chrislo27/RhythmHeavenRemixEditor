@@ -641,28 +641,30 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         subbeatSection.enabled = false
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
-            Gdx.input.inputProcessor.scrolled(-1)
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN)) {
-            Gdx.input.inputProcessor.scrolled(1)
-        }
+        if (!stage.isTyping) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP)) {
+                Gdx.input.inputProcessor.scrolled(-1)
+            }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN)) {
+                Gdx.input.inputProcessor.scrolled(1)
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (shift) {
-                when (remix.playState) {
-                    PlayState.STOPPED -> remix.playState = PlayState.PLAYING
-                    PlayState.PAUSED -> remix.playState = PlayState.PLAYING
-                    PlayState.PLAYING -> remix.playState = PlayState.PAUSED
-                }
-            } else {
-                when (remix.playState) {
-                    PlayState.STOPPED -> remix.playState = PlayState.PLAYING
-                    PlayState.PAUSED -> {
-                        remix.playState = PlayState.STOPPED
-                        remix.playState = PlayState.PLAYING
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+                if (shift) {
+                    when (remix.playState) {
+                        PlayState.STOPPED -> remix.playState = PlayState.PLAYING
+                        PlayState.PAUSED -> remix.playState = PlayState.PLAYING
+                        PlayState.PLAYING -> remix.playState = PlayState.PAUSED
                     }
-                    PlayState.PLAYING -> remix.playState = PlayState.STOPPED
+                } else {
+                    when (remix.playState) {
+                        PlayState.STOPPED -> remix.playState = PlayState.PLAYING
+                        PlayState.PAUSED -> {
+                            remix.playState = PlayState.STOPPED
+                            remix.playState = PlayState.PLAYING
+                        }
+                        PlayState.PLAYING -> remix.playState = PlayState.STOPPED
+                    }
                 }
             }
         }
@@ -698,7 +700,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (remix.playState != PlayState.STOPPED)
             return
 
-        run camera@ {
+        if (!stage.isTyping) {
             if (left) {
                 camera.position.x -= cameraDelta
             }
