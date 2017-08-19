@@ -16,7 +16,7 @@ class TempoChange(beat: Float, val bpm: Float) : Tracker(beat) {
 
     override fun onScroll(remix: Remix, amount: Int, shift: Boolean,
                           control: Boolean) {
-        val newBpm = (bpm + amount * (if (control) 5f else 1f) * (if (shift) 0.1f else 1f)).coerceIn(32f, 512f)
+        val newBpm = (bpm + amount * (if (control) 5f else 1f) * (if (shift) 0.1f else 1f)).coerceIn(30f, 600f)
         remix.mutate(GroupedAction(listOf(
                 TrackerExistenceAction(remix, remix.tempos,
                                        this, true),
