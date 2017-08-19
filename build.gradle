@@ -46,7 +46,6 @@ project(":desktop") {
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "net.spookygames.gdx:gdx-nativefilechooser-desktop:1.0.0"
     }
 }
 
@@ -68,7 +67,6 @@ project(":core") {
         compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.0"
         compile "org.eclipse.jgit:org.eclipse.jgit:4.8.0.201706111038-r"
         compile "org.slf4j:slf4j-nop:1.7.25"
-        compile "net.spookygames.gdx:gdx-nativefilechooser:1.0.0"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }

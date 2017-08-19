@@ -30,8 +30,7 @@ object Credits {
                             "Jackson\n" +
                             "JGit\n" +
                             "Apache Commons IO\n" +
-                            "SLF4J\n" +
-                            "gdx-filechooser",
+                            "SLF4J",
             "you" crediting ""
                                    )
 
