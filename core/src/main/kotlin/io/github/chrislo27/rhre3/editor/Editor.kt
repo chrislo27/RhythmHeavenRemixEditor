@@ -780,23 +780,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        // FIXME
-        if (Toolboks.debugMode) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-               Platform.runLater {
-                   val chooser = FileChooser()
-                   chooser.title = "Open resource file"
-                   chooser.extensionFilters.addAll(
-                           FileChooser.ExtensionFilter("Text files", "*.txt"),
-                           FileChooser.ExtensionFilter("Image files", "*.png", "*.gif", "*.jpg"),
-                           FileChooser.ExtensionFilter("Audio files", "*.ogg", "*.mp3", "*.wav"),
-                           FileChooser.ExtensionFilter("All files", "*.*")
-                                                  )
-                   println(chooser.showOpenDialog(JavafxStub.application.primaryStage))
-               }
-            }
-        }
-
     }
 
     fun updateMessageLabel() {
