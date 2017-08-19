@@ -9,4 +9,6 @@ object PreferenceKeys {
 
     const val WINDOW_STATE = "windowState"
 
+    const val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
+
 }

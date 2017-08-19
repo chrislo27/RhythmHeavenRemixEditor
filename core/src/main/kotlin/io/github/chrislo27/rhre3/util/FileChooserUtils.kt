@@ -17,3 +17,6 @@ internal fun attemptRememberDirectory(main: RHRE3Application, prefName: String):
 
     return null
 }
+
+internal fun getDefaultDirectory(): File =
+        File(System.getProperty("user.home"), "Desktop")
