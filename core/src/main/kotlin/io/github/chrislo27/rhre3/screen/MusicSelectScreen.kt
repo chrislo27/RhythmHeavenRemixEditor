@@ -12,6 +12,9 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.launch
 
 
 class MusicSelectScreen(main: RHRE3Application)
@@ -23,6 +26,8 @@ class MusicSelectScreen(main: RHRE3Application)
         get() = editorScreen.editor
 
     override val stage: Stage<MusicSelectScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+
+    @Volatile private var currentCoroutine: Job? = null
 
     init {
         stage as GenericStage
@@ -56,6 +61,22 @@ class MusicSelectScreen(main: RHRE3Application)
         }
     }
 
+    @Synchronized
+    private fun openPicker() {
+        if (currentCoroutine != null)
+            return
+
+        val coroutine = launch(CommonPool) {
+
+        }
+
+        currentCoroutine = coroutine
+    }
+
+    override fun hide() {
+        currentCoroutine?.cancel()
+    }
+
     override fun dispose() {
     }
 
@@ -66,8 +87,10 @@ class MusicSelectScreen(main: RHRE3Application)
                                        stage: Stage<MusicSelectScreen>)
         : Button<MusicSelectScreen>(palette, parent, stage) {
 
-
-
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            openPicker()
+        }
     }
 }
 

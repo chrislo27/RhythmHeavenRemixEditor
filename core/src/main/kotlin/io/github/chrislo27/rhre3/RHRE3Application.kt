@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
@@ -21,11 +22,12 @@ import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
-import net.spookygames.gdx.nativefilechooser.NativeFileChooser
+import javafx.application.Application
 import java.util.*
+import kotlin.concurrent.thread
 
 
-class RHRE3Application(nativeFileChooser: NativeFileChooser, logger: Logger, logToFile: Boolean)
+class RHRE3Application(logger: Logger, logToFile: Boolean)
     : ToolboksGame(logger, logToFile, RHRE3.VERSION,
                    RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 
@@ -36,13 +38,6 @@ class RHRE3Application(nativeFileChooser: NativeFileChooser, logger: Logger, log
                         NamedLocale("Français (French)", Locale("fr")),
                         NamedLocale("Español (Spanish)", Locale("es"))
                       )
-
-        lateinit var nativeFileChooser: NativeFileChooser
-            private set
-    }
-
-    init {
-        Companion.nativeFileChooser = nativeFileChooser
     }
 
     val defaultFontLargeKey = "default_font_large"
@@ -120,6 +115,10 @@ class RHRE3Application(nativeFileChooser: NativeFileChooser, logger: Logger, log
                                           ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
                                       }))
 
+        }
+
+        thread(isDaemon = true) {
+            Application.launch(JavafxStub::class.java) // start up
         }
     }
 

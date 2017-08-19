@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -35,16 +34,14 @@ import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
+import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
-import net.spookygames.gdx.nativefilechooser.NativeFileChooserCallback
-import net.spookygames.gdx.nativefilechooser.NativeFileChooserConfiguration
-import java.io.FilenameFilter
+import javafx.application.Platform
+import javafx.stage.FileChooser
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -786,38 +783,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // FIXME
         if (Toolboks.debugMode) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
-                val fileChooser = RHRE3Application.nativeFileChooser
-                // Configure
-                val conf = NativeFileChooserConfiguration()
-
-                // Starting from user's dir
-                conf.directory = Gdx.files.absolute(System.getProperty("user.home"))
-
-                // Filter out all files which do not have the .ogg extension and are not of an audio MIME type - belt and braces
-                conf.mimeFilter = "audio/*"
-                conf.nameFilter = FilenameFilter { dir, name -> name.endsWith("ogg") }
-
-                // Add a nice title
-                conf.title = "Choose audio file"
-
-                launch(CommonPool) {
-                    fileChooser.chooseFile(conf, object : NativeFileChooserCallback {
-                        override fun onFileChosen(file: FileHandle) {
-                            // Do stuff with file, yay!
-                            println("Chose $file")
-                        }
-
-                        override fun onCancellation() {
-                            // Warn user how rude it can be to cancel developer's effort
-                            println("cancelled")
-                        }
-
-                        override fun onError(exception: Exception) {
-                            // Handle error (hint: use exception type)
-                            exception.printStackTrace()
-                        }
-                    })
-                }
+               Platform.runLater {
+                   val chooser = FileChooser()
+                   chooser.title = "Open resource file"
+                   chooser.extensionFilters.addAll(
+                           FileChooser.ExtensionFilter("Text files", "*.txt"),
+                           FileChooser.ExtensionFilter("Image files", "*.png", "*.gif", "*.jpg"),
+                           FileChooser.ExtensionFilter("Audio files", "*.ogg", "*.mp3", "*.wav"),
+                           FileChooser.ExtensionFilter("All files", "*.*")
+                                                  )
+                   println(chooser.showOpenDialog(JavafxStub.application.primaryStage))
+               }
             }
         }
 
