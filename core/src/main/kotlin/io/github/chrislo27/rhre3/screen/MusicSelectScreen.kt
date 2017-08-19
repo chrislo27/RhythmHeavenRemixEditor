@@ -129,7 +129,7 @@ class MusicSelectScreen(main: RHRE3Application)
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
-                    fileChooser.initialDirectory = if (file.isFile) file.parentFile else file
+                    fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
                     try {
                         val handle = FileHandle(file)
