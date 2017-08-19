@@ -8,7 +8,7 @@ import io.github.chrislo27.toolboks.version.Version
 class RemixObject {
 
     @Transient var fileHandle: FileHandle? = null
-    @Transient var musicData: MusicData? = null
+    @Transient var musicData: JsonMusicData? = null
 
     var musicAssociation: String? = null
 
@@ -58,7 +58,7 @@ class RemixObject {
 
     }
 
-    data class MusicData(val music: Music, val file: FileHandle, val originalFileName: String) : Disposable {
+    data class JsonMusicData(val music: Music, val file: FileHandle, val originalFileName: String) : Disposable {
 
         override fun dispose() {
             music.dispose()
