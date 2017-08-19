@@ -1,17 +1,19 @@
 package io.github.chrislo27.rhre3.desktop
 
 import com.badlogic.gdx.Files
+import com.badlogic.gdx.backends.lwjgl.LwjglNativesLoader
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.logging.Logger
-import net.spookygames.gdx.nativefilechooser.desktop.DesktopFileChooser
 import kotlin.concurrent.thread
 
 object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
+        LwjglNativesLoader.load()
+
         // TODO console commands
         thread(isDaemon = true) {
             while (true) {
@@ -29,7 +31,7 @@ object DesktopLauncher {
 
         val logger = Logger()
         val logToFile = true
-        val app = RHRE3Application(DesktopFileChooser(), logger, logToFile)
+        val app = RHRE3Application(logger, logToFile)
         ToolboksDesktopLauncher(app)
                 .editConfig {
                     this.width = app.emulatedSize.first
@@ -46,7 +48,7 @@ object DesktopLauncher {
 
                     RHRE3.skipGitScreen = "--skip-git" in args
 
-                    val sizes: List<Int> = listOf(512, 256, 128, 64, 32, 24, 16)
+                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
 
                     sizes.forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
