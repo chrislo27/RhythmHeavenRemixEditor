@@ -133,7 +133,7 @@ class MusicSelectScreen(main: RHRE3Application)
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
                     try {
                         val handle = FileHandle(file)
-                        val musicData = MusicData(Gdx.audio.newMusic(handle), handle, editor.remix)
+                        val musicData = MusicData(handle, editor.remix)
                         editor.remix.music = musicData
                         updateLabels(null)
                     } catch (t: Throwable) {

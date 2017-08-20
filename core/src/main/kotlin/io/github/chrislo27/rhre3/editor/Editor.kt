@@ -34,14 +34,10 @@ import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
-import io.github.chrislo27.rhre3.util.JavafxStub
-import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import javafx.application.Platform
-import javafx.stage.FileChooser
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)

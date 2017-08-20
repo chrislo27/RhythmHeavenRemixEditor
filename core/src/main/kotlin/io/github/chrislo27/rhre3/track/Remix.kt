@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
@@ -59,6 +60,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             lastTickBeat = beat.toInt()
         }
     private var lastTickBeat = Int.MIN_VALUE
+    private var scheduleMusicPlaying = true
+    @Volatile var musicSeeking = false
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -86,6 +89,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                 }
                 PlayState.PLAYING -> {
                     lastMusicPosition = -1f
+                    scheduleMusicPlaying = true
                     AssetRegistry.resumeAllSounds()
                     if (old == PlayState.STOPPED) {
                         seconds = tempos.beatsToSeconds(playbackStart)
@@ -102,7 +106,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                     if (music != null && seconds >= musicStartSec) {
                         music.music.play()
                         setMusicVolume()
-                        music.music.position = seconds - musicStartSec
+                        if (old == PlayState.STOPPED) {
+                            musicSeeking = true
+                            music.music.position = seconds - musicStartSec
+                            musicSeeking = false
+                        }
                     }
                 }
             }
@@ -113,6 +121,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     }
 
     init {
+        tempos.add(TempoChange(0f, 60f))
     }
 
     fun getLastPoint(): Float {
@@ -151,9 +160,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
         seconds += delta
         if (music != null) {
-            if (!music.music.isPlaying && seconds >= musicStartSec) {
-                music.music.play()
-                music.music.position = seconds - musicStartSec
+            val currentSeconds = seconds
+            if (scheduleMusicPlaying && seconds >= musicStartSec) {
+                val ended = music.music.play()
+                scheduleMusicPlaying = false
+                if (ended) {
+                    music.music.pause()
+                }
             }
             if (music.music.isPlaying) {
                 val oldPosition = lastMusicPosition
@@ -166,7 +179,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
                 val musicVolume = musicVolumes.getPercentageVolume(beat)
                 if (musicVolume != music.music.volume) {
-                    music.music.volume = musicVolume
+//                    music.music.volume = musicVolume
                 }
             }
         }
