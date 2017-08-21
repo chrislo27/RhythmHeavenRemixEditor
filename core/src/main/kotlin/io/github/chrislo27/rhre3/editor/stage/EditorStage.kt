@@ -757,7 +757,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             Tool.VALUES.forEachIndexed { index, tool ->
                 toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage,
                                           { x, y ->
-                                              if (editor.clickOccupation != Editor.ClickOccupation.None) {
+                                              if (editor.clickOccupation == Editor.ClickOccupation.None) {
                                                   editor.currentTool = tool
                                                   updateSelected()
                                               }
