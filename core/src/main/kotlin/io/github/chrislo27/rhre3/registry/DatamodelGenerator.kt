@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.registry
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.registry.datamodel.impl.KeepTheBeat
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
 import io.github.chrislo27.rhre3.registry.json.DataObject
 import java.util.*
@@ -76,23 +77,23 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                 }
 
         game.objects +=
-                Pattern(game, "${id}_flippingA", mutableListOf(),
-                        "flipping",
-                        mutableListOf(
-                                CuePointer(
-                                        "$id/flip", 0f),
-                                CuePointer(
-                                        "$id/flip", 1f)
-                                     ), false)
+                KeepTheBeat(game, "${id}_flippingA", mutableListOf(),
+                            "flipping", 2f,
+                            mutableListOf(
+                                    CuePointer(
+                                            "$id/flip", 0f),
+                                    CuePointer(
+                                            "$id/flip", 1f)
+                                         ))
         game.objects +=
-                Pattern(game, "${id}_flippingB", mutableListOf(),
-                        "flipping - back",
-                        mutableListOf(
+                KeepTheBeat(game, "${id}_flippingB", mutableListOf(),
+                                 "flipping - back", 2f,
+                                 mutableListOf(
                                 CuePointer(
                                         "$id/flipB1", 0f),
                                 CuePointer(
                                         "$id/flipB2", 1f)
-                                     ), false)
+                                     ))
         game.objects +=
                 Pattern(game, "${id}_thatsit", mutableListOf(),
                         "that's it!",
