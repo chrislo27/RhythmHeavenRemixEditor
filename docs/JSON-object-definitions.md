@@ -250,7 +250,9 @@ The `CuePointerObjects` used *are in order* and are not changed.
       // see CuePointerObject
       // "beat" field ignored
     }
-  ]
+  ],
+  // optional fields after this comment
+  "responseIDs": []
 }
 ```
 
@@ -260,4 +262,6 @@ The `CuePointerObject` is unchanged, but the `beat` field inside
 will be ignored (always zero).
 
 See `PatternObject` for the `id` and `name` fields.
+
+See `CueObject` for the `responseIDs` array.
 

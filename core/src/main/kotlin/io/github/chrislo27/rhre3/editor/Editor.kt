@@ -19,12 +19,16 @@ import io.github.chrislo27.rhre3.editor.action.EntityRemoveAction
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
@@ -799,14 +803,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (selection.isNotEmpty()) {
                     builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
 
-                    if (selection.all(Entity::supportsCopying)) {
-                        builder.separator().append(Localization["editor.msg.copyHint"])
-                    }
+                    if (clickOccupation == ClickOccupation.None) {
+                        if (selection.all(Entity::supportsCopying)) {
+                            builder.separator().append(Localization["editor.msg.copyHint"])
+                        }
 
-                    // TODO may change for RandomCue
-                    if (selection.all { it is CueEntity } &&
-                            selection.any { it is CueEntity && it.datamodel.responseIDs.isNotEmpty() }) {
-                        builder.separator().append(Localization["editor.msg.callResponseHint"])
+                        if (selection.areAnyResponseCopyable()) {
+                            builder.separator().append(Localization["editor.msg.callResponseHint"])
+                        }
                     }
 
                     if (selection.size == 1) {
@@ -901,10 +905,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else if (isDraggingButtonDown) {
                     if (remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
-                        val newSel = if (isResponsing &&
-                                inBounds.all { it is CueEntity } &&
-                                inBounds.any { it is CueEntity && it.datamodel.responseIDs.isNotEmpty() }) {
-                            TODO("Figuring out a way to do responseIDs for RandomCue")
+                        val newSel = if (isResponsing && inBounds.areAnyResponseCopyable()) {
+                            inBounds.mapNotNull {
+                                it as ModelEntity<*>
+                                val datamodel = it.datamodel
+                                datamodel as ResponseModel
+                                if (datamodel.responseIDs.isNotEmpty()) {
+                                    val id = datamodel.responseIDs.random()
+                                    GameRegistry.data.objectMap[id]?.createEntity(remix) ?: error("ID $id not found in game registry when making response copy")
+                                } else {
+                                    null
+                                }
+                            }
                         } else if (isCopying && inBounds.all(Entity::supportsCopying)) {
                             inBounds.map { it.copy() }
                         } else {

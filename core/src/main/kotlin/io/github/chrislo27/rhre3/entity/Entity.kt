@@ -3,9 +3,15 @@ package io.github.chrislo27.rhre3.entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 
+fun List<Entity>.areAnyResponseCopyable(): Boolean {
+    return this.all { it is ModelEntity<*> && it.datamodel is ResponseModel } &&
+            this.any { it is ModelEntity<*> && it.datamodel is ResponseModel && it.datamodel.responseIDs.isNotEmpty() }
+}
 
 abstract class Entity(val remix: Remix) {
 

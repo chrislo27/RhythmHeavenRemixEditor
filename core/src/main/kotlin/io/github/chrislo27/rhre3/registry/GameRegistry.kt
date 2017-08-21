@@ -157,7 +157,7 @@ object GameRegistry : Disposable {
                                 obj.name, obj.cues.mapToDatamodel(), obj.stretchable)
                     is RandomCueObject ->
                         RandomCue(game, obj.id, obj.deprecatedIDs,
-                                  obj.name, obj.cues.mapToDatamodel())
+                                  obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
                 }
             }
 
