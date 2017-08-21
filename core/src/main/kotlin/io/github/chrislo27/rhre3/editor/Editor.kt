@@ -1169,7 +1169,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldPitches = selection.map { (it as? IRepitchable)?.semitone ?: 0 }
 
             selection.forEach {
-                if (it is IRepitchable) {
+                if (it is IRepitchable && it.canBeRepitched) {
                     val current = it.semitone
                     val new = current + -amount
                     if (new in IRepitchable.RANGE) {
