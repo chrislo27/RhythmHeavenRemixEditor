@@ -39,7 +39,9 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
 
     override fun copy(remix: Remix): PatternEntity {
         return PatternEntity(remix, datamodel).also {
-            it.bounds.set(this.bounds)
+            it.updateBounds {
+                it.bounds.set(this.bounds)
+            }
             it.semitone = this.semitone
         }
     }

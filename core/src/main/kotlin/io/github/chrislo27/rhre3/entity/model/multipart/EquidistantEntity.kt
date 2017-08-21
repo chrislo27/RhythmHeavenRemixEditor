@@ -19,6 +19,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
         internal.forEachIndexed { index, it ->
             it.bounds.x = this.bounds.x + index * this.bounds.width
             it.bounds.width = this.bounds.width
+            it.bounds.y
         }
     }
 
@@ -33,12 +34,15 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Object with id ${pointer.id} not found")
         }
+        this.bounds.width = datamodel.distance
     }
 
     override fun copy(remix: Remix): EquidistantEntity {
         return EquidistantEntity(remix, datamodel).also {
-            it.bounds.set(this.bounds)
             it.semitone = this.semitone
+            it.updateBounds {
+                it.bounds.set(this.bounds)
+            }
         }
     }
 }

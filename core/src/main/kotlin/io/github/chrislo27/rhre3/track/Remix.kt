@@ -79,6 +79,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             val old = field
             val music = music
             field = value
+            // TODO stop sounds and stuff
             when (field) {
                 PlayState.STOPPED -> {
                     AssetRegistry.stopAllSounds()

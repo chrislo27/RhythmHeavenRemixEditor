@@ -13,13 +13,11 @@ import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.editor.action.EntityMoveAction
-import io.github.chrislo27.rhre3.editor.action.EntityPlaceAction
-import io.github.chrislo27.rhre3.editor.action.EntityRemoveAction
-import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
+import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
+import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
@@ -1156,7 +1154,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return false
 
         val tool = currentTool
-        if (tool.isTrackerRelated) {
+        if (tool == Tool.NORMAL && selection.isNotEmpty()) {
+            val oldPitches = selection.map { (it as? IRepitchable)?.semitone ?: 0 }
+
+            selection.forEach {
+                if (it is IRepitchable) {
+                    val current = it.semitone
+                    val new = current + -amount
+                    if (new in IRepitchable.RANGE) {
+                        it.semitone = new
+                    }
+                }
+            }
+
+            remix.addActionWithoutMutating(EntityRepitchAction(this, selection, oldPitches))
+        } else if (tool.isTrackerRelated) {
             val tracker: Tracker = when (tool) {
                 Tool.BPM -> getTrackerOnMouse<TempoChange>()
                 Tool.MUSIC_VOLUME -> getTrackerOnMouse<MusicVolumeChange>()

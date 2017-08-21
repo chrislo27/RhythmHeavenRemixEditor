@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.Semitones
 
 
 class CueEntity(remix: Remix, datamodel: Cue)
@@ -58,13 +59,16 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return remix.editor.theme.entities.cue
     }
 
+    private fun Cue.getPitch(): Float {
+        return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width) * Semitones.getALPitch(semitone)
+    }
+
     override fun onStart() {
-        soundId = cue.sound.sound.play(1f, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width), 0f)
+        soundId = cue.sound.sound.play(1f, cue.getPitch(), 0f)
         cue.sound.sound.setLooping(soundId, cue.loops)
 
         introSoundId = cue.introSoundCue?.sound?.sound?.play(1f,
-                                                             cue.introSoundCue!!.getPitchForBaseBpm(
-                                                                     remix.tempos.tempoAt(remix.beat), bounds.width),
+                                                             cue.introSoundCue!!.getPitch(),
                                                              0f) ?: -1L
         if (introSoundId != -1L) {
             cue.introSoundCue?.sound?.sound?.setLooping(introSoundId, false)
@@ -76,7 +80,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             when {
                 cue.usesBaseBpm ->
                     cue.sound.sound.setPitch(soundId,
-                                             cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width))
+                                             cue.getPitch())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
 
@@ -94,7 +98,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         endingSoundId =
                 cue.endingSoundCue?.sound?.sound?.
                         play(1f,
-                             cue.endingSoundCue!!.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width),
+                             cue.endingSoundCue!!.getPitch(),
                              0f) ?: -1L
         if (endingSoundId != -1L) {
             cue.endingSoundCue?.sound?.sound?.setLooping(endingSoundId, false)
