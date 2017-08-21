@@ -609,6 +609,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                     batch.setColor(oldColor)
                 }
+                else -> {
+                }
             }
         }
 
@@ -754,6 +756,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                     is ClickOccupation.CreatingSelection -> {
                         clickOccupation.updateRectangle()
+                    }
+                    else -> {
                     }
                 }
             }
