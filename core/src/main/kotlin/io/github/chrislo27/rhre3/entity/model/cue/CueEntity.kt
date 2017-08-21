@@ -59,12 +59,12 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun onStart() {
-        soundId = cue.sound.sound.play(1f, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat)), 0f)
+        soundId = cue.sound.sound.play(1f, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width), 0f)
         cue.sound.sound.setLooping(soundId, cue.loops)
 
         introSoundId = cue.introSoundCue?.sound?.sound?.play(1f,
                                                              cue.introSoundCue!!.getPitchForBaseBpm(
-                                                                     remix.tempos.tempoAt(remix.beat)),
+                                                                     remix.tempos.tempoAt(remix.beat), bounds.width),
                                                              0f) ?: -1L
         if (introSoundId != -1L) {
             cue.introSoundCue?.sound?.sound?.setLooping(introSoundId, false)
@@ -75,7 +75,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L && cue.usesBaseBpm) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setPitch(soundId, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat)))
+                    cue.sound.sound.setPitch(soundId, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width))
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
 
@@ -93,7 +93,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         endingSoundId =
                 cue.endingSoundCue?.sound?.sound?.
                         play(1f,
-                             cue.endingSoundCue!!.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat)),
+                             cue.endingSoundCue!!.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width),
                              0f) ?: -1L
         if (endingSoundId != -1L) {
             cue.endingSoundCue?.sound?.sound?.setLooping(endingSoundId, false)
