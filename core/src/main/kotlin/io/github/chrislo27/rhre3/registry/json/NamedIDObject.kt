@@ -121,6 +121,6 @@ class RandomCueObject : NamedIDObject() {
     lateinit var cues: List<CuePointerObject>
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    lateinit var responseIDs: List<String>
+    var responseIDs: List<String> = listOf()
 
 }
