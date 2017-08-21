@@ -54,7 +54,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
     init {
         populate()
-        this.bounds.width = datamodel.defaultDuration
+        this.bounds.width = datamodel.duration
     }
 
     override fun copy(remix: Remix): KeepTheBeatEntity {

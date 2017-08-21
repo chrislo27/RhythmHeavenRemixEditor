@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.registry.datamodel.impl
 
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.json.CuePointerObject
 
 fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(
@@ -20,7 +21,7 @@ class CuePointer {
     val duration: Float
         get() =
             if (backingDuration <= 0f) {
-                (GameRegistry.data.objectMap[id] as Cue).duration
+                (GameRegistry.data.objectMap[id] as DurationModel).duration
             } else {
                 backingDuration
             }

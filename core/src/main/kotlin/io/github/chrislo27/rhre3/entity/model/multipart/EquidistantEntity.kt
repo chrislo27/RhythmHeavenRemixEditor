@@ -35,7 +35,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Object with id ${pointer.id} not found")
         }
-        this.bounds.width = datamodel.distance
+        this.bounds.width = datamodel.duration
     }
 
     override fun copy(remix: Remix): EquidistantEntity {
