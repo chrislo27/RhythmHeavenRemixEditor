@@ -818,7 +818,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         if (first is IStretchable && first.isStretchable) {
                             builder.separator().append(
-                                    Localization["editor.msg.stretchable${if (first is EquidistantEntity) ".equidistant" else (if (first is KeepTheBeatEntity) ".keepTheBeat" else "")}"])
+                                    Localization["editor.msg.stretchable${
+                                    if (first is EquidistantEntity)
+                                        ".equidistant"
+                                    else
+                                        (if (first is KeepTheBeatEntity)
+                                            ".keepTheBeat"
+                                        else
+                                            "")}"])
                         }
                     }
                 }

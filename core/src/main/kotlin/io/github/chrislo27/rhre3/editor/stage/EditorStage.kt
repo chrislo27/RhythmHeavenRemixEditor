@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
@@ -78,6 +79,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
     private var isDirty = DirtyType.CLEAN
+    private var wasDebug = false
 
     enum class DirtyType {
         CLEAN, DIRTY, SEARCH_DIRTY
@@ -124,6 +126,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     } else false
                 }
             }
+        }
+
+        if (Toolboks.debugMode != wasDebug) {
+            wasDebug = Toolboks.debugMode
+            updateSelected()
         }
 
         super.render(screen, batch, shapeRenderer)
@@ -209,6 +216,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     val y = 2 + (index - variant.pattern)
                     if (y in 0 until Editor.PATTERN_COUNT) {
                         patternLabels[y].text = datamodel.name
+                        if (Toolboks.debugMode) {
+                            patternLabels[y].text += " [GRAY](${datamodel.id})[]"
+                        }
                         if (y != (Editor.PATTERN_COUNT / 2) && datamodel is Cue) {
                             patternLabels[y].textColor = Editor.CUE_PATTERN_COLOR
                         }
