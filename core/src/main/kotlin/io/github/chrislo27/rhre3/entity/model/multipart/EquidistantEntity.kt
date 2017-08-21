@@ -13,6 +13,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
     : MultipartEntity<Equidistant>(remix, datamodel), IStretchable {
 
     override val isStretchable: Boolean = datamodel.stretchable
+    override val shouldRenderInternal = false
 
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)

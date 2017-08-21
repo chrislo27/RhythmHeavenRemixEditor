@@ -44,6 +44,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             }
         }
     protected val internal: MutableList<Entity> = mutableListOf()
+    open val shouldRenderInternal: Boolean = true
 
     init {
         this.bounds.height = (1f +
@@ -91,12 +92,14 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override fun renderBeforeText(batch: SpriteBatch) {
         super.renderBeforeText(batch)
-        val batchColor = batch.color
-        batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.35f)
-        internal.forEach {
-            batch.drawRect(it.bounds.x, it.bounds.y,
-                           it.bounds.width, it.bounds.height,
-                           remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
+        if (shouldRenderInternal) {
+            val batchColor = batch.color
+            batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.35f)
+            internal.forEach {
+                batch.drawRect(it.bounds.x, it.bounds.y,
+                               it.bounds.width, it.bounds.height,
+                               remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
+            }
         }
     }
 
