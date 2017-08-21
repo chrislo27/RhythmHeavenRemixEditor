@@ -163,7 +163,7 @@ object GameRegistry : Disposable {
                                     obj.cues.mapToDatamodel())
                     is KeepTheBeatObject ->
                         KeepTheBeat(game, obj.id, obj.deprecatedIDs,
-                                    obj.name, obj.duration,
+                                    obj.name, obj.defaultDuration,
                                     obj.cues.mapToDatamodel())
                     is PatternObject ->
                         Pattern(game, obj.id, obj.deprecatedIDs,
