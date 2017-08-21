@@ -924,7 +924,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     val entity = GameRegistry.data.objectMap[id]?.createEntity(remix) ?:
                                             error("ID $id not found in game registry when making response copy")
 
-                                    entity.bounds.setPosition(it.bounds.x, it.bounds.y)
+                                    entity.updateBounds {
+                                        entity.bounds.setPosition(it.bounds.x, it.bounds.y)
+                                    }
 
                                     entity
                                 } else {
