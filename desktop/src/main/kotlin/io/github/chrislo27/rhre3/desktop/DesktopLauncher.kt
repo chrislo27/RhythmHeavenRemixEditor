@@ -47,7 +47,7 @@ object DesktopLauncher {
                     this.audioDeviceSimultaneousSources = 256
 
                     RHRE3.skipGitScreen = "--skip-git" in args
-                    RHRE3.forceGitFetch = "--force-git-fetch" in args
+                    RHRE3.forceGitFetch = "--force-git-fetch" in args || RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
 
