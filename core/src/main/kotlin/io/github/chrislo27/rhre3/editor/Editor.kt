@@ -895,7 +895,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
 
-        val isDraggingButtonDown = button == Input.Buttons.LEFT && !(control || shift)
+        val isDraggingButtonDown = button == Input.Buttons.LEFT && !shift
         val isCopying = isDraggingButtonDown && alt
         val isResponsing = isDraggingButtonDown && alt && control
 
@@ -924,7 +924,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     val entity = GameRegistry.data.objectMap[id]?.createEntity(remix) ?:
                                             error("ID $id not found in game registry when making response copy")
 
-                                    entity.bounds.set(it.bounds)
+                                    entity.bounds.setPosition(it.bounds.x, it.bounds.y)
 
                                     entity
                                 } else {
