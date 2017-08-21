@@ -912,7 +912,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 datamodel as ResponseModel
                                 if (datamodel.responseIDs.isNotEmpty()) {
                                     val id = datamodel.responseIDs.random()
-                                    GameRegistry.data.objectMap[id]?.createEntity(remix) ?: error("ID $id not found in game registry when making response copy")
+                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix) ?:
+                                            error("ID $id not found in game registry when making response copy")
+
+                                    entity.bounds.set(it.bounds)
+
+                                    entity
                                 } else {
                                     null
                                 }
