@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.version.Version
 import java.util.*
 
@@ -98,13 +99,25 @@ object GameRegistry : Disposable {
             gameGroupsList
 
             val cues = objectList.filterIsInstance<Cue>()
+            val errors = mutableListOf<String>()
             cues.forEach {
                 if (it.introSoundCue != null) {
+                    if (it.introSound == it.id) {
+                        errors += "Recursive intro sound ID for ${it.id}"
+                    }
                     it.introSoundCue!!.hidden = true
                 }
                 if (it.endingSoundCue != null) {
+                    if (it.endingSound == it.id) {
+                        errors += "Recursive ending sound ID for ${it.id}"
+                    }
                     it.endingSoundCue!!.hidden = true
                 }
+            }
+
+            errors.forEach(Toolboks.LOGGER::error)
+            if (errors.isNotEmpty()) {
+                error("Check above for database errors")
             }
         }
 
