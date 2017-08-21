@@ -122,7 +122,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     }
 
     init {
-        tempos.add(TempoChange(0f, 60f))
     }
 
     fun getLastPoint(): Float {
