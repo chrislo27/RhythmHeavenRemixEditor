@@ -54,7 +54,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val iconSizeX = remix.editor.toScaleX(iconSizeY * Editor.ENTITY_HEIGHT)
 
         batch.draw(game.icon,
-                   bounds.x + 2 * (remix.editor.toScaleX(BORDER)), bounds.y + 2 * (remix.editor.toScaleY(BORDER)),
+                   bounds.x + 2 * (remix.editor.toScaleX(BORDER)),
+                   bounds.y + 2 * remix.editor.toScaleY(BORDER) + ((bounds.height - 4 * remix.editor.toScaleY(BORDER)) - iconSizeY) / 2,
                    iconSizeX, iconSizeY)
 
         batch.setColor(oldColor)
