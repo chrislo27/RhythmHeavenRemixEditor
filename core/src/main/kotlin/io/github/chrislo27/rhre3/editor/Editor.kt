@@ -280,8 +280,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
     }
 
-    private var clickOccupation: ClickOccupation = ClickOccupation.None
-        set(value) {
+    var clickOccupation: ClickOccupation = ClickOccupation.None
+        private set(value) {
             field = value
             updateMessageLabel()
         }
@@ -799,6 +799,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (selection.isNotEmpty()) {
                     builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
 
+                    if (selection.all(Entity::supportsCopying)) {
+                        builder.separator().append(Localization["editor.msg.copyHint"])
+                    }
+
+                    // TODO may change for RandomCue
+                    if (selection.all { it is CueEntity } &&
+                            selection.any { it is CueEntity && it.datamodel.responseIDs.isNotEmpty() }) {
+                        builder.separator().append(Localization["editor.msg.callResponseHint"])
+                    }
+
                     if (selection.size == 1) {
                         val first = selection.first()
                         if (first is IStretchable && first.isStretchable) {
@@ -874,6 +884,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val isDraggingButtonDown = button == Input.Buttons.LEFT && !(control || shift)
         val isCopying = isDraggingButtonDown && alt
+        val isResponsing = isDraggingButtonDown && alt && control
 
         if (clickOccupation != ClickOccupation.None || remix.playState != PlayState.STOPPED)
             return false
@@ -890,10 +901,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else if (isDraggingButtonDown) {
                     if (remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
-                        val newSel = if (isCopying && inBounds.all(Entity::supportsCopying))
+                        val newSel = if (isResponsing &&
+                                inBounds.all { it is CueEntity } &&
+                                inBounds.any { it is CueEntity && it.datamodel.responseIDs.isNotEmpty() }) {
+                            TODO("Figuring out a way to do responseIDs for RandomCue")
+                        } else if (isCopying && inBounds.all(Entity::supportsCopying)) {
                             inBounds.map { it.copy() }
-                        else
+                        } else {
                             inBounds
+                        }
                         val first = newSel.first()
                         val oldSel = this.selection
                         val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
@@ -1104,7 +1120,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     override fun keyDown(keycode: Int): Boolean {
         when (keycode) {
             in Input.Keys.NUM_0..Input.Keys.NUM_9 -> {
-                if (stage.isTyping)
+                if (stage.isTyping || clickOccupation != ClickOccupation.None)
                     return false
                 val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
                 if (number in 0 until Tool.VALUES.size) {

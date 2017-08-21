@@ -757,8 +757,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             Tool.VALUES.forEachIndexed { index, tool ->
                 toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage,
                                           { x, y ->
-                                              editor.currentTool = tool
-                                              updateSelected()
+                                              if (editor.clickOccupation != Editor.ClickOccupation.None) {
+                                                  editor.currentTool = tool
+                                                  updateSelected()
+                                              }
                                           }).apply {
                     this.location.set(
                             screenWidth = buttonWidth,
