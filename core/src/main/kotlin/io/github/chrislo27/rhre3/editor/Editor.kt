@@ -23,6 +23,7 @@ import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
+import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
@@ -814,8 +815,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                     if (selection.size == 1) {
                         val first = selection.first()
+
                         if (first is IStretchable && first.isStretchable) {
-                            builder.separator().append(Localization["editor.msg.stretchable${if (first is EquidistantEntity) ".equidistant" else ""}"])
+                            builder.separator().append(
+                                    Localization["editor.msg.stretchable${if (first is EquidistantEntity) ".equidistant" else (if (first is KeepTheBeatEntity) ".keepTheBeat" else "")}"])
                         }
                     }
                 }
