@@ -931,7 +931,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     null
                                 }
                             }
-                        } else if (isCopying && inBounds.all(Entity::supportsCopying)) {
+                        } else if (isCopying && inBounds.all(Entity::supportsCopying) && !isResponsing) {
                             inBounds.map { it.copy() }
                         } else {
                             inBounds
