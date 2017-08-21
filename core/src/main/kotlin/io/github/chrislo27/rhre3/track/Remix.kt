@@ -8,7 +8,6 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
@@ -105,13 +104,15 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
                         lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
                     }
-                    if (music != null && seconds >= musicStartSec) {
-                        music.music.play()
-                        setMusicVolume()
-                        if (old == PlayState.STOPPED) {
-                            musicSeeking = true
-                            music.music.position = seconds - musicStartSec
-                            musicSeeking = false
+                    if (music != null) {
+                        if (seconds >= musicStartSec) {
+                            music.music.play()
+                            setMusicVolume()
+                            if (old == PlayState.STOPPED) {
+                                seekMusic()
+                            }
+                        } else {
+                            music.music.stop()
                         }
                     }
                 }
@@ -120,6 +121,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
 
     private fun setMusicVolume() {
         music?.music?.volume = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
+    }
+
+    private fun seekMusic() {
+        val music = music ?: return
+        musicSeeking = true
+        music.music.position = seconds - musicStartSec
+        musicSeeking = false
     }
 
     init {
