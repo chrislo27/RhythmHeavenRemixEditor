@@ -100,7 +100,7 @@ class EquidistantObject : NamedIDObject() {
 @JsonTypeName("keepTheBeat")
 class KeepTheBeatObject : NamedIDObject() {
 
-    var duration: Float = 0f
+    var defaultDuration: Float = 0f
     lateinit var cues: List<CuePointerObject>
 
 }
