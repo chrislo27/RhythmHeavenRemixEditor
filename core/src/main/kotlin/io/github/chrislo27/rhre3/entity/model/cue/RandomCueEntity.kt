@@ -31,10 +31,9 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {
+        translateInternal(oldBounds)
         if (internal.isEmpty())
             reroll()
-
-        translateInternal(oldBounds)
     }
 
     override fun onStart() {
