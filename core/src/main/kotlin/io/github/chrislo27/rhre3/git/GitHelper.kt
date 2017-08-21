@@ -83,7 +83,8 @@ object GitHelper {
                 val result = git.fetch()
                         .setRemote("origin")
                         .setProgressMonitor(progressMonitor)
-                        .setRefSpecs(RefSpec("refs/heads/${RHRE3.DATABASE_BRANCH}:refs/remotes/origin/${RHRE3.DATABASE_BRANCH}"))
+                        .setRefSpecs(
+                                RefSpec("refs/heads/${RHRE3.DATABASE_BRANCH}:refs/remotes/origin/${RHRE3.DATABASE_BRANCH}"))
                         .setCheckFetchedObjects(true)
                         .call()
                 if (!result.messages.isNullOrEmpty()) {

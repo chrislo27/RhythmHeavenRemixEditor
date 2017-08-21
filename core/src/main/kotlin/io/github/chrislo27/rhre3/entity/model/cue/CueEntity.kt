@@ -75,7 +75,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L && cue.usesBaseBpm) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setPitch(soundId, cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width))
+                    cue.sound.sound.setPitch(soundId,
+                                             cue.getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width))
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
 

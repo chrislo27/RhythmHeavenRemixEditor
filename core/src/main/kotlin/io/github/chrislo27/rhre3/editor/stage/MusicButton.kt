@@ -19,8 +19,8 @@ class MusicButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
     private var wasMuted: Boolean? = null
 
     private val icons: List<TextureRegion> = listOf(
-        TextureRegion(AssetRegistry.get<Texture>("ui_icon_music_button")),
-        TextureRegion(AssetRegistry.get<Texture>("ui_icon_music_button_muted"))
+            TextureRegion(AssetRegistry.get<Texture>("ui_icon_music_button")),
+            TextureRegion(AssetRegistry.get<Texture>("ui_icon_music_button_muted"))
                                                    )
     private val label = ImageLabel(palette, this, stage)
 

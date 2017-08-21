@@ -7,8 +7,10 @@ import io.github.chrislo27.toolboks.version.Version
 
 class RemixObject {
 
-    @Transient var fileHandle: FileHandle? = null
-    @Transient var musicData: JsonMusicData? = null
+    @Transient
+    var fileHandle: FileHandle? = null
+    @Transient
+    var musicData: JsonMusicData? = null
 
     var musicAssociation: String? = null
 

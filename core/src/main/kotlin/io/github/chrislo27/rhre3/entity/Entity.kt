@@ -15,7 +15,8 @@ abstract class Entity(val remix: Remix) {
     open val supportsCopying: Boolean = true
     open var playbackCompletion = PlaybackCompletion.WAITING
 
-    protected fun SpriteBatch.setColorWithTintIfNecessary(selectionTint: Color, r: Float, g: Float, b: Float, a: Float, necessary: Boolean = isSelected) {
+    protected fun SpriteBatch.setColorWithTintIfNecessary(selectionTint: Color, r: Float, g: Float, b: Float, a: Float,
+                                                          necessary: Boolean = isSelected) {
         if (necessary) {
             this.setColor((r * (1 + selectionTint.r)).coerceIn(0f, 1f),
                           (g * (1 + selectionTint.g)).coerceIn(0f, 1f),
@@ -26,7 +27,8 @@ abstract class Entity(val remix: Remix) {
         }
     }
 
-    protected fun SpriteBatch.setColorWithTintIfNecessary(selectionTint: Color, color: Color, necessary: Boolean = isSelected) {
+    protected fun SpriteBatch.setColorWithTintIfNecessary(selectionTint: Color, color: Color,
+                                                          necessary: Boolean = isSelected) {
         this.setColorWithTintIfNecessary(selectionTint, color.r, color.g, color.b, color.a, necessary)
     }
 

@@ -66,6 +66,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val allottedHeight = bounds.height - 4 * (remix.editor.toScaleY(BORDER))
         fun computeHeight(): Float =
                 font.getTextHeight(text, allottedWidth, true)
+
         val textHeight = computeHeight()
         val textX = bounds.x + iconSizeX + 4 * (remix.editor.toScaleX(BORDER))
         val textY = bounds.y + bounds.height / 2

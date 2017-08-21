@@ -32,7 +32,8 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameIcon = ImageLabel(main.uiPalette, stage.centreStage, stage.centreStage)
         gameIcon.apply {
             this.alignment = Align.bottom or Align.center
-            this.location.set(screenWidth = 0f, screenHeight = 0f, screenY = 0.5f, pixelX = -32f, pixelWidth = 64f, pixelHeight = 64f)
+            this.location.set(screenWidth = 0f, screenHeight = 0f, screenY = 0.5f, pixelX = -32f, pixelWidth = 64f,
+                              pixelHeight = 64f)
         }
 
         gameTitle = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage)

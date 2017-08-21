@@ -61,7 +61,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         }
     private var lastTickBeat = Int.MIN_VALUE
     private var scheduleMusicPlaying = true
-    @Volatile var musicSeeking = false
+    @Volatile
+    var musicSeeking = false
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(

@@ -42,7 +42,8 @@ class MusicSelectScreen(main: RHRE3Application)
     private val mainLabel: TextLabel<MusicSelectScreen>
 
     private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
+        this.initialDirectory = attemptRememberDirectory(main,
+                                                         PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
         val key = "screen.music.fileFilter"
         val extensions = arrayOf("*.ogg", "*.mp3", "*.wav")
 
@@ -85,7 +86,8 @@ class MusicSelectScreen(main: RHRE3Application)
 //                this.fontScaleMultiplier = 0.9f
             })
         }
-        stage.centreStage.elements += object : TextLabel<MusicSelectScreen>(palette, stage.centreStage, stage.centreStage) {
+        stage.centreStage.elements += object : TextLabel<MusicSelectScreen>(palette, stage.centreStage,
+                                                                            stage.centreStage) {
             override fun frameUpdate(screen: MusicSelectScreen) {
                 super.frameUpdate(screen)
                 this.visible = isChooserOpen

@@ -32,8 +32,10 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     override val stage: Stage<GitUpdateScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<GitUpdateScreen>
-    private @Volatile var repoStatus: RepoStatus = RepoStatus.UNKNOWN
-    private @Volatile var coroutine: Job? = null
+    private @Volatile
+    var repoStatus: RepoStatus = RepoStatus.UNKNOWN
+    private @Volatile
+    var coroutine: Job? = null
 
     init {
         stage as GenericStage
@@ -173,7 +175,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
         if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
                 && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
-                || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))) {
+                || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(
+                Input.Keys.ESCAPE))) {
             coroutine?.cancel()
             coroutine = null
             toNextScreen()
