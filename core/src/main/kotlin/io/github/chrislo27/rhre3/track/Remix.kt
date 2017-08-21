@@ -78,15 +78,24 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             val old = field
             val music = music
             field = value
-            // TODO stop sounds and stuff
             when (field) {
                 PlayState.STOPPED -> {
                     AssetRegistry.stopAllSounds()
                     music?.music?.pause()
+                    GameRegistry.data.objectList.forEach {
+                        if (it is Cue) {
+                            it.stopAllSounds()
+                        }
+                    }
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
                     music?.music?.pause()
+                    GameRegistry.data.objectList.forEach {
+                        if (it is Cue) {
+                            it.pauseAllSounds()
+                        }
+                    }
                 }
                 PlayState.PLAYING -> {
                     lastMusicPosition = -1f
@@ -103,6 +112,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                         }
 
                         lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
+                    } else if (old == PlayState.PAUSED) {
+                        GameRegistry.data.objectList.forEach {
+                            if (it is Cue) {
+                                it.resumeAllSounds()
+                            }
+                        }
                     }
                     if (music != null) {
                         if (seconds >= musicStartSec) {

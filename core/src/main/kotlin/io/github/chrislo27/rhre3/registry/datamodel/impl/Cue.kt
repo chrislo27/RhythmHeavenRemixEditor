@@ -47,6 +47,30 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         endingSoundCue?.sound?.unload()
     }
 
+    fun pauseAllSounds() {
+        if (sound.isLoaded) {
+            sound.sound.pause()
+        }
+        introSoundCue?.pauseAllSounds()
+        endingSoundCue?.pauseAllSounds()
+    }
+
+    fun resumeAllSounds() {
+        if (sound.isLoaded) {
+            sound.sound.resume()
+        }
+        introSoundCue?.resumeAllSounds()
+        endingSoundCue?.resumeAllSounds()
+    }
+
+    fun stopAllSounds() {
+        if (sound.isLoaded) {
+            sound.sound.stop()
+        }
+        introSoundCue?.stopAllSounds()
+        endingSoundCue?.stopAllSounds()
+    }
+
     fun getPitchForBaseBpm(bpm: Float, entityDuration: Float): Float {
         if (baseBpm <= 0f)
             return 1f
