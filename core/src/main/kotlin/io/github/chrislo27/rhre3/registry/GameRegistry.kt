@@ -96,6 +96,16 @@ object GameRegistry : Disposable {
                         GameGroupListComparator))
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
+
+            val cues = objectList.filterIsInstance<Cue>()
+            cues.forEach {
+                if (it.introSoundCue != null) {
+                    it.introSoundCue!!.hidden = true
+                }
+                if (it.endingSoundCue != null) {
+                    it.endingSoundCue!!.hidden = true
+                }
+            }
         }
 
         fun loadOne(): Float {
