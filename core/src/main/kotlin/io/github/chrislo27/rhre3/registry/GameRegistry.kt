@@ -49,6 +49,14 @@ object GameRegistry : Disposable {
         @Volatile
         var ready: Boolean = false
             private set
+        var hasCustom: Boolean = false
+            get() {
+                if (!ready)
+                    error("Attempt to get hasCustom field when not ready")
+
+                return field
+            }
+            private set
         val gameMap: Map<String, Game> = mutableMapOf()
         val gameList: List<Game> by lazy {
             if (!ready)
@@ -99,6 +107,8 @@ object GameRegistry : Disposable {
                         GameGroupListComparator))
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
+
+            hasCustom = gameList.any { it.series == Series.CUSTOM }
 
             val cues = objectList.filterIsInstance<Cue>()
             val errors = mutableListOf<String>()

@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.editor
 
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 
@@ -67,6 +68,11 @@ class PickerSelection {
 
     var currentSeries: Series = Series.TENGOKU
         set(value) {
+            if (value == Series.CUSTOM) {
+                if (!GameRegistry.data.hasCustom)
+                    return
+            }
+
             field = value
             isSearching = false
         }
