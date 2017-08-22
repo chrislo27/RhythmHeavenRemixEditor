@@ -12,7 +12,7 @@ class TempoChange(beat: Float, val bpm: Float) : Tracker(beat) {
 
     var seconds: Float = 0f // should be lateinit
 
-    private val renderText = "♩=${String.format("%.1f", bpm)}"
+    private val renderText = "♩= ${String.format("%.1f", bpm)}"
 
     override fun onScroll(remix: Remix, amount: Int, shift: Boolean,
                           control: Boolean) {
