@@ -20,10 +20,6 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
         internal.clear()
         internal +=
                 datamodel.cues.map { GameRegistry.data.objectMap[it.id] }.random()?.createEntity(remix)?.apply {
-                    if (this !is CueEntity) {
-                        error("Entity ${this.datamodel.id} created for random cue ${this@RandomCueEntity.datamodel.id} isn't a cue entity")
-                    }
-
                     this.bounds.x = this@RandomCueEntity.bounds.x
                     this.bounds.width = this@RandomCueEntity.bounds.width
                     this.bounds.y = this@RandomCueEntity.bounds.y

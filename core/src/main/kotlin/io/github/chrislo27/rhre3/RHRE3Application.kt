@@ -105,6 +105,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
                 ScreenRegistry += "editor" to EditorScreen(this)
                 ScreenRegistry += "musicSelect" to MusicSelectScreen(this)
+                ScreenRegistry += "info" to InfoScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
