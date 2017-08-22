@@ -11,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName
         JsonSubTypes.Type(EquidistantObject::class),
         JsonSubTypes.Type(KeepTheBeatObject::class),
         JsonSubTypes.Type(PatternObject::class),
-        JsonSubTypes.Type(RandomCueObject::class)
+        JsonSubTypes.Type(RandomCueObject::class),
+        JsonSubTypes.Type(EndRemixObject::class)
              )
 sealed class NamedIDObject {
 
@@ -124,3 +125,6 @@ class RandomCueObject : NamedIDObject() {
     var responseIDs: List<String> = listOf()
 
 }
+
+@JsonTypeName("endEntity")
+class EndRemixObject : NamedIDObject()

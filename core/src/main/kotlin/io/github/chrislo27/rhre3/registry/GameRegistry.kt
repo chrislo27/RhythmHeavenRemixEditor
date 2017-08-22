@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
@@ -17,6 +18,7 @@ object GameRegistry : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
+    const val SPECIAL_GAME_ID: String = "special"
 
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
@@ -171,6 +173,8 @@ object GameRegistry : Disposable {
                     is RandomCueObject ->
                         RandomCue(game, obj.id, obj.deprecatedIDs,
                                   obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
+                    is EndRemixObject ->
+                        EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
                 }
             }
 

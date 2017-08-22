@@ -1,18 +1,26 @@
 package io.github.chrislo27.rhre3.entity
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 
-class EndEntity(remix: Remix) : Entity(remix) {
+class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix, datamodel) {
 
     override val supportsCopying: Boolean = false
 
     init {
         this.bounds.height = Editor.TRACK_COUNT.toFloat()
         this.bounds.width = 0.125f
+    }
+
+    // not used
+    override fun getRenderColor(): Color {
+        return remix.editor.theme.trackLine
     }
 
     override fun render(batch: SpriteBatch) {
