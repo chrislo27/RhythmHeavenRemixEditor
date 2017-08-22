@@ -62,6 +62,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
+    var duration: Float = Float.POSITIVE_INFINITY
+        private set
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -102,6 +104,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                     scheduleMusicPlaying = true
                     AssetRegistry.resumeAllSounds()
                     if (old == PlayState.STOPPED) {
+                        computeDuration()
                         seconds = tempos.beatsToSeconds(playbackStart)
                         entities.forEach {
                             if (it.bounds.x + it.bounds.width < beat) {
@@ -149,7 +152,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         musicSeeking = false
     }
 
-    init {
+    private fun computeDuration() {
+        duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
     }
 
     fun getLastPoint(): Float {
@@ -222,10 +226,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             lastTickBeat = Math.floor(beat.toDouble()).toInt()
             if (metronome) {
                 val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
-                metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size].sound.play(1f,
-                                                                                        if (isStartOfMeasure) 1.5f else 1.1f,
-                                                                                        0f)
+                metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
+                        .sound.play(1f, if (isStartOfMeasure) 1.5f else 1.1f, 0f)
             }
+        }
+
+        if (beat >= duration && playState != PlayState.STOPPED) {
+            playState = PlayState.STOPPED
         }
     }
 
