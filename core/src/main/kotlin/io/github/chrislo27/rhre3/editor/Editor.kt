@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -270,6 +271,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (isInDeleteZone())
                     return false
                 if (top > TRACK_COUNT)
+                    return false
+
+                // EXCEPTIONS for special entities
+                if (selection.any { it is EndEntity } && editor.remix.entities.filter { it is EndEntity }.size > 1)
                     return false
 
                 return editor.remix.entities.filter { it !in selection }.all {
