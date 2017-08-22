@@ -888,7 +888,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                   screenX = size * 6 + padding * 6)
             }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size * 4,
+                this.location.set(screenWidth = size * 5,
                                   screenX = size * 7 + padding * 7)
             }
 
