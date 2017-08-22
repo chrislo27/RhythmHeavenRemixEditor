@@ -112,6 +112,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                         }
 
                         lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
+
+                        if (editor.stage.tapalongStage.visible) {
+                            editor.stage.tapalongStage.reset()
+                        }
                     } else if (old == PlayState.PAUSED) {
                         GameRegistry.data.objectList.forEach {
                             if (it is Cue) {

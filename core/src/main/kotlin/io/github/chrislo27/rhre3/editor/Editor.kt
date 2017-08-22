@@ -460,6 +460,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart)
             renderAboveTracker("tracker.playback", "tracker.playback.controls",
                                0, remix.playbackStart, theme.trackers.playback)
+
+            if (stage.tapalongMarkersEnabled) {
+                val tapalong = stage.tapalongStage
+                tapalong.seconds.forEach {
+                    val beat = remix.tempos.secondsToBeats((it.remixSec ?: return@forEach) + remix.musicStartSec)
+                    if (beat in beatRange) {
+                        renderAboveTracker(null, null,
+                                           1, beat,
+                                           theme.trackLine)
+                    }
+                }
+            }
+
             if (remix.playState != PlayState.STOPPED) {
                 renderAboveTracker(null, null, 0, remix.beat,
                                    theme.trackers.playback, 0f)
@@ -796,63 +809,67 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return this
         }
 
-        when (currentTool) {
-            Tool.NORMAL -> {
-                val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant().getCurrentGame()
-                builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
-                if (selection.isNotEmpty()) {
-                    builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
+        if (stage.tapalongStage.visible) {
+            builder.append(Localization["editor.tapalong.info"])
+        } else {
+            when (currentTool) {
+                Tool.NORMAL -> {
+                    val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant().getCurrentGame()
+                    builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
+                    if (selection.isNotEmpty()) {
+                        builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
 
-                    if (clickOccupation == ClickOccupation.None) {
-                        if (selection.all(Entity::supportsCopying)) {
-                            builder.separator().append(Localization["editor.msg.copyHint"])
+                        if (clickOccupation == ClickOccupation.None) {
+                            if (selection.all(Entity::supportsCopying)) {
+                                builder.separator().append(Localization["editor.msg.copyHint"])
+                            }
+
+                            if (selection.areAnyResponseCopyable()) {
+                                builder.separator().append(Localization["editor.msg.callResponseHint"])
+                            }
                         }
 
-                        if (selection.areAnyResponseCopyable()) {
-                            builder.separator().append(Localization["editor.msg.callResponseHint"])
-                        }
-                    }
+                        if (selection.size == 1) {
+                            val first = selection.first()
 
-                    if (selection.size == 1) {
-                        val first = selection.first()
-
-                        if (first is IStretchable && first.isStretchable) {
-                            builder.separator().append(
-                                    Localization["editor.msg.stretchable${
-                                    if (first is EquidistantEntity)
-                                        ".equidistant"
-                                    else
-                                        (if (first is KeepTheBeatEntity)
-                                            ".keepTheBeat"
+                            if (first is IStretchable && first.isStretchable) {
+                                builder.separator().append(
+                                        Localization["editor.msg.stretchable${
+                                        if (first is EquidistantEntity)
+                                            ".equidistant"
                                         else
-                                            "")}"])
+                                            (if (first is KeepTheBeatEntity)
+                                                ".keepTheBeat"
+                                            else
+                                                "")}"])
+                            }
                         }
                     }
-                }
 
-                if (clickOccupation is ClickOccupation.CreatingSelection) {
-                    builder.separator().append(Localization["editor.msg.selectionHint", MSG_SEPARATOR])
+                    if (clickOccupation is ClickOccupation.CreatingSelection) {
+                        builder.separator().append(Localization["editor.msg.selectionHint", MSG_SEPARATOR])
+                    }
                 }
-            }
-            Tool.MULTIPART_SPLIT -> {
-                builder.append(Localization["editor.msg.multipartSplit"])
-                if (remix.playState == PlayState.STOPPED) {
-                    val multipart = getMultipartOnMouse()
-                    if (multipart != null) {
-                        if (!multipart.canSplitWithoutColliding()) {
-                            builder.separator().append(Localization["editor.msg.cannotSplit"])
+                Tool.MULTIPART_SPLIT -> {
+                    builder.append(Localization["editor.msg.multipartSplit"])
+                    if (remix.playState == PlayState.STOPPED) {
+                        val multipart = getMultipartOnMouse()
+                        if (multipart != null) {
+                            if (!multipart.canSplitWithoutColliding()) {
+                                builder.separator().append(Localization["editor.msg.cannotSplit"])
+                            }
                         }
                     }
                 }
-            }
-            Tool.BPM -> {
-                builder.append(Localization["editor.msg.tempoChange"])
-            }
-            Tool.TIME_SIGNATURE -> {
-                builder.append(Localization["editor.msg.timeSignature"])
-            }
-            Tool.MUSIC_VOLUME -> {
-                builder.append(Localization["editor.msg.musicVolume"])
+                Tool.BPM -> {
+                    builder.append(Localization["editor.msg.tempoChange"])
+                }
+                Tool.TIME_SIGNATURE -> {
+                    builder.append(Localization["editor.msg.timeSignature"])
+                }
+                Tool.MUSIC_VOLUME -> {
+                    builder.append(Localization["editor.msg.musicVolume"])
+                }
             }
         }
 
@@ -1148,7 +1165,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     override fun keyDown(keycode: Int): Boolean {
         when (keycode) {
             in Input.Keys.NUM_0..Input.Keys.NUM_9 -> {
-                if (stage.isTyping || clickOccupation != ClickOccupation.None)
+                if (stage.isTyping || clickOccupation != ClickOccupation.None || stage.tapalongStage.visible)
                     return false
                 val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
                 if (number in 0 until Tool.VALUES.size) {

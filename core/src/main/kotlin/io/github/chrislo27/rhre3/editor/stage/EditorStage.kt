@@ -42,6 +42,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val minimapBarStage: Stage<EditorScreen>
     val centreAreaStage: Stage<EditorScreen>
     val patternAreaStage: Stage<EditorScreen>
+    val tapalongStage: TapalongStage
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
@@ -77,6 +78,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         get() {
             return searchBar.hasFocus || jumpToField.hasFocus
         }
+    val tapalongMarkersEnabled: Boolean
+        get() = tapalongStage.markersEnabled
 
     private var isDirty = DirtyType.CLEAN
     private var wasDebug = false
@@ -116,7 +119,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 true
             } else false
         } ?: elements.firstOrNull {
-            if (it !is Stage) {
+            if (it !is Stage || !it.visible) {
                 false
             } else {
                 it.elements.any {
@@ -288,7 +291,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               screenWidth = 1f - (Editor.BUTTON_PADDING / RHRE3.WIDTH) * 2f,
                               screenHeight = Editor.BUTTON_SIZE / RHRE3.HEIGHT)
         }
-        elements += buttonBarStage
         pickerStage = object : Stage<EditorScreen>(this, camera) {
             override fun scrolled(amount: Int): Boolean {
                 if (isMouseOver()) {
@@ -341,14 +343,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenX = 0.5f, screenWidth = 0f, screenHeight = 1f, pixelX = 1f, pixelWidth = 1f)
             }
         }
-        elements += pickerStage
         patternAreaStage = Stage(this, camera).apply {
             this.location.set(screenY = pickerStage.location.screenY,
                               screenHeight = pickerStage.location.screenHeight,
                               screenX = 0.5f,
                               screenWidth = 0.5f)
         }
-        elements += patternAreaStage
         minimapBarStage = Stage(this, camera).apply {
             this.location.set(screenY = pickerStage.location.screenY + pickerStage.location.screenHeight,
                               screenHeight = Editor.ICON_SIZE / RHRE3.HEIGHT)
@@ -360,13 +360,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenX = 0f, screenWidth = 1f, screenHeight = 0f, pixelY = -1f, pixelHeight = 1f)
             }
         }
-        elements += minimapBarStage
+
         centreAreaStage = Stage(this, camera).apply {
             this.location.set(screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
         }
-        elements += centreAreaStage
         hoverTextLabel = TextLabel(palette, this, this).apply {
             this.background = true
             this.isLocalizationKey = false
@@ -377,6 +376,19 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.textAlign = Align.center
             this.location.set(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
         }
+        tapalongStage = TapalongStage(editor, palette, this, camera).apply {
+            this.location.set(0f,
+                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
+                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
+
+            this.visible = false
+        }
+        elements += tapalongStage
+        elements += buttonBarStage
+        elements += pickerStage
+        elements += patternAreaStage
+        elements += minimapBarStage
+        elements += centreAreaStage
         elements += hoverTextLabel
         this.updatePositions()
 
@@ -874,6 +886,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += MusicButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = size * 6 + padding * 6)
+            }
+            buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size * 4,
+                                  screenX = size * 7 + padding * 7)
             }
 
             // right aligned
