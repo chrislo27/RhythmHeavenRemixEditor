@@ -154,7 +154,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
 
             override fun redo(context: Remix) {
-                if (final == Float.NaN)
+                if (final != final)
                     error("Final value was NaN which is impossible")
                 editor.remix.musicStartSec = final
             }
