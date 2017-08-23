@@ -19,6 +19,8 @@ import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -859,7 +861,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         })
                     }
             buttonBarStage.elements +=
-                    Button(palette, buttonBarStage, buttonBarStage).apply {
+                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage){
+                        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                            super.onLeftClick(xPercent, yPercent)
+                            println(JsonHandler.toJson(Remix.toJson(editor.remix)))
+                        }
+                    }.apply {
                         this.location.set(screenWidth = size,
                                           screenX = size * 2 + padding * 2)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {

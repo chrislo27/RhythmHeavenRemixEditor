@@ -26,32 +26,34 @@ import kotlin.properties.Delegates
 class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<Remix>() {
 
     companion object {
-        fun Remix.toJson(): ObjectNode {
+        fun toJson(remix: Remix): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
 
-            tree.put("version", RHRE3.VERSION.toString())
+            remix.apply {
+                tree.put("version", RHRE3.VERSION.toString())
 
-            tree.put("playbackStart", playbackStart)
-            tree.put("musicStartSec", musicStartSec)
+                tree.put("playbackStart", playbackStart)
+                tree.put("musicStartSec", musicStartSec)
 
-            // entities
-            val entitiesArray = tree.putArray("entities")
-            entities.forEach { entity ->
-                val association = JsonObjectIDs.classToId[entity::class]
-                        ?: error("Entity ${entity::class} doesn't have an association mapping")
-                val obj = entitiesArray.addObject()
+                // entities
+                val entitiesArray = tree.putArray("entities")
+                entities.forEach { entity ->
+                    val association = JsonObjectIDs.classToId[entity::class]
+                            ?: error("Entity ${entity::class} doesn't have an association mapping")
+                    val obj = entitiesArray.addObject()
 
-                obj.put("type", association.id)
-                entity.saveData(obj)
-            }
+                    obj.put("type", association.id)
+                    entity.saveData(obj)
+                }
 
-            // trackers
-            run {
-                val trackers = tree.putObject("trackers")
+                // trackers
+                run {
+                    val trackers = tree.putObject("trackers")
 
-                trackers.set("tempos", tempos.toTree(trackers.objectNode()))
-                trackers.set("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
-                trackers.set("timeSignatures", timeSignatures.toTree(trackers.objectNode()))
+                    trackers.set("tempos", tempos.toTree(trackers.objectNode()))
+                    trackers.set("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
+                    trackers.set("timeSignatures", timeSignatures.toTree(trackers.objectNode()))
+                }
             }
 
             return tree
