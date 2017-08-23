@@ -25,6 +25,7 @@ import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
@@ -896,14 +897,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += stopButton
 
             buttonBarStage.elements +=
-                    Button(palette, buttonBarStage, buttonBarStage).apply {
+                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
+                        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                            super.onLeftClick(xPercent, yPercent)
+                            main.screen = ScreenRegistry.getNonNull("newRemix")
+                        }
+                    }.apply {
                         this.location.set(screenWidth = size)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
                             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_new_button"))
                         })
                     }
             buttonBarStage.elements +=
-                    Button(palette, buttonBarStage, buttonBarStage).apply {
+                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
+                        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                            super.onLeftClick(xPercent, yPercent)
+                            main.screen = ScreenRegistry.getNonNull("openRemix")
+                        }
+                    }.apply {
                         this.location.set(screenWidth = size,
                                           screenX = size + padding)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -914,7 +925,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage){
                         override fun onLeftClick(xPercent: Float, yPercent: Float) {
                             super.onLeftClick(xPercent, yPercent)
-                            println(JsonHandler.toJson(Remix.toJson(editor.remix)))
+                            main.screen = ScreenRegistry.getNonNull("saveRemix")
                         }
                     }.apply {
                         this.location.set(screenWidth = size,

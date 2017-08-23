@@ -43,6 +43,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_new_button", "images/ui/icons/new_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_load_button", "images/ui/icons/load_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_save_button", "images/ui/icons/save_button.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_newremix", "images/ui/icons/newremix.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_saveremix", "images/ui/icons/saveremix.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_songchoose", "images/ui/icons/songchoose.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_music_button", "images/ui/icons/music_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_music_button_muted", "images/ui/icons/music_button_muted.png")

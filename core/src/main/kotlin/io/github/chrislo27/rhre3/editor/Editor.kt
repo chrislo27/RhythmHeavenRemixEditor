@@ -79,6 +79,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val CUE_PATTERN_COLOR: Color = Color(0.65f, 0.65f, 0.65f, 1f)
     }
 
+    fun createRemix(): Remix {
+        return Remix(camera, this)
+    }
+
     val camera: OrthographicCamera by lazy {
         val c = OrthographicCamera()
         resizeCamera(c)
@@ -88,7 +92,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     val pickerSelection: PickerSelection = PickerSelection()
-    var remix: Remix = Remix(camera, this)
+    var remix: Remix = createRemix()
         set(value) {
             field.dispose()
             field = value

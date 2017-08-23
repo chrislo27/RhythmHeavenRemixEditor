@@ -106,6 +106,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "editor" to EditorScreen(this)
                 ScreenRegistry += "musicSelect" to MusicSelectScreen(this)
                 ScreenRegistry += "info" to InfoScreen(this)
+                ScreenRegistry += "newRemix" to NewRemixScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
