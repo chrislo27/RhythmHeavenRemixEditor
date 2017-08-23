@@ -138,6 +138,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     var playbackStart: Float = 0f
     var musicStartSec: Float = 0f
     var music: MusicData? = null
+        set(value) {
+            field?.dispose()
+            field = value
+        }
     private var lastMusicPosition: Float = -1f
     var metronome: Boolean = false
         set(value) {
