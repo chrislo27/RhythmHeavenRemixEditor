@@ -1,9 +1,30 @@
 package io.github.chrislo27.rhre3.track.timesignature
 
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 
 
 class TimeSignatures : TrackerContainer<TimeSignature>() {
+
+    override fun toTree(node: ObjectNode): ObjectNode {
+        val arrayNode = node.putArray("trackers")
+
+        map.values.forEach {
+            arrayNode.addObject()
+                    .put("beat", it.beat.toInt())
+                    .put("measure", it.measure)
+                    .put("upper", it.upper)
+        }
+
+        return node
+    }
+
+    override fun fromTree(node: ObjectNode) {
+        (node["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
+            add(TimeSignature(it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
+        }
+    }
 
     fun getTimeSignature(beat: Float): TimeSignature? {
         return map.floorEntry(beat)?.value

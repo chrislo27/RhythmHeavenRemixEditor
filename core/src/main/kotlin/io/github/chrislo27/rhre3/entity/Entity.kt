@@ -3,6 +3,8 @@ package io.github.chrislo27.rhre3.entity
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
@@ -52,6 +54,30 @@ abstract class Entity(val remix: Remix) {
         val old = tmpUpdateBoundsRect.set(bounds)
         this.func()
         onBoundsChange(old)
+    }
+
+    open fun saveData(objectNode: ObjectNode) {
+        objectNode.put("beat", bounds.x)
+                .put("track", bounds.y.toInt())
+                .put("width", bounds.width)
+                .put("height", bounds.height.toInt())
+
+        if (this is IRepitchable) {
+            objectNode.put("semitone", this.semitone)
+        }
+    }
+
+    open fun readData(objectNode: ObjectNode) {
+        bounds.set(
+                objectNode["beat"].floatValue(),
+                objectNode["track"].floatValue().toInt().toFloat(),
+                objectNode["width"].floatValue(),
+                objectNode["height"].floatValue().toInt().toFloat()
+                  )
+
+        if (this is IRepitchable) {
+            semitone = objectNode["semitone"].intValue()
+        }
     }
 
     abstract fun render(batch: SpriteBatch)

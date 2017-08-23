@@ -1,10 +1,14 @@
 package io.github.chrislo27.rhre3.track
 
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.json.JsonObjectIDs
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -13,12 +17,79 @@ import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.properties.Delegates
 
 
 class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<Remix>() {
+
+    companion object {
+        fun Remix.toJson(): ObjectNode {
+            val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
+
+            tree.put("version", RHRE3.VERSION.toString())
+
+            tree.put("playbackStart", playbackStart)
+            tree.put("musicStartSec", musicStartSec)
+
+            // entities
+            val entitiesArray = tree.putArray("entities")
+            entities.forEach { entity ->
+                val association = JsonObjectIDs.classToId[entity::class]
+                        ?: error("Entity ${entity::class} doesn't have an association mapping")
+                val obj = entitiesArray.addObject()
+
+                obj.put("type", association.id)
+                entity.saveData(obj)
+            }
+
+            // trackers
+            run {
+                val trackers = tree.putObject("trackers")
+
+                trackers.set("tempos", tempos.toTree(trackers.objectNode()))
+                trackers.set("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
+                trackers.set("timeSignatures", timeSignatures.toTree(trackers.objectNode()))
+            }
+
+            return tree
+        }
+
+        fun fromJson(tree: ObjectNode, remix: Remix): Remix {
+            remix.playbackStart = tree["playbackStart"]?.floatValue() ?: 0f
+            remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
+
+            // entities
+            val entitiesArray = tree["entities"] as ArrayNode
+            entitiesArray.filterIsInstance<ObjectNode>()
+                    .filter { it.has("type") }
+                    .forEach { node ->
+                        val type = node.get("type").asText(null)
+                                ?: error("Entity object doesn't have type field")
+                        val association = JsonObjectIDs.idToClass[type]
+                                ?: error("Entity object with type $type doesn't have an association")
+
+                        val entity = association.createEntity(remix, node)
+
+                        entity.readData(node)
+
+                        remix.entities += entity
+                    }
+
+            // trackers
+            run {
+                val trackers = tree.get("trackers") as ObjectNode
+
+                remix.tempos.fromTree(trackers["tempos"] as ObjectNode)
+                remix.musicVolumes.fromTree(trackers["musicVolumes"] as ObjectNode)
+                remix.timeSignatures.fromTree(trackers["timeSignatures"] as ObjectNode)
+            }
+
+            return remix
+        }
+    }
 
     val main: RHRE3Application
         get() = editor.main

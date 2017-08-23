@@ -1,11 +1,15 @@
 package io.github.chrislo27.rhre3.tracker
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.*
 
 
 abstract class TrackerContainer<T : Tracker> {
 
     protected val map: NavigableMap<Float, T> = TreeMap()
+
+    abstract fun toTree(node: ObjectNode): ObjectNode
+    abstract fun fromTree(node: ObjectNode)
 
     open fun clear() {
         map.clear()

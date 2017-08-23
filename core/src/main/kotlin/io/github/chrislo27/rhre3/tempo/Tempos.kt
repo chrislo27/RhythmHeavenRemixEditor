@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.tempo
 
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.BpmUtils
 import java.util.*
@@ -8,6 +10,25 @@ import java.util.*
 class Tempos(val defaultTempo: Float = 120f) : TrackerContainer<TempoChange>() {
 
     private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap()
+
+    override fun toTree(node: ObjectNode): ObjectNode {
+        val arrayNode = node.putArray("trackers")
+
+        map.values.forEach {
+            arrayNode.addObject()
+                    .put("beat", it.beat)
+                    .put("seconds", it.seconds)
+                    .put("bpm", it.bpm)
+        }
+
+        return node
+    }
+
+    override fun fromTree(node: ObjectNode) {
+        (node["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
+            add(TempoChange(it["beat"].asDouble().toFloat(), it["bpm"].asDouble(120.0).toFloat()))
+        }
+    }
 
     override fun clear() {
         super.clear()

@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.entity.model
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -17,6 +18,16 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     companion object {
         const val BORDER: Float = 4f
+    }
+
+    override fun saveData(objectNode: ObjectNode) {
+        super.saveData(objectNode)
+
+        objectNode.put("id", datamodel.id)
+    }
+
+    override fun readData(objectNode: ObjectNode) {
+        super.readData(objectNode)
     }
 
     abstract fun getRenderColor(): Color
