@@ -42,7 +42,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
         return EquidistantEntity(remix, datamodel).also {
             it.semitone = this.semitone
             it.updateBounds {
-                it.bounds.set(this.bounds)
+                it.bounds.set(this@EquidistantEntity.bounds)
             }
         }
     }

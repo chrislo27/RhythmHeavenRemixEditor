@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -71,6 +72,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var jumpToField: JumpToField
         private set
+    lateinit var subtitleLabel: TextLabel<EditorScreen>
+        private set
+    lateinit var subtitleField: TextField<EditorScreen>
+        private set
 
     val topOfMinimapBar: Float
         get() {
@@ -78,7 +83,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     val isTyping: Boolean
         get() {
-            return searchBar.hasFocus || jumpToField.hasFocus
+            return searchBar.hasFocus || jumpToField.hasFocus || subtitleField.hasFocus
         }
     val tapalongMarkersEnabled: Boolean
         get() = tapalongStage.markersEnabled
@@ -367,6 +372,51 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
+
+            subtitleLabel = object : TextLabel<EditorScreen>(palette, this@apply, this@apply) {
+                override fun getFont(): BitmapFont {
+                    return main.defaultBorderedFont
+                }
+
+                override fun getRealText(): String {
+                    return editor.remix.currentSubtitle
+                }
+            }.apply {
+                this.location.set(screenHeight = 0.1f)
+            }
+            this.elements += subtitleLabel
+            subtitleField = object : TextField<EditorScreen>(palette, this@apply, this@apply) {
+                override fun frameUpdate(screen: EditorScreen) {
+                    super.frameUpdate(screen)
+
+                    if (visible &&
+                            (!hasFocus
+                            || editor.selection.size != 1
+                            || editor.selection.first() !is SubtitleEntity)) {
+                        visible = false
+                    }
+                }
+
+                override fun onTextChange(oldText: String) {
+                    super.onTextChange(oldText)
+
+                    if (!hasFocus || !visible)
+                        return
+
+                    if (editor.selection.firstOrNull() is SubtitleEntity) {
+                        val entity = editor.selection.first() as SubtitleEntity
+                        entity.subtitle = this.text
+                    }
+                }
+            }.apply {
+                this.location.set(screenY = subtitleLabel.location.screenHeight,
+                                  screenHeight = 0.1f,
+                                  screenWidth = 0.5f,
+                                  screenX = 0.25f)
+                this.background = true
+                this.visible = false
+            }
+            this.elements += subtitleField
         }
         hoverTextLabel = TextLabel(palette, this, this).apply {
             this.background = true

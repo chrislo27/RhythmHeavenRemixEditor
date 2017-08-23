@@ -7,6 +7,7 @@ import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
@@ -185,6 +186,8 @@ object GameRegistry : Disposable {
                                   obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
                     is EndRemixObject ->
                         EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
+                    is SubtitleEntityObject ->
+                        Subtitle(game, obj.id, obj.deprecatedIDs, obj.name)
                 }
             }
 

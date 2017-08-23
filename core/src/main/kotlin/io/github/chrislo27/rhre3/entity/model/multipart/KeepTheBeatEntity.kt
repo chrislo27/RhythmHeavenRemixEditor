@@ -60,7 +60,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
     override fun copy(remix: Remix): KeepTheBeatEntity {
         return KeepTheBeatEntity(remix, datamodel).also {
             it.updateBounds {
-                it.bounds.set(this.bounds)
+                it.bounds.set(this@KeepTheBeatEntity.bounds)
             }
             it.semitone = this.semitone
         }

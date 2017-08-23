@@ -7,8 +7,8 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.EndEntity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -150,6 +150,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
     var musicSeeking = false
     var duration: Float = Float.POSITIVE_INFINITY
         private set
+    var currentSubtitle: String = ""
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -175,6 +176,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                             it.stopAllSounds()
                         }
                     }
+                    currentSubtitle = ""
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -205,6 +207,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                         if (editor.stage.tapalongStage.visible) {
                             editor.stage.tapalongStage.reset()
                         }
+
+                        currentSubtitle = ""
                     } else if (old == PlayState.PAUSED) {
                         GameRegistry.data.objectList.forEach {
                             if (it is Cue) {
@@ -292,12 +296,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                 lastMusicPosition = position
 
                 if (oldPosition != position) {
-                    seconds = position
+                    seconds = position + musicStartSec
                 }
 
                 val musicVolume = musicVolumes.getPercentageVolume(beat)
                 if (musicVolume != music.music.volume) {
-//                    music.music.volume = musicVolume
+                    music.music.volume = musicVolume
                 }
             }
         }

@@ -22,6 +22,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
     }
 
     override final val jsonType: String = "model"
+    open val renderText: String
+        get() = datamodel.newlinedName
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
@@ -41,7 +43,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
-        val text = datamodel.newlinedName
+        val text = renderText
         val font = remix.main.defaultFont
         val color = getRenderColor()
         val oldColor = batch.packedColor

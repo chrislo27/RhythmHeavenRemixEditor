@@ -15,7 +15,6 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
-import io.github.chrislo27.rhre3.entity.model.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -25,6 +24,8 @@ import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
+import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.GroupedAction
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
@@ -848,6 +849,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                             else
                                                 "")}"])
                             }
+
+                            if (first is SubtitleEntity) {
+                                builder.separator().append(Localization["editor.msg.subtitle.${if (stage.subtitleField.visible) "finish" else "edit"}"])
+                            }
                         }
                     }
 
@@ -927,7 +932,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (stage.centreAreaStage.isMouseOver()) {
             val tool = currentTool
             if (tool == Tool.NORMAL) {
-                if (isAnyTrackerButtonDown) {
+                val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
+                if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is SubtitleEntity) {
+                    val field = stage.subtitleField
+                    field.visible = true
+                    field.text = firstEntityInMouse.subtitle
+                    field.hasFocus = true
+                    updateMessageLabel()
+                } else if (isAnyTrackerButtonDown) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
                         ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
                     } else {
