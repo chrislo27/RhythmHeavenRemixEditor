@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.json
+package io.github.chrislo27.rhre3.rhre2
 
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.files.FileHandle

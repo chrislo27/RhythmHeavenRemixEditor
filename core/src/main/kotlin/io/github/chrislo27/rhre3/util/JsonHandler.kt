@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import java.io.OutputStream
 
 
 object JsonHandler {
@@ -52,6 +53,11 @@ object JsonHandler {
     @JvmStatic
     fun <T> fromJson(json: String, clazz: Class<T>): T {
         return OBJECT_MAPPER.readValue(json, clazz)
+    }
+
+    @JvmStatic
+    fun toJson(obj: Any, stream: OutputStream) {
+        OBJECT_MAPPER.writeValue(stream, obj)
     }
 
     @JvmStatic

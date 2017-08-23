@@ -21,6 +21,9 @@ import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
+import java.util.zip.ZipOutputStream
 import kotlin.properties.Delegates
 
 
@@ -45,6 +48,19 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 tree.put("playbackStart", playbackStart)
                 tree.put("musicStartSec", musicStartSec)
+
+                // music
+                run {
+                    val obj = tree.putObject("musicData")
+                    val music = music
+
+                    obj.put("present", music != null)
+
+                    if (music != null) {
+                        obj.put("filename", music.handle.name())
+                        obj.put("extension", music.handle.extension())
+                    }
+                }
 
                 // entities
                 val entitiesArray = tree.putArray("entities")
@@ -105,6 +121,45 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
 
             return remix
+        }
+
+        fun pack(remix: Remix, stream: ZipOutputStream) {
+            val objectNode = Remix.toJson(remix)
+            stream.setComment("Rhythm Heaven Remix Editor 3 savefile - ${RHRE3.VERSION}")
+
+            stream.putNextEntry(ZipEntry("remix.json"))
+            JsonHandler.toJson(objectNode, stream)
+            stream.closeEntry()
+
+            val musicNode = objectNode["musicData"] as ObjectNode
+            if (musicNode["present"].booleanValue()) {
+                stream.putNextEntry(ZipEntry("music.bin"))
+                val buf = remix.music!!.handle.read(2048)
+                buf.copyTo(stream)
+                buf.close()
+                stream.closeEntry()
+            }
+        }
+
+        fun unpack(remix: Remix, zip: ZipFile) {
+            val jsonStream = zip.getInputStream(zip.getEntry("remix.json"))
+            val objectNode: ObjectNode = JsonHandler.OBJECT_MAPPER.readTree(jsonStream) as ObjectNode
+            jsonStream.close()
+
+            val musicNode = objectNode["musicData"] as ObjectNode
+            val musicPresent = musicNode["present"].booleanValue()
+
+            Remix.fromJson(objectNode, remix)
+
+            if (musicPresent) {
+                val folder = RHRE3.tmpMusic
+                val fh = folder.child(musicNode["filename"].asText(null) ?: error("Could not find music filename"))
+                val musicStream = zip.getInputStream(zip.getEntry("music.bin"))
+                fh.write(musicStream, false)
+                musicStream.close()
+
+                remix.music = MusicData(fh, remix)
+            }
         }
     }
 

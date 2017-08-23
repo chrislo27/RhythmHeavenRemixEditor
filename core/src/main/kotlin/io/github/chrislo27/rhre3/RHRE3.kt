@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -12,6 +14,11 @@ object RHRE3 {
     val MINIMUM_SIZE: Pair<Int, Int> = 640 to 360
 
     val SUPPORTED_SOUND_TYPES = listOf("ogg", "mp3", "wav")
+    val tmpMusic: FileHandle by lazy {
+        val fh = Gdx.files.local("tmpMusic/")
+        fh.mkdirs()
+        fh
+    }
 
     const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
