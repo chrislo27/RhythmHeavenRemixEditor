@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.track
 
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.RHRE3
@@ -23,7 +24,8 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.properties.Delegates
 
 
-class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<Remix>() {
+class Remix(val camera: OrthographicCamera, val editor: Editor)
+    : ActionHistory<Remix>(), Disposable {
 
     companion object {
         /*
@@ -330,4 +332,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
         }
     }
 
+    override fun dispose() {
+        music?.dispose()
+    }
 }

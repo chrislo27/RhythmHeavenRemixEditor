@@ -89,6 +89,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     val pickerSelection: PickerSelection = PickerSelection()
     var remix: Remix = Remix(camera, this)
+        set(value) {
+            field.dispose()
+            field = value
+        }
     var theme: Theme = DarkTheme()
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
