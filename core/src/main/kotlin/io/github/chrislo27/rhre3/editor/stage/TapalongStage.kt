@@ -166,6 +166,10 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             })
             this.location.set(screenWidth = 0.3f, screenHeight = 0.35f)
             this.location.set(screenX = 0.675f, screenY = 0.05f)
+
+            // FIXME
+            this.visible = false
+            markersEnabled = false
         }
         this.elements += object : Button<EditorScreen>(palette, this, this) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
