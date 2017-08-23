@@ -20,8 +20,6 @@ import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
-import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -267,7 +265,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         this.colour.a = 0.75f
                     }
         }
-        messageLabel = object : TextLabel<EditorScreen>(palette, messageBarStage, messageBarStage) {
+        messageLabel = object : TextLabel<EditorScreen>(palette,
+                                                        messageBarStage, messageBarStage) {
             private var lastVersionTextWidth: Float = -1f
 
             override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -419,7 +418,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             this.elements += subtitleField
         }
-        hoverTextLabel = TextLabel(palette, this, this).apply {
+        hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),
+                                   this, this).apply {
             this.background = true
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.75f

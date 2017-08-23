@@ -19,6 +19,7 @@ object RHRE3 {
         fh.mkdirs()
         fh
     }
+    const val REMIX_FILE_EXTENSION = "rhre3"
 
     const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"

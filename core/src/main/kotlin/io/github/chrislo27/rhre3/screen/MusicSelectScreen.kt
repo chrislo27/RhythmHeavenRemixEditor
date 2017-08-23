@@ -96,7 +96,7 @@ class MusicSelectScreen(main: RHRE3Application)
             this.location.set(screenHeight = 0.25f)
             this.textAlign = Align.center
             this.isLocalizationKey = true
-            this.text = "screen.music.closeChooser"
+            this.text = "closeChooser"
             this.visible = false
         }
         mainLabel = object : TextLabel<MusicSelectScreen>(palette, stage.centreStage, stage.centreStage) {

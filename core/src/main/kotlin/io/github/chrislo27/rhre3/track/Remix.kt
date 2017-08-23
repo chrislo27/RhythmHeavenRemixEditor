@@ -21,6 +21,8 @@ import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import java.io.File
+import java.io.FileOutputStream
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
@@ -128,7 +130,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             stream.setComment("Rhythm Heaven Remix Editor 3 savefile - ${RHRE3.VERSION}")
 
             stream.putNextEntry(ZipEntry("remix.json"))
-            JsonHandler.toJson(objectNode, stream)
+            stream.write(JsonHandler.toJson(objectNode).toByteArray())
             stream.closeEntry()
 
             val musicNode = objectNode["musicData"] as ObjectNode
@@ -160,6 +162,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 remix.music = MusicData(fh, remix)
             }
+        }
+
+        fun saveTo(remix: Remix, file: File) {
+            val stream = ZipOutputStream(FileOutputStream(file))
+            pack(remix, stream)
+            stream.close()
         }
     }
 

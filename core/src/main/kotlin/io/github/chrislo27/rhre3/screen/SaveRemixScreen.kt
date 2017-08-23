@@ -2,15 +2,15 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.track.music.MusicData
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
@@ -19,7 +19,8 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.ui.Stage
+import io.github.chrislo27.toolboks.ui.TextLabel
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import java.io.File
@@ -39,13 +40,13 @@ class SaveRemixScreen(main: RHRE3Application)
             stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
-    private val mainLabel: TextLabel<MusicSelectScreen>
+    private val mainLabel: TextLabel<SaveRemixScreen>
 
     private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main,
-                                                         PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
-        val key = "screen.music.fileFilter"
-        val extensions = arrayOf("*.ogg", "*.mp3", "*.wav")
+        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE)
+                ?: getDefaultDirectory()
+        val key = "screen.save.fileFilter"
+        val extensions = arrayOf("*.rhre3")
 
         fun applyLocalizationChanges() {
             this.extensionFilters.clear()
@@ -54,7 +55,7 @@ class SaveRemixScreen(main: RHRE3Application)
             this.extensionFilters += filter
             this.selectedExtensionFilter = this.extensionFilters.first()
 
-            this.title = Localization["screen.music.fileChooserTitle"]
+            this.title = Localization["screen.save.fileChooserTitle"]
         }
 
         applyLocalizationChanges()
@@ -66,8 +67,8 @@ class SaveRemixScreen(main: RHRE3Application)
 
     init {
         stage as GenericStage
-        stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_songchoose"))
-        stage.titleLabel.text = "screen.music.title"
+        stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_saveremix"))
+        stage.titleLabel.text = "screen.save.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
             if (!isChooserOpen) {
@@ -76,19 +77,9 @@ class SaveRemixScreen(main: RHRE3Application)
         }
 
         val palette = main.uiPalette
-
-        stage.bottomStage.elements += MusicFileChooserButton(palette, stage.bottomStage, stage.bottomStage).apply {
-            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.textAlign = Align.center
-                this.text = "screen.music.select"
-                this.isLocalizationKey = true
-//                this.fontScaleMultiplier = 0.9f
-            })
-        }
-        stage.centreStage.elements += object : TextLabel<MusicSelectScreen>(palette, stage.centreStage,
-                                                                            stage.centreStage) {
-            override fun frameUpdate(screen: MusicSelectScreen) {
+        stage.centreStage.elements += object : TextLabel<SaveRemixScreen>(palette, stage.centreStage,
+                                                                          stage.centreStage) {
+            override fun frameUpdate(screen: SaveRemixScreen) {
                 super.frameUpdate(screen)
                 this.visible = isChooserOpen
             }
@@ -96,11 +87,11 @@ class SaveRemixScreen(main: RHRE3Application)
             this.location.set(screenHeight = 0.25f)
             this.textAlign = Align.center
             this.isLocalizationKey = true
-            this.text = "screen.music.closeChooser"
+            this.text = "closeChooser"
             this.visible = false
         }
-        mainLabel = object : TextLabel<MusicSelectScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun frameUpdate(screen: MusicSelectScreen) {
+        mainLabel = object : TextLabel<SaveRemixScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun frameUpdate(screen: SaveRemixScreen) {
                 super.frameUpdate(screen)
             }
         }.apply {
@@ -128,20 +119,27 @@ class SaveRemixScreen(main: RHRE3Application)
         if (!isChooserOpen) {
             Platform.runLater {
                 isChooserOpen = true
-                val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
+                val file: File? = fileChooser.showSaveDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
+                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE, fileChooser.initialDirectory)
                     try {
-                        val handle = FileHandle(file)
-                        val musicData = MusicData(handle, editor.remix)
-                        editor.remix.music = musicData
-                        updateLabels(null)
+                        val correctFile = if (file.extension != RHRE3.REMIX_FILE_EXTENSION)
+                            file.parentFile.resolve("${file.name}.${RHRE3.REMIX_FILE_EXTENSION}")
+                        else
+                            file
+
+                        Remix.saveTo(editor.remix, correctFile)
+
+                        // TODO message?
+                        (stage as GenericStage).onBackButtonClick()
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         updateLabels(t)
                     }
+                } else {
+                    (stage as GenericStage).onBackButtonClick()
                 }
             }
         }
@@ -150,15 +148,15 @@ class SaveRemixScreen(main: RHRE3Application)
     private fun updateLabels(throwable: Throwable? = null) {
         val label = mainLabel
         if (throwable == null) {
-            label.text = Localization["screen.music.currentMusic",
-                    if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
+            label.text = ""
         } else {
-            label.text = Localization["screen.music.invalid"] // TODO use throwable?
+            label.text = Localization["screen.save.failed", throwable::class.java.canonicalName]
         }
     }
 
     override fun show() {
         super.show()
+        openPicker()
         updateLabels()
     }
 
@@ -166,28 +164,5 @@ class SaveRemixScreen(main: RHRE3Application)
     }
 
     override fun tickUpdate() {
-    }
-
-    inner class MusicFileChooserButton(palette: UIPalette, parent: UIElement<MusicSelectScreen>,
-                                       stage: Stage<MusicSelectScreen>)
-        : Button<MusicSelectScreen>(palette, parent, stage) {
-
-        override fun onLeftClick(xPercent: Float, yPercent: Float) {
-            super.onLeftClick(xPercent, yPercent)
-            openPicker()
-        }
-
-        override fun onRightClick(xPercent: Float, yPercent: Float) {
-            super.onRightClick(xPercent, yPercent)
-            if (!isChooserOpen) {
-                editor.remix.music = null
-                updateLabels()
-            }
-        }
-
-        override fun frameUpdate(screen: MusicSelectScreen) {
-            super.frameUpdate(screen)
-            this.enabled = !isChooserOpen
-        }
     }
 }
