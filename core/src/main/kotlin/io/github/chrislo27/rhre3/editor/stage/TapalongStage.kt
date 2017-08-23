@@ -174,6 +174,23 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
         this.elements += object : Button<EditorScreen>(palette, this, this) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
+                remix.cuesMuted = !remix.cuesMuted
+            }
+        }.apply {
+            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage){
+                override fun getRealText(): String {
+                    return Localization["editor.tapalong.button.toggleCues.${remix.cuesMuted}"]
+                }
+            }.apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.75f
+            })
+            this.location.set(screenWidth = 0.3f, screenHeight = 0.35f)
+            this.location.set(screenX = 0.675f, screenY = 0.05f)
+        }
+        this.elements += object : Button<EditorScreen>(palette, this, this) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
                 tap()
             }
         }.apply {

@@ -63,11 +63,14 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width) * Semitones.getALPitch(semitone)
     }
 
+    private val volume: Float
+        get() = if (remix.cuesMuted) 0f else 1f
+
     override fun onStart() {
-        soundId = cue.sound.sound.play(1f, cue.getPitch(), 0f)
+        soundId = cue.sound.sound.play(volume, cue.getPitch(), 0f)
         cue.sound.sound.setLooping(soundId, cue.loops)
 
-        introSoundId = cue.introSoundCue?.sound?.sound?.play(1f,
+        introSoundId = cue.introSoundCue?.sound?.sound?.play(volume,
                                                              cue.introSoundCue!!.getPitch(),
                                                              0f) ?: -1L
         if (introSoundId != -1L) {
@@ -97,7 +100,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
         endingSoundId =
                 cue.endingSoundCue?.sound?.sound?.
-                        play(1f,
+                        play(volume,
                              cue.endingSoundCue!!.getPitch(),
                              0f) ?: -1L
         if (endingSoundId != -1L) {

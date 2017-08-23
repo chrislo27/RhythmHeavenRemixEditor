@@ -157,6 +157,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     var duration: Float = Float.POSITIVE_INFINITY
         private set
     var currentSubtitle: String = ""
+    var cuesMuted = false
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
