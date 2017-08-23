@@ -6,9 +6,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.EndEntity
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.json.JsonObjectIDs
+import io.github.chrislo27.rhre3.entity.model.EndEntity
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -26,6 +26,15 @@ import kotlin.properties.Delegates
 class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<Remix>() {
 
     companion object {
+        /*
+
+        To correctly do persistent data:
+
+        * Update tracker blocks of code when new trackers are added
+        * Update when statement in fromJson
+
+         */
+
         fun toJson(remix: Remix): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
 
@@ -38,12 +47,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
                 // entities
                 val entitiesArray = tree.putArray("entities")
                 entities.forEach { entity ->
-                    val association = JsonObjectIDs.classToId[entity::class]
-                            ?: error("Entity ${entity::class} doesn't have an association mapping")
-                    val obj = entitiesArray.addObject()
+                    val node = entitiesArray.addObject()
 
-                    obj.put("type", association.id)
-                    entity.saveData(obj)
+                    node.put("type", entity.jsonType)
+
+                    entity.saveData(node)
                 }
 
                 // trackers
@@ -68,12 +76,17 @@ class Remix(val camera: OrthographicCamera, val editor: Editor) : ActionHistory<
             entitiesArray.filterIsInstance<ObjectNode>()
                     .filter { it.has("type") }
                     .forEach { node ->
-                        val type = node.get("type").asText(null)
-                                ?: error("Entity object doesn't have type field")
-                        val association = JsonObjectIDs.idToClass[type]
-                                ?: error("Entity object with type $type doesn't have an association")
+                        val type = node["type"].asText(null) ?: return@forEach
 
-                        val entity = association.createEntity(remix, node)
+                        val entity: Entity = when (type) {
+                            "model" -> {
+                                val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
+                                ?: error("Malformed model entiy object: missing datamodel ID (${ModelEntity.JSON_DATAMODEL})")
+                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix)
+                                        ?: return@forEach
+                            }
+                            else -> error("Unsupported entity type: $type")
+                        }
 
                         entity.readData(node)
 

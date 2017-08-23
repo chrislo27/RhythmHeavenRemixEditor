@@ -23,6 +23,8 @@ abstract class Entity(val remix: Remix) {
     open val supportsCopying: Boolean = true
     open var playbackCompletion = PlaybackCompletion.WAITING
 
+    abstract val jsonType: String
+
     protected fun SpriteBatch.setColorWithTintIfNecessary(selectionTint: Color, r: Float, g: Float, b: Float, a: Float,
                                                           necessary: Boolean = isSelected) {
         if (necessary) {

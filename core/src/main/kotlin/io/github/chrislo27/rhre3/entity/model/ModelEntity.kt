@@ -18,12 +18,15 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     companion object {
         const val BORDER: Float = 4f
+        const val JSON_DATAMODEL = "datamodel"
     }
+
+    override final val jsonType: String = "model"
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
 
-        objectNode.put("id", datamodel.id)
+        objectNode.put(JSON_DATAMODEL, datamodel.id)
     }
 
     override fun readData(objectNode: ObjectNode) {
