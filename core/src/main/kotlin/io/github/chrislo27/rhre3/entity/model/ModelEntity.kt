@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -29,6 +30,9 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         super.saveData(objectNode)
 
         objectNode.put(JSON_DATAMODEL, datamodel.id)
+        if (datamodel.game.series == Series.CUSTOM) {
+            objectNode.put("isCustom", true)
+        }
     }
 
     override fun readData(objectNode: ObjectNode) {
