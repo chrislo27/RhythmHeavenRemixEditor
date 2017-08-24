@@ -348,7 +348,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             this.elements += ColourPane(this, this).apply {
                 this.colour.set(1f, 1f, 1f, 1f)
-                this.location.set(screenX = 0.5f, screenWidth = 0f, screenHeight = 1f, pixelX = 1f, pixelWidth = 1f)
+                this.location.set(screenX = 0.5f, screenWidth = 0f, screenHeight = 1f, pixelX = -0.5f, pixelWidth = 1f)
             }
         }
         patternAreaStage = Stage(this, camera).apply {
@@ -848,6 +848,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
+            minimapBarStage.elements += Minimap(editor, palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(screenX = 0.5f, screenWidth = 0.5f - Tool.VALUES.size * buttonWidth)
+            }
         }
 
         // Button bar
