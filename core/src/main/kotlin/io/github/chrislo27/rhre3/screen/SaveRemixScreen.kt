@@ -132,8 +132,7 @@ class SaveRemixScreen(main: RHRE3Application)
 
                         Remix.saveTo(editor.remix, correctFile)
 
-                        // TODO message?
-                        (stage as GenericStage).onBackButtonClick()
+                        mainLabel.text = Localization["screen.save.success"]
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         updateLabels(t)
