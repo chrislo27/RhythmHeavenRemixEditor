@@ -24,7 +24,8 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
         val AREA = (RHRE3.WIDTH * SCREEN_WIDTH) to (RHRE3.HEIGHT * SCREEN_HEIGHT)
 
         const val PADDING: Float = 32f
-        const val ICON_SIZE: Float = 128f
+        const val ICON_SIZE: Float = 96f
+        const val FONT_SCALE: Float = (ICON_SIZE / 128f)
         const val BOTTOM_SIZE: Float = 96f
 
         val PADDING_RATIO = (PADDING / AREA.first) to (PADDING / AREA.second)
@@ -52,6 +53,7 @@ class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, pa
         this.textAlign = Align.left + Align.center
         this.textWrapping = false
         this.background = false
+        this.fontScaleMultiplier = FONT_SCALE
     }
 
     var centreStage: Stage<S> = Stage(this, camera).apply {
