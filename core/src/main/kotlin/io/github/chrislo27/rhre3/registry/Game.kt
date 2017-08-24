@@ -9,7 +9,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.DatamodelComparator
 data class Game(val id: String, val name: String, val series: Series,
                 val objects: List<Datamodel>,
                 val icon: Texture, val group: String, val groupDefault: Boolean,
-                val priority: Int) : Disposable, Comparable<Game> {
+                val priority: Int, val isCustom: Boolean) : Disposable, Comparable<Game> {
 
     val placeableObjects: List<Datamodel> by lazy {
         objects.filter { !it.hidden }.sortedWith(DatamodelComparator)

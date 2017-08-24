@@ -128,7 +128,7 @@ object GameRegistry : Disposable {
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
 
-            hasCustom = gameList.any { it.series == Series.CUSTOM }
+            hasCustom = gameList.any(Game::isCustom)
 
             val cues = objectList.filterIsInstance<Cue>()
             val errors = mutableListOf<String>()
@@ -173,7 +173,7 @@ object GameRegistry : Disposable {
                                           ICON_FILENAME)),
                                   dataObject.group ?: dataObject.name,
                                   dataObject.groupDefault,
-                                  dataObject.priority)
+                                  dataObject.priority, false)
 
             dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                 when (obj) {
