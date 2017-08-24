@@ -21,13 +21,15 @@ class PickerSelection {
                 return ((groups.size / Editor.ICON_COUNT_X) - Editor.ICON_COUNT_Y).coerceAtLeast(0)
             }
 
-        fun getVariant(index: Int): VariantSelection {
+        fun getVariant(index: Int): VariantSelection? {
             if (index < 0)
                 error("Negative index $index")
+            if (index >= groups.size)
+                return null
             return variants.getOrPut(index, { VariantSelection(groups[index]) })
         }
 
-        fun getCurrentVariant(): VariantSelection =
+        fun getCurrentVariant(): VariantSelection? =
                 getVariant(group)
 
     }

@@ -144,7 +144,10 @@ class OpenRemixScreen(main: RHRE3Application)
                         val isRHRE2 = zipFile.getEntry("remix.json") == null
 
                         // TODO handle RHRE2
-                        val result = if (isRHRE2) TODO() else Remix.unpack(editor.createRemix(), zipFile)
+                        val result = if (isRHRE2)
+                            Remix.unpackRHRE2(editor.createRemix(), zipFile)
+                        else
+                            Remix.unpack(editor.createRemix(), zipFile)
 
                         fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
                             return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
@@ -157,7 +160,7 @@ class OpenRemixScreen(main: RHRE3Application)
                                 goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
                                 goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version),
                                 goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
-                                goodBad(missingAssets.second.toString(), missingAssets.second > 0, "RED")]
+                                goodBad(if (isRHRE2) "?" else missingAssets.second.toString(), missingAssets.second > 0, "RED")]
                         if (GameRegistry.data.version < remix.databaseVersion) {
                             mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
                         } else if (remix.version < RHRE3.VERSION) {

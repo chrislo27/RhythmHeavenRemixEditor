@@ -828,7 +828,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else {
             when (currentTool) {
                 Tool.NORMAL -> {
-                    val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant().getCurrentGame()
+                    val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentGame()
                     builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
                         builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
@@ -1062,7 +1062,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.NORMAL && isDraggingButtonDown) {
             // only for new
-            val datamodel = pickerSelection.currentSelection.getCurrentVariant().getCurrentPlaceable() ?: return true
+            val datamodel = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
 
             when (entity) {

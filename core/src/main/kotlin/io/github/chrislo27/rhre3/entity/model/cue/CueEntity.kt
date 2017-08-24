@@ -31,7 +31,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
              */
             // f(x, z) = (0.6/z)x + (z <= 3 ? -0.2z + 1.2 : -0.025z + 0.675)
 
-            return (0.6f / beat) +
+            return (0.6f / duration) * beat +
                     if (duration <= 3)
                         (-0.2f * duration + 1.2f)
                     else
@@ -79,22 +79,23 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun whilePlaying() {
-        if (soundId != -1L && cue.usesBaseBpm) {
+        if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
                     cue.sound.sound.setPitch(soundId,
                                              cue.getPitch())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
+                    val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
 
-                    sound.setPitch(soundId, getFillbotsPitch(remix.beat - bounds.x, bounds.width))
+                    sound.setPitch(soundId, pitch)
                 }
             }
         }
     }
 
     override fun onEnd() {
-        if (cue.loops) {
+        if (cue.loops || isFillbotsFill) {
             cue.sound.sound.stop(soundId)
         }
 

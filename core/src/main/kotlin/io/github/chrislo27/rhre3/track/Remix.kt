@@ -8,13 +8,17 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.rhre2.RemixObject
+import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
+import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
@@ -177,6 +181,62 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
 
             return result
+        }
+
+        fun unpackRHRE2(remix: Remix, zip: ZipFile): Pair<Remix, Pair<Int, Int>> {
+            val jsonStream = zip.getInputStream(zip.getEntry("data.json"))
+            val remixObject: RemixObject = JsonHandler.fromJson(String(jsonStream.readBytes(), Charsets.UTF_8))
+            jsonStream.close()
+
+            val musicPresent = remixObject.musicAssociation != null
+            var missing = 0
+
+            remix.playbackStart = remixObject.playbackStart
+            remix.musicStartSec = remixObject.musicStartTime
+            remix.databaseVersion = 0
+            remix.version = Version.fromString(remixObject.version ?: "v2.17.0")
+
+            remixObject.bpmChanges?.forEach {
+                remix.tempos.add(TempoChange(it.beat, it.tempo))
+            }
+            remix.musicVolumes.add(MusicVolumeChange(remix.tempos.secondsToBeats(remix.musicStartSec),
+                                                     (remixObject.musicVolume * 100f).toInt().coerceIn(0, 100)))
+
+            remixObject.entities?.forEach {
+                val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
+                    missing++
+                    return@forEach
+                }
+
+                val entity = datamodel.createEntity(remix)
+
+                if (entity is IRepitchable) {
+                    entity.semitone = it.semitone
+                }
+
+                entity.updateBounds {
+                    entity.bounds.x = it.beat
+                    entity.bounds.y = it.level.toFloat()
+                    if (it.width > 0f) {
+                        entity.bounds.width = it.width
+                    }
+                }
+
+                remix.entities += entity
+            }
+
+            if (musicPresent) {
+                val folder = RHRE3.tmpMusic
+                val filename = remixObject.musicAssociation!!
+                val fh = folder.child(filename)
+                val musicStream = zip.getInputStream(zip.getEntry(filename))
+                fh.write(musicStream, false)
+                musicStream.close()
+
+                remix.music = MusicData(fh, remix)
+            }
+
+            return remix to (missing to missing)
         }
 
         fun saveTo(remix: Remix, file: File) {

@@ -188,7 +188,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         if (y in 0 until Editor.ICON_COUNT_Y) {
                             val buttonIndex = y * Editor.ICON_COUNT_X + x
                             gameButtons[buttonIndex].apply {
-                                this.game = it.games[selection.getVariant(index).variant]
+                                this.game = it.games[selection.getVariant(index)?.variant ?: return@apply]
                                 if (selection.group == index) {
                                     this.selected = true
                                 }
@@ -201,11 +201,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             selection.groups.getOrNull(selection.group)?.also { group ->
                 group.games.forEachIndexed { index, game ->
-                    val y = index - selection.getCurrentVariant().variantScroll
+                    val y = index - (selection.getCurrentVariant()?.variantScroll ?: return@forEachIndexed)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
                         variantButtons[y].apply {
                             this.game = game
-                            if (selection.getCurrentVariant().variant == index) {
+                            if (selection.getCurrentVariant()!!.variant == index) {
                                 this.selected = true
                             }
                         }
@@ -217,9 +217,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.text = ""
                 it.textColor = null
             }
-            if (selection.groups.isNotEmpty() && selection.getCurrentVariant().placeableObjects.isNotEmpty()) {
+            if (selection.groups.isNotEmpty() && selection.getCurrentVariant()!!.placeableObjects.isNotEmpty()) {
                 val variant = selection.getCurrentVariant()
-                val objects = variant.placeableObjects
+                val objects = variant!!.placeableObjects
 
                 objects.forEachIndexed { index, datamodel ->
                     val y = 2 + (index - variant.pattern)
@@ -302,23 +302,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             override fun scrolled(amount: Int): Boolean {
                 if (isMouseOver()) {
                     val selection = editor.pickerSelection.currentSelection
+                    val currentVariant = selection.getCurrentVariant() ?: return false
                     when (stage.camera.getInputX()) {
                         in (location.realX + location.realWidth * 0.5f)..(location.realX + location.realWidth) -> {
-                            val old = selection.getCurrentVariant().pattern
-                            selection.getCurrentVariant().pattern =
-                                    (selection.getCurrentVariant().pattern + amount)
-                                            .coerceIn(0, selection.getCurrentVariant().maxPatternScroll)
-                            if (old != selection.getCurrentVariant().pattern) {
+                            val old = currentVariant.pattern
+                            currentVariant.pattern =
+                                    (currentVariant.pattern + amount)
+                                            .coerceIn(0, currentVariant.maxPatternScroll)
+                            if (old != currentVariant.pattern) {
                                 updateSelected()
                                 return true
                             }
                         }
                         in (variantButtons.first().location.realX)..(location.realX + location.realWidth * 0.5f) -> {
-                            val old = selection.getCurrentVariant().variantScroll
-                            selection.getCurrentVariant().variantScroll =
-                                    (selection.getCurrentVariant().variantScroll + amount)
-                                            .coerceIn(0, selection.getCurrentVariant().maxScroll)
-                            if (old != selection.getCurrentVariant().variantScroll) {
+                            val old = currentVariant.variantScroll
+                            currentVariant.variantScroll =
+                                    (currentVariant.variantScroll + amount)
+                                            .coerceIn(0, currentVariant.maxScroll)
+                            if (old != currentVariant.variantScroll) {
                                 updateSelected()
                                 return true
                             }
@@ -506,13 +507,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                         if (isVariant) {
                                             val current = selection.getCurrentVariant()
                                             if (isUp) {
-                                                if (current.variantScroll > 0) {
+                                                if (current?.variantScroll ?: 0 > 0) {
                                                     label.text = Editor.ARROWS[0]
                                                 } else {
                                                     label.text = Editor.ARROWS[2]
                                                 }
                                             } else {
-                                                if (current.variantScroll < current.maxScroll) {
+                                                if (current?.variantScroll ?: 0 < current?.maxScroll ?: 0) {
                                                     label.text = Editor.ARROWS[1]
                                                 } else {
                                                     label.text = Editor.ARROWS[3]
@@ -540,7 +541,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     super.onLeftClick(xPercent, yPercent)
                                     val selection = editor.pickerSelection.currentSelection
                                     if (isVariant) {
-                                        val current = selection.getCurrentVariant()
+                                        val current = selection.getCurrentVariant() ?: return
                                         if (isUp) {
                                             if (current.variantScroll > 0) {
                                                 current.variantScroll--
@@ -596,8 +597,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 if (visible && this.game != null) {
                                     val selection = editor.pickerSelection.currentSelection
                                     if (isVariant) {
-                                        selection.getVariant(selection.group).variant =
-                                                y + selection.getVariant(selection.group).variantScroll
+                                        selection.getVariant(selection.group)?.variant =
+                                                y + selection.getVariant(selection.group)!!.variantScroll
                                     } else {
                                         selection.group =
                                                 (y + editor.pickerSelection.currentSelection.groupScroll) * Editor.ICON_COUNT_X + x
@@ -635,7 +636,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             label.text = Editor.ARROWS[2]
                         } else {
                             val current = selection.getCurrentVariant()
-                            if (current.pattern > 0) {
+                            if (current?.pattern ?: 0 > 0) {
                                 label.text = Editor.ARROWS[0]
                             } else {
                                 label.text = Editor.ARROWS[2]
@@ -646,7 +647,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         val selection = editor.pickerSelection.currentSelection
-                        val current = selection.getCurrentVariant()
+                        val current = selection.getCurrentVariant() ?: return
                         if (current.pattern > 0) {
                             current.pattern--
                             updateSelected()
@@ -678,7 +679,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
                             label.text = Editor.ARROWS[3]
                         } else {
-                            val current = selection.getCurrentVariant()
+                            val current = selection.getCurrentVariant() ?: return
                             if (current.pattern < current.maxPatternScroll) {
                                 label.text = Editor.ARROWS[1]
                             } else {
@@ -690,7 +691,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         val selection = editor.pickerSelection.currentSelection
-                        val current = selection.getCurrentVariant()
+                        val current = selection.getCurrentVariant() ?: return
                         if (current.pattern < current.maxPatternScroll) {
                             current.pattern++
                             updateSelected()

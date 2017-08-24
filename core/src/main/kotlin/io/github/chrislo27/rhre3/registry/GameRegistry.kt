@@ -213,6 +213,9 @@ object GameRegistry : Disposable {
             (gameMap as MutableMap)[game.id] = game
             game.objects.forEach {
                 objectMap[it.id] = it
+                it.deprecatedIDs.forEach { dep ->
+                    objectMap[dep] = it
+                }
             }
 
             lastLoadedID = game.id
