@@ -89,12 +89,15 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return tree
         }
 
-        fun fromJson(tree: ObjectNode, remix: Remix): Remix {
+        fun fromJson(tree: ObjectNode, remix: Remix): Pair<Remix, Pair<Int, Int>> {
             remix.version = Version.fromString(tree["version"].asText())
             remix.databaseVersion = tree["databaseVersion"].asInt(-1)
 
             remix.playbackStart = tree["playbackStart"]?.floatValue() ?: 0f
             remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
+
+            var missing = 0
+            var missingCustom = 0
 
             // entities
             val entitiesArray = tree["entities"] as ArrayNode
@@ -106,7 +109,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         val entity: Entity = when (type) {
                             "model" -> {
                                 val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
-                                ?: error("Malformed model entiy object: missing datamodel ID (${ModelEntity.JSON_DATAMODEL})")
+                                ?: run {
+                                    missing++
+                                    if (node["isCustom"].asBoolean(false))
+                                        missingCustom++
+                                    return@forEach
+                                }
                                 GameRegistry.data.objectMap[datamodelID]?.createEntity(remix)
                                         ?: return@forEach
                             }
@@ -127,7 +135,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 remix.timeSignatures.fromTree(trackers["timeSignatures"] as ObjectNode)
             }
 
-            return remix
+            return remix to (missing to missingCustom)
         }
 
         fun pack(remix: Remix, stream: ZipOutputStream) {
@@ -148,7 +156,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        fun unpack(remix: Remix, zip: ZipFile) {
+        fun unpack(remix: Remix, zip: ZipFile): Pair<Remix, Pair<Int, Int>> {
             val jsonStream = zip.getInputStream(zip.getEntry("remix.json"))
             val objectNode: ObjectNode = JsonHandler.OBJECT_MAPPER.readTree(jsonStream) as ObjectNode
             jsonStream.close()
@@ -156,7 +164,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             val musicNode = objectNode["musicData"] as ObjectNode
             val musicPresent = musicNode["present"].booleanValue()
 
-            Remix.fromJson(objectNode, remix)
+            val result = Remix.fromJson(objectNode, remix)
 
             if (musicPresent) {
                 val folder = RHRE3.tmpMusic
@@ -167,6 +175,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 remix.music = MusicData(fh, remix)
             }
+
+            return result
         }
 
         fun saveTo(remix: Remix, file: File) {
