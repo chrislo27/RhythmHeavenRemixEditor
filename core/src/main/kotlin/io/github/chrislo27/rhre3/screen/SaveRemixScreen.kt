@@ -46,7 +46,7 @@ class SaveRemixScreen(main: RHRE3Application)
         this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE)
                 ?: getDefaultDirectory()
         val key = "screen.save.fileFilter"
-        val extensions = arrayOf("*.rhre3")
+        val extensions = arrayOf("*.${RHRE3.REMIX_FILE_EXTENSION}")
 
         fun applyLocalizationChanges() {
             this.extensionFilters.clear()

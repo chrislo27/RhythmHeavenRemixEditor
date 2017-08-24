@@ -34,6 +34,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_palette", "images/ui/icons/palette.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_info_button", "images/ui/icons/info_button.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_info", "images/ui/icons/info.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_folder", "images/ui/icons/folder.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_resetwindow", "images/ui/icons/resetwindow.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_fullscreen", "images/ui/icons/fullscreen.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_warn", "images/ui/icons/warn.png")
