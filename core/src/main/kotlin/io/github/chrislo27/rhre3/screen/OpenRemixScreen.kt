@@ -143,7 +143,6 @@ class OpenRemixScreen(main: RHRE3Application)
                         val zipFile = ZipFile(file)
                         val isRHRE2 = zipFile.getEntry("remix.json") == null
 
-                        // TODO handle RHRE2
                         val result = if (isRHRE2)
                             Remix.unpackRHRE2(editor.createRemix(), zipFile)
                         else

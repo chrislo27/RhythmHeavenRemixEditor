@@ -50,7 +50,6 @@ abstract class Theme {
         @HexColor lateinit var timeSignature: Color
 
         fun applyDefaults() {
-            // TODO
             playback = Color(0f, 1f, 0f, 1f)
             musicStart = Color(1f, 0f, 0f, 1f)
             tempoChange = Color(0.4f, 0.4f, 0.9f, 1f)

@@ -153,7 +153,7 @@ class MusicSelectScreen(main: RHRE3Application)
             label.text = Localization["screen.music.currentMusic",
                     if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
         } else {
-            label.text = Localization["screen.music.invalid"] // TODO use throwable?
+            label.text = Localization["screen.music.invalid", throwable::class.java.canonicalName]
         }
     }
 
