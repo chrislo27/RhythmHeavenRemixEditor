@@ -195,6 +195,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         preferences.flush()
         GameRegistry.dispose()
         persistWindowSettings()
+        Gdx.files.local("tmpMusic/").emptyDirectory()
     }
 
     override fun createDefaultFont(): FreeTypeFont {
