@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextField
@@ -37,7 +38,7 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
 
     override fun onTextChange(oldText: String) {
         super.onTextChange(oldText)
-        if (!hasFocus)
+        if (!hasFocus || editor.remix.playState != PlayState.STOPPED)
             return
         val int = text.toIntOrNull() ?: return
         editor.remix.camera.position.x = int.toFloat()
