@@ -42,7 +42,7 @@ class DataObject {
     lateinit var id: String
     lateinit var name: String
 
-    lateinit var requiresVersion: String
+//    lateinit var requiresVersion: String
 
     var series: String? = null
 

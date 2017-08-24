@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
@@ -18,8 +19,7 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import java.io.File
@@ -64,6 +64,13 @@ class OpenRemixScreen(main: RHRE3Application)
             applyLocalizationChanges()
         }
     }
+    private val loadButton: LoadButton
+    private val mainLabel: TextLabel<OpenRemixScreen>
+    @Volatile private var remix: Remix? = null
+        set(value) {
+            field = value
+            loadButton.visible = field != null
+        }
 
     init {
         stage as GenericStage
@@ -91,6 +98,23 @@ class OpenRemixScreen(main: RHRE3Application)
             this.text = "closeChooser"
             this.visible = false
         }
+        mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+            this.textAlign = Align.center
+            this.isLocalizationKey = false
+            this.text = ""
+        }
+        stage.centreStage.elements += mainLabel
+        loadButton = LoadButton(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.textAlign = Align.center
+                this.text = "screen.open.button"
+                this.isLocalizationKey = true
+            })
+            this.visible = false
+        }
+        stage.bottomStage.elements += loadButton
 
         stage.updatePositions()
     }
@@ -114,10 +138,12 @@ class OpenRemixScreen(main: RHRE3Application)
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
                     try {
+                        remix = null
                         val zipFile = ZipFile(file)
                         val isRHRE2 = zipFile.getEntry("remix.json") == null
                     } catch (t: Throwable) {
                         t.printStackTrace()
+                        mainLabel.text = Localization["screen.open.failed", t::class.java.canonicalName]
                     }
                 } else {
                     (stage as GenericStage).onBackButtonClick()
@@ -129,11 +155,28 @@ class OpenRemixScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         openPicker()
+        remix = null
+    }
+
+    override fun hide() {
+        super.hide()
+        mainLabel.text = ""
+        remix = null
     }
 
     override fun dispose() {
     }
 
     override fun tickUpdate() {
+    }
+
+    inner class LoadButton(palette: UIPalette, parent: UIElement<OpenRemixScreen>,
+                                       stage: Stage<OpenRemixScreen>)
+        : Button<OpenRemixScreen>(palette, parent, stage) {
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+
+        }
     }
 }

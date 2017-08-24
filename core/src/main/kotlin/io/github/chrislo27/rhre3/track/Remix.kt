@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
@@ -47,6 +48,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             remix.apply {
                 tree.put("version", RHRE3.VERSION.toString())
+                tree.put("databaseVersion", GameRegistry.data.version)
 
                 tree.put("playbackStart", playbackStart)
                 tree.put("musicStartSec", musicStartSec)
@@ -88,6 +90,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
 
         fun fromJson(tree: ObjectNode, remix: Remix): Remix {
+            remix.version = Version.fromString(tree["version"].asText())
+            remix.databaseVersion = tree["databaseVersion"].asInt(-1)
+
             remix.playbackStart = tree["playbackStart"]?.floatValue() ?: 0f
             remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
 
@@ -173,6 +178,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     val main: RHRE3Application
         get() = editor.main
+
+    var version: Version = RHRE3.VERSION
+        private set
+    var databaseVersion: Int = -1
+        private set
 
     val entities: MutableList<Entity> = mutableListOf()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()

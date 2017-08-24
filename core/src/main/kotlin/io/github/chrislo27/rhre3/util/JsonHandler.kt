@@ -18,7 +18,7 @@ object JsonHandler {
 //	val GSON: Gson = createObjectMapper()
 
     @JvmStatic
-    fun createObjectMapper(failOnUnknown: Boolean = true): ObjectMapper {
+    fun createObjectMapper(failOnUnknown: Boolean = false): ObjectMapper {
         val mapper = ObjectMapper()
                 .enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
                 .enable(SerializationFeature.INDENT_OUTPUT)

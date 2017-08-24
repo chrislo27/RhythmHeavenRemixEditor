@@ -3,6 +3,8 @@ package io.github.chrislo27.rhre3.registry
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
+import io.github.chrislo27.rhre3.git.ChangelogObject
+import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
@@ -79,6 +81,11 @@ object GameRegistry : Disposable {
 
             gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
+        val changelog: ChangelogObject
+        private val currentObj: CurrentObject
+        val version: Int
+            get() = currentObj.version
+        val editorVersion: Version
 
         private val folders: List<FileHandle> by lazy {
             val list = SFX_FOLDER.list { fh ->
@@ -92,9 +99,21 @@ object GameRegistry : Disposable {
 
             list
         }
+        private val currentObjFh: FileHandle by lazy {
+            GitHelper.SOUNDS_DIR.child("current.json")
+        }
 
         private var index: Int = 0
         var lastLoadedID: String? = null
+
+        init {
+            JsonHandler.setFailOnUnknown(false)
+            currentObj = JsonHandler.fromJson(currentObjFh.readString())
+            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
+
+            editorVersion = Version.fromString(currentObj.requiresVersion)
+            JsonHandler.setFailOnUnknown(true)
+        }
 
         private fun whenDone() {
             ready = true
@@ -149,8 +168,6 @@ object GameRegistry : Disposable {
                                   Series.valueOf(
                                           dataObject.series?.toUpperCase(
                                                   Locale.ROOT) ?: Series.OTHER.name),
-                                  Version.fromString(
-                                          dataObject.requiresVersion),
                                   mutableListOf(),
                                   Texture(folder.child(
                                           ICON_FILENAME)),
