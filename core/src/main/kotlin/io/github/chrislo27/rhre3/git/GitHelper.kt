@@ -17,7 +17,7 @@ import org.eclipse.jgit.transport.URIish
 object GitHelper {
 
     val SOUNDS_DIR by lazy {
-        val f: FileHandle = Gdx.files.external(".rhre3/sfx/")
+        val f: FileHandle = Gdx.files.external(".rhre3/${RHRE3.DATABASE_BRANCH}/sfx/")
 
         f.mkdirs()
 
