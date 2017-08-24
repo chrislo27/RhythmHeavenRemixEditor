@@ -383,6 +383,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }.apply {
                 this.location.set(screenHeight = 0.1f)
+                this.textWrapping = false
             }
             this.elements += subtitleLabel
             subtitleField = object : TextField<EditorScreen>(palette, this@apply, this@apply) {
