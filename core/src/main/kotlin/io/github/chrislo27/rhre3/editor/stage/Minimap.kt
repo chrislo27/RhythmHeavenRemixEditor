@@ -80,7 +80,8 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             batch.drawRect(x + (camera.position.x - camera.viewportWidth / 2) * unitWidth, y,
                            camera.viewportWidth * unitWidth, pxHeight, 2f)
 
-            if (isMouseOver() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (isMouseOver() && editor.clickOccupation == Editor.ClickOccupation.None
+                    && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
                 editor.camera.position.x = percent * maxX
             }
