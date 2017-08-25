@@ -34,13 +34,21 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
         val wholes: Int = percentage.toInt()
         val fractional: Float = percentage - percentage.toInt()
 
+        if (sequenceLength <= 0f)
+            error("Sequence length for keep the beat cannot be negative or zero ($sequenceLength)")
+
         // TODO optimize?
         internal.clear()
-        for (index in 0 until (percentage * cues.size).toInt()) {
+
+        var index = 0
+        while (true) {
             val cycle = index / cues.size
             val remIndex: Int = index % cues.size
             val pointer: CuePointer = cues[remIndex]
             val beat = pointer.beat + cycle * sequenceLength
+
+            if (beat >= this.bounds.width)
+                break
 
             internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
                 this.updateBounds {
@@ -51,6 +59,8 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Missing object ${pointer.id} while trying to populate keep the beat ${datamodel.id}")
+
+            index++
         }
     }
 
