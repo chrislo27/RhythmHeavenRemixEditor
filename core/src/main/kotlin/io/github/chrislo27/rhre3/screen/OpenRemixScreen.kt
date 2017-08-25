@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -153,6 +154,14 @@ class OpenRemixScreen(main: RHRE3Application)
                             return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
                         }
 
+                        if (result.isAutosave) {
+                            loadButton.alsoDo = {}
+                        } else {
+                            loadButton.alsoDo = {
+                                editor.prepAutosaveFile(FileHandle(file))
+                            }
+                        }
+
                         remix = result.remix
                         val remix = remix!!
                         val missingAssets = result.missing
@@ -180,6 +189,7 @@ class OpenRemixScreen(main: RHRE3Application)
                         remix = null
                     }
                 } else {
+                    loadButton.alsoDo = {}
                     (stage as GenericStage).onBackButtonClick()
                 }
             }
@@ -196,6 +206,7 @@ class OpenRemixScreen(main: RHRE3Application)
         super.hide()
         mainLabel.text = ""
         remix = null
+        loadButton.alsoDo = {}
     }
 
     override fun dispose() {
@@ -208,10 +219,13 @@ class OpenRemixScreen(main: RHRE3Application)
                            stage: Stage<OpenRemixScreen>)
         : Button<OpenRemixScreen>(palette, parent, stage) {
 
+        @Volatile var alsoDo = {}
+
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
             val remix = remix ?: return
             editor.remix = remix
+            alsoDo()
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
         }
     }

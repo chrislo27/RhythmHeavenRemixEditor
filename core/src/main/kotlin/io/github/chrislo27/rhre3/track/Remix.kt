@@ -247,6 +247,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
 
         fun saveTo(remix: Remix, file: File, isAutosave: Boolean) {
+            if (!file.exists()) {
+                file.createNewFile()
+            }
             val stream = ZipOutputStream(FileOutputStream(file))
             pack(remix, stream, isAutosave)
             stream.close()

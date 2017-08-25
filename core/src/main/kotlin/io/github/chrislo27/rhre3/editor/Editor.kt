@@ -43,10 +43,13 @@ import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -136,7 +139,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun prepAutosaveFile(baseFile: FileHandle) {
-        autosaveFile = baseFile.child(baseFile.nameWithoutExtension() + ".autosave.${RHRE3.REMIX_FILE_EXTENSION}")
+        autosaveFile = baseFile.sibling(baseFile.nameWithoutExtension() + ".autosave.${RHRE3.REMIX_FILE_EXTENSION}")
     }
 
     sealed class ClickOccupation {
@@ -761,9 +764,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (autosaveFrequency > 0 && autosaveFile != null) {
             timeUntilAutosave -= Gdx.graphics.deltaTime
             if (timeUntilAutosave <= 0) {
-                resetAutosaveTimer()
-                // TODO signal autosave
-                Remix.saveTo(remix, autosaveFile.file(), true)
+                autosaveFrequency = 0
+                launch(CommonPool) {
+                    Remix.saveTo(remix, autosaveFile.file(), true)
+                    Gdx.app.postRunnable {
+                        // TODO signal autosave
+
+                        resetAutosaveTimer()
+                        Toolboks.LOGGER.info("Autosaved (frequency every $autosaveFrequency minute(s))")
+                    }
+                }
             }
         }
 
