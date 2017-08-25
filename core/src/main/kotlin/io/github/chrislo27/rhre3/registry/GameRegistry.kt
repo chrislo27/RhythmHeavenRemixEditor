@@ -1,8 +1,10 @@
 package io.github.chrislo27.rhre3.registry
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.git.ChangelogObject
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
@@ -25,6 +27,9 @@ object GameRegistry : Disposable {
 
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
+    }
+    val CUSTOM_FOLDER: FileHandle by lazy {
+        Gdx.files.local("customSounds/")
     }
 
     private var backingData: RegistryData = RegistryData()
@@ -87,7 +92,11 @@ object GameRegistry : Disposable {
             get() = currentObj.version
         val editorVersion: Version
 
-        private val folders: List<FileHandle> by lazy {
+        class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
+            val textureFh = folder.child(ICON_FILENAME)
+        }
+
+        private val folders: List<SfxDirectory> by lazy {
             val list = SFX_FOLDER.list { fh ->
                 val datajson = fh.resolve(DATA_JSON_FILENAME)
                 fh.isDirectory && datajson.exists() && datajson.isFile
@@ -97,7 +106,14 @@ object GameRegistry : Disposable {
                 error("No valid sfx folders with $DATA_JSON_FILENAME inside found")
             }
 
-            list
+            CUSTOM_FOLDER.mkdirs()
+            CUSTOM_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false, "UTF-8")
+            val custom = CUSTOM_FOLDER.list { fh ->
+                fh.isDirectory
+            }.toList()
+
+            list.map { SfxDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
+                    custom.map { SfxDirectory(it, true, it.child(DATA_JSON_FILENAME)) }
         }
         private val currentObjFh: FileHandle by lazy {
             GitHelper.SOUNDS_DIR.child("current.json")
@@ -158,56 +174,88 @@ object GameRegistry : Disposable {
 
             objectMap as MutableMap
 
-            val folder: FileHandle = folders[index]
-            val datajsonFile: FileHandle = folder.child(DATA_JSON_FILENAME)
-            val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
+            val directive = folders[index]
+            val folder: FileHandle = directive.folder
+            val datajsonFile: FileHandle = directive.datajson
+            val game: Game
 
-            val game: Game = Game(dataObject.id,
-                                  dataObject.name,
-                                  Series.valueOf(
-                                          dataObject.series?.toUpperCase(
-                                                  Locale.ROOT) ?: Series.OTHER.name),
-                                  mutableListOf(),
-                                  Texture(folder.child(
-                                          ICON_FILENAME)),
-                                  dataObject.group ?: dataObject.name,
-                                  dataObject.groupDefault,
-                                  dataObject.priority, false)
+            if (datajsonFile.exists()) {
+                val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
 
-            dataObject.objects.mapTo(game.objects as MutableList) { obj ->
-                when (obj) {
-                    is CueObject ->
-                        Cue(game, obj.id, obj.deprecatedIDs, obj.name,
-                            obj.duration,
-                            obj.stretchable, obj.repitchable,
-                            SFX_FOLDER.child(
-                                    "${obj.id}.${obj.fileExtension}"),
-                            obj.introSound, obj.endingSound,
-                            obj.responseIDs,
-                            obj.baseBpm, obj.loops)
-                    is EquidistantObject ->
-                        Equidistant(game, obj.id, obj.deprecatedIDs,
-                                    obj.name, obj.distance,
-                                    obj.stretchable,
-                                    obj.cues.mapToDatamodel())
-                    is KeepTheBeatObject ->
-                        KeepTheBeat(game, obj.id, obj.deprecatedIDs,
-                                    obj.name, obj.defaultDuration,
-                                    obj.cues.mapToDatamodel())
-                    is PatternObject ->
-                        Pattern(game, obj.id, obj.deprecatedIDs,
-                                obj.name, obj.cues.mapToDatamodel(), obj.stretchable)
-                    is RandomCueObject ->
-                        RandomCue(game, obj.id, obj.deprecatedIDs,
-                                  obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
-                    is EndRemixObject ->
-                        EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
-                    is SubtitleEntityObject ->
-                        Subtitle(game, obj.id, obj.deprecatedIDs, obj.name)
+                game = Game(dataObject.id,
+                            dataObject.name,
+                            if (directive.isCustom) Series.CUSTOM
+                            else Series.valueOf(
+                                    dataObject.series?.toUpperCase(
+                                            Locale.ROOT) ?: Series.OTHER.name),
+                            mutableListOf(),
+                            if (directive.textureFh.exists()) Texture(directive.textureFh)
+                            else Texture("images/missing_game_icon.png"),
+                            dataObject.group ?: dataObject.name,
+                            dataObject.groupDefault,
+                            dataObject.priority, directive.isCustom)
+
+                dataObject.objects.mapTo(game.objects as MutableList) { obj ->
+                    when (obj) {
+                        is CueObject ->
+                            Cue(game, obj.id, obj.deprecatedIDs, obj.name,
+                                obj.duration,
+                                obj.stretchable, obj.repitchable,
+                                SFX_FOLDER.child(
+                                        "${obj.id}.${obj.fileExtension}"),
+                                obj.introSound, obj.endingSound,
+                                obj.responseIDs,
+                                obj.baseBpm, obj.loops)
+                        is EquidistantObject ->
+                            Equidistant(game, obj.id, obj.deprecatedIDs,
+                                        obj.name, obj.distance,
+                                        obj.stretchable,
+                                        obj.cues.mapToDatamodel())
+                        is KeepTheBeatObject ->
+                            KeepTheBeat(game, obj.id, obj.deprecatedIDs,
+                                        obj.name, obj.defaultDuration,
+                                        obj.cues.mapToDatamodel())
+                        is PatternObject ->
+                            Pattern(game, obj.id, obj.deprecatedIDs,
+                                    obj.name, obj.cues.mapToDatamodel(), obj.stretchable)
+                        is RandomCueObject ->
+                            RandomCue(game, obj.id, obj.deprecatedIDs,
+                                      obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
+                        is EndRemixObject ->
+                            EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
+                        is SubtitleEntityObject ->
+                            Subtitle(game, obj.id, obj.deprecatedIDs, obj.name)
+                    }
+                }
+
+                DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
+            } else {
+                val id = folder.nameWithoutExtension()
+                if (gameMap.containsKey(id)) {
+                    throw UnsupportedOperationException("Cannot load custom sound folder $id/ - already exists in registry")
+                }
+                game = Game(id,
+                            id,
+                            Series.CUSTOM,
+                            mutableListOf(),
+                            if (directive.textureFh.exists()) Texture(directive.textureFh)
+                            else Texture("images/missing_game_icon.png"),
+                            id,
+                            true,
+                            0, true)
+
+                val sfxList = directive.folder.list { fh ->
+                    fh.isFile && fh.extension in RHRE3.SUPPORTED_SOUND_TYPES
+                }.toList()
+
+                game.objects as MutableList
+                sfxList.forEach { fh ->
+                    val name = fh.nameWithoutExtension()
+                    game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
+                                        true, true, fh, null, null,
+                                        listOf(), 0f, false)
                 }
             }
-
-            DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
 
             (gameMap as MutableMap)[game.id] = game
             game.objects.forEach {
