@@ -317,7 +317,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
 
-            fun isInDeleteZone(): Boolean = top <= 0f
+            fun isInDeleteZone(): Boolean = editor.camera.getInputY() < 0f
 
         }
     }
