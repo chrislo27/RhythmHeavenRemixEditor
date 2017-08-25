@@ -32,6 +32,7 @@ import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
+import io.github.chrislo27.rhre3.screen.InfoScreen
 import io.github.chrislo27.rhre3.tempo.TempoChange
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
@@ -118,6 +119,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return field
         }
     private var wasStretchCursor = false
+    var timeUntilAutosave: Float = -1f
+    var autosaveFrequency: Int = 0
+        private set
+
+    fun resetAutosaveTimer() {
+        autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
+                                                        InfoScreen.DEFAULT_AUTOSAVE_TIME)
+                .coerceIn(InfoScreen.timers.first(), InfoScreen.timers.last())
+
+        timeUntilAutosave = 60f * autosaveFrequency
+    }
 
     sealed class ClickOccupation {
 
@@ -663,7 +675,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         remix.timeUpdate(Gdx.graphics.deltaTime)
 
         val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
-        val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
+        val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
+                Input.Keys.CONTROL_RIGHT)
         val alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
         val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
@@ -735,6 +748,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (remix.playState != PlayState.STOPPED)
             return
+
+        if (autosaveFrequency > 0) {
+            timeUntilAutosave -= Gdx.graphics.deltaTime
+            if (timeUntilAutosave <= 0) {
+                resetAutosaveTimer()
+                // TODO autosave
+            }
+        }
 
         if (!stage.isTyping) {
             if (left) {
@@ -834,7 +855,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentGame()
                     builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
-                        builder.separator().append(Localization["editor.msg.numSelected", this.selection.size.toString()])
+                        builder.separator().append(
+                                Localization["editor.msg.numSelected", this.selection.size.toString()])
 
                         if (clickOccupation == ClickOccupation.None) {
                             if (selection.all(Entity::supportsCopying)) {
@@ -862,7 +884,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             }
 
                             if (first is SubtitleEntity) {
-                                builder.separator().append(Localization["editor.msg.subtitle.${if (stage.subtitleField.visible) "finish" else "edit"}"])
+                                builder.separator().append(
+                                        Localization["editor.msg.subtitle.${if (stage.subtitleField.visible) "finish" else "edit"}"])
                             }
                         }
                     }

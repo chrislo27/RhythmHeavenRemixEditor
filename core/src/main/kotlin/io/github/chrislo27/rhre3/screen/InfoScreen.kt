@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
@@ -27,12 +28,15 @@ class InfoScreen(main: RHRE3Application)
     companion object {
 
         const val DEFAULT_AUTOSAVE_TIME = 5
+        val timers = listOf(0, 1, 2, 3, 4, 5, 10, 15)
 
     }
 
     override val stage: Stage<InfoScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     private val preferences: Preferences
         get() = main.preferences
+    private val editor: Editor
+        get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
 
     init {
         stage as GenericStage<InfoScreen>
@@ -103,13 +107,13 @@ class InfoScreen(main: RHRE3Application)
                     textLabel.text = Localization["screen.info.autosaveTimer",
                             if (timers[index] == 0) Localization["screen.info.autosaveTimerOff"]
                             else Localization["screen.info.autosaveTimerMin", timers[index]]]
+                    editor.resetAutosaveTimer()
                 }
 
                 private fun persist() {
                     preferences.putInteger(PreferenceKeys.SETTINGS_AUTOSAVE, timers[index]).flush()
                 }
 
-                private val timers = listOf(0, 1, 2, 3, 4, 5, 10, 15)
                 private var index: Int = run {
                     val default = DEFAULT_AUTOSAVE_TIME
                     val pref = preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE, default)
@@ -132,8 +136,8 @@ class InfoScreen(main: RHRE3Application)
                     if (index >= timers.size)
                         index = 0
 
-                    updateText()
                     persist()
+                    updateText()
                 }
 
                 override fun onRightClick(xPercent: Float, yPercent: Float) {
@@ -142,8 +146,8 @@ class InfoScreen(main: RHRE3Application)
                     if (index < 0)
                         index = timers.size - 1
 
-                    updateText()
                     persist()
+                    updateText()
                 }
             }.apply {
                 this.addLabel(TextLabel(palette, this, this.stage).apply {
