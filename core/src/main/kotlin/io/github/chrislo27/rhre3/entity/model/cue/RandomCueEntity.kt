@@ -20,9 +20,11 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
         internal.clear()
         internal +=
                 datamodel.cues.map { GameRegistry.data.objectMap[it.id] }.random()?.createEntity(remix)?.apply {
-                    this.bounds.x = this@RandomCueEntity.bounds.x
-                    this.bounds.width = this@RandomCueEntity.bounds.width
-                    this.bounds.y = this@RandomCueEntity.bounds.y
+                    this.updateBounds {
+                        this.bounds.x = this@RandomCueEntity.bounds.x
+                        this.bounds.width = this@RandomCueEntity.bounds.width
+                        this.bounds.y = this@RandomCueEntity.bounds.y
+                    }
                 } ?: error("Null returned on randomization")
     }
 
