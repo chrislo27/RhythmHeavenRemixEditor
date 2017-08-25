@@ -112,7 +112,6 @@ object GameRegistry : Disposable {
             changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
-            JsonHandler.setFailOnUnknown(true)
         }
 
         private fun whenDone() {
