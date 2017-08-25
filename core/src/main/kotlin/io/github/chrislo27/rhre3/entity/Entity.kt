@@ -70,12 +70,14 @@ abstract class Entity(val remix: Remix) {
     }
 
     open fun readData(objectNode: ObjectNode) {
-        bounds.set(
-                objectNode["beat"].floatValue(),
-                objectNode["track"].floatValue().toInt().toFloat(),
-                objectNode["width"].floatValue(),
-                objectNode["height"].floatValue().toInt().toFloat()
-                  )
+        updateBounds {
+            bounds.set(
+                    objectNode["beat"].floatValue(),
+                    objectNode["track"].floatValue().toInt().toFloat(),
+                    objectNode["width"].floatValue(),
+                    objectNode["height"].floatValue().toInt().toFloat()
+                      )
+        }
 
         if (this is IRepitchable) {
             semitone = objectNode["semitone"].intValue()
