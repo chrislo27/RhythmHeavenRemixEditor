@@ -17,25 +17,35 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
 
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)
+        var currentRelative: Float = 0f
         internal.forEachIndexed { index, it ->
-            it.bounds.x = this.bounds.x + index * this.bounds.width
+            val track = (it.bounds.y - this.bounds.y).toInt()
+
+            if (track == 0 && index > 0) {
+                currentRelative += this@EquidistantEntity.bounds.width
+            }
+
+            it.bounds.x = this.bounds.x + currentRelative
             it.bounds.width = this.bounds.width
-            it.bounds.y
+            it.bounds.y = this.bounds.y + track.toFloat()
         }
     }
 
     init {
         datamodel.cues.mapIndexedTo(internal) { index, pointer ->
             GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
-                this.bounds.x = this@EquidistantEntity.bounds.x + pointer.beat
-                this.bounds.y = this@EquidistantEntity.bounds.y + pointer.track
-                this.bounds.width = this@EquidistantEntity.bounds.width
+                this.updateBounds {
+                    this.bounds.x = this@EquidistantEntity.bounds.x
+                    this.bounds.y = this@EquidistantEntity.bounds.y + pointer.track
+                    this.bounds.width = this@EquidistantEntity.bounds.width
+                }
 
                 // apply cue pointer settings
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Object with id ${pointer.id} not found")
         }
         this.bounds.width = datamodel.duration
+        updateInternalCache(bounds)
     }
 
     override fun copy(remix: Remix): EquidistantEntity {

@@ -43,9 +43,11 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
             val beat = pointer.beat + cycle * sequenceLength
 
             internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
-                this.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
-                this.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track
-                this.bounds.width = pointer.duration
+                this.updateBounds {
+                    this.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
+                    this.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track
+                    this.bounds.width = pointer.duration
+                }
 
                 (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Missing object ${pointer.id} while trying to populate keep the beat ${datamodel.id}")
