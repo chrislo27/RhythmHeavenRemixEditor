@@ -21,7 +21,7 @@ class CuePointer {
     val duration: Float
         get() =
             if (backingDuration <= 0f) {
-                (GameRegistry.data.objectMap[id] as DurationModel).duration
+                (GameRegistry.data.objectMap[id] as? DurationModel)?.duration ?: error("$id is not a DurationModel")
             } else {
                 backingDuration
             }
