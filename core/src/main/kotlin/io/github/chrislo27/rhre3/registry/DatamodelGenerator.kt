@@ -1,10 +1,7 @@
 package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.files.FileHandle
-import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
-import io.github.chrislo27.rhre3.registry.datamodel.impl.KeepTheBeat
-import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
+import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.json.DataObject
 import java.util.*
 
@@ -87,13 +84,13 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                                          ))
         game.objects +=
                 KeepTheBeat(game, "${id}_flippingB", mutableListOf(),
-                                 "flipping - back", 2f,
-                                 mutableListOf(
-                                CuePointer(
-                                        "$id/flipB1", 0f),
-                                CuePointer(
-                                        "$id/flipB2", 1f)
-                                     ))
+                            "flipping - back", 2f,
+                            mutableListOf(
+                                    CuePointer(
+                                            "$id/flipB1", 0f),
+                                    CuePointer(
+                                            "$id/flipB2", 1f)
+                                         ))
         game.objects +=
                 Pattern(game, "${id}_thatsit", mutableListOf(),
                         "that's it!",
@@ -459,32 +456,47 @@ manzaiBirds/umette_umena"""
 
         game.objects.addAll(addedCues)
 
-        addedCues.forEach {
-            game.objects.add(Pattern(game, "manzaiBirds_${it.id}",
-                                     mutableListOf(), it.name,
-                                     mutableListOf(
-                                             CuePointer(
-                                                     it.id, 0f, 2.5f),
-                                             CuePointer(
-                                                     "manzaiBirds/haihai1",
-                                                     2.5f),
-                                             CuePointer(
-                                                     "manzaiBirds/haihai1",
-                                                     3f)
-                                                  ), false))
-            game.objects.add(
-                    Pattern(game, "manzaiBirds_${it.id}_boing",
-                            mutableListOf(), "${it.name} BOING!",
-                            mutableListOf(
-                                    CuePointer(
-                                            it.id, 0f, 1.5f),
-                                    CuePointer(
-                                            "manzaiBirds/boing",
-                                            1.5f),
-                                    CuePointer(
-                                            "manzaiBirds/donaiyanen",
-                                            2.5f)
-                                         ), false))
+        val patterns = addedCues.map {
+            Pattern(game, "manzaiBirds_${it.id}",
+                    mutableListOf(), it.name,
+                    mutableListOf(
+                            CuePointer(
+                                    it.id, 0f, 2.5f),
+                            CuePointer(
+                                    "manzaiBirds/haihai1",
+                                    2.5f),
+                            CuePointer(
+                                    "manzaiBirds/haihai1",
+                                    3f)
+                                 ), false)
+        }
+        val boings = addedCues.map {
+            Pattern(game, "manzaiBirds_${it.id}_boing",
+                    mutableListOf(), "${it.name} BOING!",
+                    mutableListOf(
+                            CuePointer(
+                                    it.id, 0f, 1.5f),
+                            CuePointer(
+                                    "manzaiBirds/boing",
+                                    1.5f),
+                            CuePointer(
+                                    "manzaiBirds/donaiyanen",
+                                    2.5f)
+                                 ), false)
+        }
+
+        game.objects += RandomCue(game, "manzaiBirds_randomNormal",
+                                  listOf(), "random \"hai hai!\" phrase",
+                                  patterns.map { CuePointer(it.id, 0f) },
+                                  listOf())
+        game.objects += RandomCue(game, "manzaiBirds_randomBoing",
+                                  listOf(), "random boing!",
+                                  boings.map { CuePointer(it.id, 0f) },
+                                  listOf())
+
+        patterns.zip(boings).forEach {
+            game.objects += it.first
+            game.objects += it.second
         }
     }
 
