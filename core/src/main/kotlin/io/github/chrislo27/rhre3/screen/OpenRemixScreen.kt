@@ -49,13 +49,15 @@ class OpenRemixScreen(main: RHRE3Application)
 
         fun applyLocalizationChanges() {
             this.extensionFilters.clear()
-            val filter = FileChooser.ExtensionFilter(Localization["screen.save.fileFilter"],
+//            val filter = FileChooser.ExtensionFilter(Localization["screen.save.fileFilter"],
+//                                                     "*.${RHRE3.REMIX_FILE_EXTENSION}",
+//                                                     "*.autosave.${RHRE3.REMIX_FILE_EXTENSION}")
+            val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterBoth"],
                                                      "*.${RHRE3.REMIX_FILE_EXTENSION}",
-                                                     "*.autosave.${RHRE3.REMIX_FILE_EXTENSION}")
+                                                     "*.brhre2")
 
             this.extensionFilters += filter
-            this.extensionFilters += FileChooser.ExtensionFilter(Localization["screen.open.fileFilterRHRE2"],
-                                                                 "*.brhre2")
+//            this.extensionFilters += FileChooser.ExtensionFilter(Localization["screen.open.fileFilterRHRE2"], "*.brhre2")
             this.selectedExtensionFilter = this.extensionFilters.first()
 
             this.title = Localization["screen.open.fileChooserTitle"]
