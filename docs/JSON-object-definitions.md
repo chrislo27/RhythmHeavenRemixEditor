@@ -143,8 +143,7 @@ use with the call and response/copycat tool.
 
 If `baseBpm` is used, the sound effect will be pitched
 accordingly during playback based on the current tempo relative to the value
-set in `baseBpm`. The duration of the sound relative to the original duration
-will also affect the pitch (only applicable if the cue is `stretchable`).
+set in `baseBpm`.
 
 The `loops` field is a boolean indicating if the sound should loop.
 
