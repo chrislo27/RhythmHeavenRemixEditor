@@ -36,7 +36,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
         // TODO optimize?
         internal.clear()
-        for (index in 0..(percentage * cues.size).toInt()) {
+        for (index in 0 until (percentage * cues.size).toInt()) {
             val cycle = index / cues.size
             val remIndex: Int = index % cues.size
             val pointer: CuePointer = cues[remIndex]
