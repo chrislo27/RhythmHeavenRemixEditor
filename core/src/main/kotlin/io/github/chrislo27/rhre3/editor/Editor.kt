@@ -832,7 +832,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     is ClickOccupation.CreatingSelection -> {
                         clickOccupation.updateRectangle()
                     }
-                    else -> {
+                    ClickOccupation.None -> {
+                        if (selection.isNotEmpty() &&
+                                (Gdx.input.isKeyJustPressed(Input.Keys.DEL) ||
+                                        Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
+                            remix.entities.removeAll(this.selection)
+                            remix.addActionWithoutMutating(GroupedAction(listOf(
+                                    EntityRemoveAction(this, this.selection, this.selection.map { Rectangle(it.bounds) }),
+                                    EntitySelectionAction(this, this.selection.toList(), listOf())
+                                                                               )))
+                            this.selection = listOf()
+                        }
                     }
                 }
             }
