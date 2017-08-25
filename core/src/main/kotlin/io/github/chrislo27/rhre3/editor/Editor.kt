@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -98,6 +99,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         set(value) {
             field.dispose()
             field = value
+            autosaveFile = null
+            resetAutosaveTimer()
         }
     var theme: Theme = DarkTheme()
     val stage: EditorStage = EditorStage(
@@ -122,6 +125,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     var timeUntilAutosave: Float = -1f
     var autosaveFrequency: Int = 0
         private set
+    private var autosaveFile: FileHandle? = null
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -129,6 +133,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 .coerceIn(InfoScreen.timers.first(), InfoScreen.timers.last())
 
         timeUntilAutosave = 60f * autosaveFrequency
+    }
+
+    fun prepAutosaveFile(baseFile: FileHandle) {
+        autosaveFile = baseFile.child(baseFile.nameWithoutExtension() + ".autosave.${RHRE3.REMIX_FILE_EXTENSION}")
     }
 
     sealed class ClickOccupation {
@@ -749,11 +757,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (remix.playState != PlayState.STOPPED)
             return
 
-        if (autosaveFrequency > 0) {
+        val autosaveFile = autosaveFile
+        if (autosaveFrequency > 0 && autosaveFile != null) {
             timeUntilAutosave -= Gdx.graphics.deltaTime
             if (timeUntilAutosave <= 0) {
                 resetAutosaveTimer()
-                // TODO autosave
+                // TODO signal autosave
+                Remix.saveTo(remix, autosaveFile.file(), true)
             }
         }
 

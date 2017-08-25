@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -130,7 +131,8 @@ class SaveRemixScreen(main: RHRE3Application)
                         else
                             file
 
-                        Remix.saveTo(editor.remix, correctFile)
+                        Remix.saveTo(editor.remix, correctFile, false)
+                        editor.prepAutosaveFile(FileHandle(correctFile))
 
                         mainLabel.text = Localization["screen.save.success"]
                     } catch (t: Throwable) {

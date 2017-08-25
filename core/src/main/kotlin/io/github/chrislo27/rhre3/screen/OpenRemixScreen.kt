@@ -49,7 +49,8 @@ class OpenRemixScreen(main: RHRE3Application)
         fun applyLocalizationChanges() {
             this.extensionFilters.clear()
             val filter = FileChooser.ExtensionFilter(Localization["screen.save.fileFilter"],
-                                                     "*.${RHRE3.REMIX_FILE_EXTENSION}")
+                                                     "*.${RHRE3.REMIX_FILE_EXTENSION}",
+                                                     "*.autosave.${RHRE3.REMIX_FILE_EXTENSION}")
 
             this.extensionFilters += filter
             this.extensionFilters += FileChooser.ExtensionFilter(Localization["screen.open.fileFilterRHRE2"],
@@ -152,9 +153,9 @@ class OpenRemixScreen(main: RHRE3Application)
                             return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
                         }
 
-                        remix = result.first
+                        remix = result.remix
                         val remix = remix!!
-                        val missingAssets = result.second
+                        val missingAssets = result.missing
                         mainLabel.text = Localization["screen.open.info",
                                 goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
                                 goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version),

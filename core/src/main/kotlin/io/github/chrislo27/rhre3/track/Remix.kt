@@ -38,6 +38,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     : ActionHistory<Remix>(), Disposable {
 
     companion object {
+
+        class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
+                            val isAutosave: Boolean)
+
         /*
 
         To correctly do persistent data:
@@ -47,7 +51,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
          */
 
-        fun toJson(remix: Remix): ObjectNode {
+        fun toJson(remix: Remix, isAutosave: Boolean): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
 
             remix.apply {
@@ -56,6 +60,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 tree.put("playbackStart", playbackStart)
                 tree.put("musicStartSec", musicStartSec)
+
+                tree.put("isAutosave", isAutosave)
 
                 // music
                 run {
@@ -93,7 +99,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return tree
         }
 
-        fun fromJson(tree: ObjectNode, remix: Remix): Pair<Remix, Pair<Int, Int>> {
+        fun fromJson(tree: ObjectNode, remix: Remix): RemixLoadInfo {
             remix.version = Version.fromString(tree["version"].asText())
             remix.databaseVersion = tree["databaseVersion"].asInt(-1)
 
@@ -139,11 +145,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 remix.timeSignatures.fromTree(trackers["timeSignatures"] as ObjectNode)
             }
 
-            return remix to (missing to missingCustom)
+            return RemixLoadInfo(remix, missing to missingCustom,
+                                 tree["isAutosave"]?.asBoolean(false) ?: false)
         }
 
-        fun pack(remix: Remix, stream: ZipOutputStream) {
-            val objectNode = Remix.toJson(remix)
+        fun pack(remix: Remix, stream: ZipOutputStream, isAutosave: Boolean) {
+            val objectNode = Remix.toJson(remix, isAutosave)
             stream.setComment("Rhythm Heaven Remix Editor 3 savefile - ${RHRE3.VERSION}")
 
             stream.putNextEntry(ZipEntry("remix.json"))
@@ -160,7 +167,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        fun unpack(remix: Remix, zip: ZipFile): Pair<Remix, Pair<Int, Int>> {
+        fun unpack(remix: Remix, zip: ZipFile): RemixLoadInfo {
             val jsonStream = zip.getInputStream(zip.getEntry("remix.json"))
             val objectNode: ObjectNode = JsonHandler.OBJECT_MAPPER.readTree(jsonStream) as ObjectNode
             jsonStream.close()
@@ -183,7 +190,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return result
         }
 
-        fun unpackRHRE2(remix: Remix, zip: ZipFile): Pair<Remix, Pair<Int, Int>> {
+        fun unpackRHRE2(remix: Remix, zip: ZipFile): RemixLoadInfo {
             val jsonStream = zip.getInputStream(zip.getEntry("data.json"))
             val remixObject: RemixObject = JsonHandler.fromJson(String(jsonStream.readBytes(), Charsets.UTF_8))
             jsonStream.close()
@@ -236,12 +243,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 remix.music = MusicData(fh, remix)
             }
 
-            return remix to (missing to missing)
+            return RemixLoadInfo(remix, missing to missing, false)
         }
 
-        fun saveTo(remix: Remix, file: File) {
+        fun saveTo(remix: Remix, file: File, isAutosave: Boolean) {
             val stream = ZipOutputStream(FileOutputStream(file))
-            pack(remix, stream)
+            pack(remix, stream, isAutosave)
             stream.close()
         }
     }
