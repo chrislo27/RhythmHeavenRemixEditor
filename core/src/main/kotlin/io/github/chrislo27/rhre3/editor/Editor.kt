@@ -834,7 +834,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                     ClickOccupation.None -> {
                         if (selection.isNotEmpty() &&
-                                (Gdx.input.isKeyJustPressed(Input.Keys.DEL) ||
+                                (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
                                         Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
                             remix.entities.removeAll(this.selection)
                             remix.addActionWithoutMutating(GroupedAction(listOf(
