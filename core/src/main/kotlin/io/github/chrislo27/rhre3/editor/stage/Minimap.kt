@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -86,6 +87,11 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                 editor.camera.position.x = percent * maxX
             }
         }
+    }
+
+    override fun frameUpdate(screen: EditorScreen) {
+        super.frameUpdate(screen)
+        this.visible = !screen.main.preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
