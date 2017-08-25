@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.*
@@ -704,6 +705,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val halfWidth = remix.camera.viewportWidth / 2
             if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
                 remix.camera.position.x = remix.beat + halfWidth
+            }
+
+            if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
+                remix.camera.position.x = remix.beat + remix.camera.viewportWidth * 0.25f
             }
         }
 
