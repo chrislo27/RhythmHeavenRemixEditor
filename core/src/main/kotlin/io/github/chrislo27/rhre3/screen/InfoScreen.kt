@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
@@ -53,11 +54,53 @@ class InfoScreen(main: RHRE3Application)
             main.screen = ScreenRegistry.getNonNull("editor")
         }
 
+        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                Gdx.net.openURI(RHRE3.GITHUB)
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.text = Localization["screen.info.github", RHRE3.GITHUB]
+                this.fontScaleMultiplier = 0.9f
+            })
+
+            this.location.set(screenX = 0.1875f, screenWidth = 0.625f)
+        }
+        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                main.screen = ScreenRegistry.getNonNull("credits")
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = true
+                this.text = "screen.info.credits"
+                this.fontScaleMultiplier = 0.9f
+            })
+
+            this.stage.updatePositions()
+            this.location.set(screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight) * 2f)
+            this.location.set(screenX = 1f - this.location.screenWidth)
+        }
+
         stage.centreStage.also { centre ->
             val padding = 0.05f
             val buttonWidth = 0.4f
             val buttonHeight = 0.15f
             val fontScale = 0.8f
+
+            centre.elements += TextLabel(palette, centre, centre).apply {
+                this.location.set(screenX = padding,
+                                  screenY = 1f - (padding + buttonHeight * 0.8f),
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.isLocalizationKey = true
+                this.text = "screen.info.settings"
+            }
 
             // Disable minimap
             centre.elements += object : FalseCheckbox<InfoScreen>(palette, centre, centre) {
