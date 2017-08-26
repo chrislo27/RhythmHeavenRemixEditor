@@ -14,7 +14,7 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     override val isStretchable: Boolean = true
     var subtitle: String = ""
     override val renderText: String
-        get() = "${datamodel.name}\n\"$subtitle\""
+        get() = "${datamodel.name}\n\"$subtitle[]\""
 
     init {
         bounds.width = 1f
@@ -36,14 +36,16 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     }
 
     override fun onStart() {
+        if (this !in remix.currentSubtitles) {
+            remix.currentSubtitles += this
+        }
     }
 
     override fun whilePlaying() {
-        remix.currentSubtitle = subtitle
     }
 
     override fun onEnd() {
-        remix.currentSubtitle = ""
+        remix.currentSubtitles.remove(this)
     }
 
     override fun copy(remix: Remix): SubtitleEntity {

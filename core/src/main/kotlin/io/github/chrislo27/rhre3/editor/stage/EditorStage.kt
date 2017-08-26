@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -379,14 +380,22 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     return main.defaultBorderedFont
                 }
 
-                override fun getRealText(): String {
-                    return editor.remix.currentSubtitle
+                override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    text = (if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false))
+                        editor.remix.currentSubtitles
+                    else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n") { it.subtitle }
+
+                    super.render(screen, batch, shapeRenderer)
                 }
             }.apply {
-                this.location.set(screenHeight = 0.1f)
+                this.location.set(screenY = 0.025f)
+                this.location.set(screenHeight = 0.1f - this.location.screenY)
                 this.textWrapping = false
+                this.isLocalizationKey = false
+                this.textAlign = Align.bottom or Align.center
             }
             this.elements += subtitleLabel
+            // TODO maybe make generic text field for other entities in the future
             subtitleField = object : TextField<EditorScreen>(palette, this@apply, this@apply) {
                 override fun frameUpdate(screen: EditorScreen) {
                     super.frameUpdate(screen)

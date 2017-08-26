@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -309,7 +310,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     var musicSeeking = false
     var duration: Float = Float.POSITIVE_INFINITY
         private set
-    var currentSubtitle: String = ""
+    val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
+    val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
     var cuesMuted = false
 
     private val metronomeSFX: List<LazySound> by lazy {
@@ -336,7 +338,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                             it.stopAllSounds()
                         }
                     }
-                    currentSubtitle = ""
+                    currentSubtitles.clear()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -368,7 +370,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                             editor.stage.tapalongStage.reset()
                         }
 
-                        currentSubtitle = ""
+                        currentSubtitles.clear()
                     } else if (old == PlayState.PAUSED) {
                         GameRegistry.data.objectList.forEach {
                             if (it is Cue) {

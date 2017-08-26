@@ -253,6 +253,27 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+
+            // Subtitle order
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, checked).flush()
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.subtitleOrder"
+                }
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
         }
 
         stage.updatePositions()
