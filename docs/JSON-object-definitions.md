@@ -13,7 +13,8 @@ All `data.json` files for each game are a `DataObject`.
   // optional fields after this comment
   "group": "Human-Readable Name",
   "groupDefault": false,
-  "priority": 0
+  "priority": 0,
+  "noDisplay": false
 }
 ```
 
@@ -48,6 +49,10 @@ set to true will appear earlier in the variant list.
 
 The optional `priority` field is an integer for how the games should
 be sorted. Higher numbers come first, lower numbers come last.
+
+The `noDisplay` field if true will indicate that the game display
+(with the icon and name) will not render. This is used for "games" like
+Count-Ins, or Special Entities.
 
 ## Deprecated IDs
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer

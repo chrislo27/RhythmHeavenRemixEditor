@@ -192,7 +192,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
-                            dataObject.priority, directive.isCustom)
+                            dataObject.priority, directive.isCustom, dataObject.noDisplay)
 
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                     when (obj) {
@@ -241,7 +241,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             id,
                             true,
-                            0, true)
+                            0, true, false)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_SOUND_TYPES

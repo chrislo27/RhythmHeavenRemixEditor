@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
@@ -313,6 +314,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
     val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
     var cuesMuted = false
+    var currentGameGroup: Game? = null
+        private set
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -339,6 +342,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
                     }
                     currentSubtitles.clear()
+                    currentGameGroup = null
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -424,11 +428,16 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (beat in entity.bounds.x..(entity.bounds.x + entity.bounds.width)) {
                 entity.playbackCompletion = PlaybackCompletion.PLAYING
                 entity.onStart()
+
+                if (entity is ModelEntity<*> && !entity.datamodel.game.noDisplay) {
+                    currentGameGroup = entity.datamodel.game
+                }
             }
         }
 
         if (entity.playbackCompletion == PlaybackCompletion.PLAYING) {
             entity.whilePlaying()
+
             if (entity.isFinished()) {
                 entity.playbackCompletion = PlaybackCompletion.FINISHED
                 entity.onEnd()
@@ -449,7 +458,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 val ended = music.music.play()
                 scheduleMusicPlaying = false
                 if (ended) {
-                    println("ended!")
                     music.music.pause()
                 }
             }

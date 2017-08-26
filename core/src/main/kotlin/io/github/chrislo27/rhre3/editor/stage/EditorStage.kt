@@ -428,6 +428,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.visible = false
             }
             this.elements += subtitleField
+            this.updatePositions()
+            this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@ {
+                this.location.set(screenHeight = this@apply.percentageOfHeight(32f),
+                                  screenX = this@apply.percentageOfWidth(8f),
+                                  screenWidth = this@apply.percentageOfWidth(32f) * WIDTH_MULTIPLICATION)
+                this.location.set(screenY = 1f - (this@apply.percentageOfHeight(8f) + this.location.screenHeight))
+                this.updatePositions()
+            }
         }
         hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),
                                    this, this).apply {
