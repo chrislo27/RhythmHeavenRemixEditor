@@ -125,6 +125,13 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         var completedTaskWork: Int = 0
         var taskTotalWork: Int = ProgressMonitor.UNKNOWN
         var task: String? = ""
+            set(value) {
+                if (task == "Updating references") {
+                    field = "Updating references (may take a while)"
+                } else {
+                    field = value
+                }
+            }
 
         init {
             updateLabel()
