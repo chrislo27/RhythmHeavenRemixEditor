@@ -766,7 +766,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (timeUntilAutosave <= 0) {
                 autosaveFrequency = 0
                 launch(CommonPool) {
-                    Remix.saveTo(remix, autosaveFile.file(), true)
+                    try {
+                        Remix.saveTo(remix, autosaveFile.file(), true)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        Gdx.app.postRunnable {
+                            // TODO signal fail
+                        }
+                    }
                     Gdx.app.postRunnable {
                         // TODO signal autosave
 
