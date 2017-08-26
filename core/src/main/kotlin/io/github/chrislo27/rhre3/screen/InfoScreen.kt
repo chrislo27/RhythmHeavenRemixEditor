@@ -67,24 +67,7 @@ class InfoScreen(main: RHRE3Application)
                 this.fontScaleMultiplier = 0.9f
             })
 
-            this.location.set(screenX = 0.1875f, screenWidth = 0.625f)
-        }
-        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                main.screen = ScreenRegistry.getNonNull("credits")
-            }
-        }.apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.textWrapping = true
-                this.text = "screen.info.credits"
-                this.fontScaleMultiplier = 0.9f
-            })
-
-            this.stage.updatePositions()
-            this.location.set(screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight) * 2f)
-            this.location.set(screenX = 1f - this.location.screenWidth)
+            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
 
         stage.centreStage.also { centre ->
@@ -101,7 +84,73 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = true
                 this.text = "screen.info.settings"
             }
+            centre.elements += TextLabel(palette, centre, centre).apply {
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f),
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.isLocalizationKey = true
+                this.text = "screen.info.info"
+            }
 
+            // info buttons
+            // Credits
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = ScreenRegistry.getNonNull("credits")
+                }
+            }.apply {
+
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.credits"
+                })
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+            // Editor version
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = ScreenRegistry.getNonNull("editorVersion")
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.version"
+                })
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 2 + buttonHeight,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+            // Database version
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.database"
+                })
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 3 + buttonHeight * 2,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+
+            // Settings
             // Disable minimap
             centre.elements += object : FalseCheckbox<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {

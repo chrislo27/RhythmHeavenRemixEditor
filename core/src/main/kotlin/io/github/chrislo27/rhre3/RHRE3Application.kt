@@ -109,6 +109,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "newRemix" to NewRemixScreen(this)
                 ScreenRegistry += "saveRemix" to SaveRemixScreen(this)
                 ScreenRegistry += "openRemix" to OpenRemixScreen(this)
+                ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")

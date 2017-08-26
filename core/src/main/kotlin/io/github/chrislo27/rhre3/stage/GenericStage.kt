@@ -15,7 +15,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 
-class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, parent: UIElement<S>?,
+open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, parent: UIElement<S>?,
                                              camera: OrthographicCamera) : Stage<S>(parent, camera), Palettable {
 
     companion object {
