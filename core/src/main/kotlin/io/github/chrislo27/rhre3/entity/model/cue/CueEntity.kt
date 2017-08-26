@@ -64,7 +64,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     private val volume: Float
-        get() = if (remix.cuesMuted) 0f else 1f
+        get() = if (remix.cuesMuted && remix.editor.stage.tapalongStage.visible) 0f else 1f
 
     override fun onStart() {
         soundId = cue.sound.sound.play(volume, cue.getPitch(), 0f)
