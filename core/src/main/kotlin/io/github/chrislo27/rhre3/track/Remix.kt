@@ -449,6 +449,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 val ended = music.music.play()
                 scheduleMusicPlaying = false
                 if (ended) {
+                    println("ended!")
                     music.music.pause()
                 }
             }

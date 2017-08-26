@@ -5,7 +5,6 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
-import io.github.chrislo27.rhre3.git.ChangelogObject
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -86,7 +85,7 @@ object GameRegistry : Disposable {
 
             gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
-        val changelog: ChangelogObject
+//        val changelog: ChangelogObject
         private val currentObj: CurrentObject
         val version: Int
             get() = currentObj.version
@@ -125,7 +124,7 @@ object GameRegistry : Disposable {
         init {
             JsonHandler.setFailOnUnknown(false)
             currentObj = JsonHandler.fromJson(currentObjFh.readString())
-            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
+//            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
         }
