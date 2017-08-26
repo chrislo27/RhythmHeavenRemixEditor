@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.entity.model
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.Entity
@@ -94,7 +93,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         super.renderBeforeText(batch)
         if (shouldRenderInternal) {
             val batchColor = batch.color
-            batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.35f)
+            batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.6f)
             internal.forEach {
                 batch.drawRect(it.bounds.x, it.bounds.y,
                                it.bounds.width, it.bounds.height,
@@ -115,10 +114,6 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             return super.isFinished()
         }
         return internal.all(Entity::isFinished)
-    }
-
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.pattern
     }
 
     override fun onStart() {

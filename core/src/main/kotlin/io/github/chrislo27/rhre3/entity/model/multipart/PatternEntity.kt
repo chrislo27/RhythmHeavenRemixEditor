@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.entity.model.multipart
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
@@ -31,6 +32,10 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
         this.bounds.width = internal
                 .maxBy { it.bounds.x + it.bounds.width }?.run { this.bounds.x + this.bounds.width - this@PatternEntity.bounds.x } ?:
                 error("Nothing in internal cache")
+    }
+
+    override fun getRenderColor(): Color {
+        return remix.editor.theme.entities.pattern
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {

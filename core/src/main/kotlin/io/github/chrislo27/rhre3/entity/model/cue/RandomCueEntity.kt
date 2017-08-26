@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.entity.model.cue
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -26,6 +27,10 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
                         this.bounds.y = this@RandomCueEntity.bounds.y
                     }
                 } ?: error("Null returned on randomization")
+    }
+
+    override fun getRenderColor(): Color {
+        return remix.editor.theme.entities.pattern
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {

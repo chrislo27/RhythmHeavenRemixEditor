@@ -68,11 +68,16 @@ abstract class Theme {
         @HexColor lateinit var cue: Color
         @HexColor lateinit var pattern: Color
         @HexColor lateinit var subtitle: Color
+        @HexColor lateinit var equidistant: Color
+        @HexColor lateinit var keepTheBeat: Color
 
         fun applyDefaults() {
             selectionTint = Color(0f, 0.75f, 0.75f, 1f)
             nameColor = Color(0f, 0f, 0f, 1f)
             subtitle = Color(1f, 212f / 255f, 186f / 255f, 1f)
+
+            keepTheBeat = Color(1f, 226f / 255f, 124f / 255f, 1f)
+            equidistant = Color(1f, 178f / 255f, 191f / 255f, 1f)
         }
     }
 

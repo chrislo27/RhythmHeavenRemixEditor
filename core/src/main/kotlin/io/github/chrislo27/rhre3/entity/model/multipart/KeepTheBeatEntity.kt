@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.entity.model.multipart
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
@@ -14,6 +15,10 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
     : MultipartEntity<KeepTheBeat>(remix, datamodel), IStretchable {
 
     override val isStretchable: Boolean = true
+
+    override fun getRenderColor(): Color {
+        return remix.editor.theme.entities.keepTheBeat
+    }
 
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)
