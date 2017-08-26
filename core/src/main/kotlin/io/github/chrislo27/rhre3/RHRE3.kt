@@ -22,6 +22,7 @@ object RHRE3 {
     const val REMIX_FILE_EXTENSION = "rhre3"
 
     const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
+    const val GITHUB_RELEASES = "$GITHUB/releases"
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
     const val DEV_DATABASE_BRANCH: String = "dev"
     const val DATABASE_BRANCH: String = DEV_DATABASE_BRANCH // FIXME

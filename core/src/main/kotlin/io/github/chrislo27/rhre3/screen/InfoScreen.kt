@@ -117,7 +117,7 @@ class InfoScreen(main: RHRE3Application)
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    main.screen = ScreenRegistry.getNonNull("editorVersion")
+                    Gdx.net.openURI(RHRE3.GITHUB_RELEASES)
                 }
             }.apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {

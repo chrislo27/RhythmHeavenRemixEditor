@@ -7,7 +7,5 @@ class ChangelogObject {
 
     var version: Int = -1
     var requiresVersion: String = RHRE3.VERSION.toString()
-    var experimental: Boolean = false
-    var description: String = "<missing description>"
 
 }
