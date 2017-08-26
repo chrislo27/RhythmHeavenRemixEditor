@@ -833,7 +833,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         clickOccupation.updateRectangle()
                     }
                     ClickOccupation.None -> {
-                        if (selection.isNotEmpty() &&
+                        if (selection.isNotEmpty() && !stage.isTyping &&
                                 (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
                                         Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
                             remix.entities.removeAll(this.selection)
@@ -1024,6 +1024,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                                     entity.updateBounds {
                                         entity.bounds.setPosition(it.bounds.x, it.bounds.y)
+                                        if (entity is IStretchable) {
+                                            entity.bounds.width = it.bounds.width
+                                        }
                                     }
 
                                     entity
