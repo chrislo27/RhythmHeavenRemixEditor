@@ -28,6 +28,7 @@ object RHRE3 {
     const val DATABASE_BRANCH: String = DEV_DATABASE_BRANCH // FIXME
     const val DATABASE_CURRENT_VERSION: String = "https://raw.githubusercontent.com/chrislo27/RHRE-database/$DATABASE_BRANCH/current.json"
     const val DATABASE_RELEASES = "https://github.com/chrislo27/RHRE-database/releases"
+    const val RELEASE_API_URL = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest"
 
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false

@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -80,7 +81,10 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
-            main.screen = ScreenRegistry["editor"]
+            main.screen = if (main.githubVersion != null && RHRE3.VERSION < main.githubVersion!!)
+                ScreenRegistry["editorVersion"]
+            else
+                ScreenRegistry["editor"]
         }
     }
 

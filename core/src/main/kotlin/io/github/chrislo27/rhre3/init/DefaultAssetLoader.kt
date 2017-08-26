@@ -30,6 +30,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("tool_time_signature", "images/tool/time_signature.png")
         AssetRegistry.loadAsset<Texture>("tool_music_volume", "images/tool/music_volume.png")
 
+        AssetRegistry.loadAsset<Texture>("ui_icon_update", "images/ui/icons/update.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_updatesfx", "images/ui/icons/update_sfx.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_palette", "images/ui/icons/palette.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_info_button", "images/ui/icons/info_button.png")

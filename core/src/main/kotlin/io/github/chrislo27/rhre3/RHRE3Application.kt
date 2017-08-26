@@ -12,6 +12,8 @@ import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.util.JavafxStub
+import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.rhre3.util.ReleaseObject
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
@@ -22,7 +24,11 @@ import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
+import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
+import khttp.get
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -67,6 +73,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     lateinit var preferences: Preferences
         private set
     var versionTextWidth: Float = -1f
+        private set
+
+    var githubVersion: Version? = null
         private set
 
     override fun getTitle(): String =
@@ -124,6 +133,15 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         thread(isDaemon = true) {
             Application.launch(JavafxStub::class.java) // start up
+        }
+        launch(CommonPool) {
+            try {
+                val obj = JsonHandler.fromJson<ReleaseObject>(get(RHRE3.RELEASE_API_URL).text)
+
+                githubVersion = Version.fromStringOrNull(obj.tag_name!!)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
