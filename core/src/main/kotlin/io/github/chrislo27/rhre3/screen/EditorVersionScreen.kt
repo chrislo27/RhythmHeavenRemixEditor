@@ -96,7 +96,7 @@ class EditorVersionScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         stage as GenericStage
-        stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 2)}"
+        stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 5)}"
     }
 
     override fun dispose() {
