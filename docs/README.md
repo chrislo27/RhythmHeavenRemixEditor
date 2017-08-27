@@ -2,10 +2,6 @@
 
 This readme is up to date with version `v3.0.0`.
 
-## Table of Contents
-1. [How does a remix work?](#How-does-a-remix-work)
-2. [Controls](#Controls)
-
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
 
