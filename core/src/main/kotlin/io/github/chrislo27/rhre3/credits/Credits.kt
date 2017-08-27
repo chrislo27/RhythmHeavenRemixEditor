@@ -8,8 +8,8 @@ object Credits {
     val list: List<Credit> = listOf(
             "title" crediting RHRE3.GITHUB,
             "programming" crediting "chrislo27",
-            "localization" crediting """[LIGHT_GRAY]Français (French)[]:
-                |[LIGHT_GRAY]Español (Spanish)[]:""".trimMargin(),
+            "localization" crediting """[LIGHT_GRAY]Français (French)[]: inkedsplat, Pengu123
+                |[LIGHT_GRAY]Español (Spanish)[]: GlitchyPSIX""".trimMargin(),
             "sfx" crediting "",
             "gfx" crediting "GlitchyPSIX",
             "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_, " +
