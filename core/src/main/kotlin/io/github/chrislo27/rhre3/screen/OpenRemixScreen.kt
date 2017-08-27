@@ -167,9 +167,13 @@ class OpenRemixScreen(main: RHRE3Application)
                         remix = result.remix
                         val remix = remix!!
                         val missingAssets = result.missing
+                        val databaseStr = if (isRHRE2)
+                            goodBad(remix.version.toString(), true)
+                        else
+                            goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version)
                         mainLabel.text = Localization["screen.open.info",
                                 goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
-                                goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version),
+                                databaseStr,
                                 goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
                                 goodBad(if (isRHRE2) "?" else missingAssets.second.toString(), missingAssets.second > 0, "RED")]
                         if (GameRegistry.data.version < remix.databaseVersion) {
