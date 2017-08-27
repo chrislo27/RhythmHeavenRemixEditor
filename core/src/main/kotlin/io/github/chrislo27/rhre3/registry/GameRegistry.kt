@@ -216,6 +216,7 @@ object GameRegistry : Disposable {
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
                             dataObject.priority, directive.isCustom, dataObject.noDisplay)
+                val baseFileHandle = if (directive.isCustom) CUSTOM_FOLDER else SFX_FOLDER
 
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                     when (obj) {
@@ -223,7 +224,7 @@ object GameRegistry : Disposable {
                             Cue(game, obj.id, obj.deprecatedIDs, obj.name,
                                 obj.duration,
                                 obj.stretchable, obj.repitchable,
-                                SFX_FOLDER.child(
+                                baseFileHandle.child(
                                         "${obj.id}.${obj.fileExtension}"),
                                 obj.introSound, obj.endingSound,
                                 obj.responseIDs,
