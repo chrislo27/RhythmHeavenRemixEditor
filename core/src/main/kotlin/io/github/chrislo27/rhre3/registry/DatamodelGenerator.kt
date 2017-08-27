@@ -154,21 +154,21 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                             "attention... company!",
                             mutableListOf(
                                     CuePointer(
-                                            "$id/attention/1", 0.0f),
+                                            "$id/attention/attention1", 0.0f),
                                     CuePointer(
-                                            "$id/attention/2", 0.25f),
+                                            "$id/attention/attention2", 0.25f),
                                     CuePointer(
-                                            "$id/attention/3", 0.75f),
+                                            "$id/attention/attention3", 0.75f),
                                     CuePointer(
-                                            "$id/attention/4", 1.25f),
+                                            "$id/attention/attention4", 1.25f),
                                     CuePointer(
-                                            "$id/attention/5", 2.25f),
+                                            "$id/attention/attention5", 2.25f),
                                     CuePointer(
-                                            "$id/attention/6", 2.5f),
+                                            "$id/attention/attention6", 2.5f),
                                     CuePointer(
-                                            "$id/attention/7", 2.75f),
+                                            "$id/attention/attention7", 2.75f),
                                     CuePointer(
-                                            "$id/attention/8", 3.25f)
+                                            "$id/attention/attention8", 3.25f)
                                          ), false)
         }
 
