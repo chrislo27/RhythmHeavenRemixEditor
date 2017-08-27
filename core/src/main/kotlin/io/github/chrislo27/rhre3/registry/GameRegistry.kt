@@ -170,6 +170,8 @@ object GameRegistry : Disposable {
                 error("Check above for database errors")
             }
 
+            gameMap["special"] ?: error("Missing special game")
+
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
                     objectList.filterIsInstance<Cue>().map {
