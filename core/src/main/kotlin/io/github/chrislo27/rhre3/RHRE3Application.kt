@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -24,6 +25,8 @@ import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
+import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
 import khttp.get
@@ -78,6 +81,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     var githubVersion: Version? = null
         private set
 
+    private val rainbowColor: Color = Color()
+
     override fun getTitle(): String =
             "Rhythm Heaven Remix Editor $versionString"
 
@@ -119,6 +124,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "saveRemix" to SaveRemixScreen(this)
                 ScreenRegistry += "openRemix" to OpenRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
+                ScreenRegistry += "credits" to CreditsScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
@@ -143,6 +149,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 e.printStackTrace()
             }
         }
+    }
+
+    override fun preRender() {
+        rainbowColor.setHSB(MathHelper.getSawtoothWave(2f), 0.8f, 0.8f)
+        Colors.put("RAINBOW", rainbowColor)
+        super.preRender()
     }
 
     override fun postRender() {
