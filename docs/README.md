@@ -89,6 +89,8 @@ Use this when you need to fine-tune a pattern's components.
 ## Tempo Change, Music Volume, Time Signature tools
 These three tools are very similar. They control what are called *trackers*.
 
+![Trackers](readme/trackers.png)
+
 >Note: wherever you see `SCROLL`, you can substitute this with **`PAGE UP`**
 or **`PAGE DOWN`**. This is useful if you don't have access to a mouse, like
 on a laptop.
