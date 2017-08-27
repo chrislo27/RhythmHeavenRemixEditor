@@ -18,16 +18,16 @@ You can only have **one** of these in the track at any given time.
 Cues and patterns are examples of *entities*. RHRE3 adds three new entities:
 random cue, equidistant, and keep the beat.
 
-Random cues will randomly play a cue or pattern each time you play the remix.
+**Random cues** will randomly play a cue or pattern each time you play the remix.
 This is useful for games like First Contact, or Ringside.
 
-Equidistant entities are for patterns like Built to Scale (DS) or
+**Equidistant** entities are for patterns like Built to Scale (DS) or
 Bouncy Road. By *stretching* the entity, you will change the time *between*
 cues. If you want your "do-re-mi-fa-so" (Built to Scale DS) to have 2 beats
 in between, just extend this entity to 2 beats long. The editor will take
 care of adding the other cues for you!
 
-Keep the beat entities are for games like Lockstep, Flockstep, or any other
+**Keep the beat** entities are for games like Lockstep, Flockstep, or any other
 game that has a consistent pattern. By *stretching* this entity, you can
 make constant beats without laying down multiple patterns.
 
