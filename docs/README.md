@@ -64,7 +64,7 @@ You can access them quickly by pressing `1-5` on the number keys.
 ### Selection tool
 The selection tool will be your main tool.
 
-Holding **`LEFT CLICK`** (not on a selected entity) will start a selection.
+Holding **`LEFT CLICK`** (not on a selected entity) will start a selection.<br/>
 You can hold **`SHIFT`** to make it additive (i.e.: you can add to a
 pre-existing selection). **`RIGHT CLICK`** will cancel the selection.
 
@@ -99,7 +99,7 @@ on a laptop.
 
 All tracker-type tools share these controls:
 
-**`SCROLL`** - Change value
+**`SCROLL`** - Change value<br/>
 Hold **`CONTROL`** - Change value by 5x
 
 The **tempo change** tool is exactly the same as in RHRE2. You can change the tempo
