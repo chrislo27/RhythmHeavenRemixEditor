@@ -46,6 +46,7 @@ import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
@@ -805,6 +806,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 camera.position.x = 0f
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
                 camera.position.x = remix.getLastPoint()
+            }
+
+            if (control) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                    main.screen = ScreenRegistry.getNonNull("newRemix")
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                    main.screen = ScreenRegistry.getNonNull("openRemix")
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                    main.screen = ScreenRegistry.getNonNull("saveRemix")
+                }
             }
         }
 
