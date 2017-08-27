@@ -40,14 +40,14 @@ If you are familiar with RHRE2's controls, you should have no problem
 with RHRE3.
 
 ### Generic keybinds
-**`SPACEBAR`** - Play/stop remix
-**`SHIFT+SPACEBAR`** - Pause/resume remix
-**`CTRL+N`** - New remix
-**`CTRL+O`** - Open remix
-**`CTRL+S`** - Save remix
-**`CTRL+Z`** - Undo
-**`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo
-**`HOME`** - Jump to beat 0
+**`SPACEBAR`** - Play/stop remix<br/>
+**`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
+**`CTRL+N`** - New remix<br/>
+**`CTRL+O`** - Open remix<br/>
+**`CTRL+S`** - Save remix<br/>
+**`CTRL+Z`** - Undo<br/>
+**`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
+**`HOME`** - Jump to beat 0<br/>
 **`END`** - Jump to last entity/End Remix entity
 
 On the top bar, you will see various buttons. Hover over them to view
