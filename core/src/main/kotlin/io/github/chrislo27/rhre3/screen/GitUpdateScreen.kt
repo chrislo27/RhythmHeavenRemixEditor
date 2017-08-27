@@ -73,8 +73,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         repoStatus = RepoStatus.UNKNOWN
         coroutine = launch(CommonPool) {
             repoStatus = RepoStatus.DOING
-            val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION, -1)
-            main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, -1).flush()
+            val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1)
+            main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
             try {
                 if (!RHRE3.forceGitFetch) {
                     label.text = Localization["screen.database.checkingGithub"]
@@ -93,7 +93,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                         } else {
                             if (current.version == lastVersion && !Toolboks.debugMode) {
                                 repoStatus = RepoStatus.DONE
-                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, lastVersion).flush()
+                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
                                 GitHelper.reset()
                                 return@launch
                             }
@@ -112,7 +112,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     if (obj.version < 0)
                         error("Current database version json object has a negative version of ${obj.version}")
 
-                    main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION, obj.version).flush()
+                    main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, obj.version).flush()
                 }
 
                 val time = (System.nanoTime() - nano) / 1_000_000.0
