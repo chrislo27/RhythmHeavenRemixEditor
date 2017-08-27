@@ -120,7 +120,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
             field.forEach { it.isSelected = true }
         }
-    var currentTool: Tool = Tool.NORMAL
+    var currentTool: Tool = Tool.SELECTION
     private val mouseVector: Vector2 = Vector2()
         get() {
             field.set(remix.camera.getInputX(), remix.camera.getInputY())
@@ -828,7 +828,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         run clickCheck@ {
             val clickOccupation = clickOccupation
             val tool = currentTool
-            if (tool == Tool.NORMAL) {
+            if (tool == Tool.SELECTION) {
                 val nearestBeat = MathHelper.snapToNearest(camera.getInputX(), snap)
                 when (clickOccupation) {
                     is ClickOccupation.Music -> {
@@ -920,7 +920,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             builder.append(Localization["editor.tapalong.info"])
         } else {
             when (currentTool) {
-                Tool.NORMAL -> {
+                Tool.SELECTION -> {
                     val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentGame()
                     builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
@@ -1034,7 +1034,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (stage.centreAreaStage.isMouseOver()) {
             val tool = currentTool
-            if (tool == Tool.NORMAL) {
+            if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
                 if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is SubtitleEntity) {
                     val field = stage.subtitleField
@@ -1158,7 +1158,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             })
                 }
             }
-        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.NORMAL && isDraggingButtonDown) {
+        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentPlaceable() ?: return true
             val entity = datamodel.createEntity(remix)
@@ -1307,7 +1307,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return false
 
         val tool = currentTool
-        if (tool == Tool.NORMAL && selection.isNotEmpty()) {
+        if (tool == Tool.SELECTION && selection.isNotEmpty()) {
             val oldPitches = selection.map { (it as? IRepitchable)?.semitone ?: 0 }
 
             selection.forEach {

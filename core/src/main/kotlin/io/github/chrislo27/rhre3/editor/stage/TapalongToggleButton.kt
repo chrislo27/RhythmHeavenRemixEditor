@@ -38,7 +38,7 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
         stage.buttonBarStage.visible = true
         stage.messageBarStage.visible = true
         if (visible) {
-            editor.currentTool = Tool.NORMAL
+            editor.currentTool = Tool.SELECTION
         }
         stage.updateSelected()
         editor.updateMessageLabel()

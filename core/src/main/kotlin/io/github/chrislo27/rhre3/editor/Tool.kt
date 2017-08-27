@@ -6,7 +6,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 enum class Tool(val texId: String, val nameId: String, val isTrackerRelated: Boolean = false, val canSelect: Boolean = false) {
 
-    NORMAL("tool_normal", "tool.normal.name", canSelect = true),
+    SELECTION("tool_selection", "tool.normal.name", canSelect = true),
     MULTIPART_SPLIT("tool_multipart_split", "tool.multipartsplit.name"),
     BPM("tool_bpm", "tool.bpm.name", isTrackerRelated = true),
     MUSIC_VOLUME("tool_music_volume", "tool.musicvolume.name", isTrackerRelated = true),
