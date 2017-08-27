@@ -56,7 +56,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val variantScrollButtons: List<Button<EditorScreen>>
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
-    val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_tengoku")) }
+    val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector")) }
     val searchBar: TextField<EditorScreen>
     val messageLabel: TextLabel<EditorScreen>
 
