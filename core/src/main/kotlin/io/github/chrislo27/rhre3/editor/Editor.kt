@@ -331,6 +331,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             updateMessageLabel()
         }
 
+    init {
+        Localization.listeners += { old ->
+            updateMessageLabel()
+        }
+    }
+
     fun toScaleX(float: Float): Float =
             (float / RHRE3.WIDTH) * camera.viewportWidth
 
