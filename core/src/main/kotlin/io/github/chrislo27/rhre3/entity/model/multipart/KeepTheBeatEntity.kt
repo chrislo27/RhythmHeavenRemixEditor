@@ -34,7 +34,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
         if (cues.isEmpty())
             error("KeepTheBeat datamodel has nothing in it")
 
-        val sequenceLength: Float = datamodel.totalSequenceDuration
+        val sequenceLength: Float = Math.max(datamodel.duration, datamodel.totalSequenceDuration)
         val percentage: Float = bounds.width / sequenceLength
         val wholes: Int = percentage.toInt()
         val fractional: Float = percentage - percentage.toInt()

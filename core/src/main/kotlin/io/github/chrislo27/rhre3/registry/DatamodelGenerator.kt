@@ -78,18 +78,18 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                             "flipping", 2f,
                             mutableListOf(
                                     CuePointer(
-                                            "$id/flip", 0f),
+                                            "$id/flip", 0f, duration = 1f),
                                     CuePointer(
-                                            "$id/flip", 1f)
+                                            "$id/flip", 1f, duration = 1f)
                                          ))
         game.objects +=
                 KeepTheBeat(game, "${id}_flippingB", mutableListOf(),
                             "flipping - back", 2f,
                             mutableListOf(
                                     CuePointer(
-                                            "$id/flipB1", 0f),
+                                            "$id/flipB1", 0f, duration = 1f),
                                     CuePointer(
-                                            "$id/flipB2", 1f)
+                                            "$id/flipB2", 1f, duration = 1f)
                                          ))
         game.objects +=
                 Pattern(game, "${id}_thatsit", mutableListOf(),

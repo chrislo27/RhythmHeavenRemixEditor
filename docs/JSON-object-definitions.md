@@ -235,7 +235,9 @@ repeats over and over. This is for things like
 Lockstep marching patterns, or Flipper-Flop, but is not limited to
 same-beat patterns. This is like a pattern that repeats or is truncated.
 
-The `defaultDuration` field is just the duration when initially placed.
+The `defaultDuration` field is the duration when initially placed. It also
+acts as the "duration" for when to repeat the pattern, unless the cues
+are longer than this value.
 
 See `PatternObject` for the ID and name structure.
 
