@@ -39,6 +39,20 @@ make constant beats without laying down multiple patterns.
 If you are familiar with RHRE2's controls, you should have no problem
 with RHRE3.
 
+### Generic keybinds
+**`SPACEBAR`** - Play/stop remix
+**`SHIFT+SPACEBAR`** - Pause/resume remix
+**`CTRL+N`** - New remix
+**`CTRL+O`** - Open remix
+**`CTRL+S`** - Save remix
+**`CTRL+Z`** - Undo
+**`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo
+**`HOME`** - Jump to beat 0
+**`END`** - Jump to last entity/End Remix entity
+
+On the top bar, you will see various buttons. Hover over them to view
+what they're used for.
+
 In the bottom-right, you will see tools:
 
 ![Tools](readme/tools.png)
