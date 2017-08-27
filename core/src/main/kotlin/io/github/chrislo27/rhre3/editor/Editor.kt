@@ -78,6 +78,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         private const val MSG_SEPARATOR = " - "
         private const val ZERO_BEAT_SYMBOL = "♩"
+        private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -129,6 +130,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     var autosaveFrequency: Int = 0
         private set
     private var autosaveFile: FileHandle? = null
+    private var autosaveState: Pair<Boolean, Long>? = null
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -771,17 +773,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Gdx.app.postRunnable {
-                            // TODO signal fail
+                            autosaveState = false to System.currentTimeMillis()
                         }
                     }
                     Gdx.app.postRunnable {
-                        // TODO signal autosave
+                        autosaveState = true to System.currentTimeMillis()
 
                         resetAutosaveTimer()
                         Toolboks.LOGGER.info("Autosaved (frequency every $autosaveFrequency minute(s))")
                     }
                 }
             }
+        }
+        val autosaveState = autosaveState
+        if (autosaveState != null) {
+            if (System.currentTimeMillis() >= autosaveState.second + AUTOSAVE_MESSAGE_TIME_MS) {
+                this.autosaveState = null
+            }
+            updateMessageLabel()
         }
 
         if (!stage.isTyping) {
@@ -878,10 +887,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val label = stage.messageLabel
         val builder = StringBuilder()
         val clickOccupation = clickOccupation
+        val autosaveState = autosaveState
 
         fun StringBuilder.separator(): StringBuilder {
             this.append(MSG_SEPARATOR)
             return this
+        }
+
+        if (autosaveState != null) {
+            builder.append(Localization["editor.msg.autosave.${if (autosaveState.first) "success" else "failed"}"])
+                    .separator()
         }
 
         if (stage.tapalongStage.visible) {
