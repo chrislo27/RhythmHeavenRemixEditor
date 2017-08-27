@@ -2,8 +2,10 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
@@ -12,6 +14,7 @@ import io.github.chrislo27.rhre3.credits.Credits
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.Stage
@@ -38,8 +41,8 @@ class CreditsScreen(main: RHRE3Application)
     init {
         stage as GenericStage
 
-        // TODO localize title + icon
         stage.titleLabel.text = "credits.title"
+        stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_credits"))
         stage.backButton.visible = true
         stage.onBackButtonClick = {
             main.screen = ScreenRegistry.getNonNull("info")
