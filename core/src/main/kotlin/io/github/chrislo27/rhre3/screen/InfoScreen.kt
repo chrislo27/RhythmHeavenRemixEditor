@@ -264,7 +264,7 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
 
                 this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
+                    this.fontScaleMultiplier = fontScale * 0.9f
                     this.isLocalizationKey = true
                     this.text = "screen.info.subtitleOrder"
                 }
