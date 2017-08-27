@@ -19,6 +19,7 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
             this.isLocalizationKey = true
             this.textAlign = Align.center
             this.fontScaleMultiplier = 0.75f
+            this.textWrapping = true
         })
     }
 
