@@ -145,7 +145,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                     "attention - part $it",
                     if (it in 2..3 || it == 7) 0.5f else if (it == 4 || it == 8) 1f else 0.25f,
                     false, false,
-                    GameRegistry.SFX_FOLDER.child("$it.ogg"),
+                    GameRegistry.SFX_FOLDER.child("$id/attention/attention$it.ogg"),
                     null, null, mutableListOf(), 0f, false)
             }
 
@@ -196,7 +196,7 @@ $id/count/flipperRollCountS"""
                                     "$id/count/flipperRollCount",
                                     "")}",
                             0.25f, false, false,
-                            GameRegistry.SFX_FOLDER.child("$id.ogg"),
+                            GameRegistry.SFX_FOLDER.child("$it.ogg"),
                             null, null, mutableListOf(), 0f, false)
             }
             """$id/count/flopCount1
@@ -212,7 +212,7 @@ $id/count/flopCount4B""".lines().forEach {
                             "flopping count ${it.replace(
                                     "$id/count/flopCount", "")}",
                             1f, false, false,
-                            GameRegistry.SFX_FOLDER.child("$id.ogg"),
+                            GameRegistry.SFX_FOLDER.child("$it.ogg"),
                             null, null, mutableListOf(), 0f, false)
             }
 

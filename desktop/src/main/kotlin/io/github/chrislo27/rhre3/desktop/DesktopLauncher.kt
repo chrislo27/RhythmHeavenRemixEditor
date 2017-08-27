@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.logging.Logger
 import kotlin.concurrent.thread
 
@@ -48,6 +49,7 @@ object DesktopLauncher {
 
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args || RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
+                    LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
 

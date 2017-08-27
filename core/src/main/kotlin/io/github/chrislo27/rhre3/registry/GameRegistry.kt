@@ -14,7 +14,11 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.version.Version
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import java.util.*
 
 
@@ -164,6 +168,23 @@ object GameRegistry : Disposable {
             errors.forEach(Toolboks.LOGGER::error)
             if (errors.isNotEmpty()) {
                 error("Check above for database errors")
+            }
+
+            if (!LazySound.loadLazilyWithAssetManager) {
+                runBlocking {
+                    objectList.filterIsInstance<Cue>().map {
+                        launch(CommonPool) {
+                            try {
+                                it.sound.load()
+                            } catch (e: Exception) {
+                                Toolboks.LOGGER.warn("Failed to load ${it.id} in game ${it.game.id}")
+                                e.printStackTrace()
+                            }
+                        }
+                    }.forEach {
+                        it.join()
+                    }
+                }
             }
         }
 
