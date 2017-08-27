@@ -47,28 +47,28 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.location.set(0f, 0f, 1f, 1f)
         }
-        this.elements += object : UIElement<EditorScreen>(this, this) {
-            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-            }
-
-            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-                return this@TapalongStage.visible
-            }
-
-            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-                return this@TapalongStage.visible
-            }
-
-            override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-                return this@TapalongStage.visible
-            }
-
-            override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-                return this@TapalongStage.visible
-            }
-        }.apply {
-            this.location.set(0f, 0f, 1f, 1f)
-        }
+//        this.elements += object : UIElement<EditorScreen>(this, this) {
+//            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+//            }
+//
+//            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+//                return this@TapalongStage.visible
+//            }
+//
+//            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+//                return this@TapalongStage.visible
+//            }
+//
+//            override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+//                return this@TapalongStage.visible
+//            }
+//
+//            override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+//                return this@TapalongStage.visible
+//            }
+//        }.apply {
+//            this.location.set(0f, 0f, 1f, 1f)
+//        }
 
         tempoLabel = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getFont(): BitmapFont {
