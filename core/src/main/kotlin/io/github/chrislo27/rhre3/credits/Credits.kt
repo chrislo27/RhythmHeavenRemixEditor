@@ -16,9 +16,6 @@ object Credits {
                 |GlitchyPSIX, quantic
                 |
                 |[LIGHT_GRAY](German)[]
-                |Zenon
-                |
-                |[LIGHT_GRAY](Italian)[]
                 |Zenon""".trimMargin(),
 //            "sfx" crediting "",
             "gfx" crediting "GlitchyPSIX",

@@ -45,7 +45,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 listOf(
                         NamedLocale("English", Locale("")),
                         NamedLocale("Français (French)", Locale("fr")),
-                        NamedLocale("Español (Spanish)", Locale("es"))
+                        NamedLocale("Español (Spanish)", Locale("es")),
+                        NamedLocale("Deutsch (German)", Locale("de"))
+//                      ,NamedLocale("Italiano (Italian)", Locale("it"))
                       )
     }
 
