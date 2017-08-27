@@ -856,7 +856,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenHeight = buttonHeight,
                             screenX = 1f - Tool.VALUES.size * buttonWidth + index * buttonWidth
                                      )
-                    this.background = false
+                    this.background = true
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
@@ -1100,7 +1100,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
-            this.image = selectorRegion
+            this.image = selectorRegionSeries
         }
     }
 
@@ -1133,7 +1133,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 onLeftClickFunc: SelectableButton.(Float, Float) -> Unit)
         : SelectableButton(palette, parent, stage, onLeftClickFunc), HasHoverText {
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
-            this.image = selectorRegion
+            this.image = selectorRegionSeries
         }
 
         override fun getHoverText(): String {
