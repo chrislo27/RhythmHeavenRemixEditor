@@ -13,7 +13,7 @@ object Credits {
                 |inkedsplat, Pengu123
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX
+                |GlitchyPSIX, quantic
                 |
                 |[LIGHT_GRAY](German)[]
                 |Zenon
