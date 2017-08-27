@@ -827,12 +827,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenHeight = buttonHeight,
                             screenX = index * buttonWidth
                                      )
-                    this.addLabel(
-                            ImageLabel(palette, this, this.stage).apply {
-                                this.image = TextureRegion(AssetRegistry.get<Texture>(series.textureId))
-                                this.renderType = ImageLabel.ImageRendering.RENDER_FULL
-                            }
-                                 )
+                    this.label.image = TextureRegion(AssetRegistry.get<Texture>(series.textureId))
                 }
                 seriesButtons += tmp
 
@@ -1105,7 +1100,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
-            this.image = selectorRegionSeries
+            this.image = selectorRegion
         }
     }
 
