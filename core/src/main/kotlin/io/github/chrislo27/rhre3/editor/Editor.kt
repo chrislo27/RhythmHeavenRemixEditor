@@ -106,6 +106,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
             autosaveFile = null
             resetAutosaveTimer()
+            camera.position.x = field.playbackStart
+            camera.update()
         }
     var theme: Theme = DarkTheme()
     val stage: EditorStage = EditorStage(
