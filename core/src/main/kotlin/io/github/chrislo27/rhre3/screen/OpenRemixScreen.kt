@@ -10,6 +10,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.model.MultipartEntity
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.Remix
@@ -24,6 +26,10 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import javafx.application.Platform
 import javafx.stage.FileChooser
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.runBlocking
 import java.io.File
 import java.util.zip.ZipFile
 
@@ -152,14 +158,26 @@ class OpenRemixScreen(main: RHRE3Application)
                         else
                             Remix.unpack(editor.createRemix(), zipFile)
 
+                        val coroutine: Job = launch(CommonPool) {
+                            result.remix.entities.forEach { entity ->
+                                if (entity is CueEntity) {
+                                    entity.datamodel.loadSounds()
+                                } else if (entity is MultipartEntity<*>) {
+                                    entity.loadInternalSounds()
+                                }
+                            }
+                        }
+
                         fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
                             return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
                         }
 
-                        if (result.isAutosave) {
-                            loadButton.alsoDo = {}
-                        } else {
-                            loadButton.alsoDo = {
+                        loadButton.alsoDo = {
+                            runBlocking {
+                                coroutine.join()
+                            }
+
+                            if (!result.isAutosave) {
                                 editor.prepAutosaveFile(FileHandle(file))
                             }
                         }
