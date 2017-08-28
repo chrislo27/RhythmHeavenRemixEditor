@@ -454,10 +454,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     }
 
     fun timeUpdate(delta: Float) {
+        val music: MusicData? = music
+
+        music?.music?.update(if (playState == PlayState.PLAYING) (delta * 0.75f) else delta)
+
         if (playState != PlayState.PLAYING)
             return
-
-        val music: MusicData? = music
 
         seconds += delta
         if (music != null) {
