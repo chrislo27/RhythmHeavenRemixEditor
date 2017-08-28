@@ -22,8 +22,8 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             val change = value - field
             field = value
 
-            internal.filterIsInstance<CueEntity>()
-                    .filter(CueEntity::canBeRepitched)
+            internal.filterIsInstance<IRepitchable>()
+                    .filter(IRepitchable::canBeRepitched)
                     .forEach { it.semitone += change }
         }
     override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)

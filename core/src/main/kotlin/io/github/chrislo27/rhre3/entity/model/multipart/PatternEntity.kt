@@ -13,7 +13,6 @@ import io.github.chrislo27.rhre3.track.Remix
 class PatternEntity(remix: Remix, datamodel: Pattern)
     : MultipartEntity<Pattern>(remix, datamodel), IStretchable {
 
-    override var semitone: Int = 0
     override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)
     override val isStretchable: Boolean = datamodel.stretchable
 
