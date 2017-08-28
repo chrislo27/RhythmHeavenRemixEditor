@@ -43,7 +43,7 @@ abstract class Entity(val remix: Remix) {
     }
 
     open fun inRenderRange(start: Float, end: Float): Boolean {
-        return end >= bounds.x || start <= bounds.x + bounds.width
+        return bounds.x + bounds.width >= start && bounds.x <= end
     }
 
     open fun isUpdateable(beat: Float): Boolean {

@@ -53,7 +53,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun inRenderRange(start: Float, end: Float): Boolean {
-        return end >= bounds.x || start <= bounds.x + internalWidth
+        return bounds.x + internalWidth >= start && bounds.x <= end
     }
 
     override fun getUpperUpdateableBound(): Float {
