@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.0.0`.
+This readme is up to date with version `v3.0.0-RC2`.
 
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
@@ -13,7 +13,9 @@ You can find this at `Misc. > Special Entities > End Remix`.
 
 If you are familiar with music theory, this also is used in sheet music
 to end the music piece.
-You can only have **one** of these in the track at any given time.
+You can only have **one** of these in the track at any given time.<br/>
+If you liked the old RHRE2 way of ending remixes, there's an option in the
+Info Screen.
 
 Cues and patterns are examples of *entities*. RHRE3 adds three new entities:
 random cue, equidistant, and keep the beat.
