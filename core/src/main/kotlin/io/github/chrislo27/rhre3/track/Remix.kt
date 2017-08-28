@@ -427,7 +427,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             entities.first { it is EndEntity }.bounds.x
         } else {
             val last = entities.maxBy { it.bounds.x + it.bounds.width }!!
-            last.bounds.x + last.bounds.y
+            last.bounds.x + last.bounds.width
         }
     }
 
