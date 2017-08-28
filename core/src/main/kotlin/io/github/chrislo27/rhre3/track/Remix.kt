@@ -401,7 +401,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
 
     private fun setMusicVolume() {
-        music?.music?.volume = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
+        val music = music ?: return
+        val shouldBe = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
+        if (music.music.volume != shouldBe) {
+            music.music.volume = shouldBe
+        }
     }
 
     private fun seekMusic() {
@@ -474,10 +478,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     seconds = position + musicStartSec
                 }
 
-                val musicVolume = musicVolumes.getPercentageVolume(beat)
-                if (musicVolume != music.music.volume) {
-                    music.music.volume = musicVolume
-                }
+                setMusicVolume()
             }
         }
 
