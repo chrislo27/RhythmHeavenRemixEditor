@@ -44,11 +44,16 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         }
     protected val internal: MutableList<Entity> = mutableListOf()
     open val shouldRenderInternal: Boolean = true
+    protected var internalWidth: Float = 0f
 
     init {
         this.bounds.height = (1f +
                 (datamodel.cues.maxBy(CuePointer::track)?.track ?: error("No cues in datamodel")))
                 .coerceAtLeast(1f)
+    }
+
+    override fun inRenderRange(start: Float, end: Float): Boolean {
+        return end >= bounds.x || start <= bounds.x + internalWidth
     }
 
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false) {
@@ -107,6 +112,9 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     override fun onBoundsChange(old: Rectangle) {
         super.onBoundsChange(old)
         updateInternalCache(old)
+        internalWidth = internal.maxBy { it.bounds.x + it.bounds.width }?.run {
+            this.bounds.x + this.bounds.width
+        } ?: bounds.width
     }
 
     override fun isFinished(): Boolean {

@@ -425,7 +425,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         remix.entities.forEach {
-            if (it.bounds.x + it.bounds.width >= beatRange.start && it.bounds.x <= beatRange.endInclusive) {
+            if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
                 it.render(batch)
             }
         }

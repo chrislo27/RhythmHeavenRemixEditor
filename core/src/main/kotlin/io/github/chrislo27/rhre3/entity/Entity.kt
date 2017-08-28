@@ -42,6 +42,10 @@ abstract class Entity(val remix: Remix) {
         this.setColorWithTintIfNecessary(selectionTint, color.r, color.g, color.b, color.a, necessary)
     }
 
+    open fun inRenderRange(start: Float, end: Float): Boolean {
+        return end >= bounds.x || start <= bounds.x + bounds.width
+    }
+
     open fun onBoundsChange(old: Rectangle) {
 
     }
