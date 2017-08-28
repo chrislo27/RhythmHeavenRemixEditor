@@ -46,6 +46,18 @@ abstract class Entity(val remix: Remix) {
         return end >= bounds.x || start <= bounds.x + bounds.width
     }
 
+    open fun isUpdateable(beat: Float): Boolean {
+        return beat in getLowerUpdateableBound()..getUpperUpdateableBound()
+    }
+
+    open fun getLowerUpdateableBound(): Float {
+        return bounds.x
+    }
+
+    open fun getUpperUpdateableBound(): Float {
+        return bounds.x + bounds.width
+    }
+
     open fun onBoundsChange(old: Rectangle) {
 
     }

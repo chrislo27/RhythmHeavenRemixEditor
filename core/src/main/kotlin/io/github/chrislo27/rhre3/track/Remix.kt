@@ -364,7 +364,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         computeDuration()
                         seconds = tempos.beatsToSeconds(playbackStart)
                         entities.forEach {
-                            if (it.bounds.x + it.bounds.width < beat) {
+                            if (it.getUpperUpdateableBound() < beat) {
                                 it.playbackCompletion = PlaybackCompletion.FINISHED
                             } else {
                                 it.playbackCompletion = PlaybackCompletion.WAITING
@@ -433,7 +433,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     fun entityUpdate(entity: Entity) {
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
-            if (beat in entity.bounds.x..(entity.bounds.x + entity.bounds.width)) {
+            if (entity.isUpdateable(beat)) {
                 entity.playbackCompletion = PlaybackCompletion.PLAYING
                 entity.onStart()
 

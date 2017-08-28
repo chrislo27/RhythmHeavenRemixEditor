@@ -56,6 +56,10 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         return end >= bounds.x || start <= bounds.x + internalWidth
     }
 
+    override fun getUpperUpdateableBound(): Float {
+        return bounds.x + internalWidth
+    }
+
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false) {
         internal.forEach {
             it.bounds.x = (it.bounds.x - oldBounds.x) + bounds.x
