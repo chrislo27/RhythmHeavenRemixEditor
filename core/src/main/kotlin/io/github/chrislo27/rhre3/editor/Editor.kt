@@ -1039,11 +1039,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
                 if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is SubtitleEntity) {
-                    val field = stage.subtitleField
-                    field.visible = true
-                    field.text = firstEntityInMouse.subtitle
-                    field.hasFocus = true
-                    updateMessageLabel()
+                    if (firstEntityInMouse in this.selection) {
+                        val field = stage.subtitleField
+                        field.visible = true
+                        field.text = firstEntityInMouse.subtitle
+                        field.hasFocus = true
+                        updateMessageLabel()
+                    }
                 } else if (isAnyTrackerButtonDown) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
                         ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
