@@ -89,6 +89,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             this.isLocalizationKey = false
             this.textAlign = Align.center
             this.fontScaleMultiplier = 0.75f
+            this.textWrapping = false
         }
         this.elements += tempoLabel
         val quarterNoteLabel = object : TextLabel<EditorScreen>(palette, this, this) {
