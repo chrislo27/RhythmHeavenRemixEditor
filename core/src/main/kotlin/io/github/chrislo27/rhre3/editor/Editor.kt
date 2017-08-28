@@ -1093,6 +1093,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             remix.entities.addAll(newSel)
                         }
 
+                        newSel.forEach {
+                            if (it is CueEntity) {
+                                it.datamodel.loadSounds()
+                            } else if (it is MultipartEntity<*>) {
+                                it.loadInternalSounds()
+                            }
+                        }
+
                         this.clickOccupation = newClick
                     } else {
                         val clickOccupation = clickOccupation
