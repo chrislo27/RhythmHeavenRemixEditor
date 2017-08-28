@@ -7,7 +7,7 @@ import io.github.chrislo27.toolboks.version.Version
 
 object RHRE3 {
 
-    val VERSION: Version = Version(3, 0, 0, "RC3_Aug272017")
+    val VERSION: Version = Version(3, 0, 0, "RC4_Aug272017")
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
