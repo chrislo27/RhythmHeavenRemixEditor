@@ -71,10 +71,10 @@ class InfoScreen(main: RHRE3Application)
         }
 
         stage.centreStage.also { centre ->
-            val padding = 0.05f
+            val padding = 0.025f
             val buttonWidth = 0.4f
-            val buttonHeight = 0.15f
-            val fontScale = 0.8f
+            val buttonHeight = 0.1f
+            val fontScale = 0.75f
 
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = padding,
@@ -264,13 +264,34 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
 
                 this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale * 0.9f
+                    this.fontScaleMultiplier = fontScale * fontScale
                     this.isLocalizationKey = true
                     this.text = "screen.info.subtitleOrder"
                 }
 
                 this.location.set(screenX = padding,
                                   screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+
+            // End remix at end
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, checked).flush()
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.endAtLastCue"
+                }
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 5 + buttonHeight * 4,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }

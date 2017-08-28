@@ -811,7 +811,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
                 camera.position.x = 0f
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
-                camera.position.x = remix.getLastPoint()
+                camera.position.x = remix.getLastEntityPoint()
             }
 
             if (control) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -311,6 +312,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     var musicSeeking = false
     var duration: Float = Float.POSITIVE_INFINITY
         private set
+    var lastPoint: Float = 0f
+        private set
     val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
     val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
     var cuesMuted = false
@@ -410,9 +413,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     private fun computeDuration() {
         duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
+        lastPoint = getLastEntityPoint()
     }
 
-    fun getLastPoint(): Float {
+    fun getLastEntityPoint(): Float {
         if (entities.isEmpty())
             return 0f
         return if (entities.isNotEmpty() && entities.any { it is EndEntity }) {
@@ -492,7 +496,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        if (beat >= duration && playState != PlayState.STOPPED) {
+        if (playState != PlayState.STOPPED
+                && (beat >= duration
+                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false) && beat >= lastPoint)) {
             playState = PlayState.STOPPED
         }
     }
