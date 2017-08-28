@@ -16,7 +16,7 @@ import io.github.chrislo27.toolboks.ui.*
 class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
-    val WIDTH_MULTIPLICATION = 8f
+    val WIDTH_MULTIPLICATION = 12f
 
     private val icon: ImageLabel<EditorScreen>
     private val label: TextLabel<EditorScreen>
