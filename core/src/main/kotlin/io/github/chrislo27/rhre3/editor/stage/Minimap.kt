@@ -82,6 +82,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                            camera.viewportWidth * unitWidth, pxHeight, 2f)
 
             if (isMouseOver() && editor.clickOccupation == Editor.ClickOccupation.None
+                    && remix.playState == PlayState.STOPPED
                     && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
                 editor.camera.position.x = percent * maxX
