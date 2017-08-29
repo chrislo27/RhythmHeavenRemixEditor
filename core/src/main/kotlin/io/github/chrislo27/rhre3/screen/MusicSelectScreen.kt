@@ -104,7 +104,7 @@ class MusicSelectScreen(main: RHRE3Application)
                 super.frameUpdate(screen)
             }
         }.apply {
-            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+//            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
@@ -150,8 +150,16 @@ class MusicSelectScreen(main: RHRE3Application)
     private fun updateLabels(throwable: Throwable? = null) {
         val label = mainLabel
         if (throwable == null) {
+            val music = editor.remix.music
             label.text = Localization["screen.music.currentMusic",
                     if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
+            if (music != null) {
+                if (music.handle.extension().equals("wav", true)) {
+                    label.text += "\n\n${Localization["screen.music.warning.wav"]}"
+                } else if (music.handle.extension().equals("mp3", true)) {
+                    label.text += "\n\n${Localization["screen.music.warning.mp3"]}"
+                }
+            }
         } else {
             label.text = Localization["screen.music.invalid", throwable::class.java.canonicalName]
         }
