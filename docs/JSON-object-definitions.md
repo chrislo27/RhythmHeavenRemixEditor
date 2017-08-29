@@ -127,7 +127,7 @@ should include them in the path separated by more forward slashes. Example:
 which has a parent folder of `flipperFlop`.
 
 The `name` field is a name. This is in English, except for the
-romanization of foreign language words. Avoid capitals. The only
+romanization/latinization of foreign language words. Avoid capitals. The only
 time you should be using capitals are for the following: proper noun I,
 "Remix X", "Fever" (in the context of the game).
 If this is syllabic (part of a longer sound cue), you should add a hyphen with
