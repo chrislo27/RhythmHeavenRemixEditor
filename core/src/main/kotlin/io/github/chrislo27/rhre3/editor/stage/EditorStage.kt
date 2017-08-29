@@ -42,6 +42,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val messageBarStage: Stage<EditorScreen>
     val buttonBarStage: Stage<EditorScreen>
     val pickerStage: Stage<EditorScreen>
+    val pickerDisplay: PickerDisplay
     val minimapBarStage: Stage<EditorScreen>
     val centreAreaStage: Stage<EditorScreen>
     val patternAreaStage: Stage<EditorScreen>
@@ -51,7 +52,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val variantButtons: List<GameButton>
     val seriesButtons: List<SeriesButton>
     val toolButtons: List<ToolButton>
-    val patternLabels: List<TextLabel<EditorScreen>>
     val gameScrollButtons: List<Button<EditorScreen>>
     val variantScrollButtons: List<Button<EditorScreen>>
 
@@ -214,25 +214,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
 
-            patternLabels.forEach {
-                it.text = ""
-                it.textColor = null
-            }
+            pickerDisplay.labels.clear()
             if (selection.groups.isNotEmpty() && selection.getCurrentVariant()!!.placeableObjects.isNotEmpty()) {
                 val variant = selection.getCurrentVariant()
                 val objects = variant!!.placeableObjects
 
                 objects.forEachIndexed { index, datamodel ->
-                    val y = 2 + (index - variant.pattern)
-                    if (y in 0 until Editor.PATTERN_COUNT) {
-                        patternLabels[y].text = datamodel.name
-                        if (Toolboks.debugMode) {
-                            patternLabels[y].text += " [GRAY](${datamodel.id})[]"
-                        }
-                        if (y != (Editor.PATTERN_COUNT / 2) && datamodel is Cue) {
-                            patternLabels[y].textColor = Editor.CUE_PATTERN_COLOR
-                        }
+                    var text = datamodel.name
+                    var color = Color.WHITE
+                    if (Toolboks.debugMode) {
+                        text += " [GRAY](${datamodel.id})[]"
                     }
+                    if (index != variant.pattern && datamodel is Cue) {
+                        color = Editor.CUE_PATTERN_COLOR
+                    }
+                    pickerDisplay.labels += PickerDisplay.Label(text, color)
                 }
             }
 
@@ -251,7 +247,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
         toolButtons = mutableListOf()
-        patternLabels = mutableListOf()
         gameScrollButtons = mutableListOf()
         variantScrollButtons = mutableListOf()
 
@@ -402,8 +397,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                     if (visible &&
                             (!hasFocus
-                            || editor.selection.size != 1
-                            || editor.selection.first() !is SubtitleEntity)) {
+                                    || editor.selection.size != 1
+                                    || editor.selection.first() !is SubtitleEntity)) {
                         visible = false
                     }
                 }
@@ -468,6 +463,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         run messageBar@ {
 
         }
+
+        pickerDisplay = PickerDisplay(editor, Editor.PATTERN_COUNT, palette, patternAreaStage, patternAreaStage)
 
         run pickerAndCo@ {
             val iconWidth = pickerStage.percentageOfWidth(Editor.ICON_SIZE)
@@ -638,7 +635,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             run patternArea@ {
-                patternLabels as MutableList
                 val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
                 val padding2 = pickerStage.percentageOfWidth(
                         Editor.ICON_PADDING * 2)
@@ -737,44 +733,32 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                 val labelCount = Editor.PATTERN_COUNT
                 val height = 1f / labelCount
-                for (i in 1..labelCount) {
-                    val centre = i == 1 + (labelCount / 2)
-                    val borderedPalette = if (!centre) borderedPalette else borderedPalette.copy(
-                            textColor = Color(Editor.SELECTED_TINT))
-                    patternLabels +=
-                            TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
-                                this.location.set(
-                                        screenHeight = height,
-                                        screenY = 1f - (height * i),
-                                        screenX = upButton.location.screenX + upButton.location.screenWidth +
-                                                padding2
-                                                 )
-                                this.location.set(screenWidth = 1f - (this.location.screenX + padding2))
-                                this.isLocalizationKey = false
-                                this.textAlign = Align.left
-                                this.textWrapping = false
-                                this.text = "text label $i"
-                            }
 
-                    if (centre) {
-                        patternAreaStage.elements +=
-                                TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
-                                    this.location.set(
-                                            screenX = padding2,
-                                            screenWidth = patternAreaStage.percentageOfWidth(
-                                                    Editor.ICON_SIZE),
-                                            screenHeight = height,
-                                            screenY = 1f - (height * i)
-                                                     )
-                                    this.isLocalizationKey = false
-                                    this.textAlign = Align.center
-                                    this.textWrapping = false
-                                    this.text = Editor.ARROWS[4]
-                                }
-                    }
+                patternAreaStage.elements +=
+                        TextLabel(borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT)),
+                                  patternAreaStage, patternAreaStage).apply {
+                            this.location.set(
+                                    screenX = padding2,
+                                    screenWidth = patternAreaStage.percentageOfWidth(
+                                            Editor.ICON_SIZE),
+                                    screenHeight = height,
+                                    screenY = 1f - (height * (1 + (labelCount / 2)))
+                                             )
+                            this.isLocalizationKey = false
+                            this.textAlign = Align.center
+                            this.textWrapping = false
+                            this.text = Editor.ARROWS[4]
+                        }
+
+                patternAreaStage.elements += pickerDisplay.apply {
+                    this.location.set(
+                            screenHeight = 1f,
+                            screenY = 0f,
+                            screenX = upButton.location.screenX + upButton.location.screenWidth +
+                                    padding2
+                                     )
                 }
 
-                patternAreaStage.elements.addAll(patternLabels)
             }
         }
 
@@ -939,7 +923,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         })
                     }
             buttonBarStage.elements +=
-                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage){
+                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
                         override fun onLeftClick(xPercent: Float, yPercent: Float) {
                             super.onLeftClick(xPercent, yPercent)
                             main.screen = ScreenRegistry.getNonNull("saveRemix")
@@ -972,7 +956,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = size * 6 + padding * 6)
             }
-            buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+            buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
+                                                            buttonBarStage).apply {
                 this.location.set(screenWidth = size * 8,
                                   screenX = size * 7 + padding * 7)
             }
