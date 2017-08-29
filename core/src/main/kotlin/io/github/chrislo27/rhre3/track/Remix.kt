@@ -128,7 +128,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                         missingCustom++
                                     return@forEach
                                 }
-                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix)
+                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null)
                                         ?: return@forEach
                             }
                             else -> error("Unsupported entity type: $type")
@@ -218,7 +218,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     return@forEach
                 }
 
-                val entity = datamodel.createEntity(remix)
+                val entity = datamodel.createEntity(remix, null)
 
                 if (entity is IRepitchable) {
                     entity.semitone = it.semitone

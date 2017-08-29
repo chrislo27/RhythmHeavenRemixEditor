@@ -55,7 +55,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
             if (beat >= this.bounds.width)
                 break
 
-            internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
+            internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
                 this.updateBounds {
                     this.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
                     this.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track

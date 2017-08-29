@@ -35,6 +35,9 @@ class CuePointerObject {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var track: Int = 0
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var metadata: Map<String, Any?>? = null
+
 }
 
 class DataObject {

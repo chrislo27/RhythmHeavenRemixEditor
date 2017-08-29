@@ -16,7 +16,8 @@ class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: Strin
         cues.maxBy(CuePointer::duration)?.duration ?: error("No cues found")
     }
 
-    override fun createEntity(remix: Remix): RandomCueEntity {
+    override fun createEntity(remix: Remix,
+                              cuePointer: CuePointer?): RandomCueEntity {
         return RandomCueEntity(remix, this)
     }
 

@@ -69,7 +69,8 @@ or `DataObject`.
   // optional fields after this comment
   "duration": 1.0,
   "semitone": 0,
-  "track": 0
+  "track": 0,
+  "metadata": {}
 }
 ```
 
@@ -85,6 +86,13 @@ As a result, this object will never appear by itself. The fields are similar
 to `CueObject`'s own cues, so you can look there. **Note that** the only
 fields shown here ARE the ones it has, and not every field from `CueObject`
 is inherited.
+
+The `metadata` object can be null, and acts as a key/value map.<br>
+Below is a list of potential properties:
+
+| Entity Type | Field Name | Field Type |
+|-------------|------------|------------|
+| `subtitleEntity` | `subtitleText` | `string` |
 
 ## `CueObject` structure
 ```json

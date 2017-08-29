@@ -26,20 +26,24 @@ class CuePointer {
                 backingDuration
             }
 
+    val metadata: Map<String, Any?>
+
     constructor(obj: CuePointerObject) {
         id = obj.id
         beat = obj.beat
         backingDuration = obj.duration
         semitone = obj.semitone
         track = obj.track
+        metadata = obj.metadata ?: mapOf()
     }
 
-    constructor(id: String, beat: Float, duration: Float = 0f, semitone: Int = 0, track: Int = 0) {
+    constructor(id: String, beat: Float, duration: Float = 0f, semitone: Int = 0, track: Int = 0, metadata: Map<String, Any?> = mapOf()) {
         this.id = id
         this.beat = beat
         this.backingDuration = duration
         this.semitone = semitone
         this.track = track
+        this.metadata = mapOf()
     }
 
 

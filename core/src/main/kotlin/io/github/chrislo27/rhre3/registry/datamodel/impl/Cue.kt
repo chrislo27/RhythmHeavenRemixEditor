@@ -79,7 +79,8 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         return (bpm / baseBpm) // * (duration / entityDuration)
     }
 
-    override fun createEntity(remix: Remix): CueEntity {
+    override fun createEntity(remix: Remix,
+                              cuePointer: CuePointer?): CueEntity {
         return CueEntity(remix, this)
     }
 

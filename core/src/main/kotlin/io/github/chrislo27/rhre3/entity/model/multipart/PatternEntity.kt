@@ -18,7 +18,7 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
 
     init {
         datamodel.cues.mapTo(internal) { pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
+            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
                 this.bounds.x = this@PatternEntity.bounds.x + pointer.beat
                 this.bounds.y = this@PatternEntity.bounds.y + pointer.track
                 this.bounds.width = pointer.duration

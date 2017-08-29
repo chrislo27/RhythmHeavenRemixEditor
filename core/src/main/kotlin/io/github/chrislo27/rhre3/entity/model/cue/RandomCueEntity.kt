@@ -20,7 +20,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
     private fun reroll() {
         internal.clear()
         internal +=
-                datamodel.cues.map { GameRegistry.data.objectMap[it.id] }.random()?.createEntity(remix)?.apply {
+                datamodel.cues.map { GameRegistry.data.objectMap[it.id] }.random()?.createEntity(remix, null)?.apply {
                     this.updateBounds {
                         this.bounds.x = this@RandomCueEntity.bounds.x
                         this.bounds.width = this@RandomCueEntity.bounds.width

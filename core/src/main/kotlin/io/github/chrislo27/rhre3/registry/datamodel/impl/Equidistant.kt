@@ -13,7 +13,8 @@ class Equidistant(game: Game, id: String, deprecatedIDs: List<String>, name: Str
                   override val cues: List<CuePointer>)
     : Datamodel(game, id, deprecatedIDs, name), ContainerModel, DurationModel {
 
-    override fun createEntity(remix: Remix): EquidistantEntity {
+    override fun createEntity(remix: Remix,
+                              cuePointer: CuePointer?): EquidistantEntity {
         return EquidistantEntity(remix, this)
     }
 

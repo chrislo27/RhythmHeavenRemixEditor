@@ -34,7 +34,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
 
     init {
         datamodel.cues.mapIndexedTo(internal) { index, pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix)?.apply {
+            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
                 this.updateBounds {
                     this.bounds.x = this@EquidistantEntity.bounds.x
                     this.bounds.y = this@EquidistantEntity.bounds.y + pointer.track

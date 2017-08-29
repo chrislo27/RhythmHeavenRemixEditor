@@ -1062,7 +1062,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 datamodel as ResponseModel
                                 if (datamodel.responseIDs.isNotEmpty()) {
                                     val id = datamodel.responseIDs.random()
-                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix) ?:
+                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix, null) ?:
                                             error("ID $id not found in game registry when making response copy")
 
                                     entity.updateBounds {
@@ -1173,7 +1173,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
             val datamodel = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentPlaceable() ?: return true
-            val entity = datamodel.createEntity(remix)
+            val entity = datamodel.createEntity(remix, null)
 
             when (entity) {
                 is CueEntity -> {

@@ -18,7 +18,8 @@ class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: Str
         max.beat + max.duration
     }
 
-    override fun createEntity(remix: Remix): KeepTheBeatEntity {
+    override fun createEntity(remix: Remix,
+                              cuePointer: CuePointer?): KeepTheBeatEntity {
         return KeepTheBeatEntity(remix, this)
     }
 

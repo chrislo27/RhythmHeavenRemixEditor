@@ -22,7 +22,8 @@ class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
         cues.map { it.duration }.sum()
     }
 
-    override fun createEntity(remix: Remix): PatternEntity {
+    override fun createEntity(remix: Remix,
+                              cuePointer: CuePointer?): PatternEntity {
         return PatternEntity(remix, this)
     }
 
