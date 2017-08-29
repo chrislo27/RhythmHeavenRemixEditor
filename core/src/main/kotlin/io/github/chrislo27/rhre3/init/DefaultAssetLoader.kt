@@ -55,6 +55,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_uncheckedbox", "images/ui/checkbox/unchecked.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_checkedbox", "images/ui/checkbox/checked.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_xcheckedbox", "images/ui/checkbox/x.png")
+
+        AssetRegistry.loadAsset<Texture>("wakame", "images/wakame.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
