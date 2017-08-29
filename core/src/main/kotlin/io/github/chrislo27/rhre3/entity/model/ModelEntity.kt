@@ -54,16 +54,21 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val oldFontSizeY = font.data.scaleY
         val selectionTint = remix.editor.theme.entities.selectionTint
 
+        val x = bounds.x + lerpDifference.x
+        val y = bounds.y + lerpDifference.y
+        val height = bounds.height + lerpDifference.height
+        val width = bounds.width + lerpDifference.width
+
         // filled rect + border
         batch.setColorWithTintIfNecessary(selectionTint, color)
-        batch.fillRect(bounds.x, bounds.y,
-                       bounds.width, bounds.height)
+        batch.fillRect(x, y,
+                       width, height)
         batch.setColorWithTintIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
                                           (color.g - 0.25f).coerceIn(0f, 1f),
                                           (color.b - 0.25f).coerceIn(0f, 1f),
                                           color.a)
-        batch.drawRect(bounds.x, bounds.y,
-                       bounds.width, bounds.height,
+        batch.drawRect(x, y,
+                       width, height,
                        remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
 
         renderBeforeText(batch)
@@ -73,8 +78,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val iconSizeX = remix.editor.toScaleX(iconSizeY * Editor.ENTITY_HEIGHT)
 
         batch.draw(game.icon,
-                   bounds.x + 2 * (remix.editor.toScaleX(BORDER)),
-                   bounds.y + 2 * remix.editor.toScaleY(BORDER) + ((bounds.height - 4 * remix.editor.toScaleY(BORDER)) - iconSizeY) / 2,
+                   x + 2 * (remix.editor.toScaleX(BORDER)),
+                   y + 2 * remix.editor.toScaleY(BORDER) + ((height - 4 * remix.editor.toScaleY(BORDER)) - iconSizeY) / 2,
                    iconSizeX, iconSizeY)
 
         batch.setColor(oldColor)
@@ -82,14 +87,14 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         val fontScale = 0.5f
         font.color = remix.editor.theme.entities.nameColor
         font.data.setScale(oldFontSizeX * fontScale, oldFontSizeY * fontScale)
-        val allottedWidth = bounds.width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
-        val allottedHeight = bounds.height - 4 * (remix.editor.toScaleY(BORDER))
+        val allottedWidth = width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
+//        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
         fun computeHeight(): Float =
                 font.getTextHeight(text, allottedWidth, true)
 
-        val textHeight = computeHeight()
-        val textX = bounds.x + iconSizeX + 4 * (remix.editor.toScaleX(BORDER))
-        val textY = bounds.y + bounds.height / 2
+//        val textHeight = computeHeight()
+        val textX = x + iconSizeX + 4 * (remix.editor.toScaleX(BORDER))
+        val textY = y + height / 2
 //        if (textHeight > allottedHeight) {
 //            val ratio = allottedHeight / (textHeight - (font.lineHeight - font.capHeight))
 //            font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
@@ -101,8 +106,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
                 font.setColor(1f, 0f, 0f, 1f)
             }
             font.draw(batch, Semitones.getSemitoneName(this.semitone),
-                      bounds.x + 2 * remix.editor.toScaleX(BORDER),
-                      bounds.y + 2 * remix.editor.toScaleY(BORDER) + font.capHeight)
+                      x + 2 * remix.editor.toScaleX(BORDER),
+                      y + 2 * remix.editor.toScaleY(BORDER) + font.capHeight)
         }
         font.color = oldFontColor
         font.data.setScale(oldFontSizeX, oldFontSizeY)

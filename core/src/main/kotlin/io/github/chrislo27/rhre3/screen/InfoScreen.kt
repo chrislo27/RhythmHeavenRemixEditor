@@ -295,6 +295,27 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+
+            // Smooth dragging
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, checked).flush()
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.smoothDragging"
+                }
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 6 + buttonHeight * 5,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
         }
 
         stage.updatePositions()

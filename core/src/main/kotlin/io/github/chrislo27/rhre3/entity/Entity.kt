@@ -1,7 +1,9 @@
 package io.github.chrislo27.rhre3.entity
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -20,6 +22,7 @@ abstract class Entity(val remix: Remix) {
     val tmpUpdateBoundsRect = Rectangle()
     var isSelected: Boolean = false
     val bounds: Rectangle = Rectangle()
+    val lerpDifference: Rectangle = Rectangle()
     open val supportsCopying: Boolean = true
     open var playbackCompletion = PlaybackCompletion.WAITING
 
@@ -43,7 +46,8 @@ abstract class Entity(val remix: Remix) {
     }
 
     open fun inRenderRange(start: Float, end: Float): Boolean {
-        return bounds.x + bounds.width >= start && bounds.x <= end
+        return bounds.x + lerpDifference.x + bounds.width + lerpDifference.width >= start
+                && bounds.x + lerpDifference.x <= end
     }
 
     open fun isUpdateable(beat: Float): Boolean {
@@ -59,7 +63,10 @@ abstract class Entity(val remix: Remix) {
     }
 
     open fun onBoundsChange(old: Rectangle) {
-
+        lerpDifference.x = (old.x + lerpDifference.x) - bounds.x
+        lerpDifference.y = (old.y + lerpDifference.y) - bounds.y
+        lerpDifference.width = (old.width + lerpDifference.width) - bounds.width
+        lerpDifference.height = (old.height + lerpDifference.height) - bounds.height
     }
 
     open fun isFinished(): Boolean =
@@ -98,6 +105,28 @@ abstract class Entity(val remix: Remix) {
         if (this is IRepitchable) {
             semitone = objectNode["semitone"].intValue()
         }
+    }
+
+    open fun updateInterpolation(forceUpdate: Boolean) {
+        if (forceUpdate) {
+            lerpDifference.x = 0f
+            lerpDifference.y = 0f
+            lerpDifference.width = 0f
+            lerpDifference.height = 0f
+
+            return
+        }
+
+        val delta: Float = Gdx.graphics.deltaTime
+        val speedX: Float = 32f
+        val speedY: Float = speedX
+        val alphaX: Float = delta * speedX
+        val alphaY: Float = delta * speedY
+
+        lerpDifference.x = MathUtils.lerp(lerpDifference.x, 0f, alphaX)
+        lerpDifference.y = MathUtils.lerp(lerpDifference.y, 0f, alphaY)
+        lerpDifference.width = MathUtils.lerp(lerpDifference.width, 0f, alphaX)
+        lerpDifference.height = MathUtils.lerp(lerpDifference.height, 0f, alphaY)
     }
 
     abstract fun render(batch: SpriteBatch)

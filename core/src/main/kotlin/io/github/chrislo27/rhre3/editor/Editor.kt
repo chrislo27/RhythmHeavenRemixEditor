@@ -104,10 +104,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         set(value) {
             field.dispose()
             field = value
+
             autosaveFile = null
             resetAutosaveTimer()
+
             camera.position.x = field.playbackStart
             camera.update()
+
+            field.entities.forEach { it.updateInterpolation(true) }
         }
     var theme: Theme = DarkTheme()
     val stage: EditorStage = EditorStage(
@@ -424,7 +428,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
+        val smoothDragging = main.preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
         remix.entities.forEach {
+            it.updateInterpolation(!smoothDragging)
             if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
                 it.render(batch)
             }

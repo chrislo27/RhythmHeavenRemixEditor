@@ -59,7 +59,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun inRenderRange(start: Float, end: Float): Boolean {
-        return bounds.x + internalWidth >= start && bounds.x <= end
+        return bounds.x + lerpDifference.x + internalWidth >= start && bounds.x + lerpDifference.x <= end
     }
 
     override fun getUpperUpdateableBound(): Float {
@@ -110,8 +110,8 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             val batchColor = batch.color
             batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.6f)
             internal.forEach {
-                batch.drawRect(it.bounds.x, it.bounds.y,
-                               it.bounds.width, it.bounds.height,
+                batch.drawRect(it.bounds.x + lerpDifference.x, it.bounds.y + lerpDifference.y,
+                               it.bounds.width + lerpDifference.width, it.bounds.height + lerpDifference.height,
                                remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
             }
         }
