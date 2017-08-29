@@ -49,6 +49,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                         NamedLocale("Deutsch (German)", Locale("de"))
 //                      ,NamedLocale("Italiano (Italian)", Locale("it"))
                       )
+
+        private const val RAINBOW_STR = "RAINBOW"
+
+        init {
+            Colors.put("X", Color.CLEAR)
+        }
     }
 
     val defaultFontLargeKey = "default_font_large"
@@ -155,7 +161,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     override fun preRender() {
         rainbowColor.setHSB(MathHelper.getSawtoothWave(2f), 0.8f, 0.8f)
-        Colors.put("RAINBOW", rainbowColor)
+        Colors.put(RAINBOW_STR, rainbowColor)
         super.preRender()
     }
 
