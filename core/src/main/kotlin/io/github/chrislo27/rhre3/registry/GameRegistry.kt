@@ -163,6 +163,14 @@ object GameRegistry : Disposable {
                     }
                     it.endingSoundCue!!.hidden = true
                 }
+
+                if (it.soundHandle.extension() != "ogg") {
+                    Toolboks.LOGGER.warn("Non-ogg file extension: ${it.soundHandle} for ${it.id}")
+                }
+
+                if (!it.soundHandle.exists()) {
+                    errors += "Handle does not exist for ${it.id}: ${it.soundHandle}"
+                }
             }
 
             errors.forEach(Toolboks.LOGGER::error)
@@ -188,6 +196,8 @@ object GameRegistry : Disposable {
                     }
                 }
             }
+
+            System.gc()
         }
 
         fun loadOne(): Float {
