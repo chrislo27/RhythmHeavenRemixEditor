@@ -120,8 +120,8 @@ abstract class Entity(val remix: Remix) {
         val delta: Float = Gdx.graphics.deltaTime
         val speedX: Float = 32f
         val speedY: Float = speedX
-        val alphaX: Float = delta * speedX
-        val alphaY: Float = delta * speedY
+        val alphaX: Float = (delta * speedX).coerceAtMost(1f)
+        val alphaY: Float = (delta * speedY).coerceAtMost(1f)
 
         lerpDifference.x = MathUtils.lerp(lerpDifference.x, 0f, alphaX)
         lerpDifference.y = MathUtils.lerp(lerpDifference.y, 0f, alphaY)
