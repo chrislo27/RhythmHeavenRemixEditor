@@ -1102,6 +1102,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
 
                         newSel.forEach {
+                            it.updateInterpolation(true)
+
                             if (it is CueEntity) {
                                 it.datamodel.loadSounds()
                             } else if (it is MultipartEntity<*>) {
