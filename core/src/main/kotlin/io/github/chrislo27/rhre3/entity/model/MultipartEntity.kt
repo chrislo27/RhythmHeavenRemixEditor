@@ -111,7 +111,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.6f)
             internal.forEach {
                 batch.drawRect(it.bounds.x + lerpDifference.x, it.bounds.y + lerpDifference.y,
-                               it.bounds.width + lerpDifference.width, it.bounds.height + lerpDifference.height,
+                               it.bounds.width, it.bounds.height,
                                remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
             }
         }
