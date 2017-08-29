@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
@@ -95,6 +96,8 @@ object GameRegistry : Disposable {
             get() = currentObj.version
         val editorVersion: Version
 
+        private val objectMapper: ObjectMapper
+
         class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
             val textureFh = folder.child(ICON_FILENAME)
         }
@@ -126,7 +129,7 @@ object GameRegistry : Disposable {
         var lastLoadedID: String? = null
 
         init {
-            JsonHandler.setFailOnUnknown(false)
+            objectMapper = JsonHandler.createObjectMapper(true)
             currentObj = JsonHandler.fromJson(currentObjFh.readString())
 //            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
 
@@ -212,7 +215,7 @@ object GameRegistry : Disposable {
             val game: Game
 
             if (datajsonFile.exists()) {
-                val dataObject: DataObject = JsonHandler.fromJson(datajsonFile.readString("UTF-8"))
+                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), DataObject::class.java)
 
                 game = Game(dataObject.id,
                             dataObject.name,

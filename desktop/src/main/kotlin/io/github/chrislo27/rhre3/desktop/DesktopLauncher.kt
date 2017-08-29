@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.desktop
 
 import com.badlogic.gdx.Files
-import com.badlogic.gdx.backends.lwjgl.LwjglNativesLoader
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -13,8 +12,6 @@ import kotlin.concurrent.thread
 object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
-        LwjglNativesLoader.load()
-
         // TODO console commands
         thread(isDaemon = true) {
             while (true) {
