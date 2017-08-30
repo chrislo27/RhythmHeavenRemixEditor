@@ -51,6 +51,8 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -85,6 +87,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
         val SELECTED_TINT: Color = Color(0.65f, 1f, 1f, 1f)
         val CUE_PATTERN_COLOR: Color = Color(0.65f, 0.65f, 0.65f, 1f)
+
+        private val THREE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
+        private val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
+        private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
     }
 
     fun createRemix(): Remix {
@@ -138,6 +144,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private set
     private var autosaveFile: FileHandle? = null
     private var autosaveState: Pair<Boolean, Long>? = null
+    private var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
+    private var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -479,12 +487,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun getTrackerTime(beat: Float): String {
                 val sec = Math.abs(remix.tempos.beatsToSeconds(beat))
                 return Localization["tracker.any.time",
-                        "%.3f".format(beat),
+                        THREE_DECIMAL_PLACES_FORMATTER.format(beat.toDouble()),
                         (if (beat < 0) "-" else "") +
-                                "%1$02d:%2$06.3f".format((sec / 60).toInt(), sec % 60)]
+                                TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
+                                sec % 60.0)]
             }
 
             fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
+                                   trackerTime: String = getTrackerTime(beat),
                                    triangleHeight: Float = 0.4f) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
                 val x = beat - toScaleX(TRACK_LINE * 1.5f) / 2
@@ -502,7 +512,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (textKey != null) {
                     font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
                 }
-                font.drawCompressed(batch, getTrackerTime(beat), x + triangleWidth + 0.025f, y + height, 1f, Align.left)
+                font.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
 
                 if (controlKey != null) {
                     val line = font.lineHeight
@@ -513,10 +523,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 font.scaleFont()
             }
 
+            if (cachedPlaybackStart.first != remix.playbackStart) {
+                cachedPlaybackStart = remix.playbackStart to getTrackerTime(remix.playbackStart)
+            }
+            if (cachedMusicStart.first != remix.tempos.secondsToBeats(remix.musicStartSec)) {
+                val beats = remix.tempos.secondsToBeats(remix.musicStartSec)
+                cachedMusicStart = beats to getTrackerTime(beats)
+            }
+
             renderAboveTracker("tracker.music", "tracker.music.controls",
-                               1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart)
+                               1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart,
+                               cachedMusicStart.second)
             renderAboveTracker("tracker.playback", "tracker.playback.controls",
-                               0, remix.playbackStart, theme.trackers.playback)
+                               0, remix.playbackStart, theme.trackers.playback, cachedPlaybackStart.second)
 
             if (stage.tapalongMarkersEnabled) {
                 val tapalong = stage.tapalongStage
@@ -532,7 +551,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (remix.playState != PlayState.STOPPED) {
                 renderAboveTracker(null, null, 0, remix.beat,
-                                   theme.trackers.playback, 0f)
+                                   theme.trackers.playback, triangleHeight = 0f)
             }
 
             font.color = oldFontColor
