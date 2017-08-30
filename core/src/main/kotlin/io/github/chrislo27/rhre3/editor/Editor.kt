@@ -482,8 +482,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val font = main.defaultBorderedFont
             val oldFontColor = font.color
 
-            // TODO optimize format
-
             fun getTrackerTime(beat: Float): String {
                 val sec = Math.abs(remix.tempos.beatsToSeconds(beat))
                 return Localization["tracker.any.time",
