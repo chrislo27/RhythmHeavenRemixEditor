@@ -47,6 +47,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val centreAreaStage: Stage<EditorScreen>
     val patternAreaStage: Stage<EditorScreen>
     val tapalongStage: TapalongStage
+    val presentationModeStage: PresentationModeStage
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
@@ -450,6 +451,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             this.visible = false
         }
+        presentationModeStage = PresentationModeStage(editor, palette, this, camera).apply {
+            this.location.set(0f,
+                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
+                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
+
+            this.visible = false
+        }
+//        elements += presentationModeStage
         elements += tapalongStage
         elements += buttonBarStage
         elements += pickerStage
@@ -956,6 +965,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = size * 6 + padding * 6)
             }
+//            buttonBarStage.elements += PresentationModeButton(editor,this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+//                this.location.set(screenWidth = size,
+//                                  screenX = size * 7 + padding * 7)
+//            }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
                 this.location.set(screenWidth = size * 8,
