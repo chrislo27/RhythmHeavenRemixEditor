@@ -39,6 +39,11 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
             val font = editor.main.defaultBorderedFont
             val sectionY = location.realHeight / number
             labels.forEachIndexed { index, label ->
+                val half = number / 2
+                if (scrollValue !in selection.pattern - (half + 1)..selection.pattern + (half + 1)) {
+                    return@forEachIndexed
+                }
+
                 val selected = index == selection.pattern
                 font.color = if (selected) Editor.SELECTED_TINT else label.color
                 font.drawCompressed(batch, label.string,
