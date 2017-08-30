@@ -215,7 +215,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
 
-            pickerDisplay.labels.clear()
             if (selection.groups.isNotEmpty() && selection.getCurrentVariant()!!.placeableObjects.isNotEmpty()) {
                 val variant = selection.getCurrentVariant()
                 val objects = variant!!.placeableObjects
@@ -223,13 +222,22 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
                     var color = Color.WHITE
+                    val label: PickerDisplay.Label = pickerDisplay.labels.getOrNull(index) ?: run {
+                        val l = PickerDisplay.Label("", Color.WHITE)
+                        pickerDisplay.labels.add(l)
+                        l
+                    }
                     if (Toolboks.debugMode) {
                         text += " [GRAY](${datamodel.id})[]"
                     }
                     if (index != variant.pattern && datamodel is Cue) {
                         color = Editor.CUE_PATTERN_COLOR
                     }
-                    pickerDisplay.labels += PickerDisplay.Label(text, color)
+                    label.string = text
+                    label.color = color
+                }
+                while (pickerDisplay.labels.size > objects.size) {
+                    pickerDisplay.labels.removeAt(pickerDisplay.labels.size - 1)
                 }
             }
 

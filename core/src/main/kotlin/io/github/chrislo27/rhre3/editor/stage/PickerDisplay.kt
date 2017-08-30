@@ -52,6 +52,6 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
         }
     }
 
-    data class Label(val string: String, val color: Color)
+    data class Label(var string: String, var color: Color)
 
 }
