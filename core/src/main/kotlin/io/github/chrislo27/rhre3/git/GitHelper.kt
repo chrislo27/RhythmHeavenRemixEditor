@@ -78,6 +78,7 @@ object GitHelper {
     fun fetchOrClone(progressMonitor: ProgressMonitor = NullProgressMonitor.INSTANCE) {
         if (doesGitFolderExist()) {
             Toolboks.LOGGER.info("Fetching...")
+            ensureRemoteExists()
             temporarilyUseRepo(true) {
                 val git = Git(this)
                 this.directory.resolve("index.lock").delete() // mega naughty
@@ -95,18 +96,20 @@ object GitHelper {
             reset()
         } else {
             Toolboks.LOGGER.info("Cloning...")
+            val file = SOUNDS_DIR.file()
+            file.deleteRecursively()
             Git.cloneRepository()
                     .setBranch(RHRE3.DATABASE_BRANCH)
                     .setProgressMonitor(progressMonitor)
                     .setRemote("origin")
                     .setURI(RHRE3.DATABASE_URL)
-                    .setDirectory(SOUNDS_DIR.file())
+                    .setDirectory(file)
                     .call()
         }
     }
 
     fun ensureRemoteExists() {
-        temporarilyUseRepo {
+        temporarilyUseRepo() {
             val git = Git(this)
             if ("origin" !in git.repository.remoteNames) {
                 val remoteAdd = git.remoteAdd()

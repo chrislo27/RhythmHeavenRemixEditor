@@ -92,12 +92,12 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                                     "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
                             return@launch
                         } else {
-                            if (current.version == lastVersion && !Toolboks.debugMode) {
-                                repoStatus = RepoStatus.DONE
-                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
-                                GitHelper.reset()
-                                return@launch
-                            }
+//                            if (current.version == lastVersion && !Toolboks.debugMode) {
+//                                repoStatus = RepoStatus.DONE
+//                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
+//                                GitHelper.reset()
+//                                return@launch
+//                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -213,6 +213,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
                 || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(
                 Input.Keys.ESCAPE))) {
+            println(repoStatus)
             coroutine?.cancel()
             coroutine = null
             toNextScreen()
