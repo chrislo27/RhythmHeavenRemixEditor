@@ -104,6 +104,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                         // let fetch handle the big boy exceptions
                     }
                 }
+                GitHelper.ensureRemoteExists()
                 GitHelper.fetchOrClone(ScreenProgressMonitor())
                 repoStatus = RepoStatus.DONE
                 run {
@@ -120,12 +121,22 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 Toolboks.LOGGER.info("Finished fetch/clone in $time ms")
             } catch (te: TransportException) {
                 te.printStackTrace()
-                GitHelper.reset()
+                try {
+                    GitHelper.ensureRemoteExists()
+                    GitHelper.reset()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
                 label.text = Localization["screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"]
             } catch (e: Exception) {
                 e.printStackTrace()
-                GitHelper.reset()
+                try {
+                    GitHelper.ensureRemoteExists()
+                    GitHelper.reset()
+                } catch (e2: Exception) {
+                    e2.printStackTrace()
+                }
                 repoStatus = RepoStatus.ERROR
                 label.text = Localization["screen.database.error"]
             }

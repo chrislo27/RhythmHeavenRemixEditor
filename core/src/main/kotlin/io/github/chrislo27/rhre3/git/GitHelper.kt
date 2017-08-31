@@ -12,6 +12,7 @@ import org.eclipse.jgit.lib.Repository
 import org.eclipse.jgit.lib.RepositoryBuilder
 import org.eclipse.jgit.transport.RefSpec
 import org.eclipse.jgit.transport.URIish
+import java.net.URL
 
 
 object GitHelper {
@@ -101,6 +102,18 @@ object GitHelper {
                     .setURI(RHRE3.DATABASE_URL)
                     .setDirectory(SOUNDS_DIR.file())
                     .call()
+        }
+    }
+
+    fun ensureRemoteExists() {
+        temporarilyUseRepo {
+            val git = Git(this)
+            if ("origin" !in git.repository.remoteNames) {
+                val remoteAdd = git.remoteAdd()
+                remoteAdd.setName("origin")
+                remoteAdd.setUri(URIish(URL(RHRE3.DATABASE_URL)))
+                remoteAdd.call()
+            }
         }
     }
 
