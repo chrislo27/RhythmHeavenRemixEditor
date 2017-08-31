@@ -22,6 +22,7 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         canTypeText = { char ->
             (char.isDigit() || char == '-') && text.length < if (text.startsWith("-")) 6 else 5
         }
+        canPaste = false
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
