@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
@@ -229,6 +230,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     entity.bounds.y = it.level.toFloat()
                     if (it.width > 0f) {
                         entity.bounds.width = it.width
+                    }
+
+                    if (entity is EquidistantEntity) {
+                        entity.bounds.width /= entity.datamodel.cues.count { it.track == 0 }
                     }
                 }
 

@@ -298,15 +298,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val oldFirstPosX = first.bounds.x
                 val oldFirstPosY = first.bounds.y
                 first.updateBounds {
-                    bounds.setPosition(x, y)
+                    first.bounds.setPosition(x, y)
                 }
 
                 selection.forEachIndexed { index, entity ->
                     if (index == 0)
                         return@forEachIndexed
                     entity.updateBounds {
-                        bounds.x = (bounds.x - oldFirstPosX) + x
-                        bounds.y = (bounds.y - oldFirstPosY) + y
+                        first.bounds.x = (first.bounds.x - oldFirstPosX) + x
+                        first.bounds.y = (first.bounds.y - oldFirstPosY) + y
                     }
                 }
             }
@@ -1285,8 +1285,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     // revert positions silently
                     clickOccupation.oldBounds.forEachIndexed { index, rect ->
-                        selection[index].updateBounds {
-                            bounds.set(rect)
+                        val entity = selection[index]
+                        entity.updateBounds {
+                            entity.bounds.set(rect)
                         }
                     }
                 }

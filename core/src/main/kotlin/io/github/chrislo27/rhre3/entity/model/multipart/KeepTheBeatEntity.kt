@@ -57,9 +57,9 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
             internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
                 this.updateBounds {
-                    this.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
-                    this.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track
-                    this.bounds.width = pointer.duration
+                    this@apply.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
+                    this@apply.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track
+                    this@apply.bounds.width = pointer.duration
                 }
 
                 (this as? IRepitchable)?.semitone = pointer.semitone

@@ -75,9 +75,9 @@ abstract class Entity(val remix: Remix) {
     /**
      * Automatically calls onBoundsChange and caches the old rectangle.
      */
-    inline fun updateBounds(func: Entity.() -> Unit) {
+    inline fun updateBounds(func: () -> Unit) {
         val old = tmpUpdateBoundsRect.set(bounds)
-        this.func()
+        func()
         onBoundsChange(old)
     }
 

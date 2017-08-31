@@ -52,6 +52,10 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
                 .coerceAtLeast(1f)
     }
 
+    open fun getInternalEntities(): List<Entity> {
+        return internal
+    }
+
     protected fun computeInternalWidth(): Float {
         return internal.maxBy { it.bounds.x + it.bounds.width }?.run {
             this.bounds.x + this.bounds.width - this@MultipartEntity.bounds.x

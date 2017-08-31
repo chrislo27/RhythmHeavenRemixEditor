@@ -26,9 +26,12 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
                 currentRelative += this@EquidistantEntity.bounds.width
             }
 
-            it.bounds.x = this.bounds.x + currentRelative
-            it.bounds.width = this.bounds.width
-            it.bounds.y = this.bounds.y + track.toFloat()
+            it.updateBounds {
+                it.bounds.x = this@EquidistantEntity.bounds.x + currentRelative
+                it.bounds.width = this@EquidistantEntity.bounds.width
+                it.bounds.y = this@EquidistantEntity.bounds.y + track.toFloat()
+            }
+
         }
     }
 
@@ -36,9 +39,9 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
         datamodel.cues.mapIndexedTo(internal) { index, pointer ->
             GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
                 this.updateBounds {
-                    this.bounds.x = this@EquidistantEntity.bounds.x
-                    this.bounds.y = this@EquidistantEntity.bounds.y + pointer.track
-                    this.bounds.width = this@EquidistantEntity.bounds.width
+                    this@apply.bounds.x = this@EquidistantEntity.bounds.x
+                    this@apply.bounds.y = this@EquidistantEntity.bounds.y + pointer.track
+                    this@apply.bounds.width = this@EquidistantEntity.bounds.width
                 }
 
                 // apply cue pointer settings
