@@ -201,10 +201,10 @@ class OpenRemixScreen(main: RHRE3Application)
                                     Localization[if (isRHRE2)
                                         "screen.open.rhre2Warning"
                                     else
-                                        "screen.open.oldVersion"]
+                                        "screen.open.oldWarning"]
                         }
                         if (remix.version > RHRE3.VERSION) {
-                            mainLabel.text += "\n" + Localization["screen.open.oldVersion2"]
+                            mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
                         }
                     } catch (t: Throwable) {
                         t.printStackTrace()
