@@ -151,48 +151,6 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Settings
-            // Disable minimap
-            centre.elements += object : FalseCheckbox<InfoScreen>(palette, centre, centre) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP, checked).flush()
-                }
-            }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
-
-                this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.text = "screen.info.disableMinimap"
-                }
-
-                this.location.set(screenX = padding,
-                                  screenY = padding,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-            }
-
-            // Chase camera
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, checked).flush()
-                }
-            }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)
-
-                this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.text = "screen.info.chaseCamera"
-                }
-
-                this.location.set(screenX = padding,
-                                  screenY = padding * 2 + buttonHeight,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-            }
-
             // Autosave timer
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 private fun updateText() {
@@ -247,6 +205,48 @@ class InfoScreen(main: RHRE3Application)
                     this.text = ""
                     this.fontScaleMultiplier = fontScale
                 })
+
+                this.location.set(screenX = padding,
+                                  screenY = padding,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+
+            // Chase camera
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, checked).flush()
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.chaseCamera"
+                }
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 2 + buttonHeight,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+
+            // Disable minimap
+            centre.elements += object : FalseCheckbox<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP, checked).flush()
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.disableMinimap"
+                }
 
                 this.location.set(screenX = padding,
                                   screenY = padding * 3 + buttonHeight * 2,
