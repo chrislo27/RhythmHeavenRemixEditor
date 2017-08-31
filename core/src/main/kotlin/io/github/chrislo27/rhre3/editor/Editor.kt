@@ -305,8 +305,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     if (index == 0)
                         return@forEachIndexed
                     entity.updateBounds {
-                        first.bounds.x = (first.bounds.x - oldFirstPosX) + x
-                        first.bounds.y = (first.bounds.y - oldFirstPosY) + y
+                        entity.bounds.x = (entity.bounds.x - oldFirstPosX) + x
+                        entity.bounds.y = (entity.bounds.y - oldFirstPosY) + y
                     }
                 }
             }
