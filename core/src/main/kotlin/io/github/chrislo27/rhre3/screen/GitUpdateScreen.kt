@@ -81,8 +81,9 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
                                 khttp.get(RHRE3.DATABASE_CURRENT_VERSION).text)
-                        Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms")
                         val ver: Version = Version.fromString(current.requiresVersion)
+
+                        Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
 
                         if (ver > RHRE3.VERSION) {
                             label.text = Localization["screen.database.incompatibleVersion${if (lastVersion >= 0) ".canContinue" else ""}", current.requiresVersion]
