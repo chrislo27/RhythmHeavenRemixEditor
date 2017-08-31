@@ -41,6 +41,18 @@ explained below. It is **very important** that each object type contain
 the `type` field, which is used by the JSON deserializer to determine
 what object type to deserialize at runtime. This is called *polymorphism*.
 
+The `series` field is a string showing what series this game belongs to.<br>
+>Note: if this is not present it defaults to "Other". There are other values
+possible that are not explained here because they should not be used.
+
+| Series | Field Value |
+|-------------|------------|
+| GBA | `tengoku` |
+| DS | `ds` |
+| Fever | `fever` |
+| Megamix | `megamix` |
+| Side | `side` |
+
 The optional `group` field is the full name of the group this data object
 belongs to, if it has variants. For example, `gleeClubEnMegamix` would
 have the group value be `Glee Club (Megamix)` to be grouped with other
