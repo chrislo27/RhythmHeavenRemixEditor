@@ -12,7 +12,11 @@ class EntityRemoveAction(val editor: Editor, val entities: List<Entity>, val old
 
     override fun undo(context: Remix) {
         context.entities.addAll(entities)
-        entities.forEachIndexed { index, entity -> entity.bounds.set(oldPos[index]) }
+        entities.forEachIndexed { index, entity ->
+            entity.updateBounds {
+                entity.bounds.set(oldPos[index])
+            }
+        }
     }
 
     override fun redo(context: Remix) {
