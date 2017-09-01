@@ -15,7 +15,7 @@ object Credits {
                 |[LIGHT_GRAY]Español (Spanish)[]
                 |GlitchyPSIX, quantic
                 |
-                |[LIGHT_GRAY](German)[]
+                |[LIGHT_GRAY]Deutsche (German)[]
                 |Zenon""".trimMargin(),
             "sfx" crediting "baguette, Huebird",
             "gfx" crediting "GlitchyPSIX",

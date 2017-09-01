@@ -97,11 +97,11 @@ class CreditsScreen(main: RHRE3Application)
         } else {
             var scrolled = false
             if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-                scroll -= scrollSpeed * 6 * Gdx.graphics.deltaTime
+                scroll -= scrollSpeed * 8 * Gdx.graphics.deltaTime
                 scrolled = true
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-                scroll += scrollSpeed * 6 * Gdx.graphics.deltaTime
+                scroll += scrollSpeed * 8 * Gdx.graphics.deltaTime
                 scrolled = true
             }
 
@@ -114,7 +114,7 @@ class CreditsScreen(main: RHRE3Application)
     private fun createText() {
         text = Credits.list.joinToString(separator = "") {
             "[RAINBOW]${Localization[it.localization]}[]\n${it.persons}\n\n"
-        }
+        } + Localization["licenseInfo"]
 
         maxScroll = (font.getTextHeight(text, element.location.realWidth, true) + element.location.realHeight * 0.75f).coerceAtLeast(1f)
     }
