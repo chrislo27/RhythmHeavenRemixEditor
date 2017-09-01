@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -28,6 +29,7 @@ object GameRegistry : Disposable {
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
     const val SPECIAL_GAME_ID: String = "special"
+    const val CUSTOM_PREFIX: String = "custom_"
 
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
@@ -97,6 +99,9 @@ object GameRegistry : Disposable {
         val editorVersion: Version
 
         private val objectMapper: ObjectMapper
+        private val shouldCustomsGetPrefixes by lazy {
+            RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+        }
 
         class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
             val textureFh = folder.child(ICON_FILENAME)
@@ -175,6 +180,11 @@ object GameRegistry : Disposable {
                     errors += "Handle does not exist for ${it.id}: ${it.soundHandle}"
                 }
             }
+            gameList.forEach {
+                if (!it.isCustom && it.id.startsWith(CUSTOM_PREFIX)) {
+                    errors += "Game ${it.id} starts with custom prefix $CUSTOM_PREFIX"
+                }
+            }
 
             errors.forEach(Toolboks.LOGGER::error)
             if (errors.isNotEmpty()) {
@@ -216,6 +226,9 @@ object GameRegistry : Disposable {
 
             if (datajsonFile.exists()) {
                 val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), DataObject::class.java)
+                if (directive.isCustom && shouldCustomsGetPrefixes) {
+                    dataObject.id = CUSTOM_PREFIX + dataObject.id
+                }
 
                 game = Game(dataObject.id,
                             dataObject.name,
@@ -266,7 +279,7 @@ object GameRegistry : Disposable {
 
                 DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
             } else {
-                val id = folder.nameWithoutExtension()
+                val id = if (shouldCustomsGetPrefixes) CUSTOM_PREFIX + folder.nameWithoutExtension() else folder.nameWithoutExtension()
                 if (gameMap.containsKey(id)) {
                     throw UnsupportedOperationException("Cannot load custom sound folder $id/ - already exists in registry")
                 }

@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -119,16 +120,24 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     .filter { it.has("type") }
                     .forEach { node ->
                         val type = node["type"].asText(null) ?: return@forEach
+                        val isCustom = node["isCustom"].asBoolean(false)
 
                         val entity: Entity = when (type) {
                             "model" -> {
-                                val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
+                                var datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
                                 ?: run {
                                     missing++
-                                    if (node["isCustom"].asBoolean(false))
+                                    if (isCustom)
                                         missingCustom++
                                     return@forEach
                                 }
+
+                                if (isCustom
+                                        && remix.version < VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+                                        && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES) {
+                                    datamodelID = GameRegistry.CUSTOM_PREFIX + datamodelID
+                                }
+
                                 GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null)
                                         ?: return@forEach
                             }
