@@ -213,7 +213,6 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
                 || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(
                 Input.Keys.ESCAPE))) {
-            println(repoStatus)
             coroutine?.cancel()
             coroutine = null
             toNextScreen()
