@@ -16,7 +16,10 @@ import io.github.chrislo27.toolboks.ui.*
 class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
-    val WIDTH_MULTIPLICATION = 12f
+    companion object {
+        const val WIDTH_MULTIPLICATION = 12f
+        const val FONT_SCALE = 0.8f
+    }
 
     private val icon: ImageLabel<EditorScreen>
     private val label: TextLabel<EditorScreen>
@@ -53,7 +56,7 @@ class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement
             this.text = ""
             this.textAlign = Align.left
             this.textWrapping = false
-            this.fontScaleMultiplier = 0.8f
+            this.fontScaleMultiplier = FONT_SCALE
         }
 
         elements.apply {

@@ -431,7 +431,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         musicSeeking = false
     }
 
-    private fun computeDuration() {
+    fun computeDuration() {
         duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
     }

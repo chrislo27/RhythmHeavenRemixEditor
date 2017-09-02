@@ -383,7 +383,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@ {
                 this.location.set(screenHeight = this@apply.percentageOfHeight(32f),
                                   screenX = this@apply.percentageOfWidth(8f),
-                                  screenWidth = this@apply.percentageOfWidth(32f) * WIDTH_MULTIPLICATION)
+                                  screenWidth = this@apply.percentageOfWidth(32f) * GameDisplayStage.WIDTH_MULTIPLICATION)
                 this.location.set(screenY = 1f - (this@apply.percentageOfHeight(8f) + this.location.screenHeight))
                 this.updatePositions()
             }
