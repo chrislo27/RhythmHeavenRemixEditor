@@ -150,9 +150,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         }
         launch(CommonPool) {
             try {
+                val nano = System.nanoTime()
                 val obj = JsonHandler.fromJson<ReleaseObject>(khttp.get(RHRE3.RELEASE_API_URL).text)
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!)
+                Toolboks.LOGGER.info("Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f}, is $githubVersion")
             } catch (e: Exception) {
                 e.printStackTrace()
             }

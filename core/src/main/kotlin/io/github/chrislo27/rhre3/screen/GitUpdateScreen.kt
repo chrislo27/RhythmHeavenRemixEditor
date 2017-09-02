@@ -21,9 +21,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.experimental.*
 import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.lib.ProgressMonitor
 
@@ -96,7 +94,18 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
                         Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
 
-                        if (ver > RHRE3.VERSION) {
+                        val githubVersion: Version? = async(CommonPool) {
+                            val nano = System.nanoTime()
+                            while (main.githubVersion == null) {
+                                delay(100L)
+                                if (System.nanoTime() - nano >= 1000L * 1_000_000L) {
+                                    break
+                                }
+                            }
+                            return@async main.githubVersion
+                        }.await()
+
+                        if (ver > RHRE3.VERSION && githubVersion != null && githubVersion >= ver) {
                             label.text = Localization["screen.database.incompatibleVersion${if (lastVersion >= 0) ".canContinue" else ""}", current.requiresVersion]
                             repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
                             Toolboks.LOGGER.info(
