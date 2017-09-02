@@ -29,7 +29,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
-import khttp.get
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import java.util.*
@@ -103,6 +102,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             Localization.bundles.apply {
                 languages.forEach { add(Localization.createBundle(it)) }
             }
+            Localization.logMissingLocalizations()
         }
 
         // font stuff
@@ -150,7 +150,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         }
         launch(CommonPool) {
             try {
-                val obj = JsonHandler.fromJson<ReleaseObject>(get(RHRE3.RELEASE_API_URL).text)
+                val obj = JsonHandler.fromJson<ReleaseObject>(khttp.get(RHRE3.RELEASE_API_URL).text)
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!)
             } catch (e: Exception) {
