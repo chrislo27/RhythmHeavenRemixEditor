@@ -50,7 +50,18 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         stage.bottomStage.elements += object : Button<GitUpdateScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
+                Gdx.net.openURI(if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE) RHRE3.GITHUB_RELEASES else RHRE3.DATABASE_RELEASES)
+            }
+
+            private var setToReleases = false
+
+            override fun frameUpdate(screen: GitUpdateScreen) {
+                if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE && !setToReleases) {
+                    (labels.first() as TextLabel).text = "screen.version.button"
+                    setToReleases = true
+                }
+
+                super.frameUpdate(screen)
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -76,7 +87,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
             try {
-                if (!RHRE3.forceGitFetch) {
+                if (!RHRE3.forceGitFetch || RHRE3.forceGitCheck) {
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
@@ -90,6 +101,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                             repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
                             Toolboks.LOGGER.info(
                                     "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
+                            main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
                             return@launch
                         } else {
 //                            if (current.version == lastVersion && !Toolboks.debugMode) {
@@ -155,10 +167,10 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         var taskTotalWork: Int = ProgressMonitor.UNKNOWN
         var task: String? = ""
             set(value) {
-                if (value == "Updating references") {
-                    field = "Updating references (may take a while)"
+                field = if (value == "Updating references") {
+                    "Updating references (may take a while)"
                 } else {
-                    field = value
+                    value
                 }
             }
 
