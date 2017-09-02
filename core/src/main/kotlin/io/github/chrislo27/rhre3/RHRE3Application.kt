@@ -85,7 +85,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     var versionTextWidth: Float = -1f
         private set
 
-    var githubVersion: Version? = null
+    var githubVersion: Version = Version.RETRIEVING
         private set
 
     private val rainbowColor: Color = Color()
@@ -153,7 +153,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 val nano = System.nanoTime()
                 val obj = JsonHandler.fromJson<ReleaseObject>(khttp.get(RHRE3.RELEASE_API_URL).text)
 
-                githubVersion = Version.fromStringOrNull(obj.tag_name!!)
+                githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info("Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f}, is $githubVersion")
             } catch (e: Exception) {
                 e.printStackTrace()

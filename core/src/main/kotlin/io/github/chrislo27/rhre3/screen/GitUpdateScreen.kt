@@ -96,7 +96,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
                         val githubVersion: Version? = async(CommonPool) {
                             val nano = System.nanoTime()
-                            while (main.githubVersion == null) {
+                            while (main.githubVersion == Version.RETRIEVING) {
                                 delay(100L)
                                 if (System.nanoTime() - nano >= 1000L * 1_000_000L) {
                                     break

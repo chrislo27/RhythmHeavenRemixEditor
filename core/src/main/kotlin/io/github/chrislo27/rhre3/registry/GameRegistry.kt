@@ -105,7 +105,7 @@ object GameRegistry : Disposable {
         }
 
         class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
-            val textureFh = folder.child(ICON_FILENAME)
+            val textureFh: FileHandle = folder.child(ICON_FILENAME)
         }
 
         private val folders: List<SfxDirectory> by lazy {
