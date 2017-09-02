@@ -120,7 +120,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     .filter { it.has("type") }
                     .forEach { node ->
                         val type = node["type"].asText(null) ?: return@forEach
-                        val isCustom = node["isCustom"].asBoolean(false)
+                        val isCustom = node["isCustom"]?.asBoolean(false) ?: false
 
                         val entity: Entity = when (type) {
                             "model" -> {
