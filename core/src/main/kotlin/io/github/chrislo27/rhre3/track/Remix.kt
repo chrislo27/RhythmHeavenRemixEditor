@@ -28,6 +28,7 @@ import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
@@ -125,12 +126,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         val entity: Entity = when (type) {
                             "model" -> {
                                 var datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
-                                ?: run {
-                                    missing++
-                                    if (isCustom)
-                                        missingCustom++
-                                    return@forEach
-                                }
+                                        ?: return@forEach
 
                                 if (isCustom
                                         && remix.version < VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
@@ -138,8 +134,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                     datamodelID = GameRegistry.CUSTOM_PREFIX + datamodelID
                                 }
 
-                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null)
-                                        ?: return@forEach
+                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null) ?: run {
+                                    missing++
+                                    if (isCustom)
+                                        missingCustom++
+
+                                    Toolboks.LOGGER.warn("Missing ${if (isCustom) "custom " else ""}asset: $datamodelID")
+                                    return@forEach
+                                }
                             }
                             else -> error("Unsupported entity type: $type")
                         }
@@ -515,7 +517,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         if (playState != PlayState.STOPPED
                 && (beat >= duration
-                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false) && beat >= lastPoint)) {
+                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST,
+                                               false) && beat >= lastPoint)) {
             playState = PlayState.STOPPED
         }
     }
