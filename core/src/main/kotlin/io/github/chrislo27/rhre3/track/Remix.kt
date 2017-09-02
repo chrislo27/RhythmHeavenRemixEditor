@@ -52,7 +52,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         To correctly do persistent data:
 
-        * Update tracker blocks of code when new trackers are added
+        * Update tracker blocks of code when new trackers are added, use VersionHistory to check correctly
         * Update when statement in fromJson
 
          */
