@@ -50,9 +50,6 @@ class DataObject {
     var series: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var deprecatedIDs: List<String> = listOf()
-
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var group: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
