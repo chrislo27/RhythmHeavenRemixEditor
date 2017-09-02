@@ -10,9 +10,9 @@ data class GameGroup(val name: String, val games: List<Game>) {
 
         series = games.first().series
 
-        val mismatchingSeries = games.filter { it.series != series }
+        val mismatchingSeries = games.filter { it.series != series && it.series != Series.CUSTOM }
         if (mismatchingSeries.isNotEmpty())
-            error("The following games in game group $name do not have the series $series: $mismatchingSeries")
+            error("The following games in game group $name do not have the series $series: ${mismatchingSeries.map(Game::id)} [list of all: ${games.map { it.id }}]")
     }
 
 }

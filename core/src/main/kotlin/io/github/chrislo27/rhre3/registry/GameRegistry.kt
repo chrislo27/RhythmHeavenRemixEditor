@@ -21,6 +21,7 @@ import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
+import java.io.File
 import java.util.*
 
 
@@ -121,6 +122,19 @@ object GameRegistry : Disposable {
             CUSTOM_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false, "UTF-8")
             val custom = CUSTOM_FOLDER.list { fh ->
                 fh.isDirectory
+            }.mapNotNull {
+                if (it.child("data.json").exists()) {
+                    return@mapNotNull it
+                }
+                val sfx = it.list { file: File ->
+                    file.extension in RHRE3.SUPPORTED_SOUND_TYPES
+                }
+
+                if (sfx.isEmpty()) {
+                    return@mapNotNull null
+                } else {
+                    return@mapNotNull it
+                }
             }.toList()
 
             list.map { SfxDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
@@ -239,10 +253,11 @@ object GameRegistry : Disposable {
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture("images/missing_game_icon.png"),
+//                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
                             dataObject.priority, directive.isCustom, dataObject.noDisplay)
-                val baseFileHandle = if (directive.isCustom) CUSTOM_FOLDER else SFX_FOLDER
+                val baseFileHandle = directive.folder.parent()
 
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                     when (obj) {
