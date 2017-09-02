@@ -45,6 +45,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val pickerDisplay: PickerDisplay
     val minimapBarStage: Stage<EditorScreen>
     val centreAreaStage: Stage<EditorScreen>
+    val subtitleStage: Stage<EditorScreen>
     val patternAreaStage: Stage<EditorScreen>
     val tapalongStage: TapalongStage
     val presentationModeStage: PresentationModeStage
@@ -378,7 +379,18 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
-
+            this.updatePositions()
+            this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@ {
+                this.location.set(screenHeight = this@apply.percentageOfHeight(32f),
+                                  screenX = this@apply.percentageOfWidth(8f),
+                                  screenWidth = this@apply.percentageOfWidth(32f) * WIDTH_MULTIPLICATION)
+                this.location.set(screenY = 1f - (this@apply.percentageOfHeight(8f) + this.location.screenHeight))
+                this.updatePositions()
+            }
+        }
+        subtitleStage = Stage(this, camera).apply {
+            this.location.set(centreAreaStage.location.screenX, centreAreaStage.location.screenY,
+                              centreAreaStage.location.screenWidth, centreAreaStage.location.screenHeight)
             subtitleLabel = object : TextLabel<EditorScreen>(palette, this@apply, this@apply) {
                 override fun getFont(): BitmapFont {
                     return main.defaultBorderedFont
@@ -432,14 +444,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.visible = false
             }
             this.elements += subtitleField
-            this.updatePositions()
-            this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@ {
-                this.location.set(screenHeight = this@apply.percentageOfHeight(32f),
-                                  screenX = this@apply.percentageOfWidth(8f),
-                                  screenWidth = this@apply.percentageOfWidth(32f) * WIDTH_MULTIPLICATION)
-                this.location.set(screenY = 1f - (this@apply.percentageOfHeight(8f) + this.location.screenHeight))
-                this.updatePositions()
-            }
         }
         hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),
                                    this, this).apply {
@@ -466,13 +470,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             this.visible = false
         }
-//        elements += presentationModeStage
+        elements += presentationModeStage
         elements += tapalongStage
         elements += buttonBarStage
         elements += pickerStage
         elements += patternAreaStage
         elements += minimapBarStage
         elements += centreAreaStage
+        elements += subtitleStage
         elements += hoverTextLabel
         this.updatePositions()
 
@@ -973,14 +978,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = size * 6 + padding * 6)
             }
-//            buttonBarStage.elements += PresentationModeButton(editor,this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
-//                this.location.set(screenWidth = size,
-//                                  screenX = size * 7 + padding * 7)
-//            }
+            buttonBarStage.elements += PresentationModeButton(editor,this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 7 + padding * 7)
+            }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
                 this.location.set(screenWidth = size * 8,
-                                  screenX = size * 7 + padding * 7)
+                                  screenX = size * 8 + padding * 8)
             }
 
             // right aligned
