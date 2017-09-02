@@ -20,8 +20,8 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
-import io.github.chrislo27.rhre3.tempo.TempoChange
-import io.github.chrislo27.rhre3.tempo.Tempos
+import io.github.chrislo27.rhre3.track.tempo.TempoChange
+import io.github.chrislo27.rhre3.track.tempo.Tempos
 import io.github.chrislo27.rhre3.track.music.MusicData
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes

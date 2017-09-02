@@ -34,7 +34,7 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.screen.InfoScreen
-import io.github.chrislo27.rhre3.tempo.TempoChange
+import io.github.chrislo27.rhre3.track.tempo.TempoChange
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState

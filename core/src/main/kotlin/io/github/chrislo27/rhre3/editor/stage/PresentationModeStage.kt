@@ -153,7 +153,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
     }
     private var bpm by Delegates.observable(Float.NEGATIVE_INFINITY) { _, old, new ->
         if (new != old) {
-            bpmLabel.text = String.format("%.1f", new) + " BPM"
+            bpmLabel.text = "${String.format("%.1f", new)} BPM"
         }
     }
 

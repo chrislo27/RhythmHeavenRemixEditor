@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.tempo
+package io.github.chrislo27.rhre3.track.tempo
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
