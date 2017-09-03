@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.ToolboksScreen
 
 
@@ -21,6 +22,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     override fun hide() {
         super.hide()
+        editor.remix.playState = PlayState.STOPPED
         (Gdx.input.inputProcessor as? InputMultiplexer)?.removeProcessor(editor)
     }
 
