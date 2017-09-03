@@ -860,6 +860,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     main.screen = ScreenRegistry.getNonNull("openRemix")
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
                     main.screen = ScreenRegistry.getNonNull("saveRemix")
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+//                    remix.mutate(EntitySelectionAction(this, selection.toList(), remix.entities.toList()))
                 }
             }
         }

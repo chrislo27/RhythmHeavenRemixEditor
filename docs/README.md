@@ -46,9 +46,9 @@ with RHRE3.
 **`CTRL+Z`** - Undo<br/>
 **`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
 **`HOME`** - Jump to beat 0<br/>
-**`END`** - Jump to last entity/End Remix entity
-**`PGUP`** or **`UP`** or **`W`** - Scroll up (only in editor)
-**`PGDOWN`** or **`DOWN`** or **`S`** - Scroll down (only in editor)
+**`END`** - Jump to last entity/End Remix entity<br>
+**`PGUP`** or **`UP`** or **`W`** - Scroll up (only in editor)<br>
+**`PGDOWN`** or **`DOWN`** or **`S`** - Scroll down (only in editor)<br>
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
