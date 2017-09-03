@@ -4,7 +4,7 @@
 already
 * [ ] This is a REAL issue, reasonable feature consideration, or question, and not purely personal preference
 * [ ] I have filled out this issue template knowing if I remove it the issue will immediately become invalid and will be closed
-* [ ] I have searched the diff from master to dev checking if this issue was already fixed
+* [ ] I have searched [the diff from master to dev](https://github.com/chrislo27/RhythmHeavenRemixEditor/compare/master...dev) checking if this issue was already fixed
 
 ### Description
 [insert description of the issue/suggestion]
