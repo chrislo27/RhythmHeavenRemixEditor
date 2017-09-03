@@ -423,6 +423,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
 
         camera.position.y = 1f
+        camera.zoom = MathUtils.lerp(camera.zoom,
+                                     Math.max(TRACK_COUNT.toFloat(), remix.entities.maxBy { it.bounds.y }?.bounds?.y ?: 0f) / TRACK_COUNT.toFloat(),
+                                     Gdx.graphics.deltaTime * 5f)
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.begin()
