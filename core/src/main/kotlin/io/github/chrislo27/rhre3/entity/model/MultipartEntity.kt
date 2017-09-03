@@ -90,11 +90,15 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             override fun redo(context: Remix) {
                 context.entities.remove(original)
                 context.entities.addAll(internalCache)
+                internalCache.forEach {
+                    it.updateInterpolation(true)
+                }
             }
 
             override fun undo(context: Remix) {
                 context.entities.removeAll(internalCache)
                 context.entities.add(original)
+                original.updateInterpolation(true)
             }
 
         }
