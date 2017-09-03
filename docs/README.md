@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.1.0`.
+This readme is up to date with version `v3.1.1`.
 
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
