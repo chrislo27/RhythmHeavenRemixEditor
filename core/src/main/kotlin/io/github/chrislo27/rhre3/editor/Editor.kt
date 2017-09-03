@@ -1145,12 +1145,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         newSel.forEach {
                             it.updateInterpolation(true)
-
-                            if (it is CueEntity) {
-                                it.datamodel.loadSounds()
-                            } else if (it is MultipartEntity<*>) {
-                                it.loadInternalSounds()
-                            }
                         }
 
                         this.clickOccupation = newClick
@@ -1175,8 +1169,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
                 val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-                val canPlace = if (tool == Tool.TIME_SIGNATURE) MathUtils.isEqual(Math.round(beat).toFloat(), beat,
-                                                                                  snap / 2) else true
+                val canPlace = if (tool == Tool.TIME_SIGNATURE)
+                    MathUtils.isEqual(Math.round(beat).toFloat(), beat, snap / 2)
+                else true
 
                 if (button == Input.Buttons.RIGHT && tracker != null) {
                     remix.mutate(
@@ -1228,6 +1223,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     entity.loadInternalSounds()
                 }
             }
+
+            entity.updateInterpolation(true)
 
             if (Toolboks.debugMode) {
                 entity.datamodel.game.objects.forEach { obj ->
