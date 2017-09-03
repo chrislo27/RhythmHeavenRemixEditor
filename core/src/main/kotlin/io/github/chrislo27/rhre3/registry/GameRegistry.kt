@@ -7,9 +7,12 @@ import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.VersionHistory
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
@@ -17,10 +20,9 @@ import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.experimental.*
 import java.io.File
 import java.util.*
 
@@ -93,7 +95,7 @@ object GameRegistry : Disposable {
 
             gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
-//        val changelog: ChangelogObject
+        //        val changelog: ChangelogObject
         private val currentObj: CurrentObject
         val version: Int
             get() = currentObj.version
@@ -119,7 +121,8 @@ object GameRegistry : Disposable {
             }
 
             CUSTOM_FOLDER.mkdirs()
-            CUSTOM_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false, "UTF-8")
+            CUSTOM_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false,
+                                                              "UTF-8")
             val custom = CUSTOM_FOLDER.list { fh ->
                 fh.isDirectory
             }.mapNotNull {
@@ -224,7 +227,41 @@ object GameRegistry : Disposable {
                 }
             }
 
+            if (RHRE3.verifyRegistry) {
+                Toolboks.LOGGER.info("Checking registry for errors")
+                val nanoStart = System.nanoTime()
+                launch(CommonPool) {
+                    val coroutines = LinkedList<Deferred<VerificationResult>>()
+
+                    gameList.forEach { game ->
+                        coroutines += async(CommonPool) {
+                            verify(game)
+                        }
+                    }
+
+                    val results = coroutines.map {
+                        it.await()
+                    }.sortedBy { it.game.id }
+                    val failures = results.count { !it.success }
+
+                    results.filter { !it.success }.forEach {
+                        Toolboks.LOGGER.warn("Verification failure for ${it.game.id}:\n${it.message}")
+                    }
+
+                    Toolboks.LOGGER.info(
+                            "Registry checked in ${(System.nanoTime() - nanoStart) / 1_000_000.0} ms, $failures error(s)")
+
+                    if (failures > 0) {
+                        class RegistryVerificationError : RuntimeException()
+
+                        RegistryVerificationError().printStackTrace()
+                        Gdx.app.exit()
+                    }
+                }
+            }
+
             System.gc()
+
         }
 
         fun loadOne(): Float {
@@ -239,7 +276,8 @@ object GameRegistry : Disposable {
             val game: Game
 
             if (datajsonFile.exists()) {
-                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), DataObject::class.java)
+                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"),
+                                                                    DataObject::class.java)
                 if (directive.isCustom && shouldCustomsGetPrefixes) {
                     dataObject.id = CUSTOM_PREFIX + dataObject.id
                 }
@@ -253,7 +291,7 @@ object GameRegistry : Disposable {
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture("images/missing_game_icon.png"),
-//                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
+                        //                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
                             dataObject.priority, directive.isCustom, dataObject.noDisplay)
@@ -296,7 +334,8 @@ object GameRegistry : Disposable {
             } else {
                 val id = if (shouldCustomsGetPrefixes) CUSTOM_PREFIX + folder.nameWithoutExtension() else folder.nameWithoutExtension()
                 if (gameMap.containsKey(id)) {
-                    throw UnsupportedOperationException("Cannot load custom sound folder $id/ - already exists in registry")
+                    throw UnsupportedOperationException(
+                            "Cannot load custom sound folder $id/ - already exists in registry")
                 }
                 game = Game(id,
                             id,
@@ -321,12 +360,23 @@ object GameRegistry : Disposable {
                 }
             }
 
+            if (gameMap[game.id] != null) {
+                error("Duplicate game: ${game.id}")
+            }
             (gameMap as MutableMap)[game.id] = game
+            val duplicateObjs = mutableListOf<String>()
             game.objects.forEach {
+                if (objectMap[it.id] != null) {
+                    duplicateObjs += it.id
+                }
                 objectMap[it.id] = it
                 it.deprecatedIDs.forEach { dep ->
                     objectMap[dep] = it
                 }
+            }
+
+            if (duplicateObjs.isNotEmpty()) {
+                error("Duplicate objects in game ${game.id}: $duplicateObjs")
             }
 
             lastLoadedID = game.id
@@ -372,6 +422,66 @@ object GameRegistry : Disposable {
         override fun dispose() {
             gameMap.values.forEach(Disposable::dispose)
         }
+
+        private suspend fun verify(game: Game): VerificationResult {
+            val builder = StringBuilder()
+
+            /*
+            Game verification:
+            * Non-custom games have an icon
+            * Non-custom games that are series specific have the right series
+             */
+            if (!game.isCustom && game.icon === AssetRegistry.missingTexture) {
+                builder.append("Game ${game.id} has a missing texture\n")
+            }
+            if (!game.isCustom && game.series != Series.SIDE) {
+                if ((game.name.contains("(Fever)") && game.series != Series.FEVER) ||
+                        (game.name.contains("(DS)") && game.series != Series.DS) ||
+                        (game.name.contains("(Megamix)") && game.series != Series.MEGAMIX) ||
+                        (game.name.contains("(GBA)") && game.series != Series.TENGOKU)) {
+                    builder.append("Game ${game.id} has the name \"${game.name}\" but is in series ${game.series}\n")
+                }
+            }
+
+            game.objects.forEach { model ->
+                /*
+                Model verification:
+                * Duration > 0
+                 */
+                if (model is DurationModel) {
+                    if (model.duration <= 0) {
+                        builder.append("Model ${model.id} has a negative duration: ${model.duration}\n")
+                    }
+                }
+
+                /*
+                Cue pointer verification:
+                * All pointers point to real objects
+                * Track does not exceed TRACK_COUNT
+                * Duration is not <= 0
+                */
+                if (model is ContainerModel) {
+                    model.cues.forEach { pointer ->
+                        if (objectMap[pointer.id] == null) {
+                            builder.append("Model ${model.id} has an invalid pointer: ${pointer.id}\n")
+                        }
+                        if (pointer.track >= Editor.TRACK_COUNT) {
+                            builder.append(
+                                    "Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / ${Editor.TRACK_COUNT}\n")
+                        }
+                        if (pointer.duration <= 0) {
+                            builder.append(
+                                    "Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
+                        }
+                    }
+                }
+            }
+
+            val msg = builder.toString()
+            return VerificationResult(game, msg.isBlank(), msg)
+        }
+
+        private data class VerificationResult(val game: Game, val success: Boolean, val message: String)
 
     }
 

@@ -36,6 +36,12 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         get() =
             GameRegistry.data.objectMap[endingSound] as Cue?
 
+    init {
+        if (!soundHandle.exists()) {
+            error("Sound handle for $id doesn't exist")
+        }
+    }
+
     fun loadSounds() {
         sound.load()
         introSoundCue?.sound?.load()

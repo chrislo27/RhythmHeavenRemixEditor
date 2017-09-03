@@ -49,6 +49,7 @@ object DesktopLauncher {
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args || RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
                     RHRE3.forceGitCheck = "--force-git-check" in args
+                    RHRE3.verifyRegistry = "--verify-registry" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)

@@ -34,5 +34,6 @@ object RHRE3 {
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
+    var verifyRegistry: Boolean = false
 
 }
