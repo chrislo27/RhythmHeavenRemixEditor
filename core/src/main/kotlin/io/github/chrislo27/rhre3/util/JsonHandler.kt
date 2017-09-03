@@ -14,7 +14,7 @@ import java.io.OutputStream
 
 object JsonHandler {
 
-    val OBJECT_MAPPER: ObjectMapper = createObjectMapper()
+    val OBJECT_MAPPER: ObjectMapper = createObjectMapper(false)
 //	val GSON: Gson = createObjectMapper()
 
     @JvmStatic
