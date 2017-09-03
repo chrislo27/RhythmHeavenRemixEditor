@@ -215,8 +215,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         class CreatingSelection(val editor: Editor,
-                                val startPoint: Vector2,
-                                val isAdd: Boolean) : ClickOccupation() {
+                                val startPoint: Vector2) : ClickOccupation() {
             val oldSelection = editor.selection.toList()
             val rectangle = Rectangle()
 
@@ -1062,7 +1061,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val isAnyTrackerButtonDown = isMusicTrackerButtonDown || isPlaybackTrackerButtonDown
 
-        val isDraggingButtonDown = button == Input.Buttons.LEFT && !shift
+        val isDraggingButtonDown = button == Input.Buttons.LEFT
         val isCopying = isDraggingButtonDown && alt
         val isResponsing = isDraggingButtonDown && alt && control
 
@@ -1088,7 +1087,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    if (remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
+                    if (!control && remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
                         val newSel = if (isResponsing && inBounds.areAnyResponseCopyable()) {
                             inBounds.mapNotNull {
@@ -1145,7 +1144,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val clickOccupation = clickOccupation
                         if (clickOccupation == ClickOccupation.None) {
                             // begin selection rectangle
-                            val newClick = ClickOccupation.CreatingSelection(this, Vector2(mouseVector), shift)
+                            val newClick = ClickOccupation.CreatingSelection(this, Vector2(mouseVector))
                             this.clickOccupation = newClick
                         }
                     }
@@ -1236,6 +1235,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        val shift =
+                Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
+        val control =
+                Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
+        val alt =
+                Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
+
         val clickOccupation = clickOccupation
         if (clickOccupation is ClickOccupation.Music &&
                 (button == (if (clickOccupation.middleClick) Input.Buttons.MIDDLE else Input.Buttons.RIGHT))) {
@@ -1318,8 +1324,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val selectionRect = clickOccupation.rectangle
                 val newCaptured: List<Entity> = remix.entities.filter { it.bounds.overlaps(selectionRect) }
                 val newSelection: List<Entity> =
-                        if (clickOccupation.isAdd) {
+                        if (shift && !control && !alt) {
                             this.selection.toList() + newCaptured
+                        } else if (control && !shift && !alt) {
+                            (this.selection.toMutableList().also { list ->
+                                newCaptured.forEach {
+                                    if (it in list) {
+                                        list -= it
+                                    } else {
+                                        list += it
+                                    }
+                                }
+                            })
                         } else {
                             newCaptured
                         }
