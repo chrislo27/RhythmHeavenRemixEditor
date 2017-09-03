@@ -1228,8 +1228,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
 
-            entity.updateInterpolation(true)
-
             if (Toolboks.debugMode) {
                 entity.datamodel.game.objects.forEach { obj ->
                     if (obj is Cue) {
@@ -1243,6 +1241,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
                                                           true, oldSelection, StretchRegion.NONE)
             selection.setPositionRelativeToMouse()
+            entity.updateInterpolation(true)
 
             remix.entities += entity
 
