@@ -168,6 +168,7 @@ class MusicSelectScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         updateLabels()
+        openPicker()
     }
 
     override fun dispose() {
