@@ -139,6 +139,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(
                                       {
+                                          defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
+                                          defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
+                                          defaultCamera.update()
+
                                           addOtherScreens()
                                           loadWindowSettings()
                                           ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
@@ -155,7 +159,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 val obj = JsonHandler.fromJson<ReleaseObject>(khttp.get(RHRE3.RELEASE_API_URL).text)
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
-                Toolboks.LOGGER.info("Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f}, is $githubVersion")
+                Toolboks.LOGGER.info(
+                        "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f}, is $githubVersion")
             } catch (e: Exception) {
                 e.printStackTrace()
             }

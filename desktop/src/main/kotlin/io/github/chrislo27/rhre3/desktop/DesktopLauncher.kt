@@ -34,6 +34,8 @@ object DesktopLauncher {
                 .editConfig {
                     this.width = app.emulatedSize.first
                     this.height = app.emulatedSize.second
+//                    this.width = 1000
+//                    this.height = 600
                     this.title = app.getTitle()
                     this.fullscreen = false
                     this.foregroundFPS = 60
