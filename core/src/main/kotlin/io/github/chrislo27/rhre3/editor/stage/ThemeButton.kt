@@ -57,6 +57,7 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
 
         folder.child("example.json").writeString(JsonHandler.toJson(ExampleTheme), false, "UTF-8")
 
+        index = index.coerceIn(0, themes.size - 1)
         editor.theme = themes[index]
     }
 
