@@ -55,7 +55,7 @@ open class Theme : Disposable {
         protected set
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var texture: String? = "<insert Base64 encoded RGBA888 PNG here>"
+    var texture: String? = "<insert Base64 encoded RGBA8888 PNG here>"
 
     @delegate:JsonIgnore val textureObj: Texture? by lazy {
         if (texture.isNullOrBlank() || texture!!.matches("<.*>".toRegex())) {

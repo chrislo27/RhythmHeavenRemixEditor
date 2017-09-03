@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
-import io.github.chrislo27.rhre3.theme.ExampleTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -55,9 +54,18 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
             }
         }
 
-        folder.child("example.json").writeString(JsonHandler.toJson(ExampleTheme), false, "UTF-8")
+        val exampleFolder = folder.child("example/")
+        exampleFolder.mkdirs()
+        Themes.defaultThemes.forEachIndexed { index, it ->
+            val name = it.name
+            it.name = "(Example) ${it.name}"
+            exampleFolder.child("example_${index + 1}.json").writeString(JsonHandler.toJson(it), false, "UTF-8")
+            it.name = name
+        }
 
-        index = index.coerceIn(0, themes.size - 1)
+        if (index !in 0..themes.size - 1) {
+            index = 0
+        }
         editor.theme = themes[index]
     }
 
