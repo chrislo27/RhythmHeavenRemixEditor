@@ -106,7 +106,11 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.location.set(screenWidth = 1f - (this.location.screenX))
         }
         this.elements += durationLabel
-        val gameDisplay = GameDisplayStage(editor, palette, this, this.camera).apply {
+        val gameDisplay = object : GameDisplayStage(editor, themePalette, this@PresentationModeStage, this@PresentationModeStage.camera) {
+            override fun getFont(): BitmapFont {
+                return themePalette.font
+            }
+        }.apply {
             this@PresentationModeStage.updatePositions()
             this.location.set(screenX = progressBar.location.screenX,
                               screenY = progressBar.location.screenY + progressBar.location.screenHeight + 0.0125f,
@@ -115,10 +119,10 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.updatePositions()
         }
         this.elements += gameDisplay
-        bpmLabel = object : TextLabel<EditorScreen>(palette, this, this){
-            override fun getFont(): BitmapFont {
-                return editor.main.defaultBorderedFont
-            }
+        bpmLabel = object : TextLabel<EditorScreen>(themePalette, this, this){
+//            override fun getFont(): BitmapFont {
+//                return editor.main.defaultBorderedFont
+//            }
         }.apply {
             this.textWrapping = false
             this.isLocalizationKey = false

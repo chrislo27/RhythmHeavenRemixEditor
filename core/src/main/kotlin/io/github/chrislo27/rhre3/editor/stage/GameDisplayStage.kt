@@ -13,7 +13,7 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.ui.*
 
 
-class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
+open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
     companion object {
@@ -24,6 +24,8 @@ class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement
     private val icon: ImageLabel<EditorScreen>
     private val label: TextLabel<EditorScreen>
     private val textureRegion = TextureRegion()
+
+    open fun getFont(): BitmapFont = editor.main.defaultBorderedFont
 
     var gameGroup: Game? = null
         set(value) {
@@ -45,7 +47,7 @@ class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement
         }
         label = object : TextLabel<EditorScreen>(palette, this, this){
             override fun getFont(): BitmapFont {
-                return editor.main.defaultBorderedFont
+                return this@GameDisplayStage.getFont()
             }
         }.apply {
             this.location.set(screenX = (1f / WIDTH_MULTIPLICATION) * 1.25f,
