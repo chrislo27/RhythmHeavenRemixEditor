@@ -501,7 +501,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 return Localization["tracker.any.time",
                         THREE_DECIMAL_PLACES_FORMATTER.format(beat.toDouble()),
                         (if (beat < 0) "-" else "") +
-                                TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
+                                TRACKER_MINUTES_FORMATTER.format(
+                                        (sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
                                 sec % 60.0)]
             }
 
@@ -748,10 +749,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         subbeatSection.enabled = false
 
         if (!stage.isTyping) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP) || Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP) || Gdx.input.isKeyJustPressed(
+                    Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 Gdx.input.inputProcessor.scrolled(-1)
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN) || Gdx.input.isKeyJustPressed(
+                    Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
                 Gdx.input.inputProcessor.scrolled(1)
             }
 
@@ -914,7 +917,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                         Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
                             remix.entities.removeAll(this.selection)
                             remix.addActionWithoutMutating(GroupedAction(listOf(
-                                    EntityRemoveAction(this, this.selection, this.selection.map { Rectangle(it.bounds) }),
+                                    EntityRemoveAction(this, this.selection,
+                                                       this.selection.map { Rectangle(it.bounds) }),
                                     EntitySelectionAction(this, this.selection.toList(), listOf())
                                                                                )))
                             this.selection = listOf()
@@ -1101,7 +1105,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    if (isResponsing && remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
+                    if (remix.entities.any { mouseVector in it.bounds && it.isSelected } && !(control && !alt)) {
                         val inBounds = this.selection
                         val newSel = if (isResponsing && inBounds.areAnyResponseCopyable()) {
                             inBounds.mapNotNull {
@@ -1341,7 +1345,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         if (shift && !control && !alt) {
                             this.selection.toList() + newCaptured
                         } else if (control && !shift && !alt) {
-                            (this.selection.toMutableList().also { list ->
+                            mutableListOf<Entity>().also { list ->
+                                list.addAll(this.selection)
                                 newCaptured.forEach {
                                     if (it in list) {
                                         list -= it
@@ -1349,7 +1354,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                         list += it
                                     }
                                 }
-                            })
+                            }
                         } else {
                             newCaptured
                         }
