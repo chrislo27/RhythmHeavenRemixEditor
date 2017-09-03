@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.theme.ExampleTheme
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -21,15 +22,18 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
 
     private var index: Int = 0
 
-    private lateinit var themes: List<Theme>
+    private var themes: List<Theme> = listOf()
 
     override fun getHoverText(): String {
         return Localization["editor.palette", themes[index].getRealName()]
     }
 
     private fun reloadPalettes(fromPrefs: Boolean) {
+        editor.theme = Themes.defaultThemes.first()
+        themes.filter { it !in Themes.defaultThemes }.forEach { it.dispose() }
+
         index = if (!fromPrefs) 0 else editor.main.preferences.getInteger(PreferenceKeys.THEME_INDEX, 0)
-        themes = mutableListOf(*Theme.Themes.defaultThemes.toTypedArray())
+        themes = Themes.defaultThemes.toMutableList()
         themes as MutableList
 
         val folder = Gdx.files.local("themes/")
@@ -46,7 +50,7 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
                 themes += themeObj
                 Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
             } catch (e: Exception) {
-                Toolboks.LOGGER.info("Failed to parse ${it.name()}, skipping")
+                Toolboks.LOGGER.error("Failed to parse ${it.name()}, skipping")
                 e.printStackTrace()
             }
         }

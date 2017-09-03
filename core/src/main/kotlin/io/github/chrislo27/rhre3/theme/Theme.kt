@@ -1,22 +1,35 @@
 package io.github.chrislo27.rhre3.theme
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.utils.Base64Coder
+import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.util.anyUninitializedLateinits
 
 
-abstract class Theme {
+object Themes : Disposable {
+    val defaultThemes: List<Theme> =
+            listOf(
+                    LightTheme(),
+                    DarkTheme(),
+                    RHRE0Theme()
+                  )
 
-    companion object Themes {
-        val defaultThemes: List<Theme> =
-                listOf(
-                        LightTheme(),
-                        DarkTheme(),
-                        RHRE0Theme()
-                      )
+    override fun dispose() {
+        defaultThemes.forEach { it.dispose() }
+    }
+}
 
-        val DEFAULT_NAME = "<no name>"
+open class Theme : Disposable {
+
+    companion object {
+
+        const val DEFAULT_NAME = "<no name>"
+
     }
 
     fun isAllInitialized(): Boolean {
@@ -26,7 +39,7 @@ abstract class Theme {
                 selection.anyUninitializedLateinits())
     }
 
-    var name: String = DEFAULT_NAME
+    var name: String = Theme.DEFAULT_NAME
     @field:JsonIgnore open val nameIsLocalization: Boolean = false
 
     fun getRealName(): String =
@@ -40,6 +53,23 @@ abstract class Theme {
         protected set
     @HexColor lateinit var trackLine: Color
         protected set
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var texture: String? = "<insert Base64 encoded RGBA888 PNG here>"
+
+    @delegate:JsonIgnore val textureObj: Texture? by lazy {
+        if (texture.isNullOrBlank() || texture!!.matches("<.*>".toRegex())) {
+            null
+        } else {
+            try {
+                val array = Base64Coder.decode(texture)
+                Texture(Pixmap(array, 0, array.size))
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
 
     // trackers
     open class TrackersGroup {
@@ -97,6 +127,9 @@ abstract class Theme {
     lateinit var selection: SelectionGroup
         protected set
 
+    override fun dispose() {
+        textureObj?.dispose()
+    }
 }
 
 open class LightTheme : Theme() {

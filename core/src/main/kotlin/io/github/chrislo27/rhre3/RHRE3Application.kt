@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
@@ -235,6 +236,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.dispose()
         preferences.flush()
         GameRegistry.dispose()
+        Themes.dispose()
         persistWindowSettings()
         Gdx.files.local("tmpMusic/").emptyDirectory()
     }

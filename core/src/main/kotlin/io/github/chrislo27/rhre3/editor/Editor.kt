@@ -34,12 +34,12 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.screen.InfoScreen
-import io.github.chrislo27.rhre3.track.tempo.TempoChange
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
+import io.github.chrislo27.rhre3.track.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.tracker.Tracker
 import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
@@ -412,6 +412,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        batch.begin()
+        batch.setColor(1f, 1f, 1f, 1f)
+
+        run {
+            val themeTex: Texture = theme.textureObj ?: return@run
+            batch.draw(themeTex, 0f, 0f, main.defaultCamera.viewportWidth, main.defaultCamera.viewportHeight)
+        }
+
+        batch.end()
 
         camera.position.y = 1f
         camera.update()
