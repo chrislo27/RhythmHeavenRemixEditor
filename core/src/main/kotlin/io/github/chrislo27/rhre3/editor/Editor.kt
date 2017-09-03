@@ -33,6 +33,7 @@ import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
 import io.github.chrislo27.rhre3.theme.DarkTheme
 import io.github.chrislo27.rhre3.theme.Theme
@@ -1222,6 +1223,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
                 is MultipartEntity -> {
                     entity.loadInternalSounds()
+                }
+            }
+
+            if (Toolboks.debugMode) {
+                entity.datamodel.game.objects.forEach { obj ->
+                    if (obj is Cue) {
+                        obj.loadSounds()
+                    }
                 }
             }
 
