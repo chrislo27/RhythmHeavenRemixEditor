@@ -605,33 +605,44 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
             val triangle = AssetRegistry.get<Texture>("tracker_tri")
             val tool = currentTool
-            val selectedTracker: Tracker? = if (!tool.isTrackerRelated) null else when (tool) {
-                Tool.BPM -> getTrackerOnMouse<TempoChange>()
-                Tool.MUSIC_VOLUME -> getTrackerOnMouse<MusicVolumeChange>()
-                Tool.TIME_SIGNATURE -> getTrackerOnMouse<TimeSignature>()
-                else -> error("Tool $tool not supported")
+            val selectedTracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
+
+            fun renderTracker(tracker: Tracker, y: Float) {
+                val oldBatch = batch.packedColor
+                val trackerColor = if (tracker == selectedTracker) Color.WHITE else tracker.getColor(theme)
+                val lineWidth = 1f
+
+                batch.color = trackerColor
+                batch.fillRect(tracker.beat - toScaleX(lineWidth / 2), y, toScaleX(lineWidth),
+                               -y - toScaleY(TRACK_LINE))
+                batch.draw(triangle, tracker.beat - triWidth / 2, y - triHeight, triWidth, triHeight)
+                batch.setColor(oldBatch)
+
+                val oldFontColor = font.color
+                font.color = trackerColor
+                font.draw(batch, tracker.getRenderText(),
+                          tracker.beat + triWidth / 2, y - triHeight + font.capHeight + toScaleY(2f))
+                font.color = oldFontColor
             }
 
             remix.trackers.forEachIndexed { cindex, container ->
                 val level = remix.trackers.size - cindex - 1
                 val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
                 container.getBackingMap().values.forEachIndexed { index, tracker: Tracker ->
-                    if (tracker.beat in beatRange) {
-                        val oldBatch = batch.packedColor
-                        val trackerColor = if (tracker == selectedTracker) Color.WHITE else tracker.getColor(theme)
-                        val lineWidth = 1f
+                    if (tracker != selectedTracker && tracker.beat in beatRange) {
+                        renderTracker(tracker, y)
+                    }
+                }
+            }
 
-                        batch.color = trackerColor
-                        batch.fillRect(tracker.beat - toScaleX(lineWidth / 2), y, toScaleX(lineWidth),
-                                       -y - toScaleY(TRACK_LINE))
-                        batch.draw(triangle, tracker.beat - triWidth / 2, y - triHeight, triWidth, triHeight)
-                        batch.setColor(oldBatch)
-
-                        val oldFontColor = font.color
-                        font.color = trackerColor
-                        font.draw(batch, tracker.getRenderText(),
-                                  tracker.beat + triWidth / 2, y - triHeight + font.capHeight + toScaleY(2f))
-                        font.color = oldFontColor
+            if (selectedTracker != null) {
+                remix.trackers.forEachIndexed { cindex, container ->
+                    val level = remix.trackers.size - cindex - 1
+                    val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
+                    container.getBackingMap().values.forEachIndexed { index, tracker: Tracker ->
+                        if (tracker == selectedTracker && tracker.beat in beatRange) {
+                            renderTracker(tracker, y)
+                        }
                     }
                 }
             }
