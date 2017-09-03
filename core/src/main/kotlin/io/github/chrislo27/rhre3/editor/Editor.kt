@@ -1101,7 +1101,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    if (!control && remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
+                    if (isResponsing && remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
                         val newSel = if (isResponsing && inBounds.areAnyResponseCopyable()) {
                             inBounds.mapNotNull {
