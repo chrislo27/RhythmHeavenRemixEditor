@@ -66,7 +66,10 @@ The selection tool will be your main tool.
 
 Holding **`LEFT CLICK`** (not on a selected entity) will start a selection.<br/>
 You can hold **`SHIFT`** to make it additive (i.e.: you can add to a
-pre-existing selection). **`RIGHT CLICK`** will cancel the selection.
+pre-existing selection). Starting in `v3.1.0`, holding **`CONTROL`** will
+make it a toggle - similar to a file explorer (this also disables dragging,
+so you can actually click on already-selected entities).
+**`RIGHT CLICK`** will cancel the selection.
 
 ![Dragging](readme/selectionTool.png)
 
