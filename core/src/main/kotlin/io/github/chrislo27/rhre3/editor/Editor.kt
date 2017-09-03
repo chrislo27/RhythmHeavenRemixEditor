@@ -54,6 +54,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import kotlin.reflect.KClass
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -1037,13 +1038,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     private inline fun <reified T : Tracker> getTrackerOnMouse(): T? {
+        return getTrackerOnMouse(T::class)
+    }
+
+    private fun <T : Tracker> getTrackerOnMouse(klass: KClass<T>?): T? {
+        if (klass == null)
+            return null
+
         remix.trackers.forEach { container ->
             val result = container.getBackingMap().values.firstOrNull {
-                it is T && MathUtils.isEqual(it.beat, remix.camera.getInputX(), snap / 2)
+                it::class == klass && MathUtils.isEqual(it.beat, remix.camera.getInputX(), snap / 2)
             }
 
             if (result != null) {
-                return result as T
+                return (@Suppress("UNCHECKED_CAST") (result as T))
             }
         }
 
@@ -1165,12 +1173,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
             } else if (tool.isTrackerRelated) {
-                val tracker: Tracker? = when (tool) {
-                    Tool.BPM -> getTrackerOnMouse<TempoChange>()
-                    Tool.MUSIC_VOLUME -> getTrackerOnMouse<MusicVolumeChange>()
-                    Tool.TIME_SIGNATURE -> getTrackerOnMouse<TimeSignature>()
-                    else -> error("Tool $tool not supported")
-                }
+                val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
                 val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
                 val canPlace = if (tool == Tool.TIME_SIGNATURE) MathUtils.isEqual(Math.round(beat).toFloat(), beat,
                                                                                   snap / 2) else true
