@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -9,6 +10,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
@@ -67,6 +69,17 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
                                           (color.g - 0.25f).coerceIn(0f, 1f),
                                           (color.b - 0.25f).coerceIn(0f, 1f),
                                           color.a)
+
+        if (this is IStretchable && this.isStretchable) {
+            val arrowWidth: Float = Math.min(bounds.width / 2f, Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH)
+            val y = bounds.y + bounds.height / 2 - 0.5f
+            val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
+            batch.draw(arrowTex, x, y, width, 1f, arrowTex.width / 2, 0, arrowTex.width / 2, arrowTex.height, false, false)
+
+            batch.draw(arrowTex, x, y, arrowWidth, 1f, 0, 0, arrowTex.width / 2, arrowTex.height, false, false)
+            batch.draw(arrowTex, x + bounds.width, y, -arrowWidth, 1f, 0, 0, arrowTex.width / 2, arrowTex.height, false, false)
+        }
+
         batch.drawRect(x, y,
                        width, height,
                        remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
