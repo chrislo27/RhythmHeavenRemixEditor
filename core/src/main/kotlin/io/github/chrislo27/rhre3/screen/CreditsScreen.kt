@@ -57,14 +57,23 @@ class CreditsScreen(main: RHRE3Application)
                 }.useStencilMask {
                     font.setColor(1f, 1f, 1f, 1f)
 
+                    val multiplier = (Gdx.graphics.height.toFloat() / RHRE3.HEIGHT)
+
                     for (i in -1..1) {
-                        val y = location.realY + location.realHeight * 0.75f + (scroll % maxScroll) - maxScroll * i
+                        val y = location.realY + location.realHeight * 0.125f + (scroll % maxScroll) - maxScroll * i
+                        val textHeight = font.getTextHeight(text, location.realWidth, true)
+
                         font.draw(batch, text, location.realX,
                                   y,
                                   location.realWidth, Align.center, true)
-                        val textHeight = font.getTextHeight(text, location.realWidth, true)
+
+                        val logo = AssetRegistry.get<Texture>("logo_512")
+                        val logoSize = 256f * multiplier
+                        batch.draw(logo, location.realX + location.realWidth / 2 - logoSize / 2, y + 16f * multiplier,
+                                   logoSize, logoSize)
+
                         val flag = AssetRegistry.get<Texture>("credits_flag_ca")
-                        val flagSize = 64f
+                        val flagSize = 64f * multiplier
                         batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2, y - textHeight - flagSize * 1.5f,
                                    flagSize, flagSize)
                     }
@@ -101,35 +110,42 @@ class CreditsScreen(main: RHRE3Application)
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             (stage as GenericStage).onBackButtonClick()
         } else {
+            val multiplier = (Gdx.graphics.height.toFloat() / RHRE3.HEIGHT)
             var scrolled = false
             if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
-                scroll -= scrollSpeed * 8 * Gdx.graphics.deltaTime
+                scroll -= scrollSpeed * 8 * Gdx.graphics.deltaTime * multiplier
                 scrolled = true
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
-                scroll += scrollSpeed * 8 * Gdx.graphics.deltaTime
+                scroll += scrollSpeed * 8 * Gdx.graphics.deltaTime * multiplier
                 scrolled = true
             }
 
             if (!scrolled) {
-                scroll += scrollSpeed * Gdx.graphics.deltaTime
+                scroll += scrollSpeed * Gdx.graphics.deltaTime * multiplier
             }
         }
     }
 
     private fun createText() {
+        scroll = 0f
+        maxScroll = 1f
+
         text = Credits.list.joinToString(separator = "") {
             "[RAINBOW]${Localization[it.localization]}[]\n${it.persons}\n\n"
         } + Localization["licenseInfo"]
 
-        maxScroll = (font.getTextHeight(text, element.location.realWidth, true) + element.location.realHeight * 0.75f).coerceAtLeast(1f)
+        maxScroll = (font.getTextHeight(text, element.location.realWidth, true) + element.location.realHeight * 1.25f).coerceAtLeast(1f)
     }
 
     override fun show() {
         super.show()
 
-        scroll = 0f
-        maxScroll = 1f
+        createText()
+    }
+
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
         createText()
     }
 

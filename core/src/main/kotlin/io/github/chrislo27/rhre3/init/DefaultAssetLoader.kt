@@ -12,6 +12,10 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
     override fun addManagedAssets(manager: AssetManager) {
+        listOf(16, 24, 32, 64, 128, 256, 512).forEach {
+            AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
+        }
+
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
         }
@@ -62,7 +66,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
-
 
         AssetRegistry.loadAsset<Texture>("credits_flag_ca", "credits/flag_ca.png")
     }
