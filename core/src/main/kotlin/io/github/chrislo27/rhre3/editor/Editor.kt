@@ -986,6 +986,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 Localization["editor.msg.numSelected", this.selection.size.toString()])
 
                         if (clickOccupation == ClickOccupation.None) {
+                            if (selection.any { it is IRepitchable && it.canBeRepitched }) {
+                                builder.separator().append(Localization["editor.msg.repitch"])
+                            }
+
                             if (selection.all(Entity::supportsCopying)) {
                                 builder.separator().append(Localization["editor.msg.copyHint"])
                             }
