@@ -86,6 +86,8 @@ cues! This is one example of new functionality added to RHRE3.
 
 Pressing **`BACKSPACE`** or **`DELETE`** with a selection will delete it.
 
+**`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch by semitones, if possible.
+
 ## Multipart Split tool
 The multipart split tool is very simple: **`LEFT`** clicking on a *multipart entity*
 (that is, an entity made up of multiple entities like patterns, random cues,
@@ -98,8 +100,8 @@ These three tools are very similar. They control what are called *trackers*.
 
 ![Trackers](readme/trackers.png)
 
->Note: wherever you see `SCROLL`, you can substitute this with **`PAGE UP`**
-or **`PAGE DOWN`**. This is useful if you don't have access to a mouse, like
+>Note: wherever you see `SCROLL`, you can substitute this with **`UP`**
+or **`DOWN`**. This is useful if you don't have access to a mouse, like
 on a laptop.
 
 All tracker-type tools share these controls:
