@@ -760,12 +760,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         subbeatSection.enabled = false
 
         if (!stage.isTyping) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_UP) || Gdx.input.isKeyJustPressed(
-                    Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 Gdx.input.inputProcessor.scrolled(-1)
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.PAGE_DOWN) || Gdx.input.isKeyJustPressed(
-                    Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
                 Gdx.input.inputProcessor.scrolled(1)
             }
 

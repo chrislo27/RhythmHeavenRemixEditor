@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.1.1`.
+This readme is up to date with version `v3.1.2`.
 
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
@@ -47,8 +47,8 @@ with RHRE3.
 **`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
 **`HOME`** - Jump to beat 0<br/>
 **`END`** - Jump to last entity/End Remix entity<br>
-**`PGUP`** or **`UP`** or **`W`** - Scroll up (only in editor)<br>
-**`PGDOWN`** or **`DOWN`** or **`S`** - Scroll down (only in editor)<br>
+**`UP`** or **`W`** - Scroll up (only in editor)<br>
+**`DOWN`** or **`S`** - Scroll down (only in editor)<br>
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
