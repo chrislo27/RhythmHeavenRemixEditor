@@ -14,8 +14,9 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 
 ![Palettes screenshot](.github/rhre3palettes.png)
 
-Rhythm Heaven is not my property - it is the property of Nintendo.
-This is just a community project and this is free for others to use
+Rhythm Heaven is not my property - it is the property of Nintendo.<br>
+All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to infringe trademark rights.<br>
+This is just a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license).
 
 RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).
