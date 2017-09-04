@@ -244,8 +244,8 @@ object GameRegistry : Disposable {
                     }.sortedBy { it.game.id }
                     val failures = results.count { !it.success }
 
-                    results.filter { !it.success }.forEach {
-                        Toolboks.LOGGER.warn("Verification failure for ${it.game.id}:\n${it.message}")
+                    results.filter { it.message.isNotBlank() }.forEach {
+                        Toolboks.LOGGER.warn("Verification message for ${it.game.id}:\n${it.message}")
                     }
 
                     Toolboks.LOGGER.info(
@@ -478,7 +478,7 @@ object GameRegistry : Disposable {
             }
 
             val msg = builder.toString()
-            return VerificationResult(game, msg.isBlank() && !game.isCustom, msg)
+            return VerificationResult(game, msg.isBlank() || game.isCustom, msg)
         }
 
         private data class VerificationResult(val game: Game, val success: Boolean, val message: String)
