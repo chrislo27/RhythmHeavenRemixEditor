@@ -478,7 +478,7 @@ object GameRegistry : Disposable {
             }
 
             val msg = builder.toString()
-            return VerificationResult(game, msg.isBlank(), msg)
+            return VerificationResult(game, msg.isBlank() && !game.isCustom, msg)
         }
 
         private data class VerificationResult(val game: Game, val success: Boolean, val message: String)
