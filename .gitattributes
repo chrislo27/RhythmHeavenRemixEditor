@@ -3,3 +3,5 @@ desktop/src/ionium/* linguist-vendored
 core/assets/shaders/* linguist-vendored
 distribution/ linguist-vendored
 docs/ linguist-documentation
+gradlew.bat linguist-vendored
+
