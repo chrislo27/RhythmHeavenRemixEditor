@@ -58,9 +58,15 @@ class CreditsScreen(main: RHRE3Application)
                     font.setColor(1f, 1f, 1f, 1f)
 
                     for (i in -1..1) {
+                        val y = location.realY + location.realHeight * 0.75f + (scroll % maxScroll) - maxScroll * i
                         font.draw(batch, text, location.realX,
-                                  location.realY + location.realHeight * 0.75f + (scroll % maxScroll) - maxScroll * i,
+                                  y,
                                   location.realWidth, Align.center, true)
+                        val textHeight = font.getTextHeight(text, location.realWidth, true)
+                        val flag = AssetRegistry.get<Texture>("credits_flag_ca")
+                        val flagSize = 64f
+                        batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2, y - textHeight - flagSize * 1.5f,
+                                   flagSize, flagSize)
                     }
                 }
             }
