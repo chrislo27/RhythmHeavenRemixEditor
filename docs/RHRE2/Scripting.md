@@ -1,4 +1,4 @@
-## Note: this is an archived page for RHRE2.
+## Note: this is an archived page for RHRE2. This feature was cut from `v3.0.0` onwards.
 
 RHRE2 has **experimental** Lua scripting support, starting in `v2.9.0`. [Learn about Lua here](https://www.lua.org/), and [look at the style here](https://github.com/Olivine-Labs/lua-style-guide). (It should be noted that the style used here tends to lean towards Java's lowerCamelCase and using double-quotes for strings.)
 
