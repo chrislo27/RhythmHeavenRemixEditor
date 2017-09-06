@@ -70,9 +70,13 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         return bounds.x + internalWidth
     }
 
-    protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false) {
+    protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false, scaleBeats: Boolean = false) {
         internal.forEach {
-            it.bounds.x = (it.bounds.x - oldBounds.x) + bounds.x
+            if (!scaleBeats) {
+                it.bounds.x = (it.bounds.x - oldBounds.x) + bounds.x
+            } else {
+                it.bounds.x = ((it.bounds.x - oldBounds.x) / oldBounds.width) * bounds.width + bounds.x
+            }
             it.bounds.y = (it.bounds.y - oldBounds.y) + bounds.y
 
             if (changeWidths) {

@@ -40,7 +40,7 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {
-        translateInternal(oldBounds, changeWidths = true)
+        translateInternal(oldBounds, changeWidths = true, scaleBeats = true)
     }
 
     override fun copy(remix: Remix): PatternEntity {
