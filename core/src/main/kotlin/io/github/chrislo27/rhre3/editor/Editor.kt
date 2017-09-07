@@ -944,7 +944,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // undo/redo
-        if (control) {
+        if (control && clickOccupation == ClickOccupation.None) {
             if (remix.canRedo() &&
                     (Gdx.input.isKeyJustPressed(Input.Keys.Y) ||
                             (shift && Gdx.input.isKeyJustPressed(Input.Keys.Z)))) {
