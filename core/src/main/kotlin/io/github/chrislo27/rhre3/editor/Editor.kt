@@ -79,11 +79,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         const val SELECTION_BORDER: Float = 4f
-        private const val SELECTION_NUMBER_FORMAT_STRING = "%.1f"
 
         private const val MSG_SEPARATOR = " - "
         private const val ZERO_BEAT_SYMBOL = "♩"
         private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
+        private const val SELECTION_RECT_ADD = "+"
+        private const val SELECTION_RECT_XOR = "±"
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -93,6 +94,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private val THREE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
         private val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
         private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
+        private val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
     }
 
     fun createRemix(): Remix {
@@ -687,42 +689,65 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.color = theme.selection.selectionBorder
                     batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
 
-                    val widthStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.width)
-                    val heightStr = SELECTION_NUMBER_FORMAT_STRING.format(rect.height)
+                    run text@ {
+                        val oldFontColor = font.color
+                        font.color = theme.selection.selectionBorder
 
-                    val oldFontColor = font.color
-                    font.color = theme.selection.selectionBorder
+                        val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
+                        val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
+                        val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
+                        val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
+                                Input.Keys.CONTROL_RIGHT)
 
-                    val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
-                    val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
+                        val bigFont = main.defaultFontLarge
+                        val oldBigFontColor = bigFont.color
+                        bigFont.scaleFont()
 
-                    if (rect.height - toScaleY * 2 >= font.capHeight) {
-                        var defaultX = rect.x + toScaleX
-                        var defaultWidth = rect.width - toScaleX * 2
-                        val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
-                        if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
-                            defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
-                            defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
-                        } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
-                            defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
+                        // AND or XOR strings
+                        if (rect.height - toScaleY * 2 >= bigFont.capHeight
+                                && !(shift && control) && (shift || control)) {
+                            bigFont.color = theme.selection.selectionBorder
+                            bigFont.color.a *= 0.25f * MathHelper.getTriangleWave(2f) + 0.35f
+                            bigFont.drawCompressed(batch, if (shift) SELECTION_RECT_ADD else SELECTION_RECT_XOR,
+                                                 rect.x + toScaleX, rect.y + rect.height / 2 + bigFont.capHeight / 2,
+                                                 rect.width - toScaleX * 2, Align.center)
                         }
-                        if (rect.width >= font.getTextWidth(widthStr)) {
-                            font.drawConstrained(batch, widthStr,
-                                                 defaultX,
-                                                 rect.y + rect.height - toScaleY,
-                                                 defaultWidth,
-                                                 font.lineHeight, Align.center)
+
+                        // dimension strings
+                        if (rect.height - toScaleY * 2 >= font.capHeight) {
+                            val widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
+                            val heightStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.height.toDouble())
+
+                            var defaultX = rect.x + toScaleX
+                            var defaultWidth = rect.width - toScaleX * 2
+                            val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
+                            if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
+                                defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
+                                defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
+                            } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
+                                defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
+                            }
+                            if (rect.width >= font.getTextWidth(widthStr)) {
+                                font.drawConstrained(batch, widthStr,
+                                                     defaultX,
+                                                     rect.y + rect.height - toScaleY,
+                                                     defaultWidth,
+                                                     font.lineHeight, Align.center)
+                            }
+                            if (rect.width >= font.getTextWidth(heightStr)) {
+                                font.drawConstrained(batch, heightStr,
+                                                     defaultX,
+                                                     rect.y + rect.height / 2 + font.capHeight / 2,
+                                                     defaultWidth,
+                                                     font.lineHeight,
+                                                     if (shouldBeLeftAlign) Align.left else Align.right)
+                            }
                         }
-                        if (rect.width >= font.getTextWidth(heightStr)) {
-                            font.drawConstrained(batch, heightStr,
-                                                 defaultX,
-                                                 rect.y + rect.height / 2 + font.capHeight / 2,
-                                                 defaultWidth,
-                                                 font.lineHeight,
-                                                 if (shouldBeLeftAlign) Align.left else Align.right)
-                        }
+
+                        bigFont.unscaleFont()
+                        bigFont.color = oldBigFontColor
+                        font.color = oldFontColor
                     }
-                    font.color = oldFontColor
 
                     batch.setColor(oldColor)
                 }
