@@ -133,7 +133,7 @@ class CreditsScreen(main: RHRE3Application)
         maxScroll = 1f
 
         text = Credits.list.joinToString(separator = "") {
-            "[RAINBOW]${Localization[it.localization]}[]\n${it.persons}\n\n"
+            "[RAINBOW]${it.text}[]\n${it.persons}\n\n"
         } + Localization["licenseInfo"]
 
         maxScroll = (font.getTextHeight(text, element.location.realWidth, true) + element.location.realHeight * 1.25f).coerceAtLeast(1f)

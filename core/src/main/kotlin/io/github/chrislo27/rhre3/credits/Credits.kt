@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.credits
 
 import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.toolboks.i18n.Localization
 
 
 object Credits {
@@ -49,9 +50,13 @@ object Credits {
 
     class Credit(val type: String, val persons: String) {
 
-        val localization: String by lazy {
+        private val localization: String by lazy {
             "credits.title.$type"
         }
+        private val isTitle by lazy { type == "title" }
+
+        val text: String
+            get() = if (isTitle) RHRE3.TITLE else Localization[localization]
 
     }
 
