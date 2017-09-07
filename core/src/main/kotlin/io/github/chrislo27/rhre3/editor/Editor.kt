@@ -905,8 +905,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     entity.bounds.x = (nearestBeat).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
                                     entity.bounds.width = rightSide - entity.bounds.x
                                 } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(
-                                            IStretchable.MIN_STRETCH)
+                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(IStretchable.MIN_STRETCH)
                                 }
                             }
                         } else {
@@ -999,7 +998,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             }
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
-                                builder.separator().append(Localization["editor.msg.invalidPlacement"])
+                                if (clickOccupation.isInDeleteZone()) {
+                                    builder.separator().append(Localization["editor.msg.deletingSelection"])
+                                } else {
+                                    builder.separator().append(Localization["editor.msg.invalidPlacement"])
+                                }
                             }
                         }
 
