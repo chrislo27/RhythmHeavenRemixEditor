@@ -328,8 +328,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (selection.any { it is EndEntity } && editor.remix.entities.filter { it is EndEntity }.size > 1)
                     return false
 
-                return editor.remix.entities.filter { it !in selection }.all {
-                    selection.all { sel ->
+                return editor.remix.entities.all {
+                    it in selection || selection.all { sel ->
                         !sel.bounds.overlaps(it.bounds)
                     }
                 }
@@ -916,6 +916,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         subbeatSection.enabled = true
                         subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
                         subbeatSection.end = clickOccupation.right
+
+                        updateMessageLabel()
                     }
                     is ClickOccupation.CreatingSelection -> {
                         clickOccupation.updateRectangle()
@@ -994,6 +996,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                             if (selection.areAnyResponseCopyable()) {
                                 builder.separator().append(Localization["editor.msg.callResponseHint"])
+                            }
+                        } else if (clickOccupation is ClickOccupation.SelectionDrag) {
+                            if (!clickOccupation.isPlacementValid()) {
+                                builder.separator().append(Localization["editor.msg.invalidPlacement"])
                             }
                         }
 
