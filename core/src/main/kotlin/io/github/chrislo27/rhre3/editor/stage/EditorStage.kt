@@ -487,7 +487,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += minimapBarStage
         elements += centreAreaStage
         elements += subtitleStage
-        elements += themeEditorStage
+//        elements += themeEditorStage
         elements += hoverTextLabel
         this.updatePositions()
 

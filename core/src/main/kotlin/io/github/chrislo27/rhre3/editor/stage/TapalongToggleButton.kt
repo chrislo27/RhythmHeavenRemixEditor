@@ -36,6 +36,7 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
         }
         stage.tapalongStage.visible = visible
         stage.presentationModeStage.visible = false
+        stage.themeEditorStage.visible = false
         stage.buttonBarStage.visible = true
         stage.messageBarStage.visible = true
         if (visible) {
