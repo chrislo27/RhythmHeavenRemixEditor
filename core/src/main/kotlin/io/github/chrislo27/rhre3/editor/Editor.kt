@@ -701,15 +701,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (!stage.isTyping) {
             if (left) {
                 camera.position.x -= cameraDelta
+                camera.update()
             }
             if (right) {
                 camera.position.x += cameraDelta
+                camera.update()
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
                 camera.position.x = 0f
+                camera.update()
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
                 camera.position.x = remix.getLastEntityPoint()
+                camera.update()
             }
 
             if (control && clickOccupation == ClickOccupation.None) {
