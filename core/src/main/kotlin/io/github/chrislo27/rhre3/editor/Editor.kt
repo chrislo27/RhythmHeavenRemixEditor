@@ -50,6 +50,8 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import net.beadsproject.beads.data.Sample
+import net.beadsproject.beads.ugens.SamplePlayer
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.reflect.KClass
@@ -720,6 +722,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     main.screen = ScreenRegistry.getNonNull("saveRemix")
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
 //                    remix.mutate(EntitySelectionAction(this, selection.toList(), remix.entities.toList()))
+                }
+            }
+
+            if (Toolboks.debugMode) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                    remix.audioContext.out.addInput(SamplePlayer(remix.audioContext, Sample(remix.music!!.handle.path())))
+                    remix.audioContext.start()
                 }
             }
         }
