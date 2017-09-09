@@ -1276,12 +1276,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             remix.addActionWithoutMutating(EntityRepitchAction(this, selection, oldPitches))
         } else if (tool.isTrackerRelated) {
-            val tracker: Tracker = when (tool) {
-                Tool.BPM -> getTrackerOnMouse<TempoChange>()
-                Tool.MUSIC_VOLUME -> getTrackerOnMouse<MusicVolumeChange>()
-                Tool.TIME_SIGNATURE -> getTrackerOnMouse<TimeSignature>()
-                else -> error("Tool scroll for $tool not supported")
-            } ?: return false
+            val tracker: Tracker = getTrackerOnMouse(tool.trackerClass) ?: return false
 
             val shift =
                     Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
