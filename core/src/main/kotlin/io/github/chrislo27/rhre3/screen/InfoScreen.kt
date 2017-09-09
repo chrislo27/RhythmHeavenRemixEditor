@@ -24,7 +24,7 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 
 
 class InfoScreen(main: RHRE3Application)
-    : ToolboksScreen<RHRE3Application, InfoScreen>(main) {
+    : ToolboksScreen<RHRE3Application, InfoScreen>(main), HidesVersionText {
 
     companion object {
 
@@ -82,6 +82,7 @@ class InfoScreen(main: RHRE3Application)
             val buttonHeight = 0.1f
             val fontScale = 0.75f
 
+            // left
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = padding,
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
@@ -90,6 +91,8 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = true
                 this.text = "screen.info.settings"
             }
+
+            // right
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
@@ -97,6 +100,15 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight * 0.8f)
                 this.isLocalizationKey = true
                 this.text = "screen.info.info"
+            }
+            centre.elements += TextLabel(palette, centre, centre).apply {
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.text = RHRE3.VERSION.toString()
             }
 
             // info buttons
@@ -154,6 +166,24 @@ class InfoScreen(main: RHRE3Application)
                                   screenY = padding * 3 + buttonHeight * 2,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
+            }
+            // RHRM
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    Gdx.net.openURI("https://github.com/inkedsplat/RHRM")
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.rhrm"
+                })
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight * 2 + padding)
             }
 
             // Settings

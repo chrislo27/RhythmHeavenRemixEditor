@@ -176,7 +176,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     override fun postRender() {
-        run {
+        if (screen !is HidesVersionText) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
             font.setColor(1f, 1f, 1f, 1f)
