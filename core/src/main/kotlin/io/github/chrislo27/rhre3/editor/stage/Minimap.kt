@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -81,7 +82,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             batch.drawRect(x + (camera.position.x - camera.viewportWidth / 2) * unitWidth, y,
                            camera.viewportWidth * unitWidth, pxHeight, 2f)
 
-            if (isMouseOver() && editor.clickOccupation == Editor.ClickOccupation.None
+            if (isMouseOver() && editor.clickOccupation == ClickOccupation.None
                     && remix.playState == PlayState.STOPPED
                     && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
