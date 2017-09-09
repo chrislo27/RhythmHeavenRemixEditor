@@ -26,6 +26,8 @@ class EditorVersionScreen(main: RHRE3Application)
 
     private val label: TextLabel<EditorVersionScreen>
 
+    var gotoScreen: String = "info"
+
     init {
         stage as GenericStage
         val palette = stage.palette
@@ -35,7 +37,8 @@ class EditorVersionScreen(main: RHRE3Application)
         }
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull("editor")
+            main.screen = ScreenRegistry.getNonNull(gotoScreen)
+            gotoScreen = "info"
         }
 
         stage.bottomStage.elements += object : Button<EditorVersionScreen>(palette, stage.bottomStage,

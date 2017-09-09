@@ -82,7 +82,9 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
         if (progress >= 1f && !Toolboks.debugMode) {
             main.screen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion)
-                ScreenRegistry["editorVersion"]
+                ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
+                    it.gotoScreen = "editor"
+                }
             else
                 ScreenRegistry["editor"]
         }
