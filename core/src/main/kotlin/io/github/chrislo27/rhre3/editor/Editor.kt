@@ -1128,14 +1128,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val clickOccupation = clickOccupation
         if (clickOccupation is ClickOccupation.Music &&
                 (button == (if (clickOccupation.middleClick) Input.Buttons.MIDDLE else Input.Buttons.RIGHT))) {
-            remix.addActionWithoutMutating(clickOccupation)
-            clickOccupation.final = remix.musicStartSec
+            if (remix.musicStartSec != clickOccupation.old) {
+                clickOccupation.final = remix.musicStartSec
+                remix.addActionWithoutMutating(clickOccupation)
+            }
             this.clickOccupation = ClickOccupation.None
             return true
         } else if (clickOccupation is ClickOccupation.Playback &&
                 button == Input.Buttons.RIGHT) {
-            remix.addActionWithoutMutating(clickOccupation)
-            clickOccupation.final = remix.playbackStart
+            if (remix.playbackStart != clickOccupation.old) {
+                clickOccupation.final = remix.playbackStart
+                remix.addActionWithoutMutating(clickOccupation)
+            }
             this.clickOccupation = ClickOccupation.None
             return true
         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
