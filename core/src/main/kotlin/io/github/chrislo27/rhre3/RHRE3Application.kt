@@ -67,10 +67,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin.otf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
-        this.font!!.setFixedWidthGlyphs("1234567890")
-        this.font!!.data.setLineHeight(this.font!!.lineHeight * 0.6f)
-        this.font!!.setUseIntegerPositions(true)
-        this.font!!.data.markupEnabled = true
+        this.font!!.apply {
+            setFixedWidthGlyphs("1234567890")
+            data.setLineHeight(lineHeight * 0.6f)
+            setUseIntegerPositions(true)
+            data.markupEnabled = true
+        }
     }
 
     val uiPalette: UIPalette by lazy {
