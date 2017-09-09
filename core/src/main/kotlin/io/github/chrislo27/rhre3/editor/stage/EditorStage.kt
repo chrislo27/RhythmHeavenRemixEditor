@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
@@ -862,7 +863,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             Tool.VALUES.forEachIndexed { index, tool ->
                 toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage,
                                           { x, y ->
-                                              if (editor.clickOccupation == Editor.ClickOccupation.None) {
+                                              if (editor.clickOccupation == ClickOccupation.None) {
                                                   editor.currentTool = tool
                                                   updateSelected()
                                               }
