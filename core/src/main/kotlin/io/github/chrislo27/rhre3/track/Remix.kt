@@ -32,8 +32,6 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
-import net.beadsproject.beads.core.AudioContext
-import net.beadsproject.beads.core.io.JavaSoundAudioIO
 import java.io.File
 import java.io.FileOutputStream
 import java.util.zip.ZipEntry
@@ -302,8 +300,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         trackers += t
         t
     }
-
-    val audioContext: AudioContext = AudioContext(JavaSoundAudioIO())
 
     var seconds: Float = 0f
         set(value) {

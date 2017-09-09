@@ -50,8 +50,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import net.beadsproject.beads.data.Sample
-import net.beadsproject.beads.ugens.SamplePlayer
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import kotlin.reflect.KClass
@@ -516,7 +514,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
                         val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
-                        val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
+                        val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(
+                                Input.Keys.SHIFT_RIGHT)
                         val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
                                 Input.Keys.CONTROL_RIGHT)
 
@@ -727,8 +726,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (Toolboks.debugMode) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
-                    remix.audioContext.out.addInput(SamplePlayer(remix.audioContext, Sample(remix.music!!.handle.path())))
-                    remix.audioContext.start()
                 }
             }
         }
@@ -758,7 +755,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     entity.bounds.x = (nearestBeat).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
                                     entity.bounds.width = rightSide - entity.bounds.x
                                 } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(IStretchable.MIN_STRETCH)
+                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(
+                                            IStretchable.MIN_STRETCH)
                                 }
                             }
                         } else {
