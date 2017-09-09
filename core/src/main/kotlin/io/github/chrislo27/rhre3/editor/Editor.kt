@@ -82,7 +82,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private const val ZERO_BEAT_SYMBOL = "♩"
         private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
         private const val SELECTION_RECT_ADD = "+"
-        private const val SELECTION_RECT_XOR = "±"
+        private const val SELECTION_RECT_INVERT = "±"
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -527,9 +527,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 && !(shift && control) && (shift || control)) {
                             bigFont.color = theme.selection.selectionBorder
                             bigFont.color.a *= 0.25f * MathHelper.getTriangleWave(2f) + 0.35f
-                            bigFont.drawCompressed(batch, if (shift) SELECTION_RECT_ADD else SELECTION_RECT_XOR,
-                                                 rect.x + toScaleX, rect.y + rect.height / 2 + bigFont.capHeight / 2,
-                                                 rect.width - toScaleX * 2, Align.center)
+                            bigFont.drawCompressed(batch, if (shift) SELECTION_RECT_ADD else SELECTION_RECT_INVERT,
+                                                   rect.x + toScaleX, rect.y + rect.height / 2 + bigFont.capHeight / 2,
+                                                   rect.width - toScaleX * 2, Align.center)
                         }
 
                         // dimension strings
