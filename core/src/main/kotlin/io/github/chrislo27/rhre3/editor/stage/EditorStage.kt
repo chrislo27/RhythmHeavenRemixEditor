@@ -104,22 +104,34 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     private fun setHoverText(text: String) {
-        hoverTextLabel.visible = true
-        hoverTextLabel.text = text
-        val font = hoverTextLabel.getFont()
-        font.data.setScale(hoverTextLabel.palette.fontScale * hoverTextLabel.fontScaleMultiplier)
-        hoverTextLabel.location.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
-                                    pixelWidth = font.getTextWidth(hoverTextLabel.text) + 6,
-                                    pixelHeight = font.getTextHeight(text) + font.capHeight)
-        hoverTextLabel.location.set(pixelX = Math.min(hoverTextLabel.location.pixelX,
-                                                      hoverTextLabel.stage.camera.viewportWidth - hoverTextLabel.location.pixelWidth))
-        val yLimit = hoverTextLabel.stage.camera.viewportHeight - font.capHeight
-        val top = hoverTextLabel.location.pixelY + hoverTextLabel.location.pixelHeight
+        val label = hoverTextLabel
+        val labelLoc = label.location
+        val font = label.getFont()
+
+        label.visible = true
+        label.text = text
+
+        font.data.setScale(label.palette.fontScale * label.fontScaleMultiplier)
+
+        labelLoc.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
+                     pixelWidth = font.getTextWidth(label.text) + 6,
+                     pixelHeight = font.getTextHeight(text) + font.capHeight)
+
+        val yLimit = label.stage.camera.viewportHeight
+        val top = labelLoc.pixelY + labelLoc.pixelHeight
         if (top > yLimit) {
-            hoverTextLabel.location.set(pixelY = yLimit - hoverTextLabel.location.pixelHeight)
+            val height = labelLoc.pixelHeight
+            labelLoc.set(pixelY = yLimit - labelLoc.pixelHeight,
+                         pixelX = labelLoc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
         }
+
+        // clamp X
+        labelLoc.set(pixelX = Math.min(labelLoc.pixelX,
+                                       label.stage.camera.viewportWidth - labelLoc.pixelWidth))
+
         font.data.setScale(1f)
-        hoverTextLabel.onResize(hoverTextLabel.parent!!.location.realWidth, hoverTextLabel.parent!!.location.realHeight)
+        val labelParent = label.parent!!
+        label.onResize(labelParent.location.realWidth, labelParent.location.realHeight)
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
