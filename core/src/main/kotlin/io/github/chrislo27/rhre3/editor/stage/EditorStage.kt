@@ -802,6 +802,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenX = upButton.location.screenX + upButton.location.screenWidth +
                                     padding2
                                      )
+                    this.location.set(screenWidth = 1f - this.location.screenX)
                 }
 
             }
