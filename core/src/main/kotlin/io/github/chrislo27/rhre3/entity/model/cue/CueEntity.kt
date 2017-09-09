@@ -97,6 +97,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override fun onEnd() {
         if (cue.loops || cue.usesBaseBpm || isFillbotsFill) {
             cue.sound.sound.stop(soundId)
+            if (introSoundId != -1L) {
+                cue.introSoundCue?.sound?.sound?.stop(introSoundId)
+            }
         }
 
         endingSoundId =
