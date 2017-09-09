@@ -61,10 +61,16 @@ class InfoScreen(main: RHRE3Application)
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
+                fun updateText() {
+                    this.text = Localization["screen.info.github", RHRE3.GITHUB]
+                }
+
                 this.isLocalizationKey = false
                 this.textWrapping = false
-                this.text = Localization["screen.info.github", RHRE3.GITHUB]
+                updateText()
                 this.fontScaleMultiplier = 0.9f
+
+                Localization.listeners += { updateText() }
             })
 
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
@@ -198,6 +204,12 @@ class InfoScreen(main: RHRE3Application)
 
                     persist()
                     updateText()
+                }
+
+                init {
+                    Localization.listeners += {
+                        updateText()
+                    }
                 }
             }.apply {
                 this.addLabel(TextLabel(palette, this, this.stage).apply {
