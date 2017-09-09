@@ -27,7 +27,7 @@ import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.oopsies.GroupedAction
+import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
@@ -770,11 +770,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
                                         Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
                             remix.entities.removeAll(this.selection)
-                            remix.addActionWithoutMutating(GroupedAction(listOf(
+                            remix.addActionWithoutMutating(ActionGroup(listOf(
                                     EntityRemoveAction(this, this.selection,
                                                        this.selection.map { Rectangle(it.bounds) }),
                                     EntitySelectionAction(this, this.selection.toList(), listOf())
-                                                                               )))
+                                                                             )))
                             this.selection = listOf()
                         }
                     }
@@ -1163,10 +1163,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (clickOccupation.isNewOrCopy) {
                 if (validPlacement) {
                     // place+selection action
-                    remix.addActionWithoutMutating(GroupedAction(listOf(
+                    remix.addActionWithoutMutating(ActionGroup(listOf(
                             EntityPlaceAction(this, this.selection),
                             EntitySelectionAction(this, clickOccupation.previousSelection, this.selection)
-                                                                       )))
+                                                                     )))
                 } else {
                     // delete silently
                     remix.entities.removeAll(selection)
@@ -1180,10 +1180,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else if (deleting) {
                     // remove+selection action
                     remix.entities.removeAll(this.selection)
-                    remix.addActionWithoutMutating(GroupedAction(listOf(
+                    remix.addActionWithoutMutating(ActionGroup(listOf(
                             EntityRemoveAction(this, this.selection, clickOccupation.oldBounds),
                             EntitySelectionAction(this, clickOccupation.previousSelection, listOf())
-                                                                       )))
+                                                                     )))
                     this.selection = listOf()
                 } else {
                     // revert positions silently

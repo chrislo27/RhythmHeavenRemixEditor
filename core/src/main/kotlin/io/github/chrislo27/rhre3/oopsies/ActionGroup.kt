@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.oopsies
 
 
-class GroupedAction<A : ActionHistory<A>> : ReversibleAction<A> {
+class ActionGroup<A : ActionHistory<A>> : ReversibleAction<A> {
 
     var list: List<ReversibleAction<A>> = mutableListOf()
 
