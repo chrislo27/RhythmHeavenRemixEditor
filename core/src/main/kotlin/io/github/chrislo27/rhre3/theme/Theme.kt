@@ -161,16 +161,6 @@ open class LightTheme : Theme() {
 
 }
 
-object ExampleTheme : LightTheme() {
-
-    @field:JsonIgnore override val nameIsLocalization: Boolean = false
-
-    init {
-        name = "Example Theme"
-    }
-
-}
-
 open class DarkTheme : Theme() {
 
     @field:JsonIgnore override val nameIsLocalization: Boolean = true
