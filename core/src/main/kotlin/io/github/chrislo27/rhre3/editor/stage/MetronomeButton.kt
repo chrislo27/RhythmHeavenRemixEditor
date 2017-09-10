@@ -49,7 +49,7 @@ class MetronomeButton(val editor: Editor, palette: UIPalette, parent: UIElement<
                 (120f / screen.editor.remix.tempos.tempoAt(editor.remix.beat))
             else 1.25f
             label.image = metronomeFrames[(MathHelper.getSawtoothWave(
-                    System.currentTimeMillis() - start + (time / metronomeFrames.size * 1000).toInt(), time)
+                    System.currentTimeMillis() - start + ((time + metronomeFrames.size / 2) / metronomeFrames.size * 1000).toInt(), time)
                     * metronomeFrames.size)
                     .toInt().coerceIn(0, metronomeFrames.size - 1)]
         } else {
