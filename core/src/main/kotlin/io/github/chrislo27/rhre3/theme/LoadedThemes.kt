@@ -51,8 +51,12 @@ object LoadedThemes {
                 if (!themeObj.nameIsLocalization && themeObj.name == Theme.DEFAULT_NAME) {
                     themeObj.name = "Custom Palette ${index + 1}"
                 }
-                themes += themeObj
-                Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
+                if (themeObj.isAllInitialized()) {
+                    themes += themeObj
+                    Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
+                } else {
+                    Toolboks.LOGGER.info("Couldn't load ${it.name()}, missing fields")
+                }
             } catch (e: Exception) {
                 Toolboks.LOGGER.error("Failed to parse ${it.name()}, skipping")
                 e.printStackTrace()
