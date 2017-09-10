@@ -100,18 +100,18 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             })
         }
 
-        val padding = 0.00625f
-        val start = 0.15f + 0.075f
+        val padding = 0.0125f
+        val start = 0.15f + 0.075f + padding
         val end = 0.8f
         val area = end - start
-        val numberOfButtons = 6
+        val numberOfButtons = 5
         val buttonHeight = area / numberOfButtons
         for (i in 0 until numberOfButtons) {
             buttons += ThemeChangeButton(i, palette, this, this).apply {
                 this.location.set(screenX = 0.05f,
-                                  screenY = end - (buttonHeight + padding) * (i + 1),
+                                  screenY = end - (buttonHeight) * (i + 1),
                                   screenWidth = 0.9f,
-                                  screenHeight = buttonHeight - padding * 2)
+                                  screenHeight = buttonHeight - padding)
             }
         }
 
@@ -133,7 +133,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
     }
 
     override fun scrolled(amount: Int): Boolean {
-        scroll(-amount)
+        scroll(amount)
 
         return true
     }
