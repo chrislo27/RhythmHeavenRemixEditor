@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -151,6 +152,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                                       }))
 
         }
+
+        LoadedThemes.reloadPalettes(preferences, true)
 
         thread(isDaemon = true) {
             Application.launch(JavafxStub::class.java) // start up

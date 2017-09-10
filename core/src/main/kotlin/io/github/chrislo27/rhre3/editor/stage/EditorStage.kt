@@ -51,6 +51,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val tapalongStage: TapalongStage
     val presentationModeStage: PresentationModeStage
     val themeEditorStage: ThemeEditorStage
+    val themeChooserStage: ThemeChooserStage
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
@@ -492,6 +493,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
+        themeChooserStage = ThemeChooserStage(editor, palette, this, camera).apply {
+            this.location.set(screenWidth = 0.3f,
+                              screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
+            this.location.set(screenX = 0f,
+                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(Editor.BUTTON_PADDING)) - (this.location.screenY))
+            this.visible = false
+        }
         elements += presentationModeStage
         elements += tapalongStage
         elements += buttonBarStage
@@ -501,6 +509,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += centreAreaStage
         elements += subtitleStage
 //        elements += themeEditorStage
+        elements += themeChooserStage
         elements += hoverTextLabel
         this.updatePositions()
 
