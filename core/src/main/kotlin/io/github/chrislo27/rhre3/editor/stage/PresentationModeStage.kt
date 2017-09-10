@@ -173,7 +173,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
         durationSeconds = remix.tempos.beatsToSeconds(remix.lastPoint).toInt()
         bpm = remix.tempos.tempoAt(remix.beat)
 
-        progress = (remix.beat / remix.lastPoint).coerceIn(0f, 1f)
+        progress = (remix.seconds / remix.tempos.beatsToSeconds(remix.lastPoint)).coerceIn(0f, 1f)
 
         super.render(screen, batch, shapeRenderer)
 
