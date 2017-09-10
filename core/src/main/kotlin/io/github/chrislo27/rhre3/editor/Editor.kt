@@ -996,7 +996,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                                     entity.updateBounds {
                                         entity.bounds.setPosition(it.bounds.x, it.bounds.y)
-                                        if (entity is IStretchable) {
+                                        if (entity is IStretchable && entity.isStretchable) {
                                             entity.bounds.width = it.bounds.width
                                         }
                                     }
