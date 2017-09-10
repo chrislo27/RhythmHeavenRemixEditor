@@ -12,7 +12,7 @@ object LoadedThemes {
     var index: Int = 0
         private set
     val currentTheme: Theme
-        get() = themes[index]
+        get() = if (themes.isEmpty()) error("Uninitialized themes - reloadPalettes must be called") else themes[index]
 
     var themes: List<Theme> = listOf()
         private set
