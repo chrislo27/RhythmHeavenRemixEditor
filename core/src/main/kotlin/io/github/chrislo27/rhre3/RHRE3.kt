@@ -16,9 +16,9 @@ object RHRE3 {
 
     val SUPPORTED_SOUND_TYPES = listOf("ogg", "mp3", "wav")
     val tmpMusic: FileHandle by lazy {
-        val fh = Gdx.files.local("tmpMusic/")
-        fh.mkdirs()
-        fh
+        Gdx.files.local("tmpMusic/").apply {
+            mkdirs()
+        }
     }
     const val REMIX_FILE_EXTENSION = "rhre3"
 

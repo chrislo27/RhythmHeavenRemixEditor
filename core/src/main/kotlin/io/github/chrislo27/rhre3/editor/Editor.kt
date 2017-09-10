@@ -100,11 +100,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     val camera: OrthographicCamera by lazy {
-        val c = OrthographicCamera()
-        resizeCamera(c)
-        c.position.x = 0f
-        c.update()
-        c
+        OrthographicCamera().also { c ->
+            resizeCamera(c)
+            c.position.x = 0f
+            c.update()
+        }
     }
 
     val pickerSelection: PickerSelection = PickerSelection()

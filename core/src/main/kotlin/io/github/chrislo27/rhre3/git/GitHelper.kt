@@ -17,12 +17,10 @@ import java.net.URL
 
 object GitHelper {
 
-    val SOUNDS_DIR by lazy {
-        val f: FileHandle = Gdx.files.external(".rhre3/sfx/${RHRE3.DATABASE_BRANCH}/")
-
-        f.mkdirs()
-
-        f
+    val SOUNDS_DIR: FileHandle by lazy {
+        Gdx.files.external(".rhre3/sfx/${RHRE3.DATABASE_BRANCH}/").apply {
+            mkdirs()
+        }
     }
 
     fun makeRepositoryBuilder(mustExist: Boolean = false): RepositoryBuilder =
@@ -109,7 +107,7 @@ object GitHelper {
     }
 
     fun ensureRemoteExists() {
-        temporarilyUseRepo() {
+        temporarilyUseRepo {
             val git = Git(this)
             if ("origin" !in git.repository.remoteNames) {
                 val remoteAdd = git.remoteAdd()
