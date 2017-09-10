@@ -2,6 +2,8 @@
 
 ![RHRE3 Logo](256.png)
 
+[Link to GitHub repository](https://github.com/chrislo27/RhythmHeavenRemixEditor)
+
 ### **RHRE3 (most current)**
 * [README](README.md)
 * [Launch arguments](Launch-arguments.md)
