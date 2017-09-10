@@ -36,7 +36,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
     private var progress = 0f
 
     init {
-        this.elements += backgroundPane
+//        this.elements += backgroundPane
         this.elements += ColourPane(this, this).apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.location.set(0f, 0f, 1f, 1f)
