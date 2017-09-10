@@ -95,7 +95,11 @@ class CreditsScreen(main: RHRE3Application)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.textWrapping = false
-                this.text = Localization["screen.info.github", RHRE3.GITHUB]
+                fun update() {
+                    this.text = Localization["screen.info.github", RHRE3.GITHUB]
+                }
+                update()
+                Localization.listeners += { update() }
                 this.fontScaleMultiplier = 0.9f
             })
 
