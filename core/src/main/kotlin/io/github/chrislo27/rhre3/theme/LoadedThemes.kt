@@ -51,11 +51,12 @@ object LoadedThemes {
                 if (!themeObj.nameIsLocalization && themeObj.name == Theme.DEFAULT_NAME) {
                     themeObj.name = "Custom Palette ${index + 1}"
                 }
-                if (themeObj.isAllInitialized()) {
+                val uninitialized = themeObj.getUninitialized()
+                if (uninitialized.isEmpty()) {
                     themes += themeObj
                     Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
                 } else {
-                    Toolboks.LOGGER.info("Couldn't load ${it.name()}, missing fields")
+                    Toolboks.LOGGER.info("Couldn't load ${it.name()}, missing fields (see examples for details): ${uninitialized.map { it.name }}")
                 }
             } catch (e: Exception) {
                 Toolboks.LOGGER.error("Failed to parse ${it.name()}, skipping")

@@ -8,7 +8,8 @@ import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import io.github.chrislo27.toolboks.i18n.Localization
-import io.github.chrislo27.toolboks.util.anyUninitializedLateinits
+import io.github.chrislo27.toolboks.util.getUninitializedLateinits
+import kotlin.reflect.KProperty
 
 
 object Themes : Disposable {
@@ -32,11 +33,12 @@ open class Theme : Disposable {
 
     }
 
+    fun getUninitialized(): List<KProperty<*>> {
+        return this.getUninitializedLateinits() + trackers.getUninitializedLateinits() + entities.getUninitializedLateinits() + selection.getUninitializedLateinits()
+    }
+
     fun isAllInitialized(): Boolean {
-        return !(this.anyUninitializedLateinits() ||
-                trackers.anyUninitializedLateinits() ||
-                entities.anyUninitializedLateinits() ||
-                selection.anyUninitializedLateinits())
+        return getUninitialized().isEmpty()
     }
 
     var name: String = Theme.DEFAULT_NAME

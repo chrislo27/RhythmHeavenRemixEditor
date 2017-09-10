@@ -47,6 +47,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 LoadedThemes.reloadPalettes(preferences, false)
                 LoadedThemes.persistIndex(preferences)
                 editor.theme = LoadedThemes.currentTheme
+                buttonScroll = 0
 
                 resetButtons()
             }
