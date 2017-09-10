@@ -27,6 +27,10 @@ import java.io.File
 import java.util.*
 
 
+/**
+ * Originally designed to be reloadable during runtime, the aspect of having a
+ * mutable global state was dangerous. This supports interval-based loading over several frames.
+ */
 object GameRegistry : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"

@@ -11,6 +11,10 @@ import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 
 
+/**
+ * This is where most of the editor logic resides. A click can have an "occupation" (hence the name), and
+ * prevents other occupations from occurring at the same time (ex: playback start move and music start move).
+ */
 sealed class ClickOccupation {
 
     interface TrackerBased {

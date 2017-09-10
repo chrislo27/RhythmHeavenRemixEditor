@@ -4,6 +4,9 @@ import javafx.application.Application
 import javafx.stage.Stage
 
 
+/**
+ * Used to start the JavaFX runtime for JavaFX file choosers only.
+ */
 class JavafxStub : Application() {
 
     companion object {
