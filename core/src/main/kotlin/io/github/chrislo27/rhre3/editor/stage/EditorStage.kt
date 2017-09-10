@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameGroupListComparatorIgnorePriority
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -178,15 +179,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 query in it.name.toLowerCase(Locale.ROOT) ||
                                         it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
                             }.mapTo(selection.groups) { it }
+
+                    selection.groups.sortWith(compareBy(GameGroupListComparatorIgnorePriority) { it.games.first() })
                 }
             } else {
                 selection.groups.clear()
                 GameRegistry.data.gameGroupsList
                         .filter { it.series == series }
                         .mapTo(selection.groups) { it }
-            }
 
-            selection.groups.sortBy { it.games.first() }
+                selection.groups.sortBy { it.games.first() }
+            }
 
             seriesButtons.forEach {
                 it.selected = series == it.series && !isSearching
