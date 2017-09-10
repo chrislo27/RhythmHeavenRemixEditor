@@ -31,6 +31,9 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
 //        cycle(1)
         val chooserStage = editor.stage.themeChooserStage
         chooserStage.visible = !chooserStage.visible
+        if (chooserStage.visible) {
+            chooserStage.resetButtons()
+        }
     }
 
     override fun onRightClick(xPercent: Float, yPercent: Float) {

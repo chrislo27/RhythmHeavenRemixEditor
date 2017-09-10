@@ -10,7 +10,9 @@ import io.github.chrislo27.toolboks.Toolboks
 object LoadedThemes {
 
     var index: Int = 0
-        private set
+        set(value) {
+            field = value.coerceIn(0, (themes.size - 1).coerceAtLeast(0))
+        }
     val currentTheme: Theme
         get() = if (themes.isEmpty()) error("Uninitialized themes - reloadPalettes must be called") else themes[index]
 
