@@ -28,7 +28,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
 
         this.elements += ColourPane(this, this).apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
-            this.colour.a = 0.8f
+            this.colour.a = 0.85f
         }
 
         this.elements += TextLabel(palette, this, this).apply {
