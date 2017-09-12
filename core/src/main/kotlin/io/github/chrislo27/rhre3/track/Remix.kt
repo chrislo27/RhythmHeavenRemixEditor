@@ -377,7 +377,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     scheduleMusicPlaying = true
                     AssetRegistry.resumeAllSounds()
                     if (old == PlayState.STOPPED) {
-                        computeDuration()
+                        computeCachedData()
                         seconds = tempos.beatsToSeconds(playbackStart)
                         entities.forEach {
                             if (it.getUpperUpdateableBound() < beat) {
@@ -431,7 +431,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         musicSeeking = false
     }
 
-    fun computeDuration() {
+    /**
+     * Computes cached data like [duration] and [lastPoint].
+     */
+    fun computeCachedData() {
         duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
     }
