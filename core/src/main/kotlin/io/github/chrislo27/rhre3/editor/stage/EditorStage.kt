@@ -63,7 +63,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector")) }
-    val searchBar: TextField<EditorScreen>
+    lateinit var searchBar: SearchBar<EditorScreen>
+        private set
     val messageLabel: TextLabel<EditorScreen>
 
     val hoverTextLabel: TextLabel<EditorScreen>
@@ -89,7 +90,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     val isTyping: Boolean
         get() {
-            return searchBar.hasFocus || jumpToField.hasFocus || subtitleField.hasFocus
+            return searchBar.textField.hasFocus || jumpToField.hasFocus || subtitleField.hasFocus
         }
     val tapalongMarkersEnabled: Boolean
         get() = tapalongStage.markersEnabled
@@ -143,17 +144,22 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 setHoverText(it.getHoverText())
                 true
             } else false
-        } ?: elements.firstOrNull {
-            if (it !is Stage || !it.visible) {
+        } ?: elements.firstOrNull { stage ->
+            if (stage !is Stage || !stage.visible) {
                 false
             } else {
-                it.elements.any {
+                stage.elements.any {
                     if (it is HasHoverText && it.isMouseOver() && it.visible) {
                         setHoverText(it.getHoverText())
                         true
                     } else false
                 }
             }
+        } ?: searchBar.elements.firstOrNull { // hack
+            if (it is HasHoverText && it.isMouseOver() && it.visible) {
+                setHoverText(it.getHoverText())
+                true
+            } else false
         }
 
         if (Toolboks.debugMode != wasDebug) {
@@ -173,12 +179,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     selection.groups.clear()
                     selection.variants.clear()
                     selection.group = 0
-                    val query = searchBar.text.toLowerCase(Locale.ROOT)
-                    GameRegistry.data.gameGroupsList
-                            .filter {
-                                query in it.name.toLowerCase(Locale.ROOT) ||
-                                        it.games.any { query in it.name.toLowerCase(Locale.ROOT) }
-                            }.mapTo(selection.groups) { it }
+                    val query = searchBar.textField.text.toLowerCase(Locale.ROOT)
+                    searchBar.filterGameGroups(query).mapTo(selection.groups) { it }
 
                     selection.groups.sortWith(compareBy(GameGroupListComparatorIgnorePriority) { it.games.first() })
                 }
@@ -821,36 +823,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         // Minimap area
-        searchBar = object : TextField<EditorScreen>(palette, minimapBarStage, minimapBarStage) {
-
-            init {
-                this.textWhenEmptyColor = Color.LIGHT_GRAY
-            }
-
-            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                super.render(screen, batch, shapeRenderer)
-                this.textWhenEmpty = Localization["picker.search"]
-            }
-
-            override fun onTextChange(oldText: String) {
-                super.onTextChange(oldText)
-                updateSelected(DirtyType.SEARCH_DIRTY)
-            }
-
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                val hadFocus = hasFocus
-                super.onLeftClick(xPercent, yPercent)
-                editor.pickerSelection.isSearching = true
-                updateSelected(if (!hadFocus) DirtyType.SEARCH_DIRTY else DirtyType.DIRTY)
-            }
-
-            override fun onRightClick(xPercent: Float, yPercent: Float) {
-                super.onRightClick(xPercent, yPercent)
-                hasFocus = true
-                text = ""
-                updateSelected(DirtyType.SEARCH_DIRTY)
-            }
-        }
         run minimap@ {
             minimapBarStage.updatePositions()
             seriesButtons as MutableList
@@ -876,11 +848,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             minimapBarStage.elements.addAll(seriesButtons)
 
-            searchBar.apply {
-                val last = seriesButtons.last()
-                this.location.set(screenX = last.location.screenX + last.location.screenWidth,
+            val lastSeriesButton = seriesButtons.last()
+            val searchBarX = lastSeriesButton.location.screenX + lastSeriesButton.location.screenWidth
+            val searchBarWidth = 0.5f - searchBarX
+            minimapBarStage.updatePositions()
+            searchBar = SearchBar(searchBarWidth,
+                                  editor, this, palette, minimapBarStage, camera).apply {
+                this.location.set(screenX = searchBarX,
                                   screenHeight = 1f)
-                this.location.set(screenWidth = 0.5f - location.screenX)
+                this.location.set(screenWidth = searchBarWidth)
             }
             minimapBarStage.elements += searchBar
 
