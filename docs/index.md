@@ -6,6 +6,7 @@
 
 ### **RHRE3 (most current)**
 * [README](README.md)
+* [Themes](Themes.md)
 * [Launch arguments](Launch-arguments.md)
 * [JSON Object Definitions for databasing](JSON-object-definitions.md)
 ### **RHRE2 (out of date, archived)**
