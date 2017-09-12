@@ -1,7 +1,9 @@
 # Readme
 
 This readme is up to date with version `v3.1.4`.<br>
-The version this is up to date with may not be released yet.<br>
+The version this is up to date with may be a future version,
+and may not be released yet.
+If this is the case, this readme is still up-to-date.<br>
 
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
@@ -58,7 +60,7 @@ In the bottom-right, you will see tools:
 
 ![Tools](readme/tools.png)
 
-From first to fifth: **Selection**, **Multipart Split**, **Tempo Change**,
+From first to last: **Selection**, **Multipart Split**, **Tempo Change**,
 **Music Volume**, and **Time Signature**. They will be explained below.
 You can access them quickly by pressing `1-5` on the number keys.
 

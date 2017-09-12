@@ -41,7 +41,7 @@ class PresentationModeButton(val editor: Editor, val editorStage: EditorStage, p
         stage.subtitleStage.visible = true
         if (visible) {
             editor.currentTool = Tool.SELECTION
-            editor.remix.computeCachedData()
+            editor.remix.recomputeCachedData()
         }
         stage.updateSelected()
         editor.updateMessageLabel()

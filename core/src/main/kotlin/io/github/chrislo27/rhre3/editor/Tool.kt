@@ -15,7 +15,8 @@ enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<
     MULTIPART_SPLIT("tool_multipart_split", "tool.multipartsplit.name"),
     BPM("tool_bpm", "tool.bpm.name", trackerClass = TempoChange::class),
     MUSIC_VOLUME("tool_music_volume", "tool.musicvolume.name", trackerClass = MusicVolumeChange::class),
-    TIME_SIGNATURE("tool_time_signature", "tool.timesignature.name", trackerClass = TimeSignature::class);
+    TIME_SIGNATURE("tool_time_signature", "tool.timesignature.name", trackerClass = TimeSignature::class),
+    GAME_BOUNDARIES("weird_wakame", "tool.gameBoundaries.name", canSelect = true);
 
     companion object {
         val VALUES: List<Tool> by lazy { Tool.values().toList() }

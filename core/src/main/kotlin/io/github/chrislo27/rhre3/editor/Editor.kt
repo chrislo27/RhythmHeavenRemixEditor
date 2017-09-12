@@ -135,6 +135,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field.forEach { it.isSelected = true }
         }
     var currentTool: Tool = Tool.SELECTION
+        set(value) {
+            field = value
+            remix.recomputeCachedData()
+        }
     private val mouseVector: Vector2 = Vector2()
         get() {
             field.set(remix.camera.getInputX(), remix.camera.getInputY())
