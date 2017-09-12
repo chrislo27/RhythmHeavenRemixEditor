@@ -180,7 +180,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         }
 
         fun updateLabel() {
-//            imageLabel.image = textures[filter]
+            imageLabel.image = textures[filter]
         }
     }
 
