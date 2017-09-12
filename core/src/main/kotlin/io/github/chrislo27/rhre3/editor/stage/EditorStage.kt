@@ -53,6 +53,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val presentationModeStage: PresentationModeStage
     val themeEditorStage: ThemeEditorStage
     val themeChooserStage: ThemeChooserStage
+    val viewChooserStage: ViewChooserStage
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
@@ -155,7 +156,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     } else false
                 }
             }
-        } ?: searchBar.elements.firstOrNull { // hack
+        } ?: searchBar.elements.firstOrNull {
+            // hack
             if (it is HasHoverText && it.isMouseOver() && it.visible) {
                 setHoverText(it.getHoverText())
                 true
@@ -495,14 +497,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(screenWidth = 0.3f,
                               screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(screenX = 1f - this.location.screenWidth,
-                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(Editor.BUTTON_PADDING)) - (this.location.screenY))
+                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
+                                      Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
         themeChooserStage = ThemeChooserStage(editor, palette, this, camera).apply {
             this.location.set(screenWidth = 0.3f,
                               screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(screenX = 0f,
-                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(Editor.BUTTON_PADDING)) - (this.location.screenY))
+                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
+                                      Editor.BUTTON_PADDING)) - (this.location.screenY))
+            this.visible = false
+        }
+        viewChooserStage = ViewChooserStage(editor, palette, this, camera).apply {
+            this.location.set(screenWidth = 0.3f,
+                              screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
+            this.location.set(screenX = 1f - this.location.screenWidth,
+                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
+                                      Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
         elements += presentationModeStage
@@ -515,13 +527,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += subtitleStage
 //        elements += themeEditorStage
         elements += themeChooserStage
+        elements += viewChooserStage
         elements += hoverTextLabel
         this.updatePositions()
-
-        // Message bar
-        run messageBar@ {
-
-        }
 
         pickerDisplay = PickerDisplay(editor, Editor.PATTERN_COUNT, palette, patternAreaStage, patternAreaStage)
 
@@ -969,35 +977,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_save_button"))
                         })
                     }
-            val themeButton = ThemeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size,
-                                  screenX = size * 3 + padding * 3)
-                this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
-                })
-                this.enabled = true
-            }
-            buttonBarStage.elements += themeButton
             buttonBarStage.elements += UndoRedoButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = size * 4 + padding * 4)
+                                  screenX = size * 3 + padding * 3)
             }
             buttonBarStage.elements += UndoRedoButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = size * 5 + padding * 5)
+                                  screenX = size * 4 + padding * 4)
             }
             buttonBarStage.elements += MusicButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = size * 6 + padding * 6)
+                                  screenX = size * 5 + padding * 5)
             }
-            buttonBarStage.elements += PresentationModeButton(editor, this@EditorStage, palette, buttonBarStage,
-                                                              buttonBarStage).apply {
+
+            buttonBarStage.elements += MetronomeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = size * 7 + padding * 7)
+                                  screenX = size * 6 + padding * 6)
             }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
-                this.location.set(screenX = size * 8 + padding * 8)
+                this.location.set(screenX = size * 7 + padding * 7)
                 this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
             }
 
@@ -1033,17 +1032,34 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
                 })
             }
+            buttonBarStage.elements += ThemeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 5 + padding * 4))
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
+                })
+                this.enabled = true
+            }
+            buttonBarStage.elements += PresentationModeButton(editor, this@EditorStage, palette, buttonBarStage,
+                                                              buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 6 + padding * 5))
+            }
+            buttonBarStage.elements += ViewButton(editor, palette, buttonBarStage,
+                                                  buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 7 + padding * 6))
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("weird_wakame"))
+                })
+            }
             buttonBarStage.elements += SnapButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 3,
-                                  screenX = 1f - (size * 7 + padding * 4))
-            }
-            buttonBarStage.elements += MetronomeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 8 + padding * 5))
+                                  screenX = 1f - (size * 10 + padding * 7))
             }
             jumpToField = JumpToField(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 4,
-                                  screenX = 1f - (size * 12 + padding * 6))
+                                  screenX = 1f - (size * 14 + padding * 8))
                 this.textAlign = Align.center
                 this.background = true
             }
