@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -21,15 +22,16 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
                                           val palette: UIPalette, parent: UIElement<S>, camera: OrthographicCamera)
     : Stage<S>(parent, camera) {
 
-    enum class Filter(localization: String) {
+    enum class Filter(val tag: String) {
         GAME_NAME("gameName"),
-        ENTITY_NAME("entityName");
+        ENTITY_NAME("entityName"),
+        CALL_AND_RESPONSE("callAndResponse");
 
         companion object {
             val VALUES = values().toList()
         }
 
-        val localizationKey = "editor.search.filter.$localization"
+        val localizationKey = "editor.search.filter.$tag"
     }
 
     init {
@@ -105,13 +107,22 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         return GameRegistry.data.gameGroupsList.filter { group ->
             when (filterButton.filter) {
                 Filter.GAME_NAME -> {
-                    query in group.name.toLowerCase(Locale.ROOT) ||
-                            group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                    query in group.name.toLowerCase(Locale.ROOT)
+                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
                 }
                 SearchBar.Filter.ENTITY_NAME -> {
                     group.games.any { game ->
                         game.placeableObjects.any { obj ->
                             !obj.hidden && query in obj.name.toLowerCase(Locale.ROOT)
+                        }
+                    }
+                }
+                SearchBar.Filter.CALL_AND_RESPONSE -> {
+                    (query in group.name.toLowerCase(Locale.ROOT)
+                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) })
+                    && group.games.any { game ->
+                        game.placeableObjects.any { obj ->
+                            obj is ResponseModel && obj.responseIDs.isNotEmpty()
                         }
                     }
                 }
@@ -131,10 +142,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         }
 
         private val textures by lazy {
-            mapOf(
-                    Filter.GAME_NAME to TextureRegion(AssetRegistry.get<Texture>("ui_search_filter_gameName")),
-                    Filter.ENTITY_NAME to TextureRegion(AssetRegistry.get<Texture>("ui_search_filter_entityName"))
-                 )
+            Filter.VALUES.associate { it to TextureRegion(AssetRegistry.get<Texture>("ui_search_filter_${it.tag}")) }
         }
 
         init {
@@ -150,6 +158,19 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
             var index = Filter.VALUES.indexOf(filter) + 1
             if (index >= Filter.VALUES.size) {
                 index = 0
+            }
+
+            filter = Filter.VALUES[index]
+            editorStage.updateSelected(EditorStage.DirtyType.SEARCH_DIRTY)
+
+            updateLabel()
+        }
+
+        override fun onRightClick(xPercent: Float, yPercent: Float) {
+            super.onRightClick(xPercent, yPercent)
+            var index = Filter.VALUES.indexOf(filter) - 1
+            if (index < 0) {
+                index = Filter.VALUES.size - 1
             }
 
             filter = Filter.VALUES[index]
