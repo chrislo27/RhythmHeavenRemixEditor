@@ -1050,7 +1050,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 7 + padding * 6))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("weird_wakame"))
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_views"))
                 })
             }
             buttonBarStage.elements += SnapButton(editor, palette, buttonBarStage, buttonBarStage).apply {

@@ -10,19 +10,18 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 
 
 class ViewButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
-                  stage: Stage<EditorScreen>)
+                 stage: Stage<EditorScreen>)
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     override fun getHoverText(): String {
-        return Localization["editor.view", "figure this out"]
+        return Localization["editor.view", if (editor.views.isEmpty())
+            Localization["editor.view.default"]
+        else editor.views.joinToString(separator = ", ") { Localization[it.localizationKey] }]
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        val chooserStage = editor.stage.themeChooserStage
+        val chooserStage = editor.stage.viewChooserStage
         chooserStage.visible = !chooserStage.visible
-        if (chooserStage.visible) {
-            chooserStage.resetButtons()
-        }
     }
 }

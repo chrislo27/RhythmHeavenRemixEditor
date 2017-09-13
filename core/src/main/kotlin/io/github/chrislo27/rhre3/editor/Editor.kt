@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -52,6 +53,7 @@ import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.util.*
 import kotlin.reflect.KClass
 
 
@@ -128,6 +130,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         get() = main.batch
     val subbeatSection = SubbeatSection()
     var snap: Float = 0.25f
+    val views: EnumSet<ViewType> = EnumSet.noneOf(ViewType::class.java)
     var selection: List<Entity> = listOf()
         set(value) {
             field.forEach { it.isSelected = false }
