@@ -38,7 +38,7 @@ class ViewChooserStage(val editor: Editor, val palette: UIPalette, parent: Edito
             this.elements += object : TrueCheckbox<EditorScreen>(palette, this, this) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    if (enabled) {
+                    if (checked) {
                         editor.views.add(enum)
                     } else {
                         editor.views.remove(enum)
