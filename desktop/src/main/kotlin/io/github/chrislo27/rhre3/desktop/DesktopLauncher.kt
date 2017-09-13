@@ -44,7 +44,7 @@ object DesktopLauncher {
                     this.vSyncEnabled = true
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = true
-                    this.audioDeviceSimultaneousSources = 256
+                    this.audioDeviceSimultaneousSources = 250
 
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args || RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
