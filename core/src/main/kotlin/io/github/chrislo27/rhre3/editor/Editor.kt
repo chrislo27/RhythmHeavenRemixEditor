@@ -34,7 +34,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
-import io.github.chrislo27.rhre3.theme.LightTheme
+import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
@@ -123,7 +123,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             field.entities.forEach { it.updateInterpolation(true) }
         }
-    var theme: Theme = LightTheme()
+    var theme: Theme = LoadedThemes.currentTheme
     val stage: EditorStage = EditorStage(
             null, stageCamera, main, this)
     val batch: SpriteBatch
@@ -256,7 +256,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
 
         camera.position.y = 1f
-        camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.75f else 1f,
+        camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.5f else 1f,
                                      Gdx.graphics.deltaTime * 6f)
         camera.update()
         batch.projectionMatrix = camera.combined
@@ -277,6 +277,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.fillRect(startX, trackYOffset + i.toFloat(), width,
                                toScaleY(TRACK_LINE))
             }
+            batch.setColor(1f, 1f, 1f, 1f)
+        }
+
+        // game boundaries view (background)
+        if (ViewType.GAME_BOUNDARIES in views) {
+            val squareHeight = TRACK_COUNT.toFloat()
+            val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
+
+            remix.gameSections.values.forEach { section ->
+                if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
+                    return@forEach
+                val tex = section.game.icon
+
+                val sectionWidth = section.endBeat - section.startBeat
+                val sections = (sectionWidth / squareWidth)
+                val wholes = sections.toInt()
+                val remainder = sectionWidth % squareWidth
+
+                // track background icons
+                batch.setColor(1f, 1f, 1f, 0.25f)
+                for (i in 0 until wholes) {
+                    batch.draw(tex, section.startBeat + squareWidth * i, 0f,
+                               squareWidth, squareHeight)
+                }
+                batch.draw(tex, section.startBeat + squareWidth * wholes, 0f,
+                           remainder, squareHeight,
+                           0, 0, (tex.width * (sections - wholes)).toInt(), tex.height,
+                           false, false)
+            }
+
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
@@ -321,31 +351,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        // game boundaries view
+        // game boundaries view (dividers)
         if (ViewType.GAME_BOUNDARIES in views) {
-            batch.setColor(1f, 1f, 1f, 0.85f)
-
-            val squareHeight = TRACK_COUNT.toFloat()
-            val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
-
             remix.gameSections.values.forEach { section ->
                 if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
                     return@forEach
-                val tex = section.game.icon
-
+                val icon = section.game.icon
                 val sectionWidth = section.endBeat - section.startBeat
-                val sections = (sectionWidth / squareWidth)
-                val wholes = sections.toInt()
-                val remainder = sectionWidth % squareWidth
 
-                for (i in 0 until wholes) {
-                    batch.draw(tex, section.startBeat + squareWidth * i, 0f,
-                               squareWidth, squareHeight)
+                // dividing lines
+                val triangle = AssetRegistry.get<Texture>("tracker_right_tri")
+                run left@ {
+                    batch.color = theme.trackLine
+                    font.color = theme.trackLine
+                    val x = section.startBeat
+                    val height = TRACK_COUNT * 2f
+                    val maxTextWidth = 4f
+                    batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
+                    batch.draw(triangle, x, height - 1f, 0.25f, 1f)
+
+                    batch.setColor(1f, 1f, 1f, 1f)
+                    batch.draw(icon, x + 0.125f, height - 2f, 0.25f, 1f)
+                    font.drawCompressed(batch, section.game.name, x + 0.125f, height - 2.25f,
+                                        sectionWidth.coerceAtMost(maxTextWidth), Align.left)
                 }
-                batch.draw(tex, section.startBeat + squareWidth * wholes, 0f,
-                           remainder, squareHeight,
-                           0, 0, (tex.width * (sections - wholes)).toInt(), tex.height,
-                           false, false)
+                batch.setColor(1f, 1f, 1f, 1f)
+                font.setColor(1f, 1f, 1f, 1f)
             }
 
             batch.setColor(1f, 1f, 1f, 1f)
