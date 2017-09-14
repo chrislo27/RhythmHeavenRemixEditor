@@ -36,7 +36,6 @@ object LoadedThemes {
     fun reloadPalettes(preferences: Preferences, fromPrefs: Boolean) {
         themes.filter { it !in Themes.defaultThemes }.forEach(Theme::dispose)
 
-        index = if (!fromPrefs) 0 else preferences.getInteger(PreferenceKeys.THEME_INDEX, 0)
         themes = Themes.defaultThemes.toMutableList()
         themes as MutableList
 
@@ -72,6 +71,8 @@ object LoadedThemes {
             exampleFolder.child("example_${index + 1}.json").writeString(JsonHandler.toJson(it), false, "UTF-8")
             it.name = name
         }
+
+        index = if (!fromPrefs) 0 else preferences.getInteger(PreferenceKeys.THEME_INDEX, 0)
 
         if (index !in 0 until themes.size) {
             index = 0

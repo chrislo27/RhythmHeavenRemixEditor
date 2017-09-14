@@ -122,6 +122,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
 
+        LoadedThemes.reloadPalettes(preferences, true)
+
         // screens
         run {
             ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
@@ -152,8 +154,6 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                                       }))
 
         }
-
-        LoadedThemes.reloadPalettes(preferences, true)
 
         thread(isDaemon = true) {
             Application.launch(JavafxStub::class.java) // start up
