@@ -1032,7 +1032,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
                 })
             }
-            buttonBarStage.elements += ThemeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+            buttonBarStage.elements += ThemeButton(editor, this, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 5 + padding * 4))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {

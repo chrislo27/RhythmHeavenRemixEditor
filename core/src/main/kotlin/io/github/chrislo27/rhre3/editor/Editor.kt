@@ -257,7 +257,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         camera.position.y = 1f
         camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.5f else 1f,
-                                     Gdx.graphics.deltaTime * 6f)
+                                     Gdx.graphics.deltaTime * 6.5f)
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.begin()
@@ -370,10 +370,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
                     batch.draw(triangle, x, height - 1f, 0.25f, 1f)
 
-                    batch.setColor(1f, 1f, 1f, 1f)
-                    batch.draw(icon, x + 0.125f, height - 2f, 0.25f, 1f)
-                    font.drawCompressed(batch, section.game.name, x + 0.125f, height - 2.25f,
-                                        (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
+                    for (i in 0 until (sectionWidth / 6f).toInt().coerceAtLeast(1)) {
+                        batch.setColor(1f, 1f, 1f, 1f)
+                        batch.draw(icon, x + 0.125f + 6f * i, height - 2f, 0.25f, 1f)
+                        font.drawCompressed(batch, section.game.name, x + 0.125f + 6f * i, height - 2.25f,
+                                            (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
+                    }
                 }
                 batch.setColor(1f, 1f, 1f, 1f)
                 font.setColor(1f, 1f, 1f, 1f)
@@ -704,7 +706,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         if (remix.playState == PlayState.PLAYING) {
-            val halfWidth = remix.camera.viewportWidth / 2
+            val halfWidth = remix.camera.viewportWidth / 2 * remix.camera.zoom
             if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
                 remix.camera.position.x = remix.beat + halfWidth
             }

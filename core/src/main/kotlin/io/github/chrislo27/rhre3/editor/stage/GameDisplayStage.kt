@@ -10,10 +10,12 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.ui.*
 
 
-open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
+open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>?,
+                            camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
     companion object {
@@ -45,7 +47,7 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
                               screenWidth = 1f / WIDTH_MULTIPLICATION)
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
         }
-        label = object : TextLabel<EditorScreen>(palette, this, this){
+        label = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getFont(): BitmapFont {
                 return this@GameDisplayStage.getFont()
             }
@@ -68,7 +70,7 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        game = editor.remix.getGameSection(editor.remix.beat)?.game
+        game = if (editor.remix.playState == PlayState.STOPPED) null else editor.remix.getGameSection(editor.remix.beat)?.game
         super.render(screen, batch, shapeRenderer)
     }
 }

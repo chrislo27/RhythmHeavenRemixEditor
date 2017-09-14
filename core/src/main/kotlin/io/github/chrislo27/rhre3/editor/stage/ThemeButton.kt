@@ -11,7 +11,8 @@ import io.github.chrislo27.toolboks.ui.UIElement
 import io.github.chrislo27.toolboks.ui.UIPalette
 
 
-class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
+class ThemeButton(val editor: Editor, val editorStage: EditorStage,
+                  palette: UIPalette, parent: UIElement<EditorScreen>,
                   stage: Stage<EditorScreen>)
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
@@ -31,6 +32,7 @@ class ThemeButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
 //        cycle(1)
         val chooserStage = editor.stage.themeChooserStage
         chooserStage.visible = !chooserStage.visible
+        editorStage.viewChooserStage.visible = false
         if (chooserStage.visible) {
             chooserStage.resetButtons()
         }
