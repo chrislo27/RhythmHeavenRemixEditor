@@ -366,14 +366,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     font.color = theme.trackLine
                     val x = section.startBeat
                     val height = TRACK_COUNT * 2f
-                    val maxTextWidth = 4f
+                    val maxTextWidth = 4f - 0.25f
                     batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
                     batch.draw(triangle, x, height - 1f, 0.25f, 1f)
 
                     batch.setColor(1f, 1f, 1f, 1f)
                     batch.draw(icon, x + 0.125f, height - 2f, 0.25f, 1f)
                     font.drawCompressed(batch, section.game.name, x + 0.125f, height - 2.25f,
-                                        sectionWidth.coerceAtMost(maxTextWidth), Align.left)
+                                        (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
                 }
                 batch.setColor(1f, 1f, 1f, 1f)
                 font.setColor(1f, 1f, 1f, 1f)
