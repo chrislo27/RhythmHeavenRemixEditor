@@ -504,7 +504,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         themeChooserStage = ThemeChooserStage(editor, palette, this, camera).apply {
             this.location.set(screenWidth = 0.3f,
                               screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
-            this.location.set(screenX = 0f,
+            this.location.set(screenX = 1f - this.location.screenWidth,
                               screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
                                       Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
