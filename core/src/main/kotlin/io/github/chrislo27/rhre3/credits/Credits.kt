@@ -11,7 +11,7 @@ object Credits {
             "programming" crediting "chrislo27",
             "localization" crediting
                     """[LIGHT_GRAY]Français (French)[]
-                |inkedsplat, Pengu123
+                |inkedsplat, Pengu123, minenice55
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
                 |GlitchyPSIX, quantic
