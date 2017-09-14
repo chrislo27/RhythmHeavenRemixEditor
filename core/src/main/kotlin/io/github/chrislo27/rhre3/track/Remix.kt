@@ -34,6 +34,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
@@ -139,7 +140,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                     if (isCustom)
                                         missingCustom++
 
-                                    Toolboks.LOGGER.warn("Missing ${if (isCustom) "custom " else ""}asset: $datamodelID")
+                                    Toolboks.LOGGER.warn(
+                                            "Missing ${if (isCustom) "custom " else ""}asset: $datamodelID")
                                     return@forEach
                                 }
                             }
@@ -322,19 +324,21 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             field = value
             lastTickBeat = beat.toInt()
         }
+    var cuesMuted = false
     private var lastTickBeat = Int.MIN_VALUE
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
+
     var duration: Float = Float.POSITIVE_INFINITY
         private set
     var lastPoint: Float = 0f
         private set
+
     val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
     val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
-    var cuesMuted = false
-    var currentGameGroup: Game? = null
-        private set
+
+    val gameSections: NavigableMap<Float, GameSection> = TreeMap()
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -361,7 +365,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
                     }
                     currentSubtitles.clear()
-                    currentGameGroup = null
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -432,11 +435,42 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     }
 
     /**
-     * Computes cached data like [duration] and [lastPoint].
+     * Computes cached data like [duration], [lastPoint], and [gameSections].
      */
     fun recomputeCachedData() {
+        entities.sortBy { it.bounds.x }
         duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
+
+        gameSections.clear()
+        val groupedEntities = entities.takeWhile { it !is EndEntity }
+                .filterIsInstance<ModelEntity<*>>()
+                .filter { !it.datamodel.game.noDisplay }
+                .fold(mutableListOf<Pair<Game, ModelEntity<*>>>()) { list, modelEntity ->
+                    if (list.isEmpty() || list.last().first.gameGroup != modelEntity.datamodel.game.gameGroup) {
+                        list += modelEntity.datamodel.game to modelEntity
+                    }
+
+                    list
+                }
+        groupedEntities.forEachIndexed { index, pair ->
+            val isLast = index == groupedEntities.lastIndex
+            if (isLast) {
+                val gameSection: GameSection = GameSection(pair.second.bounds.x,
+                                                           lastPoint,
+                                                           pair.first)
+                gameSections.put(gameSection.startBeat, gameSection)
+            }
+
+            if (index == 0)
+                return@forEachIndexed
+            val previous = groupedEntities[index - 1]
+
+            val gameSection: GameSection = GameSection(previous.second.bounds.x,
+                                                       pair.second.bounds.x,
+                                                       previous.first)
+            gameSections.put(gameSection.startBeat, gameSection)
+        }
     }
 
     fun getLastEntityPoint(): Float {
@@ -450,15 +484,16 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
     }
 
+    fun getGameSection(beat: Float): GameSection? {
+        val entry = gameSections.lowerEntry(beat) ?: return null
+        return entry.value
+    }
+
     fun entityUpdate(entity: Entity) {
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
             if (entity.isUpdateable(beat)) {
                 entity.playbackCompletion = PlaybackCompletion.PLAYING
                 entity.onStart()
-
-                if (entity is ModelEntity<*> && !entity.datamodel.game.noDisplay) {
-                    currentGameGroup = entity.datamodel.game
-                }
             }
         }
 
@@ -520,8 +555,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         if (playState != PlayState.STOPPED
                 && (beat >= duration
-                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST,
-                                               false) && beat >= lastPoint)) {
+                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+                && beat >= lastPoint)) {
             playState = PlayState.STOPPED
         }
     }

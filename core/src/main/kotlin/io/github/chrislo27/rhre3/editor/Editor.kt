@@ -256,9 +256,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
 
         camera.position.y = 1f
-//        camera.zoom = MathUtils.lerp(camera.zoom,
-//                                     Math.max(TRACK_COUNT.toFloat(), remix.entities.maxBy { it.bounds.y }?.bounds?.y ?: 0f) / TRACK_COUNT.toFloat(),
-//                                     Gdx.graphics.deltaTime * 5f)
+        camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.75f else 1f,
+                                     Gdx.graphics.deltaTime * 6f)
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.begin()
@@ -320,6 +319,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (subbeatSection.flashAnimation < 0)
                     subbeatSection.flashAnimation = 0f
             }
+        }
+
+        // game boundaries view
+        if (ViewType.GAME_BOUNDARIES in views) {
+            batch.setColor(1f, 1f, 1f, 0.85f)
+
+            val squareHeight = TRACK_COUNT.toFloat()
+            val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
+
+            remix.gameSections.values.forEach { section ->
+                if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
+                    return@forEach
+                val tex = section.game.icon
+
+                val sectionWidth = section.endBeat - section.startBeat
+                val sections = (sectionWidth / squareWidth)
+                val wholes = sections.toInt()
+                val remainder = sectionWidth % squareWidth
+
+                for (i in 0 until wholes) {
+                    batch.draw(tex, section.startBeat + squareWidth * i, 0f,
+                               squareWidth, squareHeight)
+                }
+                batch.draw(tex, section.startBeat + squareWidth * wholes, 0f,
+                           remainder, squareHeight,
+                           0, 0, (tex.width * (sections - wholes)).toInt(), tex.height,
+                           false, false)
+            }
+
+            batch.setColor(1f, 1f, 1f, 1f)
         }
 
         // trackers (playback start, music, others)
@@ -490,11 +519,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     val mouseX = remix.camera.getInputX()
                     val mouseY = remix.camera.getInputY()
                     val alpha = (1f - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
-                    val left = remix.camera.position.x - remix.camera.viewportWidth / 2
+                    val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
 
                     batch.setColor(1f, 0f, 0f, 0.25f * alpha)
                     batch.fillRect(left, 0f,
-                                   remix.camera.viewportWidth, -remix.camera.viewportHeight)
+                                   remix.camera.viewportWidth * remix.camera.zoom,
+                                   -remix.camera.viewportHeight * remix.camera.zoom)
                     batch.setColor(oldColor)
 
                     val deleteFont = main.defaultFontLarge
@@ -503,7 +533,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
                     deleteFont.drawCompressed(batch, Localization["editor.delete"], left, -1f + font.capHeight / 2,
-                                              remix.camera.viewportWidth, Align.center)
+                                              remix.camera.viewportWidth * remix.camera.zoom, Align.center)
 
                     deleteFont.setColor(1f, 1f, 1f, 1f)
                     deleteFont.unscaleFont()
@@ -1218,6 +1248,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             this.clickOccupation = ClickOccupation.None
+            remix.recomputeCachedData()
             return true
         } else if (clickOccupation is ClickOccupation.CreatingSelection &&
                 (button == Input.Buttons.LEFT || button == Input.Buttons.RIGHT)) {

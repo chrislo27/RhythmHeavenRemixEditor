@@ -27,7 +27,7 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
 
     open fun getFont(): BitmapFont = editor.main.defaultBorderedFont
 
-    var gameGroup: Game? = null
+    var game: Game? = null
         set(value) {
             if (field != value) {
                 field = value
@@ -68,7 +68,7 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        gameGroup = editor.remix.currentGameGroup
+        game = editor.remix.getGameSection(editor.remix.beat)?.game
         super.render(screen, batch, shapeRenderer)
     }
 }

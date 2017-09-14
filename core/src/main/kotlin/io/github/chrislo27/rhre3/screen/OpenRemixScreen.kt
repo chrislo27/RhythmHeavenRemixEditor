@@ -249,6 +249,7 @@ class OpenRemixScreen(main: RHRE3Application)
             super.onLeftClick(xPercent, yPercent)
             val remix = remix ?: return
             editor.remix = remix
+            editor.remix.recomputeCachedData()
             alsoDo()
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
         }
