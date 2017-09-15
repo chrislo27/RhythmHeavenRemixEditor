@@ -483,7 +483,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
 
                 val measureNum = remix.timeSignatures.getMeasure(i.toFloat())
-                if (measureNum >= 1 && remix.timeSignatures.getMeasurePart(i.toFloat()) == 0) {
+                if (measureNum >= 1 && remix.timeSignatures.getMeasurePart(i.toFloat()) == 0 && i < remix.duration) {
                     font.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.5f)
                     font.drawCompressed(batch, "$measureNum",
                                         x, y + font.lineHeight, width, Align.center)
