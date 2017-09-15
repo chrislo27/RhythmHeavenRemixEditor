@@ -521,7 +521,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         seconds += delta
         if (music != null) {
-            val currentSeconds = seconds
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
                 val ended = music.music.play()
                 scheduleMusicPlaying = false
