@@ -695,10 +695,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     when (remix.playState) {
                         PlayState.STOPPED -> remix.playState = PlayState.PLAYING
-                        PlayState.PAUSED -> {
-                            remix.playState = PlayState.STOPPED
-                            remix.playState = PlayState.PLAYING
-                        }
+                        PlayState.PAUSED -> remix.playState = PlayState.PLAYING
                         PlayState.PLAYING -> remix.playState = PlayState.STOPPED
                     }
                 }
