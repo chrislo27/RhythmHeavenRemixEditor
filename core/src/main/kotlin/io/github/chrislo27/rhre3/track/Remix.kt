@@ -443,33 +443,37 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         lastPoint = getLastEntityPoint()
 
         gameSections.clear()
-        val groupedEntities = entities.takeWhile { it !is EndEntity }
+        val reversedEntities = entities.takeWhile { it !is EndEntity }
                 .filterIsInstance<ModelEntity<*>>()
                 .filter { !it.datamodel.game.noDisplay }
-                .fold(mutableListOf<Pair<Game, ModelEntity<*>>>()) { list, modelEntity ->
-                    if (list.isEmpty() || list.last().first.gameGroup != modelEntity.datamodel.game.gameGroup) {
-                        list += modelEntity.datamodel.game to modelEntity
-                    }
+                .asReversed()
+        var currentGame: Game? = null
+        var currentEndPoint: Float = lastPoint
+        reversedEntities.forEachIndexed { index, modelEntity ->
+            val entityGame = modelEntity.datamodel.game
+            val cachedCurrent = currentGame
+            if (entityGame != currentGame) {
+                currentGame = entityGame
 
-                    list
+                if (cachedCurrent != null) {
+                    val previous = reversedEntities[index - 1]
+                    val section = GameSection(previous.bounds.x,
+                                              currentEndPoint,
+                                              cachedCurrent)
+
+                    gameSections.put(section.startBeat, section)
+
+                    currentEndPoint = previous.bounds.x
                 }
-        groupedEntities.forEachIndexed { index, pair ->
-            val isLast = index == groupedEntities.lastIndex
-            if (isLast) {
-                val gameSection: GameSection = GameSection(pair.second.bounds.x,
-                                                           lastPoint,
-                                                           pair.first)
-                gameSections.put(gameSection.startBeat, gameSection)
             }
+        }
+        if (currentGame != null) {
+            val final = reversedEntities.last()
+            val section = GameSection(final.bounds.x,
+                                      currentEndPoint,
+                                      final.datamodel.game)
 
-            if (index == 0)
-                return@forEachIndexed
-            val previous = groupedEntities[index - 1]
-
-            val gameSection: GameSection = GameSection(previous.second.bounds.x,
-                                                       pair.second.bounds.x,
-                                                       previous.first)
-            gameSections.put(gameSection.startBeat, gameSection)
+            gameSections.put(section.startBeat, section)
         }
     }
 
