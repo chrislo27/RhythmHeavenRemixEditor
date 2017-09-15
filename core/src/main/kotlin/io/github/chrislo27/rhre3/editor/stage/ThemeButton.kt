@@ -31,8 +31,9 @@ class ThemeButton(val editor: Editor, val editorStage: EditorStage,
         super.onLeftClick(xPercent, yPercent)
 //        cycle(1)
         val chooserStage = editor.stage.themeChooserStage
-        chooserStage.visible = !chooserStage.visible
-        editorStage.viewChooserStage.visible = false
+        val wasVisible = chooserStage.visible
+        editorStage.paneLikeStages.forEach { it.visible = false }
+        chooserStage.visible = !wasVisible
         if (chooserStage.visible) {
             chooserStage.resetButtons()
         }

@@ -10,7 +10,8 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 
 
-class ViewButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
+class ViewButton(val editor: Editor, val editorStage: EditorStage,
+                 palette: UIPalette, parent: UIElement<EditorScreen>,
                  stage: Stage<EditorScreen>)
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
@@ -38,6 +39,8 @@ class ViewButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
         val chooserStage = editor.stage.viewChooserStage
-        chooserStage.visible = !chooserStage.visible
+        val wasVisible = chooserStage.visible
+        editorStage.paneLikeStages.forEach { it.visible = false }
+        chooserStage.visible = !wasVisible
     }
 }

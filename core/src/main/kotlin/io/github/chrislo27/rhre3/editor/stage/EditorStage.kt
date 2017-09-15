@@ -41,6 +41,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     override var palette: UIPalette = main.uiPalette.copy(
             backColor = Color(main.uiPalette.backColor).apply { this.a = 0.5f })
+    val paneLikeStages: List<Stage<EditorScreen>> = mutableListOf()
     val messageBarStage: Stage<EditorScreen>
     val buttonBarStage: Stage<EditorScreen>
     val pickerStage: Stage<EditorScreen>
@@ -275,6 +276,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     init {
+        paneLikeStages as MutableList<Stage<EditorScreen>>
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
         seriesButtons = mutableListOf()
@@ -529,6 +531,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += themeChooserStage
         elements += viewChooserStage
         elements += hoverTextLabel
+        paneLikeStages += themeChooserStage
+        paneLikeStages += viewChooserStage
+        paneLikeStages += themeEditorStage
         this.updatePositions()
 
         pickerDisplay = PickerDisplay(editor, Editor.PATTERN_COUNT, palette, patternAreaStage, patternAreaStage)
@@ -1045,7 +1050,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 6 + padding * 5))
             }
-            buttonBarStage.elements += ViewButton(editor, palette, buttonBarStage,
+            buttonBarStage.elements += ViewButton(editor, this, palette, buttonBarStage,
                                                   buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 7 + padding * 6))
