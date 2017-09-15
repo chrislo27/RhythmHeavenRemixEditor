@@ -18,6 +18,7 @@ class EntityMoveAction(val editor: Editor, val entities: List<Entity>, val oldPo
                 it.bounds.set(newPos[i])
             }
         }
+        context.recomputeCachedData()
     }
 
     override fun undo(context: Remix) {
@@ -26,6 +27,7 @@ class EntityMoveAction(val editor: Editor, val entities: List<Entity>, val oldPo
                 it.bounds.set(oldPos[i])
             }
         }
+        context.recomputeCachedData()
     }
 
 }

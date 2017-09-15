@@ -22,6 +22,7 @@ class TrackerExistenceAction<T : Tracker>(val remix: Remix, val container: Track
         } else {
             add()
         }
+        context.recomputeCachedData()
     }
 
     override fun undo(context: Remix) {
@@ -30,5 +31,6 @@ class TrackerExistenceAction<T : Tracker>(val remix: Remix, val container: Track
         } else {
             remove()
         }
+        context.recomputeCachedData()
     }
 }

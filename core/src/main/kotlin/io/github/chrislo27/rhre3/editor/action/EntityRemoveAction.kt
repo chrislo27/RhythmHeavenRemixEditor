@@ -17,10 +17,12 @@ class EntityRemoveAction(val editor: Editor, val entities: List<Entity>, val old
                 entity.bounds.set(oldPos[index])
             }
         }
+        context.recomputeCachedData()
     }
 
     override fun redo(context: Remix) {
         context.entities.removeAll(entities)
+        context.recomputeCachedData()
     }
 
 }

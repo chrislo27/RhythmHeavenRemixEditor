@@ -10,10 +10,12 @@ class EntityPlaceAction(val editor: Editor, val entities: List<Entity>) : Revers
 
     override fun redo(context: Remix) {
         context.entities.addAll(entities)
+        context.recomputeCachedData()
     }
 
     override fun undo(context: Remix) {
         context.entities.removeAll(entities)
+        context.recomputeCachedData()
     }
 
 }
