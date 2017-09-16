@@ -27,6 +27,7 @@ import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
+import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
@@ -258,7 +259,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         camera.position.y = 1f
         camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.5f else 1f,
                                      Gdx.graphics.deltaTime * 6.5f)
-        camera.update()
+        if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
+            val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it -> acc * ShakeEntity.getShakeIntensity(it.semitone)}
+            val intensity = 0.125f
+            val oldX = camera.position.x
+            val oldY = camera.position.y
+
+            camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+
+            camera.update()
+
+            camera.position.x = oldX
+            camera.position.y = oldY
+        } else {
+            camera.update()
+        }
         batch.projectionMatrix = camera.combined
         batch.begin()
 

@@ -38,12 +38,16 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
     }
 
     override fun onStart() {
+        if (this !in remix.currentShakeEntities) {
+            remix.currentShakeEntities += this
+        }
     }
 
     override fun whilePlaying() {
     }
 
     override fun onEnd() {
+        remix.currentShakeEntities -= this
     }
 
     override fun copy(remix: Remix): ShakeEntity {
