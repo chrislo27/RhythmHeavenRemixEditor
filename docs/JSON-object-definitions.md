@@ -7,7 +7,6 @@ All `data.json` files for each game are a `DataObject`.
 {
   "id": "lowerCamelCaseID",
   "name": "Human-Readable Name",
-  "requiresVersion": "v3.0.0",
   "objects": [],
   "series": "tengoku",
   // optional fields after this comment
@@ -32,9 +31,6 @@ Example: `Space Dance (Megamix)` and `Space Dance (GBA)`.
   * Rhythm Heaven (Gold) - DS
   * Rhythm Heaven Fever - Fever
   * Rhythm Heaven Megamix - Megamix
-
-The `requiresVersion` field is the minimum version of the program needed to
-parse this file.
 
 The `objects` array is an array of various object types, which will be
 explained below. It is **very important** that each object type contain
