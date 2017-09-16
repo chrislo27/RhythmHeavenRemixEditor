@@ -260,13 +260,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.5f else 1f,
                                      Gdx.graphics.deltaTime * 6.5f)
         if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
-            val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it -> acc * ShakeEntity.getShakeIntensity(it.semitone)}
+            val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
+                acc * ShakeEntity.getShakeIntensity(it.semitone)
+            }
             val intensity = 0.125f
             val oldX = camera.position.x
             val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(
+                    shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
 
             camera.update()
 
