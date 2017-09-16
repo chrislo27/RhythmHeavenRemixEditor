@@ -281,7 +281,9 @@ The `CuePointerObjects` used *are in order* and are not changed.
 The `RandomCueObject` is like a pattern except it only chooses one of the
 cues in the `cues` array at random **when played**.
 The `CuePointerObject` is unchanged, but the `beat` field inside
-will be ignored (always zero).
+will be ignored (always zero). You are not actually limited to cues,
+contrary to what the name of this is. (I would've changed the name
+if I could refactor it correctly...)
 
 See `PatternObject` for the `id` and `name` fields.
 
