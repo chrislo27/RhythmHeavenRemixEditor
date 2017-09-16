@@ -189,7 +189,14 @@ class OpenRemixScreen(main: RHRE3Application)
                             goodBad(remix.version.toString(), true)
                         else
                             goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version)
-                        mainLabel.text = Localization["screen.open.info",
+
+                        mainLabel.text = ""
+
+                        if (result.isAutosave) {
+                            mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
+                        }
+
+                        mainLabel.text += Localization["screen.open.info",
                                 goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
                                 databaseStr,
                                 goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
