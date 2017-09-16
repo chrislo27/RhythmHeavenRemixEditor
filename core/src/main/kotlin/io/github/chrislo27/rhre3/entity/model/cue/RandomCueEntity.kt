@@ -46,7 +46,9 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue) : MultipartEntity<Rand
 
     override fun copy(remix: Remix): RandomCueEntity {
         return RandomCueEntity(remix, datamodel).also {
-            it.bounds.set(this.bounds)
+            it.updateBounds {
+                it.bounds.set(this.bounds)
+            }
             it.semitone = this.semitone
         }
     }

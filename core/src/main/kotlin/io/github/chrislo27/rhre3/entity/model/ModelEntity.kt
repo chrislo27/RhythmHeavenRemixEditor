@@ -46,6 +46,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
     }
 
+    protected open fun getTextForSemitone(semitone: Int): String {
+        return Semitones.getSemitoneName(semitone)
+    }
+
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
         val text = renderText
@@ -131,7 +135,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
             if (!this.canBeRepitched) {
                 font.setColor(1f, 0f, 0f, 1f)
             }
-            font.draw(batch, Semitones.getSemitoneName(this.semitone),
+            font.draw(batch, getTextForSemitone(this.semitone),
                       x + 2 * remix.editor.toScaleX(BORDER),
                       y + 2 * remix.editor.toScaleY(BORDER) + font.capHeight)
         }

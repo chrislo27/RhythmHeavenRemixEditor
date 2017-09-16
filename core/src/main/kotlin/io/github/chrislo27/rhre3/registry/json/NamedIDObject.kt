@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName
         JsonSubTypes.Type(PatternObject::class),
         JsonSubTypes.Type(RandomCueObject::class),
         JsonSubTypes.Type(EndRemixObject::class),
-        JsonSubTypes.Type(SubtitleEntityObject::class)
+        JsonSubTypes.Type(SubtitleEntityObject::class),
+        JsonSubTypes.Type(ShakeEntityObject::class)
              )
 sealed class NamedIDObject {
 
@@ -135,3 +136,6 @@ class EndRemixObject : NamedIDObject()
 
 @JsonTypeName("subtitleEntity")
 class SubtitleEntityObject : NamedIDObject()
+
+@JsonTypeName("shakeEntity")
+class ShakeEntityObject : NamedIDObject()

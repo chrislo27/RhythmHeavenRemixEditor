@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.ShakeScreen
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -331,6 +332,8 @@ object GameRegistry : Disposable {
                             EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
                         is SubtitleEntityObject ->
                             Subtitle(game, obj.id, obj.deprecatedIDs, obj.name)
+                        is ShakeEntityObject ->
+                            ShakeScreen(game, obj.id, obj.deprecatedIDs, obj.name)
                     }
                 }
 

@@ -50,7 +50,9 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
 
     override fun copy(remix: Remix): SubtitleEntity {
         return SubtitleEntity(remix, datamodel).also {
-            it.bounds.set(this@SubtitleEntity.bounds)
+            it.updateBounds {
+                it.bounds.set(this@SubtitleEntity.bounds)
+            }
             it.subtitle = subtitle
         }
     }

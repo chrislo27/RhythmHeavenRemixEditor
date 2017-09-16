@@ -114,7 +114,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     override fun copy(remix: Remix): CueEntity {
         return CueEntity(remix, datamodel).also {
-            it.bounds.set(this.bounds)
+            it.updateBounds {
+                it.bounds.set(this.bounds)
+            }
             it.semitone = this.semitone
         }
     }

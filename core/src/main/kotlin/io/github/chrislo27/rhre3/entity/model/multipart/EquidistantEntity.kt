@@ -58,10 +58,10 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
 
     override fun copy(remix: Remix): EquidistantEntity {
         return EquidistantEntity(remix, datamodel).also {
-            it.semitone = this.semitone
             it.updateBounds {
                 it.bounds.set(this@EquidistantEntity.bounds)
             }
+            it.semitone = this.semitone
         }
     }
 }
