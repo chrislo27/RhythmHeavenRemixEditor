@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
@@ -69,6 +68,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_callAndResponse", "images/ui/searchbar/callAndResponse.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_play", "images/ui/icons/play.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_pause", "images/ui/icons/pause.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_stop", "images/ui/icons/stop.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
@@ -84,8 +86,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
                         "images/icon/$it.png")
             }
         }
-        assets[AssetRegistry.bindAsset("ui-icons", "images/ui/ui-icons.pack").first] =
-                TextureAtlas("images/ui/ui-icons.pack")
+
         assets["cursor_horizontal_resize"] =
                 Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")),
                                        16, 8)

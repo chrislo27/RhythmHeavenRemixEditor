@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
@@ -920,7 +919,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenHeight = 1f)
                 this.location.set(screenX = 0.5f - size / 2)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("play")
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_play"))
                     this.tint = Color(0f, 0.5f, 0.055f, 1f)
                 })
             }
@@ -928,7 +927,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenHeight = 1f)
                 this.location.set(screenX = 0.5f - size / 2 - size - padding)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("pause")
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pause"))
                     this.tint = Color(0.75f, 0.75f, 0.25f, 1f)
                 })
             }
@@ -936,7 +935,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenHeight = 1f)
                 this.location.set(screenX = 0.5f - size / 2 + size + padding)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = AssetRegistry.get<TextureAtlas>("ui-icons").findRegion("stop")
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_stop"))
                     this.tint = Color(242 / 255f, 0.0525f, 0.0525f, 1f)
                 })
             }
