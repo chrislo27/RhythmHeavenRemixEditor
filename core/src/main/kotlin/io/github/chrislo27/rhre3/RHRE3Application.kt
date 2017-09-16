@@ -73,6 +73,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             data.setLineHeight(lineHeight * 0.6f)
             setUseIntegerPositions(true)
             data.markupEnabled = true
+            data.missingGlyph = data.getGlyph('☒')
         }
     }
 
