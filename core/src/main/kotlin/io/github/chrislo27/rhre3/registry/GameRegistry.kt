@@ -342,7 +342,7 @@ object GameRegistry : Disposable {
                             "Cannot load custom sound folder $id/ - already exists in registry")
                 }
                 game = Game(id,
-                            id,
+                            folder.nameWithoutExtension(),
                             Series.CUSTOM,
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
