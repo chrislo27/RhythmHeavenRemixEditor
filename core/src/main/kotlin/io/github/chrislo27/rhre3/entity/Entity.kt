@@ -19,7 +19,6 @@ fun List<Entity>.areAnyResponseCopyable(): Boolean {
 
 abstract class Entity(val remix: Remix) {
 
-    val tmpUpdateBoundsRect = Rectangle()
     var isSelected: Boolean = false
     val bounds: Rectangle = Rectangle()
     val lerpDifference: Rectangle = Rectangle()
@@ -76,7 +75,7 @@ abstract class Entity(val remix: Remix) {
      * Automatically calls onBoundsChange and caches the old rectangle.
      */
     inline fun updateBounds(func: () -> Unit) {
-        val old = tmpUpdateBoundsRect.set(bounds)
+        val old = Rectangle(bounds)
         func()
         onBoundsChange(old)
     }
