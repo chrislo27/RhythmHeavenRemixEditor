@@ -36,5 +36,6 @@ object RHRE3 {
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
+    lateinit var launchArguments: List<String>
 
 }

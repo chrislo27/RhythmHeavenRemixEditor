@@ -12,6 +12,8 @@ import kotlin.concurrent.thread
 object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
+        RHRE3.launchArguments = args.toList()
+
         // TODO console commands
         thread(isDaemon = true) {
             while (true) {

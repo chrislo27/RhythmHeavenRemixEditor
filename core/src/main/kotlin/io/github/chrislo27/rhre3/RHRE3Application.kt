@@ -94,6 +94,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     private val rainbowColor: Color = Color()
 
+    override val programLaunchArguments: List<String>
+        get() = RHRE3.launchArguments
+
     override fun getTitle(): String =
             "Rhythm Heaven Remix Editor $versionString"
 
