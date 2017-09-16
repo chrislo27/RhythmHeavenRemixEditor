@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.RectanglePool
 
 fun List<Entity>.areAnyResponseCopyable(): Boolean {
     return this.all { it is ModelEntity<*> && it.datamodel is ResponseModel } &&
@@ -75,9 +76,11 @@ abstract class Entity(val remix: Remix) {
      * Automatically calls onBoundsChange and caches the old rectangle.
      */
     inline fun updateBounds(func: () -> Unit) {
-        val old = Rectangle(bounds)
-        func()
-        onBoundsChange(old)
+        RectanglePool.use { rect ->
+            rect.set(bounds)
+            func()
+            onBoundsChange(rect)
+        }
     }
 
     open fun saveData(objectNode: ObjectNode) {
