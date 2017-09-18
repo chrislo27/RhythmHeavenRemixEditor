@@ -1,0 +1,92 @@
+package io.github.chrislo27.rhre3.soundsystem.gdx
+
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.soundsystem.Music
+import io.github.chrislo27.rhre3.soundsystem.Sound
+import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+
+object GdxSoundSystem : SoundSystem() {
+
+    val soundList: MutableList<GdxSoundWrapper> = mutableListOf()
+
+    override fun resume() {
+        soundList.forEach {
+            it.original.resume()
+        }
+    }
+
+    override fun pause() {
+        soundList.forEach {
+            it.original.pause()
+        }
+    }
+
+    override fun stop() {
+        soundList.forEach {
+            it.original.stop()
+        }
+    }
+
+    override fun newSound(handle: FileHandle): Sound {
+        return GdxSoundWrapper(Gdx.audio.newSound(handle)).apply {
+            soundList += this
+        }
+    }
+
+    override fun newMusic(handle: FileHandle): Music {
+        return GdxMusicWrapper(Gdx.audio.newMusic(handle))
+    }
+
+    override fun onSet() {
+        super.onSet()
+    }
+}
+
+class GdxSoundWrapper(val original: com.badlogic.gdx.audio.Sound) : Sound {
+
+    override fun play(loop: Boolean, pitch: Float, volume: Float): Long {
+        val id = original.play(volume, pitch, 0f)
+        original.setLooping(id, loop)
+        return id
+    }
+
+    override fun setPitch(id: Long, pitch: Float) {
+        original.setPitch(id, pitch)
+    }
+
+    override fun setVolume(id: Long, vol: Float) {
+        original.setVolume(id, vol)
+    }
+
+    override fun stop(id: Long) {
+        original.stop(id)
+    }
+
+    override fun dispose() {
+        GdxSoundSystem.soundList -= this
+        original.dispose()
+    }
+}
+
+class GdxMusicWrapper(val original: com.badlogic.gdx.audio.Music) : Music {
+    override fun play() {
+        original.play()
+    }
+
+    override fun stop() {
+        original.stop()
+    }
+
+    override fun getPosition(): Float {
+        return original.position
+    }
+
+    override fun setPosition(seconds: Float) {
+        original.position = seconds
+    }
+
+    override fun dispose() {
+        original.dispose()
+    }
+}

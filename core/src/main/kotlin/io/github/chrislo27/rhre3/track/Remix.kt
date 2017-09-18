@@ -21,6 +21,8 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
+import io.github.chrislo27.rhre3.soundsystem.LazySound
+import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.tempo.TempoChange
@@ -29,7 +31,6 @@ import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
-import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
@@ -360,21 +361,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 PlayState.STOPPED -> {
                     AssetRegistry.stopAllSounds()
                     music?.music?.pause()
-                    GameRegistry.data.objectList.forEach {
-                        if (it is Cue) {
-                            it.stopAllSounds()
-                        }
-                    }
+                    SoundSystem.system.stop()
                     currentSubtitles.clear()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
                     music?.music?.pause()
-                    GameRegistry.data.objectList.forEach {
-                        if (it is Cue) {
-                            it.pauseAllSounds()
-                        }
-                    }
+                    SoundSystem.system.pause()
                 }
                 PlayState.PLAYING -> {
                     lastMusicPosition = -1f
@@ -399,11 +392,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                         currentSubtitles.clear()
                     } else if (old == PlayState.PAUSED) {
-                        GameRegistry.data.objectList.forEach {
-                            if (it is Cue) {
-                                it.resumeAllSounds()
-                            }
-                        }
+                        SoundSystem.system.resume()
                     }
                     if (music != null) {
                         if (seconds >= musicStartSec) {
@@ -553,7 +542,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (metronome) {
                 val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
                 metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
-                        .sound.play(1f, if (isStartOfMeasure) 1.5f else 1.1f, 0f)
+                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f)
             }
         }
 

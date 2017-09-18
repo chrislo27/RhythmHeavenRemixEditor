@@ -1,14 +1,12 @@
 package io.github.chrislo27.rhre3.soundsystem.beads
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.StreamUtils
+import io.github.chrislo27.rhre3.soundsystem.Music
+import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
-import io.github.chrislo27.toolboks.lazysound.LazySound
-import io.github.chrislo27.toolboks.util.FastSeekingMusic
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
 import net.beadsproject.beads.core.io.JavaSoundAudioIO
@@ -27,6 +25,15 @@ object BeadsSoundSystem : SoundSystem() {
         return currentSoundID++
     }
 
+    override fun resume() {
+    }
+
+    override fun pause() {
+    }
+
+    override fun stop() {
+    }
+
     fun newAudio(handle: FileHandle): BeadsAudio {
         val music = Gdx.audio.newMusic(handle) as OpenALMusic
         val beadsAudio = BeadsAudio(music.channels, music.rate)
@@ -34,7 +41,6 @@ object BeadsSoundSystem : SoundSystem() {
 
         music.reset()
 
-        // Copied from Beads JavaSoundAudioFile source code
         sampleData = run {
             val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
@@ -52,6 +58,7 @@ object BeadsSoundSystem : SoundSystem() {
             }
             StreamUtils.closeQuietly(fileOutStream)
 
+            // Copied from Beads JavaSoundAudioFile source code
             val data = tempFile.readBytes()
             val nFrames = data.size / (2 * music.channels)
 
@@ -91,7 +98,5 @@ object BeadsSoundSystem : SoundSystem() {
 
     override fun onSet() {
         super.onSet()
-        LazySound.soundFactory = BeadsSoundSystem::newSound
-        FastSeekingMusic.musicFactory = BeadsSoundSystem::newMusic
     }
 }

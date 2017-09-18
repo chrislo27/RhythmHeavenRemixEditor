@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
-import io.github.chrislo27.rhre3.soundsystem.GdxSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.gdx.GdxSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes

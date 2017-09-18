@@ -7,8 +7,8 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
+import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.toolboks.lazysound.LazySound
 
 
 open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
@@ -54,30 +54,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         endingSoundCue?.sound?.unload()
     }
 
-    fun pauseAllSounds() {
-        if (sound.isLoaded) {
-            sound.sound.pause()
-        }
-        introSoundCue?.pauseAllSounds()
-        endingSoundCue?.pauseAllSounds()
-    }
-
-    fun resumeAllSounds() {
-        if (sound.isLoaded) {
-            sound.sound.resume()
-        }
-        introSoundCue?.resumeAllSounds()
-        endingSoundCue?.resumeAllSounds()
-    }
-
-    fun stopAllSounds() {
-        if (sound.isLoaded) {
-            sound.sound.stop()
-        }
-        introSoundCue?.stopAllSounds()
-        endingSoundCue?.stopAllSounds()
-    }
-
     fun getPitchForBaseBpm(bpm: Float, entityDuration: Float): Float {
         if (baseBpm <= 0f)
             return 1f
@@ -91,6 +67,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     }
 
     override fun dispose() {
-        sound.dispose()
+        sound.unload()
     }
 }

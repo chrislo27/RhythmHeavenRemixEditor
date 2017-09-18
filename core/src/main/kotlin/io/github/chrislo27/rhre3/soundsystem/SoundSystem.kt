@@ -1,7 +1,5 @@
 package io.github.chrislo27.rhre3.soundsystem
 
-import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
 
 
@@ -27,6 +25,12 @@ abstract class SoundSystem {
         }
 
     }
+
+    abstract fun resume()
+
+    abstract fun pause()
+
+    abstract fun stop()
 
     abstract fun newSound(handle: FileHandle): Sound
 
