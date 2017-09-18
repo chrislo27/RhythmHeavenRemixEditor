@@ -32,7 +32,7 @@ object BeadsSoundSystem : SoundSystem() {
 
         // Copied from Beads JavaSoundAudioFile source code
         sampleData = run {
-            val BUFFER_SIZE = 8192
+            val BUFFER_SIZE = 4096
             val audioBytes = ByteArray(BUFFER_SIZE)
             var sampleBufferSize = BUFFER_SIZE
             var data = ByteArray(sampleBufferSize)
@@ -59,7 +59,7 @@ object BeadsSoundSystem : SoundSystem() {
 
             System.gc()
 
-            // resize buf to proper length if necessary
+            // resize buf to proper length if necessary (trim)
             if (sampleBufferSize > totalBytesRead) {
                 sampleBufferSize = totalBytesRead
                 val newBuf = ByteArray(sampleBufferSize)
@@ -73,6 +73,7 @@ object BeadsSoundSystem : SoundSystem() {
             val sampleData = Array(music.channels) { FloatArray(nFrames) }
             val interleaved = FloatArray((music.channels * nFrames))
             AudioUtils.byteToFloat(interleaved, data, false)
+            System.gc()
             AudioUtils.deinterleave(interleaved, music.channels, nFrames, sampleData)
 
             sampleData
