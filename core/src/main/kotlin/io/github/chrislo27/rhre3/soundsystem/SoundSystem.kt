@@ -51,6 +51,11 @@ object GdxSoundSystem : SoundSystem() {
         return Gdx.audio.newMusic(handle)
     }
 
+    override fun onSet() {
+        super.onSet()
+        LazySound.soundFactory = GdxSoundSystem::newSound
+        FastSeekingMusic.musicFactory = GdxSoundSystem::newMusic
+    }
 }
 
 object BeadsSoundSystem : SoundSystem() {
@@ -64,8 +69,7 @@ object BeadsSoundSystem : SoundSystem() {
 
     override fun onSet() {
         super.onSet()
-        // TODO
-        LazySound.soundFactory
-        FastSeekingMusic.musicFactory
+        LazySound.soundFactory = BeadsSoundSystem::newSound
+        FastSeekingMusic.musicFactory = BeadsSoundSystem::newMusic
     }
 }
