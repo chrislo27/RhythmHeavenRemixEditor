@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.track
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -23,6 +25,9 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.GainedSamplePlayer
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.tempo.TempoChange
@@ -33,6 +38,7 @@ import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
+import net.beadsproject.beads.ugens.SamplePlayer
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
@@ -397,9 +403,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         if (seconds >= musicStartSec) {
                             music.music.play()
                             setMusicVolume()
-                            if (old == PlayState.STOPPED) {
-                                seekMusic()
-                            }
+                            seekMusic()
                         } else {
                             music.music.stop()
                         }
@@ -528,6 +532,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 setMusicVolume()
             }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            GainedSamplePlayer(SamplePlayer(BeadsSoundSystem.audioContext,
+                                            (music!!.music as BeadsMusic).audio.sample)).addToContext()
         }
 
         entities.forEach { entity ->
