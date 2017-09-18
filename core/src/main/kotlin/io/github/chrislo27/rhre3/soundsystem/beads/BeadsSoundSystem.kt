@@ -89,11 +89,11 @@ object BeadsSoundSystem : SoundSystem() {
     }
 
     override fun newSound(handle: FileHandle): Sound {
-        TODO()
+        return BeadsSound(newAudio(handle))
     }
 
     override fun newMusic(handle: FileHandle): Music {
-        TODO()
+        return BeadsMusic(newAudio(handle))
     }
 
     override fun onSet() {
