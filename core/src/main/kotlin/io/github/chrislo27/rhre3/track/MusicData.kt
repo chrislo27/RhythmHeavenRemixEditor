@@ -1,9 +1,8 @@
-package io.github.chrislo27.rhre3.track.music
+package io.github.chrislo27.rhre3.track
 
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.StreamUtils
-import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.FastSeekingMusic
 import java.io.InputStream
 

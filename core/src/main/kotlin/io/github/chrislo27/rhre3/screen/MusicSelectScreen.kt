@@ -10,7 +10,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.track.music.MusicData
+import io.github.chrislo27.rhre3.track.MusicData
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
