@@ -225,6 +225,11 @@ object GameRegistry : Disposable {
                                 Toolboks.LOGGER.warn("Failed to load ${it.id} in game ${it.game.id}")
                                 e.printStackTrace()
                             }
+                            try {
+                                it.sound.unload()
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
                         }
                     }.forEach {
                         it.join()
