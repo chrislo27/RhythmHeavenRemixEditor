@@ -15,6 +15,7 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
 
     override fun play() {
         player.player.start()
+//        player.addToContext()
     }
 
     override fun stop() {
