@@ -28,11 +28,13 @@ object BeadsSoundSystem : SoundSystem() {
         val beadsAudio = BeadsAudio(music.channels, music.rate)
         val sampleData: Array<FloatArray>
 
+        music.reset()
+
         // Copied from Beads JavaSoundAudioFile source code
         sampleData = run {
-            val BUFFERSIZE = 4096
-            val audioBytes = ByteArray(BUFFERSIZE)
-            var sampleBufferSize = 4096
+            val BUFFER_SIZE = 8192
+            val audioBytes = ByteArray(BUFFER_SIZE)
+            var sampleBufferSize = BUFFER_SIZE
             var data = ByteArray(sampleBufferSize)
             var bytesRead: Int = 0
             var totalBytesRead = 0
@@ -42,7 +44,8 @@ object BeadsSoundSystem : SoundSystem() {
                 return bytesRead
             }
 
-            while (readAndSetBytesRead() != -1) {
+            // this is just an expandable byte array, more memory concious than ByteArrayOutputStream
+            while (readAndSetBytesRead() > 0) {
                 // resize buf if necessary
                 if (bytesRead > sampleBufferSize - totalBytesRead) {
                     sampleBufferSize = Math.max(sampleBufferSize * 2, sampleBufferSize + bytesRead)
@@ -54,19 +57,22 @@ object BeadsSoundSystem : SoundSystem() {
                 totalBytesRead += bytesRead
             }
 
+            System.gc()
+
             // resize buf to proper length if necessary
             if (sampleBufferSize > totalBytesRead) {
                 sampleBufferSize = totalBytesRead
                 val newBuf = ByteArray(sampleBufferSize)
                 System.arraycopy(data, 0, newBuf, 0, sampleBufferSize)
                 data = newBuf
+                System.gc()
             }
             val nFrames = sampleBufferSize / (2 * music.channels)
 
             // Copy and de-interleave entire data
             val sampleData = Array(music.channels) { FloatArray(nFrames) }
             val interleaved = FloatArray((music.channels * nFrames))
-            AudioUtils.byteToFloat(interleaved, data, true)
+            AudioUtils.byteToFloat(interleaved, data, false)
             AudioUtils.deinterleave(interleaved, music.channels, nFrames, sampleData)
 
             sampleData
@@ -75,7 +81,7 @@ object BeadsSoundSystem : SoundSystem() {
         music.dispose()
 
         val sample = beadsAudio.sample
-        sample.resizeWithZeros(sampleData[0].size.toLong())
+        sample.resize(sampleData[0].size.toLong())
         sample.putFrames(0, sampleData)
 
         return beadsAudio
