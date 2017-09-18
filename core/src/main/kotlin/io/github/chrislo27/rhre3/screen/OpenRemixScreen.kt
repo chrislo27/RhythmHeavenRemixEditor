@@ -150,6 +150,7 @@ class OpenRemixScreen(main: RHRE3Application)
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
                     try {
                         remix = null
+                        System.gc()
                         val zipFile = ZipFile(file)
                         val isRHRE2 = zipFile.getEntry("remix.json") == null
 
@@ -259,6 +260,7 @@ class OpenRemixScreen(main: RHRE3Application)
             alsoDo()
             editor.remix.recomputeCachedData()
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
+            System.gc()
         }
     }
 }
