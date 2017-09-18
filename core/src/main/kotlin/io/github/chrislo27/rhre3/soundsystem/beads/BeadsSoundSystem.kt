@@ -32,7 +32,7 @@ object BeadsSoundSystem : SoundSystem() {
 
         // Copied from Beads JavaSoundAudioFile source code
         sampleData = run {
-            val BUFFER_SIZE = 8196
+            val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
             var sampleBufferSize = BUFFER_SIZE
             var data = ByteArray(sampleBufferSize)
@@ -41,7 +41,6 @@ object BeadsSoundSystem : SoundSystem() {
 
             fun readAndSetBytesRead(): Int {
                 bytesRead = music.read(audioBytes)
-                println(bytesRead)
                 return bytesRead
             }
 
