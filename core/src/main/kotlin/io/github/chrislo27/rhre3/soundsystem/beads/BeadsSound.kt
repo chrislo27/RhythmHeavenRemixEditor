@@ -2,16 +2,37 @@ package io.github.chrislo27.rhre3.soundsystem.beads
 
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import net.beadsproject.beads.core.Bead
+import net.beadsproject.beads.ugens.Envelope
+import net.beadsproject.beads.ugens.Gain
 import net.beadsproject.beads.ugens.SamplePlayer
+import java.util.concurrent.ConcurrentHashMap
 
 
 class BeadsSound(val audio: BeadsAudio) : Sound {
 
-    private val players: MutableMap<Long, SamplePlayer> = mutableMapOf()
+    class GainedSamplePlayer(val player: SamplePlayer) {
 
-    private fun obtainPlayer(): Pair<Long, SamplePlayer> {
+        val gain = Gain(BeadsSoundSystem.audioContext, 1, 1f)
+        val pitch = Envelope(BeadsSoundSystem.audioContext, 1f)
+
+        init {
+            gain.addInput(player)
+//            pitch.addInput(gain)
+
+            player.setPitch(pitch)
+        }
+
+        fun addToContext() {
+            BeadsSoundSystem.audioContext.out.addInput(player)
+        }
+
+    }
+
+    val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
+
+    private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val result = id to SamplePlayer(BeadsSoundSystem.audioContext, audio.sample).apply {
+        val result = id to GainedSamplePlayer(SamplePlayer(BeadsSoundSystem.audioContext, audio.sample).apply {
             killOnEnd = true
             killListener = object : Bead() {
                 override fun messageReceived(message: Bead?) {
@@ -20,7 +41,7 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
                     }
                 }
             }
-        }
+        })
 
         players.put(result.first, result.second)
 
@@ -29,32 +50,35 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
 
     override fun play(loop: Boolean, pitch: Float, volume: Float): Long {
         val result = obtainPlayer()
-        val player = result.second
+        val player = result.second.player
 
         player.loopType = if (loop) SamplePlayer.LoopType.LOOP_FORWARDS else SamplePlayer.LoopType.NO_LOOP_FORWARDS
 
-        // TODO play
+        result.second.gain.gain = volume
+        result.second.pitch.value = pitch
+        result.second.addToContext()
 
         return result.first
     }
 
     override fun setPitch(id: Long, pitch: Float) {
-        // TODO
+        val player = players[id] ?: return
+        player.pitch.value = pitch
     }
 
     override fun setVolume(id: Long, vol: Float) {
-        // TODO set gain
+        val player = players[id] ?: return
+        player.gain.gain = vol
     }
 
     override fun stop(id: Long) {
         val player = players[id] ?: return
         players.remove(id)
 
-        player.kill()
+        player.player.kill()
     }
 
     override fun dispose() {
         players.forEach { stop(it.key) }
-        players.clear()
     }
 }

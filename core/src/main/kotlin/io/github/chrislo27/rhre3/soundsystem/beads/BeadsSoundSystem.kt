@@ -13,6 +13,7 @@ import net.beadsproject.beads.core.io.JavaSoundAudioIO
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.concurrent.CopyOnWriteArrayList
 
 object BeadsSoundSystem : SoundSystem() {
 
@@ -21,17 +22,23 @@ object BeadsSoundSystem : SoundSystem() {
     var currentSoundID: Long = 0
         private set
 
+    private val sounds: MutableList<BeadsSound> = CopyOnWriteArrayList()
+
     fun obtainSoundID(): Long {
         return currentSoundID++
     }
 
     override fun resume() {
+        audioContext.out.pause(false)
     }
 
     override fun pause() {
+        audioContext.out.pause(true)
     }
 
     override fun stop() {
+        audioContext.out.pause(true)
+        audioContext.out.clearInputConnections()
     }
 
     fun newAudio(handle: FileHandle): BeadsAudio {
@@ -89,7 +96,9 @@ object BeadsSoundSystem : SoundSystem() {
     }
 
     override fun newSound(handle: FileHandle): Sound {
-        return BeadsSound(newAudio(handle))
+        return BeadsSound(newAudio(handle)).apply {
+            sounds += this
+        }
     }
 
     override fun newMusic(handle: FileHandle): Music {
@@ -98,5 +107,8 @@ object BeadsSoundSystem : SoundSystem() {
 
     override fun onSet() {
         super.onSet()
+
+        // FIXME
+        audioContext.start()
     }
 }

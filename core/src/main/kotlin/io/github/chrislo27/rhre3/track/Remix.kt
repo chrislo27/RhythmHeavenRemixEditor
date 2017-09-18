@@ -391,9 +391,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
 
                         currentSubtitles.clear()
-                    } else if (old == PlayState.PAUSED) {
-                        SoundSystem.system.resume()
                     }
+                    SoundSystem.system.resume()
                     if (music != null) {
                         if (seconds >= musicStartSec) {
                             music.music.play()
