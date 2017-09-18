@@ -9,8 +9,18 @@ interface Music : Disposable {
 
     fun stop()
 
+    fun pause()
+
     fun getPosition(): Float
 
     fun setPosition(seconds: Float)
+
+    fun getVolume(): Float
+
+    fun setVolume(vol: Float)
+
+    fun update(delta: Float)
+
+    fun isPlaying(): Boolean
 
 }

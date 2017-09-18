@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.toolboks.util.FastSeekingMusic
 
 object GdxSoundSystem : SoundSystem() {
 
@@ -35,7 +36,7 @@ object GdxSoundSystem : SoundSystem() {
     }
 
     override fun newMusic(handle: FileHandle): Music {
-        return GdxMusicWrapper(Gdx.audio.newMusic(handle))
+        return GdxMusicWrapper(handle)
     }
 
     override fun onSet() {
@@ -69,24 +70,47 @@ class GdxSoundWrapper(val original: com.badlogic.gdx.audio.Sound) : Sound {
     }
 }
 
-class GdxMusicWrapper(val original: com.badlogic.gdx.audio.Music) : Music {
+class GdxMusicWrapper(handle: FileHandle) : Music {
+
+    val fastSeeking = FastSeekingMusic(handle)
+
+    override fun update(delta: Float) {
+        fastSeeking.update(delta)
+    }
+
+    override fun isPlaying(): Boolean {
+        return fastSeeking.isPlaying
+    }
+
     override fun play() {
-        original.play()
+        fastSeeking.play()
+    }
+
+    override fun pause() {
+        fastSeeking.pause()
     }
 
     override fun stop() {
-        original.stop()
+        fastSeeking.stop()
     }
 
     override fun getPosition(): Float {
-        return original.position
+        return fastSeeking.position
     }
 
     override fun setPosition(seconds: Float) {
-        original.position = seconds
+        fastSeeking.position = seconds
+    }
+
+    override fun getVolume(): Float {
+        return fastSeeking.volume
+    }
+
+    override fun setVolume(vol: Float) {
+        fastSeeking.volume = vol
     }
 
     override fun dispose() {
-        original.dispose()
+        fastSeeking.dispose()
     }
 }

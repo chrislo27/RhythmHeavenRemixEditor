@@ -411,15 +411,15 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     private fun setMusicVolume() {
         val music = music ?: return
         val shouldBe = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
-        if (music.music.volume != shouldBe) {
-            music.music.volume = shouldBe
+        if (music.music.getVolume() != shouldBe) {
+            music.music.setVolume(shouldBe)
         }
     }
 
     private fun seekMusic() {
         val music = music ?: return
         musicSeeking = true
-        music.music.position = seconds - musicStartSec
+        music.music.setPosition(seconds - musicStartSec)
         musicSeeking = false
     }
 
@@ -513,13 +513,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
                 val ended = music.music.play()
                 scheduleMusicPlaying = false
-                if (ended) {
-                    music.music.pause()
-                }
+//                if (ended) {
+//                    music.music.pause()
+//                }
             }
-            if (music.music.isPlaying) {
+            if (music.music.isPlaying()) {
                 val oldPosition = lastMusicPosition
-                val position = music.music.position
+                val position = music.music.getPosition()
                 lastMusicPosition = position
 
                 if (oldPosition != position) {
