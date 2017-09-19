@@ -15,12 +15,13 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
     }
 
     override fun play() {
+        player.addToContext()
         player.player.start()
     }
 
     override fun stop() {
         player.player.pause(true)
-        player.player.reset()
+//        player.player.reset()
     }
 
     override fun pause() {
@@ -44,8 +45,8 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
     }
 
     override fun dispose() {
-        player.player.pause(true)
-        player.player.kill()
+//        player.player.pause(true)
+//        player.player.kill()
     }
 
     override fun isPlaying(): Boolean {

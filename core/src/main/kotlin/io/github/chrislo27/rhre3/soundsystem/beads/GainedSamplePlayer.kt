@@ -19,7 +19,11 @@ class GainedSamplePlayer(val player: SamplePlayer) {
     }
 
     fun addToContext() {
-        BeadsSoundSystem.audioContext.out.addInput(gain)
+        val toAdd = gain
+        val context = BeadsSoundSystem.audioContext
+        if (toAdd !in context.out.connectedInputs) {
+            context.out.addInput(toAdd)
+        }
     }
 
 }
