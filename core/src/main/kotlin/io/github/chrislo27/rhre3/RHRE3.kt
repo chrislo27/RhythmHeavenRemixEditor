@@ -36,6 +36,7 @@ object RHRE3 {
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
+    var defaultSoundSystem: String = "gdx"
     lateinit var launchArguments: List<String>
 
 }

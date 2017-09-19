@@ -53,6 +53,9 @@ object DesktopLauncher {
                     RHRE3.forceGitCheck = "--force-git-check" in args
                     RHRE3.verifyRegistry = "--verify-registry" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
+                    if ("--beads-sound-system" in args) {
+                        RHRE3.defaultSoundSystem = "beads"
+                    }
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
 

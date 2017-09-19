@@ -127,7 +127,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         preferences = Gdx.app.getPreferences("RHRE3")
 
         // load correct sound system
-        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, "gdx").toLowerCase(
+        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
                 Locale.ROOT)
         SoundSystem
                 .setSoundSystem(when (soundSystemPref) {
