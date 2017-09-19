@@ -174,8 +174,12 @@ class OpenRemixScreen(main: RHRE3Application)
                         }
 
                         loadButton.alsoDo = {
+                            val otherCoroutine = launch(CommonPool) {
+                                result.remix.music
+                            }
                             runBlocking {
                                 coroutine.join()
+                                otherCoroutine.join()
                             }
 
                             if (!result.isAutosave) {
@@ -260,7 +264,9 @@ class OpenRemixScreen(main: RHRE3Application)
             alsoDo()
             editor.remix.recomputeCachedData()
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
-            System.gc()
+            Gdx.app.postRunnable {
+                System.gc()
+            }
         }
     }
 }

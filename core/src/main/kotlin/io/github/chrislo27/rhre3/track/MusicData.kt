@@ -11,7 +11,7 @@ import java.io.InputStream
 class MusicData(val handle: FileHandle, val remix: Remix)
     : Disposable {
 
-    val music: Music = SoundSystem.system.newMusic(handle)
+    val music: Music by lazy { SoundSystem.system.newMusic(handle) }
     private val reader: InputStream = handle.read()
 
     override fun dispose() {
