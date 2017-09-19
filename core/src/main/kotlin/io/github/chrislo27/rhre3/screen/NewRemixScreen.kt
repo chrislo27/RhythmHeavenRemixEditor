@@ -55,6 +55,9 @@ class NewRemixScreen(main: RHRE3Application)
                         super.onLeftClick(xPercent, yPercent)
                         editor.remix = editor.createRemix()
                         this@NewRemixScreen.stage.onBackButtonClick()
+                        Gdx.app.postRunnable {
+                            System.gc()
+                        }
                     }
                 }.apply {
                     this.location.set(screenX = 0.25f, screenWidth = 0.5f)

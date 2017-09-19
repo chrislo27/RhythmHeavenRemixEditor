@@ -10,6 +10,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -83,6 +85,12 @@ class OpenRemixScreen(main: RHRE3Application)
             loadButton.visible = field != null
         }
 
+    private fun List<Entity>.applyFilter(): List<ModelEntity<*>> {
+        return filter { entity -> entity is CueEntity || entity is MultipartEntity<*> }
+                .filterIsInstance<ModelEntity<*>>()
+                .distinctBy { it.datamodel.id }
+    }
+
     init {
         stage as GenericStage
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
@@ -90,6 +98,13 @@ class OpenRemixScreen(main: RHRE3Application)
         stage.backButton.visible = true
         stage.onBackButtonClick = {
             if (!isChooserOpen) {
+                editor.remix.entities.applyFilter().forEach { entity ->
+                    if (entity is CueEntity) {
+                        entity.datamodel.loadSounds()
+                    } else if (entity is MultipartEntity<*>) {
+                        entity.loadInternalSounds()
+                    }
+                }
                 main.screen = ScreenRegistry.getNonNull("editor")
             }
         }
@@ -159,12 +174,22 @@ class OpenRemixScreen(main: RHRE3Application)
                         else
                             Remix.unpack(editor.createRemix(), zipFile)
 
+                        val toLoad = result.remix.entities.applyFilter()
+                        val toUnload = editor.remix.entities.applyFilter().filter { it !in toLoad }
+
                         val coroutine: Job = launch(CommonPool) {
-                            result.remix.entities.forEach { entity ->
+                            toLoad.forEach { entity ->
                                 if (entity is CueEntity) {
                                     entity.datamodel.loadSounds()
                                 } else if (entity is MultipartEntity<*>) {
                                     entity.loadInternalSounds()
+                                }
+                            }
+                            toUnload.forEach { entity ->
+                                if (entity is CueEntity) {
+                                    entity.datamodel.unloadSounds()
+                                } else if (entity is MultipartEntity<*>) {
+                                    entity.unloadInternalSounds()
                                 }
                             }
                         }
@@ -174,12 +199,8 @@ class OpenRemixScreen(main: RHRE3Application)
                         }
 
                         loadButton.alsoDo = {
-                            val otherCoroutine = launch(CommonPool) {
-                                result.remix.music
-                            }
                             runBlocking {
                                 coroutine.join()
-                                otherCoroutine.join()
                             }
 
                             if (!result.isAutosave) {
