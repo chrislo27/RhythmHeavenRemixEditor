@@ -8,8 +8,6 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -29,7 +27,7 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import net.beadsproject.beads.core.Bead
-import net.beadsproject.beads.core.UGen
+import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
 import net.beadsproject.beads.ugens.RecordToFile
 import java.io.File
@@ -149,12 +147,16 @@ class ExportRemixScreen(main: RHRE3Application)
         recorder.addInput(context.out)
         context.out.addDependent(recorder)
 
+        val oldStart = remix.playbackStart
+
         fun finalize() {
             recorder.kill()
+            context.stop()
             context.out.clearInputConnections()
             context.out.clearDependents()
             context.out.gain = 1f
             context.start()
+            remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
             isExporting = false
         }
@@ -169,6 +171,7 @@ class ExportRemixScreen(main: RHRE3Application)
             fun Float.beatToMsRelative(): Double = (remix.tempos.beatsToSeconds(this) * 1000.0) - startMs
 
             // reset things
+            remix.playbackStart = remix.tempos.secondsToBeats(startMs.toFloat() / 1000f)
             remix.playState = PlayState.PLAYING
             remix.playState = PlayState.STOPPED
 
@@ -189,27 +192,14 @@ class ExportRemixScreen(main: RHRE3Application)
             }
 
             // SFX
-            fun MultipartEntity<*>.recursiveGetCues(): List<CueEntity> {
-                if (this.getInternalEntities().isEmpty())
-                    return listOf()
-
-                return (getInternalEntities().filterIsInstance<CueEntity>()
-                        + getInternalEntities().filterIsInstance<MultipartEntity<*>>().flatMap(
-                        MultipartEntity<*>::recursiveGetCues))
-            }
-
-            val allCueEntities: List<CueEntity> = (remix.entities.filterIsInstance<CueEntity>() + remix.entities.filterIsInstance<MultipartEntity<*>>().flatMap(
-                    MultipartEntity<*>::recursiveGetCues))
-
-            // TODO
-            // Problems:
-            // limiting of sound range
-
-            context.out.addDependent(object : UGen(context, 0, 0) {
-                override fun calculateBuffer() {
+            context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
+                addMessageListener(addBead {
                     remix.seconds = (context.time + startMs).toFloat() / 1000.0f
-                    allCueEntities.forEach(remix::entityUpdate)
-                }
+                    remix.entities.forEach(remix::entityUpdate)
+
+                    val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100)
+                    mainLabel.text = Localization["screen.export.progress", "$percent"]
+                })
             })
 
             // scale gain
