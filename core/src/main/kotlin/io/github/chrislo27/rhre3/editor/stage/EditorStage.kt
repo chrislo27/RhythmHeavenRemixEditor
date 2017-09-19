@@ -981,26 +981,39 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_save_button"))
                         })
                     }
+            buttonBarStage.elements +=
+                    object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage) {
+                        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                            super.onLeftClick(xPercent, yPercent)
+                            main.screen = ScreenRegistry.getNonNull("exportRemix")
+                        }
+                    }.apply {
+                        this.location.set(screenWidth = size,
+                                          screenX = size * 3 + padding * 3)
+                        this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_save_button"))
+                        })
+                    }
             buttonBarStage.elements += UndoRedoButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size,
-                                  screenX = size * 3 + padding * 3)
-            }
-            buttonBarStage.elements += UndoRedoButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = size * 4 + padding * 4)
             }
-            buttonBarStage.elements += MusicButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+            buttonBarStage.elements += UndoRedoButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = size * 5 + padding * 5)
+            }
+            buttonBarStage.elements += MusicButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 6 + padding * 6)
             }
 
             buttonBarStage.elements += MetronomeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = size * 6 + padding * 6)
+                                  screenX = size * 7 + padding * 7)
             }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
-                this.location.set(screenX = size * 7 + padding * 7)
+                this.location.set(screenX = size * 8 + padding * 8)
                 this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
             }
 

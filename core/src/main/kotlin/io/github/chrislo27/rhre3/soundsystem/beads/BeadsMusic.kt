@@ -21,7 +21,7 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
 
     override fun stop() {
         player.player.pause(true)
-//        player.player.reset()
+        player.player.reset()
     }
 
     override fun pause() {
