@@ -65,10 +65,10 @@ object BeadsSoundSystem : SoundSystem() {
             }
             StreamUtils.closeQuietly(fileOutStream)
 
-            // Copied from Beads JavaSoundAudioFile source code
             val data = tempFile.readBytes()
             val nFrames = data.size / (2 * music.channels)
 
+            // Copied from Beads JavaSoundAudioFile source code
             // Copy and de-interleave entire data
             val sampleData = Array(music.channels) { FloatArray(nFrames) }
             val interleaved = FloatArray((music.channels * nFrames))
