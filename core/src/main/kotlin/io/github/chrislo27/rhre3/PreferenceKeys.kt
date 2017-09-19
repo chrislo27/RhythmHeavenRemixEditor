@@ -16,6 +16,7 @@ object PreferenceKeys {
     const val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"
     const val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     const val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
+    const val SETTINGS_SOUND_SYSTEM = "settings_soundSystem"
 
     const val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     const val FILE_CHOOSER_SAVE = "fileChooser_save"
