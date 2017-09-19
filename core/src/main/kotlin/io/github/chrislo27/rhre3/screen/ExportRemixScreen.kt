@@ -153,6 +153,7 @@ class ExportRemixScreen(main: RHRE3Application)
             recorder.kill()
             context.out.clearInputConnections()
             context.out.clearDependents()
+            context.out.gain = 1f
             context.start()
             remix.playState = PlayState.STOPPED
             isExporting = false
@@ -202,8 +203,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
             // TODO
             // Problems:
-            // entity updates are slow
-            // entities are offsync
+            // limiting of sound range
 
             context.out.addDependent(object : UGen(context, 0, 0) {
                 override fun calculateBuffer() {
@@ -211,6 +211,9 @@ class ExportRemixScreen(main: RHRE3Application)
                     allCueEntities.forEach(remix::entityUpdate)
                 }
             })
+
+            // scale gain
+            context.out.gain = 0.5f
 
             // run!
             context.out.start()
