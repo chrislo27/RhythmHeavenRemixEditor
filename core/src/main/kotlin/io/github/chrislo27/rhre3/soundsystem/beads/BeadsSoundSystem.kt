@@ -3,12 +3,16 @@ package io.github.chrislo27.rhre3.soundsystem.beads
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
 import net.beadsproject.beads.core.io.JavaSoundAudioIO
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.concurrent.CopyOnWriteArrayList
 
 object BeadsSoundSystem : SoundSystem() {
@@ -46,18 +50,23 @@ object BeadsSoundSystem : SoundSystem() {
         run {
             val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
+            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}", "tmp").apply {
+                deleteOnExit()
+            }
+            val fileOutStream = FileOutputStream(tempFile)
             val sample = beadsAudio.sample
-            var length = 0L
 
             while (true) {
-                val len = music.read(audioBytes)
-                if (len <= 0)
+                val length = music.read(audioBytes)
+                if (length <= 0)
                     break
 
-                length += len
+                fileOutStream.write(audioBytes, 0, length)
             }
-            music.reset()
+            StreamUtils.closeQuietly(fileOutStream)
 
+            val bufStream = tempFile.inputStream()
+            val length = tempFile.length()
             if (length >= Int.MAX_VALUE)
                 throw OutOfMemoryError("File too big")
 
@@ -68,7 +77,7 @@ object BeadsSoundSystem : SoundSystem() {
 
             var currentFrame = 0
             while (true) {
-                val len = music.read(audioBytes)
+                val len = bufStream.read(audioBytes)
                 if (len <= 0)
                     break
 
@@ -80,6 +89,13 @@ object BeadsSoundSystem : SoundSystem() {
                 sample.putFrames(currentFrame, sampleData, 0, framesOfDataRead)
 
                 currentFrame += framesOfDataRead
+            }
+            StreamUtils.closeQuietly(bufStream)
+
+            try {
+                tempFile.delete()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
 
