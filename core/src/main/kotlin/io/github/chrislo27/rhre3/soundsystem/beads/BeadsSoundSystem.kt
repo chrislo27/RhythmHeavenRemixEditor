@@ -51,7 +51,7 @@ object BeadsSoundSystem : SoundSystem() {
         run {
             val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
-            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}", "tmp").apply {
+            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}", ".tmp").apply {
                 deleteOnExit()
             }
             val fileOutStream = FileOutputStream(tempFile)
@@ -74,7 +74,7 @@ object BeadsSoundSystem : SoundSystem() {
             val nFrames = length / (2 * music.channels)
             sample.resize(nFrames)
             val interleaved = FloatArray(music.channels * (BUFFER_SIZE / (2 * music.channels)))
-            val sampleData = Array(music.channels) { FloatArray(interleaved.size) }
+            val sampleData = Array(music.channels) { FloatArray(interleaved.size / music.channels) }
 
             var currentFrame = 0
             while (true) {

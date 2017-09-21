@@ -235,7 +235,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
                         export(correctFile)
 
-                        mainLabel.text = Localization["screen.export.success", correctFile.length() / (1024)]
+                        mainLabel.text = Localization["screen.export.success"]
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         updateLabels(t)

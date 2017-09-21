@@ -7,7 +7,7 @@ import net.beadsproject.beads.ugens.SamplePlayer
 class GainedSamplePlayer(val player: SamplePlayer) {
 
     val gain = Gain(
-            BeadsSoundSystem.audioContext, 1, 1f)
+            BeadsSoundSystem.audioContext, player.outs, 1f)
     val pitch = Envelope(
             BeadsSoundSystem.audioContext, 1f)
 
