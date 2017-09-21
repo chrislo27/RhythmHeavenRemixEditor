@@ -1,12 +1,15 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.gdx.GdxSoundSystem
 
 
 abstract class SoundSystem {
 
     companion object {
 
+        val allSystems: List<SoundSystem> = listOf(GdxSoundSystem, BeadsSoundSystem)
         var errorOnDuplicateSystemSet = true
 
         lateinit var system: SoundSystem
@@ -25,6 +28,8 @@ abstract class SoundSystem {
         }
 
     }
+
+    abstract val id: String
 
     abstract fun resume()
 

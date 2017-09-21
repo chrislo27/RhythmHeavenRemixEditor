@@ -131,8 +131,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 Locale.ROOT)
         SoundSystem
                 .setSoundSystem(when (soundSystemPref) {
-                                    "beads" -> BeadsSoundSystem
-                                    "gdx" -> GdxSoundSystem
+                                    BeadsSoundSystem.id -> BeadsSoundSystem
+                                    GdxSoundSystem.id -> GdxSoundSystem
                                     else -> GdxSoundSystem
                                 })
         Toolboks.LOGGER.info("Set sound system (pref: $soundSystemPref) to ${SoundSystem.system::class.java.simpleName}")
@@ -158,6 +158,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "exportRemix" to ExportRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "credits" to CreditsScreen(this)
+                ScreenRegistry += "soundSystem" to SoundSystemScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")

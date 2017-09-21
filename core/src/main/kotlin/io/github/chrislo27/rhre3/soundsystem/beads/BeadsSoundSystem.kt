@@ -17,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object BeadsSoundSystem : SoundSystem() {
 
+    override val id: String = "beads"
     val audioContext: AudioContext = AudioContext(JavaSoundAudioIO())
     @Volatile
     var currentSoundID: Long = 0

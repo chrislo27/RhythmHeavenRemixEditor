@@ -9,6 +9,7 @@ import io.github.chrislo27.toolboks.util.FastSeekingMusic
 
 object GdxSoundSystem : SoundSystem() {
 
+    override val id: String = "gdx"
     val soundList: MutableList<GdxSoundWrapper> = mutableListOf()
 
     override fun resume() {
