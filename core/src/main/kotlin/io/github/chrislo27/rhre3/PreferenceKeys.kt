@@ -21,5 +21,6 @@ object PreferenceKeys {
     const val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     const val FILE_CHOOSER_SAVE = "fileChooser_save"
     const val FILE_CHOOSER_LOAD = "fileChooser_load"
+    const val FILE_CHOOSER_EXPORT = "fileChooser_export"
 
 }

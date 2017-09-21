@@ -55,7 +55,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private val mainLabel: TextLabel<ExportRemixScreen>
 
     private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE)
+        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
                 ?: getDefaultDirectory()
         val key = "screen.export.fileFilter"
         val extensions = arrayOf("*.wav")
@@ -226,7 +226,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE, fileChooser.initialDirectory)
+                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
                     try {
                         val correctFile = if (file.extension != "wav")
                             file.parentFile.resolve("${file.name}.wav")
@@ -235,7 +235,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
                         export(correctFile)
 
-                        mainLabel.text = Localization["screen.export.success"]
+                        mainLabel.text = Localization["screen.export.success", correctFile.length() / (1024)]
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         updateLabels(t)
