@@ -29,12 +29,13 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         return result
     }
 
-    override fun play(loop: Boolean, pitch: Float, volume: Float): Long {
+    override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float): Long {
         val result = obtainPlayer()
         val player = result.second.player
 
         player.loopType = if (loop) SamplePlayer.LoopType.LOOP_FORWARDS else SamplePlayer.LoopType.NO_LOOP_FORWARDS
 
+        result.second.player.rateUGen.value = rate
         result.second.gain.gain = volume
         result.second.pitch.value = pitch
         result.second.addToContext()

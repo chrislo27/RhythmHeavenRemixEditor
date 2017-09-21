@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Disposable
 
 interface Sound : Disposable {
 
-    fun play(loop: Boolean = false, pitch: Float = 1f, volume: Float = 1f): Long
+    fun play(loop: Boolean = false, pitch: Float = 1f, rate: Float = 1f, volume: Float = 1f): Long
 
     fun setPitch(id: Long, pitch: Float)
 

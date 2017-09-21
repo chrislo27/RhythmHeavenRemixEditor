@@ -13,7 +13,6 @@ class GainedSamplePlayer(val player: SamplePlayer) {
 
     init {
         gain.addInput(player)
-//            pitch.addInput(gain)
 
         player.setPitch(pitch)
     }

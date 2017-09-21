@@ -47,8 +47,8 @@ object GdxSoundSystem : SoundSystem() {
 
 class GdxSoundWrapper(val original: com.badlogic.gdx.audio.Sound) : Sound {
 
-    override fun play(loop: Boolean, pitch: Float, volume: Float): Long {
-        val id = original.play(volume, pitch, 0f)
+    override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float): Long {
+        val id = original.play(volume, pitch * rate, 0f)
         original.setLooping(id, loop)
         return id
     }
