@@ -9,15 +9,16 @@ library. It also supports non-realtime operation and exporting to files.
 
 Below is a table of what features are in each sound system. Choose wisely!
 
-| System | Memory usage | Supports exporting | Instant music seeking |
-|--------|--------------|--------------------|-----------------------|
-| libGDX | Minimal | **No** | **No** |
-| Beads | *Very high* | **Yes** | **Yes** |
+| System | Memory usage | Supported in hardware | Supports exporting | Instant music seeking |
+|--------|--------------|--------------------|-----------------------|-----------------------|
+| libGDX | Minimal | **Yes** | **No** | **No** |
+| Beads | *Very high* | **No** | **Yes** | **Yes** |
 
 As you can see, the Beads sound system requires a *lot* of memory.<br>
 If you need to increase the memory allocated to the program (assuming
 you do have the memory to spare for this), you can increase it using
-a Java runtime argument.
+a Java runtime argument. It also processes all the sound on the CPU
+and not your sound card, so it also may stutter.
 
 ```
 java -Xmx256M -jar RHRE3.jar
