@@ -367,6 +367,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
                     }
                     currentSubtitles.clear()
+                    currentShakeEntities.clear()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -399,6 +400,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
 
                         currentSubtitles.clear()
+                        currentShakeEntities.clear()
                     } else if (old == PlayState.PAUSED) {
                         GameRegistry.data.objectList.forEach {
                             if (it is Cue) {
