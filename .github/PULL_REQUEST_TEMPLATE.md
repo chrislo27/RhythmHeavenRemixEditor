@@ -1,16 +1,13 @@
 ### Prerequisites
-* [ ] I have read and understood the [contribution guidelines](CONTRIBUTING.md)
-* [ ] This pull request follows the code style of the project
-* [ ] I have tested this feature thoroughly WITH THE USE of the load-all-sounds starter
-  * [Screenshot of cues in the editor in force load mode]()
-* [ ] This pull request is merging into **`dev`**
-* [ ] I have filled out this pull request template knowing if I fail to complete it the pull request will immediately become invalid and will be closed indefinitely
+Mark these off with an X in the square brackets.
 
-**Issues Fixed:** [Any issues fixed by this pull request]
+* [ ] This is merging into the `dev` branch
+* [ ] I have thoroughly tested this feature
+* [ ] I have aligned to the code standards
+* [ ] I agree that permission to use these changes will be irreversibly granted to the owner of this repository
 
-### Changes Proposed in this Pull Request
-* [Change 1]
-* [Change 2]
+### Description
+(describe this pull request)
 
 
 
