@@ -363,6 +363,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     music?.music?.pause()
                     SoundSystem.system.stop()
                     currentSubtitles.clear()
+                    currentShakeEntities.clear()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
@@ -391,6 +392,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         }
 
                         currentSubtitles.clear()
+                        currentShakeEntities.clear()
                     }
                     SoundSystem.system.resume()
                     if (music != null) {
