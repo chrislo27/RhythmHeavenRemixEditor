@@ -14,11 +14,41 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.concurrent.CopyOnWriteArrayList
+import javax.sound.sampled.AudioFormat
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.DataLine
+import javax.sound.sampled.SourceDataLine
 
 object BeadsSoundSystem : SoundSystem() {
 
     override val id: String = "beads"
-    val audioContext: AudioContext = AudioContext(JavaSoundAudioIO())
+    val audioContext: AudioContext = AudioContext(JavaSoundAudioIO().apply {
+        val index = AudioSystem.getMixerInfo().toList().indexOfFirst { !it.name.startsWith("Port ") || it.name.contains("Primary Sound Driver") }
+        if (index != -1) {
+            selectMixer(index)
+        } else {
+            val ioAudioFormat = context.audioFormat
+            val audioFormat = AudioFormat(ioAudioFormat.sampleRate, ioAudioFormat.bitDepth, ioAudioFormat.outputs,
+                                          ioAudioFormat.signed, ioAudioFormat.bigEndian)
+            val info = DataLine.Info(SourceDataLine::class.java,
+                                     audioFormat)
+
+            val otherIndex = AudioSystem.getMixerInfo().toList().indexOfFirst {
+                val mixer = AudioSystem.getMixer(it)
+                try {
+                    mixer.getLine(info)
+                    true
+                } catch (e: Exception) {
+                    false
+                }
+            }
+
+            if (otherIndex != -1) {
+                selectMixer(otherIndex)
+            } else {
+            }
+        }
+    })
     @Volatile
     var currentSoundID: Long = 0
         private set
