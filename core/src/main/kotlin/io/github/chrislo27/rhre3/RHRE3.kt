@@ -8,7 +8,7 @@ import io.github.chrislo27.toolboks.version.Version
 object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 2, 1, "DEVELOPMENT")
+    val VERSION: Version = Version(3, 2, 1, "")
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
@@ -27,7 +27,7 @@ object RHRE3 {
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
     const val DEV_DATABASE_BRANCH: String = "dev"
     const val MASTER_DATABASE_BRANCH: String = "master"
-    const val DATABASE_BRANCH: String = DEV_DATABASE_BRANCH
+    const val DATABASE_BRANCH: String = MASTER_DATABASE_BRANCH
     const val DATABASE_CURRENT_VERSION: String = "https://raw.githubusercontent.com/chrislo27/RHRE-database/$DATABASE_BRANCH/current.json"
     const val DATABASE_RELEASES = "https://github.com/chrislo27/RHRE-database/releases"
     const val RELEASE_API_URL = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest"
