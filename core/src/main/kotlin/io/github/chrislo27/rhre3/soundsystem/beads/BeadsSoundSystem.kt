@@ -149,7 +149,6 @@ object BeadsSoundSystem : SoundSystem() {
     override fun onSet() {
         super.onSet()
 
-        // FIXME
         audioContext.start()
     }
 }
