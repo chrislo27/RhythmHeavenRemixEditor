@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -26,6 +27,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
     override final val jsonType: String = "model"
     open val renderText: String
         get() = datamodel.newlinedName
+    val isSpecialEntity: Boolean = datamodel.game === GameRegistry.data.specialGame
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
