@@ -1,0 +1,16 @@
+RHRE3 Human Unit Tests
+    Test Entities
+        Test CueEntity
+        Test PatternEntity
+        Test RandomCueEntity
+        Test EquidistantEntity
+        Test KeepTheBeatEntity
+        Test Special Entities
+            Test SubtitleEntity
+            Test ShakeEntity
+    Test Trackers
+        Test Tempo Changes
+        Test Music Volume Changes
+        Test Time Signatures
+    Test Sound Systems
+    Test Exporting
