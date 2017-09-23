@@ -5,7 +5,7 @@ import net.beadsproject.beads.ugens.SamplePlayer
 import java.util.concurrent.ConcurrentHashMap
 
 
-class BeadsSound(val audio: BeadsAudio) : Sound {
+class BeadsSound(val audio: BeadsAudio, val onDispose: (BeadsSound) -> Unit) : Sound {
 
     val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
 
@@ -56,5 +56,7 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
 
     override fun dispose() {
         players.forEach { stop(it.key) }
+        players.clear()
+        onDispose.invoke(this)
     }
 }

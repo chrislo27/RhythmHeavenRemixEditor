@@ -150,7 +150,9 @@ object BeadsSoundSystem : SoundSystem() {
     }
 
     override fun newSound(handle: FileHandle): Sound {
-        return BeadsSound(newAudio(handle)).apply {
+        return BeadsSound(newAudio(handle)) {
+            sounds -= it
+        }.apply {
             sounds += this
         }
     }
