@@ -127,6 +127,7 @@ class ExportRemixScreen(main: RHRE3Application)
         if (isExporting || !isCapableOfExporting)
             return
         isExporting = true
+        BeadsSoundSystem.isRealtime = false
 
         fun addBead(function: () -> Unit): Bead {
             return object : Bead() {
@@ -138,8 +139,9 @@ class ExportRemixScreen(main: RHRE3Application)
 
         // prepare
         val context = BeadsSoundSystem.audioContext
+        BeadsSoundSystem.stop()
         context.stop()
-        context.out.clearInputConnections()
+        context.out.pause(true)
         context.out.clearDependents()
 
         // prep recorder
@@ -149,15 +151,17 @@ class ExportRemixScreen(main: RHRE3Application)
 
         val oldStart = remix.playbackStart
 
-        fun finalize() {
+        @Synchronized fun finalize() {
             recorder.kill()
-            context.stop()
-            context.out.clearInputConnections()
-            context.out.clearDependents()
-            context.out.gain = 1f
-            context.start()
+            BeadsSoundSystem.stop()
+            synchronized(context.out) {
+                context.out.clearInputConnections()
+                context.out.clearDependents()
+                context.out.gain = 1f
+            }
             remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
+            BeadsSoundSystem.isRealtime = true
             isExporting = false
         }
 
@@ -177,10 +181,12 @@ class ExportRemixScreen(main: RHRE3Application)
 
             // music trigger
             if (remix.music != null) {
-                val music = (remix.music!!.music as BeadsMusic)
+                val music = BeadsMusic((remix.music!!.music as BeadsMusic).audio)
                 music.stop()
 
-                context.out.addDependent(DelayTrigger(context, (remix.musicStartSec * 1000) - startMs, addBead {
+                val musicStartMs = (remix.musicStartSec * 1000) - startMs
+
+                context.out.addDependent(DelayTrigger(context, musicStartMs, addBead {
                     music.also(BeadsMusic::play)
                 }))
                 // volumes
@@ -206,7 +212,7 @@ class ExportRemixScreen(main: RHRE3Application)
             context.out.gain = 0.5f
 
             // run!
-            context.out.start()
+            context.out.pause(false)
             context.runForNMillisecondsNonRealTime(durationMs + 500) // padding
         } catch (e: Exception) {
             e.printStackTrace()
