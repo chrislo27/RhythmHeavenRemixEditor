@@ -268,8 +268,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(
-                    shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
 
             camera.update()
 
