@@ -407,8 +407,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // trackers (playback start, music, others)
         run trackers@ {
-            val font = main.defaultBorderedFont
-            val oldFontColor = font.color
+            val borderedFont = main.defaultBorderedFont
+            val oldFontColor = borderedFont.color
 
             fun getTrackerTime(beat: Float): String {
                 val sec = Math.abs(remix.tempos.beatsToSeconds(beat))
@@ -433,21 +433,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
 
-                font.scaleFont()
-                font.scaleMul(0.75f)
-                font.color = batch.color
+                borderedFont.scaleFont()
+                borderedFont.scaleMul(0.75f)
+                borderedFont.color = batch.color
                 if (textKey != null) {
-                    font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                    borderedFont.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
                 }
-                font.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
+                borderedFont.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
 
                 if (controlKey != null) {
-                    val line = font.lineHeight
-                    font.scaleMul(0.75f)
-                    font.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                    val line = borderedFont.lineHeight
+                    borderedFont.scaleMul(0.75f)
+                    borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
                 }
 
-                font.scaleFont()
+                borderedFont.scaleFont()
             }
 
             if (cachedPlaybackStart.first != remix.playbackStart) {
@@ -481,8 +481,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                    theme.trackers.playback, triangleHeight = 0f)
             }
 
-            font.color = oldFontColor
-            font.unscaleFont()
+            borderedFont.color = oldFontColor
+            borderedFont.unscaleFont()
         }
 
         // beat numbers
