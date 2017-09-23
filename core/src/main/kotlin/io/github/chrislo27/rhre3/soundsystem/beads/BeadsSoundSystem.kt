@@ -150,15 +150,17 @@ object BeadsSoundSystem : SoundSystem() {
     }
 
     override fun newSound(handle: FileHandle): Sound {
-        return BeadsSound(newAudio(handle)) {
-            sounds -= it
-        }.apply {
+        return BeadsSound(newAudio(handle)).apply {
             sounds += this
         }
     }
 
     override fun newMusic(handle: FileHandle): Music {
         return BeadsMusic(newAudio(handle))
+    }
+
+    fun disposeSound(sound: BeadsSound) {
+        sounds -= sound
     }
 
     override fun onSet() {
