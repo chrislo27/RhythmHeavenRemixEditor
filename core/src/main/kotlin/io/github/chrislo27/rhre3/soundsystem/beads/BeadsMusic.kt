@@ -10,7 +10,7 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
             SamplePlayer(BeadsSoundSystem.audioContext, audio.sample).apply {
                 killOnEnd = false
                 pause(true)
-            }).apply {
+            }) {}.apply {
         addToContext()
     }
 

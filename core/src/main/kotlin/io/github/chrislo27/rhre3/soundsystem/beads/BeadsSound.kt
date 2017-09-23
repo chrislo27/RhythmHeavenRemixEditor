@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.soundsystem.beads
 
 import io.github.chrislo27.rhre3.soundsystem.Sound
-import net.beadsproject.beads.core.Bead
 import net.beadsproject.beads.ugens.SamplePlayer
 import java.util.concurrent.ConcurrentHashMap
 
@@ -12,17 +11,12 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val result = id to GainedSamplePlayer(
-                SamplePlayer(BeadsSoundSystem.audioContext, audio.sample).apply {
-                    killOnEnd = true
-                    killListener = object : Bead() {
-                        override fun messageReceived(message: Bead?) {
-                            if (message == this) {
-                                players.remove(id)
-                            }
-                        }
-                    }
-                })
+        val samplePlayer = SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
+        val result = id to GainedSamplePlayer(samplePlayer) { players.remove(id) }.also { gsp ->
+            samplePlayer.apply {
+                killOnEnd = true
+            }
+        }
 
         players.put(result.first, result.second)
 
