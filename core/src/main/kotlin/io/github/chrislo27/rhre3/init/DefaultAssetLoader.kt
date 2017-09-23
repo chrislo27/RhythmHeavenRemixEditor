@@ -71,6 +71,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_play", "images/ui/icons/play.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_pause", "images/ui/icons/pause.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_stop", "images/ui/icons/stop.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_export", "images/ui/icons/export.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_export_big", "images/ui/icons/exportBig.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")

@@ -14,7 +14,7 @@ Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 ## Contributing
 Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
 
-![Palettes screenshot](.github/rhre3palettes.png)
+![Palettes screenshot](.github/rhre-palettes.png)
 
 Rhythm Heaven is not my property - it is the property of Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to infringe trademark rights.<br>

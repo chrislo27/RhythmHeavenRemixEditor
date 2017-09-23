@@ -970,7 +970,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         this.location.set(screenWidth = size,
                                           screenX = size * 3 + padding * 3)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_save_button"))
+                            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_export"))
                         })
                     }
             buttonBarStage.elements += UndoRedoButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
