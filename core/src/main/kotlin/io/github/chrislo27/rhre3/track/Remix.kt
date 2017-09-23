@@ -278,6 +278,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
     }
 
+    enum class EntityUpdateResult {
+        NOT_STARTED, STARTED, UPDATED, ENDED, STARTED_AND_ENDED, ALREADY_UPDATED
+    }
+
     val main: RHRE3Application
         get() = editor.main
 
@@ -482,11 +486,20 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         return entry.value
     }
 
-    fun entityUpdate(entity: Entity) {
+    fun entityUpdate(entity: Entity): EntityUpdateResult {
+        if (entity.playbackCompletion == PlaybackCompletion.FINISHED) {
+            return EntityUpdateResult.ALREADY_UPDATED
+        }
+
+        var started = false
+
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
             if (entity.isUpdateable(beat)) {
                 entity.playbackCompletion = PlaybackCompletion.PLAYING
                 entity.onStart()
+                started = true
+            } else {
+                return EntityUpdateResult.NOT_STARTED
             }
         }
 
@@ -496,8 +509,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (entity.isFinished()) {
                 entity.playbackCompletion = PlaybackCompletion.FINISHED
                 entity.onEnd()
+
+                return if (started) EntityUpdateResult.STARTED_AND_ENDED else EntityUpdateResult.ENDED
             }
+
+            return if (started) EntityUpdateResult.STARTED else EntityUpdateResult.UPDATED
         }
+
+        error("Impossible branch for entity update")
     }
 
     fun timeUpdate(delta: Float) {

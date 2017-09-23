@@ -201,7 +201,7 @@ class ExportRemixScreen(main: RHRE3Application)
             context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
                 addMessageListener(addBead {
                     remix.seconds = (context.time + startMs).toFloat() / 1000.0f
-                    remix.entities.forEach(remix::entityUpdate)
+                    remix.entities.forEach { remix.entityUpdate(it) }
 
                     val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100)
                     mainLabel.text = Localization["screen.export.progress", "$percent"]
