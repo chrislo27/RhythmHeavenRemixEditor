@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
@@ -83,15 +84,25 @@ class SoundSystemScreen(main: RHRE3Application)
 
                 main.preferences.putString(PreferenceKeys.SETTINGS_SOUND_SYSTEM,
                                            SoundSystem.allSystems[index].id).flush()
-                textLabel.text = "screen.soundSystem.${SoundSystem.allSystems[index].id}.name"
+                changeLabel()
                 descLabel.text = "screen.soundSystem.${SoundSystem.allSystems[index].id}.desc"
             }
+
+            private fun changeLabel() {
+                textLabel.text = Localization["screen.soundSystem.click",
+                        Localization["screen.soundSystem.${main.preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM,
+                                                                                      SoundSystem.allSystems.first().id)}.name"]]
+            }
+
+            init {
+                this.addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.isLocalizationKey = false
+                    this.textWrapping = false
+                })
+
+                changeLabel()
+            }
         }.apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.text = "screen.soundSystem.${SoundSystem.system.id}.name"
-            })
 
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
