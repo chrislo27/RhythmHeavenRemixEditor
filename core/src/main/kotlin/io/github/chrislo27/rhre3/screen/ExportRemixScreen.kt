@@ -8,6 +8,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -18,6 +20,7 @@ import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
 import io.github.chrislo27.rhre3.util.persistDirectory
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -151,7 +154,8 @@ class ExportRemixScreen(main: RHRE3Application)
 
         val oldStart = remix.playbackStart
 
-        @Synchronized fun finalize() {
+        @Synchronized
+        fun finalize(success: Boolean) {
             recorder.kill()
             BeadsSoundSystem.stop()
             synchronized(context.out) {
@@ -163,12 +167,21 @@ class ExportRemixScreen(main: RHRE3Application)
             remix.playState = PlayState.STOPPED
             BeadsSoundSystem.isRealtime = true
             isExporting = false
+
+            BeadsSoundSystem.resume()
+            if (success) {
+                (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
+            } else {
+                (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
+            }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
+                    ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
         }
 
         try {
             // prep triggers
             val startMs = Math.min(remix.musicStartSec.toDouble(),
-                                   remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()) * 1000.0
+                                   remix.tempos.beatsToSeconds(
+                                           remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()) * 1000.0
             val endMs = remix.tempos.beatsToSeconds(remix.duration) * 1000.0
             val durationMs = endMs - startMs
 
@@ -201,7 +214,9 @@ class ExportRemixScreen(main: RHRE3Application)
             context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
                 addMessageListener(addBead {
                     remix.seconds = (context.time + startMs).toFloat() / 1000.0f
-                    remix.entities.forEach { remix.entityUpdate(it) }
+                    remix.entities.forEach {
+                        remix.entityUpdate(it)
+                    }
 
                     val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100)
                     mainLabel.text = Localization["screen.export.progress", "$percent"]
@@ -216,11 +231,11 @@ class ExportRemixScreen(main: RHRE3Application)
             context.runForNMillisecondsNonRealTime(durationMs + 500) // padding
         } catch (e: Exception) {
             e.printStackTrace()
-            finalize()
+            finalize(false)
             throw e
         }
 
-        finalize()
+        finalize(true)
     }
 
     @Synchronized
@@ -279,6 +294,11 @@ class ExportRemixScreen(main: RHRE3Application)
         updateLabels()
         openPicker()
         updateLabels()
+    }
+
+    override fun hide() {
+        super.hide()
+        BeadsSoundSystem.stop()
     }
 
     override fun dispose() {
