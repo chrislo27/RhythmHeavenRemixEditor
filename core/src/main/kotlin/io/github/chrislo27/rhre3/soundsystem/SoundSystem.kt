@@ -9,7 +9,7 @@ abstract class SoundSystem {
 
     companion object {
 
-        val allSystems: List<SoundSystem> = listOf(GdxSoundSystem, BeadsSoundSystem)
+        val allSystems: List<SoundSystem> = listOf(BeadsSoundSystem, GdxSoundSystem)
         var errorOnDuplicateSystemSet = true
 
         lateinit var system: SoundSystem
