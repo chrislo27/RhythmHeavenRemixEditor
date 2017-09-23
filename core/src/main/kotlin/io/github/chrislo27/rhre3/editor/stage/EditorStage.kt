@@ -992,8 +992,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
-                this.location.set(screenX = size * 8 + padding * 8)
-                this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
+                this.location.set(screenX = size * 8 + padding * 8, screenWidth = size)
+//                this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
             }
 
             // right aligned
