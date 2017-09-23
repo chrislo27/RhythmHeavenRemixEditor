@@ -283,6 +283,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val beatRange = getBeatRange()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE / 2f)
+        val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
 
         font.scaleFont()
 
@@ -299,7 +300,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // game boundaries view (background)
-        if (ViewType.GAME_BOUNDARIES in views) {
+        if (isGameBoundariesInViews) {
             val squareHeight = TRACK_COUNT.toFloat()
             val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
 
@@ -370,7 +371,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // game boundaries view (dividers)
-        if (ViewType.GAME_BOUNDARIES in views) {
+        if (isGameBoundariesInViews) {
             remix.gameSections.values.forEach { section ->
                 if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
                     return@forEach
