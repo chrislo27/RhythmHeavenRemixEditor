@@ -384,7 +384,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.color = theme.trackLine
                     font.color = theme.trackLine
                     val x = section.startBeat
-                    val height = TRACK_COUNT * 2f
+                    val height = TRACK_COUNT * 2f + 0.5f
                     val maxTextWidth = 5f
                     batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
                     batch.draw(triangle, x, height - 1f, 0.25f, 1f)
