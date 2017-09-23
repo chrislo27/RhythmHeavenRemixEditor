@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.track.Remix
@@ -189,7 +190,15 @@ sealed class ClickOccupation {
             }
         }
 
-        fun isInDeleteZone(): Boolean = bottom < -0.5f
+        fun isAllSpecial(): Boolean = editor.selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+
+        fun isInDeleteZone(): Boolean {
+            return if (isAllSpecial()) {
+                bottom < -1.5f
+            } else {
+                bottom < -0.5f
+            }
+        }
 
     }
 }

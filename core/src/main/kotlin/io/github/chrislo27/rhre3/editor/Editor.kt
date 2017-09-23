@@ -571,13 +571,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             when (clickOccupation) {
                 is ClickOccupation.SelectionDrag -> {
                     val oldColor = batch.packedColor
+                    val y = if (clickOccupation.isAllSpecial()) -1f else 0f
                     val mouseX = remix.camera.getInputX()
                     val mouseY = remix.camera.getInputY()
-                    val alpha = (1f - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
+                    val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
                     val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
 
                     batch.setColor(1f, 0f, 0f, 0.25f * alpha)
-                    batch.fillRect(left, 0f,
+                    batch.fillRect(left, y,
                                    remix.camera.viewportWidth * remix.camera.zoom,
                                    -remix.camera.viewportHeight * remix.camera.zoom)
                     batch.setColor(oldColor)
@@ -587,7 +588,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     deleteFont.scaleMul(0.5f)
                     deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
-                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, -1f + font.capHeight / 2,
+                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, y + -1f + font.capHeight / 2,
                                               remix.camera.viewportWidth * remix.camera.zoom, Align.center)
 
                     deleteFont.setColor(1f, 1f, 1f, 1f)
