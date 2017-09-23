@@ -10,6 +10,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -48,6 +50,7 @@ class OpenRemixScreen(main: RHRE3Application)
             stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
+    @Volatile private var isLoading = false
 
     private val fileChooser: FileChooser = FileChooser().apply {
         this.initialDirectory = attemptRememberDirectory(main,
@@ -83,13 +86,26 @@ class OpenRemixScreen(main: RHRE3Application)
             loadButton.visible = field != null
         }
 
+    private fun List<Entity>.applyFilter(): List<ModelEntity<*>> {
+        return filter { entity -> entity is CueEntity || entity is MultipartEntity<*> }
+                .filterIsInstance<ModelEntity<*>>()
+                .distinctBy { it.datamodel.id }
+    }
+
     init {
         stage as GenericStage
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
         stage.titleLabel.text = "screen.open.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            if (!isChooserOpen) {
+            if (!isChooserOpen && !isLoading) {
+                editor.remix.entities.applyFilter().forEach { entity ->
+                    if (entity is CueEntity) {
+                        entity.datamodel.loadSounds()
+                    } else if (entity is MultipartEntity<*>) {
+                        entity.loadInternalSounds()
+                    }
+                }
                 main.screen = ScreenRegistry.getNonNull("editor")
             }
         }
@@ -146,78 +162,94 @@ class OpenRemixScreen(main: RHRE3Application)
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
+                    isLoading = true
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
-                    try {
-                        remix = null
-                        val zipFile = ZipFile(file)
-                        val isRHRE2 = zipFile.getEntry("remix.json") == null
+                    launch(CommonPool) {
+                        try {
+                            remix = null
+                            System.gc()
+                            val zipFile = ZipFile(file)
+                            val isRHRE2 = zipFile.getEntry("remix.json") == null
 
-                        val result = if (isRHRE2)
-                            Remix.unpackRHRE2(editor.createRemix(), zipFile)
-                        else
-                            Remix.unpack(editor.createRemix(), zipFile)
+                            val result = if (isRHRE2)
+                                Remix.unpackRHRE2(editor.createRemix(), zipFile)
+                            else
+                                Remix.unpack(editor.createRemix(), zipFile)
 
-                        val coroutine: Job = launch(CommonPool) {
-                            result.remix.entities.forEach { entity ->
-                                if (entity is CueEntity) {
-                                    entity.datamodel.loadSounds()
-                                } else if (entity is MultipartEntity<*>) {
-                                    entity.loadInternalSounds()
+                            val toLoad = result.remix.entities.applyFilter()
+                            val toUnload = editor.remix.entities.applyFilter().filter { it !in toLoad }
+
+                            val coroutine: Job = launch(CommonPool) {
+                                toLoad.forEach { entity ->
+                                    if (entity is CueEntity) {
+                                        entity.datamodel.loadSounds()
+                                    } else if (entity is MultipartEntity<*>) {
+                                        entity.loadInternalSounds()
+                                    }
+                                }
+                                toUnload.forEach { entity ->
+                                    if (entity is CueEntity) {
+                                        entity.datamodel.unloadSounds()
+                                    } else if (entity is MultipartEntity<*>) {
+                                        entity.unloadInternalSounds()
+                                    }
                                 }
                             }
-                        }
 
-                        fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
-                            return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
-                        }
-
-                        loadButton.alsoDo = {
-                            runBlocking {
-                                coroutine.join()
+                            fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
+                                return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
                             }
 
-                            if (!result.isAutosave) {
-                                editor.prepAutosaveFile(FileHandle(file))
+                            loadButton.alsoDo = {
+                                runBlocking {
+                                    coroutine.join()
+                                }
+
+                                if (!result.isAutosave) {
+                                    editor.prepAutosaveFile(FileHandle(file))
+                                }
                             }
-                        }
 
-                        remix = result.remix
-                        val remix = remix!!
-                        val missingAssets = result.missing
-                        val databaseStr = if (isRHRE2)
-                            goodBad(remix.version.toString(), true)
-                        else
-                            goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version)
+                            remix = result.remix
+                            val remix = remix!!
+                            val missingAssets = result.missing
+                            val databaseStr = if (isRHRE2)
+                                goodBad(remix.version.toString(), true)
+                            else
+                                goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version)
 
-                        mainLabel.text = ""
+                            mainLabel.text = ""
 
-                        if (result.isAutosave) {
-                            mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
-                        }
+                            if (result.isAutosave) {
+                                mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
+                            }
 
-                        mainLabel.text += Localization["screen.open.info",
-                                goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
-                                databaseStr,
-                                goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
-                                goodBad(if (isRHRE2) "?" else missingAssets.second.toString(), missingAssets.second > 0, "RED")]
-                        if (GameRegistry.data.version < remix.databaseVersion) {
-                            mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
-                        } else if (remix.version < RHRE3.VERSION) {
-                            mainLabel.text += "\n" +
-                                    Localization[if (isRHRE2)
-                                        "screen.open.rhre2Warning"
-                                    else
-                                        "screen.open.oldWarning"]
+                            mainLabel.text += Localization["screen.open.info",
+                                    goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
+                                    databaseStr,
+                                    goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
+                                    goodBad(if (isRHRE2) "?" else missingAssets.second.toString(), missingAssets.second > 0, "RED")]
+                            if (GameRegistry.data.version < remix.databaseVersion) {
+                                mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
+                            } else if (remix.version < RHRE3.VERSION) {
+                                mainLabel.text += "\n" +
+                                        Localization[if (isRHRE2)
+                                            "screen.open.rhre2Warning"
+                                        else
+                                            "screen.open.oldWarning"]
+                            }
+                            if (remix.version > RHRE3.VERSION) {
+                                mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
+                            }
+                            isLoading = false
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            mainLabel.text = Localization["screen.open.failed", t::class.java.canonicalName]
+                            remix?.dispose()
+                            remix = null
+                            isLoading = false
                         }
-                        if (remix.version > RHRE3.VERSION) {
-                            mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
-                        }
-                    } catch (t: Throwable) {
-                        t.printStackTrace()
-                        mainLabel.text = Localization["screen.open.failed", t::class.java.canonicalName]
-                        remix?.dispose()
-                        remix = null
                     }
                 } else {
                     loadButton.alsoDo = {}
@@ -259,6 +291,9 @@ class OpenRemixScreen(main: RHRE3Application)
             alsoDo()
             editor.remix.recomputeCachedData()
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
+            Gdx.app.postRunnable {
+                System.gc()
+            }
         }
     }
 }

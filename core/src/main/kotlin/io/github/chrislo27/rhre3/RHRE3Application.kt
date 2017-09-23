@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.gdx.GdxSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.util.JavafxStub
@@ -123,6 +126,17 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
 
+        // load correct sound system
+        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
+                Locale.ROOT)
+        SoundSystem
+                .setSoundSystem(when (soundSystemPref) {
+                                    BeadsSoundSystem.id -> BeadsSoundSystem
+                                    GdxSoundSystem.id -> GdxSoundSystem
+                                    else -> GdxSoundSystem
+                                })
+        Toolboks.LOGGER.info("Set sound system (pref: $soundSystemPref) to ${SoundSystem.system::class.java.simpleName}")
+
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
 
@@ -141,8 +155,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "newRemix" to NewRemixScreen(this)
                 ScreenRegistry += "saveRemix" to SaveRemixScreen(this)
                 ScreenRegistry += "openRemix" to OpenRemixScreen(this)
+                ScreenRegistry += "exportRemix" to ExportRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "credits" to CreditsScreen(this)
+                ScreenRegistry += "soundSystem" to SoundSystemScreen(this)
             }
 
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")

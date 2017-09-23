@@ -268,8 +268,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(
-                    shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
 
             camera.update()
 
@@ -284,6 +283,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val beatRange = getBeatRange()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE / 2f)
+        val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
 
         font.scaleFont()
 
@@ -300,7 +300,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // game boundaries view (background)
-        if (ViewType.GAME_BOUNDARIES in views) {
+        if (isGameBoundariesInViews) {
             val squareHeight = TRACK_COUNT.toFloat()
             val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
 
@@ -371,7 +371,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // game boundaries view (dividers)
-        if (ViewType.GAME_BOUNDARIES in views) {
+        if (isGameBoundariesInViews) {
             remix.gameSections.values.forEach { section ->
                 if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
                     return@forEach
@@ -384,7 +384,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.color = theme.trackLine
                     font.color = theme.trackLine
                     val x = section.startBeat
-                    val height = TRACK_COUNT * 2f
+                    val height = TRACK_COUNT * 2f + 0.5f
                     val maxTextWidth = 5f
                     batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
                     batch.draw(triangle, x, height - 1f, 0.25f, 1f)
@@ -408,8 +408,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // trackers (playback start, music, others)
         run trackers@ {
-            val font = main.defaultBorderedFont
-            val oldFontColor = font.color
+            val borderedFont = main.defaultBorderedFont
+            val oldFontColor = borderedFont.color
 
             fun getTrackerTime(beat: Float): String {
                 val sec = Math.abs(remix.tempos.beatsToSeconds(beat))
@@ -434,21 +434,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
 
-                font.scaleFont()
-                font.scaleMul(0.75f)
-                font.color = batch.color
+                borderedFont.scaleFont()
+                borderedFont.scaleMul(0.75f)
+                borderedFont.color = batch.color
                 if (textKey != null) {
-                    font.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                    borderedFont.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
                 }
-                font.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
+                borderedFont.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
 
                 if (controlKey != null) {
-                    val line = font.lineHeight
-                    font.scaleMul(0.75f)
-                    font.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                    val line = borderedFont.lineHeight
+                    borderedFont.scaleMul(0.75f)
+                    borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
                 }
 
-                font.scaleFont()
+                borderedFont.scaleFont()
             }
 
             if (cachedPlaybackStart.first != remix.playbackStart) {
@@ -482,8 +482,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                    theme.trackers.playback, triangleHeight = 0f)
             }
 
-            font.color = oldFontColor
-            font.unscaleFont()
+            borderedFont.color = oldFontColor
+            borderedFont.unscaleFont()
         }
 
         // beat numbers

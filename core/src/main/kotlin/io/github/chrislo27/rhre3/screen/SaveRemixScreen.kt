@@ -24,6 +24,8 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import javafx.application.Platform
 import javafx.stage.FileChooser
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import java.io.File
 
 
@@ -125,19 +127,21 @@ class SaveRemixScreen(main: RHRE3Application)
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE, fileChooser.initialDirectory)
-                    try {
-                        val correctFile = if (file.extension != RHRE3.REMIX_FILE_EXTENSION)
-                            file.parentFile.resolve("${file.name}.${RHRE3.REMIX_FILE_EXTENSION}")
-                        else
-                            file
+                    launch(CommonPool) {
+                        try {
+                            val correctFile = if (file.extension != RHRE3.REMIX_FILE_EXTENSION)
+                                file.parentFile.resolve("${file.name}.${RHRE3.REMIX_FILE_EXTENSION}")
+                            else
+                                file
 
-                        Remix.saveTo(editor.remix, correctFile, false)
-                        editor.prepAutosaveFile(FileHandle(correctFile))
+                            Remix.saveTo(editor.remix, correctFile, false)
+                            editor.prepAutosaveFile(FileHandle(correctFile))
 
-                        mainLabel.text = Localization["screen.save.success"]
-                    } catch (t: Throwable) {
-                        t.printStackTrace()
-                        updateLabels(t)
+                            mainLabel.text = Localization["screen.save.success"]
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            updateLabels(t)
+                        }
                     }
                 } else {
                     (stage as GenericStage).onBackButtonClick()

@@ -155,7 +155,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun whilePlaying() {
-        internal.forEach(remix::entityUpdate)
+        internal.forEach { remix.entityUpdate(it) }
     }
 
     override fun onEnd() {

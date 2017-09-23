@@ -105,6 +105,8 @@ object GameRegistry : Disposable {
         val version: Int
             get() = currentObj.version
         val editorVersion: Version
+        lateinit var specialGame: Game
+            private set
 
         private val objectMapper: ObjectMapper
         private val shouldCustomsGetPrefixes by lazy {
@@ -213,7 +215,7 @@ object GameRegistry : Disposable {
                 error("Check above for database errors")
             }
 
-            gameMap["special"] ?: error("Missing special game")
+            specialGame = gameMap["special"] ?: error("Missing special game")
 
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
@@ -223,6 +225,11 @@ object GameRegistry : Disposable {
                                 it.sound.load()
                             } catch (e: Exception) {
                                 Toolboks.LOGGER.warn("Failed to load ${it.id} in game ${it.game.id}")
+                                e.printStackTrace()
+                            }
+                            try {
+                                it.sound.unload()
+                            } catch (e: Exception) {
                                 e.printStackTrace()
                             }
                         }

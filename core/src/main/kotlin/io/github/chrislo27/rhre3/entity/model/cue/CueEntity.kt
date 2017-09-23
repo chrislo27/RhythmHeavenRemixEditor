@@ -67,15 +67,11 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = if (remix.cuesMuted && remix.editor.stage.tapalongStage.visible) 0f else 1f
 
     override fun onStart() {
-        soundId = cue.sound.sound.play(volume, cue.getPitch(), 0f)
-        cue.sound.sound.setLooping(soundId, cue.loops)
+        soundId = cue.sound.sound.play(loop = cue.loops, pitch = cue.getPitch(), volume = volume)
 
-        introSoundId = cue.introSoundCue?.sound?.sound?.play(volume,
-                                                             cue.introSoundCue!!.getPitch(),
-                                                             0f) ?: -1L
-        if (introSoundId != -1L) {
-            cue.introSoundCue?.sound?.sound?.setLooping(introSoundId, false)
-        }
+        introSoundId = cue.introSoundCue?.sound?.sound?.play(loop = false,
+                                                             pitch = cue.introSoundCue!!.getPitch(),
+                                                             volume = volume) ?: -1L
     }
 
     override fun whilePlaying() {
@@ -104,12 +100,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
         endingSoundId =
                 cue.endingSoundCue?.sound?.sound?.
-                        play(volume,
-                             cue.endingSoundCue!!.getPitch(),
-                             0f) ?: -1L
-        if (endingSoundId != -1L) {
-            cue.endingSoundCue?.sound?.sound?.setLooping(endingSoundId, false)
-        }
+                        play(loop = false, volume = volume,
+                             pitch = cue.endingSoundCue!!.getPitch()) ?: -1L
     }
 
     override fun copy(remix: Remix): CueEntity {

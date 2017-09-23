@@ -21,7 +21,8 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
-import io.github.chrislo27.rhre3.track.music.MusicData
+import io.github.chrislo27.rhre3.soundsystem.LazySound
+import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.tempo.TempoChange
@@ -30,7 +31,6 @@ import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
-import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
@@ -278,6 +278,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
     }
 
+    enum class EntityUpdateResult {
+        NOT_STARTED, STARTED, UPDATED, ENDED, STARTED_AND_ENDED, ALREADY_UPDATED
+    }
+
     val main: RHRE3Application
         get() = editor.main
 
@@ -361,22 +365,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 PlayState.STOPPED -> {
                     AssetRegistry.stopAllSounds()
                     music?.music?.pause()
-                    GameRegistry.data.objectList.forEach {
-                        if (it is Cue) {
-                            it.stopAllSounds()
-                        }
-                    }
+                    SoundSystem.system.stop()
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
                 }
                 PlayState.PAUSED -> {
                     AssetRegistry.pauseAllSounds()
                     music?.music?.pause()
-                    GameRegistry.data.objectList.forEach {
-                        if (it is Cue) {
-                            it.pauseAllSounds()
-                        }
-                    }
+                    SoundSystem.system.pause()
                 }
                 PlayState.PLAYING -> {
                     lastMusicPosition = -1f
@@ -401,20 +397,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                         currentSubtitles.clear()
                         currentShakeEntities.clear()
-                    } else if (old == PlayState.PAUSED) {
-                        GameRegistry.data.objectList.forEach {
-                            if (it is Cue) {
-                                it.resumeAllSounds()
-                            }
-                        }
                     }
+                    SoundSystem.system.resume()
                     if (music != null) {
                         if (seconds >= musicStartSec) {
                             music.music.play()
                             setMusicVolume()
-                            if (old == PlayState.STOPPED) {
-                                seekMusic()
-                            }
+                            seekMusic()
                         } else {
                             music.music.stop()
                         }
@@ -426,15 +415,15 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     private fun setMusicVolume() {
         val music = music ?: return
         val shouldBe = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
-        if (music.music.volume != shouldBe) {
-            music.music.volume = shouldBe
+        if (music.music.getVolume() != shouldBe) {
+            music.music.setVolume(shouldBe)
         }
     }
 
     private fun seekMusic() {
         val music = music ?: return
         musicSeeking = true
-        music.music.position = seconds - musicStartSec
+        music.music.setPosition(seconds - musicStartSec)
         musicSeeking = false
     }
 
@@ -497,11 +486,20 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         return entry.value
     }
 
-    fun entityUpdate(entity: Entity) {
+    fun entityUpdate(entity: Entity): EntityUpdateResult {
+        if (entity.playbackCompletion == PlaybackCompletion.FINISHED) {
+            return EntityUpdateResult.ALREADY_UPDATED
+        }
+
+        var started = false
+
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
             if (entity.isUpdateable(beat)) {
                 entity.playbackCompletion = PlaybackCompletion.PLAYING
                 entity.onStart()
+                started = true
+            } else {
+                return EntityUpdateResult.NOT_STARTED
             }
         }
 
@@ -511,8 +509,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (entity.isFinished()) {
                 entity.playbackCompletion = PlaybackCompletion.FINISHED
                 entity.onEnd()
+
+                return if (started) EntityUpdateResult.STARTED_AND_ENDED else EntityUpdateResult.ENDED
             }
+
+            return if (started) EntityUpdateResult.STARTED else EntityUpdateResult.UPDATED
         }
+
+        error("Impossible branch for entity update")
     }
 
     fun timeUpdate(delta: Float) {
@@ -528,13 +532,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
                 val ended = music.music.play()
                 scheduleMusicPlaying = false
-                if (ended) {
-                    music.music.pause()
-                }
+//                if (ended) {
+//                    music.music.pause()
+//                }
             }
-            if (music.music.isPlaying) {
+            if (music.music.isPlaying()) {
                 val oldPosition = lastMusicPosition
-                val position = music.music.position
+                val position = music.music.getPosition()
                 lastMusicPosition = position
 
                 if (oldPosition != position) {
@@ -556,7 +560,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (metronome) {
                 val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
                 metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
-                        .sound.play(1f, if (isStartOfMeasure) 1.5f else 1.1f, 0f)
+                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f)
             }
         }
 

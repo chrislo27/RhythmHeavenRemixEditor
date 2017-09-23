@@ -358,6 +358,25 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+
+            // Sound system
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = ScreenRegistry.getNonNull("soundSystem")
+                }
+            }.apply {
+                this.addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.soundSystem"
+                    this.fontScaleMultiplier = fontScale
+                })
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 7 + buttonHeight * 6,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
         }
 
         stage.updatePositions()

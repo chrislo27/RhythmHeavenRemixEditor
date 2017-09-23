@@ -37,6 +37,7 @@ object Credits {
                             "[#FF8900]Kotlin[] by JetBrains\n" +
                             "[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games\n" +
                             "LWJGL\n" +
+                            "Beads\n" +
                             "KHttp\n" +
                             "Jackson\n" +
                             "JGit\n" +
