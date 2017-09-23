@@ -7,6 +7,8 @@ Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenR
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 
+[![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
+
 **Requires Java 8 and a graphics driver that supports OpenGL 2.0+!**
 
 ## Contributing
