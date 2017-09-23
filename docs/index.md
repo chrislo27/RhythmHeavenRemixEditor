@@ -14,6 +14,5 @@ public version of RHRE3.
 * [Launch arguments](Launch-arguments.md)
 * [JSON Object Definitions for databasing](JSON-object-definitions.md)
 * [Exporting your remix](Exporting.md)
-* [Sound systems](Sound-systems.md)
 ### **RHRE2 (out of date, archived)**
 * [Lua scripting](RHRE2/Scripting.md)
