@@ -50,6 +50,7 @@ class OpenRemixScreen(main: RHRE3Application)
             stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
+    @Volatile private var isLoading = false
 
     private val fileChooser: FileChooser = FileChooser().apply {
         this.initialDirectory = attemptRememberDirectory(main,
@@ -97,7 +98,7 @@ class OpenRemixScreen(main: RHRE3Application)
         stage.titleLabel.text = "screen.open.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            if (!isChooserOpen) {
+            if (!isChooserOpen && !isLoading) {
                 editor.remix.entities.applyFilter().forEach { entity ->
                     if (entity is CueEntity) {
                         entity.datamodel.loadSounds()
@@ -161,6 +162,7 @@ class OpenRemixScreen(main: RHRE3Application)
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
+                    isLoading = true
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
                     try {
@@ -239,11 +241,13 @@ class OpenRemixScreen(main: RHRE3Application)
                         if (remix.version > RHRE3.VERSION) {
                             mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
                         }
+                        isLoading = false
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         mainLabel.text = Localization["screen.open.failed", t::class.java.canonicalName]
                         remix?.dispose()
                         remix = null
+                        isLoading = false
                     }
                 } else {
                     loadButton.alsoDo = {}
