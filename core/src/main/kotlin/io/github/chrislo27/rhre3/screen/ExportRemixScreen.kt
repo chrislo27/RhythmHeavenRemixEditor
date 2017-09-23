@@ -29,6 +29,8 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import javafx.application.Platform
 import javafx.stage.FileChooser
+import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.launch
 import net.beadsproject.beads.core.Bead
 import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
@@ -248,19 +250,21 @@ class ExportRemixScreen(main: RHRE3Application)
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
-                    try {
-                        val correctFile = if (file.extension != "wav")
-                            file.parentFile.resolve("${file.name}.wav")
-                        else
-                            file
+                    launch(CommonPool) {
+                        try {
+                            val correctFile = if (file.extension != "wav")
+                                file.parentFile.resolve("${file.name}.wav")
+                            else
+                                file
 
-                        export(correctFile)
+                            export(correctFile)
 
-                        mainLabel.text = Localization["screen.export.success"]
-                    } catch (t: Throwable) {
-                        t.printStackTrace()
-                        updateLabels(t)
-                        isExporting = false
+                            mainLabel.text = Localization["screen.export.success"]
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            updateLabels(t)
+                            isExporting = false
+                        }
                     }
                 } else {
                     (stage as GenericStage).onBackButtonClick()
