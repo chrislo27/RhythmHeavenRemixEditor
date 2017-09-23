@@ -117,6 +117,10 @@ sealed class ClickOccupation {
         private val selection: List<Entity>
             get() = editor.selection
 
+        val isAllSpecial: Boolean by lazy {
+            selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+        }
+
         companion object {
             fun copyBounds(selection: List<Entity>): List<Rectangle> =
                     selection.map { Rectangle(it.bounds) }
@@ -190,10 +194,8 @@ sealed class ClickOccupation {
             }
         }
 
-        fun isAllSpecial(): Boolean = editor.selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
-
         fun isInDeleteZone(): Boolean {
-            return if (isAllSpecial()) {
+            return if (isAllSpecial) {
                 bottom < -1.5f
             } else {
                 bottom < -0.5f
