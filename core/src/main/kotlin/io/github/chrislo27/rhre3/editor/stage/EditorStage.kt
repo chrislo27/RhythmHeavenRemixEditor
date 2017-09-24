@@ -310,12 +310,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
         }.apply {
             this.fontScaleMultiplier = 0.5f
-            this.textAlign = Align.bottomLeft
+            this.textAlign = Align.left
             this.textWrapping = false
             this.location.set(0f, 0f,
                               1f,
-                              1.5f,
-                              pixelWidth = -8f)
+                              1f,
+                              pixelWidth = -8f,
+                              pixelY = -2f)
             this.isLocalizationKey = false
         }
         messageBarStage.elements += messageLabel
