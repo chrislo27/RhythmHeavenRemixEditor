@@ -52,32 +52,22 @@ class OpenRemixScreen(main: RHRE3Application)
         }
     @Volatile private var isLoading = false
 
-    private val fileChooser: FileChooser = FileChooser().apply {
+    private fun createFileChooser()
+            = FileChooser().apply {
         this.initialDirectory = attemptRememberDirectory(main,
                                                          PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
 
-        fun applyLocalizationChanges() {
-            this.extensionFilters.clear()
-//            val filter = FileChooser.ExtensionFilter(Localization["screen.save.fileFilter"],
-//                                                     "*.${RHRE3.REMIX_FILE_EXTENSION}",
-//                                                     "*.autosave.${RHRE3.REMIX_FILE_EXTENSION}")
-            val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterBoth"],
-                                                     "*.${RHRE3.REMIX_FILE_EXTENSION}",
-                                                     "*.brhre2")
+        this.extensionFilters.clear()
+        val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterBoth"],
+                                                 "*.${RHRE3.REMIX_FILE_EXTENSION}",
+                                                 "*.brhre2")
 
-            this.extensionFilters += filter
-//            this.extensionFilters += FileChooser.ExtensionFilter(Localization["screen.open.fileFilterRHRE2"], "*.brhre2")
-            this.selectedExtensionFilter = this.extensionFilters.first()
+        this.extensionFilters += filter
+        this.selectedExtensionFilter = this.extensionFilters.first()
 
-            this.title = Localization["screen.open.fileChooserTitle"]
-        }
-
-        applyLocalizationChanges()
-
-        Localization.listeners += { old ->
-            applyLocalizationChanges()
-        }
+        this.title = Localization["screen.open.fileChooserTitle"]
     }
+
     private val loadButton: LoadButton
     private val mainLabel: TextLabel<OpenRemixScreen>
     @Volatile private var remix: Remix? = null
@@ -159,6 +149,7 @@ class OpenRemixScreen(main: RHRE3Application)
         if (!isChooserOpen) {
             Platform.runLater {
                 isChooserOpen = true
+                val fileChooser = createFileChooser()
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
@@ -217,7 +208,8 @@ class OpenRemixScreen(main: RHRE3Application)
                             val databaseStr = if (isRHRE2)
                                 goodBad(remix.version.toString(), true)
                             else
-                                goodBad(remix.databaseVersion.toString(), remix.databaseVersion != GameRegistry.data.version)
+                                goodBad(remix.databaseVersion.toString(),
+                                        remix.databaseVersion != GameRegistry.data.version)
 
                             mainLabel.text = ""
 
@@ -229,7 +221,8 @@ class OpenRemixScreen(main: RHRE3Application)
                                     goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
                                     databaseStr,
                                     goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
-                                    goodBad(if (isRHRE2) "?" else missingAssets.second.toString(), missingAssets.second > 0, "RED")]
+                                    goodBad(if (isRHRE2) "?" else missingAssets.second.toString(),
+                                            missingAssets.second > 0, "RED")]
                             if (GameRegistry.data.version < remix.databaseVersion) {
                                 mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
                             } else if (remix.version < RHRE3.VERSION) {
@@ -282,7 +275,8 @@ class OpenRemixScreen(main: RHRE3Application)
                            stage: Stage<OpenRemixScreen>)
         : Button<OpenRemixScreen>(palette, parent, stage) {
 
-        @Volatile var alsoDo = {}
+        @Volatile
+        var alsoDo = {}
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)

@@ -59,28 +59,21 @@ class ExportRemixScreen(main: RHRE3Application)
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
 
-    private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
-                ?: getDefaultDirectory()
-        val key = "screen.export.fileFilter"
-        val extensions = arrayOf("*.wav")
+    private fun createFileChooser() =
+            FileChooser().apply {
+                this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
+                        ?: getDefaultDirectory()
+                val key = "screen.export.fileFilter"
+                val extensions = arrayOf("*.wav")
 
-        fun applyLocalizationChanges() {
-            this.extensionFilters.clear()
-            val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
+                this.extensionFilters.clear()
+                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
 
-            this.extensionFilters += filter
-            this.selectedExtensionFilter = this.extensionFilters.first()
+                this.extensionFilters += filter
+                this.selectedExtensionFilter = this.extensionFilters.first()
 
-            this.title = Localization["screen.export.fileChooserTitle"]
-        }
-
-        applyLocalizationChanges()
-
-        Localization.listeners += { old ->
-            applyLocalizationChanges()
-        }
-    }
+                this.title = Localization["screen.export.fileChooserTitle"]
+            }
 
     init {
         stage as GenericStage
@@ -245,6 +238,7 @@ class ExportRemixScreen(main: RHRE3Application)
         if (!isChooserOpen && !isExporting && isCapableOfExporting) {
             Platform.runLater {
                 isChooserOpen = true
+                val fileChooser = createFileChooser()
                 val file: File? = fileChooser.showSaveDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {

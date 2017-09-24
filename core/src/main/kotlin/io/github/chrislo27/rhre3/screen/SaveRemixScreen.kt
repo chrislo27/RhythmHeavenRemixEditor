@@ -45,28 +45,21 @@ class SaveRemixScreen(main: RHRE3Application)
         }
     private val mainLabel: TextLabel<SaveRemixScreen>
 
-    private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE)
-                ?: getDefaultDirectory()
-        val key = "screen.save.fileFilter"
-        val extensions = arrayOf("*.${RHRE3.REMIX_FILE_EXTENSION}")
+    private fun createFileChooser() =
+            FileChooser().apply {
+                this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE)
+                        ?: getDefaultDirectory()
+                val key = "screen.save.fileFilter"
+                val extensions = arrayOf("*.${RHRE3.REMIX_FILE_EXTENSION}")
 
-        fun applyLocalizationChanges() {
-            this.extensionFilters.clear()
-            val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
+                this.extensionFilters.clear()
+                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
 
-            this.extensionFilters += filter
-            this.selectedExtensionFilter = this.extensionFilters.first()
+                this.extensionFilters += filter
+                this.selectedExtensionFilter = this.extensionFilters.first()
 
-            this.title = Localization["screen.save.fileChooserTitle"]
-        }
-
-        applyLocalizationChanges()
-
-        Localization.listeners += { old ->
-            applyLocalizationChanges()
-        }
-    }
+                this.title = Localization["screen.save.fileChooserTitle"]
+            }
 
     init {
         stage as GenericStage
@@ -122,6 +115,7 @@ class SaveRemixScreen(main: RHRE3Application)
         if (!isChooserOpen) {
             Platform.runLater {
                 isChooserOpen = true
+                val fileChooser = createFileChooser()
                 val file: File? = fileChooser.showSaveDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {

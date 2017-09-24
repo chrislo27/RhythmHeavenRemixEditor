@@ -41,28 +41,21 @@ class MusicSelectScreen(main: RHRE3Application)
         }
     private val mainLabel: TextLabel<MusicSelectScreen>
 
-    private val fileChooser: FileChooser = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main,
-                                                         PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
-        val key = "screen.music.fileFilter"
-        val extensions = arrayOf("*.ogg", "*.mp3", "*.wav")
+    private fun createFileChooser() =
+            FileChooser().apply {
+                this.initialDirectory = attemptRememberDirectory(main,
+                                                                 PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
+                val key = "screen.music.fileFilter"
+                val extensions = arrayOf("*.ogg", "*.mp3", "*.wav")
 
-        fun applyLocalizationChanges() {
-            this.extensionFilters.clear()
-            val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
+                this.extensionFilters.clear()
+                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
 
-            this.extensionFilters += filter
-            this.selectedExtensionFilter = this.extensionFilters.first()
+                this.extensionFilters += filter
+                this.selectedExtensionFilter = this.extensionFilters.first()
 
-            this.title = Localization["screen.music.fileChooserTitle"]
-        }
-
-        applyLocalizationChanges()
-
-        Localization.listeners += { old ->
-            applyLocalizationChanges()
-        }
-    }
+                this.title = Localization["screen.music.fileChooserTitle"]
+            }
 
     init {
         stage as GenericStage
@@ -104,7 +97,7 @@ class MusicSelectScreen(main: RHRE3Application)
                 super.frameUpdate(screen)
             }
         }.apply {
-//            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+            //            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
@@ -128,6 +121,7 @@ class MusicSelectScreen(main: RHRE3Application)
         if (!isChooserOpen) {
             Platform.runLater {
                 isChooserOpen = true
+                val fileChooser = createFileChooser()
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
