@@ -34,7 +34,8 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             end()
         }.useStencilMask {
             val furthest: Entity? = remix.entities.maxBy { it.bounds.x + it.bounds.width }
-            val maxX: Float = if (furthest == null) remix.camera.viewportWidth else Math.min(furthest.bounds.x + furthest.bounds.width, remix.duration)
+            val maxX: Float = if (furthest == null) remix.camera.viewportWidth else Math.min(
+                    furthest.bounds.x + furthest.bounds.width, remix.duration)
             val x = location.realX
             val y = location.realY
             val pxHeight = location.realHeight

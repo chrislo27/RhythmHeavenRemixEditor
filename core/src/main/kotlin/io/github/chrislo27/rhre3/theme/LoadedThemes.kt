@@ -55,7 +55,8 @@ object LoadedThemes {
                     themes += themeObj
                     Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
                 } else {
-                    Toolboks.LOGGER.info("Couldn't load ${it.name()}, missing fields (see examples for details): ${uninitialized.map { it.name }}")
+                    Toolboks.LOGGER.info(
+                            "Couldn't load ${it.name()}, missing fields (see examples for details): ${uninitialized.map { it.name }}")
                 }
             } catch (e: Exception) {
                 Toolboks.LOGGER.error("Failed to parse ${it.name()}, skipping")

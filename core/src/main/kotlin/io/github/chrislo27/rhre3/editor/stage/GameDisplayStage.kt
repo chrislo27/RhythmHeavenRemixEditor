@@ -70,7 +70,8 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        game = if (editor.remix.playState == PlayState.STOPPED) null else editor.remix.getGameSection(editor.remix.beat)?.game
+        game = if (editor.remix.playState == PlayState.STOPPED) null else editor.remix.getGameSection(
+                editor.remix.beat)?.game
         super.render(screen, batch, shapeRenderer)
     }
 }

@@ -13,7 +13,7 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 class IOButton(val editor: Editor, val screen: String, val localization: String,
                palette: UIPalette, parent: UIElement<EditorScreen>,
                stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText  {
+    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     override fun getHoverText(): String {
         return Localization[localization]

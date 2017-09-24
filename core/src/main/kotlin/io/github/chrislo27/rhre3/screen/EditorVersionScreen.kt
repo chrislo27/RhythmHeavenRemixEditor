@@ -77,11 +77,11 @@ class EditorVersionScreen(main: RHRE3Application)
                         "[CYAN]$ghVer[]")
                     val humanFriendly: String =
                             (if (ghVer == null)
-                        "screen.version.checking"
-                    else if (ghVer <= RHRE3.VERSION)
-                        "screen.version.upToDate"
-                    else
-                        "screen.version.outOfDate")
+                                "screen.version.checking"
+                            else if (ghVer <= RHRE3.VERSION)
+                                "screen.version.upToDate"
+                            else
+                                "screen.version.outOfDate")
 
                     text = Localization["screen.version.label", currentVer, onlineVer, Localization[humanFriendly]]
                 }

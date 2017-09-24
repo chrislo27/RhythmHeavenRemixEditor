@@ -268,7 +268,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(
+                    shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
 
             camera.update()
 
@@ -395,7 +396,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val left = x + (6f * i).coerceAtLeast(0.125f)
 
                         batch.draw(icon, left, height - 2f, 0.25f, 1f)
-                        font.drawCompressed(batch, if (stage.presentationModeStage.visible) section.game.group else section.game.name,
+                        font.drawCompressed(batch,
+                                            if (stage.presentationModeStage.visible) section.game.group else section.game.name,
                                             left, height - 2.25f,
                                             (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
                     }
@@ -446,7 +448,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (controlKey != null) {
                     val line = borderedFont.lineHeight
                     borderedFont.scaleMul(0.75f)
-                    borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f, Align.right)
+                    borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f,
+                                                Align.right)
                 }
 
                 borderedFont.scaleFont()

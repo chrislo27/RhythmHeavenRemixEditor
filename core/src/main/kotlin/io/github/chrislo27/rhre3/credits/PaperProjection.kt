@@ -55,10 +55,12 @@ class PaperSprite : Sprite, PaperSpriteable {
     constructor(texture: Texture?, srcWidth: Int, srcHeight: Int) : super(texture, srcWidth, srcHeight)
     constructor(texture: Texture?, srcX: Int, srcY: Int, srcWidth: Int, srcHeight: Int) : super(texture, srcX, srcY,
                                                                                                 srcWidth, srcHeight)
+
     constructor(region: TextureRegion?) : super(region)
     constructor(region: TextureRegion?, srcX: Int, srcY: Int, srcWidth: Int, srcHeight: Int) : super(region, srcX, srcY,
                                                                                                      srcWidth,
                                                                                                      srcHeight)
+
     constructor(sprite: Sprite?) : super(sprite)
 
     init {

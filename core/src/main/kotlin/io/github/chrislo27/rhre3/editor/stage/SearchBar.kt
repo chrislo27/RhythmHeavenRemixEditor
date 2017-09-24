@@ -120,7 +120,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
                 SearchBar.Filter.CALL_AND_RESPONSE -> {
                     (query in group.name.toLowerCase(Locale.ROOT)
                             || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) })
-                    && group.games.any { game ->
+                            && group.games.any { game ->
                         game.placeableObjects.any { obj ->
                             obj is ResponseModel && obj.responseIDs.isNotEmpty()
                         }

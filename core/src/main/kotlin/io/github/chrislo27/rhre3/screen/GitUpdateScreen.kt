@@ -45,10 +45,12 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         label.setText("", Align.center, wrapping = true, isLocalization = false)
         stage.centreStage.elements += label
 
-        stage.bottomStage.elements += object : Button<GitUpdateScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
+        stage.bottomStage.elements += object : Button<GitUpdateScreen>(main.uiPalette, stage.bottomStage,
+                                                                       stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                Gdx.net.openURI(if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE) RHRE3.GITHUB_RELEASES else RHRE3.DATABASE_RELEASES)
+                Gdx.net.openURI(
+                        if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE) RHRE3.GITHUB_RELEASES else RHRE3.DATABASE_RELEASES)
             }
 
             private var setToReleases = false
@@ -92,7 +94,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                                 khttp.get(RHRE3.DATABASE_CURRENT_VERSION).text)
                         val ver: Version = Version.fromString(current.requiresVersion)
 
-                        Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
+                        Toolboks.LOGGER.info(
+                                "Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
 
                         val githubVersion: Version? = async(CommonPool) {
                             val nano = System.nanoTime()

@@ -16,7 +16,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 
 open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, parent: UIElement<S>?,
-                                             camera: OrthographicCamera) : Stage<S>(parent, camera), Palettable {
+                                                  camera: OrthographicCamera) : Stage<S>(parent, camera), Palettable {
 
     companion object {
         const val SCREEN_WIDTH = 0.85f

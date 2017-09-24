@@ -966,7 +966,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         })
                     }
             buttonBarStage.elements +=
-                    IOButton(editor, "exportRemix", "screen.export.title", palette, buttonBarStage, buttonBarStage).apply {
+                    IOButton(editor, "exportRemix", "screen.export.title", palette, buttonBarStage,
+                             buttonBarStage).apply {
                         this.location.set(screenWidth = size,
                                           screenX = size * 3 + padding * 3)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {

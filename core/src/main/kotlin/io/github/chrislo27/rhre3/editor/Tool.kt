@@ -1,15 +1,16 @@
 package io.github.chrislo27.rhre3.editor
 
 import com.badlogic.gdx.graphics.Texture
+import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignature
-import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.reflect.KClass
 
 
-enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<out Tracker>? = null, val canSelect: Boolean = false) {
+enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<out Tracker>? = null,
+                val canSelect: Boolean = false) {
 
     SELECTION("tool_selection", "tool.normal.name", canSelect = true),
     MULTIPART_SPLIT("tool_multipart_split", "tool.multipartsplit.name"),

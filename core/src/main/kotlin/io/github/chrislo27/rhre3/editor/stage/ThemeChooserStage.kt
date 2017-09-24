@@ -160,7 +160,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 for (i in 0 until lines) {
                     batch.fillRect(location.realX,
                                    location.realY + location.realHeight * 1f / 3f
-                                           + (location.realHeight / 3f * (i.toFloat() / (lines ))),
+                                           + (location.realHeight / 3f * (i.toFloat() / (lines))),
                                    location.realWidth, 1f)
                 }
 

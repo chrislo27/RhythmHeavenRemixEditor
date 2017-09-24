@@ -106,7 +106,8 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.location.set(screenWidth = 1f - (this.location.screenX))
         }
         this.elements += durationLabel
-        val gameDisplay = object : GameDisplayStage(editor, themePalette, this@PresentationModeStage, this@PresentationModeStage.camera) {
+        val gameDisplay = object : GameDisplayStage(editor, themePalette, this@PresentationModeStage,
+                                                    this@PresentationModeStage.camera) {
             override fun getFont(): BitmapFont {
                 return themePalette.font
             }
@@ -119,7 +120,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.updatePositions()
         }
         this.elements += gameDisplay
-        bpmLabel = object : TextLabel<EditorScreen>(themePalette, this, this){
+        bpmLabel = object : TextLabel<EditorScreen>(themePalette, this, this) {
 //            override fun getFont(): BitmapFont {
 //                return editor.main.defaultBorderedFont
 //            }
@@ -133,7 +134,8 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.location.set(screenX = gameDisplay.location.screenX + gameDisplay.location.screenWidth,
                               screenY = gameDisplay.location.screenY,
                               screenHeight = gameDisplay.location.screenHeight)
-            this.location.set(screenWidth = (progressBar.location.screenX + progressBar.location.screenWidth) - (this.location.screenX))
+            this.location.set(
+                    screenWidth = (progressBar.location.screenX + progressBar.location.screenWidth) - (this.location.screenX))
         }
         this.elements += bpmLabel
 

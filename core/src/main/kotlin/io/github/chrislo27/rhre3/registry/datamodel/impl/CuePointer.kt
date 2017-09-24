@@ -37,7 +37,8 @@ class CuePointer {
         metadata = obj.metadata ?: mapOf()
     }
 
-    constructor(id: String, beat: Float, duration: Float = 0f, semitone: Int = 0, track: Int = 0, metadata: Map<String, Any?> = mapOf()) {
+    constructor(id: String, beat: Float, duration: Float = 0f, semitone: Int = 0, track: Int = 0,
+                metadata: Map<String, Any?> = mapOf()) {
         this.id = id
         this.beat = beat
         this.backingDuration = duration

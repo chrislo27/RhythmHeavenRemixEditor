@@ -111,7 +111,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
 
         batch.draw(game.icon,
                    x + 2 * (remix.editor.toScaleX(BORDER)),
-                   y + 2 * remix.editor.toScaleY(BORDER) + ((height - 4 * remix.editor.toScaleY(BORDER)) - iconSizeY) / 2,
+                   y + 2 * remix.editor.toScaleY(BORDER) + ((height - 4 * remix.editor.toScaleY(
+                           BORDER)) - iconSizeY) / 2,
                    iconSizeX, iconSizeY)
 
         batch.setColor(oldColor)
@@ -120,7 +121,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         font.color = remix.editor.theme.entities.nameColor
         font.data.setScale(oldFontSizeX * fontScale, oldFontSizeY * fontScale)
         val allottedWidth = width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
-//        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
+        //        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
         fun computeHeight(): Float =
                 font.getTextHeight(text, allottedWidth, true)
 

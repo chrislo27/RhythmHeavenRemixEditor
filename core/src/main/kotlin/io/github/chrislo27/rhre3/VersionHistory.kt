@@ -15,6 +15,6 @@ object VersionHistory {
               )
     }
 
-    val CUSTOM_SOUNDS_GET_PREFIXES: Version by lazy { Version(3, 1 ,0) }
+    val CUSTOM_SOUNDS_GET_PREFIXES: Version by lazy { Version(3, 1, 0) }
 
 }

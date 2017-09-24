@@ -142,7 +142,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
                 reset()
             }
         }.apply {
-            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage){
+            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage) {
                 override fun getRealText(): String {
                     return Localization[text, AUTO_RESET_SECONDS]
                 }
@@ -178,7 +178,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
                 remix.cuesMuted = !remix.cuesMuted
             }
         }.apply {
-            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage){
+            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage) {
                 override fun getRealText(): String {
                     return Localization["editor.tapalong.button.toggleCues.${remix.cuesMuted}"]
                 }
@@ -217,7 +217,8 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             seconds.removeAt(0)
         }
 
-        seconds.add(TapRecord(internalTimekeeper, if (remix.playState == PlayState.PLAYING) (remix.seconds - remix.musicStartSec) else null))
+        seconds.add(TapRecord(internalTimekeeper,
+                              if (remix.playState == PlayState.PLAYING) (remix.seconds - remix.musicStartSec) else null))
         timeSinceLastTap = System.currentTimeMillis()
 
         // compute new tempo

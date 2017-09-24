@@ -75,7 +75,8 @@ class CreditsScreen(main: RHRE3Application)
 
                         val flag = AssetRegistry.get<Texture>("credits_flag_ca")
                         val flagSize = 64f * multiplier
-                        batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2, y - textHeight - flagSize * 1.5f,
+                        batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2,
+                                   y - textHeight - flagSize * 1.5f,
                                    flagSize, flagSize)
                     }
                 }
@@ -86,7 +87,7 @@ class CreditsScreen(main: RHRE3Application)
         stage.centreStage.elements += element
 
         stage.bottomStage.elements += object : Button<CreditsScreen>(main.uiPalette, stage.bottomStage,
-                                                                           stage.bottomStage) {
+                                                                     stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 Gdx.net.openURI(RHRE3.GITHUB)
@@ -140,7 +141,8 @@ class CreditsScreen(main: RHRE3Application)
             "[RAINBOW]${it.text}[]\n${it.persons}\n\n"
         } + Localization["licenseInfo"]
 
-        maxScroll = (font.getTextHeight(text, element.location.realWidth, true) + element.location.realHeight * 1.25f).coerceAtLeast(1f)
+        maxScroll = (font.getTextHeight(text, element.location.realWidth,
+                                        true) + element.location.realHeight * 1.25f).coerceAtLeast(1f)
     }
 
     override fun show() {

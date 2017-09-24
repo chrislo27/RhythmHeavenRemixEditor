@@ -70,7 +70,8 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         return bounds.x + internalWidth
     }
 
-    protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false, scaleBeats: Boolean = false) {
+    protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false,
+                                         scaleBeats: Boolean = false) {
         internal.forEach {
             it.updateBounds {
                 if (!scaleBeats) {
