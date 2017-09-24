@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.2.0`.<br>
+This readme is up to date with version `v3.3.0`.<br>
 The version this is up to date with may be a future version,
 and may not be released yet.
 If this is the case, this readme is still up-to-date.<br>
