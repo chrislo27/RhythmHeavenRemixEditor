@@ -1,8 +1,8 @@
-package io.github.chrislo27.rhre3.track.music
+package io.github.chrislo27.rhre3.track.tracker.music
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.chrislo27.rhre3.tracker.TrackerContainer
+import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 
 
 class MusicVolumes(val defaultVolume: Int = 100) : TrackerContainer<MusicVolumeChange>() {

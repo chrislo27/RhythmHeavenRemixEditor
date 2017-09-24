@@ -1,11 +1,11 @@
-package io.github.chrislo27.rhre3.track.tempo
+package io.github.chrislo27.rhre3.track.tracker.tempo
 
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.tracker.Tracker
-import io.github.chrislo27.rhre3.tracker.TrackerExistenceAction
+import io.github.chrislo27.rhre3.track.tracker.Tracker
+import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
 
 
 class TempoChange(beat: Float, val bpm: Float) : Tracker(beat) {

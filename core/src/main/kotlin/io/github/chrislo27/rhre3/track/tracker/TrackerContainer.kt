@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.tracker
+package io.github.chrislo27.rhre3.track.tracker
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.*

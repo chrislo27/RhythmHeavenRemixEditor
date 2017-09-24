@@ -1,8 +1,8 @@
-package io.github.chrislo27.rhre3.track.timesignature
+package io.github.chrislo27.rhre3.track.tracker.timesignature
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.chrislo27.rhre3.tracker.TrackerContainer
+import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 
 
 class TimeSignatures : TrackerContainer<TimeSignature>() {

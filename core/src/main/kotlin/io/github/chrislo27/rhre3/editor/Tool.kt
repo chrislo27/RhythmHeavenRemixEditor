@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.editor
 
 import com.badlogic.gdx.graphics.Texture
-import io.github.chrislo27.rhre3.track.music.MusicVolumeChange
-import io.github.chrislo27.rhre3.track.tempo.TempoChange
-import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
-import io.github.chrislo27.rhre3.tracker.Tracker
+import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
+import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
+import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignature
+import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.reflect.KClass
 

@@ -1,10 +1,10 @@
-package io.github.chrislo27.rhre3.track.music
+package io.github.chrislo27.rhre3.track.tracker.music
 
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.tracker.Tracker
+import io.github.chrislo27.rhre3.track.tracker.Tracker
 
 
 class MusicVolumeChange(beat: Float, volume: Int) : Tracker(beat) {

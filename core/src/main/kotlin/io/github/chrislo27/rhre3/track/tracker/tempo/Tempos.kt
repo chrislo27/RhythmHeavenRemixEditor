@@ -1,8 +1,8 @@
-package io.github.chrislo27.rhre3.track.tempo
+package io.github.chrislo27.rhre3.track.tracker.tempo
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.chrislo27.rhre3.tracker.TrackerContainer
+import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.util.BpmUtils
 import java.util.*
 
