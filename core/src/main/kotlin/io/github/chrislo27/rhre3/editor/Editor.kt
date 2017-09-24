@@ -395,7 +395,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val left = x + (6f * i).coerceAtLeast(0.125f)
 
                         batch.draw(icon, left, height - 2f, 0.25f, 1f)
-                        font.drawCompressed(batch, section.game.name, left, height - 2.25f,
+                        font.drawCompressed(batch, if (stage.presentationModeStage.visible) section.game.group else section.game.name,
+                                            left, height - 2.25f,
                                             (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
                     }
                 }
