@@ -21,7 +21,7 @@ internal fun attemptRememberDirectory(main: RHRE3Application, prefName: String):
 }
 
 internal fun getDefaultDirectory(): File =
-        if (!desktopFile.exists())
+        if (!desktopFile.exists() || !desktopFile.isDirectory)
             userHomeFile
         else
             desktopFile
