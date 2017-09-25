@@ -14,6 +14,8 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
+import io.github.chrislo27.rhre3.editor.picker.SearchFilter
+import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroupListComparatorIgnorePriority
@@ -68,6 +70,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val messageLabel: TextLabel<EditorScreen>
 
     val hoverTextLabel: TextLabel<EditorScreen>
+    val searchFilter = SearchFilter(this)
 
     lateinit var playButton: PlaybackButton
         private set
@@ -171,29 +174,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         super.render(screen, batch, shapeRenderer)
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
-            val selection = editor.pickerSelection.currentSelection
-            val series = editor.pickerSelection.currentSeries
-            val isSearching = editor.pickerSelection.isSearching
+            val pickerSelection = editor.pickerSelection
+            val filter = pickerSelection.filter
+            val isSearching = filter === searchFilter
+            val series: Series? = (filter as? SeriesFilter)?.series
 
             if (isSearching) {
                 if (isDirty == DirtyType.SEARCH_DIRTY) {
-                    selection.groups.clear()
-                    selection.variants.clear()
-                    selection.group = 0
                     val query = searchBar.textField.text.toLowerCase(Locale.ROOT)
-                    searchBar.filterGameGroups(query).mapTo(selection.groups) { it }
 
-                    selection.groups.sortWith(compareBy(GameGroupListComparatorIgnorePriority) { it.games.first() })
+                    searchFilter.query = query
+                    searchFilter.update()
+
+                    (filter.gameGroups as MutableList).sortWith(compareBy(
+                            GameGroupListComparatorIgnorePriority) { it.games.first() })
                 }
             } else {
-                selection.groups.clear()
-                GameRegistry.data.gameGroupsList
-                        .filter { it.series == series }
-                        .mapTo(selection.groups) { it }
-
-                selection.groups.sortBy { it.games.first() }
+                filter.update()
             }
-
             seriesButtons.forEach {
                 it.selected = series == it.series && !isSearching
             }
@@ -204,16 +202,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             gameButtons.forEach {
                 it.game = null
             }
-            selection.groups
-                    .forEachIndexed { index, it ->
+            filter.gameGroups
+                    .forEachIndexed { index, group ->
                         val x: Int = index % Editor.ICON_COUNT_X
-                        val y: Int = index / Editor.ICON_COUNT_X - selection.groupScroll
+                        val y: Int = index / Editor.ICON_COUNT_X - filter.groupScroll
 
                         if (y in 0 until Editor.ICON_COUNT_Y) {
                             val buttonIndex = y * Editor.ICON_COUNT_X + x
                             gameButtons[buttonIndex].apply {
-                                this.game = it.games[selection.getVariant(index)?.variant ?: return@apply]
-                                if (selection.group == index) {
+                                val gameList = filter.gamesPerGroup[group] ?: return@apply
+                                this.game = if (gameList.isEmpty) return@apply else gameList.current
+                                if (filter.currentGroupIndex == index) {
                                     this.selected = true
                                 }
                             }
@@ -223,13 +222,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             variantButtons.forEach {
                 it.game = null
             }
-            selection.groups.getOrNull(selection.group)?.also { group ->
+            filter.gameGroups.getOrNull(filter.currentGroupIndex)?.also { group ->
                 group.games.forEachIndexed { index, game ->
-                    val y = index - (selection.getCurrentVariant()?.variantScroll ?: return@forEachIndexed)
+                    val y = index - (filter.currentGameList.scroll)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
                         variantButtons[y].apply {
                             this.game = game
-                            if (selection.getCurrentVariant()!!.variant == index) {
+                            if (filter.currentGameList.currentIndex == index) {
                                 this.selected = true
                             }
                         }
@@ -237,9 +236,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
 
-            if (selection.groups.isNotEmpty() && selection.getCurrentVariant()!!.placeableObjects.isNotEmpty()) {
-                val variant = selection.getCurrentVariant()
-                val objects = variant!!.placeableObjects
+            if (!filter.areDatamodelsEmpty) {
+                val objects = filter.currentDatamodelList.list
 
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
@@ -252,7 +250,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     if (Toolboks.debugMode) {
                         text += " [GRAY](${datamodel.id})[]"
                     }
-                    if (index != variant.pattern && datamodel is Cue) {
+                    if (index != filter.currentDatamodelList.currentIndex && datamodel is Cue) {
                         color = Editor.CUE_PATTERN_COLOR
                     }
                     label.string = text
@@ -330,37 +328,39 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         pickerStage = object : Stage<EditorScreen>(this, camera) {
             override fun scrolled(amount: Int): Boolean {
                 if (isMouseOver()) {
-                    val selection = editor.pickerSelection.currentSelection
-                    val currentVariant = selection.getCurrentVariant() ?: return false
+                    val filter = editor.pickerSelection.filter
                     when (stage.camera.getInputX()) {
+                        // datamodel
                         in (location.realX + location.realWidth * 0.5f)..(location.realX + location.realWidth) -> {
-                            val old = currentVariant.pattern
-                            currentVariant.pattern =
-                                    (currentVariant.pattern + amount)
-                                            .coerceIn(0, currentVariant.maxPatternScroll)
-                            if (old != currentVariant.pattern) {
-                                updateSelected()
-                                return true
+                            if (!filter.areDatamodelsEmpty) {
+                                val old = filter.currentDatamodelList.currentIndex
+                                filter.currentDatamodelList.currentIndex += amount
+                                if (old != filter.currentDatamodelList.currentIndex) {
+                                    updateSelected()
+                                    return true
+                                }
                             }
                         }
+                        // variants
                         in (variantButtons.first().location.realX)..(location.realX + location.realWidth * 0.5f) -> {
-                            val old = currentVariant.variantScroll
-                            currentVariant.variantScroll =
-                                    (currentVariant.variantScroll + amount)
-                                            .coerceIn(0, currentVariant.maxScroll)
-                            if (old != currentVariant.variantScroll) {
-                                updateSelected()
-                                return true
+                            if (!filter.areGamesEmpty) {
+                                val old = filter.currentGameList.scroll
+                                filter.currentGameList.scroll += amount
+                                if (old != filter.currentGameList.scroll) {
+                                    updateSelected()
+                                    return true
+                                }
                             }
                         }
+                        // game groups
                         in (location.realX)..(variantButtons.first().location.realX) -> {
-                            val old = selection.groupScroll
-                            selection.groupScroll =
-                                    (selection.groupScroll + amount)
-                                            .coerceIn(0, selection.maxGroupScroll)
-                            if (old != selection.groupScroll) {
-                                updateSelected()
-                                return true
+                            if (!filter.areGroupsEmpty) {
+                                val old = filter.groupScroll
+                                filter.groupScroll += amount
+                                if (old != filter.groupScroll) {
+                                    updateSelected()
+                                    return true
+                                }
                             }
                         }
                     }
@@ -580,9 +580,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 override fun render(screen: EditorScreen, batch: SpriteBatch,
                                                     shapeRenderer: ShapeRenderer) {
                                     super.render(screen, batch, shapeRenderer)
-                                    val selection = editor.pickerSelection.currentSelection
+                                    val filter = editor.pickerSelection.filter
                                     val label = this.labels.first() as TextLabel
-                                    if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+                                    if (GameRegistry.isDataLoading() || if (isVariant) filter.areGamesEmpty else filter.areGroupsEmpty) {
                                         if (isUp) {
                                             label.text = Editor.ARROWS[2]
                                         } else {
@@ -590,33 +590,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                         }
                                     } else {
                                         if (isVariant) {
-                                            val current = selection.getCurrentVariant()
+                                            val gameList = filter.currentGameList
                                             if (isUp) {
-                                                if (current?.variantScroll ?: 0 > 0) {
-                                                    label.text = Editor.ARROWS[0]
-                                                } else {
-                                                    label.text = Editor.ARROWS[2]
-                                                }
+                                                label.text = Editor.ARROWS[if (gameList.scroll > 0) 0 else 2]
                                             } else {
-                                                if (current?.variantScroll ?: 0 < current?.maxScroll ?: 0) {
-                                                    label.text = Editor.ARROWS[1]
-                                                } else {
-                                                    label.text = Editor.ARROWS[3]
-                                                }
+                                                label.text = Editor.ARROWS[if (gameList.scroll < gameList.maxScroll) 1 else 3]
                                             }
                                         } else {
                                             if (isUp) {
-                                                if (selection.groupScroll > 0) {
-                                                    label.text = Editor.ARROWS[0]
-                                                } else {
-                                                    label.text = Editor.ARROWS[2]
-                                                }
+                                                label.text = Editor.ARROWS[if (filter.groupScroll > 0) 0 else 2]
                                             } else {
-                                                if (selection.groupScroll < selection.maxGroupScroll) {
-                                                    label.text = Editor.ARROWS[1]
-                                                } else {
-                                                    label.text = Editor.ARROWS[3]
-                                                }
+                                                label.text = Editor.ARROWS[if (filter.groupScroll < filter.maxGroupScroll) 1 else 3]
                                             }
                                         }
                                     }
@@ -624,29 +608,29 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                                     super.onLeftClick(xPercent, yPercent)
-                                    val selection = editor.pickerSelection.currentSelection
+                                    val filter = editor.pickerSelection.filter
                                     if (isVariant) {
-                                        val current = selection.getCurrentVariant() ?: return
+                                        val gameList = filter.currentGameList
                                         if (isUp) {
-                                            if (current.variantScroll > 0) {
-                                                current.variantScroll--
+                                            if (gameList.scroll > 0) {
+                                                gameList.scroll--
                                                 updateSelected()
                                             }
                                         } else {
-                                            if (current.variantScroll < current.maxScroll) {
-                                                current.variantScroll++
+                                            if (gameList.scroll < gameList.maxIndex) {
+                                                gameList.scroll++
                                                 updateSelected()
                                             }
                                         }
                                     } else {
                                         if (isUp) {
-                                            if (selection.groupScroll > 0) {
-                                                selection.groupScroll--
+                                            if (filter.groupScroll > 0) {
+                                                filter.groupScroll--
                                                 updateSelected()
                                             }
                                         } else {
-                                            if (selection.groupScroll < selection.maxGroupScroll) {
-                                                selection.groupScroll++
+                                            if (filter.groupScroll < filter.maxGroupScroll) {
+                                                filter.groupScroll++
                                                 updateSelected()
                                             }
                                         }
@@ -680,13 +664,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             val button = GameButton(x, y, palette, pickerStage, pickerStage, { _, _ ->
                                 this as GameButton
                                 if (visible && this.game != null) {
-                                    val selection = editor.pickerSelection.currentSelection
+                                    val filter = editor.pickerSelection.filter
                                     if (isVariant) {
-                                        selection.getVariant(selection.group)?.variant =
-                                                y + selection.getVariant(selection.group)!!.variantScroll
+                                        if (!filter.areGamesEmpty) {
+                                            filter.currentGameList.currentIndex = y + filter.currentGameList.scroll
+                                        }
                                     } else {
-                                        selection.group =
-                                                (y + editor.pickerSelection.currentSelection.groupScroll) * Editor.ICON_COUNT_X + x
+                                        filter.currentGroupIndex = (y + filter.groupScroll) * Editor.ICON_COUNT_X + x
                                     }
                                     updateSelected()
                                 }
@@ -714,13 +698,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun render(screen: EditorScreen, batch: SpriteBatch,
                                         shapeRenderer: ShapeRenderer) {
                         super.render(screen, batch, shapeRenderer)
-                        val selection = editor.pickerSelection.currentSelection
+                        val filter = editor.pickerSelection.filter
                         val label = this.labels.first() as TextLabel
-                        if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+
+                        if (GameRegistry.isDataLoading() || filter.areDatamodelsEmpty) {
                             label.text = Editor.ARROWS[2]
                         } else {
-                            val current = selection.getCurrentVariant()
-                            if (current?.pattern ?: 0 > 0) {
+                            if (filter.currentDatamodelList.currentIndex > 0) {
                                 label.text = Editor.ARROWS[0]
                             } else {
                                 label.text = Editor.ARROWS[2]
@@ -730,10 +714,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
-                        val selection = editor.pickerSelection.currentSelection
-                        val current = selection.getCurrentVariant() ?: return
-                        if (current.pattern > 0) {
-                            current.pattern--
+                        val filter = editor.pickerSelection.filter
+                        if (!filter.areDatamodelsEmpty && filter.currentDatamodelList.currentIndex > 0) {
+                            filter.currentDatamodelList.currentIndex--
                             updateSelected()
                         }
                     }
@@ -758,13 +741,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun render(screen: EditorScreen, batch: SpriteBatch,
                                         shapeRenderer: ShapeRenderer) {
                         super.render(screen, batch, shapeRenderer)
-                        val selection = editor.pickerSelection.currentSelection
+                        val filter = editor.pickerSelection.filter
                         val label = this.labels.first() as TextLabel
-                        if (GameRegistry.isDataLoading() || editor.pickerSelection.currentSelection.groups.isEmpty()) {
+
+                        if (GameRegistry.isDataLoading() || filter.areDatamodelsEmpty) {
                             label.text = Editor.ARROWS[3]
                         } else {
-                            val current = selection.getCurrentVariant() ?: return
-                            if (current.pattern < current.maxPatternScroll) {
+                            if (filter.currentDatamodelList.currentIndex < filter.currentDatamodelList.maxIndex) {
                                 label.text = Editor.ARROWS[1]
                             } else {
                                 label.text = Editor.ARROWS[3]
@@ -774,10 +757,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
-                        val selection = editor.pickerSelection.currentSelection
-                        val current = selection.getCurrentVariant() ?: return
-                        if (current.pattern < current.maxPatternScroll) {
-                            current.pattern++
+                        val filter = editor.pickerSelection.filter
+                        if (!filter.areDatamodelsEmpty && filter.currentDatamodelList.currentIndex < filter.currentDatamodelList.maxIndex) {
+                            filter.currentDatamodelList.currentIndex++
                             updateSelected()
                         }
                     }
@@ -845,7 +827,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             Series.VALUES.forEachIndexed { index, series ->
                 val tmp = SeriesButton(series, palette, minimapBarStage, minimapBarStage, { x, y ->
-                    editor.pickerSelection.currentSeries = series
+                    editor.pickerSelection.filter = SeriesFilter.allSeriesFilters[series] ?: error(
+                            "Series filter not found: $series")
                     updateSelected()
                 }).apply {
                     this.location.set(

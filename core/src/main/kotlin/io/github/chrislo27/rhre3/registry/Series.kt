@@ -8,7 +8,7 @@ enum class Series {
     OTHER, TENGOKU, DS, FEVER, MEGAMIX, SIDE, CUSTOM;
 
     companion object {
-        val VALUES: List<Series> by lazy { Series.values().toList() }
+        val VALUES: List<Series> = Series.values().toList()
     }
 
     val lowerCaseName: String by lazy { this.name.toLowerCase(Locale.ROOT) }

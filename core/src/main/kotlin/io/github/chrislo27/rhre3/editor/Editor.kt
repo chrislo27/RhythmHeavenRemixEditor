@@ -33,6 +33,7 @@ import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
@@ -931,7 +932,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {
-                    val currentGame: Game? = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentGame()
+                    val currentGame: Game? = if (pickerSelection.filter.areGamesEmpty) null else pickerSelection.filter.currentGame
                     builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
                         builder.separator().append(
@@ -1191,7 +1192,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
-            val datamodel = pickerSelection.currentSelection.getCurrentVariant()?.getCurrentPlaceable() ?: return true
+            val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
             val entity = datamodel.createEntity(remix, null)
 
             when (entity) {

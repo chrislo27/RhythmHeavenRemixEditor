@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.picker.SearchFilter
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
@@ -39,6 +40,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         this.updatePositions()
     }
 
+    private val searchFilter: SearchFilter get() = editorStage.searchFilter
     val textField = object : TextField<S>(palette, this@SearchBar, this@SearchBar) {
         init {
             this.textWhenEmptyColor = Color.LIGHT_GRAY
@@ -57,7 +59,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             val hadFocus = hasFocus
             super.onLeftClick(xPercent, yPercent)
-            editor.pickerSelection.isSearching = true
+            editor.pickerSelection.filter = editorStage.searchFilter
             editorStage.updateSelected(
                     if (!hadFocus) EditorStage.DirtyType.SEARCH_DIRTY else EditorStage.DirtyType.DIRTY)
         }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
+import com.sun.media.sound.EmergencySoundbank.toFloat
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.screen.EditorScreen
@@ -22,14 +23,15 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
     : UIElement<EditorScreen>(parent, stage) {
 
     val labels: MutableList<Label> = mutableListOf()
-    private val scrolls: MutableMap<PickerSelection.VariantSelection, Float> = mutableMapOf()
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        val selection = editor.pickerSelection.currentSelection.getCurrentVariant() ?: return
-        val oldScroll = scrolls.getOrPut(selection, { selection.pattern.toFloat() })
-        scrolls[selection] = MathUtils.lerp(oldScroll, selection.pattern.toFloat(),
+        if (editor.pickerSelection.filter.areDatamodelsEmpty)
+            return
+        val selection = editor.pickerSelection.filter.datamodelsPerGame[editor.pickerSelection.filter.currentGame] ?: return
+        val oldScroll = selection.smoothScroll
+        selection.smoothScroll = MathUtils.lerp(oldScroll, selection.currentIndex.toFloat(),
                                             Gdx.graphics.deltaTime / 0.075f)
-        val scrollValue = scrolls[selection]!!
+        val scrollValue = selection.smoothScroll
 
         shapeRenderer.prepareStencilMask(batch) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
@@ -40,11 +42,11 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
             val sectionY = location.realHeight / number
             labels.forEachIndexed { index, label ->
                 val half = number / 2
-                if (scrollValue !in selection.pattern - (half + 1)..selection.pattern + (half + 1)) {
+                if (scrollValue !in selection.currentIndex - (half + 1)..selection.currentIndex + (half + 1)) {
                     return@forEachIndexed
                 }
 
-                val selected = index == selection.pattern
+                val selected = index == selection.currentIndex
                 font.color = if (selected) Editor.SELECTED_TINT else label.color
                 font.drawCompressed(batch, label.string,
                                     location.realX,
