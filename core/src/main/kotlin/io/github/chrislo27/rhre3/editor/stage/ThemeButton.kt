@@ -17,7 +17,7 @@ class ThemeButton(val editor: Editor, val editorStage: EditorStage,
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     override fun getHoverText(): String {
-        return Localization["editor.palette", LoadedThemes.currentTheme.getRealName()]
+        return Localization["editor.theme", LoadedThemes.currentTheme.getRealName()]
     }
 
     private fun cycle(dir: Int) {
