@@ -16,6 +16,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.action.*
+import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity

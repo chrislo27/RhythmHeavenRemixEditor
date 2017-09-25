@@ -1,5 +1,6 @@
-package io.github.chrislo27.rhre3.editor
+package io.github.chrislo27.rhre3.editor.picker
 
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -26,7 +27,9 @@ class PickerSelection {
                 error("Negative index $index")
             if (index >= groups.size)
                 return null
-            return variants.getOrPut(index, { VariantSelection(groups[index]) })
+            return variants.getOrPut(index, {
+                VariantSelection(groups[index])
+            })
         }
 
         fun getCurrentVariant(): VariantSelection? =

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.PickerSelection
+import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
