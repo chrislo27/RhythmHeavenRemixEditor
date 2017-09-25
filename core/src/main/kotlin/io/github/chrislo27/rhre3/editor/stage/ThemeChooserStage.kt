@@ -26,7 +26,12 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
     init {
         buttons as MutableList
 
-        this.elements += ColourPane(this, this).apply {
+        this.elements += object : ColourPane<EditorScreen>(this, this) {
+            override fun scrolled(amount: Int): Boolean {
+                scroll(-amount)
+                return true
+            }
+        }.apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.colour.a = 0.8f
         }

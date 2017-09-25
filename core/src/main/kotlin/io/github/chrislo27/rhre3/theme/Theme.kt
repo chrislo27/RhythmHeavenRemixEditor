@@ -18,11 +18,18 @@ object Themes : Disposable {
             listOf(
                     LightTheme(),
                     DarkTheme(),
-                    RHRE0Theme()
+                    RHRE0Theme(),
+                    BackgroundTheme("theme.pastel.red", Color(1f, 0.55f, 0.55f, 1f)),
+                    BackgroundTheme("theme.pastel.orange", Color(1f, 0.73f, 0.55f, 1f)),
+                    BackgroundTheme("theme.pastel.yellow", Color.valueOf("FFDA7D")),
+                    BackgroundTheme("theme.pastel.green", Color(0.81f, 1f, 0.81f, 1f)),
+                    BackgroundTheme("theme.pastel.blue", Color(0.70f, 0.86f, 1f, 1f)),
+                    BackgroundTheme("theme.pastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
+                    BackgroundTheme("theme.pastel.violet", Color(0.89f, 0.86f, 1f, 1f))
                   )
 
     override fun dispose() {
-        defaultThemes.forEach { it.dispose() }
+        defaultThemes.forEach(Theme::dispose)
     }
 }
 
@@ -165,7 +172,6 @@ open class LightTheme : Theme() {
 
         selection = SelectionGroup().apply {
             applyDefaults()
-
         }
     }
 
@@ -194,7 +200,6 @@ open class DarkTheme : Theme() {
 
         selection = SelectionGroup().apply {
             applyDefaults()
-
         }
     }
 
@@ -223,7 +228,35 @@ open class RHRE0Theme : Theme() {
 
         selection = SelectionGroup().apply {
             applyDefaults()
+        }
+    }
 
+}
+
+open class BackgroundTheme(name: String, background: Color) : Theme() {
+
+    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+
+    init {
+        this.name = name
+
+        this.background = background
+        trackLine = Color(0.1f, 0.1f, 0.1f, 1f)
+
+        trackers = TrackersGroup().apply {
+            applyDefaults()
+        }
+
+        entities = EntitiesGroup().apply {
+            applyDefaults()
+
+            // Based on LightTheme
+            cue = Color(0.85f, 0.85f, 0.85f, 1f)
+            pattern = Color(0.85f, 0.85f, 1f, 1f)
+        }
+
+        selection = SelectionGroup().apply {
+            applyDefaults()
         }
     }
 
