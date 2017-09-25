@@ -242,6 +242,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
      * Pre-stage render.
      */
     fun render() {
+        val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -257,7 +258,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
 
         camera.position.y = 1f
-        camera.zoom = MathUtils.lerp(camera.zoom, if (ViewType.GAME_BOUNDARIES in views) 1.5f else 1f,
+        camera.zoom = MathUtils.lerp(camera.zoom, if (isGameBoundariesInViews) 1.5f else 1f,
                                      Gdx.graphics.deltaTime * 6.5f)
         if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
             val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
@@ -284,7 +285,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val beatRange = getBeatRange()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE / 2f)
-        val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
 
         font.scaleFont()
 
