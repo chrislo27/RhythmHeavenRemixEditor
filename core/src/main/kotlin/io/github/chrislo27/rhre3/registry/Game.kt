@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DatamodelComparator
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 
 
 data class Game(val id: String, val name: String, val series: Series,
@@ -14,6 +15,9 @@ data class Game(val id: String, val name: String, val series: Series,
 
     val placeableObjects: List<Datamodel> by lazy {
         objects.filter { !it.hidden }.sortedWith(DatamodelComparator)
+    }
+    val hasCallAndResponse: Boolean by lazy {
+        placeableObjects.any { it is ResponseModel && it.responseIDs.isNotEmpty() }
     }
 
     val gameGroup: GameGroup
