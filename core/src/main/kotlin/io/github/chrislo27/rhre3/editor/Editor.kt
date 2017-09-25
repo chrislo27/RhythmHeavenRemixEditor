@@ -219,13 +219,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (!entity.isStretchable)
             return StretchRegion.NONE
 
-        if (beat in entity.bounds.x..entity.bounds.x + IStretchable.STRETCH_AREA) {
+        if (beat in entity.bounds.x..Math.min(entity.bounds.x + IStretchable.STRETCH_AREA, entity.bounds.x + entity.bounds.width / 2f)) {
             return StretchRegion.LEFT
         }
 
         val right = entity.bounds.x + entity.bounds.width
 
-        if (beat in right - IStretchable.STRETCH_AREA..right) {
+        if (beat in Math.max(right - IStretchable.STRETCH_AREA, right - entity.bounds.width / 2f)..right) {
             return StretchRegion.RIGHT
         }
 
