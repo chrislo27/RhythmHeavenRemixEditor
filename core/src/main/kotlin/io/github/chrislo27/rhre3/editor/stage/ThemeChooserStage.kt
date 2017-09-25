@@ -109,7 +109,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
         val start = 0.15f + 0.075f + padding
         val end = 0.8f
         val area = end - start
-        val numberOfButtons = 5
+        val numberOfButtons = 7
         val buttonHeight = area / numberOfButtons
         for (i in 0 until numberOfButtons) {
             buttons += ThemeChangeButton(i, palette, this, this).apply {
@@ -181,7 +181,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 this.location.set(screenWidth = 1f - this.location.screenX)
                 this.textWrapping = false
                 this.textAlign = Align.left
-                this.fontScaleMultiplier = 0.85f
+                this.fontScaleMultiplier = 0.7f
             }
 
             colourIcon.apply {
