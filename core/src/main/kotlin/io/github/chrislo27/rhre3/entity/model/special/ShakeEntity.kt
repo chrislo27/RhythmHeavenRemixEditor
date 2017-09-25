@@ -30,7 +30,7 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
     }
 
     override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.subtitle
+        return remix.editor.theme.entities.special
     }
 
     override fun getTextForSemitone(semitone: Int): String {

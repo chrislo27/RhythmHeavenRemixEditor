@@ -31,7 +31,7 @@ Below is a sample json file:<br>
     "nameColor" : "#000000",
     "cue" : "#D8D8D8",
     "pattern" : "#D8D8FF",
-    "subtitle" : "#FFD4BA",
+    "special" : "#FFD4BA",
     "equidistant" : "#FFB2BF",
     "keepTheBeat" : "#FFE27C"
   },
@@ -41,6 +41,9 @@ Below is a sample json file:<br>
   }
 }
 ```
+
+> Note: the `subtitle` field name in entities was changed to `special` starting in v3.3.1.
+Using `subtitle` still works, but `special` is now the correct field name.
 
 You'll notice that most of these are just RGB hex values. The `name`
 is self-explanatory. Most of the colours are grouped into sections,

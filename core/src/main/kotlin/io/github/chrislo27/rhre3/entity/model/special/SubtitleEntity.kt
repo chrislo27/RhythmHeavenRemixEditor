@@ -32,7 +32,7 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     }
 
     override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.subtitle
+        return remix.editor.theme.entities.special
     }
 
     override fun onStart() {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Base64Coder
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.annotation.JsonSetter
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.util.getUninitializedLateinits
 import kotlin.reflect.KProperty
@@ -100,14 +101,20 @@ open class Theme : Disposable {
 
         @HexColor lateinit var cue: Color
         @HexColor lateinit var pattern: Color
-        @HexColor lateinit var subtitle: Color
+        @HexColor lateinit var special: Color
         @HexColor lateinit var equidistant: Color
         @HexColor lateinit var keepTheBeat: Color
+
+        @JsonSetter("subtitle")
+        @HexColor
+        private fun setSubtitleColor(color: Color) {
+            special = color
+        }
 
         fun applyDefaults() {
             selectionTint = Color(0f, 0.75f, 0.75f, 1f)
             nameColor = Color(0f, 0f, 0f, 1f)
-            subtitle = Color(1f, 212f / 255f, 186f / 255f, 1f)
+            special = Color(1f, 212f / 255f, 186f / 255f, 1f)
 
             keepTheBeat = Color(1f, 226f / 255f, 124f / 255f, 1f)
             equidistant = Color(1f, 178f / 255f, 191f / 255f, 1f)
