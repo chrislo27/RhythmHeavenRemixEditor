@@ -57,16 +57,16 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 resetButtons()
             }
         }.apply {
-            this.location.set(0.05f, 0.025f, 0.9f, 0.1f)
+            this.location.set(0.05f, 0.025f, 0.9f, 0.075f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.text = "editor.themeChooser.reset"
                 this.textWrapping = true
-                this.fontScaleMultiplier = 0.8f
+                this.fontScaleMultiplier = 0.75f
             })
         }
 
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
+        val up = object : Button<EditorScreen>(palette, this, this) {
             override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 (labels.first() as TextLabel).text = Editor.ARROWS[if (buttonScroll <= 0) 2 else 0]
                 super.render(screen, batch, shapeRenderer)
@@ -78,14 +78,15 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 scroll(-1)
             }
         }.apply {
-            this.location.set(0.05f, 0.8f, 0.9f, 0.075f)
+            this.location.set(0.05f, 0.825f, 0.9f, 0.05f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.text = ""
                 this.textWrapping = true
             })
         }
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
+        this.elements += up
+        val down = object : Button<EditorScreen>(palette, this, this) {
             override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 (labels.first() as TextLabel).text = Editor.ARROWS[if (buttonScroll >= maxButtonScroll) 3 else 1]
                 super.render(screen, batch, shapeRenderer)
@@ -97,19 +98,20 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 scroll(1)
             }
         }.apply {
-            this.location.set(0.05f, 0.15f, 0.9f, 0.075f)
+            this.location.set(0.05f, 0.1125f, 0.9f, 0.05f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.text = ""
                 this.textWrapping = true
             })
         }
+        this.elements += down
 
         val padding = 0.0125f
-        val start = 0.15f + 0.075f + padding
-        val end = 0.8f
+        val start = down.location.screenY + down.location.screenHeight + padding
+        val end = up.location.screenY
         val area = end - start
-        val numberOfButtons = 7
+        val numberOfButtons = 9
         val buttonHeight = area / numberOfButtons
         for (i in 0 until numberOfButtons) {
             buttons += ThemeChangeButton(i, palette, this, this).apply {
