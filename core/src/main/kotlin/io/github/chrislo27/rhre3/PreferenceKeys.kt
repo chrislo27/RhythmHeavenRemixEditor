@@ -23,4 +23,6 @@ object PreferenceKeys {
     const val FILE_CHOOSER_LOAD = "fileChooser_load"
     const val FILE_CHOOSER_EXPORT = "fileChooser_export"
 
+    const val FAVOURITES = "favourites"
+
 }

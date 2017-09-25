@@ -66,7 +66,7 @@ object GameRegistry : Disposable {
         return backingData
     }
 
-    class RegistryData : Disposable {
+    class RegistryData() : Disposable {
 
         @Volatile
         var ready: Boolean = false
@@ -238,6 +238,8 @@ object GameRegistry : Disposable {
                     }
                 }
             }
+
+            Favourites.initialize()
 
             if (RHRE3.verifyRegistry) {
                 Toolboks.LOGGER.info("Checking registry for errors")

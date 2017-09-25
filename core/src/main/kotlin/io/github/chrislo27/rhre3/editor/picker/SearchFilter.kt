@@ -58,14 +58,9 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
             SearchBar.Filter.ENTITY_NAME -> {
                 GameRegistry.data.gameGroupsList.forEach { group ->
                     val result: List<List<Datamodel>> = group.games.mapNotNull { game ->
-                        val objects = game.placeableObjects.filter {
+                        game.placeableObjects.filter {
                             query in it.name.toLowerCase(Locale.ROOT)
-                        }
-
-                        if (objects.isEmpty())
-                            null
-                        else
-                            objects
+                        }.takeIf { it.isNotEmpty() }
                     }
 
                     if (result.isNotEmpty()) {
@@ -103,6 +98,27 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                         }
                     }
                 }
+            }
+            SearchBar.Filter.FAVOURITES -> {
+                // TODO
+                // get icons for filter favourites, favourite tab, favourite tag
+                // implement toggling of favourites
+                GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
+                    query in group.name.toLowerCase(Locale.ROOT)
+                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                }
+
+                gameGroups.associateTo(gamesPerGroup) {
+                    it to GameList().apply {
+                        if (it.isFavourited) {
+                            this.list.addAll(it.games)
+                        } else {
+                            it.games.filterTo(this.list, Game::isFavourited)
+                        }
+                    }
+                }
+
+                addAllDatamodelsFromGames()
             }
         }
 

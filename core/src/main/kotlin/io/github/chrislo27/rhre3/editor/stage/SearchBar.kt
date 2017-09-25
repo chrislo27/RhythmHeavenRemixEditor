@@ -22,6 +22,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
     enum class Filter(val tag: String) {
         GAME_NAME("gameName"),
         ENTITY_NAME("entityName"),
+        FAVOURITES("favourites"),
         CALL_AND_RESPONSE("callAndResponse");
 
         companion object {
