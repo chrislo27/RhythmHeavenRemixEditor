@@ -25,7 +25,14 @@ object Themes : Disposable {
                     BackgroundTheme("theme.pastel.green", Color(0.81f, 1f, 0.81f, 1f)),
                     BackgroundTheme("theme.pastel.blue", Color(0.70f, 0.86f, 1f, 1f)),
                     BackgroundTheme("theme.pastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
-                    BackgroundTheme("theme.pastel.violet", Color(0.89f, 0.86f, 1f, 1f))
+                    BackgroundTheme("theme.pastel.violet", Color(0.89f, 0.86f, 1f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.red", Color(1f, 0.55f, 0.55f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.orange", Color(1f, 0.73f, 0.55f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.yellow", Color.valueOf("FFDA7D")),
+                    DarkPastelTheme("theme.darkPastel.green", Color(0.81f, 1f, 0.81f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.blue", Color(0.70f, 0.86f, 1f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
+                    DarkPastelTheme("theme.darkPastel.violet", Color(0.89f, 0.86f, 1f, 1f))
                   )
 
     override fun dispose() {
@@ -253,6 +260,35 @@ open class BackgroundTheme(name: String, background: Color) : Theme() {
             // Based on LightTheme
             cue = Color(0.85f, 0.85f, 0.85f, 1f)
             pattern = Color(0.85f, 0.85f, 1f, 1f)
+        }
+
+        selection = SelectionGroup().apply {
+            applyDefaults()
+        }
+    }
+
+}
+
+open class DarkPastelTheme(name: String, trackLine: Color) : Theme() {
+
+    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+
+    init {
+        this.name = name
+
+        this.background = Color(0.15f, 0.15f, 0.15f, 1f)
+        this.trackLine = trackLine
+
+        trackers = TrackersGroup().apply {
+            applyDefaults()
+        }
+
+        entities = EntitiesGroup().apply {
+            applyDefaults()
+
+            // Based on DarkTheme
+            cue = Color(0.65f, 0.65f, 0.65f, 1f)
+            pattern = Color(0.75f, 0.75f, 0.9f, 1f)
         }
 
         selection = SelectionGroup().apply {
