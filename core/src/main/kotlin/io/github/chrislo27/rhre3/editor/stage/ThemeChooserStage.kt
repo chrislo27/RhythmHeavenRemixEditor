@@ -107,7 +107,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
         }
         this.elements += down
 
-        val padding = 0.0125f
+        val padding = 0.0075f
         val start = down.location.screenY + down.location.screenHeight + padding
         val end = up.location.screenY
         val area = end - start
