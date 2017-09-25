@@ -9,14 +9,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.picker.SearchFilter
-import io.github.chrislo27.rhre3.registry.GameGroup
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
-import java.util.*
 
 
 class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor, val editorStage: EditorStage,
@@ -103,33 +99,6 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         elements += textField
         elements += clearButton
         elements += filterButton
-    }
-
-    fun filterGameGroups(query: String): List<GameGroup> {
-        return GameRegistry.data.gameGroupsList.filter { group ->
-            when (filterButton.filter) {
-                Filter.GAME_NAME -> {
-                    query in group.name.toLowerCase(Locale.ROOT)
-                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
-                }
-                SearchBar.Filter.ENTITY_NAME -> {
-                    group.games.any { game ->
-                        game.placeableObjects.any { obj ->
-                            !obj.hidden && query in obj.name.toLowerCase(Locale.ROOT)
-                        }
-                    }
-                }
-                SearchBar.Filter.CALL_AND_RESPONSE -> {
-                    (query in group.name.toLowerCase(Locale.ROOT)
-                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) })
-                            && group.games.any { game ->
-                        game.placeableObjects.any { obj ->
-                            obj is ResponseModel && obj.responseIDs.isNotEmpty()
-                        }
-                    }
-                }
-            }
-        }
     }
 
     inner class FilterButton : Button<S>(palette, this, this), EditorStage.HasHoverText {

@@ -18,7 +18,6 @@ import io.github.chrislo27.rhre3.editor.picker.SearchFilter
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameGroupListComparatorIgnorePriority
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -185,9 +184,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                     searchFilter.query = query
                     searchFilter.update()
-
-                    (filter.gameGroups as MutableList).sortWith(compareBy(
-                            GameGroupListComparatorIgnorePriority) { it.games.first() })
                 }
             } else {
                 filter.update()
