@@ -3,6 +3,8 @@ package io.github.chrislo27.rhre3.util
 import io.github.chrislo27.rhre3.RHRE3Application
 import java.io.File
 
+private val userHomeFile: File = File(System.getProperty("user.home"))
+private val desktopFile: File = userHomeFile.resolve("Desktop")
 
 internal fun persistDirectory(main: RHRE3Application, prefName: String, file: File) {
     main.preferences.putString(prefName, file.absolutePath)
@@ -19,4 +21,7 @@ internal fun attemptRememberDirectory(main: RHRE3Application, prefName: String):
 }
 
 internal fun getDefaultDirectory(): File =
-        File(System.getProperty("user.home"), "Desktop")
+        if (!desktopFile.exists())
+            userHomeFile
+        else
+            desktopFile
