@@ -125,3 +125,19 @@ mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage
 to create measures so your patterns sound correct.
 
+# Tapalong
+The tapalong menu is recurring from RHRE2, this time it is inline with the
+editor. The main purpose of tapalong is to be able to tap to the rhythm of
+a song to determine its BPM.
+
+![Tapalong](https://i.imgur.com/PYNsBYZ.png)
+
+# Views
+Views are useful ways of viewing your remix. You can mix and match views too.
+
+## Game Boundaries
+This highlights all the game boundaries and where they transition at.
+This also works in presenation mode. A game is said to transition when
+a new cue/pattern from a different game is introduced.
+
+![Game boundaries](https://i.imgur.com/Ek397zm.png)
