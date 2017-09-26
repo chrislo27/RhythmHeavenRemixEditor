@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.SearchFilter
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.registry.Favourites
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -63,6 +64,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val variantScrollButtons: List<Button<EditorScreen>>
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
+    val favouriteTagRegion by lazy {TextureRegion(AssetRegistry.get<Texture>("ui_selector_favourite"))}
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector")) }
     lateinit var searchBar: SearchBar<EditorScreen>
         private set
@@ -211,6 +213,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 if (filter.currentGroupIndex == index) {
                                     this.selected = true
                                 }
+                                val isFavourited = game!!.gameGroup.isFavourited
+                                if (isFavourited) {
+                                    addLabel(2, favouriteLabel)
+                                    favouriteLabel.onResize(location.realWidth, location.realHeight)
+                                } else {
+                                    removeLabel(favouriteLabel)
+                                }
                             }
                         }
                     }
@@ -218,7 +227,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             variantButtons.forEach {
                 it.game = null
             }
-            filter.gameGroups.getOrNull(filter.currentGroupIndex)?.also { group ->
+            (if (filter.areGroupsEmpty) null else filter.currentGroup)?.also { group ->
                 group.games.forEachIndexed { index, game ->
                     val y = index - (filter.currentGameList.scroll)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
@@ -226,6 +235,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             this.game = game
                             if (filter.currentGameList.currentIndex == index) {
                                 this.selected = true
+                            }
+
+                            val isFavourited = game.isFavourited
+                            if (isFavourited) {
+                                addLabel(2, favouriteLabel)
+                                favouriteLabel.onResize(location.realWidth, location.realHeight)
+                            } else {
+                                removeLabel(favouriteLabel)
                             }
                         }
                     }
@@ -657,7 +674,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             }
                         } else {
                             val isVariant = x == Editor.ICON_COUNT_X + 1
-                            val button = GameButton(x, y, palette, pickerStage, pickerStage, { _, _ ->
+                            val button = GameButton(x, y, isVariant, palette, pickerStage, pickerStage, { _, _ ->
                                 this as GameButton
                                 if (visible && this.game != null) {
                                     val filter = editor.pickerSelection.filter
@@ -1064,7 +1081,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 if (field != old) {
                     this.removeLabel(selectedLabel)
                     if (field) {
-                        this.addLabel(selectedLabel)
+                        this.addLabel(1, selectedLabel)
                         selectedLabel.onResize(this.location.realWidth, this.location.realHeight)
                     }
                 }
@@ -1081,7 +1098,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     }
 
-    open inner class GameButton(val x: Int, val y: Int,
+    open inner class GameButton(val x: Int, val y: Int, val isVariant: Boolean,
                                 palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
                                 f: SelectableButton.(Float, Float) -> Unit)
         : SelectableButton(palette, parent, stage, f), HasHoverText {
@@ -1098,11 +1115,35 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
         override fun getHoverText(): String {
-            return game?.name ?: ""
+            val game = game
+            if (game != null) {
+                return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") + game.name
+            }
+            return ""
+        }
+
+        override fun onRightClick(xPercent: Float, yPercent: Float) {
+            super.onRightClick(xPercent, yPercent)
+            val game = game
+            if (visible && game != null) {
+                // toggle
+                val wasFavourited = if (isVariant) game.isFavourited else game.gameGroup.isFavourited
+                if (isVariant) {
+                    Favourites.setFavourited(game, !wasFavourited)
+                } else {
+                    Favourites.setFavourited(game.gameGroup, !wasFavourited)
+                }
+
+                updateSelected(DirtyType.SEARCH_DIRTY)
+            }
         }
 
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegion
+        }
+        val favouriteLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
+            this.image = favouriteTagRegion
+            this.tint.set(Color.YELLOW)
         }
 
     }

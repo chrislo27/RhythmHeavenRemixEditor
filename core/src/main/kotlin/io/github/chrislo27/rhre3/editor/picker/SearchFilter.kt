@@ -100,12 +100,9 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 }
             }
             SearchBar.Filter.FAVOURITES -> {
-                // TODO
-                // get icons for filter favourites, favourite tab, favourite tag
-                // implement toggling of favourites
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
-                    query in group.name.toLowerCase(Locale.ROOT)
-                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                    (group.isFavourited && query in group.name.toLowerCase(Locale.ROOT))
+                            || group.games.any { game -> game.isFavourited && query in game.name.toLowerCase(Locale.ROOT) }
                 }
 
                 gameGroups.associateTo(gamesPerGroup) {
