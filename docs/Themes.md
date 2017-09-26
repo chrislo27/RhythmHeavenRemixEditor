@@ -42,7 +42,7 @@ Below is a sample json file:<br>
 }
 ```
 
-> Note: the `subtitle` field name in entities was changed to `special` starting in v3.3.1.
+> Note: the `subtitle` field name in entities was changed to `special` starting in v3.4.0.
 Using `subtitle` still works, but `special` is now the correct field name.
 
 You'll notice that most of these are just RGB hex values. The `name`
