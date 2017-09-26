@@ -14,6 +14,8 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
+import io.github.chrislo27.rhre3.editor.picker.FavouritesFilter
+import io.github.chrislo27.rhre3.editor.picker.Filter
 import io.github.chrislo27.rhre3.editor.picker.SearchFilter
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
@@ -58,13 +60,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
-    val seriesButtons: List<SeriesButton>
+    val filterButtons: List<FilterButton>
     val toolButtons: List<ToolButton>
     val gameScrollButtons: List<Button<EditorScreen>>
     val variantScrollButtons: List<Button<EditorScreen>>
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
-    val favouriteTagRegion by lazy {TextureRegion(AssetRegistry.get<Texture>("ui_selector_favourite"))}
+    val favouriteTagRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_favourite")) }
     val selectorRegionSeries: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector")) }
     lateinit var searchBar: SearchBar<EditorScreen>
         private set
@@ -178,7 +180,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val pickerSelection = editor.pickerSelection
             val filter = pickerSelection.filter
             val isSearching = filter === searchFilter
-            val series: Series? = (filter as? SeriesFilter)?.series
 
             if (isSearching) {
                 if (isDirty == DirtyType.SEARCH_DIRTY) {
@@ -190,8 +191,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             } else {
                 filter.update()
             }
-            seriesButtons.forEach {
-                it.selected = series == it.series && !isSearching
+            filterButtons.forEach {
+                it.selected = it.filter === filter
             }
             toolButtons.forEach {
                 it.selected = it.tool == editor.currentTool
@@ -213,7 +214,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 if (filter.currentGroupIndex == index) {
                                     this.selected = true
                                 }
-                                val isFavourited = game!!.gameGroup.isFavourited
+                                val isFavourited = isFavourited()
                                 if (isFavourited) {
                                     addLabel(2, favouriteLabel)
                                     favouriteLabel.onResize(location.realWidth, location.realHeight)
@@ -237,7 +238,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 this.selected = true
                             }
 
-                            val isFavourited = game.isFavourited
+                            val isFavourited = isFavourited()
                             if (isFavourited) {
                                 addLabel(2, favouriteLabel)
                                 favouriteLabel.onResize(location.realWidth, location.realHeight)
@@ -288,7 +289,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         paneLikeStages as MutableList<Stage<EditorScreen>>
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
-        seriesButtons = mutableListOf()
+        filterButtons = mutableListOf()
         toolButtons = mutableListOf()
         gameScrollButtons = mutableListOf()
         variantScrollButtons = mutableListOf()
@@ -343,7 +344,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 if (isMouseOver()) {
                     val filter = editor.pickerSelection.filter
                     when (stage.camera.getInputX()) {
-                        // datamodel
+                    // datamodel
                         in (location.realX + location.realWidth * 0.5f)..(location.realX + location.realWidth) -> {
                             if (!filter.areDatamodelsEmpty) {
                                 val old = filter.currentDatamodelList.currentIndex
@@ -354,7 +355,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 }
                             }
                         }
-                        // variants
+                    // variants
                         in (variantButtons.first().location.realX)..(location.realX + location.realWidth * 0.5f) -> {
                             if (!filter.areGamesEmpty) {
                                 val old = filter.currentGameList.scroll
@@ -365,7 +366,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 }
                             }
                         }
-                        // game groups
+                    // game groups
                         in (location.realX)..(variantButtons.first().location.realX) -> {
                             if (!filter.areGroupsEmpty) {
                                 val old = filter.groupScroll
@@ -832,18 +833,16 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         // Minimap area
         run minimap@ {
             minimapBarStage.updatePositions()
-            seriesButtons as MutableList
+            filterButtons as MutableList
 
             val buttonWidth: Float = minimapBarStage.percentageOfWidth(
                     Editor.ICON_SIZE)
             val buttonHeight: Float = 1f
 
             Series.VALUES.forEachIndexed { index, series ->
-                val tmp = SeriesButton(series, palette, minimapBarStage, minimapBarStage, { x, y ->
-                    editor.pickerSelection.filter = SeriesFilter.allSeriesFilters[series] ?: error(
-                            "Series filter not found: $series")
-                    updateSelected()
-                }).apply {
+                val filter: Filter = SeriesFilter.allSeriesFilters[series] ?: error("Series filter not found: $series")
+                val tmp: FilterButton = FilterButton(filter, series.localization,
+                                                     palette, minimapBarStage, minimapBarStage).apply {
                     this.location.set(
                             screenWidth = buttonWidth,
                             screenHeight = buttonHeight,
@@ -851,12 +850,20 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                      )
                     this.label.image = TextureRegion(AssetRegistry.get<Texture>(series.textureId))
                 }
-                seriesButtons += tmp
-
+                filterButtons += tmp
             }
-            minimapBarStage.elements.addAll(seriesButtons)
+            filterButtons += FilterButton(FavouritesFilter(), "editor.favourites",
+                                          palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(
+                        screenWidth = buttonWidth,
+                        screenHeight = buttonHeight,
+                        screenX = filterButtons.size * buttonWidth
+                                 )
+                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_favourites"))
+            }
+            minimapBarStage.elements.addAll(filterButtons)
 
-            val lastSeriesButton = seriesButtons.last()
+            val lastSeriesButton = filterButtons.last()
             val searchBarX = lastSeriesButton.location.screenX + lastSeriesButton.location.screenWidth
             val searchBarWidth = 0.5f - searchBarX
             minimapBarStage.updatePositions()
@@ -1117,9 +1124,19 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         override fun getHoverText(): String {
             val game = game
             if (game != null) {
-                return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") + game.name
+                return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") +
+                        game.name + "\n${Localization["editor.favouriteToggle"]}"
             }
             return ""
+        }
+
+        fun isFavourited(): Boolean {
+            val game = game ?: return false
+            return if (isVariant)
+                (if (game.gameGroup.games.size == 1)
+                    game.gameGroup.isFavourited
+                else game.isFavourited)
+            else game.gameGroup.isFavourited
         }
 
         override fun onRightClick(xPercent: Float, yPercent: Float) {
@@ -1127,9 +1144,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val game = game
             if (visible && game != null) {
                 // toggle
-                val wasFavourited = if (isVariant) game.isFavourited else game.gameGroup.isFavourited
+                val wasFavourited = isFavourited()
                 if (isVariant) {
-                    Favourites.setFavourited(game, !wasFavourited)
+                    if (game.gameGroup.games.size == 1) {
+                        Favourites.setFavourited(game.gameGroup, !wasFavourited)
+                    } else {
+                        Favourites.setFavourited(game, !wasFavourited)
+                    }
                 } else {
                     Favourites.setFavourited(game.gameGroup, !wasFavourited)
                 }
@@ -1148,13 +1169,18 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     }
 
-    open inner class SeriesButton(val series: Series,
-                                  palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>,
-                                  onLeftClick: SelectableButton.(Float, Float) -> Unit)
-        : SelectableButton(palette, parent, stage, onLeftClick), HasHoverText {
+    open inner class FilterButton(val filter: Filter, val localization: String,
+                                  palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
+        : SelectableButton(palette, parent, stage, { _, _ -> }), HasHoverText {
 
         override fun getHoverText(): String {
-            return Localization[series.localization]
+            return Localization[localization]
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            editor.pickerSelection.filter = filter
+            updateSelected()
         }
 
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
