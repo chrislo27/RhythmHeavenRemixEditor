@@ -73,11 +73,11 @@ class CreditsScreen(main: RHRE3Application)
                         batch.draw(logo, location.realX + location.realWidth / 2 - logoSize / 2, y + 16f * multiplier,
                                    logoSize, logoSize)
 
-                        val flag = AssetRegistry.get<Texture>("credits_flag_ca")
-                        val flagSize = 64f * multiplier
-                        batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2,
-                                   y - textHeight - flagSize * 1.5f,
-                                   flagSize, flagSize)
+//                        val flag = AssetRegistry.get<Texture>("credits_flag_ca")
+//                        val flagSize = 64f * multiplier
+//                        batch.draw(flag, location.realX + location.realWidth / 2 - flagSize / 2,
+//                                   y - textHeight - flagSize * 1.5f,
+//                                   flagSize, flagSize)
                     }
                 }
             }
