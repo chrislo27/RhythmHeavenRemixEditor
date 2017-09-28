@@ -231,7 +231,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.game = null
             }
             (if (filter.areGroupsEmpty) null else filter.currentGroup)?.also { group ->
-                group.games.forEachIndexed { index, game ->
+                filter.gamesPerGroup[group]?.list?.forEachIndexed { index, game ->
                     val y = index - (filter.currentGameList.scroll)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
                         variantButtons[y].apply {

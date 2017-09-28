@@ -52,7 +52,15 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                             || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
                 }
 
-                addAllGamesFromGroups()
+                gameGroups.associateTo(gamesPerGroup) {
+                    it to GameList().apply {
+                        if (query in it.name.toLowerCase(Locale.ROOT)) {
+                            this.list.addAll(it.games)
+                        } else {
+                            it.games.filterTo(this.list) { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                        }
+                    }
+                }
                 addAllDatamodelsFromGames()
             }
             SearchBar.Filter.ENTITY_NAME -> {
