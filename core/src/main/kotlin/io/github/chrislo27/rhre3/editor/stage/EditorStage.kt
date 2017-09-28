@@ -1127,15 +1127,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val game = game
             if (game != null) {
                 return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") +
-                        game.name + "\n${Localization["editor.favouriteToggle"]}"
+                        (if (isVariant) game.name else game.gameGroup.name) + "\n${Localization["editor.favouriteToggle"]}"
             }
             return ""
+        }
+
+        fun isSingleInGameGroup(): Boolean {
+            val filter = editor.pickerSelection.filter
+            val game = game ?: return false
+            return isVariant && !filter.areGroupsEmpty && game.gameGroup.games.size == 1
         }
 
         fun isFavourited(): Boolean {
             val game = game ?: return false
             return if (isVariant)
-                (if (game.gameGroup.games.size == 1)
+                (if (isSingleInGameGroup())
                     game.gameGroup.isFavourited
                 else game.isFavourited)
             else game.gameGroup.isFavourited
@@ -1148,7 +1154,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 // toggle
                 val wasFavourited = isFavourited()
                 if (isVariant) {
-                    if (game.gameGroup.games.size == 1) {
+                    if (isSingleInGameGroup()) {
                         Favourites.setFavourited(game.gameGroup, !wasFavourited)
                     } else {
                         Favourites.setFavourited(game, !wasFavourited)
@@ -1156,6 +1162,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else {
                     Favourites.setFavourited(game.gameGroup, !wasFavourited)
                 }
+                Favourites.persist()
 
                 updateSelected(DirtyType.SEARCH_DIRTY)
             }

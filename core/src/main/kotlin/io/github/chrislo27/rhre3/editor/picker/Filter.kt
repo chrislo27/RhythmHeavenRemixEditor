@@ -18,6 +18,9 @@ abstract class Filter {
     val datamodelsPerGame: Map<Game, DatamodelList> = mutableMapOf()
 
     var currentGroupIndex: Int = 0
+        set(value) {
+            field = value.coerceIn(0, maxGroupIndex)
+        }
     val currentGroup: GameGroup get() = gameGroups[currentGroupIndex]
     val currentGame: Game get() = currentGameList.current
     val currentDatamodel: Datamodel get() = currentDatamodelList.current
@@ -29,7 +32,7 @@ abstract class Filter {
         get() = areGroupsEmpty || gamesPerGroup[currentGroup]?.isEmpty ?: true
     val areDatamodelsEmpty: Boolean
         get() = areGamesEmpty || datamodelsPerGame[currentGame]?.isEmpty ?: true
-    val maxGroupIndex: Int = gameGroups.size - 1
+    val maxGroupIndex: Int get() = (gameGroups.size - 1).coerceAtLeast(0)
     var groupScroll: Int = 0
         set(value) {
             field = value.coerceIn(0, maxGroupScroll)
@@ -45,9 +48,6 @@ abstract class Filter {
         gameGroups.clear()
         gamesPerGroup.clear()
         datamodelsPerGame.clear()
-
-        currentGroupIndex = 0
-        groupScroll = groupScroll
     }
 
     abstract fun update()
@@ -56,6 +56,9 @@ abstract class Filter {
         gameGroups as MutableList
         gamesPerGroup as MutableMap
         datamodelsPerGame as MutableMap
+
+        currentGroupIndex = currentGroupIndex
+        groupScroll = groupScroll
 
         gamesPerGroup.values.forEach {
             val list = it.list
