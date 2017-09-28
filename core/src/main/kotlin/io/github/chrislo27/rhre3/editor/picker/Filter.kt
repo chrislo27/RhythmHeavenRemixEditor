@@ -21,18 +21,24 @@ abstract class Filter {
         set(value) {
             field = value.coerceIn(0, maxGroupIndex)
         }
-    val currentGroup: GameGroup get() = gameGroups[currentGroupIndex]
-    val currentGame: Game get() = currentGameList.current
-    val currentDatamodel: Datamodel get() = currentDatamodelList.current
-    val currentGameList: GameList get() = gamesPerGroup[currentGroup]!!
-    val currentDatamodelList: DatamodelList get() = datamodelsPerGame[currentGame]!!
+    val currentGroup: GameGroup
+        get() = gameGroups[currentGroupIndex]
+    val currentGame: Game
+        get() = currentGameList.current
+    val currentDatamodel: Datamodel
+        get() = currentDatamodelList.current
+    val currentGameList: GameList
+        get() = gamesPerGroup[currentGroup]!!
+    val currentDatamodelList: DatamodelList
+        get() = datamodelsPerGame[currentGame]!!
     val areGroupsEmpty: Boolean
         get() = gameGroups.isEmpty()
     val areGamesEmpty: Boolean
         get() = areGroupsEmpty || gamesPerGroup[currentGroup]?.isEmpty ?: true
     val areDatamodelsEmpty: Boolean
         get() = areGamesEmpty || datamodelsPerGame[currentGame]?.isEmpty ?: true
-    val maxGroupIndex: Int get() = (gameGroups.size - 1).coerceAtLeast(0)
+    val maxGroupIndex: Int
+        get() = (gameGroups.size - 1).coerceAtLeast(0)
     var groupScroll: Int = 0
         set(value) {
             field = value.coerceIn(0, maxGroupScroll)
