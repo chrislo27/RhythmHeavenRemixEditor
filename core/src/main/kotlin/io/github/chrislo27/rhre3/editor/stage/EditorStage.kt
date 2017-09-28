@@ -191,6 +191,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             } else {
                 filter.update()
             }
+            filter.sort()
+
             filterButtons.forEach {
                 it.selected = it.filter === filter
             }

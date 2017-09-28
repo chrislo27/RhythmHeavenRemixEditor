@@ -118,7 +118,11 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 addAllDatamodelsFromGames()
             }
         }
+    }
 
+    override fun sort() {
+        super.sort()
+        gameGroups as MutableList
         gameGroups.sortWith(compareBy(GameGroupListComparatorIgnorePriority) { it.games.first() })
     }
 }

@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.editor.picker
 
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameByNameComparator
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 
@@ -50,5 +51,21 @@ abstract class Filter {
     }
 
     abstract fun update()
+
+    open fun sort() {
+        gameGroups as MutableList
+        gamesPerGroup as MutableMap
+        datamodelsPerGame as MutableMap
+
+        gamesPerGroup.values.forEach {
+            val list = it.list
+
+            list.sortWith(GameByNameComparator)
+        }
+
+        gameGroups.sortWith(compareBy {
+            it.games.first()
+        })
+    }
 
 }
