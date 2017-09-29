@@ -377,6 +377,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+        // waveform
+        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PlayState.PLAYING && ViewType.WAVEFORM in views) {
+            batch.setColor(theme.waveform.r, theme.waveform.g, theme.waveform.b, theme.waveform.a * 0.65f)
+
+            val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
+            val samplesPerFrame = samplesPerSecond / 60
+            val fineness: Int = (samplesPerFrame / 1).coerceAtMost(samplesPerFrame)
+
+            val isPresentationMode = stage.presentationModeStage.visible
+            val viewportWidth = if (isPresentationMode) camera.viewportWidth * 0.5f else camera.viewportWidth
+            val height = if (!isPresentationMode) TRACK_COUNT / 2f else 1f
+            val centre = TRACK_COUNT / 2f
+
+            BeadsSoundSystem.audioContext.getValues(BeadsSoundSystem.sampleArray)
+
+            val data = BeadsSoundSystem.sampleArray
+            for (x in 0 until fineness) {
+                val rawH = height * data[(x.toFloat() / fineness * data.size).toInt()]
+                val h = if (isPresentationMode) Math.abs(rawH) else rawH.coerceIn(-2f, 2f)
+                val width = viewportWidth / fineness.toFloat() * camera.zoom
+                if (!isPresentationMode) {
+                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, centre - h / 2, width, h)
+                } else {
+                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, -3f, width, h / 2)
+                }
+            }
+
+            batch.setColor(1f, 1f, 1f, 1f)
+        }
+
         // game boundaries view (dividers)
         if (isGameBoundariesInViews) {
             remix.gameSections.values.forEach { section ->
@@ -686,28 +716,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
         batch.begin()
-
-        if (SoundSystem.system == BeadsSoundSystem && ViewType.WAVEFORM in views) {
-            batch.setColor(0f, 1f, 1f, 1f)
-
-            val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
-            val samplesPerFrame = samplesPerSecond / 60
-            val fineness: Int = (samplesPerFrame / 1).coerceAtMost(samplesPerFrame)
-
-            val width = Gdx.graphics.width / fineness.toFloat()
-            val height = 96f
-            val centre = Gdx.graphics.height / 2f
-
-            BeadsSoundSystem.audioContext.getValues(BeadsSoundSystem.sampleArray)
-
-            val data = BeadsSoundSystem.sampleArray
-            for (x in 0 until fineness) {
-                val h = height * data[(x.toFloat() / fineness * data.size).toInt()]
-                batch.fillRect(x * width, centre - h, width, h * 2)
-            }
-
-            batch.setColor(1f, 1f, 1f, 1f)
-        }
 
         batch.end()
 
