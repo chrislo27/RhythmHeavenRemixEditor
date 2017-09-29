@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -70,12 +71,14 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
                 batch.color = themePalette.textColor
 
                 val line = 3f
+                val lineX = line * Gdx.graphics.width / RHRE3.WIDTH
+                val lineY = line * Gdx.graphics.height / RHRE3.HEIGHT
 
-                batch.drawRect(location.realX, location.realY, location.realWidth, location.realHeight, line)
-                batch.fillRect(location.realX + line * 2,
-                               location.realY + line * 2,
-                               (location.realWidth - line * 4) * progress.coerceIn(0f, 1f),
-                               location.realHeight - line * 4)
+                batch.drawRect(location.realX, location.realY, location.realWidth, location.realHeight, lineX, lineY)
+                batch.fillRect(location.realX + lineX * 2,
+                               location.realY + lineY * 2,
+                               (location.realWidth - lineX * 4) * progress.coerceIn(0f, 1f),
+                               location.realHeight - lineY * 4)
 
                 batch.setColor(oldColor)
             }
