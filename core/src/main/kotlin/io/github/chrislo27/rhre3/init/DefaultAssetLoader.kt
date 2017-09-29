@@ -65,6 +65,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_xcheckedbox", "images/ui/checkbox/x.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_presentation", "images/ui/icons/presentation_mode.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_views", "images/ui/icons/views.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_inspections", "images/ui/icons/inspections.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_inspections_big", "images/ui/icons/biginspections.png")
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
