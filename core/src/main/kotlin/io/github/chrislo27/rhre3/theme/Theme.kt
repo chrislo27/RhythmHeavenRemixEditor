@@ -70,6 +70,8 @@ open class Theme : Disposable {
         protected set
     @HexColor lateinit var trackLine: Color
         protected set
+    @HexColor lateinit var waveform: Color
+        protected set
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var texture: String? = "<insert optional Base64 encoded RGBA8888 PNG here>"
@@ -165,6 +167,7 @@ open class LightTheme : Theme() {
 
         background = Color(0.925f, 0.925f, 0.925f, 1f)
         trackLine = Color(0.1f, 0.1f, 0.1f, 1f)
+        waveform = Color(trackLine)
 
         trackers = TrackersGroup().apply {
             applyDefaults()
@@ -193,6 +196,7 @@ open class DarkTheme : Theme() {
 
         background = Color(0.15f, 0.15f, 0.15f, 1f)
         trackLine = Color(0.95f, 0.95f, 0.95f, 1f)
+        waveform = Color(trackLine)
 
         trackers = TrackersGroup().apply {
             applyDefaults()
@@ -221,6 +225,7 @@ open class RHRE0Theme : Theme() {
 
         background = Color(1f, 165f / 255f, 0.5f, 1f)
         trackLine = Color(0f, 0f, 0f, 1f)
+        waveform = Color(trackLine)
 
         trackers = TrackersGroup().apply {
             applyDefaults()
@@ -249,6 +254,7 @@ open class BackgroundTheme(name: String, background: Color) : Theme() {
 
         this.background = background
         trackLine = Color(0.1f, 0.1f, 0.1f, 1f)
+        waveform = Color(trackLine)
 
         trackers = TrackersGroup().apply {
             applyDefaults()
@@ -278,6 +284,7 @@ open class DarkPastelTheme(name: String, trackLine: Color) : Theme() {
 
         this.background = Color(0.15f, 0.15f, 0.15f, 1f)
         this.trackLine = trackLine
+        waveform = Color(trackLine)
 
         trackers = TrackersGroup().apply {
             applyDefaults()

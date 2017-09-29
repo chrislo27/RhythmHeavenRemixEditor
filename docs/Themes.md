@@ -18,6 +18,7 @@ Below is a sample json file:<br>
   "name" : "(Example) theme.light",
   "background" : "#EBEBEB",
   "trackLine" : "#191919",
+  "waveform" : "#191919",
   "texture" : "<insert optional Base64 encoded RGBA8888 PNG here>",
   "trackers" : {
     "playback" : "#00FF00",
