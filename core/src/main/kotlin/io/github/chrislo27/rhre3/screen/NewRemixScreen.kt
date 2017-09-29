@@ -28,12 +28,6 @@ class NewRemixScreen(main: RHRE3Application)
         get() = editorScreen.editor
     override val stage: Stage<NewRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    @Volatile private var isChooserOpen = false
-        set(value) {
-            field = value
-            stage as GenericStage
-            stage.backButton.enabled = !isChooserOpen
-        }
     private val mainLabel: TextLabel<NewRemixScreen>
 
     init {
@@ -42,9 +36,7 @@ class NewRemixScreen(main: RHRE3Application)
         stage.titleLabel.text = "screen.new.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            if (!isChooserOpen) {
-                main.screen = ScreenRegistry.getNonNull("editor")
-            }
+            main.screen = ScreenRegistry.getNonNull("editor")
         }
 
         val palette = main.uiPalette

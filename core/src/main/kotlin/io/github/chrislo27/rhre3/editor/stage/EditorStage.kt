@@ -992,7 +992,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = size * 6 + padding * 6)
             }
-
             buttonBarStage.elements += MetronomeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = size * 7 + padding * 7)
@@ -1001,6 +1000,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                                             buttonBarStage).apply {
                 this.location.set(screenX = size * 8 + padding * 8, screenWidth = size)
 //                this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
+            }
+            buttonBarStage.elements += StatsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = size * 9 + padding * 9)
             }
 
             // right aligned

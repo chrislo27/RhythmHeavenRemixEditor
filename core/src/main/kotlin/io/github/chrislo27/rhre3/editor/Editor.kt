@@ -275,8 +275,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(
-                    shakeValue) * (ENTITY_HEIGHT / ENTITY_WIDTH)
+            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) *
+                    (ENTITY_HEIGHT / ENTITY_WIDTH)
 
             camera.update()
 
@@ -398,7 +398,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val h = if (isPresentationMode) Math.abs(rawH) else rawH.coerceIn(-2f, 2f)
                 val width = viewportWidth / fineness.toFloat() * camera.zoom
                 if (!isPresentationMode) {
-                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, centre - h / 2, width, h)
+                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, centre - h / 2,
+                                   width, h)
                 } else {
                     batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, -3f, width, h / 2)
                 }
