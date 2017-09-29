@@ -37,6 +37,9 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
+import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
@@ -221,7 +224,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (!entity.isStretchable)
             return StretchRegion.NONE
 
-        if (beat in entity.bounds.x..Math.min(entity.bounds.x + IStretchable.STRETCH_AREA, entity.bounds.x + entity.bounds.width / 2f)) {
+        if (beat in entity.bounds.x..Math.min(entity.bounds.x + IStretchable.STRETCH_AREA,
+                                              entity.bounds.x + entity.bounds.width / 2f)) {
             return StretchRegion.LEFT
         }
 
@@ -682,6 +686,28 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
         batch.begin()
+
+        if (SoundSystem.system == BeadsSoundSystem && ViewType.WAVEFORM in views) {
+            batch.setColor(0f, 1f, 1f, 1f)
+
+            val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
+            val samplesPerFrame = samplesPerSecond / 60
+            val fineness: Int = (samplesPerFrame / 1).coerceAtMost(samplesPerFrame)
+
+            val width = Gdx.graphics.width / fineness.toFloat()
+            val height = 96f
+            val centre = Gdx.graphics.height / 2f
+
+            BeadsSoundSystem.audioContext.getValues(BeadsSoundSystem.sampleArray)
+
+            val data = BeadsSoundSystem.sampleArray
+            for (x in 0 until fineness) {
+                val h = height * data[(x.toFloat() / fineness * data.size).toInt()]
+                batch.fillRect(x * width, centre - h, width, h * 2)
+            }
+
+            batch.setColor(1f, 1f, 1f, 1f)
+        }
 
         batch.end()
 

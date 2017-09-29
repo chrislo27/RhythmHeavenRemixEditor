@@ -36,6 +36,16 @@ object BeadsSoundSystem : SoundSystem() {
 
     private val sounds: MutableList<BeadsSound> = CopyOnWriteArrayList()
 
+    var sampleArray: FloatArray = FloatArray(audioContext.bufferSize)
+        private set
+        get() {
+            if (field.size != audioContext.bufferSize) {
+                field = FloatArray(audioContext.bufferSize)
+            }
+
+            return field
+        }
+
     private fun createAudioContext(): AudioContext =
             AudioContext(JavaSoundAudioIO().apply {
                 val index = AudioSystem.getMixerInfo().toList().indexOfFirst {
