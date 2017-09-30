@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
 import net.beadsproject.beads.core.io.JavaSoundAudioIO
@@ -121,8 +122,9 @@ object BeadsSoundSystem : SoundSystem() {
 
             val bufStream = tempFile.inputStream()
             val length = tempFile.length()
+            Toolboks.LOGGER.info("Loading audio ${handle.name()} - $length bytes")
             if (length >= Int.MAX_VALUE)
-                throw OutOfMemoryError("File too big")
+                throw OutOfMemoryError("File too big - $length bytes >= ${Int.MAX_VALUE.toLong()}")
 
             val nFrames = length / (2 * music.channels)
             sample.resize(nFrames)
@@ -154,7 +156,6 @@ object BeadsSoundSystem : SoundSystem() {
         }
 
         music.dispose()
-
 
         return beadsAudio
     }
