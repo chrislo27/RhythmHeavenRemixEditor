@@ -277,6 +277,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             incremental = true
             size = 24
             characters = ""
+            hinting = FreeTypeFontGenerator.Hinting.AutoFull
         }
     }
 
