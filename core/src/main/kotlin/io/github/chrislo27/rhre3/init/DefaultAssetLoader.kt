@@ -72,6 +72,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_callAndResponse", "images/ui/searchbar/callAndResponse.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_favourites", "images/ui/searchbar/favourites.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_useInRemix", "images/ui/searchbar/useInRemix.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_play", "images/ui/icons/play.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_pause", "images/ui/icons/pause.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_stop", "images/ui/icons/stop.png")

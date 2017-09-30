@@ -23,6 +23,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         GAME_NAME("gameName"),
         ENTITY_NAME("entityName"),
         FAVOURITES("favourites"),
+        USE_IN_REMIX("useInRemix"),
         CALL_AND_RESPONSE("callAndResponse");
 
         companion object {

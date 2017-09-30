@@ -1,7 +1,12 @@
 package io.github.chrislo27.rhre3.editor.picker
 
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
-import io.github.chrislo27.rhre3.editor.stage.SearchBar
+import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.CALL_AND_RESPONSE
+import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.ENTITY_NAME
+import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.FAVOURITES
+import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.GAME_NAME
+import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.USE_IN_REMIX
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroupListComparatorIgnorePriority
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -46,7 +51,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
         }
 
         when (filterButton.filter) {
-            SearchBar.Filter.GAME_NAME -> {
+            GAME_NAME -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     query in group.name.toLowerCase(Locale.ROOT)
                             || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
@@ -63,7 +68,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 }
                 addAllDatamodelsFromGames()
             }
-            SearchBar.Filter.ENTITY_NAME -> {
+            ENTITY_NAME -> {
                 GameRegistry.data.gameGroupsList.forEach { group ->
                     val result: List<List<Datamodel>> = group.games.mapNotNull { game ->
                         game.placeableObjects.filter {
@@ -89,7 +94,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                     }
                 }
             }
-            SearchBar.Filter.CALL_AND_RESPONSE -> {
+            CALL_AND_RESPONSE -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     group.games.any { game ->
                         query in game.name.toLowerCase(Locale.ROOT) && game.hasCallAndResponse
@@ -107,7 +112,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                     }
                 }
             }
-            SearchBar.Filter.FAVOURITES -> {
+            FAVOURITES -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     (group.isFavourited && query in group.name.toLowerCase(Locale.ROOT))
                             || group.games.any { game -> game.isFavourited && query in game.name.toLowerCase(Locale.ROOT) }
@@ -123,6 +128,25 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                     }
                 }
 
+                addAllDatamodelsFromGames()
+            }
+            USE_IN_REMIX -> {
+                val remix = editorStage.editor.remix
+
+                remix.entities
+                        .filterIsInstance<ModelEntity<*>>()
+                        .map(ModelEntity<*>::datamodel)
+                        .map(Datamodel::game)
+                        .distinct()
+                        .groupBy(Game::gameGroup)
+                        .asSequence()
+                        .associateTo(gamesPerGroup) {
+                            it.key to GameList().apply {
+                                list.addAll(it.value)
+                            }
+                        }
+
+                addAllGameGroupsFromGames()
                 addAllDatamodelsFromGames()
             }
         }

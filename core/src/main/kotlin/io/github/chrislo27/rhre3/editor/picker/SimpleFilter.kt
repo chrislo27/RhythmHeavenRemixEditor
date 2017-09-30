@@ -12,11 +12,12 @@ open class SimpleFilter(val groupFilter: (GameGroup) -> Boolean,
                        ) : Filter() {
 
     var shouldUpdate: Boolean = true
+    open val alwaysUpdate: Boolean = false
 
     override fun update() {
         if (!shouldUpdate)
             return
-        shouldUpdate = false
+        shouldUpdate = alwaysUpdate
 
         gameGroups as MutableList
         gamesPerGroup as MutableMap

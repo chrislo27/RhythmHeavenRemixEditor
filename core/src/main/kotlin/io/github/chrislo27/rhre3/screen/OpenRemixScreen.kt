@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
@@ -284,6 +285,7 @@ class OpenRemixScreen(main: RHRE3Application)
             editor.remix = remix
             alsoDo()
             editor.remix.recomputeCachedData()
+            editor.stage.updateSelected(EditorStage.DirtyType.SEARCH_DIRTY)
             (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
             Gdx.app.postRunnable {
                 System.gc()
