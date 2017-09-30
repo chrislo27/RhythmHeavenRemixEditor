@@ -228,6 +228,16 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.postRender()
     }
 
+    override fun dispose() {
+        super.dispose()
+        Favourites.persist()
+        preferences.flush()
+        GameRegistry.dispose()
+        Themes.dispose()
+        persistWindowSettings()
+        Gdx.files.local("tmpMusic/").emptyDirectory()
+    }
+
     fun persistWindowSettings() {
         val isFullscreen = Gdx.graphics.isFullscreen
         if (isFullscreen) {
@@ -240,7 +250,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     fun loadWindowSettings() {
-        val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE, "${RHRE3.WIDTH}x${RHRE3.HEIGHT}")
+        val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE, "${RHRE3.WIDTH}x${RHRE3.HEIGHT}").toLowerCase(Locale.ROOT)
         if (str == "fs") {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
         } else {
@@ -267,16 +277,6 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             size = 24
             characters = ""
         }
-    }
-
-    override fun dispose() {
-        super.dispose()
-        Favourites.persist()
-        preferences.flush()
-        GameRegistry.dispose()
-        Themes.dispose()
-        persistWindowSettings()
-        Gdx.files.local("tmpMusic/").emptyDirectory()
     }
 
     override fun createDefaultFont(): FreeTypeFont {
