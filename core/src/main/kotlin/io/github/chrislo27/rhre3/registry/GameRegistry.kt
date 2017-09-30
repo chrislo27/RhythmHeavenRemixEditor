@@ -348,13 +348,14 @@ object GameRegistry : Disposable {
 
                 DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
             } else {
-                val id = if (shouldCustomsGetPrefixes) CUSTOM_PREFIX + folder.nameWithoutExtension() else folder.nameWithoutExtension()
+                val nameWithoutExt = folder.nameWithoutExtension()
+                val id = if (shouldCustomsGetPrefixes) CUSTOM_PREFIX + nameWithoutExt else nameWithoutExt
                 if (gameMap.containsKey(id)) {
                     throw UnsupportedOperationException(
                             "Cannot load custom sound folder $id/ - already exists in registry")
                 }
                 game = Game(id,
-                            folder.nameWithoutExtension(),
+                            nameWithoutExt,
                             Series.CUSTOM,
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
