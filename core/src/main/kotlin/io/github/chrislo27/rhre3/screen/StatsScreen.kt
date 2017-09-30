@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -11,6 +12,7 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Stage
+import io.github.chrislo27.toolboks.ui.TextLabel
 
 
 class StatsScreen(main: RHRE3Application)
@@ -21,7 +23,10 @@ class StatsScreen(main: RHRE3Application)
         get() = editorScreen.editor
     override val stage: Stage<StatsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
+    private val notEnoughDataLabel: TextLabel<StatsScreen>
+
     init {
+        val palette = main.uiPalette
         stage as GenericStage
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_inspections_big"))
         stage.titleLabel.text = "screen.stats.title"
@@ -30,7 +35,12 @@ class StatsScreen(main: RHRE3Application)
             main.screen = ScreenRegistry.getNonNull("editor")
         }
 
-
+        notEnoughDataLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            textWrapping = false
+            text = "screen.stats.none"
+            textAlign = Align.center
+        }
+        stage.centreStage.elements += notEnoughDataLabel
 
         stage.updatePositions()
     }
@@ -48,4 +58,5 @@ class StatsScreen(main: RHRE3Application)
 
     override fun tickUpdate() {
     }
+
 }
