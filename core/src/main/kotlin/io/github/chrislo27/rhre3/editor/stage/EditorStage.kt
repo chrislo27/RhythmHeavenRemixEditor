@@ -1004,6 +1004,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += StatsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = size * 9 + padding * 9)
+                this.visible = false
             }
 
             // right aligned
