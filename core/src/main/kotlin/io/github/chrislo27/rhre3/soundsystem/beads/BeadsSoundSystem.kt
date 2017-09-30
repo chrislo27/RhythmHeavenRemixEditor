@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.util.MusicTooLargeException
+import io.github.chrislo27.rhre3.util.MusicWayTooLargeException
 import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
@@ -110,24 +112,39 @@ object BeadsSoundSystem : SoundSystem() {
             }
             val fileOutStream = FileOutputStream(tempFile)
             val sample = beadsAudio.sample
+            var currentLength: Long = 0L
+            var overflowed = false
 
             while (true) {
                 val length = music.read(audioBytes)
-                if (length <= 0)
+                if (length <= 0) {
+                    overflowed = length < -1
+                    if (overflowed) {
+                        Toolboks.LOGGER.info("Potential overflow when reading music: got $length as length")
+                    }
                     break
+                }
+
+                currentLength += length
 
                 fileOutStream.write(audioBytes, 0, length)
             }
             StreamUtils.closeQuietly(fileOutStream)
 
             val bufStream = tempFile.inputStream()
-            val length = tempFile.length()
+            val length = currentLength
             Toolboks.LOGGER.info("Loading audio ${handle.name()} - $length bytes")
-            if (length >= Int.MAX_VALUE)
-                throw OutOfMemoryError("File too big - $length bytes >= ${Int.MAX_VALUE.toLong()}")
+            if (length > Int.MAX_VALUE || overflowed)
+                throw MusicWayTooLargeException(length)
 
             val nFrames = length / (2 * music.channels)
-            sample.resize(nFrames)
+            try {
+                sample.resize(nFrames)
+            } catch (oome: OutOfMemoryError) {
+                oome.printStackTrace()
+                // 32 bit float per sample
+                throw MusicTooLargeException(nFrames * music.channels * 4, oome)
+            }
             val interleaved = FloatArray(music.channels * (BUFFER_SIZE / (2 * music.channels)))
             val sampleData = Array(music.channels) { FloatArray(interleaved.size / music.channels) }
 

@@ -11,10 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.MusicData
-import io.github.chrislo27.rhre3.util.JavafxStub
-import io.github.chrislo27.rhre3.util.attemptRememberDirectory
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
-import io.github.chrislo27.rhre3.util.persistDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -39,6 +36,7 @@ class MusicSelectScreen(main: RHRE3Application)
             stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
+    @Volatile private var isLoading = false
     private val mainLabel: TextLabel<MusicSelectScreen>
 
     private fun createFileChooser() =
@@ -63,7 +61,7 @@ class MusicSelectScreen(main: RHRE3Application)
         stage.titleLabel.text = "screen.music.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            if (!isChooserOpen) {
+            if (!isChooserOpen && !isLoading) {
                 main.screen = ScreenRegistry.getNonNull("editor")
             }
         }
@@ -125,6 +123,7 @@ class MusicSelectScreen(main: RHRE3Application)
                 val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
+                    isLoading = true
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
                     try {
@@ -135,6 +134,8 @@ class MusicSelectScreen(main: RHRE3Application)
                     } catch (t: Throwable) {
                         t.printStackTrace()
                         updateLabels(t)
+                    } finally {
+                        isLoading = false
                     }
                 }
             }
@@ -155,7 +156,11 @@ class MusicSelectScreen(main: RHRE3Application)
 //                }
 //            }
         } else {
-            label.text = Localization["screen.music.invalid", throwable::class.java.canonicalName]
+            label.text = when (throwable) {
+                is MusicWayTooLargeException -> throwable.getLocalizedText()
+                is MusicTooLargeException -> throwable.getLocalizedText()
+                else -> Localization["screen.music.invalid", throwable::class.java.canonicalName]
+            }
         }
     }
 
