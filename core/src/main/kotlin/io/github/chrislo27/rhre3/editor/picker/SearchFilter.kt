@@ -138,6 +138,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                         .map(ModelEntity<*>::datamodel)
                         .map(Datamodel::game)
                         .distinct()
+                        .filter { query in it.name.toLowerCase(Locale.ROOT) }
                         .groupBy(Game::gameGroup)
                         .asSequence()
                         .associateTo(gamesPerGroup) {
