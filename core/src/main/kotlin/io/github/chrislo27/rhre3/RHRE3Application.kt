@@ -110,7 +110,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // 1.8.0_144
         // 9.X.Y(extra)
         val javaVersion = System.getProperty("java.version").trim()
-        val isAtLeastJava9: Boolean = javaVersion.startsWith("9")
+        val isAtLeastJava9: Boolean = !("1\\.\\d(?:.+)".toRegex().matches(javaVersion))
         Toolboks.LOGGER.info("Running on JRE $javaVersion (is at least 9?: $isAtLeastJava9)")
 
         // localization stuff
