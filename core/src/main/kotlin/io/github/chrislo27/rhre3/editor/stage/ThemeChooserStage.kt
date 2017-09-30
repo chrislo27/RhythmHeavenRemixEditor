@@ -49,7 +49,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
 
-                LoadedThemes.reloadPalettes(preferences, false)
+                LoadedThemes.reloadThemes(preferences, false)
                 LoadedThemes.persistIndex(preferences)
                 editor.theme = LoadedThemes.currentTheme
                 buttonScroll = 0

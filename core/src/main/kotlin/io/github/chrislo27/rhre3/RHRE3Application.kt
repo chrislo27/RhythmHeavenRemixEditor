@@ -147,7 +147,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
 
-        LoadedThemes.reloadPalettes(preferences, true)
+        // load themes
+        LoadedThemes.reloadThemes(preferences, true)
 
         // screens
         run {

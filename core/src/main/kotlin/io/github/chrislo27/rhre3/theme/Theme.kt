@@ -70,8 +70,14 @@ open class Theme : Disposable {
         protected set
     @HexColor lateinit var trackLine: Color
         protected set
-    @HexColor lateinit var waveform: Color
-        protected set
+
+    @field:JsonIgnore
+    private var waveformBacking: Color? = null
+    var waveform: Color
+        @HexColor get() = waveformBacking ?: trackLine
+        @HexColor set(value) {
+            waveformBacking = value
+        }
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var texture: String? = "<insert optional Base64 encoded RGBA8888 PNG here>"
