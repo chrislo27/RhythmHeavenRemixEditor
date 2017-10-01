@@ -658,10 +658,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
                         val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
-                        val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(
-                                Input.Keys.SHIFT_RIGHT)
-                        val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
-                                Input.Keys.CONTROL_RIGHT)
+                        val shift = Gdx.input.isShiftDown()
+                        val control = Gdx.input.isControlDown()
 
                         val bigFont = main.defaultFontLarge
                         val oldBigFontColor = bigFont.color
@@ -736,10 +734,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun renderUpdate() {
         remix.timeUpdate(Gdx.graphics.deltaTime)
 
-        val shift = Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
-        val control = Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(
-                Input.Keys.CONTROL_RIGHT)
-        val alt = Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
+        val shift = Gdx.input.isShiftDown()
+        val control = Gdx.input.isControlDown()
+        val alt = Gdx.input.isAltDown()
         val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
@@ -1082,12 +1079,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val mouseVector = mouseVector
-        val shift =
-                Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
-        val control =
-                Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
-        val alt =
-                Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
+        val shift = Gdx.input.isShiftDown()
+        val control = Gdx.input.isControlDown()
+        val alt = Gdx.input.isAltDown()
 
         val isMusicTrackerButtonDown = !(shift || alt) &&
                 ((!control && button == Input.Buttons.MIDDLE) || (button == Input.Buttons.RIGHT && control))
@@ -1270,12 +1264,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        val shift =
-                Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
-        val control =
-                Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
-        val alt =
-                Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.ALT_RIGHT)
+        val shift = Gdx.input.isShiftDown()
+        val control = Gdx.input.isControlDown()
+        val alt = Gdx.input.isAltDown()
 
         val clickOccupation = clickOccupation
         if (clickOccupation is ClickOccupation.Music &&
@@ -1431,12 +1422,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else if (tool.isTrackerRelated) {
             val tracker: Tracker = getTrackerOnMouse(tool.trackerClass) ?: return false
 
-            val shift =
-                    Gdx.input.isKeyPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Input.Keys.SHIFT_RIGHT)
-            val control =
-                    Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) || Gdx.input.isKeyPressed(Input.Keys.CONTROL_RIGHT)
-
-            tracker.onScroll(remix, -amount, shift, control)
+            tracker.onScroll(remix, -amount, Gdx.input.isShiftDown(), Gdx.input.isControlDown())
         }
 
         return false
