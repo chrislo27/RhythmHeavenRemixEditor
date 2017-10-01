@@ -266,13 +266,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         camera.position.y = 1f
         camera.zoom = MathUtils.lerp(camera.zoom, if (isGameBoundariesInViews) 1.5f else 1f,
                                      Gdx.graphics.deltaTime * 6.5f)
+        val oldCameraX = camera.position.x
+        val oldCameraY = camera.position.y
+        var adjustedCameraX = oldCameraX
+        var adjustedCameraY = oldCameraY
         if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
             val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
                 acc * ShakeEntity.getShakeIntensity(it.semitone)
             }
             val intensity = 0.125f
-            val oldX = camera.position.x
-            val oldY = camera.position.y
 
             camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
             camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) *
@@ -280,8 +282,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             camera.update()
 
-            camera.position.x = oldX
-            camera.position.y = oldY
+            adjustedCameraX = camera.position.x
+            adjustedCameraY = camera.position.y
+            camera.position.x = oldCameraX
+            camera.position.y = oldCameraY
         } else {
             camera.update()
         }
@@ -398,10 +402,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val h = if (isPresentationMode) Math.abs(rawH) else rawH.coerceIn(-2f, 2f)
                 val width = viewportWidth / fineness.toFloat() * camera.zoom
                 if (!isPresentationMode) {
-                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, centre - h / 2,
-                                   width, h)
+                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width,
+                                   centre - h / 2, width, h)
                 } else {
-                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width, -3f, width, h / 2)
+                    val cameraAdjX = (oldCameraX - adjustedCameraX)
+                    val cameraAdjY = (oldCameraY - adjustedCameraY)
+                    batch.fillRect((camera.position.x - cameraAdjX - viewportWidth / 2 * camera.zoom) + x * width,
+                                   -3f - cameraAdjY, width, h / 2)
                 }
             }
 
