@@ -44,7 +44,7 @@ abstract class Filter {
             field = value.coerceIn(0, maxGroupScroll)
         }
     val maxGroupScroll: Int
-        get() = (gameGroups.size / Editor.ICON_COUNT_X - Editor.ICON_COUNT_Y + 1).coerceAtLeast(0)
+        get() = (((gameGroups.size - 1) / Editor.ICON_COUNT_X + 1) - Editor.ICON_COUNT_Y).coerceAtLeast(0)
 
     protected fun clearAll() {
         gameGroups as MutableList

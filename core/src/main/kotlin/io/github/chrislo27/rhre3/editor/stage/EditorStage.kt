@@ -74,6 +74,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     val hoverTextLabel: TextLabel<EditorScreen>
     val searchFilter = SearchFilter(this)
+    val favouritesFilter = FavouritesFilter()
 
     lateinit var playButton: PlaybackButton
         private set
@@ -854,7 +855,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
                 filterButtons += tmp
             }
-            filterButtons += FilterButton(FavouritesFilter(), "editor.favourites",
+            filterButtons += FilterButton(favouritesFilter, "editor.favourites",
                                           palette, minimapBarStage, minimapBarStage).apply {
                 this.location.set(
                         screenWidth = buttonWidth,
@@ -1168,7 +1169,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
                 Favourites.persist()
 
-                updateSelected(DirtyType.SEARCH_DIRTY)
+                favouritesFilter.shouldUpdate = true
+                updateSelected()
             }
         }
 

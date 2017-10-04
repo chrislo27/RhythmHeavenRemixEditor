@@ -8,6 +8,4 @@ class FavouritesFilter : SimpleFilter(
         gameFilter = { it.isFavourited || it.gameGroup.isFavourited }
                                      ) {
 
-    override val alwaysUpdate: Boolean = true
-
 }
