@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
+import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -356,61 +357,63 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         setMusicVolume()
     }
 
-    var playState: PlayState = PlayState.STOPPED
-        set(value) {
-            val old = field
-            val music = music
-            field = value
-            when (field) {
-                PlayState.STOPPED -> {
-                    AssetRegistry.stopAllSounds()
-                    music?.music?.pause()
-                    SoundSystem.system.stop()
+    var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { prop, old, new ->
+        if (editor.clickOccupation != ClickOccupation.None)
+            return@vetoable false
+
+        val music = music
+        when (new) {
+            PlayState.STOPPED -> {
+                AssetRegistry.stopAllSounds()
+                music?.music?.pause()
+                SoundSystem.system.stop()
+                currentSubtitles.clear()
+                currentShakeEntities.clear()
+            }
+            PlayState.PAUSED -> {
+                AssetRegistry.pauseAllSounds()
+                music?.music?.pause()
+                SoundSystem.system.pause()
+            }
+            PlayState.PLAYING -> {
+                lastMusicPosition = -1f
+                scheduleMusicPlaying = true
+                AssetRegistry.resumeAllSounds()
+                if (old == PlayState.STOPPED) {
+                    recomputeCachedData()
+                    seconds = tempos.beatsToSeconds(playbackStart)
+                    entities.forEach {
+                        if (it.getUpperUpdateableBound() < beat) {
+                            it.playbackCompletion = PlaybackCompletion.FINISHED
+                        } else {
+                            it.playbackCompletion = PlaybackCompletion.WAITING
+                        }
+                    }
+
+                    lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
+
+                    if (editor.stage.tapalongStage.visible) {
+                        editor.stage.tapalongStage.reset()
+                    }
+
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
                 }
-                PlayState.PAUSED -> {
-                    AssetRegistry.pauseAllSounds()
-                    music?.music?.pause()
-                    SoundSystem.system.pause()
-                }
-                PlayState.PLAYING -> {
-                    lastMusicPosition = -1f
-                    scheduleMusicPlaying = true
-                    AssetRegistry.resumeAllSounds()
-                    if (old == PlayState.STOPPED) {
-                        recomputeCachedData()
-                        seconds = tempos.beatsToSeconds(playbackStart)
-                        entities.forEach {
-                            if (it.getUpperUpdateableBound() < beat) {
-                                it.playbackCompletion = PlaybackCompletion.FINISHED
-                            } else {
-                                it.playbackCompletion = PlaybackCompletion.WAITING
-                            }
-                        }
-
-                        lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
-
-                        if (editor.stage.tapalongStage.visible) {
-                            editor.stage.tapalongStage.reset()
-                        }
-
-                        currentSubtitles.clear()
-                        currentShakeEntities.clear()
-                    }
-                    SoundSystem.system.resume()
-                    if (music != null) {
-                        if (seconds >= musicStartSec) {
-                            music.music.play()
-                            setMusicVolume()
-                            seekMusic()
-                        } else {
-                            music.music.stop()
-                        }
+                SoundSystem.system.resume()
+                if (music != null) {
+                    if (seconds >= musicStartSec) {
+                        music.music.play()
+                        setMusicVolume()
+                        seekMusic()
+                    } else {
+                        music.music.stop()
                     }
                 }
             }
         }
+
+        true
+    }
 
     private fun setMusicVolume() {
         val music = music ?: return
