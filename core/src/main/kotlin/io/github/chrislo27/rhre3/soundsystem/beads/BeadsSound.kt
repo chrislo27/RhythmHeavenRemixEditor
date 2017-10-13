@@ -13,7 +13,7 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val useGranular = true
+        val useGranular = false
         val samplePlayer = if (useGranular)
             GranularSamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
         else SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
