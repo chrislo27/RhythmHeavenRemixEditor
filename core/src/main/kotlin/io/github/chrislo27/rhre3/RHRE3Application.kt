@@ -210,7 +210,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         if (screen !is HidesVersionText) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
-            font.setColor(1f, 1f, 1f, 1f)
+
+            if (!githubVersion.isUnknown && githubVersion > RHRE3.VERSION) {
+                font.color = Color.ORANGE
+            } else {
+                font.setColor(1f, 1f, 1f, 1f)
+            }
 
             val oldProj = batch.projectionMatrix
             batch.projectionMatrix = defaultCamera.combined

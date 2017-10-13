@@ -81,7 +81,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
-            main.screen = if (!main.githubVersion.isUnknown && RHRE3.VERSION <= main.githubVersion)
+            main.screen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion)
                 ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
                     it.isBeginning = true
                 }
