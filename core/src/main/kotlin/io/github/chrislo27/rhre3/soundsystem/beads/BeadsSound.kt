@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.soundsystem.beads
 
 import io.github.chrislo27.rhre3.soundsystem.Sound
+import net.beadsproject.beads.ugens.GranularSamplePlayer
 import net.beadsproject.beads.ugens.SamplePlayer
 import java.util.concurrent.ConcurrentHashMap
 
@@ -12,7 +13,10 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val samplePlayer = SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
+        val useGranular = true
+        val samplePlayer = if (useGranular)
+            GranularSamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
+        else SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
         val result = id to GainedSamplePlayer(samplePlayer) { players.remove(id) }.also { gsp ->
             samplePlayer.apply {
                 killOnEnd = true
@@ -36,6 +40,7 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         result.second.player.rateUGen.value = rate
         result.second.gain.gain = volume
         result.second.pitch.value = pitch
+        result.second.rate.value = rate
         result.second.addToContext()
 
         return result.first
@@ -44,6 +49,11 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
     override fun setPitch(id: Long, pitch: Float) {
         val player = players[id] ?: return
         player.pitch.value = pitch
+    }
+
+    override fun setRate(id: Long, rate: Float) {
+        val player = players[id] ?: return
+        player.rate.value = rate
     }
 
     override fun setVolume(id: Long, vol: Float) {

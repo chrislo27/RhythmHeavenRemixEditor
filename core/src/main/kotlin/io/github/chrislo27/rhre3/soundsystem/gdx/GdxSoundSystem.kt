@@ -57,6 +57,10 @@ class GdxSoundWrapper(val original: com.badlogic.gdx.audio.Sound) : Sound {
         original.setPitch(id, pitch)
     }
 
+    override fun setRate(id: Long, rate: Float) {
+        TODO("Not implemented for the GDX sound system")
+    }
+
     override fun setVolume(id: Long, vol: Float) {
         original.setVolume(id, vol)
     }

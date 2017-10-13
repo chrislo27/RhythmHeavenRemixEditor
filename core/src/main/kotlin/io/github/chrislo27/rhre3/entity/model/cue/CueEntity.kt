@@ -59,18 +59,24 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return remix.editor.theme.entities.cue
     }
 
-    private fun Cue.getPitch(): Float {
-        return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width) * Semitones.getALPitch(semitone)
+    private fun getSemitonePitch(): Float {
+        return Semitones.getALPitch(semitone)
+    }
+
+    private fun Cue.getBaseBpmRate(): Float {
+        return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width)
     }
 
     private val volume: Float
         get() = if (remix.cuesMuted && remix.editor.stage.tapalongStage.visible) 0f else 1f
 
     override fun onStart() {
-        soundId = cue.sound.sound.play(loop = cue.loops, pitch = cue.getPitch(), volume = volume)
+        soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch(), rate = cue.getBaseBpmRate(),
+                                       volume = volume)
 
         introSoundId = cue.introSoundCue?.sound?.sound?.play(loop = false,
-                                                             pitch = cue.introSoundCue!!.getPitch(),
+                                                             pitch = getSemitonePitch(),
+                                                             rate = cue.introSoundCue!!.getBaseBpmRate(),
                                                              volume = volume) ?: -1L
     }
 
@@ -78,8 +84,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setPitch(soundId,
-                                             cue.getPitch())
+                    cue.sound.sound.setRate(soundId,
+                                             cue.getBaseBpmRate())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
@@ -101,7 +107,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
         endingSoundId =
                 cue.endingSoundCue?.sound?.sound?.
                         play(loop = false, volume = volume,
-                             pitch = cue.endingSoundCue!!.getPitch()) ?: -1L
+                             rate = cue.endingSoundCue!!.getBaseBpmRate(),
+                             pitch = getSemitonePitch()) ?: -1L
     }
 
     override fun copy(remix: Remix): CueEntity {

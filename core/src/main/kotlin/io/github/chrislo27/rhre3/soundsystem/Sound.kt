@@ -11,6 +11,8 @@ interface Sound : Disposable {
 
     fun setVolume(id: Long, vol: Float)
 
+    fun setRate(id: Long, rate: Float)
+
     fun stop(id: Long)
 
 }
