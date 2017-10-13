@@ -26,7 +26,8 @@ class EditorVersionScreen(main: RHRE3Application)
 
     private val label: TextLabel<EditorVersionScreen>
 
-    var gotoScreen: String = "info"
+    var isBeginning: Boolean = false
+    private var timeOnScreen = 0f
 
     init {
         stage as GenericStage
@@ -37,8 +38,8 @@ class EditorVersionScreen(main: RHRE3Application)
         }
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull(gotoScreen)
-            gotoScreen = "info"
+            main.screen = ScreenRegistry.getNonNull(if (isBeginning) "editor" else "info")
+            isBeginning = false
         }
 
         stage.bottomStage.elements += object : Button<EditorVersionScreen>(palette, stage.bottomStage,
@@ -46,6 +47,8 @@ class EditorVersionScreen(main: RHRE3Application)
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 Gdx.net.openURI(RHRE3.GITHUB_RELEASES)
+                val stage = stage as GenericStage
+                stage.backButton.enabled = true
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -96,10 +99,25 @@ class EditorVersionScreen(main: RHRE3Application)
         stage.updatePositions()
     }
 
+    override fun renderUpdate() {
+        super.renderUpdate()
+
+        timeOnScreen += Gdx.graphics.deltaTime
+
+        if (timeOnScreen >= 3f) {
+            stage as GenericStage
+            stage.backButton.enabled = true
+        }
+    }
+
     override fun show() {
         super.show()
         stage as GenericStage
         stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 5)}"
+        timeOnScreen = 0f
+        if (isBeginning) {
+            stage.backButton.enabled = false
+        }
     }
 
     override fun dispose() {
