@@ -167,24 +167,6 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-            // RHRM
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    Gdx.net.openURI("https://github.com/inkedsplat/RHRM")
-                }
-            }.apply {
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.text = "screen.info.rhrm"
-                })
-
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 4 + buttonHeight * 3,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight * 2 + padding)
-            }
 
             // Settings
             // Autosave timer
