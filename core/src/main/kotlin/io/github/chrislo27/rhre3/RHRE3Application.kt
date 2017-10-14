@@ -169,17 +169,17 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "stats" to StatsScreen(this)
             }
 
-            setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
-                              .setNextScreen(
-                                      {
-                                          defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
-                                          defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
-                                          defaultCamera.update()
+            val nextScreenLambda = {
+                defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
+                defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
+                defaultCamera.update()
 
-                                          addOtherScreens()
-                                          loadWindowSettings()
-                                          ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
-                                      }))
+                addOtherScreens()
+                loadWindowSettings()
+                ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
+            }
+            setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
+                              .setNextScreen(nextScreenLambda))
 
         }
 
