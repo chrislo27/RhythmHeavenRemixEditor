@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import de.sciss.jump3r.Main
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -64,7 +65,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
                         ?: getDefaultDirectory()
                 val key = "screen.export.fileFilter"
-                val extensions = arrayOf("*.wav")
+                val extensions = arrayOf("*.wav", "*.mp3")
 
                 this.extensionFilters.clear()
                 val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
@@ -121,7 +122,7 @@ class ExportRemixScreen(main: RHRE3Application)
     }
 
     @Synchronized
-    private fun export(file: File) {
+    private fun export(file: File, convertToMP3: Boolean) {
         if (isExporting || !isCapableOfExporting)
             return
         isExporting = true
@@ -143,7 +144,11 @@ class ExportRemixScreen(main: RHRE3Application)
         context.out.clearDependents()
 
         // prep recorder
-        val recorder = RecordToFile(context, 2, file, AudioFileFormat.Type.WAVE)
+        val recorderFile = if(convertToMP3)
+            File.createTempFile("export-wav-temp-${System.currentTimeMillis()}", ".wav").apply {
+                this.deleteOnExit()
+            } else file
+        val recorder = RecordToFile(context, 2, recorderFile, AudioFileFormat.Type.WAVE)
         recorder.addInput(context.out)
         context.out.addDependent(recorder)
 
@@ -161,15 +166,22 @@ class ExportRemixScreen(main: RHRE3Application)
             remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
             BeadsSoundSystem.isRealtime = true
-            isExporting = false
 
-            BeadsSoundSystem.resume()
+            if (success && convertToMP3) {
+                mainLabel.text = Localization["screen.export.convertingToMP3"]
+                val args = arrayOf(recorderFile.path, file.path)
+                Main().run(args)
+            }
+
             if (success) {
                 (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
             } else {
                 (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
+
+            BeadsSoundSystem.resume()
+            isExporting = false
         }
 
         try {
@@ -230,7 +242,13 @@ class ExportRemixScreen(main: RHRE3Application)
             throw e
         }
 
-        finalize(true)
+        try {
+            finalize(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            finalize(false)
+            throw e
+        }
     }
 
     @Synchronized
@@ -246,12 +264,13 @@ class ExportRemixScreen(main: RHRE3Application)
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
                     launch(CommonPool) {
                         try {
-                            val correctFile = if (file.extension != "wav")
+                            val correctFile = if (!file.extension.equals("wav", true) && !file.extension.equals("mp3", true))
                                 file.parentFile.resolve("${file.name}.wav")
                             else
                                 file
+                            val isMp3 = file.extension.equals("mp3", true)
 
-                            export(correctFile)
+                            export(correctFile, isMp3)
 
                             mainLabel.text = Localization["screen.export.success"]
                         } catch (t: Throwable) {

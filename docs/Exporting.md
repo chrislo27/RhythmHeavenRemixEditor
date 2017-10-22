@@ -2,8 +2,8 @@
 
 So, you've made your remix and it's all ready to go. How do you distribute it?
 
-**Starting in `v3.3.0`**, you can now export remixes as WAV files directly.
-You should probably convert these to a compressed format like MP3 or OGG.
+**Starting in `v3.3.0`**, you can now export remixes as WAV files directly.<br>
+**Starting in `v3.5.0`**, you can now also export to MP3.
 
 You could also simply distribute the `rhre3` file.
 Other people with the program can open them and listen to it.

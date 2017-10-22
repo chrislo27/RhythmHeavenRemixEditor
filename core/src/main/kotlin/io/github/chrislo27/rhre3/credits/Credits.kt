@@ -44,7 +44,8 @@ object Credits {
                             "JGit\n" +
                             "Apache Commons IO\n" +
                             "SLF4J\n" +
-                            "OSHI",
+                            "OSHI\n" +
+                            "jump3r",
             "you" crediting ""
                                    )
 
