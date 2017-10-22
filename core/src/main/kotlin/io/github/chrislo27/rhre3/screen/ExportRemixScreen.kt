@@ -145,7 +145,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
         // prep recorder
         val recorderFile = if(convertToMP3)
-            File.createTempFile("export-wav-temp-${System.currentTimeMillis()}", ".wav").apply {
+            File.createTempFile("rhre3-export-wav-temp-${System.currentTimeMillis()}", ".wav").apply {
                 this.deleteOnExit()
             } else file
         val recorder = RecordToFile(context, 2, recorderFile, AudioFileFormat.Type.WAVE)
