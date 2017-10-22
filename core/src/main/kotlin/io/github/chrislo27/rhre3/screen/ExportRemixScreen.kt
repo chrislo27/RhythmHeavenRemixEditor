@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import de.sciss.jump3r.Main
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -168,7 +169,9 @@ class ExportRemixScreen(main: RHRE3Application)
 
             if (success && convertToMP3) {
                 mainLabel.text = Localization["screen.export.convertingToMP3"]
-                val args = arrayOf(recorderFile.path, file.path)
+                val args = arrayOf("--ignore-tag-errors",
+                                   "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
+                                   recorderFile.path, file.path)
                 Main().run(args)
             }
 
