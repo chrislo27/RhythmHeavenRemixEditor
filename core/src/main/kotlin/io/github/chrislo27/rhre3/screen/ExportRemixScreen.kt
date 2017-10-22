@@ -165,7 +165,6 @@ class ExportRemixScreen(main: RHRE3Application)
             }
             remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
-            BeadsSoundSystem.isRealtime = true
 
             if (success && convertToMP3) {
                 mainLabel.text = Localization["screen.export.convertingToMP3"]
@@ -180,6 +179,7 @@ class ExportRemixScreen(main: RHRE3Application)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
 
+            BeadsSoundSystem.isRealtime = true
             BeadsSoundSystem.resume()
             isExporting = false
         }
