@@ -38,6 +38,7 @@ import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
 import net.beadsproject.beads.ugens.RecordToFile
 import java.io.File
+import java.util.*
 import javax.sound.sampled.AudioFileFormat
 
 
@@ -60,6 +61,15 @@ class ExportRemixScreen(main: RHRE3Application)
     @Volatile private var isExporting = false
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
+
+    private enum class ExportFileType(val extension: String) {
+        WAV("wav"), MP3("mp3");
+
+        companion object {
+            val VALUES: List<ExportFileType> by lazy { values().toList() }
+            val EXTENSIONS: List<String> by lazy { VALUES.map(ExportFileType::extension) }
+        }
+    }
 
     private fun createFileChooser() =
             FileChooser().apply {
@@ -123,7 +133,7 @@ class ExportRemixScreen(main: RHRE3Application)
     }
 
     @Synchronized
-    private fun export(file: File, convertToMP3: Boolean) {
+    private fun export(file: File, fileType: ExportFileType) {
         if (isExporting || !isCapableOfExporting)
             return
         isExporting = true
@@ -145,7 +155,7 @@ class ExportRemixScreen(main: RHRE3Application)
         context.out.clearDependents()
 
         // prep recorder
-        val recorderFile = if(convertToMP3)
+        val recorderFile = if (fileType != ExportFileType.WAV)
             File.createTempFile("rhre3-export-wav-temp-${System.currentTimeMillis()}", ".wav").apply {
                 this.deleteOnExit()
             } else file
@@ -167,12 +177,19 @@ class ExportRemixScreen(main: RHRE3Application)
             remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
 
-            if (success && convertToMP3) {
-                mainLabel.text = Localization["screen.export.convertingToMP3"]
-                val args = arrayOf("--ignore-tag-errors",
-                                   "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
-                                   recorderFile.path, file.path)
-                Main().run(args)
+            if (success) {
+                when (fileType) {
+                    ExportFileType.WAV -> {
+                        // nothing
+                    }
+                    ExportFileType.MP3 -> {
+                        mainLabel.text = Localization["screen.export.convertingToMP3"]
+                        val args = arrayOf("--ignore-tag-errors",
+                                           "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
+                                           recorderFile.path, file.path)
+                        Main().run(args)
+                    }
+                }
             }
 
             if (success) {
@@ -233,6 +250,9 @@ class ExportRemixScreen(main: RHRE3Application)
                 })
             })
 
+            val parameters = mapOf<String, String>()
+            parameters.entries.joinToString(separator = "&") { "${it.key}=${it.value}" }
+
             // scale gain
             context.out.gain = 0.5f
 
@@ -267,13 +287,15 @@ class ExportRemixScreen(main: RHRE3Application)
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
                     launch(CommonPool) {
                         try {
-                            val correctFile = if (!file.extension.equals("wav", true) && !file.extension.equals("mp3", true))
+                            val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)
                                 file.parentFile.resolve("${file.name}.wav")
                             else
                                 file
-                            val isMp3 = file.extension.equals("mp3", true)
+                            val fileType = ExportFileType.VALUES.firstOrNull {
+                                it.extension == file.extension.toLowerCase(Locale.ROOT)
+                            } ?: ExportFileType.WAV
 
-                            export(correctFile, isMp3)
+                            export(correctFile, fileType)
 
                             mainLabel.text = Localization["screen.export.success"]
                         } catch (t: Throwable) {
