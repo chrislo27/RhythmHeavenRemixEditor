@@ -183,11 +183,17 @@ class ExportRemixScreen(main: RHRE3Application)
                         // nothing
                     }
                     ExportFileType.MP3 -> {
-                        mainLabel.text = Localization["screen.export.convertingToMP3"]
                         val args = arrayOf("--ignore-tag-errors",
                                            "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
                                            recorderFile.path, file.path)
-                        Main().run(args)
+                        val main = Main()
+                        main.support.addPropertyChangeListener { event ->
+                            if (event.propertyName == "progress") {
+                                val percent: String = (event.newValue as? Int)?.toString() ?: "N/A"
+                                mainLabel.text = Localization["screen.export.convertingToMP3", percent]
+                            }
+                        }
+                        main.run(args)
                     }
                 }
             }
