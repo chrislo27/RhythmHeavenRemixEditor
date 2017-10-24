@@ -192,6 +192,9 @@ class ExportRemixScreen(main: RHRE3Application)
                 }
             }
 
+            BeadsSoundSystem.isRealtime = true
+            BeadsSoundSystem.resume()
+
             if (success) {
                 (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
             } else {
@@ -199,8 +202,6 @@ class ExportRemixScreen(main: RHRE3Application)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
 
-            BeadsSoundSystem.isRealtime = true
-            BeadsSoundSystem.resume()
             isExporting = false
         }
 
