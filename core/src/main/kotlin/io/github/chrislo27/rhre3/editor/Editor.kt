@@ -814,6 +814,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 launch(CommonPool) {
                     try {
                         Remix.saveTo(remix, autosaveFile.file(), true)
+                        Gdx.app.postRunnable {
+                            autosaveState = true to System.currentTimeMillis()
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         Gdx.app.postRunnable {
@@ -821,8 +824,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
                     }
                     Gdx.app.postRunnable {
-                        autosaveState = true to System.currentTimeMillis()
-
                         resetAutosaveTimer()
                         Toolboks.LOGGER.info("Autosaved (frequency every $autosaveFrequency minute(s))")
                     }
