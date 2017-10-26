@@ -6,7 +6,7 @@ import java.util.*
 
 abstract class TrackerContainer<T : Tracker> {
 
-    protected val map: NavigableMap<Float, T> = TreeMap()
+    val map: NavigableMap<Float, T> = TreeMap()
 
     abstract fun toTree(node: ObjectNode): ObjectNode
     abstract fun fromTree(node: ObjectNode)
@@ -33,9 +33,6 @@ abstract class TrackerContainer<T : Tracker> {
     protected open fun update() {
         // required for tempo changes
     }
-
-    fun getBackingMap(): NavigableMap<Float, T> =
-            map
 
     fun get(beat: Float): T? =
             map[beat]

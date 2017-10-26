@@ -32,6 +32,7 @@ import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
@@ -591,7 +592,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             remix.trackers.forEachIndexed { cindex, container ->
                 val level = remix.trackers.size - cindex - 1
                 val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
-                container.getBackingMap().values.forEachIndexed { index, tracker: Tracker ->
+                container.map.values.forEachIndexed { index, tracker: Tracker ->
                     if (tracker != selectedTracker && tracker.beat in beatRange) {
                         renderTracker(tracker, y)
                     }
@@ -602,7 +603,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 remix.trackers.forEachIndexed { cindex, container ->
                     val level = remix.trackers.size - cindex - 1
                     val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
-                    container.getBackingMap().values.forEachIndexed { index, tracker: Tracker ->
+                    container.map.values.forEachIndexed { index, tracker: Tracker ->
                         if (tracker == selectedTracker && tracker.beat in beatRange) {
                             renderTracker(tracker, y)
                         }
@@ -1065,7 +1066,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return null
 
         remix.trackers.forEach { container ->
-            val result = container.getBackingMap().values.firstOrNull {
+            val result = container.map.values.firstOrNull {
                 it::class == klass && MathUtils.isEqual(it.beat, remix.camera.getInputX(), snap / 2)
             }
 
@@ -1075,6 +1076,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         return null
+    }
+
+    fun updateRecentsList(gameUsed: Game) {
+        val list = GameMetadata.recents
+
+        list.remove(gameUsed)
+        list.add(0, gameUsed)
+
+        val byGroup = list.distinctBy(Game::gameGroup)
+        if (byGroup.size > GameMetadata.MAX_RECENTLY_USED) {
+            list.retainAll(byGroup.take(GameMetadata.MAX_RECENTLY_USED))
+        }
+
+        stage.recentsFilter.shouldUpdate = true
+        stage.updateSelected()
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
@@ -1153,7 +1169,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val stretchRegion = if (newSel.size == 1 && first is IStretchable && !isCopying)
                             getStretchRegionForStretchable(remix.camera.getInputX(), first) else StretchRegion.NONE
                         val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
-                                                                     isCopying, oldSel, stretchRegion)
+                                                                     false, isCopying, oldSel, stretchRegion)
                         if (isCopying) {
                             this.selection = newSel
                             remix.entities.addAll(newSel)
@@ -1251,7 +1267,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val oldSelection = this.selection
             this.selection = listOf(entity)
             val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
-                                                          true, oldSelection, StretchRegion.NONE)
+                                                          true, false, oldSelection, StretchRegion.NONE)
             selection.setPositionRelativeToMouse()
             entity.updateInterpolation(true)
 
@@ -1310,6 +1326,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             EntityPlaceAction(this, this.selection),
                             EntitySelectionAction(this, clickOccupation.previousSelection, this.selection)
                                                                      )))
+                    if (clickOccupation.isNew && !clickOccupation.isCopy) {
+                        updateRecentsList(
+                                (this.selection.first { it is ModelEntity<*> } as ModelEntity<*>).datamodel.game)
+                    }
                 } else {
                     // delete silently
                     remix.entities.removeAll(selection)

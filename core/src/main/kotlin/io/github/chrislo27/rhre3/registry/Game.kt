@@ -24,7 +24,11 @@ data class Game(val id: String, val name: String, val series: Series,
         get() = GameRegistry.data.gameGroupsMap[group] ?: error("No valid game group for $id with group $group")
 
     val isFavourited: Boolean
-        get() = Favourites.isGameFavourited(this)
+        get() = GameMetadata.isGameFavourited(this)
+    val recency: Int
+        get() = GameMetadata.recents.indexOf(this)
+    val isRecent: Boolean
+        get() = recency != -1
 
     override fun compareTo(other: Game): Int {
         return GameGroupListComparator.compare(this, other)

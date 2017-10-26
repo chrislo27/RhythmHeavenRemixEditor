@@ -249,7 +249,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     music.also(BeadsMusic::play)
                 }))
                 // volumes
-                remix.musicVolumes.getBackingMap().values.forEach {
+                remix.musicVolumes.map.values.forEach {
                     context.out.addDependent(DelayTrigger(context, it.beat.beatToMsRelative(), addBead {
                         music.setVolume(it.volume / 100f)
                     }))

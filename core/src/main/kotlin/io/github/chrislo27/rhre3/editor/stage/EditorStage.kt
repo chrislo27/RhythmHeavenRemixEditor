@@ -14,13 +14,10 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
-import io.github.chrislo27.rhre3.editor.picker.FavouritesFilter
-import io.github.chrislo27.rhre3.editor.picker.Filter
-import io.github.chrislo27.rhre3.editor.picker.SearchFilter
-import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
+import io.github.chrislo27.rhre3.editor.picker.*
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.registry.Favourites
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -75,6 +72,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val hoverTextLabel: TextLabel<EditorScreen>
     val searchFilter = SearchFilter(this)
     val favouritesFilter = FavouritesFilter()
+    val recentsFilter = RecentFilter()
 
     lateinit var playButton: PlaybackButton
         private set
@@ -855,6 +853,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
                 filterButtons += tmp
             }
+            filterButtons += FilterButton(recentsFilter, "editor.recents",
+                                          palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(
+                        screenWidth = buttonWidth,
+                        screenHeight = buttonHeight,
+                        screenX = filterButtons.size * buttonWidth
+                                 )
+                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_favourites"))
+            }
             filterButtons += FilterButton(favouritesFilter, "editor.favourites",
                                           palette, minimapBarStage, minimapBarStage).apply {
                 this.location.set(
@@ -1160,14 +1167,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val wasFavourited = isFavourited()
                 if (isVariant) {
                     if (isSingleInGameGroup()) {
-                        Favourites.setFavourited(game.gameGroup, !wasFavourited)
+                        GameMetadata.setFavourited(game.gameGroup, !wasFavourited)
                     } else {
-                        Favourites.setFavourited(game, !wasFavourited)
+                        GameMetadata.setFavourited(game, !wasFavourited)
                     }
                 } else {
-                    Favourites.setFavourited(game.gameGroup, !wasFavourited)
+                    GameMetadata.setFavourited(game.gameGroup, !wasFavourited)
                 }
-                Favourites.persist()
+                GameMetadata.persist()
 
                 favouritesFilter.shouldUpdate = true
                 updateSelected()

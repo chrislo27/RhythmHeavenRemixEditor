@@ -239,7 +239,7 @@ object GameRegistry : Disposable {
                 }
             }
 
-            Favourites.initialize()
+            GameMetadata.initialize()
 
             if (RHRE3.verifyRegistry) {
                 Toolboks.LOGGER.info("Checking registry for errors")

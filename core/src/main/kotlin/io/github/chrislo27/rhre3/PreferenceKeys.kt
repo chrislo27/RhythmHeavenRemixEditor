@@ -24,5 +24,6 @@ object PreferenceKeys {
     const val FILE_CHOOSER_EXPORT = "fileChooser_export"
 
     const val FAVOURITES = "favourites"
+    const val RECENT_GAMES = "recentGames"
 
 }

@@ -2,10 +2,13 @@ package io.github.chrislo27.rhre3.registry
 
 import com.badlogic.gdx.Preferences
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.util.JsonHandler
 
 
-object Favourites {
+object GameMetadata {
+
+    const val MAX_RECENTLY_USED: Int = Editor.ICON_COUNT_X * Editor.ICON_COUNT_Y
 
     private class FavouritesObject {
 
@@ -19,9 +22,20 @@ object Favourites {
 
     }
 
+    private class RecentsObject {
+
+        var games: List<String> = mutableListOf()
+
+        fun distinctify() {
+            games = games.distinct()
+        }
+
+    }
+
     lateinit var preferences: Preferences
     val games: Map<Game, Boolean> = mutableMapOf()
     val groups: Map<GameGroup, Boolean> = mutableMapOf()
+    val recents: MutableList<Game> = mutableListOf()
 
     fun isGroupFavourited(group: GameGroup): Boolean {
         return groups[group] == true
@@ -60,6 +74,17 @@ object Favourites {
             groups[group] = true
         }
 
+        run {
+            val recentsObj: RecentsObject = JsonHandler.fromJson(preferences.getString(PreferenceKeys.RECENT_GAMES, "{}"))
+            recentsObj.distinctify()
+
+            recents.clear()
+
+            recentsObj.games.mapNotNullTo(recents) {
+                GameRegistry.data.gameMap[it]
+            }
+        }
+
         // ensures old IDs are gone
         persist()
     }
@@ -71,6 +96,9 @@ object Favourites {
         obj.gameGroups = groups.filter { it.value }.map { it.key.name }
 
         preferences.putString(PreferenceKeys.FAVOURITES, JsonHandler.toJson(obj))
+        preferences.putString(PreferenceKeys.RECENT_GAMES, JsonHandler.toJson(RecentsObject().apply {
+            recents.mapTo(games as MutableList, Game::id)
+        }))
         preferences.flush()
     }
 

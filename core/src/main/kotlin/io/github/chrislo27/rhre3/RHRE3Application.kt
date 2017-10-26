@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
-import io.github.chrislo27.rhre3.registry.Favourites
+import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
@@ -130,7 +130,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
-        Favourites.preferences = preferences
+        GameMetadata.preferences = preferences
 
         // load correct sound system
 //        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
@@ -236,7 +236,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     override fun dispose() {
         super.dispose()
-        Favourites.persist()
+        GameMetadata.persist()
         preferences.flush()
         GameRegistry.dispose()
         Themes.dispose()

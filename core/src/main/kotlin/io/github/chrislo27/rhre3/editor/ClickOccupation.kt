@@ -105,49 +105,44 @@ sealed class ClickOccupation {
 
     class SelectionDrag(val editor: Editor,
                         val mouseOffset: Vector2,
-                        val isNewOrCopy: Boolean,
+                        val isNew: Boolean,
+                        val isCopy: Boolean,
                         val previousSelection: List<Entity>,
                         val stretchType: StretchRegion)
         : ClickOccupation() {
-
-        val oldBounds: List<Rectangle> = copyBounds(editor.selection)
-
-        val isStretching: Boolean by lazy { !isNewOrCopy && stretchType != StretchRegion.NONE }
-
-        private val selection: List<Entity>
-            get() = editor.selection
-
-        val isAllSpecial: Boolean by lazy {
-            selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
-        }
 
         companion object {
             fun copyBounds(selection: List<Entity>): List<Rectangle> =
                     selection.map { Rectangle(it.bounds) }
         }
 
+        val isNewOrCopy: Boolean = isNew || isCopy
+        val oldBounds: List<Rectangle> = copyBounds(editor.selection)
+        val isStretching: Boolean by lazy { !isNewOrCopy && stretchType != StretchRegion.NONE }
+        private val selection: List<Entity>
+            get() = editor.selection
+        val isAllSpecial: Boolean by lazy {
+            selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+        }
+
         val left: Float
             get() = selection.minBy { it.bounds.x }?.bounds?.x ?: error("Nothing in selection")
-
         val right: Float
             get() {
                 val right = selection.maxBy { it.bounds.x + it.bounds.width } ?: error("Nothing in selection")
                 return right.bounds.x + right.bounds.width
             }
-
         val top: Float
             get() {
                 val highest = selection.maxBy { it.bounds.y } ?: error("Nothing in selection")
                 return highest.bounds.y + highest.bounds.height
             }
-
         val bottom: Float
             get() = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
 
         val width: Float by lazy {
             right - left
         }
-
         val height: Int by lazy {
             Math.round(top - bottom)
         }

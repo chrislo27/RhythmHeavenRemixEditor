@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
@@ -132,6 +133,7 @@ class SaveRemixScreen(main: RHRE3Application)
                             editor.prepAutosaveFile(FileHandle(correctFile))
 
                             mainLabel.text = Localization["screen.save.success"]
+                            Gdx.app.postRunnable(GameMetadata::persist)
                         } catch (t: Throwable) {
                             t.printStackTrace()
                             updateLabels(t)

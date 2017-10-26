@@ -5,7 +5,7 @@ data class GameGroup(val name: String, val games: List<Game>) {
     val series: Series
 
     val isFavourited: Boolean
-        get() = Favourites.isGroupFavourited(this)
+        get() = GameMetadata.isGroupFavourited(this)
 
     init {
         if (games.isEmpty())
