@@ -201,11 +201,9 @@ class ExportRemixScreen(main: RHRE3Application)
                                            "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
                                            recorderFile.path, file.path)
                         val main = Main()
-                        main.support.addPropertyChangeListener { event ->
-                            if (event.propertyName == "progress") {
-                                val percent: Int = (event.newValue as? Int) ?: 0
-                                updateProgress("mp3", percent, 2)
-                            }
+                        main.support.addPropertyChangeListener("progress") { event ->
+                            val percent: Int = (event.newValue as? Int) ?: 0
+                            updateProgress("mp3", percent, 2)
                         }
                         main.run(args)
                     }
