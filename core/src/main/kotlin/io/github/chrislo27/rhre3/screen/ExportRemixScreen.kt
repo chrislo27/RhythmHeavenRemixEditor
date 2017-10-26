@@ -147,6 +147,20 @@ class ExportRemixScreen(main: RHRE3Application)
             }
         }
 
+        val maxProgressStages: Int = when (fileType) {
+            ExportRemixScreen.ExportFileType.WAV -> 1
+            ExportRemixScreen.ExportFileType.MP3 -> 2
+        }
+
+        fun updateProgress(localization: String, localPercent: Int, stage: Int) {
+            mainLabel.text = Localization["screen.export.progress",
+                    Localization["screen.export.progress.$localization"],
+                    "$localPercent",
+                    "$stage",
+                    "$maxProgressStages",
+                    "${Math.round((localPercent + (stage - 1) * 100f) / (maxProgressStages * 100f) * 100)}"]
+        }
+
         // prepare
         val context = BeadsSoundSystem.audioContext
         BeadsSoundSystem.stop()
@@ -189,8 +203,8 @@ class ExportRemixScreen(main: RHRE3Application)
                         val main = Main()
                         main.support.addPropertyChangeListener { event ->
                             if (event.propertyName == "progress") {
-                                val percent: String = (event.newValue as? Int)?.toString() ?: "N/A"
-                                mainLabel.text = Localization["screen.export.convertingToMP3", percent]
+                                val percent: Int = (event.newValue as? Int) ?: 0
+                                updateProgress("mp3", percent, 2)
                             }
                         }
                         main.run(args)
@@ -252,8 +266,8 @@ class ExportRemixScreen(main: RHRE3Application)
                         remix.entityUpdate(it)
                     }
 
-                    val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100)
-                    mainLabel.text = Localization["screen.export.progress", "$percent"]
+                    val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100).toInt()
+                    updateProgress("pcm", percent, 1)
                 })
             })
 
