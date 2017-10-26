@@ -1078,15 +1078,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return null
     }
 
-    fun updateRecentsList(gameUsed: Game) {
+    fun updateRecentsList(gameUsed: Game?) {
         val list = GameMetadata.recents
 
-        list.remove(gameUsed)
-        list.add(0, gameUsed)
+        if (gameUsed != null) {
+            list.remove(gameUsed)
+            list.add(0, gameUsed)
 
-        val byGroup = list.distinctBy(Game::gameGroup)
-        if (byGroup.size > GameMetadata.MAX_RECENTLY_USED) {
-            list.retainAll(byGroup.take(GameMetadata.MAX_RECENTLY_USED))
+            val byGroup = list.distinctBy(Game::gameGroup)
+            if (byGroup.size > GameMetadata.MAX_RECENTLY_USED) {
+                list.retainAll(byGroup.take(GameMetadata.MAX_RECENTLY_USED))
+            }
+        } else {
+            list.clear()
         }
 
         stage.recentsFilter.shouldUpdate = true

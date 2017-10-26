@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
@@ -38,6 +39,7 @@ class InfoScreen(main: RHRE3Application)
         get() = main.preferences
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
+    private lateinit var clearRecentsButton: Button<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -167,6 +169,27 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+            // Clear recent games
+            clearRecentsButton = object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    editor.updateRecentsList(null)
+                    enabled = false
+                    GameMetadata.persist()
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.clearRecents"
+                })
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+            centre.elements += clearRecentsButton
 
             // Settings
             // Autosave timer
@@ -351,6 +374,11 @@ class InfoScreen(main: RHRE3Application)
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
         }
+    }
+
+    override fun show() {
+        super.show()
+        clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
     }
 
     override fun tickUpdate() {
