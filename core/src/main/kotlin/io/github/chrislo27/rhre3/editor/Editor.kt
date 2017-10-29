@@ -739,26 +739,27 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // song subtitles
         run {
+            font.scaleMul(camera.zoom)
             val texture = AssetRegistry.get<Texture>("ui_songtitle")
             val scale = 1.15f
-            val texWidth = toScaleX(texture.width.toFloat() * scale)
-            val texHeight = toScaleY(texture.height.toFloat() * scale)
-            val startX = adjustedCameraX - camera.viewportWidth / 2
+            val texWidth = toScaleX(texture.width.toFloat() * scale * camera.zoom)
+            val texHeight = toScaleY(texture.height.toFloat() * scale * camera.zoom)
+            val startX = adjustedCameraX - camera.viewportWidth / 2 * camera.zoom
 
             fun renderBar(timedString: TimedString, bottom: Boolean) {
                 val rawPercent = Interpolation.circle.apply(
                         (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
                 val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
-                val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth - xPercent * texWidth
-                val y = (adjustedCameraY - camera.viewportHeight * 0.15f) - if (bottom) texHeight * 1.1f else 0f
+                val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth * camera.zoom - xPercent * texWidth
+                val y = (adjustedCameraY - camera.viewportHeight * 0.15f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
 
                 batch.draw(texture, x, y, texWidth, texHeight,
                            0, 0, texture.width, texture.height,
                            bottom, bottom)
                 font.setColor(1f, 1f, 1f, 1f)
-                val padding = toScaleX(8f)
-                val textWidth = toScaleX((texture.width.toFloat() - texture.height) * scale) - padding * 2
-                val triangleWidth = toScaleX(texture.height.toFloat() * scale)
+                val padding = toScaleX(8f * camera.zoom)
+                val textWidth = toScaleX((texture.width.toFloat() - texture.height) * scale * camera.zoom) - padding * 2
+                val triangleWidth = toScaleX(texture.height.toFloat() * scale * camera.zoom)
                 font.drawCompressed(batch, timedString.str,
                                     (if (!bottom) x else x + triangleWidth) + padding,
                                     y + font.capHeight + texHeight / 2 - font.capHeight / 2,
@@ -768,6 +769,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             renderBar(songTitle, false)
             renderBar(songArtist, true)
+
+            font.scaleMul(1f / camera.zoom)
         }
 
         font.unscaleFont()
