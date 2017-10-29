@@ -21,10 +21,7 @@ import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
-import io.github.chrislo27.rhre3.entity.model.IRepitchable
-import io.github.chrislo27.rhre3.entity.model.IStretchable
-import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
+import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
@@ -1016,9 +1013,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                 "")}"])
                             }
 
-                            if (first is SubtitleEntity) {
+                            if (first is IEditableText) {
                                 builder.separator().append(
-                                        Localization["editor.msg.subtitle.${if (stage.subtitleField.visible) "finish" else "edit"}"])
+                                        Localization["editor.msg.editabletext.${if (stage.entityTextField.visible) "finish" else "edit"}"])
                             }
                         }
                     }
@@ -1125,7 +1122,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
                 if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is SubtitleEntity) {
                     if (firstEntityInMouse in this.selection) {
-                        val field = stage.subtitleField
+                        val field = stage.entityTextField
                         field.visible = true
                         field.text = firstEntityInMouse.subtitle
                         field.hasFocus = true

@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
@@ -9,12 +10,17 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class SubtitleEntity(remix: Remix, datamodel: Subtitle)
-    : ModelEntity<Subtitle>(remix, datamodel), IStretchable {
+    : ModelEntity<Subtitle>(remix, datamodel), IStretchable, IEditableText {
 
     override val isStretchable: Boolean = true
     var subtitle: String = ""
     override val renderText: String
         get() = "${datamodel.name}\n\"$subtitle[]\""
+    override var text: String
+        get() = subtitle
+        set(value) {
+            subtitle = value
+        }
 
     init {
         bounds.width = 1f

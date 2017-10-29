@@ -15,7 +15,7 @@ import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
-import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -86,7 +86,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var subtitleLabel: TextLabel<EditorScreen>
         private set
-    lateinit var subtitleField: TextField<EditorScreen>
+    lateinit var entityTextField: TextField<EditorScreen>
         private set
 
     val topOfMinimapBar: Float
@@ -95,7 +95,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     val isTyping: Boolean
         get() {
-            return searchBar.textField.hasFocus || jumpToField.hasFocus || subtitleField.hasFocus
+            return searchBar.textField.hasFocus || jumpToField.hasFocus || entityTextField.hasFocus
         }
     val tapalongMarkersEnabled: Boolean
         get() = tapalongStage.markersEnabled
@@ -450,15 +450,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.textAlign = Align.bottom or Align.center
             }
             this.elements += subtitleLabel
-            // TODO maybe make generic text field for other entities in the future
-            subtitleField = object : TextField<EditorScreen>(palette, this@apply, this@apply) {
+            entityTextField = object : TextField<EditorScreen>(palette, this@apply, this@apply) {
                 override fun frameUpdate(screen: EditorScreen) {
                     super.frameUpdate(screen)
 
                     if (visible &&
                             (!hasFocus
                                     || editor.selection.size != 1
-                                    || editor.selection.first() !is SubtitleEntity)) {
+                                    || editor.selection.first() !is IEditableText)) {
                         visible = false
                     }
                 }
@@ -469,9 +468,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     if (!hasFocus || !visible)
                         return
 
-                    if (editor.selection.firstOrNull() is SubtitleEntity) {
-                        val entity = editor.selection.first() as SubtitleEntity
-                        entity.subtitle = this.text
+                    if (editor.selection.firstOrNull() is IEditableText) {
+                        val entity = editor.selection.first() as IEditableText
+                        entity.text = this.text
                     }
                 }
             }.apply {
@@ -482,7 +481,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.background = true
                 this.visible = false
             }
-            this.elements += subtitleField
+            this.elements += entityTextField
         }
         hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),
                                    this, this).apply {
