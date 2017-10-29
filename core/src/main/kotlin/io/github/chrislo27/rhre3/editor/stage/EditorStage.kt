@@ -381,7 +381,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     }
                 }
 
-                return false
+                return true
             }
         }.apply {
             this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight,
