@@ -137,6 +137,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.update()
 
             field.entities.forEach { it.updateInterpolation(true) }
+
+            resetAllSongSubtitles()
         }
     var theme: Theme = LoadedThemes.currentTheme
     val stage: EditorStage = EditorStage(
