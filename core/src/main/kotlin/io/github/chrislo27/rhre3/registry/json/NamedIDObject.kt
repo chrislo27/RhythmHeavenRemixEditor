@@ -135,7 +135,12 @@ class RandomCueObject : NamedIDObject() {
 class EndRemixObject : NamedIDObject()
 
 @JsonTypeName("subtitleEntity")
-class SubtitleEntityObject : NamedIDObject()
+class SubtitleEntityObject : NamedIDObject() {
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var subtitleType: String? = null
+
+}
 
 @JsonTypeName("shakeEntity")
 class ShakeEntityObject : NamedIDObject()

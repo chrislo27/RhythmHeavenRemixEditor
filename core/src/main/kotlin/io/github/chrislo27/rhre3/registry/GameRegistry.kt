@@ -340,7 +340,7 @@ object GameRegistry : Disposable {
                         is EndRemixObject ->
                             EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
                         is SubtitleEntityObject ->
-                            Subtitle(game, obj.id, obj.deprecatedIDs, obj.name)
+                            Subtitle(game, obj.id, obj.deprecatedIDs, obj.name, obj.subtitleType)
                         is ShakeEntityObject ->
                             ShakeScreen(game, obj.id, obj.deprecatedIDs, obj.name)
                     }

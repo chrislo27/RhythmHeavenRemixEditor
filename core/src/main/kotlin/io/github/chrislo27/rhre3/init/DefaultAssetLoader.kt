@@ -81,6 +81,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_tapalong_button", "images/ui/icons/tapalongButton.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_favourites", "images/ui/icons/favouritesTab.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_recents", "images/ui/icons/recentsTab.png")
+        AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")

@@ -98,9 +98,9 @@ is inherited.
 The `metadata` object can be null, and acts as a key/value map.<br>
 Below is a list of potential properties:
 
-| Entity Type | Field Name | Field Type |
-|-------------|------------|------------|
-| `subtitleEntity` | `subtitleText` | `string` |
+| Entity Type | Field Name | Field Type | Field Values |
+|-------------|------------|------------|--------------|
+| `subtitleEntity` | `subtitleText` | `string` | \<user-defined> |
 
 ## `CueObject` structure
 ```json

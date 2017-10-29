@@ -369,6 +369,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 SoundSystem.system.stop()
                 currentSubtitles.clear()
                 currentShakeEntities.clear()
+                editor.resetAllSongSubtitles()
             }
             PlayState.PAUSED -> {
                 AssetRegistry.pauseAllSounds()

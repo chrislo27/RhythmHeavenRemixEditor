@@ -7,6 +7,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
@@ -89,6 +90,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
         private const val SELECTION_RECT_ADD = "+"
         private const val SELECTION_RECT_INVERT = "±"
+        private const val SONG_SUBTITLE_TRANSITION = 0.5f
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -103,6 +105,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun createRemix(): Remix {
         return Remix(camera, this)
+    }
+
+    data class TimedString(val str: String, var time: Float, var out: Boolean) {
+
+        fun goIn() {
+            out = false
+            time = 0f
+        }
+
     }
 
     val camera: OrthographicCamera by lazy {
@@ -159,6 +170,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     private var autosaveState: Pair<Boolean, Long>? = null
     private var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
+    private val songSubtitles = mutableMapOf("songArtist" to TimedString("", SONG_SUBTITLE_TRANSITION, false),
+                                             "songTitle" to TimedString("", SONG_SUBTITLE_TRANSITION, false))
+    var songArtist: TimedString by songSubtitles
+        private set
+    var songTitle: TimedString by songSubtitles
+        private set
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -716,6 +733,39 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+        // song subtitles
+        run {
+            val texture = AssetRegistry.get<Texture>("ui_songtitle")
+            val scale = 1.15f
+            val texWidth = toScaleX(texture.width.toFloat() * scale)
+            val texHeight = toScaleY(texture.height.toFloat() * scale)
+            val startX = camera.position.x - camera.viewportWidth / 2
+
+            fun renderBar(timedString: TimedString, bottom: Boolean) {
+                val rawPercent = Interpolation.circle.apply(
+                        (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
+                val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
+                val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth - xPercent * texWidth
+                val y = (camera.position.y - camera.viewportHeight * 0.15f) - if (bottom) texHeight * 1.1f else 0f
+
+                batch.draw(texture, x, y, texWidth, texHeight,
+                           0, 0, texture.width, texture.height,
+                           bottom, bottom)
+                font.setColor(1f, 1f, 1f, 1f)
+                val padding = toScaleX(8f)
+                val textWidth = toScaleX((texture.width.toFloat() - texture.height) * scale) - padding * 2
+                val triangleWidth = toScaleX(texture.height.toFloat() * scale)
+                font.drawCompressed(batch, timedString.str,
+                                    (if (!bottom) x else x + triangleWidth) + padding,
+                                    y + font.capHeight + texHeight / 2 - font.capHeight / 2,
+                                    textWidth,
+                                    if (bottom) Align.left else Align.right)
+            }
+
+            renderBar(songTitle, false)
+            renderBar(songArtist, true)
+        }
+
         font.unscaleFont()
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
@@ -731,6 +781,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun renderUpdate() {
         remix.timeUpdate(Gdx.graphics.deltaTime)
+        if (remix.playState == PlayState.PLAYING) {
+            songSubtitles.values.forEach { it.time += Gdx.graphics.deltaTime }
+        }
 
         val shift = Gdx.input.isShiftDown()
         val control = Gdx.input.isControlDown()
@@ -1074,6 +1127,29 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         return null
+    }
+
+    fun songTitle(text: String?) {
+        if (text == null) {
+            songTitle.goIn()
+        } else {
+            songTitle = TimedString(text, 0f, true)
+        }
+    }
+
+    fun songArtist(text: String?) {
+        if (text == null) {
+            songArtist.goIn()
+        } else {
+            songArtist = TimedString(text, 0f, true)
+        }
+    }
+
+    fun resetAllSongSubtitles() {
+        songSubtitles.values.forEach {
+            it.time = SONG_SUBTITLE_TRANSITION
+            it.out = false
+        }
     }
 
     fun updateRecentsList(gameUsed: Game?) {

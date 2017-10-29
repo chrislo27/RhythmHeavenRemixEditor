@@ -4,10 +4,29 @@ import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.toolboks.Toolboks
 
 
-class Subtitle(game: Game, id: String, deprecatedIDs: List<String>, name: String)
+class Subtitle(game: Game, id: String, deprecatedIDs: List<String>, name: String, type: String?)
     : SpecialDatamodel(game, id, deprecatedIDs, name) {
+
+    val type: SubtitleType = when (type) {
+        null -> SubtitleType.SUBTITLE
+        else -> {
+            SubtitleType.VALUES.firstOrNull { it.metadata == type } ?: run {
+                Toolboks.LOGGER.warn("Unknown subtitle type: $type")
+                SubtitleType.SUBTITLE
+            }
+        }
+    }
+
+    enum class SubtitleType(val metadata: String) {
+        SUBTITLE("subtitle"), SONG_TITLE("songTitle"), SONG_ARTIST("songArtist");
+
+        companion object {
+            val VALUES = values()
+        }
+    }
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): SubtitleEntity {

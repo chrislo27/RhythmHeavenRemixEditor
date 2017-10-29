@@ -6,6 +6,9 @@ import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SONG_ARTIST
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SONG_TITLE
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SUBTITLE
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -42,8 +45,14 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     }
 
     override fun onStart() {
-        if (this !in remix.currentSubtitles) {
-            remix.currentSubtitles += this
+        when (datamodel.type) {
+            SUBTITLE -> {
+                if (this !in remix.currentSubtitles) {
+                    remix.currentSubtitles += this
+                }
+            }
+            SONG_TITLE -> remix.editor.songTitle(subtitle)
+            SONG_ARTIST -> remix.editor.songArtist(subtitle)
         }
     }
 
@@ -51,7 +60,11 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     }
 
     override fun onEnd() {
-        remix.currentSubtitles.remove(this)
+        when (datamodel.type) {
+            SUBTITLE -> remix.currentSubtitles.remove(this)
+            SONG_TITLE -> remix.editor.songTitle(null)
+            SONG_ARTIST -> remix.editor.songArtist(null)
+        }
     }
 
     override fun copy(remix: Remix): SubtitleEntity {
