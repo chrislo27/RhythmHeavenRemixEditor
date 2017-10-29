@@ -860,7 +860,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         screenHeight = buttonHeight,
                         screenX = filterButtons.size * buttonWidth
                                  )
-                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_favourites"))
+                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_recents"))
             }
             filterButtons += FilterButton(favouritesFilter, "editor.favourites",
                                           palette, minimapBarStage, minimapBarStage).apply {
