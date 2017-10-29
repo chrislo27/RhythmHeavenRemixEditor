@@ -2,8 +2,8 @@ package io.github.chrislo27.rhre3.editor.picker
 
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameByNameComparator
 import io.github.chrislo27.rhre3.registry.GameGroup
+import io.github.chrislo27.rhre3.registry.GameGroupListComparator
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 
 
@@ -69,7 +69,7 @@ abstract class Filter {
         gamesPerGroup.values.forEach {
             val list = it.list
 
-            list.sortWith(GameByNameComparator)
+            list.sortWith(GameGroupListComparator)
         }
 
         gameGroups.sortWith(compareBy {

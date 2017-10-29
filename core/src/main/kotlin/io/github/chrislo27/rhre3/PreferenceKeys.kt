@@ -4,7 +4,7 @@ package io.github.chrislo27.rhre3
 object PreferenceKeys {
 
     private const val DATABASE_VERSION = "databaseVersion"
-    const val DATABASE_VERSION_BRANCH = "${DATABASE_VERSION}_${RHRE3.DATABASE_BRANCH}"
+    val DATABASE_VERSION_BRANCH = "${DATABASE_VERSION}_${RHRE3.DATABASE_BRANCH}"
     const val THEME_INDEX = "themeIndex"
     const val LANG_INDEX = "languageIndex"
     const val WINDOW_STATE = "windowState"
