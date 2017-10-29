@@ -285,8 +285,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                      Gdx.graphics.deltaTime * 6.5f)
         val oldCameraX = camera.position.x
         val oldCameraY = camera.position.y
-        var adjustedCameraX = oldCameraX
-        var adjustedCameraY = oldCameraY
+        val adjustedCameraX: Float
+        val adjustedCameraY: Float
         if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
             val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
                 acc * ShakeEntity.getShakeIntensity(it.semitone)
@@ -305,6 +305,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.position.y = oldCameraY
         } else {
             camera.update()
+            adjustedCameraX = oldCameraX
+            adjustedCameraY = oldCameraY
         }
         batch.projectionMatrix = camera.combined
         batch.begin()
@@ -741,14 +743,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val scale = 1.15f
             val texWidth = toScaleX(texture.width.toFloat() * scale)
             val texHeight = toScaleY(texture.height.toFloat() * scale)
-            val startX = camera.position.x - camera.viewportWidth / 2
+            val startX = adjustedCameraX - camera.viewportWidth / 2
 
             fun renderBar(timedString: TimedString, bottom: Boolean) {
                 val rawPercent = Interpolation.circle.apply(
                         (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
                 val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
                 val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth - xPercent * texWidth
-                val y = (camera.position.y - camera.viewportHeight * 0.15f) - if (bottom) texHeight * 1.1f else 0f
+                val y = (adjustedCameraY - camera.viewportHeight * 0.15f) - if (bottom) texHeight * 1.1f else 0f
 
                 batch.draw(texture, x, y, texWidth, texHeight,
                            0, 0, texture.width, texture.height,
