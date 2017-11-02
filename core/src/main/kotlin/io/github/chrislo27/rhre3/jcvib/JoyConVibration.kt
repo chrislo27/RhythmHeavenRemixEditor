@@ -131,7 +131,7 @@ object JoyConVibration {
 
     fun frequencyToHF(frequency: Float): Int {
         // Convert to Joy-Con HF range. Range in big-endian: 0x0004-0x01FC with +0x0004 steps.
-        return ((frequencyToHexFreq(frequency) - 0x60) * 4).toInt()
+        return ((frequencyToHexFreq(frequency) - 0x60) * 4)
     }
 
     fun frequencyToLF(frequency: Float): Short {
