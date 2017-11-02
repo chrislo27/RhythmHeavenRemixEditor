@@ -13,7 +13,7 @@ object JoyConVibration {
     private const val RRAW = 0x52524157
     private val LOG2 = Math.log10(2.0)
 
-    private val amplitudeTable: NavigableMap<Double, Pair<Byte, Short>> = listOf(
+    private val amplitudeTable: NavigableMap<Double, Pair<Short, Int>> = listOf(
             0.000000 to (0x00 to 0x0040),
             0.007843 to (0x02 to 0x8040),
             0.011823 to (0x04 to 0x0041),
@@ -117,7 +117,7 @@ object JoyConVibration {
             1.002867 to (0xc8 to 0x0072)
                                                                                 )
             .map {
-                it.first to (it.second.first.toByte() to it.second.second.toShort())
+                it.first to (it.second.first.toShort() to it.second.second.toInt())
             }.toMap(TreeMap())
 
     private fun log2(value: Double): Double {
