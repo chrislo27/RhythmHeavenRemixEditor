@@ -28,6 +28,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.jcvib.JoyConVibration
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -56,6 +57,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import java.io.File
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -825,6 +827,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         PlayState.PLAYING -> remix.playState = PlayState.STOPPED
                     }
                 }
+            }
+
+            if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+                val intArray = (1..100).map {
+                    val alpha = it.toFloat() / 100f
+                    JoyConVibration.writeToInt(0f, 0f, MathUtils.lerp(41f, 1200f, alpha), 0.5f)
+                }
+
+                File("test.jcvib")
+                        .writeBytes(JoyConVibration.jcvib(100,
+                                                          intArray.toIntArray()
+                                                         ))
+
+                println("Done")
             }
         }
 
