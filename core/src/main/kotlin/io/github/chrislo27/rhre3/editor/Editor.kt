@@ -830,14 +830,40 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+                fun getFrequencyFromA440(semitones: Int): Double {
+                    val clamped = semitones.coerceIn(-21..27)
+                    return 440.0 * Math.pow(2.0, clamped / 12.0)
+                }
+
+                fun getFrequencyFromMiddleC(semitones: Int): Double {
+                    return getFrequencyFromA440(semitones - 9 - 12)
+                }
+
                 val intArray = (1..100).map {
                     val alpha = it.toFloat() / 100f
                     JoyConVibration.writeToInt(0f, 0f, MathUtils.lerp(41f, 1200f, alpha), 0.5f)
                 }
 
                 File("test.jcvib")
-                        .writeBytes(JoyConVibration.jcvib(100,
-                                                          intArray.toIntArray()
+                        .writeBytes(JoyConVibration.jcvib(500,
+                                                          intArrayOf(
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(0).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(2).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(4).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(5).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(7).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(9).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(11).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(12).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(12).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(11).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(9).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(7).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(5).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(4).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(2).toFloat(), 0.8f, 0f, 0f),
+                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(0).toFloat(), 0.8f, 0f, 0f)
+                                                                    )
                                                          ))
 
                 println("Done")
