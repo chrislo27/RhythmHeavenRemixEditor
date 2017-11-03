@@ -28,7 +28,6 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.jcvib.JoyConVibration
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -57,7 +56,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import java.io.File
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -827,46 +825,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         PlayState.PLAYING -> remix.playState = PlayState.STOPPED
                     }
                 }
-            }
-
-            if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-                fun getFrequencyFromA440(semitones: Int): Double {
-                    val clamped = semitones.coerceIn(-21..27)
-                    return 440.0 * Math.pow(2.0, clamped / 12.0)
-                }
-
-                fun getFrequencyFromMiddleC(semitones: Int): Double {
-                    return getFrequencyFromA440(semitones - 9 - 12)
-                }
-
-                val intArray = (1..100).map {
-                    val alpha = it.toFloat() / 100f
-                    JoyConVibration.writeToInt(0f, 0f, MathUtils.lerp(41f, 1200f, alpha), 0.5f)
-                }
-
-                File("test.jcvib")
-                        .writeBytes(JoyConVibration.jcvib(500,
-                                                          intArrayOf(
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(0).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(2).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(4).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(5).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(7).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(9).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(11).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(12).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(12).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(11).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(9).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(7).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(5).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(4).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(2).toFloat(), 0.8f, 0f, 0f),
-                                                                  JoyConVibration.writeToInt(getFrequencyFromMiddleC(0).toFloat(), 0.8f, 0f, 0f)
-                                                                    )
-                                                         ))
-
-                println("Done")
             }
         }
 
