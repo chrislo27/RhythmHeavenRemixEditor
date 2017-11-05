@@ -892,7 +892,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (System.currentTimeMillis() >= autosaveState.second + AUTOSAVE_MESSAGE_TIME_MS) {
                 this.autosaveState = null
             }
-            updateMessageLabel()
+            updateMessageLabel() // TODO remove
+        }
+
+        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+            Gdx.app.postRunnable {
+                this.autosaveState = true to System.currentTimeMillis()
+            }
         }
 
         if (!stage.isTyping) {

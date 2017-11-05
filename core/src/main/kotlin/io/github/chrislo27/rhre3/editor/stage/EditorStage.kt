@@ -333,6 +333,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.isLocalizationKey = false
         }
         messageBarStage.elements += messageLabel
+        messageBarStage.elements += SaveElement(editor, palette, messageBarStage, messageBarStage.camera).apply {
+            this.location.set(0f, 1f, 0.25f, 3f, pixelX = 4f)
+            this.visible = false
+        }
         elements += messageBarStage
         buttonBarStage = Stage(this, camera).apply {
             this.location.set(screenX = (Editor.BUTTON_PADDING / RHRE3.WIDTH),
