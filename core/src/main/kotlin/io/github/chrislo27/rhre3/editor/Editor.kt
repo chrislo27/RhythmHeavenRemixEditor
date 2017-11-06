@@ -123,6 +123,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             c.update()
         }
     }
+    private val staticCamera: OrthographicCamera by lazy {
+        OrthographicCamera().also { c ->
+            resizeCamera(c)
+            c.position.x = c.viewportWidth / 2f
+            c.position.y = c.viewportHeight / 2f
+            c.update()
+        }
+    }
 
     val pickerSelection: PickerSelection = PickerSelection()
     var remix: Remix = createRemix()
@@ -212,7 +220,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun toScaleY(float: Float): Float =
             (float / RHRE3.HEIGHT) * camera.viewportHeight
 
-    fun BitmapFont.scaleFont() {
+    fun BitmapFont.scaleFont(camera: OrthographicCamera) {
         this.setUseIntegerPositions(false)
         this.data.setScale(camera.viewportWidth / main.defaultCamera.viewportWidth,
                            camera.viewportHeight / main.defaultCamera.viewportHeight)
@@ -315,7 +323,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE / 2f)
 
-        font.scaleFont()
+        font.scaleFont(camera)
 
         // horizontal track lines
         run trackLines@ {
@@ -500,7 +508,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
 
-                borderedFont.scaleFont()
+                borderedFont.scaleFont(camera)
                 borderedFont.scaleMul(0.75f)
                 borderedFont.color = batch.color
                 if (textKey != null) {
@@ -515,7 +523,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                 Align.right)
                 }
 
-                borderedFont.scaleFont()
+                borderedFont.scaleFont(camera)
             }
 
             if (cachedPlaybackStart.first != remix.playbackStart) {
@@ -581,7 +589,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // bottom trackers
         run trackers@ {
             val font = main.defaultBorderedFont
-            font.scaleFont()
+            font.scaleFont(camera)
 
             val triHeight = 0.5f
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
@@ -651,7 +659,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.setColor(oldColor)
 
                     val deleteFont = main.defaultFontLarge
-                    deleteFont.scaleFont()
+                    deleteFont.scaleFont(camera)
                     deleteFont.scaleMul(0.5f)
                     deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
@@ -682,7 +690,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         val bigFont = main.defaultFontLarge
                         val oldBigFontColor = bigFont.color
-                        bigFont.scaleFont()
+                        bigFont.scaleFont(camera)
 
                         // AND or XOR strings
                         if (rect.height - toScaleY * 2 >= bigFont.capHeight
@@ -710,16 +718,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             }
                             if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr)) {
                                 font.drawCompressed(batch, widthStr,
-                                                     defaultX,
-                                                     rect.y + rect.height - toScaleY,
-                                                     defaultWidth, Align.center)
+                                                    defaultX,
+                                                    rect.y + rect.height - toScaleY,
+                                                    defaultWidth, Align.center)
                             }
                             if (rect.width - toScaleX * 2 >= font.getTextWidth(heightStr)) {
                                 font.drawCompressed(batch, heightStr,
-                                                     defaultX,
-                                                     rect.y + rect.height / 2 + font.capHeight / 2,
-                                                     defaultWidth,
-                                                     if (shouldBeLeftAlign) Align.left else Align.right)
+                                                    defaultX,
+                                                    rect.y + rect.height / 2 + font.capHeight / 2,
+                                                    defaultWidth,
+                                                    if (shouldBeLeftAlign) Align.left else Align.right)
                             }
                         }
 
@@ -735,21 +743,30 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
+        font.unscaleFont()
+        batch.end()
+
+        // static camera
+        batch.projectionMatrix = staticCamera.combined
+        batch.begin()
+        font.scaleFont(staticCamera)
+
         // song subtitles (NEVER touch this ever again)
         run {
+            val camera = staticCamera
             font.scaleMul(camera.zoom)
             val texture = AssetRegistry.get<Texture>("ui_songtitle")
             val scale = 1.15f
             val texWidth = toScaleX(texture.width.toFloat() * scale * camera.zoom)
             val texHeight = toScaleY(texture.height.toFloat() * scale * camera.zoom)
-            val startX = adjustedCameraX - camera.viewportWidth / 2 * camera.zoom
+            val startX = 0f
 
             fun renderBar(timedString: TimedString, bottom: Boolean) {
                 val rawPercent = Interpolation.circle.apply(
                         (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
                 val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
                 val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth * camera.zoom - xPercent * texWidth
-                val y = (adjustedCameraY - camera.viewportHeight * 0.15f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
+                val y = (camera.viewportHeight * 0.35f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
 
                 batch.draw(texture, x, y, texWidth, texHeight,
                            0, 0, texture.width, texture.height,
@@ -773,11 +790,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         font.unscaleFont()
         batch.end()
+
+        // reset camera proj matrix to normal
         batch.projectionMatrix = main.defaultCamera.combined
-        batch.begin()
-
-        batch.end()
-
     }
 
     fun postStageRender() {
@@ -1573,5 +1588,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun resize(width: Int, height: Int) {
         stage.updatePositions()
         resizeCamera(camera)
+        resizeCamera(staticCamera)
     }
 }
