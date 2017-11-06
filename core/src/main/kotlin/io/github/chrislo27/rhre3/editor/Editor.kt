@@ -708,19 +708,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
                                 defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
                             }
-                            if (rect.width >= font.getTextWidth(widthStr)) {
-                                font.drawConstrained(batch, widthStr,
+                            if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr)) {
+                                font.drawCompressed(batch, widthStr,
                                                      defaultX,
                                                      rect.y + rect.height - toScaleY,
-                                                     defaultWidth,
-                                                     font.lineHeight, Align.center)
+                                                     defaultWidth, Align.center)
                             }
-                            if (rect.width >= font.getTextWidth(heightStr)) {
-                                font.drawConstrained(batch, heightStr,
+                            if (rect.width - toScaleX * 2 >= font.getTextWidth(heightStr)) {
+                                font.drawCompressed(batch, heightStr,
                                                      defaultX,
                                                      rect.y + rect.height / 2 + font.capHeight / 2,
                                                      defaultWidth,
-                                                     font.lineHeight,
                                                      if (shouldBeLeftAlign) Align.left else Align.right)
                             }
                         }
@@ -737,7 +735,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        // song subtitles
+        // song subtitles (NEVER touch this ever again)
         run {
             font.scaleMul(camera.zoom)
             val texture = AssetRegistry.get<Texture>("ui_songtitle")
