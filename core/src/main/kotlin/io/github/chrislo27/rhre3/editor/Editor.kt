@@ -646,7 +646,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             when (clickOccupation) {
                 is ClickOccupation.SelectionDrag -> {
                     val oldColor = batch.packedColor
-                    val y = if (clickOccupation.isAllSpecial) -1f else 0f
+                    val y = if (clickOccupation.isBottomSpecial) -1f else 0f
                     val mouseX = remix.camera.getInputX()
                     val mouseY = remix.camera.getInputY()
                     val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)

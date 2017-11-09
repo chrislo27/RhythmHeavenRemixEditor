@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor
 
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import io.github.chrislo27.rhre3.entity.Entity
@@ -124,19 +125,29 @@ sealed class ClickOccupation {
         val isAllSpecial: Boolean by lazy {
             selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
         }
+        val isBottomSpecial: Boolean by lazy {
+            if (isAllSpecial) return@lazy true
+            val lowPoint = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
+            val allBottom = selection.filter { MathUtils.isEqual(it.bounds.y, lowPoint) }
+
+            allBottom.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+        }
 
         val left: Float
             get() = selection.minBy { it.bounds.x }?.bounds?.x ?: error("Nothing in selection")
+
         val right: Float
             get() {
                 val right = selection.maxBy { it.bounds.x + it.bounds.width } ?: error("Nothing in selection")
                 return right.bounds.x + right.bounds.width
             }
+
         val top: Float
             get() {
                 val highest = selection.maxBy { it.bounds.y } ?: error("Nothing in selection")
                 return highest.bounds.y + highest.bounds.height
             }
+
         val bottom: Float
             get() = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
 
@@ -190,7 +201,7 @@ sealed class ClickOccupation {
         }
 
         fun isInDeleteZone(): Boolean {
-            return if (isAllSpecial) {
+            return if (isBottomSpecial) {
                 bottom < -1.5f
             } else {
                 bottom < -0.5f
