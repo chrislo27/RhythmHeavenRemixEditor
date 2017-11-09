@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import io.github.chrislo27.rhre3.goat.GoatBackgrounds
-import io.github.chrislo27.rhre3.goat.GoatFaces
-import io.github.chrislo27.rhre3.goat.GoatHats
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
@@ -91,22 +88,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("weird_odyssey_circle", "images/odyssey_circle.png")
 
         AssetRegistry.loadAsset<Texture>("credits_flag_ca", "credits/flag_ca.png")
-
-        // goat
-        AssetRegistry.loadAsset<Texture>("goat_full", "images/goat/goat_full.png")
-        AssetRegistry.loadAsset<Texture>("goat_base", "images/goat/goat_base.png")
-        AssetRegistry.loadAsset<Texture>("goat_medal", "images/goat/medal.png")
-        run {
-            GoatBackgrounds.VALUES.forEach {
-                AssetRegistry.loadAsset<Texture>("goat_bg_${it.name}", it.file)
-            }
-            GoatFaces.VALUES.forEach {
-                AssetRegistry.loadAsset<Texture>("goat_face_${it.name}", it.file)
-            }
-            GoatHats.VALUES.forEach {
-                AssetRegistry.loadAsset<Texture>("goat_hat_${it.name}", it.file)
-            }
-        }
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
