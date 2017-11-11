@@ -801,6 +801,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val autosaveState = autosaveState
             val borderedFont = main.defaultBorderedFont
             borderedFont.scaleFont(staticCamera)
+            borderedFont.scaleMul(0.85f)
 
             val texture = AssetRegistry.get<Texture>("ui_spinning_circle")
             val alpha = if (autosaveState.result.timed) (autosaveState.time * 3f).coerceIn(0f, 1f) else 1f
@@ -809,7 +810,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             batch.setColor(1f, 1f, 1f, alpha)
 
             val startX = 6f
-            val startY = stage.centreAreaStage.location.realY + 6f
+            val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight + 6f
             val height = 32f
             val width = 32f
 
@@ -937,6 +938,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (autosaveState.time > 0) {
             autosaveState.time -= Gdx.graphics.deltaTime
+        }
+
+        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
+            timeUntilAutosave = 0f
         }
 
         if (!stage.isTyping) {
