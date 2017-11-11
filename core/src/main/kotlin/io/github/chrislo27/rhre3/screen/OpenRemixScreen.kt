@@ -109,7 +109,7 @@ class OpenRemixScreen(main: RHRE3Application)
                 this.visible = isChooserOpen
             }
         }.apply {
-            this.location.set(screenHeight = 0.25f)
+            this.location.set(screenHeight = 0.125f)
             this.textAlign = Align.center
             this.isLocalizationKey = true
             this.text = "closeChooser"
@@ -128,7 +128,7 @@ class OpenRemixScreen(main: RHRE3Application)
                 get() = super.visible && (isLoading || isLoadingSounds)
         }.apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-            this.location.set(screenHeight = 0.125f)
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
         }
         loadButton = LoadButton(palette, stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.25f, screenWidth = 0.5f)
