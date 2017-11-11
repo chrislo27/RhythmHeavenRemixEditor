@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.SpinningWheel
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -49,6 +50,7 @@ class OpenRemixScreen(main: RHRE3Application)
             stage.backButton.enabled = !isChooserOpen
         }
     @Volatile private var isLoading = false
+    @Volatile private var isLoadingSounds = false
 
     private fun createFileChooser()
             = FileChooser().apply {
@@ -114,12 +116,20 @@ class OpenRemixScreen(main: RHRE3Application)
             this.visible = false
         }
         mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            //            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+            this.location.set(screenHeight = 0.875f, screenY = 0.125f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
+        stage.centreStage.elements += object : SpinningWheel<OpenRemixScreen>(palette, stage.centreStage,
+                                                                              stage.centreStage) {
+            override var visible: Boolean = true
+                get() = super.visible && (isLoading || isLoadingSounds)
+        }.apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenHeight = 0.125f)
+        }
         loadButton = LoadButton(palette, stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.25f, screenWidth = 0.5f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -170,6 +180,7 @@ class OpenRemixScreen(main: RHRE3Application)
                             val toUnload = editor.remix.entities.applyFilter().filter { it !in toLoad }
 
                             val coroutine: Job = launch(CommonPool) {
+                                isLoadingSounds = true
                                 toLoad.forEach { entity ->
                                     if (entity is CueEntity) {
                                         entity.datamodel.loadSounds()
@@ -184,6 +195,7 @@ class OpenRemixScreen(main: RHRE3Application)
                                         entity.unloadInternalSounds()
                                     }
                                 }
+                                isLoadingSounds = false
                             }
 
                             fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
@@ -265,6 +277,7 @@ class OpenRemixScreen(main: RHRE3Application)
         mainLabel.text = ""
         remix = null
         loadButton.alsoDo = {}
+        isLoadingSounds = false
     }
 
     override fun dispose() {
