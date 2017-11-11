@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
+import io.github.chrislo27.toolboks.util.gdxutils.intersects
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
