@@ -103,29 +103,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
     }
 
-    fun createRemix(): Remix {
-        return Remix(camera, this)
-    }
-
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
-
         fun goIn() {
             out = false
             time = 0f
         }
+    }
 
+    private enum class AutosaveResult(val localization: String, val timed: Boolean = false) {
+        NONE(""),
+        DOING("editor.msg.autosave.progress"),
+        SUCCESS("editor.msg.autosave.success", true),
+        FAILED("editor.msg.autosave.failed", true)
+    }
+
+    private data class AutosaveState(val result: AutosaveResult, var time: Float)
+
+    fun createRemix(): Remix {
+        return Remix(camera, this)
     }
 
     val camera: OrthographicCamera by lazy {
         OrthographicCamera().also { c ->
-            resizeCamera(c)
+            resizeCameraToEntityScale(c)
             c.position.x = 0f
             c.update()
         }
     }
     private val staticCamera: OrthographicCamera by lazy {
         OrthographicCamera().also { c ->
-            resizeCamera(c)
+            resizeCameraToPixelScale(c)
             c.position.x = c.viewportWidth / 2f
             c.position.y = c.viewportHeight / 2f
             c.update()
@@ -177,7 +184,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     var autosaveFrequency: Int = 0
         private set
     private var autosaveFile: FileHandle? = null
-    private var autosaveState: Pair<Boolean, Long>? = null
+    private @Volatile
+    var autosaveState: AutosaveState = AutosaveState(AutosaveResult.NONE, 0f)
     private var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private val songSubtitles = mutableMapOf("songArtist" to TimedString("", SONG_SUBTITLE_TRANSITION, false),
@@ -751,14 +759,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.begin()
         font.scaleFont(staticCamera)
 
-        // song subtitles (NEVER touch this ever again)
+        // song subtitles
         run {
             val camera = staticCamera
             font.scaleMul(camera.zoom)
             val texture = AssetRegistry.get<Texture>("ui_songtitle")
             val scale = 1.15f
-            val texWidth = toScaleX(texture.width.toFloat() * scale * camera.zoom)
-            val texHeight = toScaleY(texture.height.toFloat() * scale * camera.zoom)
+            val texWidth = texture.width.toFloat() * scale * camera.zoom
+            val texHeight = texture.height.toFloat() * scale * camera.zoom
             val startX = 0f
 
             fun renderBar(timedString: TimedString, bottom: Boolean) {
@@ -772,9 +780,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                            0, 0, texture.width, texture.height,
                            bottom, bottom)
                 font.setColor(1f, 1f, 1f, 1f)
-                val padding = toScaleX(8f * camera.zoom)
-                val textWidth = toScaleX((texture.width.toFloat() - texture.height) * scale * camera.zoom) - padding * 2
-                val triangleWidth = toScaleX(texture.height.toFloat() * scale * camera.zoom)
+                val padding = 8f * camera.zoom
+                val textWidth = (texture.width.toFloat() - texture.height) * scale * camera.zoom - padding * 2
+                val triangleWidth = texture.height.toFloat() * scale * camera.zoom
                 font.drawCompressed(batch, timedString.str,
                                     (if (!bottom) x else x + triangleWidth) + padding,
                                     y + font.capHeight + texHeight / 2 - font.capHeight / 2,
@@ -786,6 +794,35 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             renderBar(songArtist, true)
 
             font.scaleMul(1f / camera.zoom)
+        }
+
+        // autosave indicator
+        if (autosaveState.result != AutosaveResult.NONE) {
+            val autosaveState = autosaveState
+            val borderedFont = main.defaultBorderedFont
+            borderedFont.scaleFont(staticCamera)
+
+            val texture = AssetRegistry.get<Texture>("ui_spinning_circle")
+            val alpha = if (autosaveState.result.timed) (autosaveState.time * 3f).coerceIn(0f, 1f) else 1f
+
+            borderedFont.setColor(1f, 1f, 1f, alpha)
+            batch.setColor(1f, 1f, 1f, alpha)
+
+            val startX = 6f
+            val startY = stage.centreAreaStage.location.realY + 6f
+            val height = 32f
+            val width = 32f
+
+            batch.draw(texture, startX, startY, width * 0.5f, height * 0.5f, width, height, 1f, 1f,
+                       360f * MathHelper.getSawtoothWave(2f),
+                       0, 0, texture.width, texture.height, false, false)
+            borderedFont.drawCompressed(batch, Localization[autosaveState.result.localization],
+                                        startX + width * 1.25f, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
+                                        staticCamera.viewportWidth - width, Align.left)
+
+            borderedFont.setColor(1f, 1f, 1f, 1f)
+            borderedFont.unscaleFont()
+            batch.setColor(1f, 1f, 1f, 1f)
         }
 
         font.unscaleFont()
@@ -883,15 +920,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 autosaveFrequency = 0
                 launch(CommonPool) {
                     try {
+                        autosaveState = AutosaveState(AutosaveResult.DOING, 0f)
                         Remix.saveTo(remix, autosaveFile.file(), true)
-                        Gdx.app.postRunnable {
-                            autosaveState = true to System.currentTimeMillis()
-                        }
+                        autosaveState = AutosaveState(AutosaveResult.SUCCESS, 5f)
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        Gdx.app.postRunnable {
-                            autosaveState = false to System.currentTimeMillis()
-                        }
+                        autosaveState = AutosaveState(AutosaveResult.FAILED, 15f)
                     }
                     Gdx.app.postRunnable {
                         resetAutosaveTimer()
@@ -900,18 +934,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
         }
-        val autosaveState = autosaveState
-        if (autosaveState != null) {
-            if (System.currentTimeMillis() >= autosaveState.second + AUTOSAVE_MESSAGE_TIME_MS) {
-                this.autosaveState = null
-            }
-            updateMessageLabel() // TODO remove
-        }
 
-        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-            Gdx.app.postRunnable {
-                this.autosaveState = true to System.currentTimeMillis()
-            }
+        if (autosaveState.time > 0) {
+            autosaveState.time -= Gdx.graphics.deltaTime
         }
 
         if (!stage.isTyping) {
@@ -1037,11 +1062,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         fun StringBuilder.separator(): StringBuilder {
             this.append(MSG_SEPARATOR)
             return this
-        }
-
-        if (autosaveState != null) {
-            builder.append(Localization["editor.msg.autosave.${if (autosaveState.first) "success" else "failed"}"])
-                    .separator()
         }
 
         if (stage.tapalongStage.visible) {
@@ -1579,15 +1599,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 //        }
     }
 
-    private fun resizeCamera(camera: OrthographicCamera) {
+    private fun resizeCameraToEntityScale(camera: OrthographicCamera) {
         camera.viewportWidth = RHRE3.WIDTH / ENTITY_WIDTH
         camera.viewportHeight = RHRE3.HEIGHT / ENTITY_HEIGHT
         camera.update()
     }
 
+    private fun resizeCameraToPixelScale(camera: OrthographicCamera) {
+        camera.viewportWidth = RHRE3.WIDTH.toFloat()
+        camera.viewportHeight = RHRE3.HEIGHT.toFloat()
+        camera.update()
+    }
+
     fun resize(width: Int, height: Int) {
         stage.updatePositions()
-        resizeCamera(camera)
-        resizeCamera(staticCamera)
+        resizeCameraToEntityScale(camera)
+        resizeCameraToPixelScale(staticCamera)
     }
 }

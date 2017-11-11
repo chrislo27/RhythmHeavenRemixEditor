@@ -82,10 +82,10 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_favourites", "images/ui/icons/favouritesTab.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_recents", "images/ui/icons/recentsTab.png")
         AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
+        AssetRegistry.loadAsset<Texture>("ui_spinning_circle", "images/ui/circle.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
-        AssetRegistry.loadAsset<Texture>("weird_odyssey_circle", "images/odyssey_circle.png")
 
         AssetRegistry.loadAsset<Texture>("credits_flag_ca", "credits/flag_ca.png")
     }
