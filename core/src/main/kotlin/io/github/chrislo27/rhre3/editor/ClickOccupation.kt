@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
+import io.github.chrislo27.toolboks.util.gdxutils.intersects
 
 
 /**
@@ -195,7 +196,7 @@ sealed class ClickOccupation {
 
             return editor.remix.entities.all {
                 it in selection || selection.all { sel ->
-                    !sel.bounds.overlaps(it.bounds)
+                    !sel.bounds.intersects(it.bounds)
                 }
             }
         }

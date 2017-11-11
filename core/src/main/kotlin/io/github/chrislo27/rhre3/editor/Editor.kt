@@ -1502,7 +1502,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 // finish selection as ACTION
                 clickOccupation.updateRectangle()
                 val selectionRect = clickOccupation.rectangle
-                val newCaptured: List<Entity> = remix.entities.filter { it.bounds.overlaps(selectionRect) }
+                val newCaptured: List<Entity> = remix.entities.filter { it.bounds.intersects(selectionRect) }
                 val newSelection: List<Entity> =
                         if (shift && !control && !alt) {
                             this.selection.toList() + newCaptured

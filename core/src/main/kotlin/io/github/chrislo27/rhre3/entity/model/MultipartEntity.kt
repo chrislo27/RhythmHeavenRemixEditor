@@ -114,7 +114,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     fun canSplitWithoutColliding(): Boolean {
         return remix.entities.filter { it !== this && it !in internal }.none { target ->
             internal.any {
-                it.bounds.overlaps(target.bounds)
+                it.bounds.intersects(target.bounds)
             }
         }
     }
