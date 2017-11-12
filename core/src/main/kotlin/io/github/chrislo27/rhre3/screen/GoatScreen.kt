@@ -124,11 +124,6 @@ class GoatScreen(main: RHRE3Application)
         goatStage.elements += ImageLabel(palette, goatStage, goatStage).apply {
             image = TextureRegion(AssetRegistry.get<Texture>("goat_base"))
         }
-        medal = ImageLabel(palette, goatStage, goatStage).apply {
-            image = TextureRegion(AssetRegistry.get<Texture>("goat_medal"))
-            visible = false
-        }
-        goatStage.elements += medal
         hat = ImageLabel(palette, goatStage, goatStage).apply {
             image = null
         }
@@ -137,6 +132,11 @@ class GoatScreen(main: RHRE3Application)
             image = null
         }
         goatStage.elements += face
+        medal = ImageLabel(palette, goatStage, goatStage).apply {
+            image = TextureRegion(AssetRegistry.get<Texture>("goat_medal"))
+            visible = false
+        }
+        goatStage.elements += medal
         mask = ImageLabel(palette, goatStage, goatStage).apply {
             image = null
         }
