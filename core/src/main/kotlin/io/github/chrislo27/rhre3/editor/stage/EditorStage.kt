@@ -455,6 +455,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 override fun frameUpdate(screen: EditorScreen) {
                     super.frameUpdate(screen)
 
+                    attemptSetInvisible()
+                }
+
+                private fun attemptSetInvisible() {
                     if (visible &&
                             (!hasFocus
                                     || editor.selection.size != 1
@@ -473,6 +477,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val entity = editor.selection.first() as IEditableText
                         entity.text = this.text
                     }
+                }
+
+                override fun onEnterPressed(): Boolean {
+                    hasFocus = false
+                    attemptSetInvisible()
+                    return true
                 }
             }.apply {
                 this.location.set(screenY = subtitleLabel.location.screenHeight,
