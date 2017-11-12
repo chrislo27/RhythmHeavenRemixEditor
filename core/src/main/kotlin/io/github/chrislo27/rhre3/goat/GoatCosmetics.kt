@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.goat
 
 
-enum class GoatBackgrounds(val file: String, val nam: String) {
+enum class GoatBackground(val file: String, val readableName: String) {
 
     DEFAULT("images/goat/bg/rhythm.png", "Default"),
     AURORA("images/goat/bg/aurora.png", "Aurora"),
@@ -64,7 +64,7 @@ enum class GoatBackgrounds(val file: String, val nam: String) {
 
 }
 
-enum class GoatFaces(val file: String, val nam: String, val isMask: Boolean = false) {
+enum class GoatFace(val file: String, val readableName: String, val isMask: Boolean = false) {
 
     DEFAULT("images/goat/face/smile.png", "Default"),
     DISAPPOINTED("images/goat/face/disappointed.png", "Disappointed"),
@@ -123,8 +123,9 @@ enum class GoatFaces(val file: String, val nam: String, val isMask: Boolean = fa
 
 }
 
-enum class GoatHats(val file: String, val nam: String, val helmet: Boolean = false, val head: Boolean = false) {
+enum class GoatHat(val file: String, val readableName: String, val helmet: Boolean = false, val head: Boolean = false) {
 
+    NONE("images/goat/hat/none.png", "None"),
     GHOSTLY_GIBUS("images/goat/hat/ghostly_gibus.png", "Ghostly Gibus"),
     STOMP_FARMER("images/goat/hat/stomp farmer.png", "Stomp Farmer"),
     CHOWDER("images/goat/hat/chowder.png", "Chowder"),

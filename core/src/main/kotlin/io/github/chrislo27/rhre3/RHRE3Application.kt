@@ -166,7 +166,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "exportRemix" to ExportRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "credits" to CreditsScreen(this)
-                ScreenRegistry += "stats" to StatsScreen(this)
+                ScreenRegistry += "goat" to GoatScreen(this)
             }
 
             val nextScreenLambda = {

@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
-import io.github.chrislo27.rhre3.goat.GoatBackgrounds
-import io.github.chrislo27.rhre3.goat.GoatFaces
-import io.github.chrislo27.rhre3.goat.GoatHats
+import io.github.chrislo27.rhre3.goat.GoatBackground
+import io.github.chrislo27.rhre3.goat.GoatFace
+import io.github.chrislo27.rhre3.goat.GoatHat
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
@@ -97,13 +97,13 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("goat_base", "images/goat/goat_base.png")
         AssetRegistry.loadAsset<Texture>("goat_medal", "images/goat/medal.png")
         run {
-            GoatBackgrounds.VALUES.forEach {
+            GoatBackground.VALUES.forEach {
                 AssetRegistry.loadAsset<Texture>("goat_bg_${it.name}", it.file)
             }
-            GoatFaces.VALUES.forEach {
+            GoatFace.VALUES.forEach {
                 AssetRegistry.loadAsset<Texture>("goat_face_${it.name}", it.file)
             }
-            GoatHats.VALUES.forEach {
+            GoatHat.VALUES.forEach {
                 AssetRegistry.loadAsset<Texture>("goat_hat_${it.name}", it.file)
             }
         }
