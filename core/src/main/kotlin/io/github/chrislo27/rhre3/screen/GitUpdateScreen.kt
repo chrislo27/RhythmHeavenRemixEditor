@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.SpinningWheel
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -18,6 +19,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
@@ -38,14 +40,21 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
     init {
         stage as GenericStage
+        val palette = main.uiPalette
 
         stage.titleLabel.setText("screen.database.title")
 
-        label = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage)
+        label = TextLabel(palette, stage.centreStage, stage.centreStage)
         label.setText("", Align.center, wrapping = true, isLocalization = false)
         stage.centreStage.elements += label
 
-        stage.bottomStage.elements += object : Button<GitUpdateScreen>(main.uiPalette, stage.bottomStage,
+        stage.centreStage.elements += SpinningWheel(palette, stage.centreStage,
+                                                                              stage.centreStage).apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
+        }
+
+        stage.bottomStage.elements += object : Button<GitUpdateScreen>(palette, stage.bottomStage,
                                                                        stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
