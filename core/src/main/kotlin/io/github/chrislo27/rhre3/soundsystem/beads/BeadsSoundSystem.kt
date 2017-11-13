@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
-import io.github.chrislo27.rhre3.util.MusicTooLargeException
-import io.github.chrislo27.rhre3.util.MusicWayTooLargeException
+import io.github.chrislo27.rhre3.util.err.MusicTooLargeException
+import io.github.chrislo27.rhre3.util.err.MusicWayTooLargeException
 import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils

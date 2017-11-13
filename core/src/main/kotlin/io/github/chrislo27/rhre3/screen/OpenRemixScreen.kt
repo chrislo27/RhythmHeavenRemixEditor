@@ -20,7 +20,11 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.SpinningWheel
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.rhre3.util.JavafxStub
+import io.github.chrislo27.rhre3.util.attemptRememberDirectory
+import io.github.chrislo27.rhre3.util.err.MusicLoadingException
+import io.github.chrislo27.rhre3.util.getDefaultDirectory
+import io.github.chrislo27.rhre3.util.persistDirectory
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -244,8 +248,7 @@ class OpenRemixScreen(main: RHRE3Application)
                         } catch (t: Throwable) {
                             t.printStackTrace()
                             mainLabel.text = when (t) {
-                                is MusicTooLargeException -> t.getLocalizedText()
-                                is MusicWayTooLargeException -> t.getLocalizedText()
+                                is MusicLoadingException -> t.getLocalizedText()
                                 else -> Localization["screen.open.failed", t::class.java.canonicalName]
                             }
                             remix?.dispose()

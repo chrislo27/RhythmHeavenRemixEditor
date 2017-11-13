@@ -11,7 +11,11 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.MusicData
-import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.rhre3.util.JavafxStub
+import io.github.chrislo27.rhre3.util.attemptRememberDirectory
+import io.github.chrislo27.rhre3.util.err.MusicLoadingException
+import io.github.chrislo27.rhre3.util.getDefaultDirectory
+import io.github.chrislo27.rhre3.util.persistDirectory
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -157,8 +161,7 @@ class MusicSelectScreen(main: RHRE3Application)
 //            }
         } else {
             label.text = when (throwable) {
-                is MusicWayTooLargeException -> throwable.getLocalizedText()
-                is MusicTooLargeException -> throwable.getLocalizedText()
+                is MusicLoadingException -> throwable.getLocalizedText()
                 else -> Localization["screen.music.invalid", throwable::class.java.canonicalName]
             }
         }
