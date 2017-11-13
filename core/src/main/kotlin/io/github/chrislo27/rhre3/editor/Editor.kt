@@ -922,7 +922,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     try {
                         autosaveState = AutosaveState(AutosaveResult.DOING, 0f)
                         Remix.saveTo(remix, autosaveFile.file(), true)
-                        autosaveState = AutosaveState(AutosaveResult.SUCCESS, 5f)
+                        autosaveState = AutosaveState(AutosaveResult.SUCCESS, 3f)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         autosaveState = AutosaveState(AutosaveResult.FAILED, 15f)
