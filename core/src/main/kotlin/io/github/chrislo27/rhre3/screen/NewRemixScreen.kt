@@ -8,8 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
+import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -48,10 +47,8 @@ class NewRemixScreen(main: RHRE3Application)
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         editor.remix.entities.forEach {
-                            if (it is CueEntity) {
-                                it.datamodel.unloadSounds()
-                            } else if (it is MultipartEntity<*>) {
-                                it.unloadInternalSounds()
+                            if (it is ILoadsSounds) {
+                                it.unloadSounds()
                             }
                         }
                         editor.remix = editor.createRemix()

@@ -23,7 +23,6 @@ import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.*
-import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
@@ -1376,13 +1375,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
             val entity = datamodel.createEntity(remix, null)
 
-            when (entity) {
-                is CueEntity -> {
-                    entity.datamodel.loadSounds()
-                }
-                is MultipartEntity -> {
-                    entity.loadInternalSounds()
-                }
+            if (entity is ILoadsSounds) {
+                entity.loadSounds()
             }
 
             if (Toolboks.debugMode) {

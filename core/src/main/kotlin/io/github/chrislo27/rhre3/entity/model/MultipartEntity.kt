@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3.entity.model
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -15,7 +14,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.intersects
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
-    : ModelEntity<M>(remix, datamodel), IRepitchable
+    : ModelEntity<M>(remix, datamodel), IRepitchable, ILoadsSounds
         where M : Datamodel, M : ContainerModel {
 
     override var semitone: Int = 0
@@ -163,11 +162,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     override fun onEnd() {
     }
 
-    fun loadInternalSounds() {
-        internal.filterIsInstance<CueEntity>().forEach { it.datamodel.loadSounds() }
+    override fun loadSounds() {
+        internal.filterIsInstance<ILoadsSounds>().forEach(ILoadsSounds::loadSounds)
     }
 
-    fun unloadInternalSounds() {
-        internal.filterIsInstance<CueEntity>().forEach { it.datamodel.unloadSounds() }
+    override fun unloadSounds() {
+        internal.filterIsInstance<ILoadsSounds>().forEach(ILoadsSounds::unloadSounds)
     }
 }

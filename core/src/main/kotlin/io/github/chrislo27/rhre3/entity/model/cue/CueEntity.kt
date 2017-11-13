@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -10,7 +11,7 @@ import io.github.chrislo27.rhre3.util.Semitones
 
 
 class CueEntity(remix: Remix, datamodel: Cue)
-    : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable {
+    : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable, ILoadsSounds {
 
     companion object {
         /**
@@ -118,5 +119,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
             }
             it.semitone = this.semitone
         }
+    }
+
+    override fun loadSounds() {
+        datamodel.loadSounds()
+    }
+
+    override fun unloadSounds() {
+        datamodel.unloadSounds()
     }
 }

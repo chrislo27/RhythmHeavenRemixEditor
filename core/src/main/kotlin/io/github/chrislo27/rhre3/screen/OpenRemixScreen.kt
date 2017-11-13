@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
@@ -90,10 +91,8 @@ class OpenRemixScreen(main: RHRE3Application)
         stage.onBackButtonClick = {
             if (!isChooserOpen && !isLoading) {
                 editor.remix.entities.applyFilter().forEach { entity ->
-                    if (entity is CueEntity) {
-                        entity.datamodel.loadSounds()
-                    } else if (entity is MultipartEntity<*>) {
-                        entity.loadInternalSounds()
+                    if (entity is ILoadsSounds) {
+                        entity.loadSounds()
                     }
                 }
                 main.screen = ScreenRegistry.getNonNull("editor")
@@ -182,17 +181,13 @@ class OpenRemixScreen(main: RHRE3Application)
                             val coroutine: Job = launch(CommonPool) {
                                 isLoadingSounds = true
                                 toLoad.forEach { entity ->
-                                    if (entity is CueEntity) {
-                                        entity.datamodel.loadSounds()
-                                    } else if (entity is MultipartEntity<*>) {
-                                        entity.loadInternalSounds()
+                                    if (entity is ILoadsSounds) {
+                                        entity.loadSounds()
                                     }
                                 }
                                 toUnload.forEach { entity ->
-                                    if (entity is CueEntity) {
-                                        entity.datamodel.unloadSounds()
-                                    } else if (entity is MultipartEntity<*>) {
-                                        entity.unloadInternalSounds()
+                                    if (entity is ILoadsSounds) {
+                                        entity.unloadSounds()
                                     }
                                 }
                                 isLoadingSounds = false
