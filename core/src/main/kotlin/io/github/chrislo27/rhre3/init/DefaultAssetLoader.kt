@@ -70,12 +70,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_views", "images/ui/icons/views.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_inspections", "images/ui/icons/inspections.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_inspections_big", "images/ui/icons/biginspections.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_filter_callAndResponse", "images/ui/searchbar/callAndResponse.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_filter_favourites", "images/ui/searchbar/favourites.png")
-        AssetRegistry.loadAsset<Texture>("ui_search_filter_useInRemix", "images/ui/searchbar/useInRemix.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_play", "images/ui/icons/play.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_pause", "images/ui/icons/pause.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_stop", "images/ui/icons/stop.png")
@@ -84,13 +78,19 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_tapalong_button", "images/ui/icons/tapalongButton.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_favourites", "images/ui/icons/favouritesTab.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_recents", "images/ui/icons/recentsTab.png")
+
+        AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_callAndResponse", "images/ui/searchbar/callAndResponse.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_favourites", "images/ui/searchbar/favourites.png")
+        AssetRegistry.loadAsset<Texture>("ui_search_filter_useInRemix", "images/ui/searchbar/useInRemix.png")
+
         AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
         AssetRegistry.loadAsset<Texture>("ui_spinning_circle", "images/ui/circle.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
-
-        AssetRegistry.loadAsset<Texture>("credits_flag_ca", "credits/flag_ca.png")
 
         // goat
         AssetRegistry.loadAsset<Texture>("goat_full", "images/goat/goat_full.png")
