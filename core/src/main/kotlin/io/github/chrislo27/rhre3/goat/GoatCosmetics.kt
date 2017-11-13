@@ -28,7 +28,7 @@ enum class GoatBackground(val file: String, val readableName: String) {
     NIGHT_WALK_FEVER("images/goat/bg/night walk fever.png", "Night Walk Fever"),
     NINJA_BODYGUARD("images/goat/bg/ninja bodyguard.png", "Ninja Bodyguard"),
     QUIZ_AUDIENCE("images/goat/bg/quiz audience.png", "Quiz Audience"),
-    RAP_MEN("images/goat/bg/Rap Men.png", "Rap Men"),
+    RAP_MEN("images/goat/bg/rap men.png", "Rap Men"),
     RINGSIDE_BG("images/goat/bg/ringside.png", "Ringside"),
     SAMURAI_SLICE_FOGGY("images/goat/bg/samurai slice foggy.png", "Samurai Slice Foggy"),
     SAMURAI_SLICE("images/goat/bg/samurai slice.png", "Samurai Slice"),
