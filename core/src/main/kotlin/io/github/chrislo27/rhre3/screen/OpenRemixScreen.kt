@@ -180,14 +180,14 @@ class OpenRemixScreen(main: RHRE3Application)
 
                             val coroutine: Job = launch(CommonPool) {
                                 isLoadingSounds = true
-                                toLoad.forEach { entity ->
-                                    if (entity is ILoadsSounds) {
-                                        entity.loadSounds()
-                                    }
-                                }
                                 toUnload.forEach { entity ->
                                     if (entity is ILoadsSounds) {
                                         entity.unloadSounds()
+                                    }
+                                }
+                                toLoad.forEach { entity ->
+                                    if (entity is ILoadsSounds) {
+                                        entity.loadSounds()
                                     }
                                 }
                                 isLoadingSounds = false
