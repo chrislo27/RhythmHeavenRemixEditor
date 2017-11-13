@@ -46,7 +46,8 @@ class GoatScreen(main: RHRE3Application)
         stage as GenericStage
         val palette = main.uiPalette
 
-        stage.titleLabel.text = "goat.title"
+        stage.titleLabel.text = "Goat"
+        stage.titleLabel.isLocalizationKey = false
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("goat_full"))
         stage.backButton.visible = true
         stage.onBackButtonClick = {

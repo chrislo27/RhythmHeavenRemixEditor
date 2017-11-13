@@ -23,7 +23,7 @@ open class SpinningWheel<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: U
             image = TextureRegion(AssetRegistry.get<Texture>("ui_spinning_circle"))
         }
 
-        rotation = MathHelper.getSawtoothWave(Math.abs(speed)) * 360f * Math.signum(speed)
+        rotation = MathHelper.getSawtoothWave(Math.abs(speed)) * -360f * Math.signum(speed)
         super.render(screen, batch, shapeRenderer)
     }
 

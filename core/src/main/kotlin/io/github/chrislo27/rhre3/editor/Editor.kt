@@ -815,7 +815,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val width = 32f
 
             batch.draw(texture, startX, startY, width * 0.5f, height * 0.5f, width, height, 1f, 1f,
-                       360f * MathHelper.getSawtoothWave(2f),
+                       -360f * MathHelper.getSawtoothWave(2f),
                        0, 0, texture.width, texture.height, false, false)
             borderedFont.drawCompressed(batch, Localization[autosaveState.result.localization],
                                         startX + width * 1.25f, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
