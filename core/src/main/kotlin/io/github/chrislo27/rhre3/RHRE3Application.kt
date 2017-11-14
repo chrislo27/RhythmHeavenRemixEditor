@@ -69,11 +69,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     val defaultBorderedFontLarge: BitmapFont
         get() = fonts[defaultBorderedFontLargeKey].font!!
 
-    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin.otf") }
+    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
         this.font!!.apply {
             setFixedWidthGlyphs("1234567890")
-            data.setLineHeight(lineHeight * 0.6f)
+            data.setLineHeight(lineHeight * 0.9f)
             setUseIntegerPositions(true)
             data.markupEnabled = true
             data.missingGlyph = data.getGlyph('☒')
