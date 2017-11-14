@@ -878,17 +878,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        if (selection.isNotEmpty() && Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-            val leftSide = selection.map { it.bounds }.minBy { it.x }!!.x
-            val cuePointers = selection.filterIsInstance<ModelEntity<*>>().joinToString {
-                val relX = it.bounds.x - leftSide
-                "CuePointer(\"${it.datamodel.id.replace("bossaNovaEn", "${'$'}{id}")}\", ${relX}f, track = ${it.bounds.y.toInt()})"
-            }
-            println("""
-                game.objects += Pattern(game, "${'$'}{id}_malePattern1", mutableListOf(), "pattern - male - 1", mutableListOf($cuePointers), false)
-            """.trimIndent())
-        }
-
         if (remix.playState == PlayState.PLAYING) {
             val halfWidth = remix.camera.viewportWidth / 2 * remix.camera.zoom
             if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
