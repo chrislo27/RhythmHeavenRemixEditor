@@ -373,8 +373,6 @@ class InfoScreen(main: RHRE3Application)
         stage as GenericStage
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-            main.screen = ScreenRegistry.getNonNull("goat")
         }
     }
 
