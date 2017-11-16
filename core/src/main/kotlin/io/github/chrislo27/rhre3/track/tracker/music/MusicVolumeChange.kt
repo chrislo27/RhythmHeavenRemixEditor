@@ -12,7 +12,7 @@ class MusicVolumeChange(beat: Float, volume: Int) : Tracker(beat) {
     var volume: Int = 0
         set(value) {
             field = value.coerceIn(0, 100)
-            renderText = "♬➡$field%"
+            renderText = "♬\ue13c➡$field%"
         }
     private var renderText: String = ""
 

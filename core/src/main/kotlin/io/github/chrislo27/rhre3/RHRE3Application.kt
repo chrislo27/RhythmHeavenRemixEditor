@@ -69,7 +69,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     val defaultBorderedFontLarge: BitmapFont
         get() = fonts[defaultBorderedFontLargeKey].font!!
 
-    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin.ttf") }
+    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
         this.font!!.apply {
             setFixedWidthGlyphs("1234567890")
