@@ -432,7 +432,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             val data = BeadsSoundSystem.sampleArray
             for (x in 0 until fineness) {
-                val rawH = height * data[(x.toFloat() / fineness * data.size).toInt()]
+                val rawH = height * data[(x.toFloat() / fineness * data.size).toInt()].coerceIn(-1f, 1f)
                 val h = if (isPresentationMode) Math.abs(rawH) else rawH.coerceIn(-4f, 4f)
                 val width = viewportWidth / fineness.toFloat() * camera.zoom
                 if (!isPresentationMode) {
