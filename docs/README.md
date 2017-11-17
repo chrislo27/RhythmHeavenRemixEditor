@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.5.1`.
+This readme is up to date with version `v3.6.0`.
 
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
@@ -115,7 +115,7 @@ Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
 0.5 BPM.
 
 The **music volume** tool is new in RHRE3. You can change the music volume
-mid-remix as a percentage from 0-100%.
+mid-remix as a percentage from 0-200%.
 
 The **time signature** tool is new in RHRE3. You can change the time signature
 mid-remix as a value over 4 (that is, everything is in X/4 time). If you
