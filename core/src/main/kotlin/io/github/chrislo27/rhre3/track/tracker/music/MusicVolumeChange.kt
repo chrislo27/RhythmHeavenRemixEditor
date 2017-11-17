@@ -9,9 +9,13 @@ import io.github.chrislo27.rhre3.track.tracker.Tracker
 
 class MusicVolumeChange(beat: Float, volume: Int) : Tracker(beat) {
 
+    companion object {
+        val MAX_VOLUME: Int = 200
+    }
+
     var volume: Int = 0
         set(value) {
-            field = value.coerceIn(0, 100)
+            field = value.coerceIn(0, MAX_VOLUME)
             renderText = "♬\ue13c➡$field%"
         }
     private var renderText: String = ""

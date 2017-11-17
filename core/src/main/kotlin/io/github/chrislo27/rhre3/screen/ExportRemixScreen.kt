@@ -36,6 +36,7 @@ import kotlinx.coroutines.experimental.launch
 import net.beadsproject.beads.core.Bead
 import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
+import net.beadsproject.beads.ugens.RangeLimiter
 import net.beadsproject.beads.ugens.RecordToFile
 import java.io.File
 import java.util.*
@@ -170,11 +171,13 @@ class ExportRemixScreen(main: RHRE3Application)
 
         // prep recorder
         val recorderFile = if (fileType != ExportFileType.WAV)
-            File.createTempFile("rhre3-export-wav-temp-${System.currentTimeMillis()}", ".wav").apply {
+            File.createTempFile("rhre3-export-tmp-${System.currentTimeMillis()}", ".wav").apply {
                 this.deleteOnExit()
             } else file
         val recorder = RecordToFile(context, 2, recorderFile, AudioFileFormat.Type.WAVE)
-        recorder.addInput(context.out)
+        val limiter = RangeLimiter(context, 2)
+        recorder.addInput(limiter)
+        limiter.addInput(context.out)
         context.out.addDependent(recorder)
 
         val oldStart = remix.playbackStart
@@ -182,11 +185,13 @@ class ExportRemixScreen(main: RHRE3Application)
         @Synchronized
         fun finalize(success: Boolean) {
             recorder.kill()
+            limiter.kill()
             BeadsSoundSystem.stop()
             synchronized(context.out) {
                 context.out.clearInputConnections()
                 context.out.clearDependents()
                 context.out.gain = 1f
+                context.out.removeDependent(limiter)
             }
             remix.playbackStart = oldStart
             remix.playState = PlayState.STOPPED
@@ -268,9 +273,6 @@ class ExportRemixScreen(main: RHRE3Application)
                     updateProgress("pcm", percent, 1)
                 })
             })
-
-            val parameters = mapOf<String, String>()
-            parameters.entries.joinToString(separator = "&") { "${it.key}=${it.value}" }
 
             // scale gain
             context.out.gain = 0.5f

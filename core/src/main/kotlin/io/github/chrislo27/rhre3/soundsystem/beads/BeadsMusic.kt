@@ -41,7 +41,7 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
     }
 
     override fun setVolume(vol: Float) {
-        player.gain.gain = vol.coerceIn(0f, 1f)
+        player.gain.gain = vol.coerceAtLeast(0f)
     }
 
     override fun dispose() {
