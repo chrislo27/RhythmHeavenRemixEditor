@@ -1252,8 +1252,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.image = selectorRegionSeries
         }
 
+        private val keyText: String by lazy {
+            val moddedIndex = tool.index + 1
+            when (moddedIndex) {
+                10 -> "[0] "
+                in 1..9 -> "[$moddedIndex] "
+                else -> ""
+            }
+        }
+
         override fun getHoverText(): String {
-            return Localization[tool.nameId]
+            return keyText + Localization[tool.nameId]
         }
 
         init {

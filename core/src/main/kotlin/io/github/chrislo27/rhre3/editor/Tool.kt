@@ -23,7 +23,7 @@ enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<
     }
 
     val isTrackerRelated: Boolean = trackerClass != null
-
+    val index: Int by lazy { VALUES.indexOf(this) }
     val texture: Texture
         get() = AssetRegistry[texId]
 
