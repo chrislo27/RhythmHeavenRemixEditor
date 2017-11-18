@@ -1377,9 +1377,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
                 val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-                val canPlace = if (tool == Tool.TIME_SIGNATURE)
-                    MathUtils.isEqual(Math.round(beat).toFloat(), beat, snap / 2)
-                else true
 
                 if (button == Input.Buttons.RIGHT && tracker != null) {
                     remix.mutate(
@@ -1396,7 +1393,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 }
                                 else -> error("Tracker removal not supported: $tool")
                             })
-                } else if (button == Input.Buttons.LEFT && tracker == null && canPlace) {
+                } else if (button == Input.Buttons.LEFT && tracker == null) {
                     remix.mutate(
                             when (tool) {
                                 Tool.BPM -> {
@@ -1410,7 +1407,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 }
                                 Tool.TIME_SIGNATURE -> {
                                     TrackerExistenceAction(remix, remix.timeSignatures,
-                                                           TimeSignature(beat.toInt(),
+                                                           TimeSignature(Math.floor(beat.toDouble()).toInt(),
                                                                          remix.timeSignatures.getTimeSignature(
                                                                                  beat)?.upper ?: 4), false)
                                 }
