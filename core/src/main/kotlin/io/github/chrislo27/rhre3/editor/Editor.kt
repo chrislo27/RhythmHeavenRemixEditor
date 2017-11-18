@@ -85,6 +85,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val SELECTION_BORDER: Float = 4f
 
         private const val MSG_SEPARATOR = " - "
+        private const val NEGATIVE_SYMBOL = "-"
         private const val ZERO_BEAT_SYMBOL = "♩"
         private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
         private const val SELECTION_RECT_ADD = "+"
@@ -580,7 +581,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     x, y, width, Align.center)
                 if (i < 0) {
                     val textWidth = font.getTextWidth(text, width, false)
-                    font.drawCompressed(batch, "-", x - textWidth / 2f, y, ENTITY_WIDTH * 0.2f, Align.right)
+                    font.drawCompressed(batch, NEGATIVE_SYMBOL, x - textWidth / 2f, y, ENTITY_WIDTH * 0.2f, Align.right)
                 }
 
                 val measureNum = remix.timeSignatures.getMeasure(i.toFloat())
