@@ -22,8 +22,6 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Edito
             this.colour.a = 0.75f
         }
 
-        // TODO localize
-
         this.elements += TextLabel(palette, this, this).apply {
             this.location.set(screenX = 0f, screenWidth = 1f, screenY = 0.9f, screenHeight = 0.1f)
 

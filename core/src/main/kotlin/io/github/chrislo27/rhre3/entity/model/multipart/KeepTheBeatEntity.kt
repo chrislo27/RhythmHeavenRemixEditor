@@ -42,7 +42,6 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
         if (sequenceLength <= 0f)
             error("Sequence length for keep the beat cannot be negative or zero ($sequenceLength)")
 
-        // TODO optimize?
         internal.clear()
 
         var index = 0
