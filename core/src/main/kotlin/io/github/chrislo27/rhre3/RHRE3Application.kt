@@ -63,11 +63,14 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     val defaultFontLargeKey = "default_font_large"
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
+    val timeSignatureFontKey = "time_signature"
 
     val defaultFontLarge: BitmapFont
         get() = fonts[defaultFontLargeKey].font!!
     val defaultBorderedFontLarge: BitmapFont
         get() = fonts[defaultBorderedFontLargeKey].font!!
+    val timeSignatureFont: BitmapFont
+        get() = fonts[timeSignatureFontKey].font!!
 
     private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
@@ -125,6 +128,17 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         run {
             fonts[defaultFontLargeKey] = createDefaultLargeFont()
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
+            fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize,
+                                                       createDefaultTTFParameter().apply {
+                                                           size *= 6
+                                                           characters = "0123456789"
+                                                           incremental = false
+                                                       })
+                    .setAfterLoad {
+                        this.font!!.apply {
+                            setFixedWidthGlyphs("0123456789")
+                        }
+                    }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
         }
 
@@ -255,7 +269,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     fun loadWindowSettings() {
-        val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE, "${RHRE3.WIDTH}x${RHRE3.HEIGHT}").toLowerCase(Locale.ROOT)
+        val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE,
+                                                "${RHRE3.WIDTH}x${RHRE3.HEIGHT}").toLowerCase(Locale.ROOT)
         if (str == "fs") {
             Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
         } else {

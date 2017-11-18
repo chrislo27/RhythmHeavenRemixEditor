@@ -27,6 +27,10 @@ class TimeSignature(beat: Int, upper: Int) : Tracker(beat.toFloat()) {
     var measure: Int = -1 // should be lateinit
 
     private var renderText: String = ""
+    var upperText: String = ""
+        private set
+    var lowerText: String = ""
+        private set
 
     init {
         updateRenderText()
@@ -49,6 +53,8 @@ class TimeSignature(beat: Int, upper: Int) : Tracker(beat.toFloat()) {
 
     private fun updateRenderText() {
         renderText = "$upper/$lower"
+        upperText = "$upper"
+        lowerText = "$lower"
     }
 
     override fun getColor(theme: Theme): Color {

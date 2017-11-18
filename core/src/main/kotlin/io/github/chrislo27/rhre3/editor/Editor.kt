@@ -48,6 +48,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignature
+import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignatures
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -638,19 +639,51 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             renderTracker(tracker, y)
                         }
                     }
+                } else {
+                    if (container is TimeSignatures) {
+                        val bigFont = main.timeSignatureFont
+                        val heightOfTrack = TRACK_COUNT.toFloat()
+                        bigFont.scaleFont(camera)
+                        bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
+
+                        container.map.values.forEach { tracker ->
+                            val x = tracker.beat
+                            val startY = 0f
+
+                            if (tracker == selectedTracker) {
+                                bigFont.color = theme.selection.selectionBorder
+                            } else {
+                                bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
+                            }
+
+                            val lowerWidth = bigFont.getTextWidth(tracker.lowerText, 1f, false)
+                            val upperWidth = bigFont.getTextWidth(tracker.upperText, 1f, false)
+                            val biggerWidth = Math.max(lowerWidth, upperWidth)
+
+                            bigFont.drawCompressed(batch, tracker.lowerText,
+                                                   x + biggerWidth * 0.5f - lowerWidth * 0.5f,
+                                                   startY + bigFont.capHeight,
+                                                   1f, Align.left)
+                            bigFont.drawCompressed(batch, tracker.upperText,
+                                                   x + biggerWidth * 0.5f - upperWidth * 0.5f,
+                                                   startY + heightOfTrack * 0.5f + bigFont.capHeight + 0.05f,
+                                                   1f, Align.left)
+                        }
+
+                        bigFont.setColor(1f, 1f, 1f, 1f)
+                        bigFont.unscaleFont()
+                    }
                 }
             }
 
             remix.trackersReverseView.forEach { container ->
-                if (container.usesStandardRendering) {
-                    renderTrackerContainer(container)
-                }
+                renderTrackerContainer(container)
             }
 
             if (selectedTracker != null && selectedTracker.beat in beatRange) {
                 remix.trackers.firstOrNull {
                     selectedTracker in it.map.values
-                }?.let { container ->
+                }?.takeIf(TrackerContainer<*>::usesStandardRendering)?.let { container ->
                     renderTracker(selectedTracker, getTrackerY(container))
                 }
             }
@@ -1177,9 +1210,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (klass == null)
             return null
 
+        val inputX = remix.camera.getInputX()
+
         remix.trackers.forEach { container ->
             val result = container.map.values.firstOrNull {
-                it::class == klass && MathUtils.isEqual(it.beat, remix.camera.getInputX(), snap / 2)
+                it::class == klass &&
+                        (if (container is TimeSignatures) Math.floor(it.beat.toDouble()).toInt() == Math.floor(inputX.toDouble()).toInt()
+                        else MathUtils.isEqual(it.beat, inputX, snap * 0.5f))
             }
 
             if (result != null) {
