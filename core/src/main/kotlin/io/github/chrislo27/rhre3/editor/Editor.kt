@@ -43,6 +43,7 @@ import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.Tracker
+import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
@@ -488,7 +489,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
-        // trackers (playback start, music, others)
+        // trackers (playback start, music)
         run trackers@ {
             val borderedFont = main.defaultBorderedFont
             val oldFontColor = borderedFont.color
@@ -608,40 +609,49 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun renderTracker(tracker: Tracker, y: Float) {
                 val oldBatch = batch.packedColor
                 val trackerColor = if (tracker == selectedTracker) Color.WHITE else tracker.getColor(theme)
-                val lineWidth = 1f
+                val lineWidth = 1.5f
 
                 batch.color = trackerColor
-                batch.fillRect(tracker.beat - toScaleX(lineWidth / 2), y, toScaleX(lineWidth),
+                batch.fillRect(tracker.beat - toScaleX(lineWidth * 0.5f), y, toScaleX(lineWidth),
                                -y - toScaleY(TRACK_LINE))
-                batch.draw(triangle, tracker.beat - triWidth / 2, y - triHeight, triWidth, triHeight)
+                batch.draw(triangle, tracker.beat - triWidth * 0.5f, y - triHeight, triWidth, triHeight)
                 batch.setColor(oldBatch)
 
                 val oldFontColor = font.color
                 font.color = trackerColor
                 font.draw(batch, tracker.getRenderText(),
-                          tracker.beat + triWidth / 2, y - triHeight + font.capHeight + toScaleY(2f))
+                          tracker.beat + triWidth * 0.5f, y - triHeight + font.capHeight + toScaleY(2f))
                 font.color = oldFontColor
             }
 
-            remix.trackers.forEachIndexed { cindex, container ->
-                val level = remix.trackers.size - cindex - 1
-                val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
-                container.map.values.forEachIndexed { index, tracker: Tracker ->
-                    if (tracker != selectedTracker && tracker.beat in beatRange) {
-                        renderTracker(tracker, y)
+            fun getTrackerY(layer: Int): Float {
+                return 0f - (layer * font.lineHeight) - toScaleY(TRACK_LINE * 2)
+            }
+
+            fun getTrackerY(container: TrackerContainer<*>): Float = getTrackerY(container.renderLayer)
+
+            fun renderTrackerContainer(container: TrackerContainer<*>, layer: Int = container.renderLayer) {
+                if (container.usesStandardRendering) {
+                    val y = getTrackerY(layer)
+                    container.map.values.forEach { tracker: Tracker ->
+                        if (tracker != selectedTracker && tracker.beat in beatRange) {
+                            renderTracker(tracker, y)
+                        }
                     }
                 }
             }
 
-            if (selectedTracker != null) {
-                remix.trackers.forEachIndexed { cindex, container ->
-                    val level = remix.trackers.size - cindex - 1
-                    val y = 0f - (level * font.lineHeight) - toScaleY(TRACK_LINE * 2)
-                    container.map.values.forEachIndexed { index, tracker: Tracker ->
-                        if (tracker == selectedTracker && tracker.beat in beatRange) {
-                            renderTracker(tracker, y)
-                        }
-                    }
+            remix.trackersReverseView.forEach { container ->
+                if (container.usesStandardRendering) {
+                    renderTrackerContainer(container)
+                }
+            }
+
+            if (selectedTracker != null && selectedTracker.beat in beatRange) {
+                remix.trackers.firstOrNull {
+                    selectedTracker in it.map.values
+                }?.let { container ->
+                    renderTracker(selectedTracker, getTrackerY(container))
                 }
             }
 

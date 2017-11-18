@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 
 
-class TimeSignatures : TrackerContainer<TimeSignature>() {
+class TimeSignatures : TrackerContainer<TimeSignature>(-1) {
+
+    override val usesStandardRendering: Boolean = false
 
     override fun toTree(node: ObjectNode): ObjectNode {
         val arrayNode = node.putArray("trackers")

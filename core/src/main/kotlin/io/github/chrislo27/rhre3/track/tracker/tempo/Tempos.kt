@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.util.BpmUtils
 import java.util.*
 
 
-class Tempos(val defaultTempo: Float = 120f) : TrackerContainer<TempoChange>() {
+class Tempos(val defaultTempo: Float = 120f) : TrackerContainer<TempoChange>(0) {
 
     private val secondsMap: NavigableMap<Float, TempoChange> = TreeMap()
 

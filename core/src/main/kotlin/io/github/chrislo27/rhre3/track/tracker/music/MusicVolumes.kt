@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 
 
-class MusicVolumes(val defaultVolume: Int = 100) : TrackerContainer<MusicVolumeChange>() {
+class MusicVolumes(val defaultVolume: Int = 100) : TrackerContainer<MusicVolumeChange>(1) {
 
     override fun toTree(node: ObjectNode): ObjectNode {
         val arrayNode = node.putArray("trackers")

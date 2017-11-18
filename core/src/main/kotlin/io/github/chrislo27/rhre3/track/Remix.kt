@@ -293,21 +293,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     val entities: MutableList<Entity> = mutableListOf()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
-    val timeSignatures: TimeSignatures = run {
-        val ts = TimeSignatures()
-        trackers += ts
-        ts
-    }
-    val musicVolumes: MusicVolumes = run {
-        val mv = MusicVolumes()
-        trackers += mv
-        mv
-    }
-    val tempos: Tempos = run {
-        val t = Tempos()
-        trackers += t
-        t
-    }
+    val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
+    val tempos: Tempos = Tempos().apply { trackers.add(this) }
+    val musicVolumes: MusicVolumes = MusicVolumes().apply { trackers.add(this) }
+    val timeSignatures: TimeSignatures = TimeSignatures().apply { trackers.add(this) }
 
     var seconds: Float = 0f
         set(value) {
