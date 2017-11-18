@@ -642,13 +642,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     if (container is TimeSignatures) {
                         val bigFont = main.timeSignatureFont
-                        val heightOfTrack = TRACK_COUNT.toFloat()
+                        val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
                         bigFont.scaleFont(camera)
                         bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
 
                         container.map.values.forEach { tracker ->
                             val x = tracker.beat
-                            val startY = 0f
+                            val startY = 0f + toScaleY(TRACK_LINE)
 
                             if (tracker == selectedTracker) {
                                 bigFont.color = theme.selection.selectionBorder
@@ -666,7 +666,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                    1f, Align.left)
                             bigFont.drawCompressed(batch, tracker.upperText,
                                                    x + biggerWidth * 0.5f - upperWidth * 0.5f,
-                                                   startY + heightOfTrack * 0.5f + bigFont.capHeight + 0.05f,
+                                                   startY + heightOfTrack,
                                                    1f, Align.left)
                         }
 
