@@ -523,7 +523,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         seconds += delta
         if (music != null) {
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
-                val ended = music.music.play()
+                music.music.play()
                 scheduleMusicPlaying = false
 //                if (ended) {
 //                    music.music.pause()
@@ -568,6 +568,5 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     override fun dispose() {
         music?.dispose()
     }
-
 
 }
