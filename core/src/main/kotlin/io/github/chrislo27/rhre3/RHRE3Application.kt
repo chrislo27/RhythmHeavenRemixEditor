@@ -206,7 +206,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info(
-                        "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f}, is $githubVersion")
+                        "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
             } catch (e: Exception) {
                 e.printStackTrace()
             }
