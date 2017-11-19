@@ -5,7 +5,6 @@ import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.Tracker
-import io.github.chrislo27.toolboks.Toolboks
 
 
 class TimeSignature(beat: Int, upper: Int) : Tracker(beat.toFloat()) {
@@ -17,10 +16,7 @@ class TimeSignature(beat: Int, upper: Int) : Tracker(beat.toFloat()) {
         }
     var lower: Int = 4
         private set(value) {
-            field = value.coerceIn(1, 32)
-            if (field != 4) {
-                Toolboks.LOGGER.warn("Time signature bottom number isn't 4 ($field)")
-            }
+            field = 4
             updateRenderText()
         }
 
