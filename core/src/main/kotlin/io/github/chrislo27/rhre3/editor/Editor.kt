@@ -1346,8 +1346,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                   remix.camera.getInputY() - first.bounds.y)
                         val stretchRegion = if (newSel.size == 1 && first is IStretchable && !isCopying)
                             getStretchRegionForStretchable(remix.camera.getInputX(), first) else StretchRegion.NONE
-                        val newClick = ClickOccupation.SelectionDrag(this, mouseOffset,
+
+                        val newClick = ClickOccupation.SelectionDrag(this, first, mouseOffset,
                                                                      false, isCopying, oldSel, stretchRegion)
+
                         if (isCopying) {
                             this.selection = newSel
                             remix.entities.addAll(newSel)
@@ -1437,7 +1439,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             val oldSelection = this.selection
             this.selection = listOf(entity)
-            val selection = ClickOccupation.SelectionDrag(this, Vector2(0f, 0f),
+            val selection = ClickOccupation.SelectionDrag(this, this.selection.first(), Vector2(0f, 0f),
                                                           true, false, oldSelection, StretchRegion.NONE)
             selection.setPositionRelativeToMouse()
             entity.updateInterpolation(true)

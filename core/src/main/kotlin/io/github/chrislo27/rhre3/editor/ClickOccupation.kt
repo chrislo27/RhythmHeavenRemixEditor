@@ -106,6 +106,7 @@ sealed class ClickOccupation {
     }
 
     class SelectionDrag(val editor: Editor,
+                        private val first: Entity,
                         val mouseOffset: Vector2,
                         val isNew: Boolean,
                         val isCopy: Boolean,
@@ -161,16 +162,15 @@ sealed class ClickOccupation {
 
         fun setFirstPosition(x: Float, y: Float) {
             // reducing object creation due to rapid calling
-            val first = selection.first()
             val oldFirstPosX = first.bounds.x
             val oldFirstPosY = first.bounds.y
             first.updateBounds {
                 first.bounds.setPosition(x, y)
             }
 
-            selection.forEachIndexed { index, entity ->
-                if (index == 0)
-                    return@forEachIndexed
+            selection.forEach { entity ->
+                if (entity === first)
+                    return@forEach
                 entity.updateBounds {
                     entity.bounds.x = (entity.bounds.x - oldFirstPosX) + x
                     entity.bounds.y = (entity.bounds.y - oldFirstPosY) + y
