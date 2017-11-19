@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Texture
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignature
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.reflect.KClass
 
@@ -16,7 +15,7 @@ enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<
     MULTIPART_SPLIT("tool_multipart_split", "tool.multipartsplit.name"),
     BPM("tool_bpm", "tool.bpm.name", trackerClass = TempoChange::class),
     MUSIC_VOLUME("tool_music_volume", "tool.musicvolume.name", trackerClass = MusicVolumeChange::class),
-    TIME_SIGNATURE("tool_time_signature", "tool.timesignature.name", trackerClass = TimeSignature::class);
+    TIME_SIGNATURE("tool_time_signature", "tool.timesignature.name");
 
     companion object {
         val VALUES: List<Tool> by lazy { Tool.values().toList() }

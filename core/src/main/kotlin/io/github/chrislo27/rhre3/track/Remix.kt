@@ -24,12 +24,13 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumes
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.Tempos
-import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -101,7 +102,18 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                     trackers.set("tempos", tempos.toTree(trackers.objectNode()))
                     trackers.set("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
-                    trackers.set("timeSignatures", timeSignatures.toTree(trackers.objectNode()))
+                }
+
+                // time signatures
+                run {
+                    val timeSigs = tree.putArray("timeSignatures")
+
+                    timeSignatures.map.values.forEach {
+                        val node = timeSigs.addObject()
+                        node.put("beat", it.beat)
+                        node.put("divisions", it.divisions)
+                        node.put("measure", it.measure)
+                    }
                 }
             }
 
@@ -118,6 +130,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             var missing = 0
             var missingCustom = 0
 
+            // backwards compatibility silent upgrades
+            val shouldAppendCustomPrefixToCustomIDs = remix.version < VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+                    && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+            val shouldConvertTimeSignatures = remix.version < VersionHistory.TIME_SIGNATURES_REFACTOR
+                    && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+
             // entities
             val entitiesArray = tree["entities"] as ArrayNode
             entitiesArray.filterIsInstance<ObjectNode>()
@@ -131,9 +149,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                 var datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
                                         ?: return@forEach
 
-                                if (isCustom
-                                        && remix.version < VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
-                                        && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES) {
+                                if (isCustom && shouldAppendCustomPrefixToCustomIDs) {
                                     datamodelID = GameRegistry.CUSTOM_PREFIX + datamodelID
                                 }
 
@@ -161,7 +177,22 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 remix.tempos.fromTree(trackers["tempos"] as ObjectNode)
                 remix.musicVolumes.fromTree(trackers["musicVolumes"] as ObjectNode)
-                remix.timeSignatures.fromTree(trackers["timeSignatures"] as ObjectNode)
+            }
+
+            // time signatures
+            run {
+                if (shouldConvertTimeSignatures) {
+                    val trackers = tree.get("trackers") as ObjectNode
+                    val timeSigs = trackers["timeSignatures"] as ObjectNode
+                    (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
+                        remix.timeSignatures.add(TimeSignature(it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
+                    }
+                } else {
+                    val timeSigs = tree.get("timeSignatures") as ArrayNode
+                    timeSigs.filterIsInstance<ObjectNode>().forEach {
+                        remix.timeSignatures.add(TimeSignature(it["beat"].asInt(), it["divisions"].asInt(4)))
+                    }
+                }
             }
 
             return RemixLoadInfo(remix, missing to missingCustom,
@@ -292,11 +323,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         private set
 
     val entities: MutableList<Entity> = mutableListOf()
+    val timeSignatures: TimeSignatures = TimeSignatures()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
     val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
     val tempos: Tempos = Tempos().apply { trackers.add(this) }
     val musicVolumes: MusicVolumes = MusicVolumes().apply { trackers.add(this) }
-    val timeSignatures: TimeSignatures = TimeSignatures().apply { trackers.add(this) }
 
     var seconds: Float = 0f
         set(value) {

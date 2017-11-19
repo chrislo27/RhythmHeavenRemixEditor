@@ -47,8 +47,6 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
 import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignature
-import io.github.chrislo27.rhre3.track.tracker.timesignature.TimeSignatures
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -596,6 +594,42 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             font.setColor(1f, 1f, 1f, 1f)
         }
 
+        // time signatures
+        run timeSignatures@ {
+            val timeSignatures = remix.timeSignatures
+            val bigFont = main.timeSignatureFont
+            val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
+            bigFont.scaleFont(camera)
+            bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
+
+            timeSignatures.map.values.forEach { tracker ->
+                val x = tracker.beat
+                val startY = 0f + toScaleY(TRACK_LINE)
+
+//                if (tracker == selectedTracker) {
+//                    bigFont.color = theme.selection.selectionBorder
+//                } else {
+                    bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
+//                }
+
+                val lowerWidth = bigFont.getTextWidth(tracker.lowerText, 1f, false)
+                val upperWidth = bigFont.getTextWidth(tracker.upperText, 1f, false)
+                val biggerWidth = Math.max(lowerWidth, upperWidth)
+
+                bigFont.drawCompressed(batch, tracker.lowerText,
+                                       x + biggerWidth * 0.5f - lowerWidth * 0.5f,
+                                       startY + bigFont.capHeight,
+                                       1f, Align.left)
+                bigFont.drawCompressed(batch, tracker.upperText,
+                                       x + biggerWidth * 0.5f - upperWidth * 0.5f,
+                                       startY + heightOfTrack,
+                                       1f, Align.left)
+            }
+
+            bigFont.setColor(1f, 1f, 1f, 1f)
+            bigFont.unscaleFont()
+        }
+
         // bottom trackers
         run trackers@ {
             val font = main.defaultBorderedFont
@@ -640,39 +674,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
                     }
                 } else {
-                    if (container is TimeSignatures) {
-                        val bigFont = main.timeSignatureFont
-                        val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
-                        bigFont.scaleFont(camera)
-                        bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
-
-                        container.map.values.forEach { tracker ->
-                            val x = tracker.beat
-                            val startY = 0f + toScaleY(TRACK_LINE)
-
-                            if (tracker == selectedTracker) {
-                                bigFont.color = theme.selection.selectionBorder
-                            } else {
-                                bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
-                            }
-
-                            val lowerWidth = bigFont.getTextWidth(tracker.lowerText, 1f, false)
-                            val upperWidth = bigFont.getTextWidth(tracker.upperText, 1f, false)
-                            val biggerWidth = Math.max(lowerWidth, upperWidth)
-
-                            bigFont.drawCompressed(batch, tracker.lowerText,
-                                                   x + biggerWidth * 0.5f - lowerWidth * 0.5f,
-                                                   startY + bigFont.capHeight,
-                                                   1f, Align.left)
-                            bigFont.drawCompressed(batch, tracker.upperText,
-                                                   x + biggerWidth * 0.5f - upperWidth * 0.5f,
-                                                   startY + heightOfTrack,
-                                                   1f, Align.left)
-                        }
-
-                        bigFont.setColor(1f, 1f, 1f, 1f)
-                        bigFont.unscaleFont()
-                    }
                 }
             }
 
@@ -1214,9 +1215,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         remix.trackers.forEach { container ->
             val result = container.map.values.firstOrNull {
-                it::class == klass &&
-                        (if (container is TimeSignatures) Math.floor(it.beat.toDouble()).toInt() == Math.floor(inputX.toDouble()).toInt()
-                        else MathUtils.isEqual(it.beat, inputX, snap * 0.5f))
+                it::class == klass && MathUtils.isEqual(it.beat, inputX, snap * 0.5f)
             }
 
             if (result != null) {
@@ -1388,9 +1387,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange,
                                                            true)
                                 }
-                                Tool.TIME_SIGNATURE -> {
-                                    TrackerExistenceAction(remix, remix.timeSignatures, tracker as TimeSignature, true)
-                                }
                                 else -> error("Tracker removal not supported: $tool")
                             })
                 } else if (button == Input.Buttons.LEFT && tracker == null) {
@@ -1404,12 +1400,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                     TrackerExistenceAction(remix, remix.musicVolumes,
                                                            MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)),
                                                            false)
-                                }
-                                Tool.TIME_SIGNATURE -> {
-                                    TrackerExistenceAction(remix, remix.timeSignatures,
-                                                           TimeSignature(Math.floor(beat.toDouble()).toInt(),
-                                                                         remix.timeSignatures.getTimeSignature(
-                                                                                 beat)?.upper ?: 4), false)
                                 }
                                 else -> error("Tracker placement not supported: $tool")
                             })
