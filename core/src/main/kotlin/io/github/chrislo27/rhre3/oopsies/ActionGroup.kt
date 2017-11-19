@@ -1,13 +1,9 @@
 package io.github.chrislo27.rhre3.oopsies
 
 
-class ActionGroup<A : ActionHistory<A>> : ReversibleAction<A> {
+class ActionGroup<A : ActionHistory<A>>(var list: List<ReversibleAction<A>>) : ReversibleAction<A> {
 
-    var list: List<ReversibleAction<A>> = mutableListOf()
-
-    constructor(list: List<ReversibleAction<A>>) {
-        this.list = list
-    }
+    constructor(vararg actions: ReversibleAction<A>) : this(listOf(*actions))
 
     override fun redo(context: A) {
         list.forEach {

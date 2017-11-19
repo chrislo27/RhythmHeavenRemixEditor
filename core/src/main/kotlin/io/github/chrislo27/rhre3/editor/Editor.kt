@@ -42,6 +42,8 @@ import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
+import io.github.chrislo27.rhre3.track.timesignature.TimeSignatureAction
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
@@ -599,6 +601,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val timeSignatures = remix.timeSignatures
             val bigFont = main.timeSignatureFont
             val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
+            val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
             bigFont.scaleFont(camera)
             bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
 
@@ -606,11 +609,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val x = tracker.beat
                 val startY = 0f + toScaleY(TRACK_LINE)
 
-//                if (tracker == selectedTracker) {
-//                    bigFont.color = theme.selection.selectionBorder
-//                } else {
+                if (currentTool == Tool.TIME_SIGNATURE && tracker.beat == inputBeat) {
+                    bigFont.color = theme.selection.selectionBorder
+                } else {
                     bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
-//                }
+                }
 
                 val lowerWidth = bigFont.getTextWidth(tracker.lowerText, 1f, false)
                 val upperWidth = bigFont.getTextWidth(tracker.upperText, 1f, false)
@@ -1373,6 +1376,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
                     }
                 }
+            } else if (tool == Tool.TIME_SIGNATURE) {
+                val beat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
+                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(beat.toFloat())?.takeIf { it.beat == beat }
+
+                if (button == Input.Buttons.RIGHT && timeSig != null) {
+                    remix.mutate(TimeSignatureAction(remix, timeSig, true))
+                } else if (button == Input.Buttons.LEFT && timeSig == null) {
+                    remix.mutate(TimeSignatureAction(remix, TimeSignature(beat, remix.timeSignatures.getTimeSignature(
+                            beat.toFloat())?.divisions ?: 4), false))
+                }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
                 val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
@@ -1597,6 +1610,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             remix.addActionWithoutMutating(EntityRepitchAction(this, selection, oldPitches))
+        } else if (tool == Tool.TIME_SIGNATURE) {
+            val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
+            if (timeSig != null) {
+                val change = -amount
+                val newDivisions = (timeSig.divisions + change).coerceIn(TimeSignature.LOWER_LIMIT,
+                                                                         TimeSignature.UPPER_LIMIT)
+                if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
+                    remix.mutate(ActionGroup(TimeSignatureAction(remix, timeSig, true),
+                                             TimeSignatureAction(remix, TimeSignature(timeSig.beat, newDivisions),
+                                                                 false)))
+                }
+            }
         } else if (tool.isTrackerRelated) {
             val tracker: Tracker = getTrackerOnMouse(tool.trackerClass) ?: return false
 

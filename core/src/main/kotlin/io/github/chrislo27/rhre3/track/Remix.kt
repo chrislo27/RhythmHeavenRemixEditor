@@ -130,11 +130,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             var missing = 0
             var missingCustom = 0
 
+            fun fromThisVersion(version: Version): Boolean {
+                return remix.version < version && RHRE3.VERSION >= version
+            }
+
             // backwards compatibility silent upgrades
-            val shouldAppendCustomPrefixToCustomIDs = remix.version < VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
-                    && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
-            val shouldConvertTimeSignatures = remix.version < VersionHistory.TIME_SIGNATURES_REFACTOR
-                    && RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
+            val shouldAppendCustomPrefixToCustomIDs = fromThisVersion(VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES)
+            val shouldConvertTimeSignatures = fromThisVersion(VersionHistory.TIME_SIGNATURES_REFACTOR)
 
             // entities
             val entitiesArray = tree["entities"] as ArrayNode
