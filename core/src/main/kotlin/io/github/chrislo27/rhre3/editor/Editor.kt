@@ -1168,7 +1168,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
 
                     if (clickOccupation is ClickOccupation.CreatingSelection) {
-                        builder.separator().append(Localization["editor.msg.selectionHint", MSG_SEPARATOR])
+                        builder.separator().append(Localization["editor.msg.selectionHint"])
                     }
                 }
                 Tool.MULTIPART_SPLIT -> {
