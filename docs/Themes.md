@@ -24,8 +24,7 @@ Below is a sample json file:<br>
     "playback" : "#00FF00",
     "musicStart" : "#FF0000",
     "musicVolume" : "#FF6600",
-    "tempoChange" : "#6666E5",
-    "timeSignature" : "#FFFF00"
+    "tempoChange" : "#6666E5"
   },
   "entities" : {
     "selectionTint" : "#00BFBF",
@@ -45,6 +44,9 @@ Below is a sample json file:<br>
 
 > Note: the `subtitle` field name in entities was changed to `special` starting in v3.4.0.
 Using `subtitle` still works, but `special` is now the correct field name.
+
+
+> Note: as of `v3.6.0`, the `timeSignature` field inside `trackers` has been removed. The colour now uses the track line colour.
 
 You'll notice that most of these are just RGB hex values. The `name`
 is self-explanatory. Most of the colours are grouped into sections,

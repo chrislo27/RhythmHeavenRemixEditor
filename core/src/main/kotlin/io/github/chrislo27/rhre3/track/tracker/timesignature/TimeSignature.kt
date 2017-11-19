@@ -54,7 +54,7 @@ class TimeSignature(beat: Int, upper: Int) : Tracker(beat.toFloat()) {
     }
 
     override fun getColor(theme: Theme): Color {
-        return theme.trackers.timeSignature
+        return theme.trackLine
     }
 
     override fun getRenderText(): String {
