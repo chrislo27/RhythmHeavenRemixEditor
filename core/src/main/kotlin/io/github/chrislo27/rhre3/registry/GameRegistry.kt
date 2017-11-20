@@ -349,7 +349,7 @@ object GameRegistry : Disposable {
                 DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
             } else {
                 val nameWithoutExt = folder.nameWithoutExtension()
-                val id = if (shouldCustomsGetPrefixes) CUSTOM_PREFIX + nameWithoutExt else nameWithoutExt
+                val id = nameWithoutExt
                 if (gameMap.containsKey(id)) {
                     throw UnsupportedOperationException(
                             "Cannot load custom sound folder $id/ - already exists in registry")
