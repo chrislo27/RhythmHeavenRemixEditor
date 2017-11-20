@@ -67,7 +67,12 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
         val numLoaded = registryData.gameMap.size
         val nano = System.nanoTime()
-        val progress: Float = if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
+        val progress: Float = try {
+            if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
+        } catch (e: Exception) {
+            System.exit(1)
+            throw e // should never happen since System.exit doesn't return
+        }
 //        println("Loaded ${registryData.gameMap.size - numLoaded} this frame in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
         val game: Game? = registryData.gameMap[registryData.lastLoadedID]
 
