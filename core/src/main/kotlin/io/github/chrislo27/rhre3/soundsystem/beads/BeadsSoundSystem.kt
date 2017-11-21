@@ -98,6 +98,12 @@ object BeadsSoundSystem : SoundSystem() {
         audioContext.out.clearInputConnections()
     }
 
+    override fun dispose() {
+        stop()
+        realtimeAudioContext.stop()
+        nonrealtimeAudioContext.stop()
+    }
+
     fun newAudio(handle: FileHandle): BeadsAudio {
         val music = Gdx.audio.newMusic(handle) as OpenALMusic
         val beadsAudio = BeadsAudio(music.channels, music.rate)

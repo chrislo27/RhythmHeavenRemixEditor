@@ -1,11 +1,12 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.gdx.GdxSoundSystem
 
 
-abstract class SoundSystem {
+abstract class SoundSystem : Disposable {
 
     companion object {
 

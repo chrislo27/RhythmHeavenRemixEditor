@@ -255,6 +255,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         Themes.dispose()
         persistWindowSettings()
         Gdx.files.local("tmpMusic/").emptyDirectory()
+        SoundSystem.allSystems.forEach(SoundSystem::dispose)
     }
 
     fun persistWindowSettings() {

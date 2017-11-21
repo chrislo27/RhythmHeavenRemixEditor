@@ -29,6 +29,13 @@ object GdxSoundSystem : SoundSystem() {
         }
     }
 
+    override fun dispose() {
+        synchronized(soundList) {
+            soundList.forEach(GdxSoundWrapper::dispose)
+            soundList.clear()
+        }
+    }
+
     override fun newSound(handle: FileHandle): Sound {
         return GdxSoundWrapper(Gdx.audio.newSound(handle)).apply {
             soundList += this
