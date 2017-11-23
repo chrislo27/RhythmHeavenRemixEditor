@@ -259,7 +259,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 remix.tempos.add(TempoChange(it.beat, it.tempo))
             }
             remix.musicVolumes.add(MusicVolumeChange(remix.tempos.secondsToBeats(remix.musicStartSec),
-                                                     (remixObject.musicVolume * 100f).toInt().coerceIn(0, 100)))
+                                                     (remixObject.musicVolume * 100f).toInt().coerceIn(0, MusicVolumeChange.MAX_VOLUME)))
 
             remixObject.entities?.forEach {
                 val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
