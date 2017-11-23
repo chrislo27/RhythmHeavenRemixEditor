@@ -501,7 +501,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
                                    trackerTime: String = getTrackerTime(beat),
-                                   triangleHeight: Float = 0.4f) {
+                                   triangleHeight: Float = 0.4f, bpmText: String? = null) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
                 val x = beat - toScaleX(TRACK_LINE * 1.5f) / 2
                 val y = trackYOffset
@@ -519,6 +519,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     borderedFont.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
                 }
                 borderedFont.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
+                if (bpmText != null) {
+                    borderedFont.drawCompressed(batch, bpmText,
+                                                x + triangleWidth + 0.025f,
+                                                y + height + borderedFont.capHeight * 1.25f,
+                                                1f, Align.left)
+                }
 
                 if (controlKey != null) {
                     val line = borderedFont.lineHeight
@@ -558,7 +564,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (remix.playState != PlayState.STOPPED) {
                 renderAboveTracker(null, null, 0, remix.beat,
-                                   theme.trackers.playback, triangleHeight = 0f)
+                                   theme.trackers.playback, triangleHeight = 0f, bpmText = "♩=${ONE_DECIMAL_PLACE_FORMATTER.format(remix.tempos.tempoAt(remix.beat))}")
             }
 
             borderedFont.color = oldFontColor
