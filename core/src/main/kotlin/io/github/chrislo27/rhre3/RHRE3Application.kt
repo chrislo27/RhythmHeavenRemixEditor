@@ -250,6 +250,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     override fun dispose() {
         super.dispose()
         GameMetadata.persist()
+        preferences.putString("lastVersion", RHRE3.VERSION.toString())
         preferences.flush()
         GameRegistry.dispose()
         Themes.dispose()
