@@ -41,7 +41,7 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
         return if (seconds >= endSeconds) {
             endBeat + BpmUtils.secondsToBeats(seconds - this.endSeconds, tempoAtSeconds(seconds))
         } else {
-            beat + BpmUtils.secondsToBeats(secondsWidth, previousBpm) + getBeatDuration(secondsWidth, previousBpm, tempoAtSeconds(seconds))
+            beat + getBeatDuration(secondsWidth, previousBpm, tempoAtSeconds(seconds))
         }
     }
 
@@ -50,7 +50,7 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
         return if (beat >= endBeat) {
             endSeconds + BpmUtils.beatsToSeconds(beat - this.endBeat, tempoAt(beat))
         } else {
-            seconds + BpmUtils.beatsToSeconds(beatWidth, previousBpm) + getSecondsDuration(beatWidth, previousBpm, tempoAt(beat))
+            seconds + getSecondsDuration(beatWidth, previousBpm, tempoAt(beat))
         }
     }
 
