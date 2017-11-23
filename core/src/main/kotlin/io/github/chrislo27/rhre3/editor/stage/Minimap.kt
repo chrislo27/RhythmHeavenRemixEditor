@@ -65,7 +65,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             // trackers
             editor.remix.trackers.forEach { tc ->
                 tc.map.values.forEach { tracker ->
-                    batch.color = tracker.getColor(editor.theme)
+                    batch.color = tracker.getColour(editor.theme)
                     batch.fillRect(x + tracker.beat * unitWidth - 0.5f, y, 1f, pxHeight)
                 }
             }

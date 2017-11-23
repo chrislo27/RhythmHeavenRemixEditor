@@ -46,6 +46,10 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
         editor.dispose()
     }
 
+    override fun getDebugString(): String? {
+        return editor.getDebugString()
+    }
+
     override fun tickUpdate() {
     }
 }

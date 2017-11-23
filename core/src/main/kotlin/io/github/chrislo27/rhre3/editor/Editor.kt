@@ -44,11 +44,6 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatureAction
-import io.github.chrislo27.rhre3.track.tracker.Tracker
-import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
-import io.github.chrislo27.rhre3.track.tracker.TrackerExistenceAction
-import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
-import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -60,7 +55,6 @@ import kotlinx.coroutines.experimental.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
-import kotlin.reflect.KClass
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -642,52 +636,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
             val triangle = AssetRegistry.get<Texture>("tracker_tri")
             val tool = currentTool
-            val selectedTracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
-
-            fun renderTracker(tracker: Tracker, y: Float) {
-                val oldBatch = batch.packedColor
-                val trackerColor = if (tracker == selectedTracker) Color.WHITE else tracker.getColor(theme)
-                val lineWidth = 1.5f
-
-                batch.color = trackerColor
-                batch.fillRect(tracker.beat - toScaleX(lineWidth * 0.5f), y, toScaleX(lineWidth),
-                               -y - toScaleY(TRACK_LINE))
-                batch.draw(triangle, tracker.beat - triWidth * 0.5f, y - triHeight, triWidth, triHeight)
-                batch.setColor(oldBatch)
-
-                val oldFontColor = font.color
-                font.color = trackerColor
-                font.draw(batch, tracker.getRenderText(),
-                          tracker.beat + triWidth * 0.5f, y - triHeight + font.capHeight + toScaleY(2f))
-                font.color = oldFontColor
-            }
-
-            fun getTrackerY(layer: Int): Float {
-                return 0f - (layer * font.lineHeight) - toScaleY(TRACK_LINE * 2)
-            }
-
-            fun getTrackerY(container: TrackerContainer<*>): Float = getTrackerY(container.renderLayer)
-
-            fun renderTrackerContainer(container: TrackerContainer<*>, layer: Int = container.renderLayer) {
-                val y = getTrackerY(layer)
-                container.map.values.forEach { tracker: Tracker ->
-                    if (tracker != selectedTracker && tracker.beat in beatRange) {
-                        renderTracker(tracker, y)
-                    }
-                }
-            }
-
-            remix.trackersReverseView.forEach { container ->
-                renderTrackerContainer(container)
-            }
-
-            if (selectedTracker != null && selectedTracker.beat in beatRange) {
-                remix.trackers.firstOrNull {
-                    selectedTracker in it.map.values
-                }?.let { container ->
-                    renderTracker(selectedTracker, getTrackerY(container))
-                }
-            }
 
             font.unscaleFont()
         }
@@ -1203,29 +1151,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return remix.entities.firstOrNull { mouseVector in it.bounds } as? MultipartEntity<*>?
     }
 
-    private inline fun <reified T : Tracker> getTrackerOnMouse(): T? {
-        return getTrackerOnMouse(T::class)
-    }
-
-    private fun <T : Tracker> getTrackerOnMouse(klass: KClass<T>?): T? {
-        if (klass == null)
-            return null
-
-        val inputX = remix.camera.getInputX()
-
-        remix.trackers.forEach { container ->
-            val result = container.map.values.firstOrNull {
-                it::class == klass && MathUtils.isEqual(it.beat, inputX, snap * 0.5f)
-            }
-
-            if (result != null) {
-                return (@Suppress("UNCHECKED_CAST") (result as T))
-            }
-        }
-
-        return null
-    }
-
     fun songTitle(text: String?) {
         if (text == null) {
             songTitle.goIn()
@@ -1387,36 +1312,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             beat.toFloat())?.divisions ?: 4), false))
                 }
             } else if (tool.isTrackerRelated) {
-                val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
-                val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-
-                if (button == Input.Buttons.RIGHT && tracker != null) {
-                    remix.mutate(
-                            when (tool) {
-                                Tool.BPM -> {
-                                    TrackerExistenceAction(remix, remix.tempos, tracker as TempoChange, true)
-                                }
-                                Tool.MUSIC_VOLUME -> {
-                                    TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange,
-                                                           true)
-                                }
-                                else -> error("Tracker removal not supported: $tool")
-                            })
-                } else if (button == Input.Buttons.LEFT && tracker == null) {
-                    remix.mutate(
-                            when (tool) {
-                                Tool.BPM -> {
-                                    TrackerExistenceAction(remix, remix.tempos,
-                                                           TempoChange(beat, remix.tempos.tempoAt(beat)), false)
-                                }
-                                Tool.MUSIC_VOLUME -> {
-                                    TrackerExistenceAction(remix, remix.musicVolumes,
-                                                           MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)),
-                                                           false)
-                                }
-                                else -> error("Tracker placement not supported: $tool")
-                            })
-                }
+//                val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
+//                val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
+//
+//                if (button == Input.Buttons.RIGHT && tracker != null) {
+//                    remix.mutate(
+//                            when (tool) {
+//                                Tool.BPM -> {
+//                                    TrackerExistenceAction(remix, remix.tempos, tracker as TempoChange, true)
+//                                }
+//                                Tool.MUSIC_VOLUME -> {
+//                                    TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange,
+//                                                           true)
+//                                }
+//                                else -> error("Tracker removal not supported: $tool")
+//                            })
+//                } else if (button == Input.Buttons.LEFT && tracker == null) {
+//                    remix.mutate(
+//                            when (tool) {
+//                                Tool.BPM -> {
+//                                    TrackerExistenceAction(remix, remix.tempos,
+//                                                           TempoChange(beat, remix.tempos.tempoAt(beat)), false)
+//                                }
+//                                Tool.MUSIC_VOLUME -> {
+//                                    TrackerExistenceAction(remix, remix.musicVolumes,
+//                                                           MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)),
+//                                                           false)
+//                                }
+//                                else -> error("Tracker placement not supported: $tool")
+//                            })
+//                }
             }
         } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
@@ -1622,10 +1547,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                                  false)))
                 }
             }
-        } else if (tool.isTrackerRelated) {
-            val tracker: Tracker = getTrackerOnMouse(tool.trackerClass) ?: return false
-
-            tracker.onScroll(remix, -amount, Gdx.input.isShiftDown(), Gdx.input.isControlDown())
         }
 
         return false
@@ -1674,5 +1595,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         stage.updatePositions()
         resizeCameraToEntityScale(camera)
         resizeCameraToPixelScale(staticCamera)
+    }
+
+    fun getDebugString(): String? {
+        return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)}\nbpm: ${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(remix.beat)}"
     }
 }

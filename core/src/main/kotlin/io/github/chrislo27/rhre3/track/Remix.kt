@@ -27,10 +27,10 @@ import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
-import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumeChange
-import io.github.chrislo27.rhre3.track.tracker.music.MusicVolumes
+import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
+import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumes
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.track.tracker.tempo.Tempos
+import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -256,10 +256,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             remix.version = Version.fromString(remixObject.version ?: "v2.17.0")
 
             remixObject.bpmChanges?.forEach {
-                remix.tempos.add(TempoChange(it.beat, it.tempo))
+                remix.tempos.add(TempoChange(remix.tempos, it.beat, 0f, it.tempo))
             }
-            remix.musicVolumes.add(MusicVolumeChange(remix.tempos.secondsToBeats(remix.musicStartSec),
-                                                     (remixObject.musicVolume * 100f).toInt().coerceIn(0, MusicVolumeChange.MAX_VOLUME)))
+            remix.musicVolumes.add(
+                    MusicVolumeChange(remix.musicVolumes,
+                                      remix.tempos.secondsToBeats(remix.musicStartSec),
+                                      0f,
+                                      (remixObject.musicVolume * 100f).toInt().coerceIn(0, MusicVolumeChange.MAX_VOLUME)
+                                     ))
 
             remixObject.entities?.forEach {
                 val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
@@ -328,7 +332,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val timeSignatures: TimeSignatures = TimeSignatures()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
     val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
-    val tempos: Tempos = Tempos().apply { trackers.add(this) }
+    val tempos: TempoChanges = TempoChanges().apply { trackers.add(this) }
     val musicVolumes: MusicVolumes = MusicVolumes().apply { trackers.add(this) }
 
     var seconds: Float = 0f
@@ -440,7 +444,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     private fun setMusicVolume() {
         val music = music ?: return
-        val shouldBe = if (isMusicMuted) 0f else musicVolumes.getPercentageVolume(beat)
+        val shouldBe = if (isMusicMuted) 0f else musicVolumes.volumeAt(beat)
         if (music.music.getVolume() != shouldBe) {
             music.music.setVolume(shouldBe)
         }

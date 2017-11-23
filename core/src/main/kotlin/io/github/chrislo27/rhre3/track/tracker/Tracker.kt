@@ -2,16 +2,20 @@ package io.github.chrislo27.rhre3.track.tracker
 
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.theme.Theme
-import io.github.chrislo27.rhre3.track.Remix
 
 
-abstract class Tracker(val beat: Float) {
+abstract class Tracker<SELF : Tracker<SELF>>(val container: TrackerContainer<SELF>,
+                                             var beat: Float, width: Float) {
 
-    abstract fun onScroll(remix: Remix, amount: Int, shift: Boolean,
-                          control: Boolean)
+    var width: Float = width
+        set(value) {
+            field = value.coerceAtLeast(0f)
+        }
+    val isZeroWidth: Boolean
+        get() = width <= 0f
+    val endBeat: Float
+        get() = beat + width
 
-    abstract fun getColor(theme: Theme): Color
-
-    abstract fun getRenderText(): String
+    abstract fun getColour(theme: Theme): Color
 
 }

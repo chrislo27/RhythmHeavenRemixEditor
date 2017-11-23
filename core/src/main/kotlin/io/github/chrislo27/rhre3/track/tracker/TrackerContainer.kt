@@ -4,43 +4,39 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.*
 
 
-abstract class TrackerContainer<T : Tracker>(val renderLayer: Int) {
+abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
 
-    val map: NavigableMap<Float, T> = TreeMap()
+    protected val backingMap: NavigableMap<Float, T> = TreeMap()
+    val map: Map<Float, T>
+        get() = backingMap
 
     abstract fun toTree(node: ObjectNode): ObjectNode
+
     abstract fun fromTree(node: ObjectNode)
 
-    open fun clear() {
-        map.clear()
+    abstract fun update()
+
+    open fun add(tracker: T, shouldUpdate: Boolean = true): Boolean {
+        if (map.containsKey(tracker.beat))
+            return false
+
+        backingMap[tracker.beat] = tracker
+
+        if (shouldUpdate) {
+            update()
+        }
+
+        return true
     }
 
-    open fun add(tracker: T) {
-        map.put(tracker.beat, tracker)
-        update()
+    open fun remove(tracker: T, shouldUpdate: Boolean = true): Boolean {
+        val didRemove = backingMap.remove(tracker.beat, tracker)
+
+        if (didRemove && shouldUpdate) {
+            update()
+        }
+
+        return didRemove
     }
-
-    open fun remove(tracker: T) {
-        map.remove(tracker.beat, tracker)
-        update()
-    }
-
-    open fun remove(beat: Float) {
-        map.remove(beat)
-        update()
-    }
-
-    protected open fun update() {
-        // required for tempo changes
-    }
-
-    fun get(beat: Float): T? =
-            map[beat]
-
-    fun lowerGet(beat: Float): T? =
-            map.lowerEntry(beat)?.value
-
-    fun higherGet(beat: Float): T? =
-            map.higherEntry(beat)?.value
 
 }

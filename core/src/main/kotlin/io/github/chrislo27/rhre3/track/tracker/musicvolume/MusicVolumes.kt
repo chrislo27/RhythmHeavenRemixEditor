@@ -1,18 +1,18 @@
-package io.github.chrislo27.rhre3.track.tracker.music
+package io.github.chrislo27.rhre3.track.tracker.musicvolume
 
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
 
 
-class MusicVolumes(val defaultVolume: Int = 100) : TrackerContainer<MusicVolumeChange>(1) {
-
+class MusicVolumes : TrackerContainer<MusicVolumeChange>(1) {
     override fun toTree(node: ObjectNode): ObjectNode {
         val arrayNode = node.putArray("trackers")
 
         map.values.forEach {
             arrayNode.addObject()
                     .put("beat", it.beat)
+                    .put("width", it.width)
                     .put("volume", it.volume)
         }
 
@@ -21,17 +21,17 @@ class MusicVolumes(val defaultVolume: Int = 100) : TrackerContainer<MusicVolumeC
 
     override fun fromTree(node: ObjectNode) {
         (node["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-            add(MusicVolumeChange(it["beat"].asDouble().toFloat(), it["volume"].asInt(100).coerceIn(0, 100)))
+            add(MusicVolumeChange(this,
+                                  it["beat"].asDouble().toFloat(),
+                                  it["width"]?.asDouble(0.0)?.toFloat() ?: 0f,
+                                  it["volume"].asInt(100).coerceIn(0, MusicVolumeChange.MAX_VOLUME)))
         }
     }
 
-    fun getVolume(beat: Float): Int {
-        val change = map.floorEntry(beat)?.value ?: return defaultVolume
-        return change.volume
+    override fun update() {
     }
 
-    fun getPercentageVolume(beat: Float): Float {
-        return getVolume(beat) / 100f
+    fun volumeAt(beat: Float): Float {
+        return backingMap.lowerEntry(beat)?.value?.volumeAt(beat) ?: 1f
     }
-
 }
