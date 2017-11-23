@@ -46,10 +46,11 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
     }
 
     fun beatsToSeconds(beat: Float): Float {
+        val beatWidth = beat - this.beat
         return if (beat >= endBeat) {
             endSeconds + BpmUtils.beatsToSeconds(beat - this.endBeat, tempoAt(beat))
         } else {
-            seconds + getSecondsDuration(beat - this.beat, previousBpm, tempoAt(beat))
+            seconds + BpmUtils.beatsToSeconds(beatWidth, previousBpm) + getSecondsDuration(beatWidth, previousBpm, tempoAt(beat))
         }
     }
 
