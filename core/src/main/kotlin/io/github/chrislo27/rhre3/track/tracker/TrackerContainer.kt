@@ -7,7 +7,6 @@ import java.util.*
 abstract class TrackerContainer<T : Tracker>(val renderLayer: Int) {
 
     val map: NavigableMap<Float, T> = TreeMap()
-    open val usesStandardRendering: Boolean = true
 
     abstract fun toTree(node: ObjectNode): ObjectNode
     abstract fun fromTree(node: ObjectNode)

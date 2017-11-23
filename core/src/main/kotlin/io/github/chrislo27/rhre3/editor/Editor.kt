@@ -669,14 +669,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun getTrackerY(container: TrackerContainer<*>): Float = getTrackerY(container.renderLayer)
 
             fun renderTrackerContainer(container: TrackerContainer<*>, layer: Int = container.renderLayer) {
-                if (container.usesStandardRendering) {
-                    val y = getTrackerY(layer)
-                    container.map.values.forEach { tracker: Tracker ->
-                        if (tracker != selectedTracker && tracker.beat in beatRange) {
-                            renderTracker(tracker, y)
-                        }
+                val y = getTrackerY(layer)
+                container.map.values.forEach { tracker: Tracker ->
+                    if (tracker != selectedTracker && tracker.beat in beatRange) {
+                        renderTracker(tracker, y)
                     }
-                } else {
                 }
             }
 
@@ -687,7 +684,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (selectedTracker != null && selectedTracker.beat in beatRange) {
                 remix.trackers.firstOrNull {
                     selectedTracker in it.map.values
-                }?.takeIf(TrackerContainer<*>::usesStandardRendering)?.let { container ->
+                }?.let { container ->
                     renderTracker(selectedTracker, getTrackerY(container))
                 }
             }
@@ -1380,7 +1377,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
                 val beat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
-                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(beat.toFloat())?.takeIf { it.beat == beat }
+                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(
+                        beat.toFloat())?.takeIf { it.beat == beat }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
                     remix.mutate(TimeSignatureAction(remix, timeSig, true))
