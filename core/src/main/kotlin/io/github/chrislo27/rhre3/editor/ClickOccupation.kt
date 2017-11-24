@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
@@ -190,7 +191,7 @@ sealed class ClickOccupation {
             if (top > Editor.TRACK_COUNT)
                 return false
 
-            // EXCEPTIONS for special entities
+            // EXCEPTIONS for the end entity
             if (selection.any { it is EndEntity } && editor.remix.entities.filter { it is EndEntity }.size > 1)
                 return false
 
@@ -211,5 +212,23 @@ sealed class ClickOccupation {
 
     }
 
+    class TrackerResize(val tracker: Tracker<*>, val mouseOffset: Vector2)
+        : ClickOccupation() {
 
+        var beat: Float = tracker.beat
+            private set
+        var width: Float = tracker.width
+            private set
+        val text: String = tracker.text
+        val renderLayer: Int
+            get() = tracker.container.renderLayer
+
+        private fun normalizeWidth() {
+            if (width < 0) {
+                width = Math.abs(width)
+                beat -= width
+            }
+        }
+
+    }
 }

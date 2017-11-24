@@ -644,6 +644,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
             val triangle = AssetRegistry.get<Texture>("tracker_tri")
             val tool = currentTool
+            val clickOccupation = clickOccupation
+            val toolIsTrackerBased = currentTool.isTrackerRelated
+            val clickIsTrackerResize = clickOccupation is ClickOccupation.TrackerResize
 
             fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float) {
                 val heightPerLayer = 0.75f
@@ -679,7 +682,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             remix.trackersReverseView.forEach {
-                it.map.values.forEach(Tracker<*>::render)
+                it.map.values.forEach {
+                    if (clickOccupation is ClickOccupation.TrackerResize && clickOccupation.tracker === it) {
+                        renderTracker(clickOccupation.renderLayer, Color.WHITE, clickOccupation.text,
+                                      clickOccupation.beat, clickOccupation.width)
+                    } else {
+                        it.render()
+                    }
+                }
             }
 
             font.unscaleFont()
@@ -1583,7 +1593,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else if (tool == Tool.TIME_SIGNATURE) {
             val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
             if (timeSig != null) {
-                val change = -amount
+                val change = -amount * (if (Gdx.input.isControlDown()) 5 else 1)
                 val newDivisions = (timeSig.divisions + change).coerceIn(TimeSignature.LOWER_LIMIT,
                                                                          TimeSignature.UPPER_LIMIT)
                 if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
