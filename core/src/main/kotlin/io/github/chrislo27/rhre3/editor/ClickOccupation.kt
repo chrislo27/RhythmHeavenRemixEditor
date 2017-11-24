@@ -210,4 +210,6 @@ sealed class ClickOccupation {
         }
 
     }
+
+
 }

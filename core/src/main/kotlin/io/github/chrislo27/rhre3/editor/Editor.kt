@@ -44,6 +44,7 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatureAction
+import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -83,7 +84,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private const val MSG_SEPARATOR = " - "
         private const val NEGATIVE_SYMBOL = "-"
         private const val ZERO_BEAT_SYMBOL = "♩"
-        private const val AUTOSAVE_MESSAGE_TIME_MS = 10000L
         private const val SELECTION_RECT_ADD = "+"
         private const val SELECTION_RECT_INVERT = "±"
         private const val SONG_SUBTITLE_TRANSITION = 0.5f
@@ -96,7 +96,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private val THREE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
         private val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
         private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
-        private val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
+        val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -564,7 +564,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (remix.playState != PlayState.STOPPED) {
                 renderAboveTracker(null, null, 0, remix.beat,
-                                   theme.trackers.playback, triangleHeight = 0f, bpmText = "♩=${ONE_DECIMAL_PLACE_FORMATTER.format(remix.tempos.tempoAt(remix.beat))}")
+                                   theme.trackers.playback, triangleHeight = 0f,
+                                   bpmText = "♩=${ONE_DECIMAL_PLACE_FORMATTER.format(
+                                           remix.tempos.tempoAt(remix.beat))}")
             }
 
             borderedFont.color = oldFontColor
@@ -642,6 +644,43 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
             val triangle = AssetRegistry.get<Texture>("tracker_tri")
             val tool = currentTool
+
+            fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float) {
+                val heightPerLayer = 0.75f
+                val y = 0f - (layer + 1) * heightPerLayer
+                val height = 0f - y
+
+                // background
+                batch.setColor(color.r, color.g, color.b, color.a * 0.35f)
+                batch.fillRect(beat, y, width, height)
+                batch.drawRect(beat, y, width, height, toScaleX(2f), toScaleY(2f))
+
+                // lines
+                batch.color = color
+                val lineWidth = toScaleX(TRACK_LINE)
+                batch.fillRect(beat, y, lineWidth, height)
+                batch.fillRect(beat + width, y, -lineWidth, height)
+
+                // triangle
+                batch.draw(triangle, beat + width - triWidth * 0.5f, y, triWidth, triHeight)
+                batch.draw(triangle, beat - triWidth * 0.5f, y, triWidth, triHeight)
+
+                // text
+                font.color = color
+                font.drawCompressed(batch, text, beat + triWidth * 0.5f,
+                                    y + heightPerLayer * 0.5f + font.capHeight * 0.5f,
+                                    100f, Align.left)
+
+                batch.setColor(1f, 1f, 1f, 1f)
+            }
+
+            fun Tracker<*>.render() {
+                renderTracker(container.renderLayer, getColour(theme), text, beat, width)
+            }
+
+            remix.trackersReverseView.forEach {
+                it.map.values.forEach(Tracker<*>::render)
+            }
 
             font.unscaleFont()
         }
@@ -1604,6 +1643,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun getDebugString(): String? {
-        return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)}\nbpm: ${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(remix.beat)}"
+        return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
+                remix.seconds)}\nbpm: ${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
+                remix.beat)}"
     }
 }

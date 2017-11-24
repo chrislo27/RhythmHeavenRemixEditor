@@ -19,6 +19,10 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
     val previousVolume: Int
         get() = (container.map as NavigableMap).lowerEntry(beat)?.value?.volume ?: 100
 
+    init {
+        text = "♬\ue13c➡$volume%"
+    }
+
     override fun getColour(theme: Theme): Color {
         return theme.trackers.musicVolume
     }

@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.track.tracker.tempo
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.util.BpmUtils
@@ -31,6 +32,10 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
 
     val previousBpm: Float
         get() = (container.map as NavigableMap).lowerEntry(beat)?.value?.bpm ?: (container as TempoChanges).defaultTempo
+
+    init {
+        text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
+    }
 
     override fun getColour(theme: Theme): Color {
         return theme.trackers.tempoChange
