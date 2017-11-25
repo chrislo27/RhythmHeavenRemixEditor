@@ -104,23 +104,27 @@ These three tools are very similar. They control what are called *trackers*.
 or **`DOWN`**. This is useful if you don't have access to a mouse, like
 on a laptop.
 
-All tracker-type tools share these controls:
+All tracker-like tools share these controls:
 
 **`SCROLL`** - Change value<br/>
 Hold **`CONTROL`** - Change value by 5x
 
-The **tempo change** tool is exactly the same as in RHRE2. You can change the tempo
+The **tempo change** tool has changed slightly from RHRE2. You can change the tempo
 mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
-0.5 BPM.
+0.5 BPM. Starting in v3.6.0, clicking and dragging the ends
+will allow you to have gradual speed ups or slow downs.
 
 The **music volume** tool is new in RHRE3. You can change the music volume
-mid-remix as a percentage from 0-200%.
+mid-remix as a percentage from 0-200%. Starting in v3.6.0, clicking and
+dragging the ends will allow you to make smooth transitions
+for a perfect fade-out.
 
 The **time signature** tool is new in RHRE3. You can change the time signature
 mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage
-to create measures so your patterns sound correct.
+to create measures so your patterns sound correct. You can only place this
+on whole beats.
 
 # Tapalong
 The tapalong menu is recurring from RHRE2, this time it is inline with the
