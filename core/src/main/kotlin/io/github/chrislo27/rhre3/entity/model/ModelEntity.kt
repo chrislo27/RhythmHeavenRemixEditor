@@ -15,6 +15,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
+import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 
 
 abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : Entity(remix) {
@@ -136,6 +137,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
 
         if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
+            font.scaleMul(1.25f)
             if (!this.canBeRepitched) {
                 font.setColor(1f, 0f, 0f, 1f)
             }
