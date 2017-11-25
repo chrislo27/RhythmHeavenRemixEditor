@@ -85,7 +85,7 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
 
     fun tempoAt(beat: Float): Float {
         val endBeat = this.endBeat
-        return if (beat in this.beat..endBeat) {
+        return if (!isZeroWidth && beat in this.beat..endBeat) {
             MathUtils.lerp(this.previousBpm, this.bpm, (beat - this.beat) / width)
         } else {
             bpm
@@ -93,7 +93,7 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
     }
 
     fun tempoAtSeconds(seconds: Float): Float {
-        return if (seconds in this.seconds..this.endSeconds) {
+        return if (!isZeroWidth && seconds in this.seconds..this.endSeconds) {
             MathUtils.lerp(this.previousBpm, this.bpm, (seconds - this.seconds) / widthSeconds)
         } else {
             bpm

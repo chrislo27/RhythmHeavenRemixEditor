@@ -541,12 +541,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 borderedFont.scaleFont(camera)
             }
 
-            if (cachedPlaybackStart.first != remix.playbackStart) {
-                cachedPlaybackStart = remix.playbackStart to getTrackerTime(remix.playbackStart)
+            if (cachedPlaybackStart.first != remix.tempos.beatsToSeconds(remix.playbackStart)) {
+                cachedPlaybackStart = remix.tempos.beatsToSeconds(remix.playbackStart) to getTrackerTime(remix.playbackStart)
             }
-            if (cachedMusicStart.first != remix.tempos.secondsToBeats(remix.musicStartSec)) {
+            if (cachedMusicStart.first != remix.musicStartSec) {
                 val beats = remix.tempos.secondsToBeats(remix.musicStartSec)
-                cachedMusicStart = beats to getTrackerTime(beats)
+                cachedMusicStart = remix.musicStartSec to getTrackerTime(beats)
             }
 
             renderAboveTracker("tracker.music", "tracker.music.controls",
@@ -1441,19 +1441,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             clickOccupation = TrackerResize(tracker, mouseX - tracker.beat, left)
                         }
                     } else {
-                        val action: TrackerAction = when (tool) {
+                        val action: TrackerAction = TrackerAction(when (tool) {
                             Tool.TEMPO_CHANGE -> {
-                                TrackerAction(TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat)), false)
+                                TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat))
                             }
                             Tool.MUSIC_VOLUME -> {
-                                TrackerAction(MusicVolumeChange(remix.musicVolumes, beat, 0f,
+                                MusicVolumeChange(remix.musicVolumes, beat, 0f,
                                                                 Math.round(remix.musicVolumes.volumeAt(
                                                                         beat) * 100).coerceIn(0,
-                                                                                              MusicVolumeChange.MAX_VOLUME)),
-                                              false)
+                                                                                              MusicVolumeChange.MAX_VOLUME))
                             }
                             else -> error("Tracker creation not supported for tool $tool")
-                        }
+                        }, false)
                         remix.mutate(action)
                     }
                 }
