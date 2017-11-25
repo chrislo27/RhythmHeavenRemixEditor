@@ -187,12 +187,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     val trackers = tree.get("trackers") as ObjectNode
                     val timeSigs = trackers["timeSignatures"] as ObjectNode
                     (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
                     }
                 } else {
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(it["beat"].asInt(), it["divisions"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
                     }
                 }
             }

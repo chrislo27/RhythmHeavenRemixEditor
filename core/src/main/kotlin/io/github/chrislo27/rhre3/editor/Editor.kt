@@ -43,10 +43,12 @@ import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.track.timesignature.TimeSigValueChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatureAction
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.TrackerAction
+import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.toolboks.Toolboks
@@ -673,22 +675,23 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (width == 0f) {
                     batch.draw(triangle, beat - triWidth * 0.5f, y, triWidth, triHeight)
                 } else {
-                    batch.draw(rightTriangle, beat + width , y, -triWidth * 0.75f, triHeight)
+                    batch.draw(rightTriangle, beat + width, y, -triWidth * 0.75f, triHeight)
                     batch.draw(rightTriangle, beat, y, triWidth * 0.75f, triHeight)
                 }
 
                 // text
                 borderedFont.color = color
                 borderedFont.drawCompressed(batch, text, beat + triWidth * 0.5f,
-                                    y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
-                                    100f, Align.left)
+                                            y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
+                                            100f, Align.left)
 
                 batch.setColor(1f, 1f, 1f, 1f)
             }
 
             fun Tracker<*>.render() {
                 renderTracker(container.renderLayer,
-                              if (toolIsTrackerBased && currentTracker === this && !clickIsTrackerResize) Color.WHITE else getColour(theme),
+                              if (toolIsTrackerBased && currentTracker === this && !clickIsTrackerResize) Color.WHITE else getColour(
+                                      theme),
                               text, beat, width)
             }
 
@@ -1407,8 +1410,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
                     remix.mutate(TimeSignatureAction(remix, timeSig, true))
                 } else if (button == Input.Buttons.LEFT && timeSig == null) {
-                    remix.mutate(TimeSignatureAction(remix, TimeSignature(beat, remix.timeSignatures.getTimeSignature(
-                            beat.toFloat())?.divisions ?: 4), false))
+                    remix.mutate(TimeSignatureAction(remix,
+                                                     TimeSignature(remix.timeSignatures, beat,
+                                                                   remix.timeSignatures
+                                                                           .getTimeSignature(beat.toFloat())
+                                                                           ?.divisions ?: 4), false))
                 }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java)
@@ -1416,14 +1422,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val beat = MathHelper.snapToNearest(mouseX, snap)
 
                 if (button == Input.Buttons.RIGHT && tracker != null) {
-                    // edit tracker
-                    tracker.editAction(this)
+                    remix.mutate(TrackerAction(tracker, true))
                 } else if (button == Input.Buttons.LEFT) {
                     if (tracker != null) {
                         val left = MathUtils.isEqual(tracker.beat, mouseX, snap * 0.5f)
                         val right = MathUtils.isEqual(tracker.endBeat, mouseX, snap * 0.5f)
                         if (left || right) {
-                            clickOccupation = TrackerResize(tracker,mouseX - tracker.beat, left)
+                            clickOccupation = TrackerResize(tracker, mouseX - tracker.beat, left)
                         }
                     } else {
                         val action: TrackerAction = when (tool) {
@@ -1434,7 +1439,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 TrackerAction(MusicVolumeChange(remix.musicVolumes, beat, 0f,
                                                                 Math.round(remix.musicVolumes.volumeAt(
                                                                         beat) * 100).coerceIn(0,
-                                                                                              MusicVolumeChange.MAX_VOLUME)), false)
+                                                                                              MusicVolumeChange.MAX_VOLUME)),
+                                              false)
                             }
                             else -> error("Tracker creation not supported for tool $tool")
                         }
@@ -1602,7 +1608,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         TrackerAction(clickOccupation.tracker, true),
                         TrackerAction(copy, false)
                                         ))
-                println(copy in copy.container.map.values)
             }
 
             this.clickOccupation = ClickOccupation.None
@@ -1633,6 +1638,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             return false
 
         val tool = currentTool
+        val control = Gdx.input.isControlDown()
+        val shift = Gdx.input.isShiftDown()
         if (tool == Tool.SELECTION && selection.isNotEmpty()) {
             val oldPitches = selection.map { (it as? IRepitchable)?.semitone ?: 0 }
 
@@ -1647,17 +1654,44 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             remix.addActionWithoutMutating(EntityRepitchAction(this, selection, oldPitches))
+
+            return true
         } else if (tool == Tool.TIME_SIGNATURE) {
             val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
             if (timeSig != null) {
-                val change = -amount * (if (Gdx.input.isControlDown()) 5 else 1)
-                val newDivisions = (timeSig.divisions + change).coerceIn(TimeSignature.LOWER_LIMIT,
-                                                                         TimeSignature.UPPER_LIMIT)
+                val change = -amount * (if (control) 5 else 1)
+                val newDivisions = (timeSig.divisions + change)
+                        .coerceIn(TimeSignature.LOWER_LIMIT, TimeSignature.UPPER_LIMIT)
                 if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
-                    remix.mutate(ActionGroup(TimeSignatureAction(remix, timeSig, true),
-                                             TimeSignatureAction(remix, TimeSignature(timeSig.beat, newDivisions),
-                                                                 false)))
+                    val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst()?.takeIf { it is TimeSigValueChange } as TimeSigValueChange?
+                    val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions)
+
+                    if (lastAction != null && lastAction.current === timeSig) {
+                        lastAction.current = result
+                        lastAction.redo(remix)
+                    } else {
+                        remix.mutate(TimeSigValueChange(timeSig, result))
+                    }
+                    return true
                 }
+            }
+        } else if (tool.isTrackerRelated) {
+            val tracker = getTrackerOnMouse(tool.trackerClass?.java)
+            if (tracker != null) {
+                val result = tracker.scroll(-amount, control, shift)
+
+                if (result != null) {
+                    val lastAction: TrackerValueChange? = remix.getUndoStack().peekFirst()?.takeIf { it is TrackerValueChange } as TrackerValueChange?
+
+                    if (lastAction != null && lastAction.current === tracker) {
+                        lastAction.current = result
+                        lastAction.redo(remix)
+                    } else {
+                        remix.mutate(TrackerValueChange(tracker, result))
+                    }
+                }
+
+                return true
             }
         }
 

@@ -14,6 +14,9 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
 
     companion object {
 
+        val MIN_TEMPO: Float = 1.0f
+        val MAX_TEMPO: Float = 600f
+
         fun getSecondsDuration(beatWidth: Float, startBpm: Float, endBpm: Float): Float {
             return ((2 * beatWidth) / (startBpm + endBpm)) * 60f
         }
@@ -39,6 +42,15 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
 
     override fun editAction(editor: Editor) {
 
+    }
+
+    override fun scroll(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
+        val change = amount * (if (control) 5 else 1) * (if (shift) 0.1f else 1f)
+
+        if ((change < 0 && bpm <= MIN_TEMPO) || (change > 0 && bpm >= MAX_TEMPO))
+            return null
+
+        return TempoChange(container as TempoChanges, beat, width, (bpm + change).coerceIn(MIN_TEMPO, MAX_TEMPO))
     }
 
     override fun createResizeCopy(beat: Float, width: Float): TempoChange {

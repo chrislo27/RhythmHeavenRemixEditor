@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.track.timesignature
 
 
-class TimeSignature(val beat: Int, divisions: Int) {
+class TimeSignature(val container: TimeSignatures, val beat: Int, divisions: Int) {
 
     companion object {
         private val FOUR = "4"

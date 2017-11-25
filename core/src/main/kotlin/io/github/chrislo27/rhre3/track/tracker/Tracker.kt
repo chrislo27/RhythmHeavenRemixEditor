@@ -26,6 +26,6 @@ abstract class Tracker<SELF : Tracker<SELF>>(val container: TrackerContainer<SEL
 
     abstract fun createResizeCopy(beat: Float, width: Float): Tracker<SELF>
 
-    open fun onScroll(amount: Int, control: Boolean, shift: Boolean): Boolean = false
+    open fun scroll(amount: Int, control: Boolean, shift: Boolean): Tracker<SELF>? = null
 
 }

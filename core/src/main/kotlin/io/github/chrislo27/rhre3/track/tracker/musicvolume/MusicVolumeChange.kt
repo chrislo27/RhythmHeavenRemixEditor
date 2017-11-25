@@ -28,6 +28,15 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
 
     }
 
+    override fun scroll(amount: Int, control: Boolean, shift: Boolean): MusicVolumeChange? {
+        val change = amount * (if (control) 5 else 1)
+
+        if ((change < 0 && volume <= 0) || (change > 0 && volume >= MAX_VOLUME))
+            return null
+
+        return MusicVolumeChange(container, beat, width, (volume + change).coerceIn(0, MAX_VOLUME))
+    }
+
     override fun createResizeCopy(beat: Float, width: Float): MusicVolumeChange {
         return MusicVolumeChange(container, beat, width, volume)
     }

@@ -18,7 +18,7 @@ abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
 
     @Suppress("UNCHECKED_CAST")
     open fun add(tracker: Tracker<*>, shouldUpdate: Boolean = true): Boolean {
-        if (map.containsKey(tracker.beat))
+        if (map[tracker.beat] === tracker)
             return false
 
         backingMap.put(tracker.beat, tracker as T)
