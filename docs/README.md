@@ -106,14 +106,14 @@ All tracker-like tools share these controls:<br>
 **`SCROLL`** - Change value<br/>
 Hold **`CONTROL`** - Change value by 5x
 
-![Tempo changes](https://i.imgur.com/qkxenRu.png)<br>
+![Tempo changes](https://i.imgur.com/mS0qg3n.png)<br>
 The **tempo change** tool has changed slightly from RHRE2. You can change the tempo
 mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
 0.5 BPM. Starting in v3.6.0, clicking and dragging the ends
 will allow you to have gradual speed ups or slow downs.
 
-![Music volume changes](https://i.imgur.com/KQdqEq2.png)<br>
+![Music volume changes](https://i.imgur.com/HQSTPeT.png)<br>
 The **music volume** tool is new in RHRE3. You can change the music volume
 mid-remix as a percentage from 0-200%. Starting in v3.6.0, clicking and
 dragging the ends will allow you to make smooth transitions

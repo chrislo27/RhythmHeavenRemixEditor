@@ -40,6 +40,14 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
         text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
     }
 
+    override fun getSlope(): Int {
+        return when {
+            bpm > previousBpm -> 1
+            bpm < previousBpm -> -1
+            else -> 0
+        }
+    }
+
     override fun scroll(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
         val change = amount * (if (control) 5 else 1) * (if (shift) 0.1f else 1f)
 

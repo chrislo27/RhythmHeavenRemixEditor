@@ -23,6 +23,14 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
         text = "♬\ue13c➡$volume%"
     }
 
+    override fun getSlope(): Int {
+        return when {
+            volume > previousVolume -> 1
+            volume < previousVolume -> -1
+            else -> 0
+        }
+    }
+
     override fun scroll(amount: Int, control: Boolean, shift: Boolean): MusicVolumeChange? {
         val change = amount * (if (control) 5 else 1)
 

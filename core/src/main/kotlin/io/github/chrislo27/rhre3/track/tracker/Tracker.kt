@@ -19,6 +19,8 @@ abstract class Tracker<SELF : Tracker<SELF>>(val container: TrackerContainer<SEL
     var text: String = ""
         protected set
 
+    open fun getSlope(): Int = 0
+
     abstract fun getColour(theme: Theme): Color
 
     abstract fun createResizeCopy(beat: Float, width: Float): Tracker<SELF>

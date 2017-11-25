@@ -655,14 +655,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val clickIsTrackerResize = clickOccupation is TrackerResize
             val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java)
 
-            fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float) {
+            fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float, slope: Int) {
                 val heightPerLayer = 0.75f
                 val y = 0f - (layer + 1) * heightPerLayer
                 val height = 0f - y
 
                 // background
                 batch.setColor(color.r, color.g, color.b, color.a * 0.35f)
-                batch.fillRect(beat, y, width, height)
+                val batchColor = batch.packedColor
+                val fadedColor = Color.toFloatBits(color.r, color.g, color.b, color.a * 0.025f)
+                if (slope == 0 || width == 0f) {
+                    batch.fillRect(beat, y, width, height)
+                } else {
+                    batch.drawQuad(beat, y + height, batchColor,
+                                   beat + width, y + height, fadedColor,
+                                  beat + width, y, fadedColor,
+                                   beat, y, batchColor)
+                }
+
                 batch.drawRect(beat, y, width, height, toScaleX(2f), toScaleY(2f))
 
                 // lines
@@ -692,7 +702,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 renderTracker(container.renderLayer,
                               if (toolIsTrackerBased && currentTracker === this && !clickIsTrackerResize) Color.WHITE else getColour(
                                       theme),
-                              text, beat, width)
+                              text, beat, width, getSlope())
             }
 
             remix.trackersReverseView.forEach {
@@ -708,7 +718,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 renderTracker(clickOccupation.renderLayer,
                               if (clickOccupation.isPlacementValid()) Color.WHITE else Color.RED,
                               clickOccupation.text,
-                              clickOccupation.beat, clickOccupation.width)
+                              clickOccupation.beat, clickOccupation.width, clickOccupation.tracker.getSlope())
             }
 
             borderedFont.unscaleFont()
