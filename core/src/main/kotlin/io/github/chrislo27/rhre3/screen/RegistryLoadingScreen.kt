@@ -70,6 +70,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
         val progress: Float = try {
             if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
         } catch (e: Exception) {
+            e.printStackTrace()
             System.exit(1)
             throw e // should never happen since System.exit doesn't return
         }
