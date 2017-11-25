@@ -108,7 +108,7 @@ object GameRegistry : Disposable {
         lateinit var specialGame: Game
             private set
 
-        private val objectMapper: ObjectMapper
+        private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(true)
         private val shouldCustomsGetPrefixes by lazy {
             RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
         }
@@ -158,7 +158,6 @@ object GameRegistry : Disposable {
         var lastLoadedID: String? = null
 
         init {
-            objectMapper = JsonHandler.createObjectMapper(true)
             currentObj = JsonHandler.fromJson(currentObjFh.readString())
 //            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
 
@@ -292,16 +291,10 @@ object GameRegistry : Disposable {
             if (datajsonFile.exists()) {
                 val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"),
                                                                     DataObject::class.java)
-                if (directive.isCustom && shouldCustomsGetPrefixes) {
-                    dataObject.id = CUSTOM_PREFIX + dataObject.id
-                }
 
                 game = Game(dataObject.id,
                             dataObject.name,
-                            if (directive.isCustom) Series.CUSTOM
-                            else Series.valueOf(
-                                    dataObject.series?.toUpperCase(
-                                            Locale.ROOT) ?: Series.OTHER.name),
+                            Series.valueOf(dataObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture("images/missing_game_icon.png"),
@@ -349,7 +342,7 @@ object GameRegistry : Disposable {
                 DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
             } else {
                 val nameWithoutExt = folder.nameWithoutExtension()
-                val id = nameWithoutExt
+                val id = CUSTOM_PREFIX + nameWithoutExt
                 if (gameMap.containsKey(id)) {
                     throw UnsupportedOperationException(
                             "Cannot load custom sound folder $id/ - already exists in registry")
@@ -360,7 +353,7 @@ object GameRegistry : Disposable {
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture("images/missing_game_icon.png"),
-                            id,
+                            nameWithoutExt,
                             true,
                             0, true, false)
 
@@ -377,10 +370,25 @@ object GameRegistry : Disposable {
                 }
             }
 
-            if (gameMap[game.id] != null) {
-                error("Duplicate game: ${game.id}")
+            val existingGame: Game? = gameMap[game.id]
+            val isOverwriting: Boolean = game.isCustom && gameMap[game.id]?.isCustom == false
+            if (existingGame != null) {
+                if (isOverwriting) {
+                    Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
+                } else if (existingGame.isCustom && !game.isCustom) {
+                    Toolboks.LOGGER.info("Ignoring non-custom game ${game.id} because a custom game already exists with the same ID")
+                } else {
+                    error("Duplicate game: ${game.id}")
+                }
             }
             (gameMap as MutableMap)[game.id] = game
+
+            if (isOverwriting && existingGame != null) {
+                existingGame.objects.forEach {
+                    objectMap.remove(it.id, it)
+                }
+            }
+
             val duplicateObjs = mutableListOf<String>()
             game.objects.forEach {
                 if (objectMap[it.id] != null) {
@@ -392,7 +400,7 @@ object GameRegistry : Disposable {
                 }
             }
 
-            if (duplicateObjs.isNotEmpty()) {
+            if (!isOverwriting && duplicateObjs.isNotEmpty()) {
                 error("Duplicate objects in game ${game.id}: $duplicateObjs")
             }
 

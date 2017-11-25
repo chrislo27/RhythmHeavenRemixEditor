@@ -135,7 +135,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
 
             // backwards compatibility silent upgrades
-            val shouldAppendCustomPrefixToCustomIDs = fromThisVersion(VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES)
             val shouldConvertTimeSignatures = fromThisVersion(VersionHistory.TIME_SIGNATURES_REFACTOR)
 
             // entities
@@ -148,12 +147,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                         val entity: Entity = when (type) {
                             "model" -> {
-                                var datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
+                                val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
                                         ?: return@forEach
-
-                                if (isCustom && shouldAppendCustomPrefixToCustomIDs) {
-                                    datamodelID = GameRegistry.CUSTOM_PREFIX + datamodelID
-                                }
 
                                 GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null) ?: run {
                                     missing++
