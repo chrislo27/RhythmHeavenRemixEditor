@@ -50,7 +50,7 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
 
     fun volumeAt(beat: Float): Float {
         val endBeat = this.endBeat
-        return if (beat <= endBeat) {
+        return if (!isZeroWidth && beat <= endBeat) {
             MathUtils.lerp(previousVolume / 100f, volume / 100f, (beat - this.beat) / width)
         } else {
             volume / 100f
