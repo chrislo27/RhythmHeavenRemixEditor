@@ -12,7 +12,7 @@ class ActionGroup<A : ActionHistory<A>>(var list: List<ReversibleAction<A>>) : R
     }
 
     override fun undo(context: A) {
-        list.forEach {
+        list.asReversed().forEach {
             it.undo(context)
         }
     }
