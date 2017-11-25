@@ -1150,6 +1150,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val game = game
             if (game != null) {
                 return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") +
+                        (if (game.isCustom) "[CYAN]★[]" else "") +
                         (if (isVariant) game.name else game.gameGroup.name) + "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]"
             }
             return ""
