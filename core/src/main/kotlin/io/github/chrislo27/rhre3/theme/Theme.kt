@@ -25,14 +25,14 @@ object Themes : Disposable {
                     BackgroundTheme("theme.pastel.green", Color(0.81f, 1f, 0.81f, 1f)),
                     BackgroundTheme("theme.pastel.blue", Color(0.70f, 0.86f, 1f, 1f)),
                     BackgroundTheme("theme.pastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
-                    BackgroundTheme("theme.pastel.violet", Color(0.89f, 0.86f, 1f, 1f)),
+                    BackgroundTheme("theme.pastel.violet", Color.valueOf("C59FFF")),
                     DarkPastelTheme("theme.darkPastel.red", Color(1f, 0.55f, 0.55f, 1f)),
                     DarkPastelTheme("theme.darkPastel.orange", Color(1f, 0.73f, 0.55f, 1f)),
                     DarkPastelTheme("theme.darkPastel.yellow", Color.valueOf("FFDA7D")),
                     DarkPastelTheme("theme.darkPastel.green", Color(0.81f, 1f, 0.81f, 1f)),
                     DarkPastelTheme("theme.darkPastel.blue", Color(0.70f, 0.86f, 1f, 1f)),
                     DarkPastelTheme("theme.darkPastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
-                    DarkPastelTheme("theme.darkPastel.violet", Color(0.89f, 0.86f, 1f, 1f))
+                    DarkPastelTheme("theme.darkPastel.violet", Color.valueOf("C59FFF"))
                   )
 
     override fun dispose() {
