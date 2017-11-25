@@ -539,10 +539,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
 
                 borderedFont.scaleFont(camera)
+                batch.setColor(1f, 1f, 1f, 1f)
             }
 
             if (cachedPlaybackStart.first != remix.tempos.beatsToSeconds(remix.playbackStart)) {
-                cachedPlaybackStart = remix.tempos.beatsToSeconds(remix.playbackStart) to getTrackerTime(remix.playbackStart)
+                cachedPlaybackStart = remix.tempos.beatsToSeconds(remix.playbackStart) to getTrackerTime(
+                        remix.playbackStart)
             }
             if (cachedMusicStart.first != remix.musicStartSec) {
                 val beats = remix.tempos.secondsToBeats(remix.musicStartSec)
@@ -601,6 +603,34 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
             font.setColor(1f, 1f, 1f, 1f)
+        }
+
+        // Play-Yan
+        if (remix.metronome) {
+            val jumpTime = 0.65f
+            val beat = if (remix.playState != PlayState.STOPPED) remix.beat else remix.playbackStart
+            val beatPercent = (beat + Math.abs(Math.floor(beat.toDouble()) * 2).toFloat()) % 1
+            if (beatPercent <= jumpTime && remix.playState != PlayState.STOPPED) {
+                val jumpSawtooth = beatPercent / jumpTime
+                val jumpTriangle = if (jumpSawtooth <= 0.5f)
+                    jumpSawtooth * 2
+                else
+                    1f - (jumpSawtooth - 0.5f) * 2
+                val jumpHeight = if (jumpSawtooth <= 0.5f)
+                    jumpSawtooth * 2
+                else
+                    jumpTriangle * jumpTriangle
+
+                batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
+                           TRACK_COUNT + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
+                           0, 0, 26, 35, false, false)
+            } else {
+                val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
+                batch.draw(AssetRegistry.get<Texture>("playyan_walking"), beat,
+                           TRACK_COUNT * 1f,
+                           toScaleX(26f), toScaleY(35f),
+                           step * 26, 0, 26, 35, false, false)
+            }
         }
 
         // time signatures
@@ -669,7 +699,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     batch.drawQuad(beat, y + height, batchColor,
                                    beat + width, y + height, fadedColor,
-                                  beat + width, y, fadedColor,
+                                   beat + width, y, fadedColor,
                                    beat, y, batchColor)
                 }
 
@@ -1442,17 +1472,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
                     } else {
                         val action: TrackerAction = TrackerAction(when (tool) {
-                            Tool.TEMPO_CHANGE -> {
-                                TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat))
-                            }
-                            Tool.MUSIC_VOLUME -> {
-                                MusicVolumeChange(remix.musicVolumes, beat, 0f,
-                                                                Math.round(remix.musicVolumes.volumeAt(
-                                                                        beat) * 100).coerceIn(0,
-                                                                                              MusicVolumeChange.MAX_VOLUME))
-                            }
-                            else -> error("Tracker creation not supported for tool $tool")
-                        }, false)
+                                                                      Tool.TEMPO_CHANGE -> {
+                                                                          TempoChange(remix.tempos, beat, 0f,
+                                                                                      remix.tempos.tempoAt(beat))
+                                                                      }
+                                                                      Tool.MUSIC_VOLUME -> {
+                                                                          MusicVolumeChange(remix.musicVolumes, beat,
+                                                                                            0f,
+                                                                                            Math.round(
+                                                                                                    remix.musicVolumes.volumeAt(
+                                                                                                            beat) * 100).coerceIn(
+                                                                                                    0,
+                                                                                                    MusicVolumeChange.MAX_VOLUME))
+                                                                      }
+                                                                      else -> error(
+                                                                              "Tracker creation not supported for tool $tool")
+                                                                  }, false)
                         remix.mutate(action)
                     }
                 }

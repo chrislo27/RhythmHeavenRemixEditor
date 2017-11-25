@@ -585,7 +585,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             if (metronome) {
                 val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
                 metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
-                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f)
+                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
             }
         }
 
