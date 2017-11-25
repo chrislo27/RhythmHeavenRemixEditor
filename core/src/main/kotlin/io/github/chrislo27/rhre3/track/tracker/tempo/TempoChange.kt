@@ -38,7 +38,7 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
     }
 
     override fun editAction(editor: Editor) {
-        TODO()
+
     }
 
     override fun createResizeCopy(beat: Float, width: Float): TempoChange {

@@ -39,7 +39,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
-        editor.resize(width, height)
+        editor.resize()
     }
 
     override fun dispose() {

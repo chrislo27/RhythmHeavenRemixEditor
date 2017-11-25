@@ -25,7 +25,7 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
     }
 
     override fun editAction(editor: Editor) {
-        TODO()
+
     }
 
     override fun createResizeCopy(beat: Float, width: Float): MusicVolumeChange {

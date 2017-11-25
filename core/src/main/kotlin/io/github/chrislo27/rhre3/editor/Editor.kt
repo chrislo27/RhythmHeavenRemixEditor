@@ -81,7 +81,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val MESSAGE_BAR_HEIGHT: Int = 14
         const val BUTTON_SIZE: Float = 32f
         const val BUTTON_PADDING: Float = 4f
-        const val BUTTON_BAR_HEIGHT: Float = BUTTON_SIZE + BUTTON_PADDING * 2
 
         const val SELECTION_BORDER: Float = 4f
 
@@ -214,7 +213,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
     init {
-        Localization.listeners += { old ->
+        Localization.listeners += {
             updateMessageLabel()
 
             cachedPlaybackStart = Float.POSITIVE_INFINITY to ""
@@ -641,8 +640,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // bottom trackers
         run trackers@ {
-            val font = main.defaultBorderedFont
-            font.scaleFont(camera)
+            val borderedFont = main.defaultBorderedFont
+            borderedFont.scaleFont(camera)
 
             val triHeight = 0.5f
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
@@ -679,9 +678,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
 
                 // text
-                font.color = color
-                font.drawCompressed(batch, text, beat + triWidth * 0.5f,
-                                    y + heightPerLayer * 0.5f + font.capHeight * 0.5f,
+                borderedFont.color = color
+                borderedFont.drawCompressed(batch, text, beat + triWidth * 0.5f,
+                                    y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
                                     100f, Align.left)
 
                 batch.setColor(1f, 1f, 1f, 1f)
@@ -709,7 +708,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                               clickOccupation.beat, clickOccupation.width)
             }
 
-            font.unscaleFont()
+            borderedFont.unscaleFont()
         }
 
         // render selection box + delete zone
@@ -1130,7 +1129,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val label = stage.messageLabel
         val builder = StringBuilder()
         val clickOccupation = clickOccupation
-        val autosaveState = autosaveState
 
         fun StringBuilder.separator(): StringBuilder {
             this.append(MSG_SEPARATOR)
@@ -1288,6 +1286,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         return null
+    }
+
+    private fun onHoveredTrackerChange(old: Tracker<*>, new: Tracker<*>) {
+
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
@@ -1593,7 +1595,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             this.clickOccupation = ClickOccupation.None
         } else if (clickOccupation is TrackerResize) {
             clickOccupation.normalizeWidth()
-            if (clickOccupation.isPlacementValid() &&
+            if (button == Input.Buttons.LEFT && clickOccupation.isPlacementValid() &&
                     (clickOccupation.tracker.beat != clickOccupation.beat || clickOccupation.tracker.width != clickOccupation.width)) {
                 val copy = clickOccupation.tracker.createResizeCopy(clickOccupation.beat, clickOccupation.width)
                 remix.mutate(ActionGroup(
@@ -1701,7 +1703,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         camera.update()
     }
 
-    fun resize(width: Int, height: Int) {
+    fun resize() {
         stage.updatePositions()
         resizeCameraToEntityScale(camera)
         resizeCameraToPixelScale(staticCamera)

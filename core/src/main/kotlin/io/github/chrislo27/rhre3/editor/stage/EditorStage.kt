@@ -494,6 +494,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             this.elements += entityTextField
         }
+
         hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),
                                    this, this).apply {
             this.background = true
