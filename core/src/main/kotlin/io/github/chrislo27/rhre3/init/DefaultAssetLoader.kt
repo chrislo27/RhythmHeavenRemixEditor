@@ -28,9 +28,10 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         AssetRegistry.loadAsset<Texture>("tracker_right_tri", "images/ui/tracker_right_triangle.png")
         AssetRegistry.loadAsset<Texture>("tracker_tri", "images/ui/tracker_triangle.png")
+        AssetRegistry.loadAsset<Texture>("tracker_right_tri_bordered", "images/ui/tracker_triangle_right_bordered.png")
 
         AssetRegistry.loadAsset<Texture>("tool_selection", "images/tool/selection.png")
-        AssetRegistry.loadAsset<Texture>("tool_bpm", "images/tool/bpm.png")
+        AssetRegistry.loadAsset<Texture>("tool_tempo_change", "images/tool/tempo_change.png")
         AssetRegistry.loadAsset<Texture>("tool_multipart_split", "images/tool/multipart_split.png")
         AssetRegistry.loadAsset<Texture>("tool_time_signature", "images/tool/time_signature.png")
         AssetRegistry.loadAsset<Texture>("tool_music_volume", "images/tool/music_volume.png")

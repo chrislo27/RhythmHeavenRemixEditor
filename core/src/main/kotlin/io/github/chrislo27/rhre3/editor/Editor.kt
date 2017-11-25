@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
@@ -45,6 +46,9 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatureAction
 import io.github.chrislo27.rhre3.track.tracker.Tracker
+import io.github.chrislo27.rhre3.track.tracker.TrackerAction
+import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
+import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -643,10 +647,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val triHeight = 0.5f
             val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
             val triangle = AssetRegistry.get<Texture>("tracker_tri")
+            val rightTriangle = AssetRegistry.get<Texture>("tracker_right_tri_bordered")
             val tool = currentTool
             val clickOccupation = clickOccupation
-            val toolIsTrackerBased = currentTool.isTrackerRelated
-            val clickIsTrackerResize = clickOccupation is ClickOccupation.TrackerResize
+            val toolIsTrackerBased = tool.isTrackerRelated
+            val clickIsTrackerResize = clickOccupation is TrackerResize
+            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java)
 
             fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float) {
                 val heightPerLayer = 0.75f
@@ -665,8 +671,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.fillRect(beat + width, y, -lineWidth, height)
 
                 // triangle
-                batch.draw(triangle, beat + width - triWidth * 0.5f, y, triWidth, triHeight)
-                batch.draw(triangle, beat - triWidth * 0.5f, y, triWidth, triHeight)
+                if (width == 0f) {
+                    batch.draw(triangle, beat - triWidth * 0.5f, y, triWidth, triHeight)
+                } else {
+                    batch.draw(rightTriangle, beat + width , y, -triWidth * 0.75f, triHeight)
+                    batch.draw(rightTriangle, beat, y, triWidth * 0.75f, triHeight)
+                }
 
                 // text
                 font.color = color
@@ -678,18 +688,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             fun Tracker<*>.render() {
-                renderTracker(container.renderLayer, getColour(theme), text, beat, width)
+                renderTracker(container.renderLayer,
+                              if (toolIsTrackerBased && currentTracker === this && !clickIsTrackerResize) Color.WHITE else getColour(theme),
+                              text, beat, width)
             }
 
             remix.trackersReverseView.forEach {
                 it.map.values.forEach {
-                    if (clickOccupation is ClickOccupation.TrackerResize && clickOccupation.tracker === it) {
-                        renderTracker(clickOccupation.renderLayer, Color.WHITE, clickOccupation.text,
-                                      clickOccupation.beat, clickOccupation.width)
+                    if (clickOccupation is TrackerResize && clickOccupation.tracker === it) {
                     } else {
                         it.render()
                     }
                 }
+            }
+
+            if (clickOccupation is TrackerResize) {
+                renderTracker(clickOccupation.renderLayer,
+                              if (clickOccupation.isPlacementValid()) Color.WHITE else Color.RED,
+                              clickOccupation.text,
+                              clickOccupation.beat, clickOccupation.width)
             }
 
             font.unscaleFont()
@@ -1030,16 +1047,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         run clickCheck@ {
             val clickOccupation = clickOccupation
             val tool = currentTool
+            val nearestSnap = MathHelper.snapToNearest(camera.getInputX(), snap)
             if (tool == Tool.SELECTION) {
-                val nearestBeat = MathHelper.snapToNearest(camera.getInputX(), snap)
                 when (clickOccupation) {
                     is ClickOccupation.Music -> {
                         setSubbeatSectionToMouse()
-                        remix.musicStartSec = remix.tempos.beatsToSeconds(nearestBeat)
+                        remix.musicStartSec = remix.tempos.beatsToSeconds(nearestSnap)
                     }
                     is ClickOccupation.Playback -> {
                         setSubbeatSectionToMouse()
-                        remix.playbackStart = nearestBeat
+                        remix.playbackStart = nearestSnap
                     }
                     is ClickOccupation.SelectionDrag -> {
                         if (clickOccupation.isStretching) {
@@ -1049,10 +1066,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 if (clickOccupation.stretchType == StretchRegion.LEFT) {
                                     val rightSide = oldBound.x + oldBound.width
 
-                                    entity.bounds.x = (nearestBeat).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
+                                    entity.bounds.x = (nearestSnap).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
                                     entity.bounds.width = rightSide - entity.bounds.x
                                 } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                    entity.bounds.width = (nearestBeat - oldBound.x).coerceAtLeast(
+                                    entity.bounds.width = (nearestSnap - oldBound.x).coerceAtLeast(
                                             IStretchable.MIN_STRETCH)
                                 }
                             }
@@ -1082,6 +1099,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             this.selection = listOf()
                         }
                     }
+                }
+            } else if (tool.isTrackerRelated) {
+                if (clickOccupation is TrackerResize) {
+                    clickOccupation.updatePosition(nearestSnap)
                 }
             }
         }
@@ -1186,11 +1207,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
                     }
                 }
-                Tool.BPM -> {
-                    builder.append(Localization["editor.msg.tempoChange"])
-                }
                 Tool.TIME_SIGNATURE -> {
                     builder.append(Localization["editor.msg.timeSignature"])
+                }
+                Tool.TEMPO_CHANGE -> {
+                    builder.append(Localization["editor.msg.tempoChange"])
                 }
                 Tool.MUSIC_VOLUME -> {
                     builder.append(Localization["editor.msg.musicVolume"])
@@ -1246,6 +1267,27 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         stage.recentsFilter.shouldUpdate = true
         stage.updateSelected()
+    }
+
+    fun getTrackerOnMouse(klass: Class<out Tracker<*>>?): Tracker<*>? {
+        if (klass == null || remix.camera.getInputY() > 0f)
+            return null
+        val mouseX = remix.camera.getInputX()
+        remix.trackers.forEach {
+            val result = it.map.values.firstOrNull {
+                if (it::class.java != klass)
+                    false
+                else if (it.isZeroWidth)
+                    MathUtils.isEqual(mouseX, it.beat, snap * 0.5f)
+                else
+                    mouseX in it.beat..it.endBeat
+            }
+
+            if (result != null)
+                return result
+        }
+
+        return null
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
@@ -1367,36 +1409,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             beat.toFloat())?.divisions ?: 4), false))
                 }
             } else if (tool.isTrackerRelated) {
-//                val tracker: Tracker? = getTrackerOnMouse(tool.trackerClass)
-//                val beat = MathHelper.snapToNearest(remix.camera.getInputX(), snap)
-//
-//                if (button == Input.Buttons.RIGHT && tracker != null) {
-//                    remix.mutate(
-//                            when (tool) {
-//                                Tool.BPM -> {
-//                                    TrackerExistenceAction(remix, remix.tempos, tracker as TempoChange, true)
-//                                }
-//                                Tool.MUSIC_VOLUME -> {
-//                                    TrackerExistenceAction(remix, remix.musicVolumes, tracker as MusicVolumeChange,
-//                                                           true)
-//                                }
-//                                else -> error("Tracker removal not supported: $tool")
-//                            })
-//                } else if (button == Input.Buttons.LEFT && tracker == null) {
-//                    remix.mutate(
-//                            when (tool) {
-//                                Tool.BPM -> {
-//                                    TrackerExistenceAction(remix, remix.tempos,
-//                                                           TempoChange(beat, remix.tempos.tempoAt(beat)), false)
-//                                }
-//                                Tool.MUSIC_VOLUME -> {
-//                                    TrackerExistenceAction(remix, remix.musicVolumes,
-//                                                           MusicVolumeChange(beat, remix.musicVolumes.getVolume(beat)),
-//                                                           false)
-//                                }
-//                                else -> error("Tracker placement not supported: $tool")
-//                            })
-//                }
+                val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java)
+                val mouseX = remix.camera.getInputX()
+                val beat = MathHelper.snapToNearest(mouseX, snap)
+
+                if (button == Input.Buttons.RIGHT && tracker != null) {
+                    // edit tracker
+                    tracker.editAction(this)
+                } else if (button == Input.Buttons.LEFT) {
+                    if (tracker != null) {
+                        val left = MathUtils.isEqual(tracker.beat, mouseX, snap * 0.5f)
+                        val right = MathUtils.isEqual(tracker.endBeat, mouseX, snap * 0.5f)
+                        if (left || right) {
+                            clickOccupation = TrackerResize(tracker,mouseX - tracker.beat, left)
+                        }
+                    } else {
+                        val action: TrackerAction = when (tool) {
+                            Tool.TEMPO_CHANGE -> {
+                                TrackerAction(TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat)), false)
+                            }
+                            Tool.MUSIC_VOLUME -> {
+                                TrackerAction(MusicVolumeChange(remix.musicVolumes, beat, 0f,
+                                                                Math.round(remix.musicVolumes.volumeAt(
+                                                                        beat) * 100).coerceIn(0,
+                                                                                              MusicVolumeChange.MAX_VOLUME)), false)
+                            }
+                            else -> error("Tracker creation not supported for tool $tool")
+                        }
+                        remix.mutate(action)
+                    }
+                }
             }
         } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
@@ -1546,6 +1588,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         (newSelection.size != this.selection.size)) {
                     remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                 }
+            }
+
+            this.clickOccupation = ClickOccupation.None
+        } else if (clickOccupation is TrackerResize) {
+            clickOccupation.normalizeWidth()
+            if (clickOccupation.isPlacementValid()) {
+                remix.mutate(ActionGroup(
+                        TrackerAction(clickOccupation.tracker, true),
+                        TrackerAction(clickOccupation.tracker.createResizeCopy(clickOccupation.beat, clickOccupation.width), false)
+                                        ))
             }
 
             this.clickOccupation = ClickOccupation.None

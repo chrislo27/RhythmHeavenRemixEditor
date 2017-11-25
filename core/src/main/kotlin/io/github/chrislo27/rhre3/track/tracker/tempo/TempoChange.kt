@@ -37,6 +37,14 @@ class TempoChange(container: TempoChanges, beat: Float, width: Float, val bpm: F
         text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
     }
 
+    override fun editAction(editor: Editor) {
+        TODO()
+    }
+
+    override fun createResizeCopy(beat: Float, width: Float): TempoChange {
+        return TempoChange(container as TempoChanges, beat, width, bpm)
+    }
+
     override fun getColour(theme: Theme): Color {
         return theme.trackers.tempoChange
     }

@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.track.tracker
 
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.theme.Theme
 
 
@@ -20,5 +21,9 @@ abstract class Tracker<SELF : Tracker<SELF>>(val container: TrackerContainer<SEL
         protected set
 
     abstract fun getColour(theme: Theme): Color
+
+    abstract fun editAction(editor: Editor)
+
+    abstract fun createResizeCopy(beat: Float, width: Float): Tracker<SELF>
 
 }

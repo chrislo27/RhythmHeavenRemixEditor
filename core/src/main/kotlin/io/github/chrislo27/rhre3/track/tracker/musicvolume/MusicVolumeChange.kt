@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.track.tracker.musicvolume
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
@@ -21,6 +22,14 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
 
     init {
         text = "♬\ue13c➡$volume%"
+    }
+
+    override fun editAction(editor: Editor) {
+        TODO()
+    }
+
+    override fun createResizeCopy(beat: Float, width: Float): MusicVolumeChange {
+        return MusicVolumeChange(container, beat, width, volume)
     }
 
     override fun getColour(theme: Theme): Color {

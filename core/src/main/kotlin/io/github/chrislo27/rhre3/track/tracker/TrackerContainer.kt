@@ -16,11 +16,12 @@ abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
 
     abstract fun update()
 
-    open fun add(tracker: T, shouldUpdate: Boolean = true): Boolean {
+    @Suppress("UNCHECKED_CAST")
+    open fun add(tracker: Tracker<*>, shouldUpdate: Boolean = true): Boolean {
         if (map.containsKey(tracker.beat))
             return false
 
-        backingMap[tracker.beat] = tracker
+        backingMap.put(tracker.beat, tracker as T)
 
         if (shouldUpdate) {
             update()
@@ -29,8 +30,9 @@ abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
         return true
     }
 
-    open fun remove(tracker: T, shouldUpdate: Boolean = true): Boolean {
-        val didRemove = backingMap.remove(tracker.beat, tracker)
+    @Suppress("UNCHECKED_CAST")
+    open fun remove(tracker: Tracker<*>, shouldUpdate: Boolean = true): Boolean {
+        val didRemove = backingMap.remove(tracker.beat, tracker as T)
 
         if (didRemove && shouldUpdate) {
             update()

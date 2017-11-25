@@ -212,7 +212,7 @@ sealed class ClickOccupation {
 
     }
 
-    class TrackerResize(val tracker: Tracker<*>, val mouseOffset: Vector2)
+    class TrackerResize(val tracker: Tracker<*>, val mouseOffset: Float, val left: Boolean)
         : ClickOccupation() {
 
         var beat: Float = tracker.beat
@@ -223,12 +223,38 @@ sealed class ClickOccupation {
         val renderLayer: Int
             get() = tracker.container.renderLayer
 
-        private fun normalizeWidth() {
+        fun normalizeWidth() {
             if (width < 0) {
                 width = Math.abs(width)
                 beat -= width
             }
         }
 
+        fun isPlacementValid(): Boolean {
+            return tracker.container.map.values.none {
+                if (it === tracker) {
+                    false
+                } else {
+                    beat < it.beat + it.width && beat + width > it.beat
+                }
+            }
+        }
+
+        fun updatePosition(newPos: Float) {
+            val originalX = tracker.beat
+            val originalEndX = tracker.endBeat
+
+            if (left) {
+                beat = newPos
+                width = originalEndX - newPos
+            } else {
+                beat = originalX
+                width = newPos - originalX
+            }
+
+            normalizeWidth()
+        }
+
     }
+
 }
