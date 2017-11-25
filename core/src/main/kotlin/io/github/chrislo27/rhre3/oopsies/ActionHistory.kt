@@ -77,4 +77,7 @@ open class ActionHistory<SELF : ActionHistory<SELF>>(val maxItems: Int = 128) {
         redos.clear()
     }
 
+    fun getUndoStack() = undos
+    fun getRedoStack() = redos
+
 }
