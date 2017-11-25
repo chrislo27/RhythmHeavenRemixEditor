@@ -1593,11 +1593,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             this.clickOccupation = ClickOccupation.None
         } else if (clickOccupation is TrackerResize) {
             clickOccupation.normalizeWidth()
-            if (clickOccupation.isPlacementValid()) {
+            if (clickOccupation.isPlacementValid() &&
+                    (clickOccupation.tracker.beat != clickOccupation.beat || clickOccupation.tracker.width != clickOccupation.width)) {
+                val copy = clickOccupation.tracker.createResizeCopy(clickOccupation.beat, clickOccupation.width)
                 remix.mutate(ActionGroup(
                         TrackerAction(clickOccupation.tracker, true),
-                        TrackerAction(clickOccupation.tracker.createResizeCopy(clickOccupation.beat, clickOccupation.width), false)
+                        TrackerAction(copy, false)
                                         ))
+                println(copy in copy.container.map.values)
             }
 
             this.clickOccupation = ClickOccupation.None

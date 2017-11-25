@@ -235,7 +235,7 @@ sealed class ClickOccupation {
                 if (it === tracker) {
                     false
                 } else {
-                    beat < it.beat + it.width && beat + width > it.beat
+                    (beat < it.beat + it.width && beat + width > it.beat) || it.beat == beat
                 }
             }
         }
