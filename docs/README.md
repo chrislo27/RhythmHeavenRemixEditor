@@ -96,30 +96,30 @@ equidistants, and keep-the-beats) will split it into whatever it was made of.
 Use this when you need to fine-tune a pattern's components.
 
 ## Tempo Change, Music Volume, Time Signature tools
-These three tools are very similar. They control what are called *trackers*.
-
-![Trackers](readme/trackers.png)
+These tools are very similar. They control what are called *trackers*.
 
 >Note: wherever you see `SCROLL`, you can substitute this with **`UP`**
 or **`DOWN`**. This is useful if you don't have access to a mouse, like
 on a laptop.
 
-All tracker-like tools share these controls:
-
+All tracker-like tools share these controls:<br>
 **`SCROLL`** - Change value<br/>
 Hold **`CONTROL`** - Change value by 5x
 
+![Tempo changes](https://i.imgur.com/qkxenRu.png)<br>
 The **tempo change** tool has changed slightly from RHRE2. You can change the tempo
 mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
 0.5 BPM. Starting in v3.6.0, clicking and dragging the ends
 will allow you to have gradual speed ups or slow downs.
 
+![Music volume changes](https://i.imgur.com/KQdqEq2.png)<br>
 The **music volume** tool is new in RHRE3. You can change the music volume
 mid-remix as a percentage from 0-200%. Starting in v3.6.0, clicking and
 dragging the ends will allow you to make smooth transitions
 for a perfect fade-out.
 
+![4/4 time signature](https://i.imgur.com/SwG9g8n.png)<br>
 The **time signature** tool is new in RHRE3. You can change the time signature
 mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage
