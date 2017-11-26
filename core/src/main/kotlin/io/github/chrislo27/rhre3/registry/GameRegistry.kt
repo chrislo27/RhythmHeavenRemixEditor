@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
-import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
@@ -104,9 +103,6 @@ object GameRegistry : Disposable {
             private set
 
         private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(true)
-        private val shouldCustomsGetPrefixes by lazy {
-            RHRE3.VERSION >= VersionHistory.CUSTOM_SOUNDS_GET_PREFIXES
-        }
 
         class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
             val textureFh: FileHandle = folder.child(ICON_FILENAME)
