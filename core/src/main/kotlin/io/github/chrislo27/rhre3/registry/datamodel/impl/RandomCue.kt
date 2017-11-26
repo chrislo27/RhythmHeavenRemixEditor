@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.registry.datamodel.impl
 
-import io.github.chrislo27.rhre3.entity.model.cue.RandomCueEntity
+import io.github.chrislo27.rhre3.entity.model.multipart.RandomCueEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel

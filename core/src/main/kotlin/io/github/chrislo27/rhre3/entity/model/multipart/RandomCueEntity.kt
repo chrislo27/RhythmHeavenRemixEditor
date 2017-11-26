@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.entity.model.cue
+package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
