@@ -1450,11 +1450,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
                     remix.mutate(TimeSignatureAction(remix, timeSig, true))
                 } else if (button == Input.Buttons.LEFT && timeSig == null) {
-                    remix.mutate(TimeSignatureAction(remix,
-                                                     TimeSignature(remix.timeSignatures, beat,
-                                                                   remix.timeSignatures
-                                                                           .getTimeSignature(beat.toFloat())
-                                                                           ?.divisions ?: 4), false))
+                    remix.mutate(
+                            TimeSignatureAction(remix,
+                                                TimeSignature(remix.timeSignatures, beat,
+                                                              remix.timeSignatures.getTimeSignature(beat.toFloat())
+                                                                      ?.divisions ?: 4), false))
                 }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java)
@@ -1471,23 +1471,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             clickOccupation = TrackerResize(tracker, mouseX - tracker.beat, left)
                         }
                     } else {
-                        val action: TrackerAction = TrackerAction(when (tool) {
-                                                                      Tool.TEMPO_CHANGE -> {
-                                                                          TempoChange(remix.tempos, beat, 0f,
-                                                                                      remix.tempos.tempoAt(beat))
-                                                                      }
-                                                                      Tool.MUSIC_VOLUME -> {
-                                                                          MusicVolumeChange(remix.musicVolumes, beat,
-                                                                                            0f,
-                                                                                            Math.round(
-                                                                                                    remix.musicVolumes.volumeAt(
-                                                                                                            beat) * 100).coerceIn(
-                                                                                                    0,
-                                                                                                    MusicVolumeChange.MAX_VOLUME))
-                                                                      }
-                                                                      else -> error(
-                                                                              "Tracker creation not supported for tool $tool")
-                                                                  }, false)
+                        val tr = when (tool) {
+                            Tool.TEMPO_CHANGE -> {
+                                TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat))
+                            }
+                            Tool.MUSIC_VOLUME -> {
+                                MusicVolumeChange(remix.musicVolumes, beat,
+                                                  0f,
+                                                  Math.round(remix.musicVolumes.volumeAt(beat) * 100)
+                                                          .coerceIn(0, MusicVolumeChange.MAX_VOLUME))
+                            }
+                            else -> error(
+                                    "Tracker creation not supported for tool $tool")
+                        }
+                        val action: TrackerAction = TrackerAction(tr, false)
                         remix.mutate(action)
                     }
                 }
