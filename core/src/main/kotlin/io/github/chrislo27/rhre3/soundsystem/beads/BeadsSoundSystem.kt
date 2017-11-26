@@ -49,7 +49,7 @@ object BeadsSoundSystem : SoundSystem() {
         }
 
     private fun createAudioContext(): AudioContext =
-            AudioContext(ImprovedJavaSoundAudioIO().apply {
+            AudioContext(DaemonJavaSoundAudioIO().apply {
                 val index = AudioSystem.getMixerInfo().toList().indexOfFirst {
                     !it.name.startsWith("Port ") || it.name.contains("Primary Sound Driver")
                 }
