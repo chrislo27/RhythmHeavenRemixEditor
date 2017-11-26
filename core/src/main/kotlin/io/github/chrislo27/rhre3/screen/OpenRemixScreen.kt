@@ -196,8 +196,8 @@ class OpenRemixScreen(main: RHRE3Application)
                                 isLoadingSounds = false
                             }
 
-                            fun goodBad(str: String, bad: Boolean, badness: String = "ORANGE"): String {
-                                return if (bad) "[$badness]$str[]" else "[LIGHT_GRAY]$str[]"
+                            fun goodBad(str: String, bad: Boolean, badColour: String = "ORANGE"): String {
+                                return if (bad) "[$badColour]$str[]" else "[LIGHT_GRAY]$str[]"
                             }
 
                             loadButton.alsoDo = {
