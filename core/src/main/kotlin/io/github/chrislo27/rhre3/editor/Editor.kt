@@ -1686,7 +1686,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
             val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
-            val anyChanged = selection.fold(false) { _, it ->
+            val anyChanged = selection.fold(false) { acc, it ->
                 if (it is IRepitchable && it.canBeRepitched) {
                     val current = it.semitone
                     val new = current + -amount
@@ -1695,7 +1695,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         return@fold true
                     }
                 }
-                false
+                acc or false
             }
 
             if (anyChanged) {
