@@ -1695,7 +1695,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         return@fold true
                     }
                 }
-                acc or false
+                acc
             }
 
             if (anyChanged) {
