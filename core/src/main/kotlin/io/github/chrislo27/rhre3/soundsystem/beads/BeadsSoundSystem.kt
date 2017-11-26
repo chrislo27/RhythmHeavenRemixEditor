@@ -12,7 +12,6 @@ import io.github.chrislo27.rhre3.util.err.MusicWayTooLargeException
 import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
-import net.beadsproject.beads.core.io.JavaSoundAudioIO
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,7 +38,7 @@ object BeadsSoundSystem : SoundSystem() {
 
     private val sounds: MutableList<BeadsSound> = CopyOnWriteArrayList()
 
-    var sampleArray: FloatArray = FloatArray(audioContext.bufferSize)
+    var sampleArray: FloatArray = FloatArray(AudioContext.DEFAULT_BUFFER_SIZE)
         private set
         get() {
             if (field.size != audioContext.bufferSize) {
@@ -50,7 +49,7 @@ object BeadsSoundSystem : SoundSystem() {
         }
 
     private fun createAudioContext(): AudioContext =
-            AudioContext(JavaSoundAudioIO().apply {
+            AudioContext(ImprovedJavaSoundAudioIO().apply {
                 val index = AudioSystem.getMixerInfo().toList().indexOfFirst {
                     !it.name.startsWith("Port ") || it.name.contains("Primary Sound Driver")
                 }
