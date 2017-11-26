@@ -137,13 +137,22 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
 
         if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
-            font.scaleMul(1.25f)
-            if (!this.canBeRepitched) {
-                font.setColor(1f, 0f, 0f, 1f)
+            val borderedFont = remix.main.defaultBorderedFont
+            remix.editor.apply {
+                borderedFont.scaleFont(remix.camera)
             }
-            font.draw(batch, getTextForSemitone(this.semitone),
+            borderedFont.scaleMul(0.75f)
+            if (!this.canBeRepitched) {
+                borderedFont.setColor(1f, 0f, 0f, 1f)
+            } else {
+                borderedFont.setColor(1f, 1f, 1f, 1f)
+            }
+            borderedFont.draw(batch, getTextForSemitone(this.semitone),
                       x + 2 * remix.editor.toScaleX(BORDER),
-                      y + 2 * remix.editor.toScaleY(BORDER) + font.capHeight)
+                      y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
+            remix.editor.apply {
+                borderedFont.unscaleFont()
+            }
         }
         font.color = oldFontColor
         font.data.setScale(oldFontSizeX, oldFontSizeY)
