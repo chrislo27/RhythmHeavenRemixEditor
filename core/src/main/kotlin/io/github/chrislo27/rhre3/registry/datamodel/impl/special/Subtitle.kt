@@ -20,8 +20,8 @@ class Subtitle(game: Game, id: String, deprecatedIDs: List<String>, name: String
         }
     }
 
-    enum class SubtitleType(val metadata: String) {
-        SUBTITLE("subtitle"), SONG_TITLE("songTitle"), SONG_ARTIST("songArtist");
+    enum class SubtitleType(val metadata: String, val canInputNewlines: Boolean) {
+        SUBTITLE("subtitle", true), SONG_TITLE("songTitle", false), SONG_ARTIST("songArtist", false);
 
         companion object {
             val VALUES = values()

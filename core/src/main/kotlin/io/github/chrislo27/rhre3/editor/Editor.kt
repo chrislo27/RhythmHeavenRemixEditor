@@ -27,7 +27,6 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
-import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -1360,11 +1359,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val tool = currentTool
             if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
-                if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is SubtitleEntity) {
+                if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is IEditableText) {
                     if (firstEntityInMouse in this.selection) {
                         val field = stage.entityTextField
                         field.visible = true
-                        field.text = firstEntityInMouse.subtitle
+                        field.text = firstEntityInMouse.text
+                        field.canInputNewlines = firstEntityInMouse.canInputNewlines
                         field.hasFocus = true
                         updateMessageLabel()
                     }

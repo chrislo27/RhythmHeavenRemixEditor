@@ -491,6 +491,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                   screenX = 0.25f)
                 this.background = true
                 this.visible = false
+                this.canInputNewlines = true
             }
             this.elements += entityTextField
         }

@@ -24,6 +24,8 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
         set(value) {
             subtitle = value
         }
+    override val canInputNewlines: Boolean
+        get() = datamodel.type.canInputNewlines
 
     init {
         bounds.width = 1f
