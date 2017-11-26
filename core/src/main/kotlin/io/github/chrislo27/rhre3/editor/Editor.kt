@@ -1678,23 +1678,35 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (remix.playState != PlayState.STOPPED)
             return false
 
+        val selection = selection
         val tool = currentTool
         val control = Gdx.input.isControlDown()
         val shift = Gdx.input.isShiftDown()
         if (tool == Tool.SELECTION && selection.isNotEmpty()) {
-            val oldPitches = selection.map { (it as? IRepitchable)?.semitone ?: 0 }
+            val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
+            val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
-            selection.forEach {
+            val anyChanged = selection.fold(false) { _, it ->
                 if (it is IRepitchable && it.canBeRepitched) {
                     val current = it.semitone
                     val new = current + -amount
-                    if (new in IRepitchable.RANGE) {
+                    if (new in it.range) {
                         it.semitone = new
+                        return@fold true
                     }
                 }
+                false
             }
 
-            remix.addActionWithoutMutating(EntityRepitchAction(this, selection.toList(), oldPitches))
+            if (anyChanged) {
+                val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst()?.takeIf { it is EntityRepitchAction } as EntityRepitchAction?
+
+                if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
+                    lastAction.reloadNewPitches()
+                } else {
+                    remix.addActionWithoutMutating(EntityRepitchAction(this, repitchables, oldPitches))
+                }
+            }
 
             return true
         } else if (tool == Tool.TIME_SIGNATURE) {

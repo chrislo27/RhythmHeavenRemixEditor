@@ -10,7 +10,14 @@ import io.github.chrislo27.rhre3.track.Remix
 class EntityRepitchAction(val editor: Editor, val entities: List<Entity>, val oldPitches: List<Int>)
     : ReversibleAction<Remix> {
 
-    val newPitches: List<Int> = entities.map { (it as? IRepitchable)?.semitone ?: 0 }
+    var newPitches: List<Int> = getPitches()
+        private set
+
+    private fun getPitches() = entities.map { (it as? IRepitchable)?.semitone ?: 0 }
+
+    fun reloadNewPitches() {
+        newPitches = getPitches()
+    }
 
     override fun redo(context: Remix) {
         entities.forEachIndexed { index, entity ->
