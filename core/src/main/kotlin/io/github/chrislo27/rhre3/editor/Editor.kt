@@ -1694,7 +1694,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
 
-            remix.addActionWithoutMutating(EntityRepitchAction(this, selection, oldPitches))
+            remix.addActionWithoutMutating(EntityRepitchAction(this, selection.toList(), oldPitches))
 
             return true
         } else if (tool == Tool.TIME_SIGNATURE) {
