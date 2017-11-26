@@ -156,8 +156,6 @@ object GameRegistry : Disposable {
         }
 
         private fun whenDone() {
-            ready = true
-
             // create
             gameList
             objectList
@@ -265,7 +263,7 @@ object GameRegistry : Disposable {
             }
 
             System.gc()
-
+            ready = true
         }
 
         fun loadOne(): Float {
