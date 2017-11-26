@@ -220,7 +220,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     }
 
     override fun postRender() {
-        if (screen !is HidesVersionText) {
+        val screen = screen
+        if (screen !is HidesVersionText || !screen.hidesVersionText) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
 
