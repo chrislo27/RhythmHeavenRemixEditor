@@ -475,9 +475,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 if (cachedCurrent != null) {
                     val previous = reversedEntities[index - 1]
-                    val section = GameSection(previous.bounds.x,
-                                              currentEndPoint,
-                                              cachedCurrent)
+                    val section = GameSection(previous.bounds.x, currentEndPoint, cachedCurrent)
 
                     gameSections.put(section.startBeat, section)
 
@@ -487,9 +485,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
         if (currentGame != null) {
             val final = reversedEntities.last()
-            val section = GameSection(final.bounds.x,
-                                      currentEndPoint,
-                                      final.datamodel.game)
+            val section = GameSection(final.bounds.x, currentEndPoint, final.datamodel.game)
 
             gameSections.put(section.startBeat, section)
         }
