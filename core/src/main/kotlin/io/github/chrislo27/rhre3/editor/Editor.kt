@@ -823,8 +823,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             var defaultX = rect.x + toScaleX
                             var defaultWidth = rect.width - toScaleX * 2
                             val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
-                            if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2) {
-                                defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2
+                            if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom) {
+                                defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
                                 defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
                             } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
                                 defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
