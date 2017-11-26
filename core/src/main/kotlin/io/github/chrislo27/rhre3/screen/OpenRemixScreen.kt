@@ -14,8 +14,6 @@ import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.SpinningWheel
@@ -82,7 +80,7 @@ class OpenRemixScreen(main: RHRE3Application)
         }
 
     private fun List<Entity>.applyFilter(): List<ModelEntity<*>> {
-        return filter { entity -> entity is CueEntity || entity is MultipartEntity<*> }
+        return filter { entity -> entity is ILoadsSounds }
                 .filterIsInstance<ModelEntity<*>>()
                 .distinctBy { it.datamodel.id }
     }
@@ -180,7 +178,8 @@ class OpenRemixScreen(main: RHRE3Application)
                                 Remix.unpack(editor.createRemix(), zipFile)
 
                             val toLoad = result.remix.entities.applyFilter()
-                            val toUnload = editor.remix.entities.applyFilter().filter { it !in toLoad }
+                            val toLoadIDs = toLoad.map { it.datamodel.id }
+                            val toUnload = editor.remix.entities.applyFilter().filter { it.datamodel.id !in toLoadIDs }
 
                             val coroutine: Job = launch(CommonPool) {
                                 isLoadingSounds = true
