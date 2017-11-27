@@ -909,7 +909,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             borderedFont.scaleFont(staticCamera)
             borderedFont.scaleMul(0.85f)
 
-            val texture = AssetRegistry.get<Texture>("ui_spinning_circle")
             val alpha = if (autosaveState.result.timed) (autosaveState.time * 3f).coerceIn(0f, 1f) else 1f
 
             borderedFont.setColor(1f, 1f, 1f, alpha)
@@ -920,11 +919,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val height = 32f
             val width = 32f
 
-            batch.draw(texture, startX, startY, width * 0.5f, height * 0.5f, width, height, 1f, 1f,
-                       -360f * MathHelper.getSawtoothWave(2f),
-                       0, 0, texture.width, texture.height, false, false)
             borderedFont.drawCompressed(batch, Localization[autosaveState.result.localization],
-                                        startX + width * 1.25f, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
+                                        startX, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
                                         staticCamera.viewportWidth - width, Align.left)
 
             borderedFont.setColor(1f, 1f, 1f, 1f)
