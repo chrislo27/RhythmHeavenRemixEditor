@@ -374,11 +374,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         throw RuntimeException("Missing metronome sound")
               )
     }
-    var isMusicMuted: Boolean by Delegates.observable(false) { prop, old, new ->
+    var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _->
         setMusicVolume()
     }
 
-    var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { prop, old, new ->
+    var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
         if (editor.clickOccupation != ClickOccupation.None)
             return@vetoable false
 
