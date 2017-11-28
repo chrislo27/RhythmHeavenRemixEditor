@@ -144,6 +144,7 @@ a new cue/pattern from a different game is introduced.
 ![Game boundaries](https://i.imgur.com/Ek397zm.png)
 
 ## Waveform
-This shows the waveform as the remix plays. This also works in presentation mode.
+This shows the live audio data as the remix plays.
+This also works in presentation mode.
 
 ![Waveform](readme/waveform.png)
