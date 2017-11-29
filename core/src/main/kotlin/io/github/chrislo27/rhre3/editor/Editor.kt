@@ -1137,6 +1137,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             this.selection = listOf()
                         }
                     }
+                    is TrackerResize -> {
+                        // handled below
+                    }
                 }
             } else if (tool.isTrackerRelated) {
                 if (clickOccupation is TrackerResize) {
