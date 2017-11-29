@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -12,6 +13,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
@@ -53,10 +55,23 @@ class RegistryLoadingScreen(main: RHRE3Application)
             add(gameTitle)
         }
 
+        stage.bottomStage.elements += object : Button<RegistryLoadingScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.info.database"
+//                this.fontScaleMultiplier = 0.9f
+            })
+
+            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+        }
+
         stage.updatePositions()
-
-        stage.centreStage.updatePositions()
-
     }
 
     override fun render(delta: Float) {
