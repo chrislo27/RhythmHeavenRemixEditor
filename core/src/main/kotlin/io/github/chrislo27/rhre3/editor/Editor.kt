@@ -583,11 +583,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // beat numbers
         run beatNumbers@ {
             for (i in beatRange) {
-                font.color = theme.trackLine
                 val width = ENTITY_WIDTH * 0.4f
                 val x = i - width / 2f
                 val y = TRACK_COUNT + toScaleY(TRACK_LINE + TRACK_LINE) + font.capHeight
                 val text = if (i == 0) ZERO_BEAT_SYMBOL else "${Math.abs(i)}"
+                if (stage.jumpToField.hasFocus && i == stage.jumpToField.text.toIntOrNull() ?: Int.MAX_VALUE) {
+                    val glow = MathHelper.getTriangleWave(1f)
+                    val sel = theme.selection.selectionBorder
+                    font.setColor(MathUtils.lerp(sel.r, 1f, glow), MathUtils.lerp(sel.g, 1f, glow),
+                                  MathUtils.lerp(sel.b, 1f, glow), sel.a)
+                } else {
+                    font.color = theme.trackLine
+                }
                 font.drawCompressed(batch, text,
                                     x, y, width, Align.center)
                 if (i < 0) {
