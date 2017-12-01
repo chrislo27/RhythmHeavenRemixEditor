@@ -1706,7 +1706,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             if (anyChanged) {
-                val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst()?.takeIf { it is EntityRepitchAction } as EntityRepitchAction?
+                val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction?
 
                 if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
                     lastAction.reloadNewPitches()
@@ -1723,7 +1723,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val newDivisions = (timeSig.divisions + change)
                         .coerceIn(TimeSignature.LOWER_LIMIT, TimeSignature.UPPER_LIMIT)
                 if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
-                    val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst()?.takeIf { it is TimeSigValueChange } as TimeSigValueChange?
+                    val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
                     val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions)
 
                     if (lastAction != null && lastAction.current === timeSig) {
@@ -1741,7 +1741,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val result = tracker.scroll(-amount, control, shift)
 
                 if (result != null) {
-                    val lastAction: TrackerValueChange? = remix.getUndoStack().peekFirst()?.takeIf { it is TrackerValueChange } as TrackerValueChange?
+                    val lastAction: TrackerValueChange? = remix.getUndoStack().peekFirst() as? TrackerValueChange?
 
                     if (lastAction != null && lastAction.current === tracker) {
                         lastAction.current = result
