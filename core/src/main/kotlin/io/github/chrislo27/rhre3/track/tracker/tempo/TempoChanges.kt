@@ -32,7 +32,7 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
             add(TempoChange(this,
                             it["beat"].asDouble().toFloat(),
                             it["width"]?.asDouble(0.0)?.toFloat() ?: 0f,
-                            it["bpm"].asDouble(120.0).toFloat()),
+                            it["bpm"].asDouble(defaultTempo.toDouble()).toFloat()),
                 shouldUpdate = false)
         }
         update()
