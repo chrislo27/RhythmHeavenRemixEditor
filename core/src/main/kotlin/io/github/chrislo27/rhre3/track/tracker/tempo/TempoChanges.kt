@@ -45,7 +45,7 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
         backingSecondsMap.clear()
 
         old.forEach {
-            val before: TempoChange? = backingMap.lowerEntry(it.bpm)?.value
+            val before: TempoChange? = backingMap.lowerEntry(it.beat)?.value
             if (before == null) {
                 it.seconds = BpmUtils.beatsToSeconds(it.beat, defaultTempo)
             } else {

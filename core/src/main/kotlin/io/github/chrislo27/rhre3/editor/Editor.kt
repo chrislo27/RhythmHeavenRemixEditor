@@ -1806,7 +1806,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun getDebugString(): String? {
         val click = clickOccupation
         return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
-                remix.seconds)}\nbpm: ${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
+                remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
                 remix.beat)}"
     }
 }
