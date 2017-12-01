@@ -49,7 +49,7 @@ object DesktopLauncher {
                     this.audioDeviceSimultaneousSources = 250
 
                     RHRE3.skipGitScreen = "--skip-git" in args
-                    RHRE3.forceGitFetch = "--force-git-fetch" in args || RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
+                    RHRE3.forceGitFetch = "--force-git-fetch" in args
                     RHRE3.forceGitCheck = "--force-git-check" in args
                     RHRE3.verifyRegistry = "--verify-registry" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args

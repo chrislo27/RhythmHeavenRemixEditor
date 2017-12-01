@@ -96,7 +96,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
             try {
-                if (!RHRE3.forceGitFetch || RHRE3.forceGitCheck) {
+                if (!RHRE3.forceGitFetch || RHRE3.forceGitCheck || RHRE3.DATABASE_BRANCH != RHRE3.DEV_DATABASE_BRANCH) {
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
