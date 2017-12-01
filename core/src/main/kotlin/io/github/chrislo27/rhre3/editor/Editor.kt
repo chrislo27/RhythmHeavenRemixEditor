@@ -690,7 +690,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val clickOccupation = clickOccupation
             val toolIsTrackerBased = tool.isTrackerRelated
             val clickIsTrackerResize = clickOccupation is TrackerResize
-            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java)
+            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java, true)
 
             fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float, slope: Int) {
                 val heightPerLayer = 0.75f
@@ -1316,8 +1316,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         stage.updateSelected()
     }
 
-    fun getTrackerOnMouse(klass: Class<out Tracker<*>>?): Tracker<*>? {
-        if (klass == null || remix.camera.getInputY() > 0f)
+    fun getTrackerOnMouse(klass: Class<out Tracker<*>>?, obeyY: Boolean): Tracker<*>? {
+        if (klass == null || (obeyY && remix.camera.getInputY() > 0f))
             return null
         val mouseX = remix.camera.getInputX()
         remix.trackers.forEach {
@@ -1464,7 +1464,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                                       ?.divisions ?: 4), false))
                 }
             } else if (tool.isTrackerRelated) {
-                val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java)
+                val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java, true)
                 val mouseX = remix.camera.getInputX()
                 val beat = MathHelper.snapToNearest(mouseX, snap)
 
@@ -1477,7 +1477,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         if (left || right) {
                             clickOccupation = TrackerResize(tracker, mouseX - tracker.beat, left)
                         }
-                    } else {
+                    } else if (getTrackerOnMouse(tool.trackerClass.java, false) == null) {
                         val tr = when (tool) {
                             Tool.TEMPO_CHANGE -> {
                                 TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat))
@@ -1736,7 +1736,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
         } else if (tool.isTrackerRelated) {
-            val tracker = getTrackerOnMouse(tool.trackerClass?.java)
+            val tracker = getTrackerOnMouse(tool.trackerClass?.java, true)
             if (tracker != null) {
                 val result = tracker.scroll(-amount, control, shift)
 
