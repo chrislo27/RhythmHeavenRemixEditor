@@ -33,10 +33,9 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     override val stage: Stage<GitUpdateScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<GitUpdateScreen>
-    private @Volatile
-    var repoStatus: RepoStatus = RepoStatus.UNKNOWN
-    private @Volatile
-    var coroutine: Job? = null
+    @Volatile private var repoStatus: RepoStatus = RepoStatus.UNKNOWN
+    @Volatile private var coroutine: Job? = null
+    private val spinner: SpinningWheel<GitUpdateScreen>
 
     init {
         stage as GenericStage
@@ -48,11 +47,12 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         label.setText("", Align.center, wrapping = true, isLocalization = false)
         stage.centreStage.elements += label
 
-        stage.centreStage.elements += SpinningWheel(palette, stage.centreStage,
-                                                                              stage.centreStage).apply {
+        spinner = SpinningWheel(palette, stage.centreStage,
+                                stage.centreStage).apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
         }
+        stage.centreStage.elements += spinner
 
         stage.bottomStage.elements += object : Button<GitUpdateScreen>(palette, stage.bottomStage,
                                                                        stage.bottomStage) {
@@ -242,10 +242,12 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     override fun renderUpdate() {
         super.renderUpdate()
 
+        spinner.visible = repoStatus == RepoStatus.DOING
+
         if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
                 && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
-                || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == "dev" && Gdx.input.isKeyJustPressed(
-                Input.Keys.ESCAPE))) {
+                || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
+                && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))) {
             coroutine?.cancel()
             coroutine = null
             toNextScreen()
