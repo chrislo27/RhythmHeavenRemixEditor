@@ -89,7 +89,7 @@ class EditorVersionScreen(main: RHRE3Application)
                                 Localization["screen.version.outOfDate",
                                         main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
                                                 .coerceAtLeast(1)])
-//                    val test = Localization["screen.version.outOfDate", 3]
+//                    val test = Localization["screen.version.outOfDate", 2]
 
                     text = Localization["screen.version.label", currentVer, onlineVer, humanFriendly]
                 }
