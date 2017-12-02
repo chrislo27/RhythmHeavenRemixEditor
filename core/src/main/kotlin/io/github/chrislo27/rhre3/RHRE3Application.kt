@@ -217,6 +217,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                     if (v > RHRE3.VERSION) {
                         preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE,
                                                preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0) + 1)
+                    } else {
+                        preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0)
                     }
                 }
             } catch (e: Exception) {

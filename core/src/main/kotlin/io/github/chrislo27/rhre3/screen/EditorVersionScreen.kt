@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -28,6 +29,7 @@ class EditorVersionScreen(main: RHRE3Application)
 
     var isBeginning: Boolean = false
     private var timeOnScreen = 0f
+    private var timeToStayOnScreen = 0f
 
     init {
         stage as GenericStage
@@ -61,32 +63,35 @@ class EditorVersionScreen(main: RHRE3Application)
         }
 
         label = object : TextLabel<EditorVersionScreen>(palette, stage.centreStage, stage.centreStage) {
-            private var lastGithubVer: Version? = main.githubVersion
+            private var lastGithubVer: Version = main.githubVersion
 
             override fun render(screen: EditorVersionScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 if (lastGithubVer != main.githubVersion || text == "") {
                     lastGithubVer = main.githubVersion
 
                     val ghVer = lastGithubVer
-                    val currentVer: String = (if (ghVer == null)
+                    val currentVer: String = (if (ghVer.isUnknown)
                         "[LIGHT_GRAY]"
                     else if (ghVer <= RHRE3.VERSION)
                         "[CYAN]"
                     else
                         "[ORANGE]") + "${RHRE3.VERSION}[]"
-                    val onlineVer: String = (if (ghVer == null)
+                    val onlineVer: String = (if (ghVer.isUnknown)
                         "[LIGHT_GRAY]...[]"
                     else
                         "[CYAN]$ghVer[]")
                     val humanFriendly: String =
-                            (if (ghVer == null)
-                                "screen.version.checking"
+                            (if (ghVer.isUnknown)
+                                Localization["screen.version.checking"]
                             else if (ghVer <= RHRE3.VERSION)
-                                "screen.version.upToDate"
+                                Localization["screen.version.upToDate"]
                             else
-                                "screen.version.outOfDate")
+                                Localization["screen.version.outOfDate",
+                                        main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
+                                                .coerceAtLeast(1)])
+//                    val test = Localization["screen.version.outOfDate", 3]
 
-                    text = Localization["screen.version.label", currentVer, onlineVer, Localization[humanFriendly]]
+                    text = Localization["screen.version.label", currentVer, onlineVer, humanFriendly]
                 }
                 super.render(screen, batch, shapeRenderer)
             }
@@ -104,7 +109,7 @@ class EditorVersionScreen(main: RHRE3Application)
 
         timeOnScreen += Gdx.graphics.deltaTime
 
-        if (timeOnScreen >= 3f) {
+        if (timeOnScreen >= timeToStayOnScreen) {
             stage as GenericStage
             stage.backButton.enabled = true
         }
@@ -117,7 +122,9 @@ class EditorVersionScreen(main: RHRE3Application)
         timeOnScreen = 0f
         if (isBeginning) {
             stage.backButton.enabled = false
+            timeToStayOnScreen = (-3f / (main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1) + 1).coerceAtLeast(1)) + 3f
         }
+        label.text = ""
     }
 
     override fun dispose() {
