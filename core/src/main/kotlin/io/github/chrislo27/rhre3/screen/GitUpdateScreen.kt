@@ -95,6 +95,11 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             repoStatus = RepoStatus.DOING
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
+
+            fun restoreDatabaseVersion() {
+                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
+            }
+
             try {
                 if (!RHRE3.forceGitFetch || RHRE3.forceGitCheck || RHRE3.DATABASE_BRANCH != RHRE3.DEV_DATABASE_BRANCH) {
                     label.text = Localization["screen.database.checkingGithub"]
@@ -122,7 +127,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                             repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
                             Toolboks.LOGGER.info(
                                     "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
-                            main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
+                            restoreDatabaseVersion()
                             return@launch
                         } else {
 //                            if (current.version == lastVersion && !Toolboks.debugMode) {
@@ -162,6 +167,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 }
                 repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
                 label.text = Localization["screen.database.transportException." + if (lastVersion < 0) "failed" else "safe"]
+                restoreDatabaseVersion()
             } catch (e: Exception) {
                 e.printStackTrace()
                 try {
@@ -172,6 +178,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 }
                 repoStatus = RepoStatus.ERROR
                 label.text = Localization["screen.database.error"]
+                restoreDatabaseVersion()
             }
         }
     }
