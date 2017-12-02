@@ -93,6 +93,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
     lateinit var preferences: Preferences
         private set
+
     var versionTextWidth: Float = -1f
         private set
 
@@ -145,6 +146,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
         GameMetadata.preferences = preferences
+        if (preferences.getString(PreferenceKeys.LAST_VERSION, null) != RHRE3.VERSION.toString()) {
+            preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
+        }
 
         // load correct sound system
 //        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
@@ -207,6 +211,14 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info(
                         "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
+
+                val v = githubVersion
+                if (!v.isUnknown) {
+                    if (v > RHRE3.VERSION) {
+                        preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE,
+                                               preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0) + 1)
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -251,7 +263,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
     override fun dispose() {
         super.dispose()
         GameMetadata.persist()
-        preferences.putString("lastVersion", RHRE3.VERSION.toString())
+        preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
         preferences.flush()
         GameRegistry.dispose()
         Themes.dispose()
