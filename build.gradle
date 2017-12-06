@@ -69,6 +69,7 @@ project(":core") {
         compile "org.eclipse.jgit:org.eclipse.jgit:4.8.0.201706111038-r"
         compile "org.slf4j:slf4j-nop:1.7.25"
         compile "de.sciss:jump3r:1.0.4"
+        compile "com.github.MinnDevelopment:Java-DiscordRPC:v1.3.0"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }
