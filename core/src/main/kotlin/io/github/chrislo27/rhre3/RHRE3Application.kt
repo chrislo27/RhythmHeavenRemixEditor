@@ -239,6 +239,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             rpc.Discord_UpdatePresence(DiscordRichPresence().apply {
                 this.details = "${RHRE3.VERSION}"
                 this.largeImageKey = DiscordRPCHelper.LARGE_LOGO
+                if (@Suppress()(RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH)) {
+                    this.state = "Developing RHRE3"
+                }
             })
         }
         launch(CommonPool) {
