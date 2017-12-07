@@ -1,8 +1,5 @@
 package io.github.chrislo27.rhre3
 
-import club.minnced.discord.rpc.DiscordEventHandlers
-import club.minnced.discord.rpc.DiscordRPC
-import club.minnced.discord.rpc.DiscordRichPresence
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
@@ -20,7 +17,6 @@ import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
-import io.github.chrislo27.rhre3.util.DiscordRPCHelper
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
@@ -206,43 +202,6 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         thread(isDaemon = true) {
             Application.launch(JavafxStub::class.java) // start up
-        }
-        // Discord RPC
-        thread(isDaemon = true) {
-            val rpc = DiscordRPC.INSTANCE
-            val eventHandlers = DiscordEventHandlers()
-            eventHandlers.ready = DiscordEventHandlers.OnReady { Toolboks.LOGGER.info("Discord RPC ready!") }
-
-            rpc.Discord_Initialize(RHRE3.DISCORD_APP_ID, eventHandlers, false, "")
-
-            // shutdown hook
-            Runtime.getRuntime().addShutdownHook(thread(start = false) {
-                try {
-                    rpc.Discord_Shutdown()
-                } catch (t: Throwable) {
-                    t.printStackTrace()
-                }
-            })
-
-            // event handler
-            thread(isDaemon = true, name = "DiscordRPC Callback Handler") {
-                while (!Thread.currentThread().isInterrupted) {
-                    rpc.Discord_RunCallbacks()
-                    try {
-                        Thread.sleep(2500L)
-                    } catch (ignored: InterruptedException) {
-                    }
-                }
-            }
-
-            // presence update
-            rpc.Discord_UpdatePresence(DiscordRichPresence().apply {
-                this.details = "${RHRE3.VERSION}"
-                this.largeImageKey = DiscordRPCHelper.LARGE_LOGO
-                if (@Suppress()(RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH)) {
-                    this.state = "Developing RHRE3"
-                }
-            })
         }
         launch(CommonPool) {
             try {
