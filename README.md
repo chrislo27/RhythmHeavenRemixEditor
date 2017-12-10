@@ -10,7 +10,9 @@ Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
 
 ## Requirements
-**Requires at least [Java 8](https://java.com/en/download/) and a graphics driver that supports OpenGL 2.0+!**<br>
+* [Java 8 or higher](https://java.com/en/download/)
+* A graphics driver that supports OpenGL 2.0 or higher
+* An Internet connection initially
 
 ## Contributing
 Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
