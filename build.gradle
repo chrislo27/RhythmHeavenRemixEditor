@@ -18,7 +18,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "rhythm-heaven-remix-editor-3"
-        gdxVersion = '1.9.7'
+        gdxVersion = '1.9.8'
         roboVMVersion = '2.1.0'
         box2DLightsVersion = '1.4'
         ashleyVersion = '1.7.0'
