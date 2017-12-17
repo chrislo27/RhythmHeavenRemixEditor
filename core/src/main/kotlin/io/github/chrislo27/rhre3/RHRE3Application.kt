@@ -36,6 +36,7 @@ import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.lwjgl.opengl.Display
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -279,8 +280,10 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         if (isFullscreen) {
             preferences.putString(PreferenceKeys.WINDOW_STATE, "fs")
         } else {
-            preferences.putString(PreferenceKeys.WINDOW_STATE, "${Gdx.graphics.width}x${Gdx.graphics.height}")
+            preferences.putString(PreferenceKeys.WINDOW_STATE, "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
         }
+
+        Toolboks.LOGGER.info("Persisting window settings as ${preferences.getString(PreferenceKeys.WINDOW_STATE)}")
 
         preferences.flush()
     }

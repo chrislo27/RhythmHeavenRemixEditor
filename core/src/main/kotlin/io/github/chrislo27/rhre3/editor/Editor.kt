@@ -1798,9 +1798,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun resize() {
-        stage.updatePositions()
         resizeCameraToEntityScale(camera)
         resizeCameraToPixelScale(staticCamera)
+        stage.updatePositions()
     }
 
     fun getDebugString(): String? {

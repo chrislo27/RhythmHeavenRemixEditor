@@ -47,6 +47,7 @@ object DesktopLauncher {
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = true
                     this.audioDeviceSimultaneousSources = 250
+                    this.useHDPI = true
 
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args
