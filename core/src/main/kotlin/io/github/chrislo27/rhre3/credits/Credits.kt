@@ -45,8 +45,7 @@ object Credits {
                             "Apache Commons IO\n" +
                             "SLF4J\n" +
                             "OSHI\n" +
-                            "jump3r\n" +
-                            "Java-DiscordRPC",
+                            "jump3r",
             "you" crediting ""
                                    )
 
