@@ -11,7 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.stage.SpinningWheel
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -35,7 +35,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     private val label: TextLabel<GitUpdateScreen>
     @Volatile private var repoStatus: RepoStatus = RepoStatus.UNKNOWN
     @Volatile private var coroutine: Job? = null
-    private val spinner: SpinningWheel<GitUpdateScreen>
+    private val spinner: LoadingIcon<GitUpdateScreen>
 
     init {
         stage as GenericStage
@@ -47,8 +47,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         label.setText("", Align.center, wrapping = true, isLocalization = false)
         stage.centreStage.elements += label
 
-        spinner = SpinningWheel(palette, stage.centreStage,
-                                stage.centreStage).apply {
+        spinner = LoadingIcon(palette, stage.centreStage).apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
         }

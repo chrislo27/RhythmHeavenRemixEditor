@@ -16,7 +16,7 @@ import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.stage.SpinningWheel
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
@@ -123,8 +123,7 @@ class OpenRemixScreen(main: RHRE3Application)
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
-        stage.centreStage.elements += object : SpinningWheel<OpenRemixScreen>(palette, stage.centreStage,
-                                                                              stage.centreStage) {
+        stage.centreStage.elements += object : LoadingIcon<OpenRemixScreen>(palette, stage.centreStage) {
             override var visible: Boolean = true
                 get() = super.visible && (isLoading || isLoadingSounds)
         }.apply {
