@@ -83,7 +83,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_SIZE: Float = 32f
         const val BUTTON_PADDING: Float = 4f
 
-        const val SELECTION_BORDER: Float = 4f
+        const val SELECTION_BORDER: Float = 2f
 
         private const val MSG_SEPARATOR = " - "
         private const val NEGATIVE_SYMBOL = "-"
