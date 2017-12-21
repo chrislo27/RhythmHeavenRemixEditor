@@ -16,7 +16,7 @@ open class LoadingIcon<S : ToolboksScreen<*, *>>(private val palette: UIPalette,
     : Stage<S>(stage, stage.camera) {
 
     companion object {
-        private const val VARIATIONS = 1
+        private const val VARIATIONS = 7
         private const val FRAMES = 5
         private const val SECONDS_PER_VARIATION = 1.25f
         private const val REGION_SIZE = 32
