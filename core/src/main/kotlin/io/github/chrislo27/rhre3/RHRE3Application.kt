@@ -130,17 +130,15 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         run {
             fonts[defaultFontLargeKey] = createDefaultLargeFont()
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
-            fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize,
-                                                       createDefaultTTFParameter().apply {
-                                                           size *= 6
-                                                           characters = "0123456789"
-                                                           incremental = false
-                                                       })
-                    .setAfterLoad {
-                        this.font!!.apply {
-                            setFixedWidthGlyphs("0123456789")
-                        }
-                    }
+            fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter().apply {
+                size *= 6
+                characters = "0123456789"
+                incremental = false
+            }).setAfterLoad {
+                this.font!!.apply {
+                    setFixedWidthGlyphs("0123456789")
+                }
+            }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
         }
 
@@ -280,7 +278,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         if (isFullscreen) {
             preferences.putString(PreferenceKeys.WINDOW_STATE, "fs")
         } else {
-            preferences.putString(PreferenceKeys.WINDOW_STATE, "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
+            preferences.putString(PreferenceKeys.WINDOW_STATE,
+                                  "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
         }
 
         Toolboks.LOGGER.info("Persisting window settings as ${preferences.getString(PreferenceKeys.WINDOW_STATE)}")
