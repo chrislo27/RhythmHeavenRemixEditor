@@ -14,7 +14,6 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -93,11 +92,6 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight * 0.8f)
                 this.isLocalizationKey = true
                 this.text = "screen.info.settings"
-            }
-
-            centre.elements += LoadingIcon(palette, centre).apply {
-                this.location.set(screenX = 0.5f, screenY = 1f, screenWidth = 0f, screenHeight = 0f,
-                                  pixelX = -32f, pixelY = -64f, pixelWidth = 64f, pixelHeight = 64f)
             }
 
             // right
