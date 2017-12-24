@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
@@ -32,8 +33,10 @@ import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumes
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
@@ -41,6 +44,8 @@ import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import javax.sound.midi.*
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
@@ -182,18 +187,128 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     val trackers = tree.get("trackers") as ObjectNode
                     val timeSigs = trackers["timeSignatures"] as ObjectNode
                     (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(),
+                                                               it["upper"].asInt(4)))
                     }
                 } else {
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
+                        remix.timeSignatures.add(
+                                TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
                     }
                 }
             }
 
             return RemixLoadInfo(remix, missing to missingCustom,
                                  tree["isAutosave"]?.asBoolean(false) ?: false)
+        }
+
+        fun fromMidiSequence(remix: Remix, sequence: Sequence): RemixLoadInfo {
+            data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float,
+                                 val track: Int)
+
+            val beatsPerTick: Float = 1f / sequence.resolution
+
+            var trackNum: Int = 0
+            val points: List<NotePoint> = sequence.tracks.flatMap { track ->
+                val list = mutableListOf<NotePoint>()
+                val map = mutableMapOf<Int, NotePoint>()
+
+                for (i in 0 until track.size()) {
+                    val event: MidiEvent = track[i]
+                    val message: MidiMessage = event.message
+
+                    if (message is ShortMessage) {
+                        val command: Int = message.command
+                        val semitone: Int = message.data1 - 60
+
+                        fun turnOff() {
+                            val point = map[semitone]
+                            if (point != null) {
+                                point.duration = event.tick * beatsPerTick - point.startBeat
+                                list += point
+                                map.remove(semitone)
+                            }
+                        }
+
+                        when (command) {
+                            ShortMessage.NOTE_ON -> {
+                                val vol = message.data2 / 127f
+                                if (vol <= 0) {
+                                    turnOff()
+                                } else {
+                                    map[semitone] = NotePoint(event.tick * beatsPerTick, 0f, semitone, vol,
+                                                              trackNum)
+                                }
+                            }
+                            ShortMessage.NOTE_OFF -> {
+                                turnOff()
+                            }
+                            else -> {
+//                                println("Got command $command ${message.data1} ${message.data2}")
+                            }
+                        }
+                    } else if (message is MetaMessage) {
+                        // http://www.deluge.co/?q=midi-tempo-bpm
+                        when (message.type) {
+                            0x51 /* SET_TEMPO */ -> {
+                                val data = message.data
+                                val microseconds: Int = ((data[0].toInt() and 0xFF) shl 16) or ((data[1].toInt() and 0xFF) shl 8) or (data[2].toInt() and 0xFF)
+                                val bpm: Float = 60_000_000f / microseconds
+
+                                remix.tempos.add(TempoChange(remix.tempos, event.tick * beatsPerTick,
+                                                             0f, bpm))
+                            }
+                            0x58 /* TIME_SIGNATURE */ -> {
+                                val data = message.data
+                                val numerator = data[0].toInt() and 0xFF
+                                val denominatorPower = data[1].toInt() and 0xFF
+                                val denominator = Math.pow(2.0, denominatorPower.toDouble()).toInt()
+
+                                // only denominators of 4 are supported
+                                if (denominator == 4) {
+                                    remix.timeSignatures.add(
+                                            TimeSignature(remix.timeSignatures,
+                                                          (event.tick * beatsPerTick).roundToInt(), numerator))
+                                }
+                            }
+                        }
+                    }
+                }
+
+                trackNum++
+                return@flatMap list
+            }
+
+            // TODO
+            val noteCue = "builtToScaleDS/c"
+            points.mapTo(remix.entities) { point ->
+                val ent = GameRegistry.data.objectMap[noteCue]!!.createEntity(remix, null).apply {
+                    updateBounds {
+                        bounds.set(point.startBeat, point.track.toFloat() % Editor.TRACK_COUNT,
+                                   point.duration, 1f)
+                    }
+
+                    if (this is IRepitchable) {
+                        semitone = point.semitone
+
+                        if (this is CueEntity && semitone <= Semitones.SEMITONES_IN_OCTAVE * -1) {
+                            stopAtEnd = true
+                        }
+                    }
+                }
+
+                ent
+            }
+
+            remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
+                updateBounds {
+                    bounds.x = (remix.entities.lastOrNull()?.run { bounds.maxX }?.roundToInt() ?: 0) + 2f
+                    bounds.y = 0f
+                }
+            }
+
+            return RemixLoadInfo(remix, 0 to 0, false)
         }
 
         fun pack(remix: Remix, stream: ZipOutputStream, isAutosave: Boolean) {
@@ -374,7 +489,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         throw RuntimeException("Missing metronome sound")
               )
     }
-    var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _->
+    var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
     }
 
