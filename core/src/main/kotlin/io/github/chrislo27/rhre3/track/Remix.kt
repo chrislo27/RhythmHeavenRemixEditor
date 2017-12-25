@@ -33,7 +33,6 @@ import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumes
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.JsonHandler
-import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.maxX
@@ -280,8 +279,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 return@flatMap list
             }
 
-            // TODO
-            val noteCue = "builtToScaleDS/c"
+            // TODO maybe make customizable
+            val noteCue = "gleeClubEn/singLoop"
             points.mapTo(remix.entities) { point ->
                 val ent = GameRegistry.data.objectMap[noteCue]!!.createEntity(remix, null).apply {
                     updateBounds {
@@ -292,7 +291,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     if (this is IRepitchable) {
                         semitone = point.semitone
 
-                        if (this is CueEntity && semitone <= Semitones.SEMITONES_IN_OCTAVE * -1) {
+                        if (this is CueEntity && semitone < -18) {
                             stopAtEnd = true
                         }
                     }
@@ -303,7 +302,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
                 updateBounds {
-                    bounds.x = (remix.entities.lastOrNull()?.run { bounds.maxX }?.roundToInt() ?: 0) + 2f
+                    bounds.x = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0) + 2f
                     bounds.y = 0f
                 }
             }
