@@ -149,16 +149,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
 
-        // load correct sound system
-//        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
-//                Locale.ROOT)
-//        SoundSystem
-//                .setSoundSystem(when (soundSystemPref) {
-//                                    BeadsSoundSystem.id -> BeadsSoundSystem
-//                                    GdxSoundSystem.id -> GdxSoundSystem
-//                                    else -> GdxSoundSystem
-//                                })
-//        Toolboks.LOGGER.info("Set sound system (pref: $soundSystemPref) to ${SoundSystem.system::class.java.simpleName}")
+        // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
 
         // registry
