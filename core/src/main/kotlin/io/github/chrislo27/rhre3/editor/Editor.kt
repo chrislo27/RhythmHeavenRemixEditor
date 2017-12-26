@@ -730,7 +730,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 borderedFont.color = color
                 borderedFont.drawCompressed(batch, text, beat + triWidth * 0.5f,
                                             y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
-                                            100f, Align.left)
+                                            2f, Align.left)
 
                 batch.setColor(1f, 1f, 1f, 1f)
             }
