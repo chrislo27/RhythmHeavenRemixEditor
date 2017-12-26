@@ -744,8 +744,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             remix.trackersReverseView.forEach {
                 it.map.values.forEach {
-                    if (clickOccupation is TrackerResize && clickOccupation.tracker === it) {
-                    } else {
+                    if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker) {
                         it.render()
                     }
                 }
@@ -756,6 +755,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                               if (clickOccupation.isPlacementValid()) Color.WHITE else Color.RED,
                               clickOccupation.text,
                               clickOccupation.beat, clickOccupation.width, clickOccupation.tracker.getSlope())
+            } else {
+                currentTracker?.render()
             }
 
             borderedFont.unscaleFont()
