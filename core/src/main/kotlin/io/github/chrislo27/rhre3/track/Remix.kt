@@ -208,7 +208,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             val beatsPerTick: Float = 1f / sequence.resolution
 
-            var trackNum: Int = 0
+            val trackNum = sequence.tracks.size
             val points: List<NotePoint> = sequence.tracks.flatMap { track ->
                 val list = mutableListOf<NotePoint>()
                 val map = mutableMapOf<Int, NotePoint>()
@@ -275,8 +275,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     }
                 }
 
-                trackNum++
-                return@flatMap list
+                list
             }
 
             // TODO maybe make customizable
