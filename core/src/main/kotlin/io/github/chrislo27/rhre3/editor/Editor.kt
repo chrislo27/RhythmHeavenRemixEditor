@@ -769,7 +769,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 is ClickOccupation.SelectionDrag -> {
                     val oldColor = batch.packedColor
                     val y = if (clickOccupation.isBottomSpecial) -1f else 0f
-                    val mouseX = remix.camera.getInputX()
                     val mouseY = remix.camera.getInputY()
                     val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
                     val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
@@ -1338,10 +1337,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return null
     }
 
-    private fun onHoveredTrackerChange(old: Tracker<*>, new: Tracker<*>) {
-
-    }
-
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val mouseVector = mouseVector
         val shift = Gdx.input.isShiftDown()
@@ -1805,7 +1800,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun getDebugString(): String? {
-        val click = clickOccupation
+//        val click = clickOccupation
         return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
                 remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
                 remix.beat)}"
