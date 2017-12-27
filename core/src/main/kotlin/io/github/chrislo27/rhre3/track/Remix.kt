@@ -625,7 +625,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return EntityUpdateResult.ALREADY_UPDATED
         }
 
-        var started = false
+        val started: Boolean
 
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
             if (entity.isUpdateable(beat)) {
@@ -635,6 +635,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             } else {
                 return EntityUpdateResult.NOT_STARTED
             }
+        } else {
+            started = false
         }
 
         if (entity.playbackCompletion == PlaybackCompletion.PLAYING) {
