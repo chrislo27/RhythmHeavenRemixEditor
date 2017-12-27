@@ -53,6 +53,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     companion object {
 
+        val DEFAULT_MIDI_NOTE: String = "gleeClubEn/singLoop"
+
         class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
                             val isAutosave: Boolean)
 
@@ -278,10 +280,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 list
             }
 
-            // TODO maybe make customizable
-            val noteCue = "gleeClubEn/singLoop"
+            val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(
+                    PreferenceKeys.MIDI_NOTE)] ?: GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!!
             points.mapTo(remix.entities) { point ->
-                val ent = GameRegistry.data.objectMap[noteCue]!!.createEntity(remix, null).apply {
+                val ent = noteCue.createEntity(remix, null).apply {
                     updateBounds {
                         bounds.set(point.startBeat, point.track.toFloat() % Editor.TRACK_COUNT,
                                    point.duration, 1f)

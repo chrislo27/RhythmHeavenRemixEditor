@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
@@ -256,6 +257,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.dispose()
         GameMetadata.persist()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
+        preferences.putString(PreferenceKeys.MIDI_NOTE, preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
         preferences.flush()
         GameRegistry.dispose()
         Themes.dispose()
