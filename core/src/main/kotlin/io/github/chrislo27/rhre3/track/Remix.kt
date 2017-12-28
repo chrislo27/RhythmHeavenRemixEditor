@@ -303,7 +303,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
                 updateBounds {
-                    bounds.x = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0) + 2f
+                    val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0).toFloat()
+                    val timeSig = remix.timeSignatures.getTimeSignature(furthest)
+                    bounds.x = if (timeSig == null) {
+                        furthest + 2f
+                    } else {
+                        (remix.timeSignatures.getMeasure(furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
+                    }
                     bounds.y = 0f
                 }
             }
