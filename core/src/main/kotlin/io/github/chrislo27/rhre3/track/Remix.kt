@@ -210,10 +210,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             val beatsPerTick: Float = 1f / sequence.resolution
 
-            val trackNum = sequence.tracks.size
             val points: List<NotePoint> = sequence.tracks.flatMap { track ->
                 val list = mutableListOf<NotePoint>()
                 val map = mutableMapOf<Int, NotePoint>()
+                val trackIndex = sequence.tracks.indexOf(track)
 
                 for (i in 0 until track.size()) {
                     val event: MidiEvent = track[i]
@@ -239,7 +239,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                     turnOff()
                                 } else {
                                     map[semitone] = NotePoint(event.tick * beatsPerTick, 0f, semitone, vol,
-                                                              trackNum)
+                                                              trackIndex)
                                 }
                             }
                             ShortMessage.NOTE_OFF -> {
