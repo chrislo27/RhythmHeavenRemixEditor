@@ -301,6 +301,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 ent
             }
 
+            // add end entity either 2 beats after furthest point, or on the next measure border
             remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
                 updateBounds {
                     val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0).toFloat()
@@ -308,11 +309,38 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     bounds.x = if (timeSig == null) {
                         furthest + 2f
                     } else {
-                        (remix.timeSignatures.getMeasure(furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
+                        (remix.timeSignatures.getMeasure(
+                                furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
                     }
                     bounds.y = 0f
                 }
             }
+
+            // remove redundant tempo changes
+            remix.tempos.map.values.toList()
+                    .sortedBy(TempoChange::beat)
+                    .fold(null as TempoChange?) { last, tc ->
+                        if (last != null) {
+                            if (tc.isZeroWidth && last.bpm == tc.bpm) {
+                                remix.tempos.remove(tc)
+                            }
+                        }
+
+                        tc
+                    }
+
+            // remove redundant time signatures
+            remix.timeSignatures.map.values.toList()
+                    .sortedBy(TimeSignature::beat)
+                    .fold(null as TimeSignature?) { last, ts ->
+                        if (last != null) {
+                            if (ts.divisions == last.divisions) {
+                                remix.timeSignatures.remove(ts)
+                            }
+                        }
+
+                        ts
+                    }
 
             return RemixLoadInfo(remix, 0 to 0, false)
         }
