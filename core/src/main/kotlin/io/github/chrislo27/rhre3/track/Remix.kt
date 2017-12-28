@@ -206,7 +206,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         fun fromMidiSequence(remix: Remix, sequence: Sequence): RemixLoadInfo {
             data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float,
-                                 val track: Int)
+                                 val track: Pair<Track, Int>)
 
             val beatsPerTick: Float = 1f / sequence.resolution
 
@@ -214,6 +214,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 val list = mutableListOf<NotePoint>()
                 val map = mutableMapOf<Int, NotePoint>()
                 val trackIndex = sequence.tracks.indexOf(track)
+                val pair = track to trackIndex
 
                 for (i in 0 until track.size()) {
                     val event: MidiEvent = track[i]
@@ -239,7 +240,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                     turnOff()
                                 } else {
                                     map[semitone] = NotePoint(event.tick * beatsPerTick, 0f, semitone, vol,
-                                                              trackIndex)
+                                                              pair)
                                 }
                             }
                             ShortMessage.NOTE_OFF -> {
@@ -285,7 +286,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             points.mapTo(remix.entities) { point ->
                 val ent = noteCue.createEntity(remix, null).apply {
                     updateBounds {
-                        bounds.set(point.startBeat, point.track.toFloat() % Editor.TRACK_COUNT,
+                        bounds.set(point.startBeat, point.track.second.toFloat() % Editor.TRACK_COUNT,
                                    point.duration, 1f)
                     }
 
