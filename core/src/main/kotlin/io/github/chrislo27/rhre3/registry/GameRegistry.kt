@@ -456,6 +456,10 @@ object GameRegistry : Disposable {
                         (game.name.contains("(GBA)") && game.series != Series.TENGOKU)) {
                     builder.append("Game ${game.id} has the name \"${game.name}\" but is in series ${game.series}\n")
                 }
+
+                if (game.name.contains("(Wii)")) {
+                    builder.append("Game ${game.id} has (Wii) in its name: ${game.name}")
+                }
             }
 
             game.objects.forEach { model ->
