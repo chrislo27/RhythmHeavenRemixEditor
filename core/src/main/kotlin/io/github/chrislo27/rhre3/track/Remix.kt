@@ -351,7 +351,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             stream.setComment("Rhythm Heaven Remix Editor 3 savefile - ${RHRE3.VERSION}")
 
             stream.putNextEntry(ZipEntry("remix.json"))
-            stream.write(JsonHandler.toJson(objectNode).toByteArray())
+            JsonHandler.toJson(objectNode, stream)
             stream.closeEntry()
 
             val musicNode = objectNode["musicData"] as ObjectNode
