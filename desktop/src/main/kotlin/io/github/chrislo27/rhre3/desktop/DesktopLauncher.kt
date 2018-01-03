@@ -47,15 +47,13 @@ object DesktopLauncher {
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = true
                     this.audioDeviceSimultaneousSources = 250
+                    this.useHDPI = true
 
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args
                     RHRE3.forceGitCheck = "--force-git-check" in args
                     RHRE3.verifyRegistry = "--verify-registry" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
-                    if ("--beads-sound-system" in args) {
-                        RHRE3.defaultSoundSystem = "beads"
-                    }
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
 

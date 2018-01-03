@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
@@ -46,6 +47,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
     override val isStretchable: Boolean = datamodel.stretchable
+    var stopAtEnd: Boolean = false
 
     private var soundId: Long = -1L
     private var introSoundId: Long = -1L
@@ -98,7 +100,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun onEnd() {
-        if (cue.loops || cue.usesBaseBpm || isFillbotsFill) {
+        if (cue.loops || cue.usesBaseBpm || isFillbotsFill || stopAtEnd) {
             cue.sound.sound.stop(soundId)
             if (introSoundId != -1L) {
                 cue.introSoundCue?.sound?.sound?.stop(introSoundId)
@@ -118,7 +120,20 @@ class CueEntity(remix: Remix, datamodel: Cue)
                 it.bounds.set(this.bounds)
             }
             it.semitone = this.semitone
+            it.stopAtEnd = this.stopAtEnd
         }
+    }
+
+    override fun saveData(objectNode: ObjectNode) {
+        super.saveData(objectNode)
+        if (stopAtEnd) {
+            objectNode.put("stopAtEnd", stopAtEnd)
+        }
+    }
+
+    override fun readData(objectNode: ObjectNode) {
+        super.readData(objectNode)
+        stopAtEnd = objectNode["stopAtEnd"]?.asBoolean(false) ?: false
     }
 
     override fun loadSounds() {

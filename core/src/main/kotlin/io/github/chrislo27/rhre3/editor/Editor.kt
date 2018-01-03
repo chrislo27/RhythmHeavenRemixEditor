@@ -83,7 +83,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val BUTTON_SIZE: Float = 32f
         const val BUTTON_PADDING: Float = 4f
 
-        const val SELECTION_BORDER: Float = 4f
+        const val SELECTION_BORDER: Float = 2f
 
         private const val MSG_SEPARATOR = " - "
         private const val NEGATIVE_SYMBOL = "-"
@@ -730,7 +730,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 borderedFont.color = color
                 borderedFont.drawCompressed(batch, text, beat + triWidth * 0.5f,
                                             y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
-                                            100f, Align.left)
+                                            2f, Align.left)
 
                 batch.setColor(1f, 1f, 1f, 1f)
             }
@@ -744,8 +744,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             remix.trackersReverseView.forEach {
                 it.map.values.forEach {
-                    if (clickOccupation is TrackerResize && clickOccupation.tracker === it) {
-                    } else {
+                    if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat in beatRange || it.endBeat in beatRange)) {
                         it.render()
                     }
                 }
@@ -756,6 +755,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                               if (clickOccupation.isPlacementValid()) Color.WHITE else Color.RED,
                               clickOccupation.text,
                               clickOccupation.beat, clickOccupation.width, clickOccupation.tracker.getSlope())
+            } else {
+                currentTracker?.render()
             }
 
             borderedFont.unscaleFont()
@@ -768,7 +769,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 is ClickOccupation.SelectionDrag -> {
                     val oldColor = batch.packedColor
                     val y = if (clickOccupation.isBottomSpecial) -1f else 0f
-                    val mouseX = remix.camera.getInputX()
                     val mouseY = remix.camera.getInputY()
                     val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
                     val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
@@ -1337,10 +1337,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return null
     }
 
-    private fun onHoveredTrackerChange(old: Tracker<*>, new: Tracker<*>) {
-
-    }
-
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val mouseVector = mouseVector
         val shift = Gdx.input.isShiftDown()
@@ -1798,15 +1794,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun resize() {
-        stage.updatePositions()
         resizeCameraToEntityScale(camera)
         resizeCameraToPixelScale(staticCamera)
+        stage.updatePositions()
     }
 
     fun getDebugString(): String? {
-        val click = clickOccupation
+//        val click = clickOccupation
         return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
-                remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
+                remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
+                remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
                 remix.beat)}"
     }
 }

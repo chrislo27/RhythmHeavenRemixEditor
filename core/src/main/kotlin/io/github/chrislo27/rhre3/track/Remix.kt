@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
@@ -34,6 +35,7 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
@@ -41,6 +43,8 @@ import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import javax.sound.midi.*
+import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
@@ -48,6 +52,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     : ActionHistory<Remix>(), Disposable {
 
     companion object {
+
+        val DEFAULT_MIDI_NOTE: String = "gleeClubEn/singLoop"
 
         class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
                             val isAutosave: Boolean)
@@ -182,12 +188,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     val trackers = tree.get("trackers") as ObjectNode
                     val timeSigs = trackers["timeSignatures"] as ObjectNode
                     (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(), it["upper"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(),
+                                                               it["upper"].asInt(4)))
                     }
                 } else {
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
+                        remix.timeSignatures.add(
+                                TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
                     }
                 }
             }
@@ -196,12 +204,154 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                  tree["isAutosave"]?.asBoolean(false) ?: false)
         }
 
+        fun fromMidiSequence(remix: Remix, sequence: Sequence): RemixLoadInfo {
+            data class NotePoint(val startBeat: Float, var duration: Float, val semitone: Int, val volume: Float,
+                                 val track: Pair<Track, Int>)
+
+            val beatsPerTick: Float = 1f / sequence.resolution
+
+            val points: List<NotePoint> = sequence.tracks.flatMap { track ->
+                val list = mutableListOf<NotePoint>()
+                val map = mutableMapOf<Int, NotePoint>()
+                val trackIndex = sequence.tracks.indexOf(track)
+                val pair = track to trackIndex
+
+                for (i in 0 until track.size()) {
+                    val event: MidiEvent = track[i]
+                    val message: MidiMessage = event.message
+
+                    if (message is ShortMessage) {
+                        val command: Int = message.command
+                        val semitone: Int = message.data1 - 60
+
+                        fun turnOff() {
+                            val point = map[semitone]
+                            if (point != null) {
+                                point.duration = event.tick * beatsPerTick - point.startBeat
+                                list += point
+                                map.remove(semitone)
+                            }
+                        }
+
+                        when (command) {
+                            ShortMessage.NOTE_ON -> {
+                                val vol = message.data2 / 127f
+                                if (vol <= 0) {
+                                    turnOff()
+                                } else {
+                                    map[semitone] = NotePoint(event.tick * beatsPerTick, 0f, semitone, vol,
+                                                              pair)
+                                }
+                            }
+                            ShortMessage.NOTE_OFF -> {
+                                turnOff()
+                            }
+                            else -> {
+//                                println("Got command $command ${message.data1} ${message.data2}")
+                            }
+                        }
+                    } else if (message is MetaMessage) {
+                        // http://www.deluge.co/?q=midi-tempo-bpm
+                        when (message.type) {
+                            0x51 /* SET_TEMPO */ -> {
+                                val data = message.data
+                                val microseconds: Int = ((data[0].toInt() and 0xFF) shl 16) or ((data[1].toInt() and 0xFF) shl 8) or (data[2].toInt() and 0xFF)
+                                val bpm: Float = 60_000_000f / microseconds
+
+                                remix.tempos.add(TempoChange(remix.tempos, event.tick * beatsPerTick,
+                                                             0f, bpm))
+                            }
+                            0x58 /* TIME_SIGNATURE */ -> {
+                                val data = message.data
+                                val numerator = data[0].toInt() and 0xFF
+                                val denominatorPower = data[1].toInt() and 0xFF
+                                val denominator = Math.pow(2.0, denominatorPower.toDouble()).toInt()
+
+                                // only denominators of 4 are supported
+                                if (denominator == 4) {
+                                    remix.timeSignatures.add(
+                                            TimeSignature(remix.timeSignatures,
+                                                          (event.tick * beatsPerTick).roundToInt(), numerator))
+                                }
+                            }
+                        }
+                    }
+                }
+
+                list
+            }
+
+            val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(
+                    PreferenceKeys.MIDI_NOTE)] ?: GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!!
+            points.mapTo(remix.entities) { point ->
+                val ent = noteCue.createEntity(remix, null).apply {
+                    updateBounds {
+                        bounds.set(point.startBeat, point.track.second.toFloat() % Editor.TRACK_COUNT,
+                                   point.duration, 1f)
+                    }
+
+                    if (this is IRepitchable) {
+                        semitone = point.semitone
+
+                        if (this is CueEntity && semitone < -18) {
+                            stopAtEnd = true
+                        }
+                    }
+                }
+
+                ent
+            }
+
+            // add end entity either 2 beats after furthest point, or on the next measure border
+            remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
+                updateBounds {
+                    val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0).toFloat()
+                    val timeSig = remix.timeSignatures.getTimeSignature(furthest)
+                    bounds.x = if (timeSig == null) {
+                        furthest + 2f
+                    } else {
+                        (remix.timeSignatures.getMeasure(
+                                furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
+                    }
+                    bounds.y = 0f
+                }
+            }
+
+            // remove redundant tempo changes
+            remix.tempos.map.values.toList()
+                    .sortedBy(TempoChange::beat)
+                    .fold(null as TempoChange?) { last, tc ->
+                        if (last != null) {
+                            if (tc.isZeroWidth && last.bpm == tc.bpm) {
+                                remix.tempos.remove(tc)
+                            }
+                        }
+
+                        tc
+                    }
+
+            // remove redundant time signatures
+            remix.timeSignatures.map.values.toList()
+                    .sortedBy(TimeSignature::beat)
+                    .fold(null as TimeSignature?) { last, ts ->
+                        if (last != null) {
+                            if (ts.divisions == last.divisions) {
+                                remix.timeSignatures.remove(ts)
+                            }
+                        }
+
+                        ts
+                    }
+
+            return RemixLoadInfo(remix, 0 to 0, false)
+        }
+
         fun pack(remix: Remix, stream: ZipOutputStream, isAutosave: Boolean) {
             val objectNode = Remix.toJson(remix, isAutosave)
             stream.setComment("Rhythm Heaven Remix Editor 3 savefile - ${RHRE3.VERSION}")
 
             stream.putNextEntry(ZipEntry("remix.json"))
-            stream.write(JsonHandler.toJson(objectNode).toByteArray())
+            JsonHandler.toJson(objectNode, stream)
             stream.closeEntry()
 
             val musicNode = objectNode["musicData"] as ObjectNode
@@ -374,7 +524,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         throw RuntimeException("Missing metronome sound")
               )
     }
-    var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _->
+    var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
     }
 
@@ -512,7 +662,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return EntityUpdateResult.ALREADY_UPDATED
         }
 
-        var started = false
+        val started: Boolean
 
         if (entity.playbackCompletion == PlaybackCompletion.WAITING) {
             if (entity.isUpdateable(beat)) {
@@ -522,6 +672,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             } else {
                 return EntityUpdateResult.NOT_STARTED
             }
+        } else {
+            started = false
         }
 
         if (entity.playbackCompletion == PlaybackCompletion.PLAYING) {

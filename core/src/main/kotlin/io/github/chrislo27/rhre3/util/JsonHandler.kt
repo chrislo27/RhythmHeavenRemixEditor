@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.util
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.PropertyAccessor
+import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.MapperFeature
@@ -24,6 +25,7 @@ object JsonHandler {
                 .enable(SerializationFeature.INDENT_OUTPUT)
                 .enable(MapperFeature.USE_ANNOTATIONS)
                 .enable(JsonParser.Feature.ALLOW_COMMENTS)
+                .disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET)
                 .setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE)
                 .setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
                 .registerModule(AfterburnerModule())

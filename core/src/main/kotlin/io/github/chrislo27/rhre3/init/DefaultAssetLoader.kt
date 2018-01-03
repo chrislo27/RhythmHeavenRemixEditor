@@ -86,6 +86,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
         AssetRegistry.loadAsset<Texture>("ui_spinning_circle", "images/ui/circle.png")
+        AssetRegistry.loadAsset<Texture>("ui_loading_icon", "images/loading/rhre3_animation.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")

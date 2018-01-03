@@ -16,7 +16,7 @@ import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.stage.SpinningWheel
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
@@ -36,6 +36,7 @@ import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.runBlocking
 import java.io.File
 import java.util.zip.ZipFile
+import javax.sound.midi.MidiSystem
 
 
 class OpenRemixScreen(main: RHRE3Application)
@@ -55,15 +56,20 @@ class OpenRemixScreen(main: RHRE3Application)
     @Volatile private var isLoading = false
     @Volatile private var isLoadingSounds = false
 
+    private enum class RemixType {
+        RHRE3, RHRE2, MIDI
+    }
+
     private fun createFileChooser()
             = FileChooser().apply {
         this.initialDirectory = attemptRememberDirectory(main,
                                                          PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
 
         this.extensionFilters.clear()
-        val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterBoth"],
+        val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterSupported"],
                                                  "*.${RHRE3.REMIX_FILE_EXTENSION}",
-                                                 "*.brhre2")
+                                                 "*.brhre2",
+                                                 "*.mid")
 
         this.extensionFilters += filter
         this.selectedExtensionFilter = this.extensionFilters.first()
@@ -123,8 +129,7 @@ class OpenRemixScreen(main: RHRE3Application)
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
-        stage.centreStage.elements += object : SpinningWheel<OpenRemixScreen>(palette, stage.centreStage,
-                                                                              stage.centreStage) {
+        stage.centreStage.elements += object : LoadingIcon<OpenRemixScreen>(palette, stage.centreStage) {
             override var visible: Boolean = true
                 get() = super.visible && (isLoading || isLoadingSounds)
         }.apply {
@@ -169,13 +174,23 @@ class OpenRemixScreen(main: RHRE3Application)
                         try {
                             remix = null
                             System.gc()
-                            val zipFile = ZipFile(file)
-                            val isRHRE2 = zipFile.getEntry("remix.json") == null
 
-                            val result = if (isRHRE2)
-                                Remix.unpackRHRE2(editor.createRemix(), zipFile)
-                            else
-                                Remix.unpack(editor.createRemix(), zipFile)
+                            val newRemix = editor.createRemix()
+                            val remixType: RemixType
+                            val result = if (file.extension.equals("mid", ignoreCase = true)) {
+                                remixType = RemixType.MIDI
+                                Remix.fromMidiSequence(newRemix, MidiSystem.getSequence(file))
+                            } else {
+                                val zipFile = ZipFile(file)
+                                val isRHRE2 = zipFile.getEntry("remix.json") == null
+
+                                remixType = if (isRHRE2) RemixType.RHRE2 else RemixType.RHRE3
+
+                                if (isRHRE2)
+                                    Remix.unpackRHRE2(newRemix, zipFile)
+                                else
+                                    Remix.unpack(newRemix, zipFile)
+                            }
 
                             val toLoad = result.remix.entities.applyFilter()
                             val toLoadIDs = toLoad.map { it.datamodel.id }
@@ -213,7 +228,7 @@ class OpenRemixScreen(main: RHRE3Application)
                             remix = result.remix
                             val remix = remix!!
                             val missingAssets = result.missing
-                            val databaseStr = if (isRHRE2)
+                            val databaseStr = if (remixType == RemixType.RHRE2)
                                 goodBad(remix.version.toString(), true)
                             else
                                 goodBad(remix.databaseVersion.toString(),
@@ -225,17 +240,21 @@ class OpenRemixScreen(main: RHRE3Application)
                                 mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
                             }
 
-                            mainLabel.text += Localization["screen.open.info",
-                                    goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
-                                    databaseStr,
-                                    goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
-                                    goodBad(if (isRHRE2) "?" else missingAssets.second.toString(),
-                                            missingAssets.second > 0, "RED")]
+                            mainLabel.text += if (remixType == RemixType.MIDI) {
+                                Localization["screen.open.info.midi"]
+                            } else {
+                                Localization["screen.open.info",
+                                        goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
+                                        databaseStr,
+                                        goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
+                                        goodBad(if (remixType != RemixType.RHRE3) "?" else missingAssets.second.toString(),
+                                                missingAssets.second > 0, "RED")]
+                            }
                             if (GameRegistry.data.version < remix.databaseVersion) {
                                 mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
                             } else if (remix.version < RHRE3.VERSION) {
                                 mainLabel.text += "\n" +
-                                        Localization[if (isRHRE2)
+                                        Localization[if (remixType == RemixType.RHRE2)
                                             "screen.open.rhre2Warning"
                                         else
                                             "screen.open.oldWarning"]

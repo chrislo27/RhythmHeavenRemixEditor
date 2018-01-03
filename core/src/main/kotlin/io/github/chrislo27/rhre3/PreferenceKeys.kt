@@ -8,6 +8,7 @@ object PreferenceKeys {
     val THEME_INDEX = "themeIndex"
     val LANG_INDEX = "languageIndex"
     val WINDOW_STATE = "windowState"
+    val MIDI_NOTE = "midiNote"
 
     // settings
     val SETTINGS_MINIMAP = "settings_minimap"

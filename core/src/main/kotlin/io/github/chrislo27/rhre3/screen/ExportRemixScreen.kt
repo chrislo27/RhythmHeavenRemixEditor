@@ -253,12 +253,13 @@ class ExportRemixScreen(main: RHRE3Application)
                 context.out.addDependent(DelayTrigger(context, musicStartMs, addBead {
                     music.also(BeadsMusic::play)
                 }))
-                // volumes TODO change when fade in/out is implemented
-                remix.musicVolumes.map.values.forEach {
-                    context.out.addDependent(DelayTrigger(context, it.beat.beatToMsRelative(), addBead {
-                        music.setVolume(it.volume / 100f)
-                    }))
-                }
+
+                // volumes
+                context.out.addDependent(Clock(context, 10f).apply {
+                    addMessageListener(addBead {
+                        music.setVolume(remix.musicVolumes.volumeAt(remix.beat))
+                    })
+                })
             }
 
             // SFX

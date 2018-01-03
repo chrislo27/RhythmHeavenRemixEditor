@@ -8,7 +8,7 @@ import io.github.chrislo27.toolboks.version.Version
 object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 6, 3, "")
+    val VERSION: Version = Version(3, 6, 5, "")
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
@@ -37,7 +37,6 @@ object RHRE3 {
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
-    var defaultSoundSystem: String = "beads"
     lateinit var launchArguments: List<String>
 
     init {

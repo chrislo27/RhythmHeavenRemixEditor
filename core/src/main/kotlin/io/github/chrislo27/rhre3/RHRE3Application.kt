@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
@@ -36,6 +37,7 @@ import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.lwjgl.opengl.Display
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -129,17 +131,15 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         run {
             fonts[defaultFontLargeKey] = createDefaultLargeFont()
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
-            fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize,
-                                                       createDefaultTTFParameter().apply {
-                                                           size *= 6
-                                                           characters = "0123456789"
-                                                           incremental = false
-                                                       })
-                    .setAfterLoad {
-                        this.font!!.apply {
-                            setFixedWidthGlyphs("0123456789")
-                        }
-                    }
+            fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter().apply {
+                size *= 6
+                characters = "0123456789"
+                incremental = false
+            }).setAfterLoad {
+                this.font!!.apply {
+                    setFixedWidthGlyphs("0123456789")
+                }
+            }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
         }
 
@@ -150,16 +150,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
 
-        // load correct sound system
-//        val soundSystemPref = preferences.getString(PreferenceKeys.SETTINGS_SOUND_SYSTEM, RHRE3.defaultSoundSystem).toLowerCase(
-//                Locale.ROOT)
-//        SoundSystem
-//                .setSoundSystem(when (soundSystemPref) {
-//                                    BeadsSoundSystem.id -> BeadsSoundSystem
-//                                    GdxSoundSystem.id -> GdxSoundSystem
-//                                    else -> GdxSoundSystem
-//                                })
-//        Toolboks.LOGGER.info("Set sound system (pref: $soundSystemPref) to ${SoundSystem.system::class.java.simpleName}")
+        // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
 
         // registry
@@ -266,6 +257,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         super.dispose()
         GameMetadata.persist()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
+        preferences.putString(PreferenceKeys.MIDI_NOTE, preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
         preferences.flush()
         GameRegistry.dispose()
         Themes.dispose()
@@ -279,8 +271,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         if (isFullscreen) {
             preferences.putString(PreferenceKeys.WINDOW_STATE, "fs")
         } else {
-            preferences.putString(PreferenceKeys.WINDOW_STATE, "${Gdx.graphics.width}x${Gdx.graphics.height}")
+            preferences.putString(PreferenceKeys.WINDOW_STATE,
+                                  "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
         }
+
+        Toolboks.LOGGER.info("Persisting window settings as ${preferences.getString(PreferenceKeys.WINDOW_STATE)}")
 
         preferences.flush()
     }
