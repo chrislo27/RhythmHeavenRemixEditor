@@ -49,7 +49,7 @@ class EditorVersionScreen(main: RHRE3Application)
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 Gdx.net.openURI(RHRE3.GITHUB_RELEASES)
-                val stage = stage as GenericStage
+                val stage = stage.parent as GenericStage
                 stage.backButton.enabled = true
             }
         }.apply {
