@@ -11,7 +11,6 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.MusicData
-import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.err.MusicLoadingException
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
@@ -124,7 +123,7 @@ class MusicSelectScreen(main: RHRE3Application)
             Platform.runLater {
                 isChooserOpen = true
                 val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
+                val file: File? = fileChooser.showOpenDialog(null)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
                     isLoading = true

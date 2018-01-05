@@ -18,7 +18,6 @@ import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
 import io.github.chrislo27.rhre3.util.persistDirectory
@@ -302,7 +301,7 @@ class ExportRemixScreen(main: RHRE3Application)
             Platform.runLater {
                 isChooserOpen = true
                 val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showSaveDialog(JavafxStub.application.primaryStage)
+                val file: File? = fileChooser.showSaveDialog(null)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
