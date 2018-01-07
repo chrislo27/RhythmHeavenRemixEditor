@@ -2,8 +2,8 @@
 
 I hope you really enjoyed using RHRE3! I don't require credit with anything
 made with RHRE3, but it would be very appreciated if you provided a link
-to the program, using either https://github.com/chrislo27/RhythmHeavenRemixEditor/releases or https://github.com/chrislo27/RhythmHeavenRemixEditor
-as URLs.
+to the program, using [https://github.com/chrislo27/RhythmHeavenRemixEditor](https://github.com/chrislo27/RhythmHeavenRemixEditor)
+as the URL.
 
 In Presentation Mode, this data is already provided on-screen.
 
