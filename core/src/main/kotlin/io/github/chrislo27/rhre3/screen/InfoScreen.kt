@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
@@ -40,6 +41,7 @@ class InfoScreen(main: RHRE3Application)
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
     private lateinit var clearRecentsButton: Button<InfoScreen>
+    private lateinit var dbVersionLabel: TextLabel<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -84,7 +86,7 @@ class InfoScreen(main: RHRE3Application)
             val buttonHeight = 0.1f
             val fontScale = 0.75f
 
-            // left
+            // left heading
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = padding,
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
@@ -94,7 +96,7 @@ class InfoScreen(main: RHRE3Application)
                 this.text = "screen.info.settings"
             }
 
-            // right
+            // right heading
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
@@ -103,6 +105,7 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = true
                 this.text = "screen.info.info"
             }
+            // current program version
             centre.elements += TextLabel(palette, centre, centre).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
@@ -112,6 +115,18 @@ class InfoScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = RHRE3.VERSION.toString()
             }
+            dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
+
+            }.apply {
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.text = "DB VERSION"
+            }
+            centre.elements += dbVersionLabel
 
             // info buttons
             // Credits
@@ -133,7 +148,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-            // Editor version
+            // Editor version screen
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -151,7 +166,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-            // Database version
+            // Database version changelog
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -379,6 +394,7 @@ class InfoScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
+        dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
     }
 
     override fun tickUpdate() {

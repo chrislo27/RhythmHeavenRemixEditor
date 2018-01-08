@@ -164,7 +164,7 @@ class OpenRemixScreen(main: RHRE3Application)
             Platform.runLater {
                 isChooserOpen = true
                 val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showOpenDialog(JavafxStub.application.primaryStage)
+                val file: File? = fileChooser.showOpenDialog(null)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
                     isLoading = true
