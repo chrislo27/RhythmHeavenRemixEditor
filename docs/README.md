@@ -103,7 +103,9 @@ or **`DOWN`**. This is useful if you don't have access to a mouse, like
 on a laptop.
 
 All tracker-like tools share these controls:<br>
-**`SCROLL`** - Change value<br/>
+**`LEFT CLICK`** - Place tracker<br>
+**`RIGHT CLICK`** - Remove tracker<br>
+**`SCROLL`** - Change value<br>
 Hold **`CONTROL`** - Change value by 5x
 
 ![Tempo changes](https://i.imgur.com/mS0qg3n.png)<br>
@@ -123,8 +125,8 @@ for a perfect fade-out.
 The **time signature** tool is new in RHRE3. You can change the time signature
 mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage
-to create measures so your patterns sound correct. You can only place this
-on whole beats.
+to create measures so your patterns don't sound "off". You can only place this
+on whole, non-negative beats.
 
 # Tapalong
 The tapalong menu is recurring from RHRE2, this time it is inline with the
