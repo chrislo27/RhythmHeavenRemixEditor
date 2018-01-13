@@ -37,7 +37,7 @@ make constant beats without laying down multiple patterns.
 If you are familiar with RHRE2's controls, you should have no problem
 with RHRE3.
 
-### Generic keybinds
+### Generic keystrokes
 **`SPACEBAR`** - Play/stop remix<br/>
 **`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
 **`CTRL+N`** - New remix<br/>
@@ -53,6 +53,12 @@ with RHRE3.
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
 
+On the bottom half of the screen, you will see icons for each
+game on the left, and patterns and cues for the selected
+game on the right. Using the Selection tool, you can drag
+from the pattern area up to the track to place down patterns.
+**`SCROLL`** or click on the arrows to cycle through your options.
+
 In the bottom-right, you will see tools:
 
 ![Tools](readme/tools.png)
@@ -62,13 +68,14 @@ From first to last: **Selection**, **Multipart Split**, **Tempo Change**,
 You can access them quickly by pressing `1-5` on the number keys.
 
 ### Selection tool
-The selection tool will be your main tool.
+The selection tool will be your main tool. It allows you to
+drag up cues and patterns from the pattern selector and create
+selections on the track.
 
 Holding **`LEFT CLICK`** (not on a selected entity) will start a selection.<br/>
 You can hold **`SHIFT`** to make it additive (i.e.: you can add to a
 pre-existing selection). Starting in `v3.1.0`, holding **`CONTROL`** will
-make it a toggle - similar to a file explorer (this also disables dragging,
-so you can actually click on already-selected entities).
+make it an inverted selection.<br>
 **`RIGHT CLICK`** will cancel the selection.
 
 ![Dragging](readme/selectionTool.png)
