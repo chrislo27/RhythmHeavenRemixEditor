@@ -140,7 +140,9 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
     }
 
     override fun scrolled(amount: Int): Boolean {
-        scroll(amount)
+        if (this.isMouseOver()) {
+            scroll(amount)
+        }
 
         return true
     }
