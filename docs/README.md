@@ -2,6 +2,16 @@
 
 This readme is up to date with version `v3.6.6`.
 
+## Launching the program
+After decompressing/unzipping the zip archive, run the
+`run_windows.bat` file by double clicking if you're on Windows, or
+run the `run_macOS-linux.sh` file if you're on macOS or a UNIX operating
+system.
+
+Alternatively, open Command Prompt/Terminal inside
+the folder *containing the jar file* and run
+`java -jar RHRE3.jar`.
+
 ## How does a remix work?
 Remixes in RHRE3 have changed since RHRE2.
 
