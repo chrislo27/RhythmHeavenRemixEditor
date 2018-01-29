@@ -1801,7 +1801,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun getDebugString(): String? {
 //        val click = clickOccupation
-        return "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
+        val range = getBeatRange()
+        return "e: ${remix.entities.count { it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat()) }} / ${remix.entities.size}\n" +
+                "tr: ${remix.trackers.sumBy { it.map.values.count { it.beat in range || it.endBeat in range} }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
+                "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
                 remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
                 remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
                 remix.beat)}"
