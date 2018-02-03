@@ -32,7 +32,7 @@ You cannot have folder names identical to IDs already used. The editor will cras
 
 Each sound will be limited to these factors:
   * $DURATION beats long by default
-  * Loaded sound data shou;d be under a megabyte. The editor may CRASH if it's too big!
+  * Loaded UNCOMPRESSED sound data should be under a megabyte. The editor may run out of memory if you have too many large files.
   * You will be able to stretch the cues.
   * You will be able to change the duration of the cues.
   * The cues will not loop. If you want them to loop, you will have to manually add a game using the JSON files.
