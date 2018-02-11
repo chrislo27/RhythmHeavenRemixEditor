@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
-import com.github.kittinunf.fuel.Fuel
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -38,6 +37,8 @@ import io.github.chrislo27.toolboks.version.Version
 import javafx.application.Application
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import org.asynchttpclient.AsyncHttpClient
+import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
 import java.util.*
 import kotlin.concurrent.thread
@@ -56,6 +57,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                         NamedLocale("Deutsch (German)", Locale("de"))
 //                      ,NamedLocale("Italiano (Italian)", Locale("it"))
                       )
+
+        val httpClient: AsyncHttpClient = asyncHttpClient()
 
         private const val RAINBOW_STR = "RAINBOW"
 
@@ -198,7 +201,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         launch(CommonPool) {
             try {
                 val nano = System.nanoTime()
-                val obj = JsonHandler.fromJson<ReleaseObject>(Fuel.get(RHRE3.RELEASE_API_URL).responseString().third.get())
+                val obj = JsonHandler.fromJson<ReleaseObject>(
+                        httpClient.prepareGet(RHRE3.RELEASE_API_URL).execute().get().responseBody)
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info(
@@ -265,6 +269,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         persistWindowSettings()
         Gdx.files.local("tmpMusic/").emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)
+        httpClient.close()
     }
 
     fun persistWindowSettings() {
