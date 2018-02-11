@@ -48,6 +48,3 @@ task afterEclipseImport(description: "Post processing after project generation",
 repositories {
     mavenCentral()
 }
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-}
