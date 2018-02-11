@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
+import com.github.kittinunf.fuel.Fuel
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -197,7 +198,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         launch(CommonPool) {
             try {
                 val nano = System.nanoTime()
-                val obj = JsonHandler.fromJson<ReleaseObject>(khttp.get(RHRE3.RELEASE_API_URL).text)
+                val obj = JsonHandler.fromJson<ReleaseObject>(Fuel.get(RHRE3.RELEASE_API_URL).responseString().third.get())
 
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info(

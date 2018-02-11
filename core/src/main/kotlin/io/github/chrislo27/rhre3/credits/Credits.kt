@@ -39,7 +39,7 @@ object Credits {
                             "[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games\n" +
                             "LWJGL\n" +
                             "Beads\n" +
-                            "KHttp\n" +
+                            "Fuel\n" +
                             "Jackson\n" +
                             "JGit\n" +
                             "Apache Commons IO\n" +

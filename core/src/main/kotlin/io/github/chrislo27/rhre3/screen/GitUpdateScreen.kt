@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import com.github.kittinunf.fuel.Fuel
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -104,7 +105,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
-                                khttp.get(RHRE3.DATABASE_CURRENT_VERSION).text)
+                                Fuel.get(RHRE3.DATABASE_CURRENT_VERSION).responseString().third.get())
                         val ver: Version = Version.fromString(current.requiresVersion)
 
                         Toolboks.LOGGER.info(
