@@ -1,7 +1,7 @@
 <img align="right" src="core/assets/images/icon/256.png" height="256" width="256">
 
 # Rhythm Heaven Remix Editor 3
-RHRE 3 - Rhythm Heaven Remix Editor 3 - An audio remix editor for the Rhythm Heaven series
+An audio remix editor for the Rhythm Heaven series
 
 Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor2/releases).<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
