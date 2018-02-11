@@ -105,7 +105,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
-                                Fuel.get(RHRE3.DATABASE_CURRENT_VERSION).responseString().third.get())
+                                Fuel.get(RHRE3.DATABASE_CURRENT_VERSION).timeout(5000).responseString().third.get())
                         val ver: Version = Version.fromString(current.requiresVersion)
 
                         Toolboks.LOGGER.info(
