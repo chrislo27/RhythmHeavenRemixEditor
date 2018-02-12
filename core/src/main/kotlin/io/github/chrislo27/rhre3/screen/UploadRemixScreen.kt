@@ -7,9 +7,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -139,6 +143,15 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
             mainLabel.text = Localization["screen.upload.preparing"]
 
             launch(CommonPool) {
+                fun playEndSound(success: Boolean) {
+                    BeadsSoundSystem.resume()
+                    if (success) {
+                        (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
+                    } else {
+                        (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
+                    }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
+                            ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
+                }
                 try {
                     val initial = http.prepareGet(PICOSONG_MAIN_URL)
                             .execute().get()
@@ -187,9 +200,12 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                     } else {
                         error("Non-successful result:\n${upload.responseBody}")
                     }
+
+                    playEndSound(true)
                 } catch (e: Exception) {
                     e.printStackTrace()
                     mainLabel.text = Localization["screen.upload.failed", e.javaClass.name, e.message]
+                    playEndSound(false)
                 } finally {
                     isUploading = false
                 }
