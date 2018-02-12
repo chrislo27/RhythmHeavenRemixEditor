@@ -30,7 +30,7 @@ import java.nio.charset.Charset
 import kotlin.math.roundToLong
 
 
-class UploadRemixScreen(main: RHRE3Application, private val file: File)
+class UploadRemixScreen(main: RHRE3Application, private val file: File, private val filename: String)
     : ToolboksScreen<RHRE3Application, UploadRemixScreen>(main) {
 
     companion object {
@@ -158,7 +158,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File)
                             .setBodyParts(listOf(
                                     StringPart("csrfmiddlewaretoken", csrfmiddlewaretoken),
                                     FilePart("file", file, "audio/mp3", Charset.forName("UTF-8"),
-                                             file.name)
+                                             filename)
                                                 ))
                             .setCookies(cookies)
                             .execute(object : AsyncCompletionHandlerBase() {

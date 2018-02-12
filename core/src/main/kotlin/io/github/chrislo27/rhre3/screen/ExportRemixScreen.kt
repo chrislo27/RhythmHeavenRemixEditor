@@ -360,9 +360,10 @@ class ExportRemixScreen(main: RHRE3Application)
                             picosongButton.visible = canUploadToPicosong
                             picosongFunc = if (canUploadToPicosong) {
                                 val tempFile = File.createTempFile("rhre3exportupload", ".mp3")
+                                val originalName = correctFile.name
                                 correctFile.copyTo(tempFile, true);
                                 {
-                                    UploadRemixScreen(main, tempFile)
+                                    UploadRemixScreen(main, tempFile, originalName)
                                 }
                             } else {
                                 null
