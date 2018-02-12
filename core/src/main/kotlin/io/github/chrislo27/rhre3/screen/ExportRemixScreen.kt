@@ -12,6 +12,9 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.MAX_PICOSONG_BYTES
+import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_AUP_URL
+import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_TOS_URL
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -38,23 +41,13 @@ import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
 import net.beadsproject.beads.ugens.RangeLimiter
 import net.beadsproject.beads.ugens.RecordToFile
-import org.asynchttpclient.request.body.multipart.FilePart
-import org.asynchttpclient.request.body.multipart.StringPart
 import java.io.File
-import java.nio.charset.Charset
 import java.util.*
 import javax.sound.sampled.AudioFileFormat
 
 
 class ExportRemixScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, ExportRemixScreen>(main) {
-
-    companion object {
-        private const val MAX_PICOSONG_BYTES: Int = 16000000
-        private const val PICOSONG_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
-        private const val PICOSONG_UPLOAD_URL = "http://picosong.com/async-upload/"
-        private const val PICOSONG_MAIN_URL = "http://picosong.com/"
-    }
 
     private val editorScreen: EditorScreen by lazy { ScreenRegistry.getNonNullAsType<EditorScreen>("editor") }
     private val editor: Editor
@@ -75,7 +68,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
     private val picosongButton: Button<ExportRemixScreen>
-    private var picosongFunc: () -> Unit = {}
+    private var picosongFunc: (() -> UploadRemixScreen)? = null
 
     private enum class ExportFileType(val extension: String) {
         WAV("wav"), MP3("mp3");
@@ -138,7 +131,11 @@ class ExportRemixScreen(main: RHRE3Application)
         picosongButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                picosongFunc()
+                picosongFunc?.let {
+                    main.screen = it.invoke()
+                }
+                visible = false
+                picosongFunc = null
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -358,43 +355,17 @@ class ExportRemixScreen(main: RHRE3Application)
                                         (if (correctFile.length() <= MAX_PICOSONG_BYTES)
                                             "screen.export.success.picosong.yes"
                                         else "screen.export.success.picosong.no")
-                                    else "screen.export.success"]
+                                    else "screen.export.success", PICOSONG_AUP_URL, PICOSONG_TOS_URL]
 
                             picosongButton.visible = canUploadToPicosong
-                            picosongFunc = {
-                                try {
-                                    val ahc = RHRE3Application.httpClient
-                                    val initial = ahc.prepareGet(PICOSONG_MAIN_URL).execute().get()
-                                    val cookies = initial.cookies
-                                    val csrfmiddlewaretoken = cookies.find { it.name() == "csrftoken" }?.value()
-
-                                    println("\n------------------------------------------\n")
-
-                                    val upload = ahc.preparePost(PICOSONG_UPLOAD_URL)
-                                            .addHeader("Accept", "application/json, text/javascript, */*")
-                                            .addHeader("Accept-Encoding", "gzip, deflate")
-                                            .addHeader("Accept-Language", "en-US,en;q=0.5")
-                                            .addHeader("Connection", "keep-alive")
-                                            .addHeader("Host", "picosong.com")
-                                            .addHeader("Referer", "http://picosong.com/")
-                                            .addHeader("User-Agent", PICOSONG_USER_AGENT)
-                                            .addHeader("X-Requested-With", "XMLHttpRequest")
-                                            .setBodyParts(listOf(
-                                                    StringPart("csrfmiddlewaretoken", csrfmiddlewaretoken),
-                                                    FilePart("file", correctFile, "audio/mp3", Charset.forName("UTF-8"),
-                                                             correctFile.name)
-                                                                ))
-                                            .setCookies(cookies)
-                                            .execute().get()
-                                    println(upload)
-                                } catch (e: Exception) {
-                                    e.printStackTrace()
-                                    updateLabels(e)
-                                    isExporting = false
+                            picosongFunc = if (canUploadToPicosong) {
+                                val tempFile = File.createTempFile("rhre3exportupload", ".mp3")
+                                correctFile.copyTo(tempFile, true);
+                                {
+                                    UploadRemixScreen(main, tempFile)
                                 }
-
-                                picosongFunc = {}
-                                picosongButton.visible = false
+                            } else {
+                                null
                             }
                         } catch (t: Throwable) {
                             t.printStackTrace()
@@ -413,7 +384,7 @@ class ExportRemixScreen(main: RHRE3Application)
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val isBeads = SoundSystem.system == BeadsSoundSystem
-        picosongFunc = {}
+        picosongFunc = null
         picosongButton.visible = false
         isCapableOfExporting = isBeads && hasEndRemix
         if (!isCapableOfExporting) {
@@ -442,7 +413,7 @@ class ExportRemixScreen(main: RHRE3Application)
         super.hide()
         BeadsSoundSystem.stop()
         picosongButton.visible = false
-        picosongFunc = {}
+        picosongFunc = null
     }
 
     override fun dispose() {
