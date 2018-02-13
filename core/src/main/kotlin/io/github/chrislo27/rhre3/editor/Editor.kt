@@ -623,10 +623,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     jumpSawtooth * 2
                 else
                     1f - (jumpSawtooth - 0.5f) * 2
-                val jumpHeight = if (jumpSawtooth <= 0.5f)
+                val jumpHeight = (if (jumpSawtooth <= 0.5f)
                     jumpSawtooth * 2
                 else
-                    jumpTriangle * jumpTriangle
+                    jumpTriangle * jumpTriangle) * (if (remix.timeSignatures.getMeasurePart(beat) == 0) 2f else 1f)
 
                 batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
                            TRACK_COUNT + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
