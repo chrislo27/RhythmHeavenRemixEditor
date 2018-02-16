@@ -162,10 +162,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
         } ?: searchBar.elements.firstOrNull {
             // hack
-            if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                setHoverText(it.getHoverText())
-                true
-            } else false
+            if (searchBar.visible) {
+                if (it is HasHoverText && it.isMouseOver() && it.visible) {
+                    setHoverText(it.getHoverText())
+                    true
+                } else false
+            } else {
+                false
+            }
         }
 
         if (Toolboks.debugMode != wasDebug) {

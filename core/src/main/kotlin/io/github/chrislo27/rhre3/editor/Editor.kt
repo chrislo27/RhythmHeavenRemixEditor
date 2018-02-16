@@ -146,6 +146,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
 
             autosaveFile = null
+            lastSaveFile = null
             resetAutosaveTimer()
 
             camera.position.x = field.playbackStart
@@ -184,8 +185,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     var autosaveFrequency: Int = 0
         private set
     private var autosaveFile: FileHandle? = null
-    private @Volatile
-    var autosaveState: AutosaveState = AutosaveState(AutosaveResult.NONE, 0f)
+    var lastSaveFile: FileHandle? = null
+        private set
+    @Volatile
+    private var autosaveState: AutosaveState = AutosaveState(AutosaveResult.NONE, 0f)
     private var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private val songSubtitles = mutableMapOf("songArtist" to TimedString("", SONG_SUBTITLE_TRANSITION, false),
@@ -203,7 +206,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         timeUntilAutosave = 60f * autosaveFrequency
     }
 
-    fun prepAutosaveFile(baseFile: FileHandle) {
+    fun setFileHandles(baseFile: FileHandle) {
+        lastSaveFile = baseFile
         autosaveFile = baseFile.sibling(baseFile.nameWithoutExtension() + ".autosave.${RHRE3.REMIX_FILE_EXTENSION}")
     }
 
@@ -1358,7 +1362,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (clickOccupation != ClickOccupation.None || remix.playState != PlayState.STOPPED)
             return false
 
-        if (stage.centreAreaStage.isMouseOver()) {
+        if (stage.centreAreaStage.isMouseOver() && stage.centreAreaStage.visible) {
             val tool = currentTool
             if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
@@ -1492,7 +1496,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
             }
-        } else if (stage.patternAreaStage.isMouseOver() && currentTool == Tool.SELECTION && isDraggingButtonDown) {
+        } else if (stage.patternAreaStage.isMouseOver() && stage.patternAreaStage.visible
+                && currentTool == Tool.SELECTION && isDraggingButtonDown) {
             // only for new
             val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
             val entity = datamodel.createEntity(remix, null)
