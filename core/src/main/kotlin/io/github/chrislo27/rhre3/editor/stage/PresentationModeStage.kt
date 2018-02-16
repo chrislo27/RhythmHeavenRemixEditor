@@ -147,7 +147,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
 
     private fun secondsToText(seconds: Int): String {
         val sec = seconds % 60
-        return "${seconds / 60}:${if (sec < 10) "0" else ""}$sec"
+        return "${seconds / 60}:${if (sec < 10) "0" else ""}${Math.max(0, sec)}"
     }
 
     private var timeSeconds by Delegates.observable(0) { _, old, new ->
