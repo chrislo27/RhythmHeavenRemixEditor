@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.MusicData
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.err.MusicLoadingException
@@ -34,11 +35,6 @@ class MusicSelectScreen(main: RHRE3Application)
     override val stage: Stage<MusicSelectScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     @Volatile private var isChooserOpen = false
-        set(value) {
-            field = value
-            stage as GenericStage
-            stage.backButton.enabled = !isChooserOpen
-        }
     @Volatile private var isLoading = false
     private val mainLabel: TextLabel<MusicSelectScreen>
 
@@ -105,6 +101,14 @@ class MusicSelectScreen(main: RHRE3Application)
         }
         stage.centreStage.elements += mainLabel
 
+        stage.centreStage.elements += object : LoadingIcon<MusicSelectScreen>(palette, stage.centreStage) {
+            override var visible: Boolean = true
+                get() = super.visible && isLoading
+        }.apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
+        }
+
         stage.updatePositions()
         updateLabels(null)
     }
@@ -112,8 +116,11 @@ class MusicSelectScreen(main: RHRE3Application)
     override fun renderUpdate() {
         super.renderUpdate()
 
+        stage as GenericStage
+        stage.backButton.enabled = !(isChooserOpen || isLoading)
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            (stage as GenericStage).onBackButtonClick()
+            stage.onBackButtonClick()
         }
     }
 
@@ -130,9 +137,11 @@ class MusicSelectScreen(main: RHRE3Application)
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
                     try {
+                        updateLabels(null)
                         val handle = FileHandle(file)
                         val musicData = MusicData(handle, editor.remix)
                         editor.remix.music = musicData
+                        isLoading = false
                         updateLabels(null)
                     } catch (t: Throwable) {
                         t.printStackTrace()
@@ -149,8 +158,12 @@ class MusicSelectScreen(main: RHRE3Application)
         val label = mainLabel
         if (throwable == null) {
             val music = editor.remix.music
-            label.text = Localization["screen.music.currentMusic",
-                    if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
+            if (isLoading) {
+                label.text = Localization["screen.music.loadingMusic"]
+            } else {
+                label.text = Localization["screen.music.currentMusic",
+                        if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
+            }
 //            if (music != null) {
 //                if (music.handle.extension().equals("wav", true)) {
 //                    label.text += "\n\n${Localization["screen.music.warning.wav"]}"
@@ -197,7 +210,7 @@ class MusicSelectScreen(main: RHRE3Application)
 
         override fun frameUpdate(screen: MusicSelectScreen) {
             super.frameUpdate(screen)
-            this.enabled = !isChooserOpen
+            this.enabled = !(isChooserOpen || isLoading)
         }
     }
 }
