@@ -18,7 +18,6 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.attemptRememberDirectory
 import io.github.chrislo27.rhre3.util.err.MusicLoadingException
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
@@ -221,7 +220,7 @@ class OpenRemixScreen(main: RHRE3Application)
                                 }
 
                                 if (!result.isAutosave) {
-                                    editor.prepAutosaveFile(FileHandle(file))
+                                    editor.setFileHandles(FileHandle(file))
                                 }
                             }
 
