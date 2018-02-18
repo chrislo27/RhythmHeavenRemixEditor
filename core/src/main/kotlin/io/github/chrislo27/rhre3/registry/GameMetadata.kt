@@ -32,10 +32,14 @@ object GameMetadata {
 
     }
 
-    lateinit var preferences: Preferences
+    private lateinit var preferences: Preferences
     val games: Map<Game, Boolean> = mutableMapOf()
     val groups: Map<GameGroup, Boolean> = mutableMapOf()
     val recents: MutableList<Game> = mutableListOf()
+
+    fun setPreferencesInstance(preferences: Preferences) {
+        this.preferences = preferences
+    }
 
     fun isGroupFavourited(group: GameGroup): Boolean {
         return groups[group] == true

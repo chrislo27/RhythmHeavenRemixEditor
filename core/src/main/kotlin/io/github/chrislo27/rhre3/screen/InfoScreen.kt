@@ -311,6 +311,43 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 this.location.set(screenX = padding,
+                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+
+            // Minimap preview
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+
+                private var bufferSupported = true
+
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    if (bufferSupported && !editor.stage.minimap.bufferSupported) {
+                        bufferSupported = false
+                        textLabel.text = "screen.info.minimapPreview.unsupported"
+                        checked = false
+                    }
+                    enabled = bufferSupported && !preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
+
+                    super.render(screen, batch, shapeRenderer)
+                }
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    if (bufferSupported) {
+                        preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, checked).flush()
+                    }
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.minimapPreview"
+                }
+
+                this.location.set(screenX = padding,
                                   screenY = padding * 3 + buttonHeight * 2,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
@@ -332,7 +369,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 this.location.set(screenX = padding,
-                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenY = padding * 5 + buttonHeight * 4,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
@@ -353,7 +390,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 this.location.set(screenX = padding,
-                                  screenY = padding * 5 + buttonHeight * 4,
+                                  screenY = padding * 6 + buttonHeight * 5,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
@@ -374,7 +411,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 this.location.set(screenX = padding,
-                                  screenY = padding * 6 + buttonHeight * 5,
+                                  screenY = padding * 7 + buttonHeight * 6,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }

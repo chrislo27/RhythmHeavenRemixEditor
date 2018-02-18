@@ -281,10 +281,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
     }
 
+    fun render() = render(getBeatRange(), adjustCamera = true, otherUI = true)
+
     /**
      * Pre-stage render.
      */
-    fun render() {
+    fun render(beatRange: IntRange, adjustCamera: Boolean, otherUI: Boolean) {
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
@@ -300,38 +302,43 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         batch.end()
 
-        camera.position.y = 1f
-        camera.zoom = MathUtils.lerp(camera.zoom, if (isGameBoundariesInViews) 1.5f else 1f,
-                                     Gdx.graphics.deltaTime * 6.5f)
         val oldCameraX = camera.position.x
         val oldCameraY = camera.position.y
         val adjustedCameraX: Float
         val adjustedCameraY: Float
-        if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
-            val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
-                acc * ShakeEntity.getShakeIntensity(it.semitone)
+        if (adjustCamera) {
+            camera.position.y = 1f
+            camera.zoom = MathUtils.lerp(camera.zoom, if (isGameBoundariesInViews) 1.5f else 1f,
+                                         Gdx.graphics.deltaTime * 6.5f)
+
+            if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
+                val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
+                    acc * ShakeEntity.getShakeIntensity(it.semitone)
+                }
+                val intensity = 0.125f
+
+                camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
+                camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) *
+                        (ENTITY_HEIGHT / ENTITY_WIDTH)
+
+                camera.update()
+
+                adjustedCameraX = camera.position.x
+                adjustedCameraY = camera.position.y
+                camera.position.x = oldCameraX
+                camera.position.y = oldCameraY
+            } else {
+                camera.update()
+                adjustedCameraX = oldCameraX
+                adjustedCameraY = oldCameraY
             }
-            val intensity = 0.125f
-
-            camera.position.y += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue)
-            camera.position.x += intensity * MathUtils.randomSign() * MathUtils.random(shakeValue) *
-                    (ENTITY_HEIGHT / ENTITY_WIDTH)
-
-            camera.update()
-
-            adjustedCameraX = camera.position.x
-            adjustedCameraY = camera.position.y
-            camera.position.x = oldCameraX
-            camera.position.y = oldCameraY
         } else {
-            camera.update()
             adjustedCameraX = oldCameraX
             adjustedCameraY = oldCameraY
         }
         batch.projectionMatrix = camera.combined
         batch.begin()
 
-        val beatRange = getBeatRange()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE / 2f)
 
@@ -421,7 +428,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // waveform
-        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PlayState.PLAYING && ViewType.WAVEFORM in views) {
+        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PlayState.PLAYING && ViewType.WAVEFORM in views && otherUI) {
             batch.setColor(theme.waveform.r, theme.waveform.g, theme.waveform.b, theme.waveform.a * 0.65f)
 
             val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
@@ -767,7 +774,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // render selection box + delete zone
-        run selectionRectDrawAndDeleteZone@ {
+        if (otherUI) {
             val clickOccupation = clickOccupation
             when (clickOccupation) {
                 is ClickOccupation.SelectionDrag -> {
@@ -876,67 +883,69 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.begin()
         font.scaleFont(staticCamera)
 
-        // song subtitles
-        run {
-            val camera = staticCamera
-            font.scaleMul(camera.zoom)
-            val texture = AssetRegistry.get<Texture>("ui_songtitle")
-            val scale = 1.15f
-            val texWidth = texture.width.toFloat() * scale * camera.zoom
-            val texHeight = texture.height.toFloat() * scale * camera.zoom
-            val startX = 0f
+        if (otherUI) {
+            // song subtitles
+            run {
+                val camera = staticCamera
+                font.scaleMul(camera.zoom)
+                val texture = AssetRegistry.get<Texture>("ui_songtitle")
+                val scale = 1.15f
+                val texWidth = texture.width.toFloat() * scale * camera.zoom
+                val texHeight = texture.height.toFloat() * scale * camera.zoom
+                val startX = 0f
 
-            fun renderBar(timedString: TimedString, bottom: Boolean) {
-                val rawPercent = Interpolation.circle.apply(
-                        (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
-                val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
-                val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth * camera.zoom - xPercent * texWidth
-                val y = (camera.viewportHeight * 0.35f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
+                fun renderBar(timedString: TimedString, bottom: Boolean) {
+                    val rawPercent = Interpolation.circle.apply(
+                            (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
+                    val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
+                    val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth * camera.zoom - xPercent * texWidth
+                    val y = (camera.viewportHeight * 0.35f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
 
-                batch.draw(texture, x, y, texWidth, texHeight,
-                           0, 0, texture.width, texture.height,
-                           bottom, bottom)
-                font.setColor(1f, 1f, 1f, 1f)
-                val padding = 8f * camera.zoom
-                val textWidth = (texture.width.toFloat() - texture.height) * scale * camera.zoom - padding * 2
-                val triangleWidth = texture.height.toFloat() * scale * camera.zoom
-                font.drawCompressed(batch, timedString.str,
-                                    (if (!bottom) x else x + triangleWidth) + padding,
-                                    y + font.capHeight + texHeight / 2 - font.capHeight / 2,
-                                    textWidth,
-                                    if (bottom) Align.left else Align.right)
+                    batch.draw(texture, x, y, texWidth, texHeight,
+                               0, 0, texture.width, texture.height,
+                               bottom, bottom)
+                    font.setColor(1f, 1f, 1f, 1f)
+                    val padding = 8f * camera.zoom
+                    val textWidth = (texture.width.toFloat() - texture.height) * scale * camera.zoom - padding * 2
+                    val triangleWidth = texture.height.toFloat() * scale * camera.zoom
+                    font.drawCompressed(batch, timedString.str,
+                                        (if (!bottom) x else x + triangleWidth) + padding,
+                                        y + font.capHeight + texHeight / 2 - font.capHeight / 2,
+                                        textWidth,
+                                        if (bottom) Align.left else Align.right)
+                }
+
+                renderBar(songTitle, false)
+                renderBar(songArtist, true)
+
+                font.scaleMul(1f / camera.zoom)
             }
 
-            renderBar(songTitle, false)
-            renderBar(songArtist, true)
+            // autosave indicator
+            if (autosaveState.result != AutosaveResult.NONE) {
+                val autosaveState = autosaveState
+                val borderedFont = main.defaultBorderedFont
+                borderedFont.scaleFont(staticCamera)
+                borderedFont.scaleMul(0.85f)
 
-            font.scaleMul(1f / camera.zoom)
-        }
+                val alpha = if (autosaveState.result.timed) (autosaveState.time * 3f).coerceIn(0f, 1f) else 1f
 
-        // autosave indicator
-        if (autosaveState.result != AutosaveResult.NONE) {
-            val autosaveState = autosaveState
-            val borderedFont = main.defaultBorderedFont
-            borderedFont.scaleFont(staticCamera)
-            borderedFont.scaleMul(0.85f)
+                borderedFont.setColor(1f, 1f, 1f, alpha)
+                batch.setColor(1f, 1f, 1f, alpha)
 
-            val alpha = if (autosaveState.result.timed) (autosaveState.time * 3f).coerceIn(0f, 1f) else 1f
+                val startX = 6f
+                val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight + 6f
+                val height = 32f
+                val width = 32f
 
-            borderedFont.setColor(1f, 1f, 1f, alpha)
-            batch.setColor(1f, 1f, 1f, alpha)
+                borderedFont.drawCompressed(batch, Localization[autosaveState.result.localization],
+                                            startX, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
+                                            staticCamera.viewportWidth - width, Align.left)
 
-            val startX = 6f
-            val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight + 6f
-            val height = 32f
-            val width = 32f
-
-            borderedFont.drawCompressed(batch, Localization[autosaveState.result.localization],
-                                        startX, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
-                                        staticCamera.viewportWidth - width, Align.left)
-
-            borderedFont.setColor(1f, 1f, 1f, 1f)
-            borderedFont.unscaleFont()
-            batch.setColor(1f, 1f, 1f, 1f)
+                borderedFont.setColor(1f, 1f, 1f, 1f)
+                borderedFont.unscaleFont()
+                batch.setColor(1f, 1f, 1f, 1f)
+            }
         }
 
         font.unscaleFont()

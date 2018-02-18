@@ -12,6 +12,7 @@ object PreferenceKeys {
 
     // settings
     val SETTINGS_MINIMAP = "settings_minimap"
+    val SETTINGS_MINIMAP_PREVIEW = "settings_minimapPreview"
     val SETTINGS_AUTOSAVE = "settings_autosave"
     val SETTINGS_CHASE_CAMERA = "settings_chaseCamera"
     val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"

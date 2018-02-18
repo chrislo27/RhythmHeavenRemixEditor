@@ -149,7 +149,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
-        GameMetadata.preferences = preferences
+        GameMetadata.setPreferencesInstance(preferences)
         if (preferences.getString(PreferenceKeys.LAST_VERSION, null) != RHRE3.VERSION.toString()) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }

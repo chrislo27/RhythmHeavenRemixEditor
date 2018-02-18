@@ -46,6 +46,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val pickerStage: Stage<EditorScreen>
     val pickerDisplay: PickerDisplay
     val minimapBarStage: Stage<EditorScreen>
+    lateinit var minimap: Minimap
+        private set
     val centreAreaStage: Stage<EditorScreen>
     val subtitleStage: Stage<EditorScreen>
     val patternAreaStage: Stage<EditorScreen>
@@ -919,9 +921,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
-            minimapBarStage.elements += Minimap(editor, palette, minimapBarStage, minimapBarStage).apply {
+            minimap = Minimap(editor, palette, minimapBarStage, minimapBarStage).apply {
                 this.location.set(screenX = 0.5f, screenWidth = 0.5f - Tool.VALUES.size * buttonWidth)
             }
+            minimapBarStage.elements += minimap
         }
 
         // Button bar
