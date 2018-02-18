@@ -231,7 +231,7 @@ class ExportRemixScreen(main: RHRE3Application)
                         // nothing
                     }
                     ExportFileType.MP3 -> {
-                        val args = arrayOf("--ignore-tag-errors",
+                        val args = arrayOf("-q", "3", "--ignore-tag-errors",
                                            "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
                                            recorderFile.path, file.path)
                         val main = Main()
