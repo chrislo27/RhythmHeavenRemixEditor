@@ -342,7 +342,7 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
 
                 this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
+                    this.fontScaleMultiplier = fontScale * fontScale
                     this.isLocalizationKey = true
                     this.text = "screen.info.minimapPreview"
                 }
