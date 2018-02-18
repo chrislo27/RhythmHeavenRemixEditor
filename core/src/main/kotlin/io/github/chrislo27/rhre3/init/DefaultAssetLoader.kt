@@ -98,6 +98,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         // goat
         AssetRegistry.loadAsset<Texture>("goat_full", "images/goat/goat_full.png")
         AssetRegistry.loadAsset<Texture>("goat_base", "images/goat/goat_base.png")
+
+        // glee club midi visualization
+        AssetRegistry.loadAsset<Texture>("glee_club", "images/chorusmen_rot.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {

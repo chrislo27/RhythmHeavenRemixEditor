@@ -24,6 +24,7 @@ import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
 import io.github.chrislo27.rhre3.entity.model.*
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
@@ -41,6 +42,7 @@ import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.timesignature.TimeSigValueChange
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
@@ -50,6 +52,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -61,6 +64,7 @@ import kotlinx.coroutines.experimental.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
@@ -885,6 +889,41 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         font.scaleFont(staticCamera)
 
         if (otherUI) {
+            // midi visualization w/ glee club
+            if (Toolboks.debugMode && remix.midiInstruments > 0) {
+                // each cell is 88x136 with a 1 px black border
+                val texture = AssetRegistry.get<Texture>("glee_club")
+                val width = 86
+                val cellHeight = 134
+                val height = cellHeight - 15
+                val renderWidth = width * 0.65f
+
+                val startX = (staticCamera.viewportWidth / 2f - renderWidth * remix.midiInstruments / 2f).coerceAtLeast(
+                        0f)
+                val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight
+
+                for (i in 0 until remix.midiInstruments) {
+                    val playingEntity: Entity? = remix.entities.find {
+                        it.playbackCompletion == PlaybackCompletion.PLAYING && it is CueEntity && it.instrument == i + 1
+                    }
+                    val isPlaying = remix.playState != PlayState.STOPPED && playingEntity != null
+                    val animation = if (isPlaying) {
+                        MathUtils.lerp(0f, 3f, MathHelper.getSawtoothWave(0.2f)).roundToInt().coerceAtMost(2)
+                    } else {
+                        MathHelper.getSawtoothWave(0.2f).roundToInt()
+                    }
+
+                    batch.draw(texture, startX + i * (if (startX <= 0f)
+                        staticCamera.viewportWidth / remix.midiInstruments
+                    else renderWidth), startY, width.toFloat(),
+                               height * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable)
+                                   (Semitones.getALPitch(playingEntity.semitone)) else 1f),
+                               1 + (animation * (width + 2)),
+                               1 + (if (isPlaying) ((cellHeight + 2) * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable && playingEntity.semitone > IRepitchable.DEFAULT_RANGE.endInclusive) 4 else 3)) else 0),
+                               width, height, false, false)
+                }
+            }
+
             // song subtitles
             run {
                 val camera = staticCamera
@@ -968,7 +1007,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val shift = Gdx.input.isShiftDown()
         val control = Gdx.input.isControlDown()
-        val alt = Gdx.input.isAltDown()
+//        val alt = Gdx.input.isAltDown()
         val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
@@ -1401,8 +1440,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 datamodel as ResponseModel
                                 if (datamodel.responseIDs.isNotEmpty()) {
                                     val id = datamodel.responseIDs.random()
-                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix, null) ?:
-                                            error("ID $id not found in game registry when making response copy")
+                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix, null) ?: error(
+                                            "ID $id not found in game registry when making response copy")
 
                                     entity.updateBounds {
                                         entity.bounds.setPosition(it.bounds.x, it.bounds.y)
@@ -1817,11 +1856,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun getDebugString(): String? {
 //        val click = clickOccupation
         val range = getBeatRange()
-        return "e: ${remix.entities.count { it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat()) }} / ${remix.entities.size}\n" +
-                "tr: ${remix.trackers.sumBy { it.map.values.count { it.beat in range || it.endBeat in range} }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
+        return "e: ${remix.entities.count {
+            it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
+        }} / ${remix.entities.size}\n" +
+                "tr: ${remix.trackers.sumBy { it.map.values.count { it.beat in range || it.endBeat in range } }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
                 "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
-                remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
-                remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
-                remix.beat)}"
+                        remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
+                        remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
+                        remix.beat)}\nmidiinst: ${remix.midiInstruments}"
     }
 }

@@ -79,6 +79,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                 tree.put("isAutosave", isAutosave)
 
+                tree.put("midiInstruments", midiInstruments)
+
                 // music
                 run {
                     val obj = tree.putObject("musicData")
@@ -132,6 +134,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             remix.playbackStart = tree["playbackStart"]?.floatValue() ?: 0f
             remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
+
+            remix.midiInstruments = tree["midiInstruemnts"]?.intValue() ?: 0
 
             var missing = 0
             var missingCustom = 0
@@ -210,6 +214,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             val beatsPerTick: Float = 1f / sequence.resolution
 
+            val tracksWithNotes: MutableList<Int> = mutableListOf()
+
             val points: List<NotePoint> = sequence.tracks.flatMap { track ->
                 val list = mutableListOf<NotePoint>()
                 val map = mutableMapOf<Int, NotePoint>()
@@ -230,6 +236,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                 point.duration = event.tick * beatsPerTick - point.startBeat
                                 list += point
                                 map.remove(semitone)
+
+                                if (trackIndex !in tracksWithNotes) {
+                                    tracksWithNotes += trackIndex
+                                }
                             }
                         }
 
@@ -281,8 +291,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 list
             }
 
+            remix.midiInstruments = tracksWithNotes.size
+
+            val defaultCue = GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!! as Cue
             val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(
-                    PreferenceKeys.MIDI_NOTE)] ?: GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!!
+                    PreferenceKeys.MIDI_NOTE)] ?: defaultCue
             points.mapTo(remix.entities) { point ->
                 val ent = noteCue.createEntity(remix, null).apply {
                     updateBounds {
@@ -297,6 +310,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                             stopAtEnd = true
                         }
                     }
+
+                    if (this is CueEntity) {
+                        instrument = tracksWithNotes.indexOf(point.track.second) + 1
+                    }
                 }
 
                 ent
@@ -305,7 +322,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             // add end entity either 2 beats after furthest point, or on the next measure border
             remix.entities += GameRegistry.data.objectMap["special_endEntity"]!!.createEntity(remix, null).apply {
                 updateBounds {
-                    val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt() ?: 0).toFloat()
+                    val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
+                            ?: 0).toFloat()
                     val timeSig = remix.timeSignatures.getTimeSignature(furthest)
                     bounds.x = if (timeSig == null) {
                         furthest + 2f
@@ -506,6 +524,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
+    /**
+     * Only used for loading midi files
+     */
+    var midiInstruments = 0
+        private set
 
     var duration: Float = Float.POSITIVE_INFINITY
         private set
@@ -520,8 +543,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
-                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?:
-                        throw RuntimeException("Missing metronome sound")
+                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: throw RuntimeException(
+                        "Missing metronome sound")
               )
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
@@ -689,7 +712,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return if (started) EntityUpdateResult.STARTED else EntityUpdateResult.UPDATED
         }
 
-        throw ConcurrentModificationException("Entity playbackCompletion state was modified in such a way that it escaped all update logic branches")
+        throw ConcurrentModificationException(
+                "Entity playbackCompletion state was modified in such a way that it escaped all update logic branches")
     }
 
     fun timeUpdate(delta: Float) {
@@ -739,8 +763,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
         if (playState != PlayState.STOPPED
                 && (beat >= duration
-                || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
-                && beat >= lastPoint)) {
+                        || main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+                        && beat >= lastPoint)) {
             playState = PlayState.STOPPED
         }
     }

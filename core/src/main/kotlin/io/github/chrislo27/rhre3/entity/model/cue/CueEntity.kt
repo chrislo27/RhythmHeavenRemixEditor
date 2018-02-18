@@ -48,6 +48,14 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override val canBeRepitched: Boolean = datamodel.repitchable
     override val isStretchable: Boolean = datamodel.stretchable
     var stopAtEnd: Boolean = false
+    private var instrumentByte: Byte = 0
+    var instrument: Int
+        get() {
+            return instrumentByte.toInt() and 0xFF
+        }
+        set(value) {
+            instrumentByte = value.toByte()
+        }
 
     private var soundId: Long = -1L
     private var introSoundId: Long = -1L
@@ -88,7 +96,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             when {
                 cue.usesBaseBpm ->
                     cue.sound.sound.setRate(soundId,
-                                             cue.getBaseBpmRate())
+                                            cue.getBaseBpmRate())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
@@ -108,10 +116,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
         }
 
         endingSoundId =
-                cue.endingSoundCue?.sound?.sound?.
-                        play(loop = false, volume = volume,
-                             rate = cue.endingSoundCue!!.getBaseBpmRate(),
-                             pitch = getSemitonePitch()) ?: -1L
+                cue.endingSoundCue?.sound?.sound?.play(loop = false, volume = volume,
+                                                       rate = cue.endingSoundCue!!.getBaseBpmRate(),
+                                                       pitch = getSemitonePitch()) ?: -1L
     }
 
     override fun copy(remix: Remix): CueEntity {
@@ -129,11 +136,15 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (stopAtEnd) {
             objectNode.put("stopAtEnd", stopAtEnd)
         }
+        if (instrument != 0) {
+            objectNode.put("instrument", instrument)
+        }
     }
 
     override fun readData(objectNode: ObjectNode) {
         super.readData(objectNode)
         stopAtEnd = objectNode["stopAtEnd"]?.asBoolean(false) ?: false
+        instrument = objectNode["instrument"]?.asInt(0) ?: 0
     }
 
     override fun loadSounds() {
