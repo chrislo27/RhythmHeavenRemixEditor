@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.6.7`.
+This readme is up to date with version `v3.7.0`.
 
 ## Launching the program
 After decompressing/unzipping the zip archive, run the
