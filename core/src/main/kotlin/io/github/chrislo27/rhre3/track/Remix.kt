@@ -689,7 +689,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return if (started) EntityUpdateResult.STARTED else EntityUpdateResult.UPDATED
         }
 
-        error("Impossible branch for entity update")
+        throw ConcurrentModificationException("Entity playbackCompletion state was modified in such a way that it escaped all update logic branches")
     }
 
     fun timeUpdate(delta: Float) {
