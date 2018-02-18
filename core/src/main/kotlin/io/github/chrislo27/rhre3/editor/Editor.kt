@@ -281,12 +281,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
     }
 
-    fun render() = render(getBeatRange(), adjustCamera = true, otherUI = true)
+    fun render() = render(adjustCamera = true, otherUI = true)
 
     /**
      * Pre-stage render.
      */
-    fun render(beatRange: IntRange, adjustCamera: Boolean, otherUI: Boolean) {
+    fun render(adjustCamera: Boolean, otherUI: Boolean) {
+        val beatRange = getBeatRange()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
