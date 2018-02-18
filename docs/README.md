@@ -77,6 +77,17 @@ From first to last: **Selection**, **Multipart Split**, **Tempo Change**,
 **Music Volume**, and **Time Signature**. They will be explained below.
 You can access them quickly by pressing `1-5` on the number keys.
 
+To the left of the tool buttons you'll see a minimap.
+**`LEFT CLICK`** will jump the camera to that position.
+Hover over the minimap to bring up a preview. You can also go to the
+Info and Settings menu to disable the minimap and/or the preview.
+
+![Minimap and preview](readme/minimapPreview.png)
+
+>If the preview doesn't appear, check the Info and Settings menu.
+The preview may have disabled itself if your graphics driver is not able
+to support it. ![Minimap unsupported](readme/minimapUnsupported.png)
+
 ### Selection tool
 The selection tool will be your main tool. It allows you to
 drag up cues and patterns from the pattern selector and create
