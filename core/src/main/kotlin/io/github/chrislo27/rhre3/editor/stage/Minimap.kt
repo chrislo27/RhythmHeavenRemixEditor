@@ -136,19 +136,19 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             batch.begin()
 
             val bufSecH = (buffer.height * 0.75f).roundToInt()
+            val x = location.realX
+            val y = location.realY + location.realHeight
+            val w = location.realWidth
             val h = location.realWidth * (bufSecH.toFloat() / buffer.width)
             val outline = 2f
             batch.color = editor.theme.background
-            batch.fillRect(location.realX, location.realY + location.realHeight,
-                           location.realWidth, h)
+            batch.fillRect(x, y, w, h)
             batch.setColor(editor.theme.trackLine.r, editor.theme.trackLine.g, editor.theme.trackLine.b, 1f)
-            batch.drawRect(location.realX - outline, location.realY + location.realHeight,
-                           location.realWidth + outline * 2, h + outline, outline)
+            batch.drawRect(x - outline, y,
+                           w + outline * 2, h + outline, outline)
             batch.setColor(1f, 1f, 1f, 1f)
             batch.draw(buffer.colorBufferTexture,
-                       location.realX, location.realY + location.realHeight,
-                       location.realWidth, h,
-                       0, buffer.height - bufSecH, buffer.width, bufSecH, false, true)
+                       x, y, w, h, 0, buffer.height - bufSecH, buffer.width, bufSecH, false, true)
         }
     }
 
