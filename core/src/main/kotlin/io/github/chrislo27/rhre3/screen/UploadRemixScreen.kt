@@ -31,6 +31,7 @@ import org.asynchttpclient.request.body.multipart.FilePart
 import org.asynchttpclient.request.body.multipart.StringPart
 import java.io.File
 import java.nio.charset.Charset
+import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 
@@ -179,9 +180,18 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                     return super.onContentWritten()
                                 }
 
+                                private var timeBetweenProgress: Long = -1L
+
                                 override fun onContentWriteProgress(amount: Long, current: Long,
                                                                     total: Long): AsyncHandler.State {
-                                    mainLabel.text = Localization["screen.upload.uploading", current, total, (current.toDouble() / total * 100).roundToLong()]
+                                    val time = if (timeBetweenProgress == -1L) 0L else System.currentTimeMillis() - timeBetweenProgress
+                                    timeBetweenProgress = System.currentTimeMillis()
+
+                                    val kbs = (amount / 1024f) / (time / 1000f)
+
+                                    mainLabel.text = Localization["screen.upload.uploading",
+                                            current, total, (current.toDouble() / total * 100).roundToLong(),
+                                            if (current >= total) "--" else kbs.roundToInt()]
                                     return super.onContentWriteProgress(amount, current, total)
                                 }
                             })
