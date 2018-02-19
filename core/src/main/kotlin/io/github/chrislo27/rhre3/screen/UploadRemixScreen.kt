@@ -31,7 +31,6 @@ import org.asynchttpclient.request.body.multipart.FilePart
 import org.asynchttpclient.request.body.multipart.StringPart
 import java.io.File
 import java.nio.charset.Charset
-import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
 
@@ -180,18 +179,27 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                     return super.onContentWritten()
                                 }
 
-                                private var timeBetweenProgress: Long = -1L
+                                private val speedUpdateRate = 500L
+                                private var timeBetweenProgress: Long = System.currentTimeMillis()
+                                private var lastSpeed = 0L
+                                private var speedAcc = 0L
 
                                 override fun onContentWriteProgress(amount: Long, current: Long,
                                                                     total: Long): AsyncHandler.State {
-                                    val time = if (timeBetweenProgress == -1L) 0L else System.currentTimeMillis() - timeBetweenProgress
-                                    timeBetweenProgress = System.currentTimeMillis()
+                                    val time = System.currentTimeMillis() - timeBetweenProgress
 
-                                    val kbs = (amount / 1024f) / (time / 1000f)
+                                    speedAcc += amount
+
+                                    if (time >= speedUpdateRate) {
+                                        timeBetweenProgress = System.currentTimeMillis()
+                                        lastSpeed = (speedAcc / (time / 1000f)).roundToLong()
+                                        println("lastspeed $lastSpeed  speedAcc $speedAcc  time $time")
+                                        speedAcc = 0L
+                                    }
 
                                     mainLabel.text = Localization["screen.upload.uploading",
                                             current, total, (current.toDouble() / total * 100).roundToLong(),
-                                            if (current >= total) "--" else kbs.roundToInt()]
+                                            if (current >= total || lastSpeed <= 0) "---" else (lastSpeed / 1024)]
                                     return super.onContentWriteProgress(amount, current, total)
                                 }
                             })
