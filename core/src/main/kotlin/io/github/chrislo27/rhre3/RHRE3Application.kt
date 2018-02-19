@@ -64,6 +64,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         init {
             Colors.put("X", Color.CLEAR)
+            Colors.put("PICOSONG", Color.valueOf("26AB57"))
         }
     }
 
