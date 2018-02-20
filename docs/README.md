@@ -178,3 +178,9 @@ This shows the live audio data as the remix plays.
 This also works in presentation mode.
 
 ![Waveform](readme/waveform.png)
+
+## Glee Club (midis only)
+This shows the tracks of a loaded midi file as Glee Club singers.
+Their heights represent the note they are playing.
+
+![Glee Club singers](https://i.imgur.com/0X3wJae.png)

@@ -890,7 +890,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (otherUI) {
             // midi visualization w/ glee club
-            if (Toolboks.debugMode && remix.midiInstruments > 0) {
+            if (remix.midiInstruments > 0 && ViewType.GLEE_CLUB in views) {
                 // each cell is 88x136 with a 1 px black border
                 val texture = AssetRegistry.get<Texture>("glee_club")
                 val width = 86
