@@ -91,7 +91,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                     }
                     run {
                         batch.color = editor.theme.trackers.musicStart
-                        batch.fillRect(x + remix.tempos.secondsToBeats(remix.musicStartSec) * unitWidth - 0.5f, y, 1f,
+                        batch.fillRect(x + remix.musicStartSec * unitWidth - 0.5f, y, 1f,
                                        pxHeight)
                         val playback = if (remix.playState == PlayState.STOPPED) remix.playbackStart else remix.beat
                         batch.color = editor.theme.trackers.playback

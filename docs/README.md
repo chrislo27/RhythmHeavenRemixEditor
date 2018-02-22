@@ -96,7 +96,7 @@ selections on the track.
 Holding **`LEFT CLICK`** (not on a selected entity) will start a selection.<br/>
 You can hold **`SHIFT`** to make it additive (i.e.: you can add to a
 pre-existing selection). Starting in `v3.1.0`, holding **`CONTROL`** will
-make it an inverted selection.<br>
+make it an inverted/XOR selection.<br>
 **`RIGHT CLICK`** will cancel the selection.
 
 ![Dragging](readme/selectionTool.png)
@@ -114,7 +114,28 @@ cues! This is one example of new functionality added to RHRE3.
 
 Pressing **`BACKSPACE`** or **`DELETE`** with a selection will delete it.
 
-**`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch by semitones, if possible.
+**`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch of any **selected** cues
+ by semitones, if possible.
+
+#### Playback Start
+The Playback Start (default green) tracker will be the starting point of the
+remix each time you play it. This is controlled through **`RIGHT CLICK`**.
+Keep setting this as you build your remix so you can quickly listen to it.
+
+![Playback tracker](https://i.imgur.com/Pl3xOOV.png)
+
+#### Music Start
+The Music Start (default red) tracker is the starting point of the music.
+This is controlled through **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`**.
+If you notice that everything is slightly offbeat, or the music has a period of silence,
+consider moving this tracker backwards so the actual music will start on time.
+
+![Music Start tracker](https://i.imgur.com/qdxWqL1.png)
+
+>Note: As of `v3.7.0`, the Music Start tracker only shows the seconds.
+For each beat on the track, the Music Start tracker will be at that
+value in **seconds**. (Example: putting it where beat 1 is actually puts
+it at second 1.) This change was made to make it more intuitive to use.
 
 ## Multipart Split tool
 The multipart split tool is very simple: **`LEFT`** clicking on a *multipart entity*
@@ -149,7 +170,7 @@ mid-remix as a percentage from 0-200%. Starting in v3.6.0, clicking and
 dragging the ends will allow you to make smooth transitions
 for a perfect fade-out.
 
-![4/4 time signature](https://i.imgur.com/SwG9g8n.png)<br>
+![4/4 time signature](readme/timeSignature.png)<br>
 The **time signature** tool is new in RHRE3. You can change the time signature
 mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage

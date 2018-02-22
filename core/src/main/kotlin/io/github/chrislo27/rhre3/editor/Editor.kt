@@ -509,15 +509,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val borderedFont = main.defaultBorderedFont
             val oldFontColor = borderedFont.color
 
-            fun getTrackerTime(beat: Float): String {
-                val signedSec = remix.tempos.beatsToSeconds(beat)
+            fun getTrackerTime(time: Float, noBeat: Boolean = false): String {
+                val signedSec = if (noBeat) time else remix.tempos.beatsToSeconds(time)
                 val sec = Math.abs(signedSec)
+                val seconds = (if (signedSec < 0) "-" else "") +
+                        TRACKER_MINUTES_FORMATTER.format(
+                                (sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
+                        sec % 60.0)
+                if (noBeat) {
+                    return seconds
+                }
                 return Localization["tracker.any.time",
-                        THREE_DECIMAL_PLACES_FORMATTER.format(beat.toDouble()),
-                        (if (signedSec < 0) "-" else "") +
-                                TRACKER_MINUTES_FORMATTER.format(
-                                        (sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
-                                sec % 60.0)]
+                        THREE_DECIMAL_PLACES_FORMATTER.format(time.toDouble()), seconds]
             }
 
             fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
@@ -563,12 +566,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         remix.playbackStart)
             }
             if (cachedMusicStart.first != remix.musicStartSec) {
-                val beats = remix.tempos.secondsToBeats(remix.musicStartSec)
-                cachedMusicStart = remix.musicStartSec to getTrackerTime(beats)
+                cachedMusicStart = remix.musicStartSec to getTrackerTime(remix.musicStartSec, noBeat = true)
             }
 
             renderAboveTracker("tracker.music", "tracker.music.controls",
-                               1, remix.tempos.secondsToBeats(remix.musicStartSec), theme.trackers.musicStart,
+                               1, remix.musicStartSec, theme.trackers.musicStart,
                                cachedMusicStart.second)
             renderAboveTracker("tracker.playback", "tracker.playback.controls",
                                0, remix.playbackStart, theme.trackers.playback, cachedPlaybackStart.second)
@@ -1150,7 +1152,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 when (clickOccupation) {
                     is ClickOccupation.Music -> {
                         setSubbeatSectionToMouse()
-                        remix.musicStartSec = remix.tempos.beatsToSeconds(nearestSnap)
+                        remix.musicStartSec = nearestSnap
                     }
                     is ClickOccupation.Playback -> {
                         setSubbeatSectionToMouse()
