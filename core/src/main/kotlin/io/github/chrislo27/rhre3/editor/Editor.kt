@@ -1029,14 +1029,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 if (shift) {
                     when (remix.playState) {
-                        PlayState.STOPPED -> remix.playState = PlayState.PLAYING
-                        PlayState.PAUSED -> remix.playState = PlayState.PLAYING
+                        PlayState.STOPPED, PlayState.PAUSED -> remix.playState = PlayState.PLAYING
                         PlayState.PLAYING -> remix.playState = PlayState.PAUSED
                     }
                 } else {
                     when (remix.playState) {
-                        PlayState.STOPPED -> remix.playState = PlayState.PLAYING
-                        PlayState.PAUSED -> remix.playState = PlayState.PLAYING
+                        PlayState.STOPPED, PlayState.PAUSED -> remix.playState = PlayState.PLAYING
                         PlayState.PLAYING -> remix.playState = PlayState.STOPPED
                     }
                 }

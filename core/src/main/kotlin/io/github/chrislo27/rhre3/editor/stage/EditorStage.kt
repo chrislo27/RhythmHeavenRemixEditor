@@ -1232,7 +1232,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     open inner class PlaybackButton(val type: PlayState, palette: UIPalette, parent: UIElement<EditorScreen>,
                                     stage: Stage<EditorScreen>)
-        : Button<EditorScreen>(palette, parent, stage) {
+        : Button<EditorScreen>(palette, parent, stage), HasHoverText {
 
         private fun updateEnabledness() {
             this.enabled = false
@@ -1241,6 +1241,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 PlayState.PAUSED -> if (type != PlayState.PAUSED) enabled = true
                 PlayState.PLAYING -> if (type != PlayState.PLAYING) enabled = true
             }
+        }
+
+        override fun getHoverText(): String {
+            return Localization[when (type) {
+                PlayState.STOPPED -> "editor.stop"
+                PlayState.PAUSED -> "editor.pause"
+                PlayState.PLAYING -> "editor.play"
+            }]
         }
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
