@@ -1,6 +1,8 @@
 package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -18,10 +20,8 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.ImageLabel
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
+import io.netty.handler.codec.http.cookie.Cookie
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncCompletionHandlerBase
@@ -44,6 +44,8 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         const val PICOSONG_MAIN_URL = "http://picosong.com/"
         const val PICOSONG_TOS_URL = "http://picosong.com/tos"
         const val PICOSONG_AUP_URL = "http://picosong.com/aup"
+        private const val PICOSONG_NEXT_URL = "http://picosong.com/next/"
+        private const val PICOSONG_SKIP_FIELDS_URL = "http://picosong.com/success/"
     }
 
     override val stage: Stage<UploadRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -54,12 +56,22 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         get() = RHRE3Application.httpClient
 
     private val gotoButton: Button<UploadRemixScreen>
+    private val copyButton: Button<UploadRemixScreen>
     @Volatile
-    private var picosongUrl: String? = null
+    private var picosongEditID: String? = null
     private val mainLabel: TextLabel<UploadRemixScreen>
+    private val editStage: Stage<UploadRemixScreen>
+    private val verifyFields: Map<String, TextField<UploadRemixScreen>>
+    private val titleField: TextField<UploadRemixScreen>
+    private val artistField: TextField<UploadRemixScreen>
+    private val albumField: TextField<UploadRemixScreen>
+    private val yearField: TextField<UploadRemixScreen>
+    private val trackField: TextField<UploadRemixScreen>
+    private val genreField: TextField<UploadRemixScreen>
 
     init {
         stage as GenericStage
+        verifyFields = mutableMapOf()
         val palette = main.uiPalette
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_update"))
         stage.titleLabel.text = "screen.upload.title"
@@ -86,39 +98,259 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         }
         stage.centreStage.elements += mainLabel
 
-        gotoButton = object : Button<UploadRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
+        copyButton = object : Button<UploadRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
 
-            private var timeUntilCopyReset = 0.0f
+            private val textLabel: TextLabel<UploadRemixScreen>
+                get() = this.labels.first() as TextLabel
+            private var timeUntilCopyReset = System.currentTimeMillis()
 
             override fun render(screen: UploadRemixScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 super.render(screen, batch, shapeRenderer)
                 if (timeUntilCopyReset > 0) {
-                    timeUntilCopyReset -= Gdx.graphics.deltaTime
-                    if (timeUntilCopyReset <= 0) {
-                        timeUntilCopyReset = 0f
-                        (this.labels.firstOrNull() as? TextLabel?)?.text = "screen.upload.button"
+                    if (System.currentTimeMillis() > timeUntilCopyReset) {
+                        timeUntilCopyReset = 0L
+                        textLabel.text = "screen.upload.finalize.button"
                     }
                 }
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                picosongUrl?.let(Gdx.net::openURI)
-            }
-
-            override fun onRightClick(xPercent: Float, yPercent: Float) {
-                super.onRightClick(xPercent, yPercent)
-                picosongUrl?.let {
-                    Gdx.app.clipboard.contents = it
-                    (this.labels.firstOrNull() as? TextLabel?)?.text = "screen.upload.button.copied"
-                    timeUntilCopyReset = 2f
+                if (!picosongEditID.isNullOrBlank()) {
+                    Gdx.app.clipboard.contents = PICOSONG_SKIP_FIELDS_URL + picosongEditID + "/"
+                    timeUntilCopyReset = System.currentTimeMillis() + 2000L
+                    textLabel.text = "screen.upload.copied"
                 }
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
-                this.text = "screen.upload.button"
+                this.text = "screen.upload.finalize.button"
+            })
+
+            this.visible = false
+
+            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
+        }
+        stage.bottomStage.elements += copyButton
+
+        // Edit stage + fields + labels
+        editStage = object : Stage<UploadRemixScreen>(stage.centreStage, stage.centreStage.camera) {
+            override fun keyTyped(character: Char): Boolean {
+                if (character == '\t') {
+                    val list = verifyFields.values.toList()
+                    val indexOfFocused = list.indexOfFirst(TextField<UploadRemixScreen>::hasFocus)
+                    if (indexOfFocused == -1) {
+                        list.first().hasFocus = true
+                    } else if (indexOfFocused >= list.size - 1) {
+                        list.forEach {
+                            it.hasFocus = false
+                        }
+                    } else {
+                        list[indexOfFocused].hasFocus = false
+                        list[indexOfFocused + 1].hasFocus = true
+                    }
+                    return true
+                }
+
+                return super.keyTyped(character)
+            }
+        }
+        editStage.visible = false
+        stage.centreStage.elements += editStage
+
+        // Description label
+        val descHeight = 0.25f
+        editStage.elements += TextLabel(palette, editStage, editStage).apply {
+            this.isLocalizationKey = true
+            this.textAlign = Align.center
+            this.text = "screen.upload.edit"
+            this.location.set(screenX = 0f, screenY = 1f - descHeight, screenWidth = 1f, screenHeight = descHeight)
+        }
+
+        // Labels
+        val labelList = listOf("title", "artist", "album", "year", "track", "genre")
+        val labelWidth = 0.2f
+        val labelPadding = 0.05f
+        val labelHeight = (1f - descHeight) / labelList.size
+        labelList.forEachIndexed { index, type ->
+            editStage.elements += TextLabel(palette, editStage, editStage).apply {
+                this.isLocalizationKey = true
+                this.textAlign = Align.right
+                this.text = "screen.upload.edit.$type"
+                this.location.set(screenX = 0f, screenY = 1f - descHeight - labelHeight * (index + 1),
+                                  screenWidth = labelWidth - labelPadding, screenHeight = labelHeight)
+                this.textColor = Color.LIGHT_GRAY
+            }
+        }
+
+        // Fields
+        val fieldHeight = labelHeight * 0.8f
+        val fieldGap = (1f - fieldHeight / labelHeight) / 2 * labelHeight
+        val fieldPalette = palette.copy(backColor = Color(0.25f, 0.25f, 0.25f, 1f))
+
+        titleField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 300
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 1 + fieldGap,
+                              screenWidth = 0.75f, screenHeight = fieldHeight)
+        }
+        artistField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 300
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 2 + fieldGap,
+                              screenWidth = 0.75f, screenHeight = fieldHeight)
+        }
+        albumField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 300
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 3 + fieldGap,
+                              screenWidth = 0.75f, screenHeight = fieldHeight)
+        }
+        yearField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 6 // value must be less or equal to 999999
+            this.canTypeText = Char::isDigit
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 4 + fieldGap,
+                              screenWidth = 0.75f / 2, screenHeight = fieldHeight)
+        }
+        trackField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 20
+            this.canTypeText = { it.isDigit() || it == '/' || it == ' ' }
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 5 + fieldGap,
+                              screenWidth = 0.75f / 2, screenHeight = fieldHeight)
+        }
+        genreField = TextField(fieldPalette, editStage, editStage).apply {
+            this.canPaste = true
+            this.background = true
+            this.characterLimit = 300
+
+            this.location.set(screenX = labelWidth, screenY = 1f - descHeight - labelHeight * 6 + fieldGap,
+                              screenWidth = 0.75f / 2, screenHeight = fieldHeight)
+        }
+
+        verifyFields["title"] = titleField
+        verifyFields["artist"] = artistField
+        verifyFields["album"] = albumField
+        verifyFields["year"] = yearField
+        verifyFields["track"] = trackField
+        verifyFields["genre"] = genreField
+        editStage.elements.addAll(verifyFields.values)
+
+        editStage.elements += object : Button<UploadRemixScreen>(palette, editStage, editStage) {
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                clearAllFields()
+                verifyFields.values.also {
+                    it.forEach { it.hasFocus = false }
+                    it.first().hasFocus = true
+                }
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.upload.edit.clearAll"
+            })
+
+            this.location.set(screenX = labelWidth + 0.45f, screenY = 1f - descHeight - labelHeight * 6,
+                              screenWidth = 0.3f, screenHeight = fieldHeight * 2)
+        }
+
+        // Save and go to URL button
+        gotoButton = object : Button<UploadRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
+
+            private val textLabel: TextLabel<UploadRemixScreen>
+                get() = this.labels.first() as TextLabel
+            private val fieldsNotBlank by lazy { "screen.upload.save" to Colors.get("PICOSONG") }
+            private val fieldsBlank by lazy { "screen.upload.save.blank" to Colors.get("LIGHT_GRAY") }
+
+            override fun render(screen: UploadRemixScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                super.render(screen, batch, shapeRenderer)
+                if (areFieldsEmpty()) {
+                    textLabel.text = fieldsBlank.first
+                    textLabel.textColor = fieldsBlank.second
+                } else {
+                    textLabel.text = fieldsNotBlank.first
+                    textLabel.textColor = fieldsNotBlank.second
+                }
+            }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (!picosongEditID.isNullOrBlank() && !isUploading) {
+                    if (areFieldsEmpty()) {
+                        Gdx.net.openURI(PICOSONG_SKIP_FIELDS_URL + picosongEditID + "/")
+                        this.visible = false
+                        editStage.visible = false
+
+                        copyButton.visible = true
+                        mainLabel.text = Localization["screen.upload.finalize"]
+                    } else {
+                        this.visible = false
+                        editStage.visible = false
+
+                        mainLabel.text = Localization["screen.upload.edit.finishing"]
+                        isUploading = true
+                        launch(CommonPool) {
+                            val (csrfmiddlewaretoken, cookies) = getCsrfTokenAndGetCookies()
+
+                            val req = http.preparePost(PICOSONG_NEXT_URL + picosongEditID + "/")
+                                    .addHeader("Accept", "application/json, text/javascript, */*")
+                                    .addHeader("Accept-Encoding", "gzip, deflate")
+                                    .addHeader("Accept-Language", "en-US,en;q=0.5")
+                                    .addHeader("Connection", "keep-alive")
+                                    .addHeader("Host", "picosong.com")
+                                    .addHeader("Referer", "http://picosong.com/")
+                                    .addHeader("User-Agent", PICOSONG_USER_AGENT)
+                                    .addHeader("X-Requested-With", "XMLHttpRequest")
+                                    .setCookies(cookies)
+                                    .addFormParam("csrfmiddlewaretoken", "$csrfmiddlewaretoken")
+
+                            verifyFields.entries.forEach {
+//                                if (it.value.text.isNotBlank())
+                                    req.addFormParam(it.key, it.value.text)
+                            }
+
+                            try {
+                                val res = req.execute().get()
+
+                                if (res.statusCode == 302) {
+                                    val location = res.headers["Location"] ?: error("Redirect location header not found:\n$res")
+                                    copyButton.visible = true
+                                    mainLabel.text = Localization["screen.upload.finalize"]
+                                    Gdx.net.openURI(location)
+                                } else {
+                                    error("Bad status code (not 302):\n$res")
+                                }
+                            } catch (t: Throwable) {
+                                t.printStackTrace()
+                                mainLabel.text = Localization["screen.upload.failed", t.javaClass.name, t.message]
+                            } finally {
+                                isUploading = false
+                            }
+                        }
+                    }
+                }
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.upload.save"
             })
 
             this.visible = false
@@ -137,6 +369,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
     override fun show() {
         super.show()
+
         if (!isUploading) {
             isUploading = true
 
@@ -153,11 +386,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                             ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
                 }
                 try {
-                    val initial = http.prepareGet(PICOSONG_MAIN_URL)
-                            .execute().get()
-
-                    val cookies = initial.cookies
-                    val csrfmiddlewaretoken = cookies.find { it.name() == "csrftoken" }?.value()
+                    val (csrfmiddlewaretoken, cookies) = getCsrfTokenAndGetCookies()
 
                     val upload = http.preparePost(PICOSONG_UPLOAD_URL)
                             .addHeader("Accept", "application/json, text/javascript, */*")
@@ -175,10 +404,6 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                                 ))
                             .setCookies(cookies)
                             .execute(object : AsyncCompletionHandlerBase() {
-                                override fun onContentWritten(): AsyncHandler.State {
-                                    return super.onContentWritten()
-                                }
-
                                 private val speedUpdateRate = 500L
                                 private var timeBetweenProgress: Long = System.currentTimeMillis()
                                 private var lastSpeed = 0L
@@ -208,12 +433,12 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
                     if (result["status"]?.asText(null) == "success") {
                         val redirectStr = result["redirect"]?.asText(null) ?: error("No redirect url given!")
-                        val redirectUrl = PICOSONG_MAIN_URL + redirectStr.substring(1) // Remove first /
+                        picosongEditID = redirectStr.substring(6) // Remove "/next/" from start
 
-                        mainLabel.text = Localization["screen.upload.done", redirectUrl]
-                        picosongUrl = redirectUrl
+                        mainLabel.text = ""
                         gotoButton.visible = true
-//                        Gdx.net.openURI(redirectUrl)
+                        clearAllFields()
+                        editStage.visible = true
                     } else {
                         error("Non-successful result:\n${upload.responseBody}")
                     }
@@ -230,10 +455,35 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         }
     }
 
+    private fun getCsrfTokenAndGetCookies(): Pair<String?, List<Cookie>> {
+        val initial = http.prepareGet(PICOSONG_MAIN_URL)
+                .execute().get()
+
+        val cookies = initial.cookies
+        val csrfmiddlewaretoken = cookies.find { it.name() == "csrftoken" }?.value()
+
+        return csrfmiddlewaretoken to cookies
+    }
+
+    private fun clearAllFields() {
+        verifyFields.forEach { it.value.text = "" }
+    }
+
+    private fun areFieldsEmpty(): Boolean {
+        return verifyFields.all { it.value.text.isBlank() }
+    }
+
     override fun tickUpdate() {
     }
 
     override fun dispose() {
     }
 
+    override fun hide() {
+        super.hide()
+        editStage.visible = false
+        clearAllFields()
+        gotoButton.visible = false
+        copyButton.visible = false
+    }
 }
