@@ -249,6 +249,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         verifyFields["genre"] = genreField
         editStage.elements.addAll(verifyFields.values)
 
+        // Clear all fields
         editStage.elements += object : Button<UploadRemixScreen>(palette, editStage, editStage) {
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -266,8 +267,8 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                 this.text = "screen.upload.edit.clearAll"
             })
 
-            this.location.set(screenX = labelWidth + 0.45f, screenY = 1f - descHeight - labelHeight * 6,
-                              screenWidth = 0.3f, screenHeight = fieldHeight * 2)
+            this.location.set(screenX = labelWidth + 0.4f, screenY = 1f - descHeight - labelHeight * 6 + fieldGap,
+                              screenWidth = 0.35f, screenHeight = labelHeight * 2 - fieldGap * 2)
         }
 
         // Save and go to URL button
