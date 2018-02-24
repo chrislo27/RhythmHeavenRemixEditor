@@ -10,6 +10,7 @@ public version of RHRE3.
 
 ### **RHRE3 (most current)**
 * [README](README.md)
+* [Toolbar](Toolbar.md)
 * [Crediting RHRE3](Crediting.md)
 * [Themes](Themes.md)
 * [`OutOfMemoryError` when loading music](Out-of-memory-on-music.md)

@@ -44,9 +44,6 @@ game that has a consistent pattern. By *stretching* this entity, you can
 make constant beats without laying down multiple patterns.
 
 ## Controls
-If you are familiar with RHRE2's controls, you should have no problem
-with RHRE3.
-
 ### Generic keystrokes
 **`SPACEBAR`** - Play/stop remix<br/>
 **`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
@@ -62,6 +59,7 @@ with RHRE3.
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
+<br>For more info, [**see this page**](Toolbar.md).
 
 On the bottom half of the screen, you will see icons for each
 game on the left, and patterns and cues for the selected
