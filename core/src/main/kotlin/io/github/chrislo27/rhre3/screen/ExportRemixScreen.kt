@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import com.tulskiy.musique.audio.Encoder
+import com.tulskiy.musique.audio.formats.flac.FLACEncoder
 import com.tulskiy.musique.audio.formats.ogg.VorbisEncoder
 import de.sciss.jump3r.Main
 import io.github.chrislo27.rhre3.PreferenceKeys
@@ -13,6 +15,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.OGG_VORBIS
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
@@ -77,7 +80,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private var picosongFunc: (() -> UploadRemixScreen)? = null
 
     private enum class ExportFileType(val extension: String) {
-        WAV("wav"), MP3("mp3"), OGG_VORBIS("ogg");
+        WAV("wav"), MP3("mp3"), OGG_VORBIS("ogg"), FLAC("flac");
 
         companion object {
             val VALUES: List<ExportFileType> by lazy { values().toList() }
@@ -90,7 +93,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
                         ?: getDefaultDirectory()
                 val key = "screen.export.fileFilter"
-                val extensions = arrayOf("*.wav", "*.mp3", "*.ogg")
+                val extensions = arrayOf("*.wav", "*.mp3", "*.ogg", "*.flac")
 
                 this.extensionFilters.clear()
                 val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
@@ -187,6 +190,7 @@ class ExportRemixScreen(main: RHRE3Application)
             WAV -> 1
             MP3 -> 2
             OGG_VORBIS -> 2
+            FLAC -> 2
         }
 
         fun updateProgress(localization: String, localPercent: Int, stage: Int) {
@@ -248,12 +252,17 @@ class ExportRemixScreen(main: RHRE3Application)
                         }
                         main.run(args)
                     }
-                    OGG_VORBIS -> {
-                        val encoder = VorbisEncoder()
+                    OGG_VORBIS, FLAC -> {
+                        val pair: Pair<Encoder, String> = when (fileType) {
+                            OGG_VORBIS -> VorbisEncoder() to "oggvorbis"
+                            FLAC -> FLACEncoder() to "flac"
+                            else -> error("Unsupported encoder for file type $fileType")
+                        }
+                        val encoder: Encoder = pair.first
                         if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false), null))
-                            error("Failed to open vorbis encoder")
+                            error("Failed to open $fileType encoder")
 
-                        val buffer: ByteArray = ByteArray(2048)
+                        val buffer: ByteArray = ByteArray(8192)
                         val stream = recorderFile.inputStream()
                         val fileSize = recorderFile.length()
                         var bytesRead = 0L
@@ -261,7 +270,7 @@ class ExportRemixScreen(main: RHRE3Application)
                         var bytes = stream.read(buffer)
 
                         fun updateLabel() {
-                            updateProgress("oggvorbis", (bytesRead.toDouble() / fileSize * 100).roundToInt(), 2)
+                            updateProgress(pair.second, (bytesRead.toDouble() / fileSize * 100).roundToInt(), 2)
                         }
 
                         while (bytes >= 4) {
