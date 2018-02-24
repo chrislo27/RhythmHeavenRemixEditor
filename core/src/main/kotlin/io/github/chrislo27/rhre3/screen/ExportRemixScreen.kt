@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import com.tulskiy.musique.audio.formats.ogg.VorbisEncoder
 import de.sciss.jump3r.Main
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
@@ -12,6 +13,9 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
+import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.OGG_VORBIS
+import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.MAX_PICOSONG_BYTES
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_AUP_URL
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_TOS_URL
@@ -44,6 +48,8 @@ import net.beadsproject.beads.ugens.RecordToFile
 import java.io.File
 import java.util.*
 import javax.sound.sampled.AudioFileFormat
+import javax.sound.sampled.AudioFormat
+import kotlin.math.roundToInt
 
 
 class ExportRemixScreen(main: RHRE3Application)
@@ -71,7 +77,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private var picosongFunc: (() -> UploadRemixScreen)? = null
 
     private enum class ExportFileType(val extension: String) {
-        WAV("wav"), MP3("mp3");
+        WAV("wav"), MP3("mp3"), OGG_VORBIS("ogg");
 
         companion object {
             val VALUES: List<ExportFileType> by lazy { values().toList() }
@@ -84,7 +90,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
                         ?: getDefaultDirectory()
                 val key = "screen.export.fileFilter"
-                val extensions = arrayOf("*.wav", "*.mp3")
+                val extensions = arrayOf("*.wav", "*.mp3", "*.ogg")
 
                 this.extensionFilters.clear()
                 val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
@@ -178,8 +184,9 @@ class ExportRemixScreen(main: RHRE3Application)
         }
 
         val maxProgressStages: Int = when (fileType) {
-            ExportRemixScreen.ExportFileType.WAV -> 1
-            ExportRemixScreen.ExportFileType.MP3 -> 2
+            WAV -> 1
+            MP3 -> 2
+            OGG_VORBIS -> 2
         }
 
         fun updateProgress(localization: String, localPercent: Int, stage: Int) {
@@ -199,7 +206,7 @@ class ExportRemixScreen(main: RHRE3Application)
         context.out.clearDependents()
 
         // prep recorder
-        val recorderFile = if (fileType != ExportFileType.WAV)
+        val recorderFile = if (fileType != WAV)
             File.createTempFile("rhre3-export-tmp-${System.currentTimeMillis()}", ".wav").apply {
                 this.deleteOnExit()
             } else file
@@ -227,10 +234,10 @@ class ExportRemixScreen(main: RHRE3Application)
 
             if (success) {
                 when (fileType) {
-                    ExportFileType.WAV -> {
+                    WAV -> {
                         // nothing
                     }
-                    ExportFileType.MP3 -> {
+                    MP3 -> {
                         val args = arrayOf("-q", "3", "--ignore-tag-errors",
                                            "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
                                            recorderFile.path, file.path)
@@ -240,6 +247,36 @@ class ExportRemixScreen(main: RHRE3Application)
                             updateProgress("mp3", percent, 2)
                         }
                         main.run(args)
+                    }
+                    OGG_VORBIS -> {
+                        val encoder = VorbisEncoder()
+                        if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false), null))
+                            error("Failed to open vorbis encoder")
+
+                        val buffer: ByteArray = ByteArray(2048)
+                        val stream = recorderFile.inputStream()
+                        val fileSize = recorderFile.length()
+                        var bytesRead = 0L
+                        stream.skip(44L)
+                        var bytes = stream.read(buffer)
+
+                        fun updateLabel() {
+                            updateProgress("oggvorbis", (bytesRead.toDouble() / fileSize * 100).roundToInt(), 2)
+                        }
+
+                        while (bytes >= 4) {
+                            bytesRead += bytes
+                            encoder.encode(buffer, bytes)
+                            bytes = stream.read(buffer)
+
+                            updateLabel()
+                        }
+
+                        bytesRead = fileSize
+                        updateLabel()
+
+                        stream.close()
+                        encoder.close()
                     }
                 }
             }
@@ -344,14 +381,14 @@ class ExportRemixScreen(main: RHRE3Application)
                                 file
                             val fileType = ExportFileType.VALUES.firstOrNull {
                                 it.extension == file.extension.toLowerCase(Locale.ROOT)
-                            } ?: ExportFileType.WAV
+                            } ?: WAV
 
                             export(correctFile, fileType)
 
-                            val canUploadToPicosong = fileType == ExportFileType.MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
+                            val canUploadToPicosong = fileType == MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
 
                             mainLabel.text = Localization[
-                                    if (fileType == ExportFileType.MP3)
+                                    if (fileType == MP3)
                                         (if (correctFile.length() <= MAX_PICOSONG_BYTES)
                                             "screen.export.success.picosong.yes"
                                         else "screen.export.success.picosong.no")
