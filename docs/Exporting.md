@@ -15,6 +15,3 @@ and [Acceptable Use Policy](https://picosong.com/aup) apply.
 You could also simply distribute the `rhre3` file.
 Other people with the program can open them and listen to it, but is
 far less convenient (especially in version mismatches).
-
-The last alternative is to record it in [Audacity](http://www.audacityteam.org/).
-Setting up Audacity to record program audio is beyond the scope of this doc page.
