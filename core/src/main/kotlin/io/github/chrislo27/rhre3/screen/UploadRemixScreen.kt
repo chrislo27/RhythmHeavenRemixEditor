@@ -172,7 +172,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         // Labels
         val labelList = listOf("title", "artist", "album", "year", "track", "genre")
         val labelWidth = 0.2f
-        val labelPadding = 0.05f
+        val labelPadding = 0.025f
         val labelHeight = (1f - descHeight) / labelList.size
         labelList.forEachIndexed { index, type ->
             editStage.elements += TextLabel(palette, editStage, editStage).apply {
