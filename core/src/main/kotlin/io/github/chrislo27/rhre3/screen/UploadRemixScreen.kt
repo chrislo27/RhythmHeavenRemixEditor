@@ -213,7 +213,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                         mainLabel.text = Localization["screen.upload.done", redirectUrl]
                         picosongUrl = redirectUrl
                         gotoButton.visible = true
-                        Gdx.net.openURI(redirectUrl)
+//                        Gdx.net.openURI(redirectUrl)
                     } else {
                         error("Non-successful result:\n${upload.responseBody}")
                     }
