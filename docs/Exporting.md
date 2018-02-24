@@ -4,7 +4,8 @@ So, you've made your remix and it's all ready to go. How do you distribute it?
 
 **Starting in `v3.3.0`**, you can now export remixes as WAV files directly.<br>
 **Starting in `v3.5.0`**, you can now also export to MP3.<br>
-**Starting in `v3.7.0`**, you can now directly upload exported MP3 files to [picosong](https://picosong.com)!
+**Starting in `v3.7.0`**, you can now directly upload exported MP3 files to [picosong](https://picosong.com)!<br>
+**Starting in `v3.7.0`**, you can now also export to OGG (Vorbis) and FLAC.<br>
 
 >The prompt for picosong uploads will only appear if you exported
 the remix as an mp3 file. The maximum file size is 15 MB. picosong's
@@ -16,5 +17,4 @@ Other people with the program can open them and listen to it, but is
 far less convenient (especially in version mismatches).
 
 The last alternative is to record it in [Audacity](http://www.audacityteam.org/).
-Setting up Audacity to record program audio is beyond the scope of this doc page,
-and can be Googled easily.
+Setting up Audacity to record program audio is beyond the scope of this doc page.

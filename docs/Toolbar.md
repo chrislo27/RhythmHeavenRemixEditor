@@ -24,7 +24,7 @@ The **Save Remix** button will ask you where to save your remix.
 ## Exporting
 ![Export button](readme/toolbar/export.png)
 
-This will allow you to export your remixes as either WAV or MP3
+This will allow you to export your remixes as WAV, MP3, OGG (Vorbis), or FLAC
 files, as long as you have placed an End Remix entity.
 If you export the remix as an MP3, you can upload directly
 to [picosong](http://picosong.com) afterwards too.
