@@ -193,7 +193,6 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                     if (time >= speedUpdateRate) {
                                         timeBetweenProgress = System.currentTimeMillis()
                                         lastSpeed = (speedAcc / (time / 1000f)).roundToLong()
-                                        println("lastspeed $lastSpeed  speedAcc $speedAcc  time $time")
                                         speedAcc = 0L
                                     }
 
