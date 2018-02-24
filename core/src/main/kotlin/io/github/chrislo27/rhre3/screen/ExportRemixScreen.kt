@@ -259,7 +259,7 @@ class ExportRemixScreen(main: RHRE3Application)
                             else -> error("Unsupported encoder for file type $fileType")
                         }
                         val encoder: Encoder = pair.first
-                        if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false), null))
+                        if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false)))
                             error("Failed to open $fileType encoder")
 
                         val buffer: ByteArray = ByteArray(8192)
