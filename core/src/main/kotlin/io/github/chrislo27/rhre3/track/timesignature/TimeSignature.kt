@@ -13,9 +13,11 @@ class TimeSignature(val container: TimeSignatures, val beat: Int, divisions: Int
         set(value) {
             field = value.coerceIn(LOWER_LIMIT, UPPER_LIMIT)
         }
+
     init {
         this.divisions = divisions
     }
+
     var measure: Int = 0
     val lowerText: String = FOUR
     val upperText: String = "${this.divisions}"

@@ -55,7 +55,8 @@ class RegistryLoadingScreen(main: RHRE3Application)
             add(gameTitle)
         }
 
-        stage.bottomStage.elements += object : Button<RegistryLoadingScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
+        stage.bottomStage.elements += object : Button<RegistryLoadingScreen>(main.uiPalette, stage.bottomStage,
+                                                                             stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 Gdx.net.openURI(RHRE3.DATABASE_RELEASES)

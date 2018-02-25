@@ -122,7 +122,8 @@ class EditorVersionScreen(main: RHRE3Application)
         timeOnScreen = 0f
         if (isBeginning) {
             stage.backButton.enabled = false
-            timeToStayOnScreen = (-3f / (main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1) + 1).coerceAtLeast(1)) + 3f
+            timeToStayOnScreen = (-3f / (main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE,
+                                                                     1) + 1).coerceAtLeast(1)) + 3f
         }
         label.text = ""
     }

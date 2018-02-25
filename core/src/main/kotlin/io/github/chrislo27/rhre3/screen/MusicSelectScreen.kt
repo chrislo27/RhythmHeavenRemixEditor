@@ -34,8 +34,10 @@ class MusicSelectScreen(main: RHRE3Application)
         get() = editorScreen.editor
     override val stage: Stage<MusicSelectScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    @Volatile private var isChooserOpen = false
-    @Volatile private var isLoading = false
+    @Volatile
+    private var isChooserOpen = false
+    @Volatile
+    private var isLoading = false
     private val mainLabel: TextLabel<MusicSelectScreen>
 
     private fun createFileChooser() =

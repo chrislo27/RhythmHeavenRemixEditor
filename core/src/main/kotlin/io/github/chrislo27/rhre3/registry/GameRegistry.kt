@@ -124,19 +124,19 @@ object GameRegistry : Disposable {
             val custom = CUSTOM_FOLDER.list { fh ->
                 fh.isDirectory
             }.mapNotNull {
-                if (it.child("data.json").exists()) {
-                    return@mapNotNull it
-                }
-                val sfx = it.list { file: File ->
-                    file.extension in RHRE3.SUPPORTED_SOUND_TYPES
-                }
+                        if (it.child("data.json").exists()) {
+                            return@mapNotNull it
+                        }
+                        val sfx = it.list { file: File ->
+                            file.extension in RHRE3.SUPPORTED_SOUND_TYPES
+                        }
 
-                if (sfx.isEmpty()) {
-                    return@mapNotNull null
-                } else {
-                    return@mapNotNull it
-                }
-            }.toList()
+                        if (sfx.isEmpty()) {
+                            return@mapNotNull null
+                        } else {
+                            return@mapNotNull it
+                        }
+                    }.toList()
 
             list.map { SfxDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
                     custom.map { SfxDirectory(it, true, it.child(DATA_JSON_FILENAME)) }
@@ -224,8 +224,8 @@ object GameRegistry : Disposable {
                             }
                         }
                     }.forEach {
-                        it.join()
-                    }
+                                it.join()
+                            }
                 }
             }
 
@@ -366,7 +366,8 @@ object GameRegistry : Disposable {
                 if (isOverwriting) {
                     Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
                 } else if (existingGame.isCustom && !game.isCustom) {
-                    Toolboks.LOGGER.info("Ignoring non-custom game ${game.id} because a custom game already exists with the same ID")
+                    Toolboks.LOGGER.info(
+                            "Ignoring non-custom game ${game.id} because a custom game already exists with the same ID")
                 } else {
                     error("Duplicate game: ${game.id}")
                 }

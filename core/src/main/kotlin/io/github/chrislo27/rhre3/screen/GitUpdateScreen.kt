@@ -33,8 +33,10 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     override val stage: Stage<GitUpdateScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<GitUpdateScreen>
-    @Volatile private var repoStatus: RepoStatus = RepoStatus.UNKNOWN
-    @Volatile private var coroutine: Job? = null
+    @Volatile
+    private var repoStatus: RepoStatus = RepoStatus.UNKNOWN
+    @Volatile
+    private var coroutine: Job? = null
     private val spinner: LoadingIcon<GitUpdateScreen>
 
     init {
@@ -104,7 +106,8 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
                         val current = JsonHandler.fromJson<CurrentObject>(
-                                RHRE3Application.httpClient.prepareGet(RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
+                                RHRE3Application.httpClient.prepareGet(
+                                        RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
                         val ver: Version = Version.fromString(current.requiresVersion)
 
                         Toolboks.LOGGER.info(
@@ -251,9 +254,9 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         spinner.visible = repoStatus == RepoStatus.DOING
 
         if ((Gdx.input.isKeyJustPressed(Input.Keys.ENTER)
-                && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
+                        && (repoStatus == RepoStatus.NO_INTERNET_CAN_CONTINUE))
                 || repoStatus == RepoStatus.DONE || (RHRE3.DATABASE_BRANCH == RHRE3.DEV_DATABASE_BRANCH
-                && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))) {
+                        && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))) {
             coroutine?.cancel()
             coroutine = null
             toNextScreen()

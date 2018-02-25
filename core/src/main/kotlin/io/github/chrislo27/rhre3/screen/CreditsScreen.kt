@@ -55,25 +55,26 @@ class CreditsScreen(main: RHRE3Application)
                     shapeRenderer.rect(location.realX, location.realY, location.realWidth, location.realHeight)
                     shapeRenderer.end()
                 }.useStencilMask {
-                    font.setColor(1f, 1f, 1f, 1f)
+                            font.setColor(1f, 1f, 1f, 1f)
 
-                    val multiplier = (Gdx.graphics.height.toFloat() / RHRE3.HEIGHT)
+                            val multiplier = (Gdx.graphics.height.toFloat() / RHRE3.HEIGHT)
 
-                    for (i in -1..1) {
-                        val y = location.realY + location.realHeight * 0.125f + (scroll % maxScroll) - maxScroll * i
-                        val textHeight = font.getTextHeight(text, location.realWidth, true)
+                            for (i in -1..1) {
+                                val y = location.realY + location.realHeight * 0.125f + (scroll % maxScroll) - maxScroll * i
+                                val textHeight = font.getTextHeight(text, location.realWidth, true)
 
-                        font.draw(batch, text, location.realX,
-                                  y,
-                                  location.realWidth, Align.center, true)
+                                font.draw(batch, text, location.realX,
+                                          y,
+                                          location.realWidth, Align.center, true)
 
-                        batch.setColor(1f, 1f, 1f, 1f)
-                        val logo = AssetRegistry.get<Texture>("logo_512")
-                        val logoSize = 256f * multiplier
-                        batch.draw(logo, location.realX + location.realWidth / 2 - logoSize / 2, y + 16f * multiplier,
-                                   logoSize, logoSize)
-                    }
-                }
+                                batch.setColor(1f, 1f, 1f, 1f)
+                                val logo = AssetRegistry.get<Texture>("logo_512")
+                                val logoSize = 256f * multiplier
+                                batch.draw(logo, location.realX + location.realWidth / 2 - logoSize / 2,
+                                           y + 16f * multiplier,
+                                           logoSize, logoSize)
+                            }
+                        }
             }
         }.apply {
 

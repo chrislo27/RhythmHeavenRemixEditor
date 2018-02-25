@@ -344,10 +344,10 @@ $id/thwack"""
                         } else if (it.endsWith("cloud2")) {
                             2f
                         } else if (it.contains("bom") || it.contains(
-                                "don")) {
+                                        "don")) {
                             1.5f
                         } else if (it.contains("turn") || it.contains(
-                                "spin")) {
+                                        "spin")) {
                             1f
                         } else {
                             0.5f

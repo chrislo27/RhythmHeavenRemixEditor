@@ -15,7 +15,8 @@ import java.util.*
 
 
 @Retention(AnnotationRetention.RUNTIME)
-@Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_SETTER, AnnotationTarget.PROPERTY_GETTER)
+@Target(AnnotationTarget.FIELD, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_SETTER,
+        AnnotationTarget.PROPERTY_GETTER)
 @JacksonAnnotationsInside
 @JsonSerialize(using = LibgdxColorSerializer::class)
 @JsonDeserialize(using = LibgdxColorDeserializer::class)

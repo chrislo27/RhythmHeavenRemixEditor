@@ -9,7 +9,8 @@ import java.util.concurrent.ConcurrentHashMap
 class BeadsSound(val audio: BeadsAudio) : Sound {
 
     val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
-    @Volatile private var disposed = false
+    @Volatile
+    private var disposed = false
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()

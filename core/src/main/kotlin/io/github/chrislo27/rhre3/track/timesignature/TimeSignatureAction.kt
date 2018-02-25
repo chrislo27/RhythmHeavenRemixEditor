@@ -4,7 +4,7 @@ import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.track.Remix
 
 
-class TimeSignatureAction(val remix: Remix, val timeSig: TimeSignature, val remove: Boolean): ReversibleAction<Remix> {
+class TimeSignatureAction(val remix: Remix, val timeSig: TimeSignature, val remove: Boolean) : ReversibleAction<Remix> {
 
     private val container: TimeSignatures
         get() = remix.timeSignatures

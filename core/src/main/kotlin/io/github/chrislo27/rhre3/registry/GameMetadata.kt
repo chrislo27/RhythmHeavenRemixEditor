@@ -79,7 +79,8 @@ object GameMetadata {
         }
 
         run {
-            val recentsObj: RecentsObject = JsonHandler.fromJson(preferences.getString(PreferenceKeys.RECENT_GAMES, "{}"))
+            val recentsObj: RecentsObject = JsonHandler.fromJson(
+                    preferences.getString(PreferenceKeys.RECENT_GAMES, "{}"))
             recentsObj.distinctify()
 
             recents.clear()

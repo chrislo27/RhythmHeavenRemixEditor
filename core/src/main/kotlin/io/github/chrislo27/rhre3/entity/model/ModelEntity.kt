@@ -148,8 +148,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : 
                 borderedFont.setColor(1f, 1f, 1f, 1f)
             }
             borderedFont.draw(batch, getTextForSemitone(this.semitone),
-                      x + 2 * remix.editor.toScaleX(BORDER),
-                      y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
+                              x + 2 * remix.editor.toScaleX(BORDER),
+                              y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
             remix.editor.apply {
                 borderedFont.unscaleFont()
             }

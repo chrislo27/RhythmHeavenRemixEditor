@@ -47,21 +47,23 @@ class OpenRemixScreen(main: RHRE3Application)
         get() = editorScreen.editor
     override val stage: Stage<OpenRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    @Volatile private var isChooserOpen = false
+    @Volatile
+    private var isChooserOpen = false
         set(value) {
             field = value
             stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
-    @Volatile private var isLoading = false
-    @Volatile private var isLoadingSounds = false
+    @Volatile
+    private var isLoading = false
+    @Volatile
+    private var isLoadingSounds = false
 
     private enum class RemixType {
         RHRE3, RHRE2, MIDI
     }
 
-    private fun createFileChooser()
-            = FileChooser().apply {
+    private fun createFileChooser() = FileChooser().apply {
         this.initialDirectory = attemptRememberDirectory(main,
                                                          PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
 
@@ -79,7 +81,8 @@ class OpenRemixScreen(main: RHRE3Application)
 
     private val loadButton: LoadButton
     private val mainLabel: TextLabel<OpenRemixScreen>
-    @Volatile private var remix: Remix? = null
+    @Volatile
+    private var remix: Remix? = null
         set(value) {
             field = value
             loadButton.visible = field != null

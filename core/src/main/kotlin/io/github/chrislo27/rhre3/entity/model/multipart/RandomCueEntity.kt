@@ -16,8 +16,8 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
     : MultipartEntity<RandomCue>(remix, datamodel) {
 
     init {
-        bounds.width = datamodel.cues.map(CuePointer::duration).max() ?:
-                error("Datamodel ${datamodel.id} has no internal cues")
+        bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
+                "Datamodel ${datamodel.id} has no internal cues")
     }
 
     private fun getPossibleObjects(): List<Datamodel> {

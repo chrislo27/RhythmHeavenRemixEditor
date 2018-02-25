@@ -115,7 +115,9 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
             FAVOURITES -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     (group.isFavourited && query in group.name.toLowerCase(Locale.ROOT))
-                            || group.games.any { game -> game.isFavourited && query in game.name.toLowerCase(Locale.ROOT) }
+                            || group.games.any { game ->
+                        game.isFavourited && query in game.name.toLowerCase(Locale.ROOT)
+                    }
                 }
 
                 gameGroups.associateTo(gamesPerGroup) {

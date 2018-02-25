@@ -57,7 +57,8 @@ open class Theme : Disposable {
     }
 
     var name: String = Theme.DEFAULT_NAME
-    @field:JsonIgnore open val nameIsLocalization: Boolean = false
+    @field:JsonIgnore
+    open val nameIsLocalization: Boolean = false
 
     fun getRealName(): String =
             if (nameIsLocalization)
@@ -66,9 +67,11 @@ open class Theme : Disposable {
                 name
 
     // main elements
-    @HexColor lateinit var background: Color
+    @HexColor
+    lateinit var background: Color
         protected set
-    @HexColor lateinit var trackLine: Color
+    @HexColor
+    lateinit var trackLine: Color
         protected set
 
     @field:JsonIgnore
@@ -99,10 +102,14 @@ open class Theme : Disposable {
 
     // trackers
     open class TrackersGroup {
-        @HexColor lateinit var playback: Color
-        @HexColor lateinit var musicStart: Color
-        @HexColor lateinit var musicVolume: Color
-        @HexColor lateinit var tempoChange: Color
+        @HexColor
+        lateinit var playback: Color
+        @HexColor
+        lateinit var musicStart: Color
+        @HexColor
+        lateinit var musicVolume: Color
+        @HexColor
+        lateinit var tempoChange: Color
 
         fun applyDefaults() {
             playback = Color(0f, 1f, 0f, 1f)
@@ -116,14 +123,21 @@ open class Theme : Disposable {
         protected set
 
     open class EntitiesGroup {
-        @HexColor lateinit var selectionTint: Color
-        @HexColor lateinit var nameColor: Color
+        @HexColor
+        lateinit var selectionTint: Color
+        @HexColor
+        lateinit var nameColor: Color
 
-        @HexColor lateinit var cue: Color
-        @HexColor lateinit var pattern: Color
-        @HexColor lateinit var special: Color
-        @HexColor lateinit var equidistant: Color
-        @HexColor lateinit var keepTheBeat: Color
+        @HexColor
+        lateinit var cue: Color
+        @HexColor
+        lateinit var pattern: Color
+        @HexColor
+        lateinit var special: Color
+        @HexColor
+        lateinit var equidistant: Color
+        @HexColor
+        lateinit var keepTheBeat: Color
 
         @JsonSetter("subtitle")
         @HexColor
@@ -145,8 +159,10 @@ open class Theme : Disposable {
         protected set
 
     open class SelectionGroup {
-        @HexColor lateinit var selectionFill: Color
-        @HexColor lateinit var selectionBorder: Color
+        @HexColor
+        lateinit var selectionFill: Color
+        @HexColor
+        lateinit var selectionBorder: Color
 
         fun applyDefaults() {
             selectionFill = Color(0.1f, 0.75f, 0.75f, 0.333f)
@@ -164,7 +180,8 @@ open class Theme : Disposable {
 
 open class LightTheme : Theme() {
 
-    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore
+    override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.light"
@@ -193,7 +210,8 @@ open class LightTheme : Theme() {
 
 open class DarkTheme : Theme() {
 
-    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore
+    override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.dark"
@@ -222,7 +240,8 @@ open class DarkTheme : Theme() {
 
 open class RHRE0Theme : Theme() {
 
-    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore
+    override val nameIsLocalization: Boolean = true
 
     init {
         name = "theme.rhre0"
@@ -251,7 +270,8 @@ open class RHRE0Theme : Theme() {
 
 open class BackgroundTheme(name: String, background: Color) : Theme() {
 
-    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore
+    override val nameIsLocalization: Boolean = true
 
     init {
         this.name = name
@@ -281,7 +301,8 @@ open class BackgroundTheme(name: String, background: Color) : Theme() {
 
 open class DarkPastelTheme(name: String, trackLine: Color) : Theme() {
 
-    @field:JsonIgnore override val nameIsLocalization: Boolean = true
+    @field:JsonIgnore
+    override val nameIsLocalization: Boolean = true
 
     init {
         this.name = name

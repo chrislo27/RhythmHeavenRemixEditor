@@ -37,7 +37,8 @@ class SaveRemixScreen(main: RHRE3Application)
         get() = editorScreen.editor
     override val stage: Stage<SaveRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    @Volatile private var isChooserOpen = false
+    @Volatile
+    private var isChooserOpen = false
         set(value) {
             field = value
             stage as GenericStage

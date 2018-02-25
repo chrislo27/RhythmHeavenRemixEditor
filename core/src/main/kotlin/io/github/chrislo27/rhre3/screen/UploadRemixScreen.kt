@@ -322,15 +322,16 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                     .addFormParam("csrfmiddlewaretoken", "$csrfmiddlewaretoken")
 
                             verifyFields.entries.forEach {
-//                                if (it.value.text.isNotBlank())
-                                    req.addFormParam(it.key, it.value.text)
+                                //                                if (it.value.text.isNotBlank())
+                                req.addFormParam(it.key, it.value.text)
                             }
 
                             try {
                                 val res = req.execute().get()
 
                                 if (res.statusCode == 302) {
-                                    val location = res.headers["Location"] ?: error("Redirect location header not found:\n$res")
+                                    val location = res.headers["Location"] ?: error(
+                                            "Redirect location header not found:\n$res")
                                     copyButton.visible = true
                                     mainLabel.text = Localization["screen.upload.finalize"]
                                     Gdx.net.openURI(location)

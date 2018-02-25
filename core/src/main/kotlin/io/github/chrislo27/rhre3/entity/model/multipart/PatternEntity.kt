@@ -31,8 +31,8 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
         }
 
         this.bounds.width = internal
-                .maxBy { it.bounds.x + it.bounds.width }?.run { this.bounds.x + this.bounds.width - this@PatternEntity.bounds.x } ?:
-                error("Nothing in internal cache")
+                .maxBy { it.bounds.x + it.bounds.width }?.run { this.bounds.x + this.bounds.width - this@PatternEntity.bounds.x } ?: error(
+                "Nothing in internal cache")
     }
 
     override fun getRenderColor(): Color {

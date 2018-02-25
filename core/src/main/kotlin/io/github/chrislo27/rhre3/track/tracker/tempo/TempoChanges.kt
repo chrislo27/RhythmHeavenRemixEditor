@@ -59,15 +59,14 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
     }
 
     fun secondsToBeats(seconds: Float): Float {
-        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?:
-                return BpmUtils.secondsToBeats(seconds, defaultTempo)
+        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return BpmUtils.secondsToBeats(seconds,
+                                                                                                             defaultTempo)
 
         return tc.secondsToBeats(seconds)
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        val tc: TempoChange = backingMap.floorEntry(beat)?.value ?:
-                return BpmUtils.beatsToSeconds(beat, defaultTempo)
+        val tc: TempoChange = backingMap.floorEntry(beat)?.value ?: return BpmUtils.beatsToSeconds(beat, defaultTempo)
 
         return tc.beatsToSeconds(beat)
     }

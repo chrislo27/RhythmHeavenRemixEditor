@@ -11,7 +11,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 
 class StatsButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
-                       stage: Stage<EditorScreen>)
+                  stage: Stage<EditorScreen>)
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     init {
