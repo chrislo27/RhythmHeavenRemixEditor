@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
@@ -240,7 +241,9 @@ class OpenRemixScreen(main: RHRE3Application)
                             }
 
                             mainLabel.text += if (remixType == RemixType.MIDI) {
-                                Localization["screen.open.info.midi"]
+                                val noteCue = result.extra["noteCue"] as Datamodel?
+                                val noteCount: Any = if (noteCue == null) "N/A" else remix.entities.count { it is ModelEntity<*> && it.datamodel == noteCue }
+                                Localization["screen.open.info.midi", remix.midiInstruments, noteCount, "${noteCue?.name} (${noteCue?.game?.name})"]
                             } else {
                                 Localization["screen.open.info",
                                         goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),

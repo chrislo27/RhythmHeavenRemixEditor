@@ -56,7 +56,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         val DEFAULT_MIDI_NOTE: String = "gleeClubEn/singLoop"
 
         class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
-                            val isAutosave: Boolean)
+                            val isAutosave: Boolean, val extra: MutableMap<String, Any> = mutableMapOf())
 
         /*
 
@@ -361,7 +361,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         ts
                     }
 
-            return RemixLoadInfo(remix, 0 to 0, false)
+            return RemixLoadInfo(remix, 0 to 0, false).apply {
+                extra["noteCue"] = noteCue
+            }
         }
 
         fun pack(remix: Remix, stream: ZipOutputStream, isAutosave: Boolean) {
