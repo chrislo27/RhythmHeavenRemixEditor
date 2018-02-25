@@ -135,7 +135,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             remix.playbackStart = tree["playbackStart"]?.floatValue() ?: 0f
             remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
 
-            remix.midiInstruments = tree["midiInstruemnts"]?.intValue() ?: 0
+            remix.midiInstruments = tree["midiInstruments"]?.intValue() ?: 0
 
             var missing = 0
             var missingCustom = 0
