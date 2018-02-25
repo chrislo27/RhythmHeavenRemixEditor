@@ -1273,14 +1273,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private val keyText: String by lazy {
             val moddedIndex = tool.index + 1
             when (moddedIndex) {
-                10 -> "[0] "
-                in 1..9 -> "[$moddedIndex] "
+                10 -> " [LIGHT_GRAY][[0][]"
+                in 1..9 -> " [LIGHT_GRAY][[$moddedIndex][]"
                 else -> ""
             }
         }
 
         override fun getHoverText(): String {
-            return keyText + Localization[tool.nameId]
+            return Localization[tool.nameId] + keyText
         }
 
         init {
