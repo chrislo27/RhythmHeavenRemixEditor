@@ -376,9 +376,11 @@ class ExportRemixScreen(main: RHRE3Application)
         if (!isChooserOpen && !isExporting && isCapableOfExporting) {
             Platform.runLater {
                 isChooserOpen = true
+                mainLabel.text = Localization["screen.export.uploadHint"]
                 val fileChooser = createFileChooser()
                 val file: File? = fileChooser.showSaveDialog(null)
                 isChooserOpen = false
+                mainLabel.text = ""
                 if (file != null && main.screen == this) {
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
