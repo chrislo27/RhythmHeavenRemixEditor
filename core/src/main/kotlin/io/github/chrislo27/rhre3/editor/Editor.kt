@@ -755,8 +755,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             fun Tracker<*>.render() {
                 renderTracker(container.renderLayer,
-                              if (toolIsTrackerBased && currentTracker === this && !clickIsTrackerResize) Color.WHITE else getColour(
-                                      theme),
+                              if (toolIsTrackerBased && currentTracker === this
+                                      && !clickIsTrackerResize && remix.playState == PlayState.STOPPED)
+                                  Color.WHITE else getColour(theme),
                               text, beat, width, getSlope())
             }
 
