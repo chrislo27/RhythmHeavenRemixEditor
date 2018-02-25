@@ -10,7 +10,8 @@ Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
 
 ## Requirements
-* [Java 8 or higher](https://java.com/en/download/)
+* [Java 8](https://java.com/en/download/)
+  * Java 9 not supported at the moment
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
