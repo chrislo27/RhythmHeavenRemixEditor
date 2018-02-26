@@ -298,8 +298,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     PreferenceKeys.MIDI_NOTE)] ?: defaultCue
             points.mapTo(remix.entities) { point ->
                 val ent = noteCue.createEntity(remix, null).apply {
+                    if (this is CueEntity) {
+                        instrument = tracksWithNotes.indexOf(point.track.second) + 1
+                    }
+
                     updateBounds {
-                        bounds.set(point.startBeat, point.track.second.toFloat() % Editor.TRACK_COUNT,
+                        bounds.set(point.startBeat, tracksWithNotes.indexOf(point.track.second).toFloat() % Editor.TRACK_COUNT,
                                    point.duration, 1f)
                     }
 
@@ -309,10 +313,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         if (this is CueEntity && semitone < -18) {
                             stopAtEnd = true
                         }
-                    }
-
-                    if (this is CueEntity) {
-                        instrument = tracksWithNotes.indexOf(point.track.second) + 1
                     }
                 }
 
