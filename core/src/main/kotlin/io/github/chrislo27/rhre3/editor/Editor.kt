@@ -1740,14 +1740,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val tool = currentTool
         val control = Gdx.input.isControlDown()
         val shift = Gdx.input.isShiftDown()
-        if (tool == Tool.SELECTION && selection.isNotEmpty()) {
+        if (tool == Tool.SELECTION && selection.isNotEmpty() && !shift) {
             val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
             val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
             val anyChanged = selection.fold(false) { acc, it ->
                 if (it is IRepitchable && it.canBeRepitched) {
                     val current = it.semitone
-                    val new = current + -amount
+                    val new = current + -amount * (if (control) 2 else 1)
                     if (new in it.range) {
                         it.semitone = new
                         return@fold true
@@ -1767,7 +1767,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             return true
-        } else if (tool == Tool.TIME_SIGNATURE) {
+        } else if (tool == Tool.TIME_SIGNATURE && !shift) {
             val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
             if (timeSig != null) {
                 val change = -amount * (if (control) 5 else 1)
@@ -1801,6 +1801,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         remix.mutate(TrackerValueChange(tracker, result))
                     }
                 }
+
+                return true
+            }
+        }
+
+        // Camera scrolling and zoom
+        if (shift) {
+            // Camera scrolling left/right (CTRL/SHIFT+CTRL)
+            val amt = (amount * if (control) 5f else 1f)
+            camera.position.x += amt
+            camera.update()
+
+            return true
+        } else {
+            // Zoom (CTRL)
+            if (control) {
 
                 return true
             }
