@@ -20,6 +20,7 @@ import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.editor.stage.EditorStage.DirtyType
 import io.github.chrislo27.rhre3.editor.view.ViewType
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.areAnyResponseCopyable
@@ -159,6 +160,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field.entities.forEach { it.updateInterpolation(true) }
 
             resetAllSongSubtitles()
+            stage.updateSelected(DirtyType.SEARCH_DIRTY)
         }
     var theme: Theme = LoadedThemes.currentTheme
     val stage: EditorStage = EditorStage(
@@ -1815,7 +1817,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.update()
 
             return true
-
         }
 
         return false
@@ -1872,10 +1873,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return "e: ${remix.entities.count {
             it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
         }} / ${remix.entities.size}\n" +
-                "tr: ${remix.trackers.sumBy { it.map.values.count { it.beat in range || it.endBeat in range } }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
-                "loc: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
+                "tr: ${remix.trackers.sumBy {
+                    it.map.values.count { it.beat in range || it.endBeat in range }
+                }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
+                "pos: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
                         remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
-                        remix.seconds)}\nvol: ${remix.musicVolumes.volumeAt(
-                        remix.beat)}\nmidiinst: ${remix.midiInstruments}"
+                        remix.seconds)}\nmvol: ${remix.musicVolumes.volumeAt(
+                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min"
     }
 }
