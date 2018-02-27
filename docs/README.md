@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.7.0`.
+This readme is up to date with version `v3.7.1`.
 
 ## Launching the program
 After decompressing/unzipping the zip archive, run the
@@ -56,6 +56,7 @@ make constant beats without laying down multiple patterns.
 **`END`** - Jump to last entity/End Remix entity<br>
 **`UP`** or **`W`** - Scroll up (only in editor)<br>
 **`DOWN`** or **`S`** - Scroll down (only in editor)<br>
+**`SHIFT+SCROLL`** - Pan camera (hold **`CTRL`** to increase speed)<br>
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
@@ -113,7 +114,7 @@ cues! This is one example of new functionality added to RHRE3.
 Pressing **`BACKSPACE`** or **`DELETE`** with a selection will delete it.
 
 **`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch of any **selected** cues
- by semitones, if possible.
+ by a semitone, if possible. Holding **`CTRL`** will change it in increments of two.
 
 #### Playback Start
 The Playback Start (default green) tracker will be the starting point of the

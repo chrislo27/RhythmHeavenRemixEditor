@@ -313,7 +313,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val adjustedCameraY: Float
         if (adjustCamera) {
             camera.position.y = 1f
-            camera.zoom = MathUtils.lerp(camera.zoom, if (isGameBoundariesInViews) 1.5f else 1f,
+            camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f),
                                          Gdx.graphics.deltaTime * 6.5f)
 
             if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
@@ -1733,8 +1733,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun scrolled(amount: Int): Boolean {
-        if (remix.playState != PlayState.STOPPED)
+        if (remix.playState != PlayState.STOPPED) {
             return false
+        }
 
         val selection = selection
         val tool = currentTool
@@ -1806,7 +1807,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        // Camera scrolling and zoom
+
         if (shift) {
             // Camera scrolling left/right (CTRL/SHIFT+CTRL)
             val amt = (amount * if (control) 5f else 1f)
@@ -1814,12 +1815,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.update()
 
             return true
-        } else {
-            // Zoom (CTRL)
-            if (control) {
 
-                return true
-            }
         }
 
         return false
