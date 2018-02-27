@@ -92,11 +92,11 @@ class ExportRemixScreen(main: RHRE3Application)
             FileChooser().apply {
                 this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
                         ?: getDefaultDirectory()
-                val key = "screen.export.fileFilter"
-                val extensions = arrayOf("*.wav", "*.mp3", "*.ogg", "*.flac")
+                val formalExtensions = "MP3, OGG, FLAC, WAV"
+                val extensions = arrayOf("*.mp3", "*.ogg", "*.flac", "*.wav")
 
                 this.extensionFilters.clear()
-                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
+                val filter = FileChooser.ExtensionFilter(Localization["screen.export.fileFilter", formalExtensions], *extensions)
 
                 this.extensionFilters += filter
                 this.selectedExtensionFilter = this.extensionFilters.first()
@@ -387,12 +387,12 @@ class ExportRemixScreen(main: RHRE3Application)
                     launch(CommonPool) {
                         try {
                             val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)
-                                file.parentFile.resolve("${file.name}.wav")
+                                file.parentFile.resolve("${file.name}.mp3")
                             else
                                 file
                             val fileType = ExportFileType.VALUES.firstOrNull {
                                 it.extension == file.extension.toLowerCase(Locale.ROOT)
-                            } ?: WAV
+                            } ?: MP3
 
                             export(correctFile, fileType)
 
