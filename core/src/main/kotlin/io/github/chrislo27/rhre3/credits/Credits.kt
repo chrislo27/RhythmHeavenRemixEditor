@@ -32,7 +32,7 @@ object Credits {
                     "Miracle22, mistuh_salmon, Pengu12345, quantic, F Yeah, Rhythm Heaven! Tumblr, " +
                     "Serena Strawberry, Strawzzboy64, The Golden Station, TheGarnet_, TheNewOrchestra, " +
                     "TheRhythmKid, TieSoul, ToonLucas22, Whistler_420" +
-                    "\n(original) /r/rhythmheaven RH Discord Server",
+                    "\nRhythm Heaven and /r/RhythmHeaven Discord servers",
             "resources" crediting
                     "Rhythm Heaven assets by Nintendo\n" +
                     "[#FF8900]Kotlin[] by JetBrains\n" +
