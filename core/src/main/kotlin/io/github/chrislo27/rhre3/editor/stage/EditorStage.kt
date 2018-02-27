@@ -63,6 +63,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val toolButtons: List<ToolButton>
     val gameScrollButtons: List<Button<EditorScreen>>
     val variantScrollButtons: List<Button<EditorScreen>>
+    val datamodelScrollButtons: List<Button<EditorScreen>>
 
     val selectorRegion: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_fever")) }
     val favouriteTagRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_selector_favourite")) }
@@ -89,6 +90,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     lateinit var subtitleLabel: TextLabel<EditorScreen>
         private set
     lateinit var entityTextField: TextField<EditorScreen>
+        private set
+    lateinit var gameStageText: TextLabel<EditorScreen>
+        private set
+    lateinit var patternAreaArrowLabel: TextLabel<EditorScreen>
         private set
 
     val topOfMinimapBar: Float
@@ -231,6 +236,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             }
                         }
                     }
+            val anyGames = gameButtons.any {
+                it.game != null
+            }
+            gameScrollButtons.forEach {
+                it.visible = anyGames
+            }
 
             variantButtons.forEach {
                 it.game = null
@@ -255,6 +266,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         }
                     }
                 }
+            }
+            val anyVariants = variantButtons.any {
+                it.game != null
+            }
+            variantScrollButtons.forEach {
+                it.visible = anyVariants
             }
 
             if (!filter.areDatamodelsEmpty) {
@@ -281,8 +298,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     pickerDisplay.labels.removeAt(pickerDisplay.labels.size - 1)
                 }
             }
+            val anyDatamodels = !filter.areDatamodelsEmpty
+            datamodelScrollButtons.forEach {
+                it.visible = anyDatamodels
+            }
+            patternAreaArrowLabel.visible = anyDatamodels
 
             editor.updateMessageLabel()
+
+            gameStageText.text = ""
+            if (filter.areGroupsEmpty) {
+                if (filter == favouritesFilter) {
+                    gameStageText.text = Localization["editor.nothing.favourites"]
+                } else if (filter == recentsFilter) {
+                    gameStageText.text = Localization["editor.nothing.recents"]
+                } else if (filter == searchFilter) {
+                    gameStageText.text = Localization["editor.nothing.search"]
+                } else if (filter is CustomFilter) {
+                    gameStageText.text = Localization["editor.nothing.customs", GameRegistry.CUSTOM_FOLDER.name()]
+                }
+            }
 
             isDirty = DirtyType.CLEAN
         }
@@ -293,13 +328,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     init {
-        paneLikeStages as MutableList<Stage<EditorScreen>>
+        paneLikeStages as MutableList
         gameButtons = mutableListOf()
         variantButtons = mutableListOf()
         filterButtons = mutableListOf()
         toolButtons = mutableListOf()
         gameScrollButtons = mutableListOf()
         variantScrollButtons = mutableListOf()
+        datamodelScrollButtons = mutableListOf()
 
         messageBarStage = Stage(this, camera).apply {
             this.location.set(0f, 0f,
@@ -601,6 +637,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                      )
                 }
 
+                gameStageText = TextLabel(palette.copy(textColor = Color.LIGHT_GRAY.cpy().apply { a = 0.8f }),
+                                          pickerStage, pickerStage).apply {
+                    this.location.set(0f, 0f, 0.5f, 1f)
+                    this.isLocalizationKey = false
+                    this.text = ""
+                    this.textAlign = Align.center
+                    this.fontScaleMultiplier = 0.9f
+                }
+                pickerStage.elements += gameStageText
 
                 for (y in 0 until Editor.ICON_COUNT_Y) {
                     for (x in 0 until Editor.ICON_COUNT_X + 3) {
@@ -814,27 +859,29 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             })
                 }
 
-                patternAreaStage.elements += upButton
-                patternAreaStage.elements += downButton
+                datamodelScrollButtons as MutableList
+                datamodelScrollButtons += upButton
+                datamodelScrollButtons += downButton
+                patternAreaStage.elements.addAll(datamodelScrollButtons)
 
                 val labelCount = Editor.PATTERN_COUNT
                 val height = 1f / labelCount
 
-                patternAreaStage.elements +=
-                        TextLabel(borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT)),
-                                  patternAreaStage, patternAreaStage).apply {
-                            this.location.set(
-                                    screenX = padding2,
-                                    screenWidth = patternAreaStage.percentageOfWidth(
-                                            Editor.ICON_SIZE),
-                                    screenHeight = height,
-                                    screenY = 1f - (height * (1 + (labelCount / 2)))
-                                             )
-                            this.isLocalizationKey = false
-                            this.textAlign = Align.center
-                            this.textWrapping = false
-                            this.text = Editor.ARROWS[4]
-                        }
+                patternAreaArrowLabel = TextLabel(borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT)),
+                                                  patternAreaStage, patternAreaStage).apply {
+                    this.location.set(
+                            screenX = padding2,
+                            screenWidth = patternAreaStage.percentageOfWidth(
+                                    Editor.ICON_SIZE),
+                            screenHeight = height,
+                            screenY = 1f - (height * (1 + (labelCount / 2)))
+                                     )
+                    this.isLocalizationKey = false
+                    this.textAlign = Align.center
+                    this.textWrapping = false
+                    this.text = Editor.ARROWS[4]
+                }
+                patternAreaStage.elements += patternAreaArrowLabel
 
                 patternAreaStage.elements += pickerDisplay.apply {
                     this.location.set(
