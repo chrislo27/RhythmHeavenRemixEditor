@@ -187,7 +187,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
-            updateSelected()
+            updateSelected(DirtyType.SEARCH_DIRTY)
         }
 
         super.render(screen, batch, shapeRenderer)

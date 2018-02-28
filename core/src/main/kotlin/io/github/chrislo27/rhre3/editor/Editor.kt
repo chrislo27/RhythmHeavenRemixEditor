@@ -1246,7 +1246,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             when (currentTool) {
                 Tool.SELECTION -> {
                     val currentGame: Game? = if (pickerSelection.filter.areGamesEmpty) null else pickerSelection.filter.currentGame
-                    builder.append(currentGame?.name ?: Localization["editor.msg.noGame"])
+                    builder.append(currentGame?.let {
+                        if (Toolboks.debugMode) {
+                            it.name + " [LIGHT_GRAY](${it.id})[]"
+                        } else {
+                            it.name
+                        }
+                    } ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
                         builder.separator().append(
                                 Localization["editor.msg.numSelected", this.selection.size.toString()])
