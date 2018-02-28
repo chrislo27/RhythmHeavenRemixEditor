@@ -118,6 +118,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         fun getHoverText(): String
     }
 
+    init {
+        Localization.listeners += {
+            updateSelected(DirtyType.SEARCH_DIRTY)
+        }
+    }
+
     private fun setHoverText(text: String) {
         val label = hoverTextLabel
         val labelLoc = label.location
