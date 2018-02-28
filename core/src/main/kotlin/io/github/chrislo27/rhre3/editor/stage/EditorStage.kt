@@ -277,14 +277,18 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             if (!filter.areDatamodelsEmpty) {
                 val objects = filter.currentDatamodelList.list
 
+                fun <T> MutableList<T>.getOrAdd(index: Int, function: (Int) -> T): T {
+                    return getOrNull(index) ?: function(index).also {
+                        add(it)
+                    }
+                }
+
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
                     var color = Color.WHITE
-                    val label: PickerDisplay.Label = pickerDisplay.labels.getOrNull(index) ?: run {
-                        val l = PickerDisplay.Label("", Color.WHITE)
-                        pickerDisplay.labels.add(l)
-                        l
-                    }
+                    val label: PickerDisplay.Label = pickerDisplay.labels.getOrAdd(index, {
+                        PickerDisplay.Label("", Color.WHITE)
+                    })
                     if (Toolboks.debugMode) {
                         text += " [GRAY](${datamodel.id})[]"
                     }
