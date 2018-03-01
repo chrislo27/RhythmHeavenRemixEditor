@@ -959,6 +959,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = searchBarWidth)
             }
             minimapBarStage.elements += searchBar
+            minimapBarStage.elements += ColourPane(minimapBarStage, minimapBarStage).apply {
+                this.colour.set(1f, 1f, 1f, 1f)
+                this.location.set(screenX = searchBarX, screenHeight = 1f, screenWidth = 0f, screenY = 0f,
+                                  pixelX = -1f, pixelWidth = 1f)
+            }
 
             toolButtons as MutableList
             Tool.VALUES.forEachIndexed { index, tool ->
@@ -984,7 +989,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             minimapBarStage.elements += minimap
         }
 
-        // Button bar
+        // Button bar / Toolbar
         run buttonBar@ {
             buttonBarStage.updatePositions()
             val stageWidth = buttonBarStage.location.realWidth

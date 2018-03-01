@@ -35,7 +35,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("tool_multipart_split", "images/tool/multipart_split.png")
         AssetRegistry.loadAsset<Texture>("tool_time_signature", "images/tool/time_signature.png")
         AssetRegistry.loadAsset<Texture>("tool_music_volume", "images/tool/music_volume.png")
-        AssetRegistry.loadAsset<Texture>("tool_game_boundaries", "images/wakame.png")
+        AssetRegistry.loadAsset<Texture>("tool_sfx_volume", "images/tool/sfx_volume.png")
 
 //        AssetRegistry.loadAsset<Texture>("entity_stretchable_line", "images/entity/stretchable/line.png")
         AssetRegistry.loadAsset<Texture>("entity_stretchable_arrow", "images/entity/stretchable/arrow.png")
