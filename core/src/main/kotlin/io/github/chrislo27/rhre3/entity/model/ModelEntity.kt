@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -24,6 +25,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     companion object {
         const val BORDER: Float = 4f
         const val JSON_DATAMODEL = "datamodel"
+        private val TMP_COLOR = Color(1f, 1f, 1f, 1f)
     }
 
     final override val jsonType: String = "model"
@@ -54,6 +56,15 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         return Semitones.getSemitoneName(semitone)
     }
 
+    private fun Color.rotateColour(): Color {
+        val tmp = TMP_COLOR
+        tmp.a = a
+        tmp.r = b
+        tmp.g = r
+        tmp.b = g
+        return tmp
+    }
+
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
         val text = renderText
@@ -62,7 +73,13 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val oldColor = batch.packedColor
         val oldFontSizeX = font.data.scaleX
         val oldFontSizeY = font.data.scaleY
-        val selectionTint = remix.editor.theme.entities.selectionTint
+        val volumetricallyHighlighted = this is IVolumetric && this.isVolumetric && remix.editor.currentTool == Tool.SFX_VOLUME
+        val selectionTint = if (volumetricallyHighlighted) {
+            remix.editor.theme.entities.selectionTint.rotateColour()
+        } else {
+            remix.editor.theme.entities.selectionTint
+        }
+        val showSelection = volumetricallyHighlighted || (!volumetricallyHighlighted && isSelected)
 
         val x = bounds.x + lerpDifference.x
         val y = bounds.y + lerpDifference.y
@@ -70,14 +87,14 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val width = bounds.width + lerpDifference.width
 
         // filled rect + border
-        batch.setColorWithTintIfNecessary(selectionTint, color)
+        batch.setColorWithTintIfNecessary(selectionTint, color, necessary = showSelection)
         batch.fillRect(x, y,
                        width, height)
 
         batch.setColorWithTintIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
                                           (color.g - 0.25f).coerceIn(0f, 1f),
                                           (color.b - 0.25f).coerceIn(0f, 1f),
-                                          color.a)
+                                          color.a, necessary = showSelection)
 
         if (this is IStretchable && this.isStretchable) {
             val oldColor = batch.packedColor
@@ -88,7 +105,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             batch.setColorWithTintIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
                                               (color.g - 0.25f).coerceIn(0f, 1f),
                                               (color.b - 0.25f).coerceIn(0f, 1f),
-                                              color.a * 0.5f)
+                                              color.a * 0.5f, necessary = showSelection)
 
             batch.draw(arrowTex, x + arrowWidth, y, width - arrowWidth * 2, 1f,
                        arrowTex.width / 2, 0, arrowTex.width / 2,

@@ -3,6 +3,8 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -36,6 +38,12 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
                         ent.bounds.x = this@RandomCueEntity.bounds.x
                         ent.bounds.width = this@RandomCueEntity.bounds.width
                         ent.bounds.y = this@RandomCueEntity.bounds.y
+                    }
+                    if (ent is IVolumetric && ent.isVolumetric) {
+                        ent.volumePercent = this@RandomCueEntity.volumePercent
+                    }
+                    if (ent is IRepitchable) {
+                        ent.semitone = this@RandomCueEntity.semitone
                     }
                 } ?: error("No valid entities found from randomization for object ${datamodel.id}")
     }
@@ -83,6 +91,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
                 it.bounds.set(this.bounds)
             }
             it.semitone = this.semitone
+            it.volumePercent = this.volumePercent
         }
     }
 }

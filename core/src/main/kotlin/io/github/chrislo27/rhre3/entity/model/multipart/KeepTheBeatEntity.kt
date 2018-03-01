@@ -79,6 +79,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
                 it.bounds.set(this@KeepTheBeatEntity.bounds)
             }
             it.semitone = this.semitone
+            it.volumePercent = this.volumePercent
         }
     }
 }

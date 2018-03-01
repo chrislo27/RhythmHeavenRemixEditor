@@ -62,6 +62,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
                 it.bounds.set(this@EquidistantEntity.bounds)
             }
             it.semitone = this.semitone
+            it.volumePercent = this.volumePercent
         }
     }
 }

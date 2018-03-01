@@ -49,6 +49,7 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
                 it.bounds.set(this@PatternEntity.bounds)
             }
             it.semitone = this.semitone
+            it.volumePercent = this.volumePercent
         }
     }
 }

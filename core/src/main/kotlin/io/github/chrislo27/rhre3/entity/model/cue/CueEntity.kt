@@ -127,6 +127,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             }
             it.semitone = this.semitone
             it.stopAtEnd = this.stopAtEnd
+            it.volumePercent = this.volumePercent
         }
     }
 

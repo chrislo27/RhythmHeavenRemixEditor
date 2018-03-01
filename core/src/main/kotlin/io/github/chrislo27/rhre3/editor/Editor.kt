@@ -1827,6 +1827,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                 return true
             }
+        } else if (tool == Tool.SFX_VOLUME) {
+            val entity = getEntityOnMouse()
+            if (entity != null && entity is IVolumetric && entity.isVolumetric) {
+                val change = -amount * (if (control) 10 else 1)
+                val oldVol = entity.volumePercent
+                val newVol = (oldVol + change).coerceIn(entity.volumeRange)
+
+                if (oldVol != newVol) {
+                    val lastAction: EntityRevolumeAction? = remix.getUndoStack().peekFirst() as? EntityRevolumeAction?
+
+                    if (lastAction != null && lastAction.entity === entity) {
+                        remix.getUndoStack().pop()
+                        remix.mutate(EntityRevolumeAction(this, entity, newVol, lastAction.oldVolume))
+                    } else {
+                        remix.mutate(EntityRevolumeAction(this, entity, newVol))
+                    }
+
+                }
+            }
         }
 
 

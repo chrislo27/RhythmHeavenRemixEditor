@@ -25,6 +25,6 @@ interface IVolumetric {
     val volumeRange: IntRange
         get() = VOLUME_RANGE
     val volume: Float
-        get() = volumePercent / 100f
+        get() = if (isMuted) 0f else volumePercent / 100f
 
 }

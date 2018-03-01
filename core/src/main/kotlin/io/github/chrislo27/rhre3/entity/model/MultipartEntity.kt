@@ -11,7 +11,6 @@ import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.intersects
-import kotlin.math.roundToInt
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
@@ -49,13 +48,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
         set(value) {
-            val oldField = field
             field = value
             internal.filterIsInstance<IVolumetric>()
                     .forEach {
                         if (it.isVolumetric) {
-                            it.volumePercent = (it.volumePercent / (oldField / 100f)).roundToInt()
-                            it.volumePercent = (it.volumePercent * volume).roundToInt()
+                            it.volumePercent = value
                         }
                     }
         }
