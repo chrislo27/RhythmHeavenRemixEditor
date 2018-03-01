@@ -11,10 +11,11 @@ import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.intersects
+import kotlin.math.roundToInt
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
-    : ModelEntity<M>(remix, datamodel), IRepitchable, ILoadsSounds
+    : ModelEntity<M>(remix, datamodel), IRepitchable, ILoadsSounds, IVolumetric
         where M : Datamodel, M : ContainerModel {
 
     override var semitone: Int = 0
@@ -45,6 +46,25 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     protected val internal: MutableList<Entity> = mutableListOf()
     open val shouldRenderInternal: Boolean = true
     protected var internalWidth: Float = computeInternalWidth()
+
+    override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
+        set(value) {
+            val oldField = field
+            field = value
+            internal.filterIsInstance<IVolumetric>()
+                    .forEach {
+                        if (it.isVolumetric) {
+                            it.volumePercent = (it.volumePercent / (oldField / 100f)).roundToInt()
+                            it.volumePercent = (it.volumePercent * volume).roundToInt()
+                        }
+                    }
+        }
+    override val isMuted: Boolean
+        get() = IVolumetric.isRemixMutedExternally(remix)
+    override val isVolumetric: Boolean
+        get() {
+            return internal.any { it is IVolumetric && it.isVolumetric }
+        }
 
     init {
         this.bounds.height = (1f +

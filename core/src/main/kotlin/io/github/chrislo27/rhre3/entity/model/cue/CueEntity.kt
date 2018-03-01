@@ -2,17 +2,14 @@ package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
-import io.github.chrislo27.rhre3.entity.model.IRepitchable
-import io.github.chrislo27.rhre3.entity.model.IStretchable
-import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 
 
 class CueEntity(remix: Remix, datamodel: Cue)
-    : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable, ILoadsSounds {
+    : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable, ILoadsSounds, IVolumetric {
 
     companion object {
         /**
@@ -28,7 +25,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             and the pitch as y. By plotting three points of which were the b value of each linear equation,
             one could compute two linear equations - this is what the if statement represents.
             Therefore, this equation is made up simply that the pitch increases by 0.6 units
-            in any duration (0.6 / duration) and starts at a different place based on a possiblity of
+            in any duration (0.6 / duration) and starts at a different place based on a possibility of
             two linear equations.
              */
             // f(x, z) = (0.6/z)x + (z <= 3 ? -0.2z + 1.2 : -0.025z + 0.675)
@@ -78,8 +75,10 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width)
     }
 
-    private val volume: Float
-        get() = if (remix.cuesMuted && remix.editor.stage.tapalongStage.visible) 0f else 1f
+    override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
+    override val isMuted: Boolean
+        get() = IVolumetric.isRemixMutedExternally(remix)
+    override val isVolumetric: Boolean = true
 
     override fun onStart() {
         soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch(), rate = cue.getBaseBpmRate(),

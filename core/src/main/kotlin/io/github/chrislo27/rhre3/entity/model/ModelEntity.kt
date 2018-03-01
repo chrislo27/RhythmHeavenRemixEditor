@@ -18,14 +18,15 @@ import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 
 
-abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M) : Entity(remix) {
+abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
+    : Entity(remix) {
 
     companion object {
         const val BORDER: Float = 4f
         const val JSON_DATAMODEL = "datamodel"
     }
 
-    override final val jsonType: String = "model"
+    final override val jsonType: String = "model"
     open val renderText: String
         get() = datamodel.newlinedName
     val isSpecialEntity: Boolean = datamodel.game === GameRegistry.data.specialGame

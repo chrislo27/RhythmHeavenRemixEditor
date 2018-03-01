@@ -1208,6 +1208,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (clickOccupation is TrackerResize) {
                     clickOccupation.updatePosition(nearestSnap)
                 }
+            } else if (tool == Tool.SFX_VOLUME) {
+                updateMessageLabel()
             }
         }
 
@@ -1325,6 +1327,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 Tool.MUSIC_VOLUME -> {
                     builder.append(Localization["editor.msg.musicVolume"])
                 }
+                Tool.SFX_VOLUME -> {
+                    builder.append(Localization["editor.msg.sfxVolume"])
+                    val entity = getEntityOnMouse()
+                    if (entity != null && entity is IVolumetric && entity.isVolumetric) {
+                        builder.separator().append(Localization["editor.msg.sfxVolume.volume", entity.volumePercent])
+                    }
+                }
             }
         }
 
@@ -1334,6 +1343,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     private fun getMultipartOnMouse(): MultipartEntity<*>? {
         val mouseVector = mouseVector
         return remix.entities.firstOrNull { mouseVector in it.bounds } as? MultipartEntity<*>?
+    }
+
+    private fun getEntityOnMouse(): Entity? {
+        val mouseVector = mouseVector
+        return remix.entities.firstOrNull { mouseVector in it.bounds }
     }
 
     fun songTitle(text: String?) {
