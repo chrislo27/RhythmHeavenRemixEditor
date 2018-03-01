@@ -1837,11 +1837,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (oldVol != newVol) {
                     val lastAction: EntityRevolumeAction? = remix.getUndoStack().peekFirst() as? EntityRevolumeAction?
 
-                    if (lastAction != null && lastAction.entity === entity) {
-                        remix.getUndoStack().pop()
-                        remix.mutate(EntityRevolumeAction(this, entity, newVol, lastAction.oldVolume))
+                    entity.volumePercent = newVol
+
+                    if (lastAction != null && entity in lastAction.entities) {
+                        lastAction.reloadNewVolumes()
                     } else {
-                        remix.mutate(EntityRevolumeAction(this, entity, newVol))
+                        remix.addActionWithoutMutating(EntityRevolumeAction(this, listOf(entity), listOf(oldVol)))
                     }
 
                 }
