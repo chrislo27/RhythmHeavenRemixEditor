@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.entity.model
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
@@ -13,6 +14,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
@@ -56,12 +58,13 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         return Semitones.getSemitoneName(semitone)
     }
 
-    private fun Color.rotateColour(): Color {
+    private fun Color.rotateColour(glow: Boolean): Color {
         val tmp = TMP_COLOR
+        val coeff = if (!glow) 1f else MathUtils.lerp(0.5f, 1.25f, MathHelper.getTriangleWave(1f))
         tmp.a = a
-        tmp.r = b
-        tmp.g = r
-        tmp.b = g
+        tmp.r = b * coeff
+        tmp.g = r * coeff
+        tmp.b = g * coeff
         return tmp
     }
 
@@ -75,7 +78,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val oldFontSizeY = font.data.scaleY
         val volumetricallyHighlighted = this is IVolumetric && this.isVolumetric && remix.editor.currentTool == Tool.SFX_VOLUME
         val selectionTint = if (volumetricallyHighlighted) {
-            remix.editor.theme.entities.selectionTint.rotateColour()
+            remix.editor.theme.entities.selectionTint.rotateColour(remix.editor.getEntityOnMouse() === this)
         } else {
             remix.editor.theme.entities.selectionTint
         }

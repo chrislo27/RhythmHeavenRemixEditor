@@ -1340,12 +1340,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         label.text = builder.toString()
     }
 
-    private fun getMultipartOnMouse(): MultipartEntity<*>? {
+    fun getMultipartOnMouse(): MultipartEntity<*>? {
         val mouseVector = mouseVector
         return remix.entities.firstOrNull { mouseVector in it.bounds } as? MultipartEntity<*>?
     }
 
-    private fun getEntityOnMouse(): Entity? {
+    fun getEntityOnMouse(): Entity? {
         val mouseVector = mouseVector
         return remix.entities.firstOrNull { mouseVector in it.bounds }
     }
@@ -1844,11 +1844,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     } else {
                         remix.addActionWithoutMutating(EntityRevolumeAction(this, listOf(entity), listOf(oldVol)))
                     }
-
                 }
             }
         }
-
 
         if (shift) {
             // Camera scrolling left/right (CTRL/SHIFT+CTRL)
