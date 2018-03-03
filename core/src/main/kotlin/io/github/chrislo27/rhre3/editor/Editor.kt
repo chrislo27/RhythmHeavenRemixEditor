@@ -352,7 +352,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         font.scaleFont(camera)
 
         // horizontal track lines
-        run trackLines@ {
+        run trackLines@{
             batch.color = theme.trackLine
             val startX = beatRange.start.toFloat()
             val width = beatRange.endInclusive.toFloat() - startX
@@ -402,7 +402,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // beat lines
-        run beatLines@ {
+        run beatLines@{
             for (i in beatRange) {
                 batch.color = theme.trackLine
                 if (remix.timeSignatures.getMeasurePart(i.toFloat()) > 0) {
@@ -478,7 +478,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                 // dividing lines
                 val triangle = AssetRegistry.get<Texture>("tracker_right_tri")
-                run left@ {
+                run left@{
                     batch.color = theme.trackLine
                     font.color = theme.trackLine
                     val x = section.startBeat
@@ -507,7 +507,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // trackers (playback start, music)
-        run trackers@ {
+        run trackers@{
             val borderedFont = main.defaultBorderedFont
             val oldFontColor = borderedFont.color
 
@@ -601,7 +601,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // beat numbers
-        run beatNumbers@ {
+        run beatNumbers@{
             for (i in beatRange) {
                 val width = ENTITY_WIDTH * 0.4f
                 val x = i - width / 2f
@@ -661,7 +661,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // time signatures
-        run timeSignatures@ {
+        run timeSignatures@{
             val timeSignatures = remix.timeSignatures
             val bigFont = main.timeSignatureFont
             val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
@@ -698,7 +698,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // bottom trackers
-        run trackers@ {
+        run trackers@{
             val borderedFont = main.defaultBorderedFont
             borderedFont.scaleFont(camera)
 
@@ -783,7 +783,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             borderedFont.unscaleFont()
         }
 
-        // render selection box + delete zone
+        // render selection box, delete zone, sfx vol
         if (otherUI) {
             val clickOccupation = clickOccupation
             when (clickOccupation) {
@@ -821,7 +821,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.color = theme.selection.selectionBorder
                     batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
 
-                    run text@ {
+                    run text@{
                         val oldFontColor = font.color
                         font.color = theme.selection.selectionBorder
 
@@ -1063,7 +1063,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        run stretchCursor@ {
+        run stretchCursor@{
             val shouldStretch = this.selection.size == 1 && remix.entities.any {
                 canStretchEntity(mouseVector, it)
             }
@@ -1145,7 +1145,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        run clickCheck@ {
+        run clickCheck@{
             val clickOccupation = clickOccupation
             val tool = currentTool
             val nearestSnap = MathHelper.snapToNearest(camera.getInputX(), snap)
@@ -1208,8 +1208,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (clickOccupation is TrackerResize) {
                     clickOccupation.updatePosition(nearestSnap)
                 }
-            } else if (tool == Tool.SFX_VOLUME) {
-                updateMessageLabel()
             }
         }
 
@@ -1329,15 +1327,44 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
                 Tool.SFX_VOLUME -> {
                     builder.append(Localization["editor.msg.sfxVolume"])
-                    val entity = getEntityOnMouse()
-                    if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                        builder.separator().append(Localization["editor.msg.sfxVolume.volume", entity.volumePercent])
-                    }
                 }
             }
         }
 
         label.text = builder.toString()
+    }
+
+    fun getHoverText(): String {
+        val tool = currentTool
+        var output: String = ""
+        if (tool == Tool.SFX_VOLUME) {
+            val entity = getEntityOnMouse()
+            if (entity != null && entity is IVolumetric && entity.isVolumetric) {
+                output = Localization["editor.msg.sfxVolume.volume", entity.volumePercent]
+            }
+        }
+
+        if (Toolboks.debugMode) {
+            val str = StringBuilder()
+            val entity = getEntityOnMouse()
+
+            if (entity != null) {
+                str.append(entity::class.java.simpleName)
+                if (entity is ModelEntity<*>) {
+                    str.append('\n').append(entity.datamodel.id)
+                }
+            }
+
+            if (str.isNotEmpty()) {
+                val sb = StringBuilder(output)
+                if (output.isNotEmpty()) {
+                    sb.append('\n')
+                }
+                output = sb.append("[LIGHT_GRAY]").append(str).append("[]").toString()
+            }
+        }
+
+        return output
     }
 
     fun getMultipartOnMouse(): MultipartEntity<*>? {
@@ -1830,7 +1857,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else if (tool == Tool.SFX_VOLUME) {
             val entity = getEntityOnMouse()
             if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                val change = -amount * (if (control) 10 else 1)
+                val change = -amount * (if (control) 25 else 5)
                 val oldVol = entity.volumePercent
                 val newVol = (oldVol + change).coerceIn(entity.volumeRange)
 

@@ -183,7 +183,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             } else {
                 false
             }
-        }
+        } ?: editor.getHoverText().takeIf(String::isNotEmpty)?.also(this::setHoverText)
 
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
