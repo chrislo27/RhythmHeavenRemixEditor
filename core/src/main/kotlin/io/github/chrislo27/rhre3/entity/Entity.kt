@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
@@ -92,6 +93,9 @@ abstract class Entity(val remix: Remix) {
         if (this is IRepitchable) {
             objectNode.put("semitone", this.semitone)
         }
+        if (this is IVolumetric) {
+            objectNode.put("volume", this.volumePercent)
+        }
     }
 
     open fun readData(objectNode: ObjectNode) {
@@ -105,7 +109,10 @@ abstract class Entity(val remix: Remix) {
         }
 
         if (this is IRepitchable) {
-            semitone = objectNode["semitone"].intValue()
+            semitone = objectNode["semitone"].asInt(0)
+        }
+        if (this is IVolumetric) {
+            volumePercent = objectNode["volume"].asInt(IVolumetric.DEFAULT_VOLUME)
         }
     }
 
