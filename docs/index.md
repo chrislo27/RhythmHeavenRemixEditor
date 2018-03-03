@@ -4,18 +4,21 @@
 
 [Link to GitHub repository](https://github.com/chrislo27/RhythmHeavenRemixEditor)
 
->Remember to check the version each article is dated for. Some versions
-may be for in the future and not yet applicable to the most recent
-public version of RHRE3.
 
-### **RHRE3 (most current)**
+### General Usage
 * [README](README.md)
 * [Toolbar](Toolbar.md)
+* [Exporting your remix](Exporting.md)
 * [Crediting RHRE3](Crediting.md)
 * [Themes](Themes.md)
+
+### Troubleshooting
 * [`OutOfMemoryError` when loading music](Out-of-memory-on-music.md)
 * [Launch arguments](Launch-arguments.md)
+
+### Advanced Editing and Documentation
 * [JSON Object Definitions for databasing](JSON-object-definitions.md)
-* [Exporting your remix](Exporting.md)
-### **RHRE2 (out of date, archived)**
+* [Localization files](Localization.md)
+
+### RHRE2 (out of date, archived)
 * [Lua scripting](RHRE2/Scripting.md)
