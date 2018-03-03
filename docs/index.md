@@ -13,7 +13,7 @@
 * [Themes](Themes.md)
 
 ### Troubleshooting
-* [`OutOfMemoryError` when loading music](Out-of-memory-on-music.md)
+* [Out of memory when loading music](Out-of-memory-on-music.md)
 * [Launch arguments](Launch-arguments.md)
 
 ### Advanced Editing and Documentation

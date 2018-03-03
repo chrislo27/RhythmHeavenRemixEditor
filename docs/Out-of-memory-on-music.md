@@ -1,4 +1,4 @@
-## What do I do when I get an `OutOfMemoryError` when loading music?
+## What do I do when there's not enough memory when loading music?
 
 As songs are loaded into memory now as of v3.3.0, a new requirement is that you have enough memory to load the entire song.
 
