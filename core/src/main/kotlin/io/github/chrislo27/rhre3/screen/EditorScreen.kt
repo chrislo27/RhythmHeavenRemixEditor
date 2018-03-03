@@ -22,7 +22,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     override fun hide() {
         super.hide()
-        if (editor.remix.playState == PlayState.PLAYING) editor.remix.playState = PlayState.PAUSED
+        editor.remix.playState = PlayState.STOPPED
         (Gdx.input.inputProcessor as? InputMultiplexer)?.removeProcessor(editor)
     }
 
