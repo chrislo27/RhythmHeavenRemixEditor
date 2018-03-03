@@ -1368,8 +1368,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun getMultipartOnMouse(): MultipartEntity<*>? {
-        val mouseVector = mouseVector
-        return remix.entities.firstOrNull { mouseVector in it.bounds } as? MultipartEntity<*>?
+        return getEntityOnMouse() as? MultipartEntity<*>
     }
 
     fun getEntityOnMouse(): Entity? {
