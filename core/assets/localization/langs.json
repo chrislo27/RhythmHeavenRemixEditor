@@ -1,0 +1,34 @@
+[
+  {
+    "name": "English",
+    "locale": {
+      "language": "", // Leave blank to use the default localization file
+      "country": "",
+      "variant": ""
+    }
+  },
+  {
+    "name": "Français (French)",
+    "locale": {
+      "language": "fr",
+      "country": "",
+      "variant": ""
+    }
+  },
+  {
+    "name": "Español (Spanish)",
+    "locale": {
+      "language": "es",
+      "country": "",
+      "variant": ""
+    }
+  },
+  {
+    "name": "Deutsch (German)",
+    "locale": {
+      "language": "de",
+      "country": "",
+      "variant": ""
+    }
+  }
+]

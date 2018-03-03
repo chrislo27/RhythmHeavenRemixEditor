@@ -49,14 +49,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                    RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 
     companion object {
-        val languages: List<NamedLocale> =
-                listOf(
-                        NamedLocale("English", Locale("")),
-                        NamedLocale("Français (French)", Locale("fr")),
-                        NamedLocale("Español (Spanish)", Locale("es")),
-                        NamedLocale("Deutsch (German)", Locale("de"))
-//                      ,NamedLocale("Italiano (Italian)", Locale("it"))
-                      )
+        lateinit var languages: List<NamedLocale>
+            private set
 
         val httpClient: AsyncHttpClient = asyncHttpClient()
 
@@ -126,9 +120,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
         // localization stuff
         run {
-            Localization.bundles.apply {
-                languages.forEach { add(Localization.createBundle(it)) }
-            }
+            Localization.loadBundlesFromLangFile()
             Localization.logMissingLocalizations()
         }
 
