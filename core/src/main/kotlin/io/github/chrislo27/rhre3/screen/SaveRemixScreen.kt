@@ -117,8 +117,10 @@ class SaveRemixScreen(main: RHRE3Application)
             Platform.runLater {
                 isChooserOpen = true
                 val fileChooser = createFileChooser()
-                if (editor.lastSaveFile != null) {
-                    fileChooser.initialFileName = editor.lastSaveFile!!.name()
+                val lastSaveFile = editor.lastSaveFile
+                if (lastSaveFile != null) {
+                    fileChooser.initialDirectory = lastSaveFile.parent().file()
+                    fileChooser.initialFileName = lastSaveFile.name()
                 }
                 val file: File? = fileChooser.showSaveDialog(null)
                 isChooserOpen = false
