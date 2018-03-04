@@ -40,13 +40,17 @@ object AnalyticsHandler : Disposable {
         this.prefs = prefs
         analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
 
+        identify()
+        analytics.flush()
+    }
+
+    fun identify() {
         analytics.enqueue(IdentifyMessage.builder()
                                   .userId(userID)
                                   .traits(mapOf(
                                           "createdAt" to prefs.getString(PREFS_USER_CREATED, (System.currentTimeMillis() / 1000L).toString()))
                                          )
                          )
-        analytics.flush()
     }
 
     private fun getContext(): Map<String, *> {
