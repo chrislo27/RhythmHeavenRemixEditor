@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -145,6 +146,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         if (preferences.getString(PreferenceKeys.LAST_VERSION, null) != RHRE3.VERSION.toString()) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
+        AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
@@ -263,6 +265,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         Gdx.files.local("tmpMusic/").emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)
         httpClient.close()
+        AnalyticsHandler.dispose()
     }
 
     fun persistWindowSettings() {

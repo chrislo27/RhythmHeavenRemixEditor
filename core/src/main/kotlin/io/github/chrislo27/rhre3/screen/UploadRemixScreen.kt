@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -294,7 +295,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                 super.onLeftClick(xPercent, yPercent)
                 if (!picosongEditID.isNullOrBlank() && !isUploading) {
                     if (areFieldsEmpty()) {
-                        Gdx.net.openURI(PICOSONG_SKIP_FIELDS_URL + picosongEditID + "/")
+                        Gdx.net.openURI("$PICOSONG_SKIP_FIELDS_URL$picosongEditID/")
                         this.visible = false
                         editStage.visible = false
 
@@ -346,6 +347,13 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                             }
                         }
                     }
+
+                    // Analytics
+                    AnalyticsHandler.track("Upload Remix",
+                                           mapOf(
+                                                   "fields" to verifyFields.entries.associate { it.key to it.value.text },
+                                                   "success" to (picosongEditID ?: "")
+                                                ))
                 }
             }
         }.apply {

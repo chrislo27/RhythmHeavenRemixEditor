@@ -12,6 +12,7 @@ import de.sciss.jump3r.Main
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -416,6 +417,14 @@ class ExportRemixScreen(main: RHRE3Application)
                             } else {
                                 null
                             }
+
+                            // Analytics
+                            AnalyticsHandler.track("Export Remix",
+                                                   mapOf(
+                                                           "sfxDatabase" to GameRegistry.data.version,
+                                                           "fileType" to fileType.extension,
+                                                           "fileSize" to correctFile.length()
+                                                                         ))
                         } catch (t: Throwable) {
                             t.printStackTrace()
                             updateLabels(t)

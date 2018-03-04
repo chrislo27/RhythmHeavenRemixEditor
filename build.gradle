@@ -70,6 +70,7 @@ project(":core") {
         compile "org.slf4j:slf4j-nop:1.7.25"
         compile "de.sciss:jump3r:1.0.4"
         compile "com.github.chrislo27:musique-barebones:-SNAPSHOT"
+        compile "com.segment.analytics.java:analytics:+"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }
