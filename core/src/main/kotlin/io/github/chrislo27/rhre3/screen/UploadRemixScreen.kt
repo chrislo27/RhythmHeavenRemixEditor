@@ -351,8 +351,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                     // Analytics
                     AnalyticsHandler.track("Upload Remix",
                                            mapOf(
-                                                   "fields" to verifyFields.entries.associate { it.key to it.value.text },
-                                                   "success" to (picosongEditID ?: "")
+                                                   "fields" to verifyFields.entries.associate { it.key to it.value.text }
                                                 ))
                 }
             }
