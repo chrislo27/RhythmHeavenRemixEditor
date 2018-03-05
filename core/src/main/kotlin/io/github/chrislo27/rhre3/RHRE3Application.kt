@@ -265,6 +265,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         Gdx.files.local("tmpMusic/").emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)
         httpClient.close()
+        AnalyticsHandler.track("Close Program", mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
         AnalyticsHandler.dispose()
     }
 
