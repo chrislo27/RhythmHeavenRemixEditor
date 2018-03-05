@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.VersionHistory
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -23,6 +25,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.version.Version
 
 
 class InfoScreen(main: RHRE3Application)
@@ -42,6 +45,10 @@ class InfoScreen(main: RHRE3Application)
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
     private lateinit var clearRecentsButton: Button<InfoScreen>
     private lateinit var dbVersionLabel: TextLabel<InfoScreen>
+    private var didChangeSettings: Boolean = Version.fromStringOrNull(
+            preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
+        !it.isUnknown && it < VersionHistory.ANALYTICS
+    } ?: false
 
     init {
         stage as GenericStage<InfoScreen>
@@ -218,6 +225,7 @@ class InfoScreen(main: RHRE3Application)
 
                 private fun persist() {
                     preferences.putInteger(PreferenceKeys.SETTINGS_AUTOSAVE, timers[index]).flush()
+                    didChangeSettings = true
                 }
 
                 private var index: Int = run {
@@ -279,6 +287,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, checked).flush()
+                    didChangeSettings = true
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)
@@ -300,6 +309,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP, checked).flush()
+                    didChangeSettings = true
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
@@ -336,6 +346,7 @@ class InfoScreen(main: RHRE3Application)
                     super.onLeftClick(xPercent, yPercent)
                     if (bufferSupported) {
                         preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, checked).flush()
+                        didChangeSettings = true
                     }
                 }
             }.apply {
@@ -358,6 +369,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, checked).flush()
+                    didChangeSettings = true
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
@@ -379,6 +391,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, checked).flush()
+                    didChangeSettings = true
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
@@ -400,6 +413,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, checked).flush()
+                    didChangeSettings = true
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
@@ -432,6 +446,23 @@ class InfoScreen(main: RHRE3Application)
         super.show()
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
+    }
+
+    override fun hide() {
+        super.hide()
+
+        // Analytics
+        if (didChangeSettings) {
+            val map: Map<String, *> = preferences.get()
+            AnalyticsHandler.track("Exit Info and Settings",
+                                   mapOf(
+                                           "settings" to PreferenceKeys.allSettingsKeys.associate {
+                                               it.replace("settings_", "") to (map[it] ?: "null")
+                                           }
+                                        ))
+        }
+
+        didChangeSettings = false
     }
 
     override fun tickUpdate() {

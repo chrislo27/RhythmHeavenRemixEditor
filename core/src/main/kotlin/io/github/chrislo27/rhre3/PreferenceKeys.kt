@@ -19,7 +19,11 @@ object PreferenceKeys {
     val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"
     val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
-    val SETTINGS_SOUND_SYSTEM = "settings_soundSystem"
+
+    val allSettingsKeys: List<String> by lazy {
+        listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CHASE_CAMERA,
+               SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING)
+    }
 
     val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     val FILE_CHOOSER_SAVE = "fileChooser_save"
