@@ -165,7 +165,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             }
             borderedFont.scaleMul(0.75f)
             if (!this.canBeRepitched) {
-                borderedFont.setColor(1f, 0f, 0f, 1f)
+                borderedFont.setColor(1f, 0.8f, 0.8f, 1f)
             } else {
                 borderedFont.setColor(1f, 1f, 1f, 1f)
             }
