@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -122,8 +123,15 @@ class EditorVersionScreen(main: RHRE3Application)
         timeOnScreen = 0f
         if (isBeginning) {
             stage.backButton.enabled = false
-            timeToStayOnScreen = (-3f / (main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE,
-                                                                     1) + 1).coerceAtLeast(1)) + 3f
+            val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
+            timeToStayOnScreen = (-3f / (timesSkipped + 1).coerceAtLeast(1)) + 3f
+
+            // Analytics
+            AnalyticsHandler.track("Update Notification",
+                                   mapOf(
+                                           "timeToStayOnScreen" to timeToStayOnScreen,
+                                           "timesSkipped" to timesSkipped
+                                        ))
         }
         label.text = ""
     }
