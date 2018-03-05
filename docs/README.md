@@ -1,6 +1,12 @@
 # Readme
 
-This readme is up to date with version `v3.7.1`.
+This readme is up to date with version `v3.8.0`.
+
+Please read through the sections of this readme. There are MANY
+other features and other intricacies that are not mentioned,
+but do contain info inside the program.
+
+You will learn best through experimentation; don't give up!
 
 ## Launching the program
 After decompressing/unzipping the zip archive, run the
