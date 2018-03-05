@@ -46,7 +46,8 @@ object Credits {
                     "SLF4J\n" +
                     "OSHI\n" +
                     "jump3r\n" +
-                    "musique (forked)",
+                    "musique (forked)\n" +
+                    "Segment",
             "you" crediting ""
                                    )
 

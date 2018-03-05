@@ -118,7 +118,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 if (!picosongEditID.isNullOrBlank()) {
-                    Gdx.app.clipboard.contents = PICOSONG_SKIP_FIELDS_URL + picosongEditID + "/"
+                    Gdx.app.clipboard.contents = "$PICOSONG_SKIP_FIELDS_URL$picosongEditID/"
                     timeUntilCopyReset = System.currentTimeMillis() + 2000L
                     textLabel.text = "screen.upload.copied"
                 }
@@ -310,7 +310,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                         launch(CommonPool) {
                             val (csrfmiddlewaretoken, cookies) = getCsrfTokenAndGetCookies()
 
-                            val req = http.preparePost(PICOSONG_NEXT_URL + picosongEditID + "/")
+                            val req = http.preparePost("$PICOSONG_NEXT_URL$picosongEditID/")
                                     .addHeader("Accept", "application/json, text/javascript, */*")
                                     .addHeader("Accept-Encoding", "gzip, deflate")
                                     .addHeader("Accept-Language", "en-US,en;q=0.5")
@@ -349,10 +349,26 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                     }
 
                     // Analytics
-                    AnalyticsHandler.track("Upload Remix",
-                                           mapOf(
-                                                   "fields" to verifyFields.entries.associate { it.key to it.value.text }
-                                                ))
+                    launch(CommonPool) {
+                        val regex = "<h2 class=\"short-link text-center\"><a href=\"http://picosong\\.com/([a-zA-Z0-9]+)\">".toRegex()
+                        val body = http.prepareGet("$PICOSONG_SKIP_FIELDS_URL$picosongEditID/")
+                                .addHeader("Accept", "application/json, text/javascript, */*")
+                                .addHeader("Accept-Encoding", "gzip, deflate")
+                                .addHeader("Accept-Language", "en-US,en;q=0.5")
+                                .addHeader("Connection", "keep-alive")
+                                .addHeader("Host", "picosong.com")
+                                .addHeader("Referer", "http://picosong.com/")
+                                .addHeader("User-Agent", PICOSONG_USER_AGENT)
+                                .execute().get().responseBody
+
+                        val short: String = regex.find(body)?.groups?.get(1)?.value ?: "N/A"
+
+                        AnalyticsHandler.track("Upload Remix",
+                                               mapOf(
+                                                       "fields" to verifyFields.entries.associate { it.key to it.value.text },
+                                                       "url" to "$PICOSONG_MAIN_URL$short"
+                                                    ))
+                    }
                 }
             }
         }.apply {
