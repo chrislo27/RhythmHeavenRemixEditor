@@ -47,6 +47,7 @@ object AnalyticsHandler : Disposable {
     fun identify() {
         analytics.enqueue(IdentifyMessage.builder()
                                   .userId(userID)
+                                  .context(getContext())
                                   .traits(mapOf(
                                           "createdAt" to prefs.getString(PREFS_USER_CREATED, (System.currentTimeMillis() / 1000L).toString()))
                                          )
