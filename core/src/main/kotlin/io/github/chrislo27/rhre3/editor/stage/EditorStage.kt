@@ -392,9 +392,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.textAlign = Align.left
             this.textWrapping = false
             this.location.set(messageBarStage.percentageOfWidth(2f), 0.5f + messageBarStage.percentageOfHeight(2f),
-                              1f,
+                              1f - messageBarStage.percentageOfWidth(2f) * 2,
                               0.5f,
-                              pixelWidth = -8f,
+                              pixelWidth = 0f,
                               pixelY = -2f)
             this.isLocalizationKey = false
         }

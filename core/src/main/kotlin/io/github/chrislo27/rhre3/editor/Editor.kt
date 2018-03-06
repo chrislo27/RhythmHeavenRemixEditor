@@ -96,6 +96,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private const val SELECTION_RECT_ADD = "+"
         private const val SELECTION_RECT_INVERT = "±"
         private const val SONG_SUBTITLE_TRANSITION = 0.5f
+        const val VOLUME_CHAR = "\uE13C" // Only works with built-in font
 
         val TRANSLUCENT_BLACK: Color = Color(0f, 0f, 0f, 0.5f)
         val ARROWS: List<String> = listOf("▲", "▼", "△", "▽", "➡")
@@ -1254,8 +1255,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 Localization["editor.msg.numSelected", this.selection.size.toString()])
 
                         if (clickOccupation == ClickOccupation.None) {
+                            msgBuilder.separator().append(Localization["editor.msg.changeScrollMode"])
+
                             if (selection.any { it is IRepitchable && it.canBeRepitched }) {
-                                ctrlBuilder.separator().append(Localization["editor.msg.repitch"])
+                                ctrlBuilder.separator().append(Localization["editor.msg.repitch", Localization["editor.msg.scroll"]])
                             }
 
                             if (selection.all(Entity::supportsCopying)) {
