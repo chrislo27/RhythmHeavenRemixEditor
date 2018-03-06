@@ -1246,15 +1246,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             when (currentTool) {
                 Tool.SELECTION -> {
                     val currentGame: Game? = if (pickerSelection.filter.areGamesEmpty) null else pickerSelection.filter.currentGame
-                    builder.append(currentGame?.let {
-                        if (Toolboks.debugMode) {
-                            it.name + " [LIGHT_GRAY](${it.id})[]"
-                        } else {
-                            it.name
-                        }
-                    } ?: Localization["editor.msg.noGame"])
                     if (selection.isNotEmpty()) {
-                        builder.separator().append(
+                        builder.append(
                                 Localization["editor.msg.numSelected", this.selection.size.toString()])
 
                         if (clickOccupation == ClickOccupation.None) {
@@ -1299,6 +1292,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                         Localization["editor.msg.editabletext.${if (stage.entityTextField.visible) "finish" else "edit"}"])
                             }
                         }
+                    } else {
+                        builder.append(currentGame?.let {
+                            if (Toolboks.debugMode) {
+                                it.name + " [LIGHT_GRAY](${it.id})[]"
+                            } else {
+                                it.name
+                            }
+                        } ?: Localization["editor.msg.noGame"])
                     }
 
                     if (clickOccupation is ClickOccupation.CreatingSelection) {
