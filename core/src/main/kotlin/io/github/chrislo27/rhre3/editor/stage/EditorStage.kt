@@ -71,6 +71,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     lateinit var searchBar: SearchBar<EditorScreen>
         private set
     val messageLabel: TextLabel<EditorScreen>
+    val controlsLabel: TextLabel<EditorScreen>
 
     val hoverTextLabel: TextLabel<EditorScreen>
     val searchFilter = SearchFilter(this)
@@ -380,12 +381,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.textWrapping = false
             this.location.set(0f, 0f,
                               1f,
-                              1f,
+                              0.5f,
                               pixelWidth = -8f,
                               pixelY = -2f)
             this.isLocalizationKey = false
         }
         messageBarStage.elements += messageLabel
+        controlsLabel = TextLabel(palette, messageBarStage, messageBarStage).apply {
+            this.fontScaleMultiplier = 0.5f
+            this.textAlign = Align.left
+            this.textWrapping = false
+            this.location.set(messageBarStage.percentageOfWidth(2f), 0.5f + messageBarStage.percentageOfHeight(2f),
+                              1f,
+                              0.5f,
+                              pixelWidth = -8f,
+                              pixelY = -2f)
+            this.isLocalizationKey = false
+        }
+        messageBarStage.elements += controlsLabel
         elements += messageBarStage
         buttonBarStage = Stage(this, camera).apply {
             this.location.set(screenX = (Editor.BUTTON_PADDING / RHRE3.WIDTH),

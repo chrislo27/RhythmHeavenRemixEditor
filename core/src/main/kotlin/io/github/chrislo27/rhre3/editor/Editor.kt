@@ -84,7 +84,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val TRACK_LINE: Float = 2f
         const val PATTERN_COUNT: Int = 5
 
-        const val MESSAGE_BAR_HEIGHT: Int = 14
+        const val MESSAGE_BAR_HEIGHT: Int = 28
         const val BUTTON_SIZE: Float = 32f
         const val BUTTON_PADDING: Float = 4f
 
@@ -944,7 +944,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             (timedString.time / SONG_SUBTITLE_TRANSITION).coerceIn(0f, 1f))
                     val xPercent: Float = if (timedString.out) rawPercent else 1f - rawPercent
                     val x = startX + if (!bottom) texWidth * xPercent - texWidth else camera.viewportWidth * camera.zoom - xPercent * texWidth
-                    val y = (camera.viewportHeight * 0.35f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
+                    val y = (camera.viewportHeight * 0.365f * camera.zoom) - if (bottom) texHeight * 1.1f else 0f
 
                     batch.draw(texture, x, y, texWidth, texHeight,
                                0, 0, texture.width, texture.height,
@@ -1231,43 +1231,46 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun updateMessageLabel() {
-        val label = stage.messageLabel
-        val builder = StringBuilder()
+        val messageLabel = stage.messageLabel
+        val controlsLabel = stage.controlsLabel
+        val msgBuilder = StringBuilder()
+        val ctrlBuilder = StringBuilder()
         val clickOccupation = clickOccupation
 
         fun StringBuilder.separator(): StringBuilder {
-            this.append(MSG_SEPARATOR)
+            if (this.isNotEmpty())
+                this.append(MSG_SEPARATOR)
             return this
         }
 
         if (stage.tapalongStage.visible) {
-            builder.append(Localization["editor.tapalong.info"])
+            msgBuilder.append(Localization["editor.tapalong.info"])
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {
                     val currentGame: Game? = if (pickerSelection.filter.areGamesEmpty) null else pickerSelection.filter.currentGame
                     if (selection.isNotEmpty()) {
-                        builder.append(
+                        msgBuilder.append(
                                 Localization["editor.msg.numSelected", this.selection.size.toString()])
 
                         if (clickOccupation == ClickOccupation.None) {
                             if (selection.any { it is IRepitchable && it.canBeRepitched }) {
-                                builder.separator().append(Localization["editor.msg.repitch"])
+                                ctrlBuilder.separator().append(Localization["editor.msg.repitch"])
                             }
 
                             if (selection.all(Entity::supportsCopying)) {
-                                builder.separator().append(Localization["editor.msg.copyHint"])
+                                ctrlBuilder.separator().append(Localization["editor.msg.copyHint"])
                             }
 
                             if (selection.areAnyResponseCopyable()) {
-                                builder.separator().append(Localization["editor.msg.callResponseHint"])
+                                ctrlBuilder.separator().append(Localization["editor.msg.callResponseHint"])
                             }
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
                                 if (clickOccupation.isInDeleteZone()) {
-                                    builder.separator().append(Localization["editor.msg.deletingSelection"])
+                                    msgBuilder.separator().append(Localization["editor.msg.deletingSelection"])
                                 } else {
-                                    builder.separator().append(Localization["editor.msg.invalidPlacement"])
+                                    msgBuilder.separator().append(Localization["editor.msg.invalidPlacement"])
                                 }
                             }
                         }
@@ -1276,7 +1279,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             val first = selection.first()
 
                             if (first is IStretchable && first.isStretchable) {
-                                builder.separator().append(
+                                ctrlBuilder.separator().append(
                                         Localization["editor.msg.stretchable${
                                         if (first is EquidistantEntity)
                                             ".equidistant"
@@ -1288,12 +1291,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             }
 
                             if (first is IEditableText) {
-                                builder.separator().append(
+                                ctrlBuilder.separator().append(
                                         Localization["editor.msg.editabletext.${if (stage.entityTextField.visible) "finish" else "edit"}"])
                             }
                         }
                     } else {
-                        builder.append(currentGame?.let {
+                        msgBuilder.append(currentGame?.let {
                             if (Toolboks.debugMode) {
                                 it.name + " [LIGHT_GRAY](${it.id})[]"
                             } else {
@@ -1303,36 +1306,37 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
 
                     if (clickOccupation is ClickOccupation.CreatingSelection) {
-                        builder.separator().append(Localization["editor.msg.selectionHint"])
+                        ctrlBuilder.separator().append(Localization["editor.msg.selectionHint"])
                     }
                 }
                 Tool.MULTIPART_SPLIT -> {
-                    builder.append(Localization["editor.msg.multipartSplit"])
+                    ctrlBuilder.append(Localization["editor.msg.multipartSplit"])
                     if (remix.playState == PlayState.STOPPED) {
                         val multipart = getMultipartOnMouse()
                         if (multipart != null) {
                             if (!multipart.canSplitWithoutColliding()) {
-                                builder.separator().append(Localization["editor.msg.cannotSplit"])
+                                msgBuilder.separator().append(Localization["editor.msg.cannotSplit"])
                             }
                         }
                     }
                 }
                 Tool.TIME_SIGNATURE -> {
-                    builder.append(Localization["editor.msg.timeSignature"])
+                    ctrlBuilder.append(Localization["editor.msg.timeSignature"])
                 }
                 Tool.TEMPO_CHANGE -> {
-                    builder.append(Localization["editor.msg.tempoChange"])
+                    ctrlBuilder.append(Localization["editor.msg.tempoChange"])
                 }
                 Tool.MUSIC_VOLUME -> {
-                    builder.append(Localization["editor.msg.musicVolume"])
+                    ctrlBuilder.append(Localization["editor.msg.musicVolume"])
                 }
                 Tool.SFX_VOLUME -> {
-                    builder.append(Localization["editor.msg.sfxVolume"])
+                    ctrlBuilder.append(Localization["editor.msg.sfxVolume"])
                 }
             }
         }
 
-        label.text = builder.toString()
+        messageLabel.text = msgBuilder.toString()
+        controlsLabel.text = ctrlBuilder.toString()
     }
 
     fun getHoverText(): String {
