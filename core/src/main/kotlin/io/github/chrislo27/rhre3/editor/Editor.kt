@@ -1368,9 +1368,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun getHoverText(): String {
-        val tool = currentTool
         var output: String = ""
-        if (tool == Tool.SFX_VOLUME) {
+        if (scrollMode == ScrollMode.VOLUME) {
             val entity = getEntityOnMouse()
             if (entity != null && entity is IVolumetric && entity.isVolumetric) {
                 output = Localization["editor.msg.sfxVolume.volume", entity.volumePercent]
