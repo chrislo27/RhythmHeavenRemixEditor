@@ -34,9 +34,9 @@ abstract class Filter {
     val areGroupsEmpty: Boolean
         get() = gameGroups.isEmpty()
     val areGamesEmpty: Boolean
-        get() = areGroupsEmpty || gamesPerGroup[currentGroup]?.isEmpty ?: true
+        get() = areGroupsEmpty || gamesPerGroup[currentGroup]?.isEmpty != false
     val areDatamodelsEmpty: Boolean
-        get() = areGamesEmpty || datamodelsPerGame[currentGame]?.isEmpty ?: true
+        get() = areGamesEmpty || datamodelsPerGame[currentGame]?.isEmpty != false
     val maxGroupIndex: Int
         get() = (gameGroups.size - 1).coerceAtLeast(0)
     var groupScroll: Int = 0

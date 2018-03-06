@@ -203,6 +203,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                     searchFilter.query = query
                     searchFilter.update()
+                    searchFilter.sort()
                 }
             } else {
                 filter.update()
