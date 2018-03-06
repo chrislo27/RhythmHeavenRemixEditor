@@ -100,7 +100,7 @@ Below is a list of potential properties:
 
 | Entity Type | Field Name | Field Type | Field Values |
 |-------------|------------|------------|--------------|
-| `subtitleEntity` | `subtitleText` | `string` | \<user-defined> |
+| `subtitleEntity` | `subtitleText` | `string` | \<user-defined\> |
 
 ## `CueObject` structure
 ```json
