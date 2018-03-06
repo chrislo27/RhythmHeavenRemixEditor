@@ -158,25 +158,38 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 //        }
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
 
-        if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
-            val borderedFont = remix.main.defaultBorderedFont
-            remix.editor.apply {
-                borderedFont.scaleFont(remix.camera)
+        when (remix.editor.scrollMode) {
+            Editor.ScrollMode.PITCH -> {
+                if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
+                    drawCornerText(batch, getTextForSemitone(semitone), !this.canBeRepitched, x, y)
+                }
             }
-            borderedFont.scaleMul(0.75f)
-            if (!this.canBeRepitched) {
-                borderedFont.setColor(1f, 0.8f, 0.8f, 1f)
-            } else {
-                borderedFont.setColor(1f, 1f, 1f, 1f)
-            }
-            borderedFont.draw(batch, getTextForSemitone(this.semitone),
-                              x + 2 * remix.editor.toScaleX(BORDER),
-                              y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
-            remix.editor.apply {
-                borderedFont.unscaleFont()
+            Editor.ScrollMode.VOLUME -> {
+                if (this is IVolumetric && (this.isVolumetric || this.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
+                    drawCornerText(batch, IVolumetric.getVolumeText(this.volumePercent), !this.isVolumetric, x, y)
+                }
             }
         }
         font.color = oldFontColor
         font.data.setScale(oldFontSizeX, oldFontSizeY)
+    }
+
+    private fun drawCornerText(batch: SpriteBatch, text: String, useNegativeColor: Boolean, x: Float, y: Float) {
+        val borderedFont = remix.main.defaultBorderedFont
+        remix.editor.apply {
+            borderedFont.scaleFont(remix.camera)
+        }
+        borderedFont.scaleMul(0.75f)
+        if (useNegativeColor) {
+            borderedFont.setColor(1f, 0.8f, 0.8f, 1f)
+        } else {
+            borderedFont.setColor(1f, 1f, 1f, 1f)
+        }
+        borderedFont.draw(batch, text,
+                          x + 2 * remix.editor.toScaleX(BORDER),
+                          y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
+        remix.editor.apply {
+            borderedFont.unscaleFont()
+        }
     }
 }

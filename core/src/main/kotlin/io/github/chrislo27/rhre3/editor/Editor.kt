@@ -123,6 +123,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         FAILED("editor.msg.autosave.failed", true)
     }
 
+    enum class ScrollMode(val localization: String) {
+        PITCH("editor.msg.repitch"), VOLUME("editor.msg.changeVolume")
+    }
+
     private data class AutosaveState(val result: AutosaveResult, var time: Float)
 
     fun createRemix(): Remix {
@@ -182,6 +186,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
             remix.recomputeCachedData()
         }
+    var scrollMode: ScrollMode = ScrollMode.PITCH
     private val mouseVector: Vector2 = Vector2()
         get() {
             field.set(remix.camera.getInputX(), remix.camera.getInputY())
@@ -1200,6 +1205,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                                              )))
                             this.selection = listOf()
                         }
+
+                        if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
+                            scrollMode = when (scrollMode) {
+                                ScrollMode.PITCH -> ScrollMode.VOLUME
+                                ScrollMode.VOLUME -> ScrollMode.PITCH
+                            }
+                            updateMessageLabel()
+                        }
                     }
                     is TrackerResize -> {
                         // handled below
@@ -1237,6 +1250,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val msgBuilder = StringBuilder()
         val ctrlBuilder = StringBuilder()
         val clickOccupation = clickOccupation
+        val scrollMode = scrollMode
 
         fun StringBuilder.separator(): StringBuilder {
             if (this.isNotEmpty())
@@ -1257,8 +1271,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         if (clickOccupation == ClickOccupation.None) {
                             msgBuilder.separator().append(Localization["editor.msg.changeScrollMode"])
 
-                            if (selection.any { it is IRepitchable && it.canBeRepitched }) {
-                                ctrlBuilder.separator().append(Localization["editor.msg.repitch", Localization["editor.msg.scroll"]])
+                            when (scrollMode) {
+                                Editor.ScrollMode.PITCH -> {
+                                    if (selection.any { it is IRepitchable && it.canBeRepitched }) {
+                                        msgBuilder.separator().append(
+                                                Localization["editor.msg.repitch", Localization["editor.msg.scroll"]])
+                                    }
+                                }
+                                Editor.ScrollMode.VOLUME -> {
+                                    if (selection.any { it is IVolumetric && it.isVolumetric }) {
+                                        msgBuilder.separator().append(
+                                                Localization["editor.msg.changeVolume", Localization["editor.msg.scroll"]])
+                                    }
+                                }
                             }
 
                             if (selection.all(Entity::supportsCopying)) {
@@ -1798,28 +1823,35 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val control = Gdx.input.isControlDown()
         val shift = Gdx.input.isShiftDown()
         if (tool == Tool.SELECTION && selection.isNotEmpty() && !shift) {
-            val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
-            val oldPitches = repitchables.map { (it as IRepitchable).semitone }
+            when (scrollMode) {
+                Editor.ScrollMode.PITCH -> {
+                    val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
+                    val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
-            val anyChanged = selection.fold(false) { acc, it ->
-                if (it is IRepitchable && it.canBeRepitched) {
-                    val current = it.semitone
-                    val new = current + -amount * (if (control) 2 else 1)
-                    if (new in it.range) {
-                        it.semitone = new
-                        return@fold true
+                    val anyChanged = selection.fold(false) { acc, it ->
+                        if (it is IRepitchable && it.canBeRepitched) {
+                            val current = it.semitone
+                            val new = current + -amount * (if (control) 2 else 1)
+                            if (new in it.range) {
+                                it.semitone = new
+                                return@fold true
+                            }
+                        }
+                        acc
+                    }
+
+                    if (anyChanged) {
+                        val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction?
+
+                        if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
+                            lastAction.reloadNewPitches()
+                        } else {
+                            remix.addActionWithoutMutating(EntityRepitchAction(this, repitchables, oldPitches))
+                        }
                     }
                 }
-                acc
-            }
+                Editor.ScrollMode.VOLUME -> {
 
-            if (anyChanged) {
-                val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction?
-
-                if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
-                    lastAction.reloadNewPitches()
-                } else {
-                    remix.addActionWithoutMutating(EntityRepitchAction(this, repitchables, oldPitches))
                 }
             }
 
