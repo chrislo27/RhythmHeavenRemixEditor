@@ -7,11 +7,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -77,13 +75,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val oldColor = batch.packedColor
         val oldFontSizeX = font.data.scaleX
         val oldFontSizeY = font.data.scaleY
-        val volumetricallyHighlighted = this is IVolumetric && this.isVolumetric && remix.editor.currentTool == Tool.SFX_VOLUME && remix.playState == PlayState.STOPPED
-        val selectionTint = if (volumetricallyHighlighted) {
-            remix.editor.theme.entities.selectionTint.rotateColour(remix.editor.getEntityOnMouse() === this)
-        } else {
-            remix.editor.theme.entities.selectionTint
-        }
-        val showSelection = volumetricallyHighlighted || (!volumetricallyHighlighted && isSelected)
+        val selectionTint = remix.editor.theme.entities.selectionTint
+        val showSelection = isSelected
 
         val x = bounds.x + lerpDifference.x
         val y = bounds.y + lerpDifference.y

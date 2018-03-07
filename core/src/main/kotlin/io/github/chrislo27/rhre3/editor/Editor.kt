@@ -1357,9 +1357,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 Tool.MUSIC_VOLUME -> {
                     ctrlBuilder.append(Localization["editor.msg.musicVolume"])
                 }
-                Tool.SFX_VOLUME -> {
-                    ctrlBuilder.append(Localization["editor.msg.sfxVolume"])
-                }
             }
         }
 
@@ -1372,7 +1369,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (scrollMode == ScrollMode.VOLUME) {
             val entity = getEntityOnMouse()
             if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                output = Localization["editor.msg.sfxVolume.volume", entity.volumePercent]
+                output = Localization["editor.msg.volume", entity.volumePercent]
             }
         }
 
@@ -1826,13 +1823,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 Editor.ScrollMode.PITCH -> {
                     val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
                     val oldPitches = repitchables.map { (it as IRepitchable).semitone }
+                    val changeAmount = -amount * (if (control) 2 else 1)
 
                     val anyChanged = selection.fold(false) { acc, it ->
                         if (it is IRepitchable && it.canBeRepitched) {
                             val current = it.semitone
-                            val new = current + -amount * (if (control) 2 else 1)
+                            val new = current + changeAmount
                             if (new in it.range) {
                                 it.semitone = new
+                                return@fold true
+                            } else if (it.range.endInclusive in (current + 1)..(new - 1)) {
+                                // new > it.range.endInclusive && current < it.range.endInclusive
+                                it.semitone = it.range.endInclusive
+                                return@fold true
+                            } else if (it.range.start in (new + 1)..(current - 1)) {
+                                // new < it.range.start && current > it.range.start
+                                it.semitone = it.range.start
                                 return@fold true
                             }
                         }
@@ -1840,7 +1846,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
 
                     if (anyChanged) {
-                        val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction?
+                        val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction
 
                         if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
                             lastAction.reloadNewPitches()
@@ -1850,7 +1856,41 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
                 Editor.ScrollMode.VOLUME -> {
+                    // TODO add volume/pitch switch button
+                    val volumetrics = selection.filter { it is IVolumetric && it.isVolumetric }
+                    val oldVolumes: List<Int> = volumetrics.map { (it as IVolumetric).volumePercent }
+                    val changeAmount = -amount * (if (control) 25 else 5)
 
+                    val anyChanged = selection.fold(false) { acc, it ->
+                        if (it is IVolumetric && it.isVolumetric) {
+                            val current = it.volumePercent
+                            val new = current + changeAmount
+                            if (new in it.volumeRange) {
+                                it.volumePercent = new
+                                return@fold true
+                            } else if (it.volumeRange.endInclusive in (current + 1)..(new - 1)) {
+                                // new > it.range.endInclusive && current < it.range.endInclusive
+                                it.volumePercent = it.volumeRange.endInclusive
+                                return@fold true
+                            } else if (it.volumeRange.start in (new + 1)..(current - 1)) {
+                                // new < it.range.start && current > it.range.start
+                                it.volumePercent = it.volumeRange.start
+                                return@fold true
+                            }
+                        }
+
+                        acc
+                    }
+
+                    if (anyChanged) {
+                        val lastAction: EntityRevolumeAction? = remix.getUndoStack().peekFirst() as? EntityRevolumeAction
+
+                        if (lastAction != null && lastAction.entities.containsAll(volumetrics)) {
+                            lastAction.reloadNewVolumes()
+                        } else {
+                            remix.addActionWithoutMutating(EntityRevolumeAction(this, volumetrics, oldVolumes))
+                        }
+                    }
                 }
             }
 
@@ -1891,25 +1931,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
 
                 return true
-            }
-        } else if (tool == Tool.SFX_VOLUME) {
-            val entity = getEntityOnMouse()
-            if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                val change = -amount * (if (control) 25 else 5)
-                val oldVol = entity.volumePercent
-                val newVol = (oldVol + change).coerceIn(entity.volumeRange)
-
-                if (oldVol != newVol) {
-                    val lastAction: EntityRevolumeAction? = remix.getUndoStack().peekFirst() as? EntityRevolumeAction?
-
-                    entity.volumePercent = newVol
-
-                    if (lastAction != null && entity in lastAction.entities) {
-                        lastAction.reloadNewVolumes()
-                    } else {
-                        remix.addActionWithoutMutating(EntityRevolumeAction(this, listOf(entity), listOf(oldVol)))
-                    }
-                }
             }
         }
 
