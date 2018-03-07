@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
-import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -31,21 +30,17 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
                 it.bounds.width = this@EquidistantEntity.bounds.width
                 it.bounds.y = this@EquidistantEntity.bounds.y + track.toFloat()
             }
-
         }
     }
 
     init {
         datamodel.cues.mapIndexedTo(internal) { index, pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
+            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
                 this.updateBounds {
                     this@apply.bounds.x = this@EquidistantEntity.bounds.x
                     this@apply.bounds.y = this@EquidistantEntity.bounds.y + pointer.track
                     this@apply.bounds.width = this@EquidistantEntity.bounds.width
                 }
-
-                // apply cue pointer settings
-                (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Object with id ${pointer.id} not found")
         }
         this.bounds.width = datamodel.duration

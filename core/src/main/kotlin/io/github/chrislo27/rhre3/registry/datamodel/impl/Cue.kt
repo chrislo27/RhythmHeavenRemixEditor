@@ -63,7 +63,12 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): CueEntity {
-        return CueEntity(remix, this)
+        return CueEntity(remix, this).apply {
+            if (cuePointer != null) {
+                semitone = cuePointer.semitone
+                volumePercent = cuePointer.volume
+            }
+        }
     }
 
     override fun dispose() {

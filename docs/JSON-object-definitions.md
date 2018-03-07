@@ -76,8 +76,9 @@ or `DataObject`.
   "beat": 1.0,
   // optional fields after this comment
   "duration": 1.0,
-  "semitone": 0,
   "track": 0,
+  "semitone": 0,
+  "volume": 100,
   "metadata": {}
 }
 ```
@@ -87,13 +88,22 @@ like other ID-based objects do. This is specifically an object that
 "points" to a `CueObject`. It's basically the definition for spawning
 cue objects. The usage of this object WILL vary from other object types,
 and if you need more data on what's used/isn't used per object, see the
-specific comments. For example, `PatternObject` (below) uses the base
+specific comments. For example, `PatternObject` (shown later below) uses the base
 implementation of `CuePointerObject`.
 
 As a result, this object will never appear by itself. The fields are similar
 to `CueObject`'s own cues, so you can look there. **Note that** the only
 fields shown here ARE the ones it has, and not every field from `CueObject`
 is inherited.
+
+The `semitone` property is an integer indicating the number of semitones
+to repitch by. This works on normally non-repitchable entities, but is
+not recommended. Has no effect on non-SFX entities.
+
+The `volume` property is an integer indicating the volume percentage.
+Has no effect on non-SFX entities. The default value is 100.
+The range of values should be kept at 0-300.
+(All negative values will be coerced to zero. Values higher than 300 are not changed, however.)
 
 The `metadata` object can be null, and acts as a key/value map.<br>
 Below is a list of potential properties:

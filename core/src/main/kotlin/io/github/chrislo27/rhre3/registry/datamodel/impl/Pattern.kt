@@ -24,7 +24,12 @@ class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): PatternEntity {
-        return PatternEntity(remix, this)
+        return PatternEntity(remix, this).apply {
+            if (cuePointer != null) {
+                semitone = cuePointer.semitone
+                volumePercent = cuePointer.volume
+            }
+        }
     }
 
     override fun dispose() {

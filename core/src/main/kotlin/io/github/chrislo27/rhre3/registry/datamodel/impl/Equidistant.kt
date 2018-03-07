@@ -15,7 +15,12 @@ class Equidistant(game: Game, id: String, deprecatedIDs: List<String>, name: Str
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): EquidistantEntity {
-        return EquidistantEntity(remix, this)
+        return EquidistantEntity(remix, this).apply {
+            if (cuePointer != null) {
+                semitone = cuePointer.semitone
+                volumePercent = cuePointer.volume
+            }
+        }
     }
 
     override fun dispose() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
+import io.github.chrislo27.rhre3.entity.model.IVolumetric
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
@@ -33,6 +34,8 @@ class CuePointerObject {
     var duration: Float = 0f
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var semitone: Int = 0
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var volume: Int = IVolumetric.DEFAULT_VOLUME
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var track: Int = 0
 

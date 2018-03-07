@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
-import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -22,30 +21,37 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
                 "Datamodel ${datamodel.id} has no internal cues")
     }
 
-    private fun getPossibleObjects(): List<Datamodel> {
-        return datamodel.cues.mapNotNull {
-            GameRegistry.data.objectMap[it.id]
+    private fun getPossibleObjects(): List<Pair<Datamodel, CuePointer>> {
+        return datamodel.cues.mapNotNull { pointer ->
+            GameRegistry.data.objectMap[pointer.id]?.let { it to pointer }
         }
     }
 
     private fun reroll() {
+        val thisSemitone = semitone
+        val thisVolume = volumePercent
+
+        // Set semitone and volume to zero, repopulate, and reset it so the setters in MultipartEntity take effect
+        semitone = 0
+        volumePercent = IVolumetric.DEFAULT_VOLUME
+
         internal.clear()
         internal +=
                 getPossibleObjects().takeIf {
                     it.isNotEmpty()
-                }?.random()?.createEntity(remix, null)?.also { ent ->
-                    ent.updateBounds {
-                        ent.bounds.x = this@RandomCueEntity.bounds.x
-                        ent.bounds.width = this@RandomCueEntity.bounds.width
-                        ent.bounds.y = this@RandomCueEntity.bounds.y
-                    }
-                    if (ent is IVolumetric && ent.isVolumetric) {
-                        ent.volumePercent = this@RandomCueEntity.volumePercent
-                    }
-                    if (ent is IRepitchable) {
-                        ent.semitone = this@RandomCueEntity.semitone
+                }?.random()?.let { pair ->
+                    pair.first.createEntity(remix, pair.second).also { ent ->
+                        ent.updateBounds {
+                            ent.bounds.x = this@RandomCueEntity.bounds.x
+                            ent.bounds.width = this@RandomCueEntity.bounds.width
+                            ent.bounds.y = this@RandomCueEntity.bounds.y
+                        }
                     }
                 } ?: error("No valid entities found from randomization for object ${datamodel.id}")
+
+        // Re-set semitone and volume so it takes effect in the internals
+        semitone = thisSemitone
+        volumePercent = thisVolume
     }
 
     override fun getRenderColor(): Color {
@@ -55,7 +61,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
     override fun loadSounds() {
         super.loadSounds()
         getPossibleObjects()
-                .map { it.createEntity(remix, null) }
+                .map { it.first.createEntity(remix, null) }
                 .forEach {
                     if (it is ILoadsSounds) {
                         it.loadSounds()
@@ -66,7 +72,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
     override fun unloadSounds() {
         super.unloadSounds()
         getPossibleObjects()
-                .map { it.createEntity(remix, null) }
+                .map { it.first.createEntity(remix, null) }
                 .forEach {
                     if (it is ILoadsSounds) {
                         it.unloadSounds()

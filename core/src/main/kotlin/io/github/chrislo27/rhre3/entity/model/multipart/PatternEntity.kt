@@ -18,15 +18,12 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
 
     init {
         datamodel.cues.mapTo(internal) { pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
+            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
                 this.updateBounds {
                     this.bounds.x = this@PatternEntity.bounds.x + pointer.beat
                     this.bounds.y = this@PatternEntity.bounds.y + pointer.track
                     this.bounds.width = pointer.duration
                 }
-
-                // apply cue pointer settings
-                (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Object with id ${pointer.id} not found")
         }
 

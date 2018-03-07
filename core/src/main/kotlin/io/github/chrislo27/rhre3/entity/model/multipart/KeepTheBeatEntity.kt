@@ -2,8 +2,8 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
-import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
+import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
@@ -36,8 +36,12 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
         val sequenceLength: Float = Math.max(datamodel.duration, datamodel.totalSequenceDuration)
         val percentage: Float = bounds.width / sequenceLength
-        val wholes: Int = percentage.toInt()
-        val fractional: Float = percentage - percentage.toInt()
+        val thisSemitone = semitone
+        val thisVolume = volumePercent
+
+        // Set semitone and volume to zero, repopulate, and reset it so the setters in MultipartEntity take effect
+        semitone = 0
+        volumePercent = IVolumetric.DEFAULT_VOLUME
 
         if (sequenceLength <= 0f)
             error("Sequence length for keep the beat cannot be negative or zero ($sequenceLength)")
@@ -54,18 +58,20 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
             if (beat >= this.bounds.width)
                 break
 
-            internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, null)?.apply {
+            internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
                 this.updateBounds {
                     this@apply.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
                     this@apply.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track
                     this@apply.bounds.width = pointer.duration
                 }
-
-                (this as? IRepitchable)?.semitone = pointer.semitone
             } ?: error("Missing object ${pointer.id} while trying to populate keep the beat ${datamodel.id}")
 
             index++
         }
+
+        // Re-set semitone and volume so it takes effect in the internals
+        semitone = thisSemitone
+        volumePercent = thisVolume
     }
 
     init {

@@ -48,10 +48,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
         set(value) {
-            field = value
+            field = value.coerceIn(volumeRange)
             internal.filterIsInstance<IVolumetric>()
                     .forEach {
                         if (it.isVolumetric) {
+                            // TODO make multiplicative, somehow
                             it.volumePercent = value
                         }
                     }

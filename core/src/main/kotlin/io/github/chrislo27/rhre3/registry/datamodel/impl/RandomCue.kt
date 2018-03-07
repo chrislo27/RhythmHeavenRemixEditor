@@ -18,7 +18,12 @@ class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: Strin
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): RandomCueEntity {
-        return RandomCueEntity(remix, this)
+        return RandomCueEntity(remix, this).apply {
+            if (cuePointer != null) {
+                semitone = cuePointer.semitone
+                volumePercent = cuePointer.volume
+            }
+        }
     }
 
     override fun dispose() {
