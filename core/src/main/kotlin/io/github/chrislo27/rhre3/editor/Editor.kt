@@ -1829,16 +1829,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         if (it is IRepitchable && it.canBeRepitched) {
                             val current = it.semitone
                             val new = current + changeAmount
-                            if (new in it.range) {
+                            if (new in it.semitoneRange) {
                                 it.semitone = new
                                 return@fold true
-                            } else if (it.range.endInclusive in (current + 1)..(new - 1)) {
+                            } else if (it.semitoneRange.endInclusive in (current + 1)..(new - 1)) {
                                 // new > it.range.endInclusive && current < it.range.endInclusive
-                                it.semitone = it.range.endInclusive
+                                it.semitone = it.semitoneRange.endInclusive
                                 return@fold true
-                            } else if (it.range.start in (new + 1)..(current - 1)) {
+                            } else if (it.semitoneRange.start in (new + 1)..(current - 1)) {
                                 // new < it.range.start && current > it.range.start
-                                it.semitone = it.range.start
+                                it.semitone = it.semitoneRange.start
                                 return@fold true
                             }
                         }
