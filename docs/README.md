@@ -112,12 +112,12 @@ and doesn't collide with any other entities.
 
 If you hold **`ALT`** while starting a drag, you will copy the selection.
 
-If you hold **`CONTROL+ALT`** while starting a drag, you will make what's called
-a *response-copy*. For games like First Contact, or Working Dough, making a
+If you hold **`CONTROL+ALT`** (**`SHIFT+ALT`** on macOS) while starting a drag, you will make what's called
+a *response-copy*. For games like First Contact or Working Dough, making a
 response-copy of the "leader" cues will make a special copy of the player
 cues! This is one example of new functionality added to RHRE3.
 
-Pressing **`BACKSPACE`** or **`DELETE`** with a selection will delete it.
+Pressing **`BACKSPACE`** or **`DELETE`** with a selection made will delete it.
 
 **`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch of any **selected** cues
  by a semitone, if possible. Holding **`CTRL`** will change it in increments of two.

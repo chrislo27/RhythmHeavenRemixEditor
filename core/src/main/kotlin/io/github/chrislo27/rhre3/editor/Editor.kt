@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.SharedLibraryLoader
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -1291,7 +1292,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             }
 
                             if (selection.areAnyResponseCopyable()) {
-                                ctrlBuilder.separator().append(Localization["editor.msg.callResponseHint"])
+                                ctrlBuilder.separator().append(
+                                        Localization[if (SharedLibraryLoader.isMac) "editor.msg.callResponseHint.mac" else "editor.msg.callResponseHint"])
                             }
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
@@ -1484,7 +1486,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val isDraggingButtonDown = button == Input.Buttons.LEFT
         val isCopying = isDraggingButtonDown && alt
-        val isResponsing = isDraggingButtonDown && alt && control
+        val isResponsing = isDraggingButtonDown && alt && (control || shift)
 
         if (clickOccupation != ClickOccupation.None || remix.playState != PlayState.STOPPED)
             return false
@@ -1509,7 +1511,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         ClickOccupation.Playback(this)
                     }
                 } else if (isDraggingButtonDown) {
-                    if (remix.entities.any { mouseVector in it.bounds && it.isSelected } && !(control && !alt)) {
+                    if (remix.entities.any { mouseVector in it.bounds && it.isSelected }) {
                         val inBounds = this.selection
                         val newSel = if (isResponsing && inBounds.areAnyResponseCopyable()) {
                             inBounds.mapNotNull {
@@ -2003,6 +2005,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 "pos: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
                         remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
                         remix.seconds)}\nmvol: ${remix.musicVolumes.volumeAt(
-                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min"
+                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min\nmodkeys: [${if (Gdx.input.isControlDown()) "CTRL" else ""}][${if (Gdx.input.isShiftDown()) "SHIFT" else ""}][${if (Gdx.input.isAltDown()) "ALT" else ""}]"
     }
 }
