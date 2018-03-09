@@ -485,7 +485,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.location.set(
                     screenHeight = (buttonBarStage.location.screenY - this.location.screenY - (Editor.BUTTON_PADDING / RHRE3.HEIGHT)))
             this.updatePositions()
-            this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@ {
+            this.elements += GameDisplayStage(editor, palette, this, this.camera).apply display@{
                 this.location.set(screenHeight = this@apply.percentageOfHeight(32f),
                                   screenX = this@apply.percentageOfWidth(8f),
                                   screenWidth = this@apply.percentageOfWidth(
@@ -630,7 +630,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         pickerDisplay = PickerDisplay(editor, Editor.PATTERN_COUNT, palette, patternAreaStage, patternAreaStage)
 
-        run pickerAndCo@ {
+        run pickerAndCo@{
             val iconWidth = pickerStage.percentageOfWidth(Editor.ICON_SIZE)
             val iconHeight = pickerStage.percentageOfHeight(Editor.ICON_SIZE)
             val iconWidthPadded = pickerStage.percentageOfWidth(
@@ -647,7 +647,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                                              ))
 
             // Picker area
-            run picker@ {
+            run picker@{
                 pickerStage.updatePositions()
                 gameButtons as MutableList
                 variantButtons as MutableList
@@ -791,7 +791,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 pickerStage.elements.addAll(variantButtons)
             }
 
-            run patternArea@ {
+            run patternArea@{
                 val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
                 val padding2 = pickerStage.percentageOfWidth(
                         Editor.ICON_PADDING * 2)
@@ -921,7 +921,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         // Minimap area
-        run minimap@ {
+        run minimap@{
             minimapBarStage.updatePositions()
             filterButtons as MutableList
 
@@ -1004,7 +1004,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         // Button bar / Toolbar
-        run buttonBar@ {
+        run buttonBar@{
             buttonBarStage.updatePositions()
             val stageWidth = buttonBarStage.location.realWidth
             val stageHeight = buttonBarStage.location.realHeight
@@ -1101,14 +1101,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             buttonBarStage.elements += TapalongToggleButton(editor, this@EditorStage, palette, buttonBarStage,
                                                             buttonBarStage).apply {
-                this.location.set(screenX = size * 8 + padding * 8, screenWidth = size)
-//                this.location.set(screenWidth = pauseButton.location.screenX - this.location.screenX - padding)
+                this.location.set(screenWidth = size, screenX = size * 8 + padding * 8)
             }
-            buttonBarStage.elements += StatsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size,
-                                  screenX = size * 9 + padding * 9)
-                this.visible = false
+            buttonBarStage.elements += ScrollModeButton(editor, palette, buttonBarStage,
+                                                        buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 9 + padding * 9)
             }
+//            buttonBarStage.elements += StatsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+//                this.location.set(screenWidth = size,
+//                                  screenX = size * 10 + padding * 10)
+//                this.visible = false
+//            }
 
             // right aligned
             // info button

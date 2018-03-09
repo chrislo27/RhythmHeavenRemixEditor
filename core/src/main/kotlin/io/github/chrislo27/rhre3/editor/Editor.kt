@@ -124,8 +124,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         FAILED("editor.msg.autosave.failed", true)
     }
 
-    enum class ScrollMode(val localization: String) {
-        PITCH("editor.msg.repitch"), VOLUME("editor.msg.changeVolume")
+    enum class ScrollMode(val msgLocalization: String, val buttonLocalization: String, val icon: String) {
+        PITCH("editor.msg.repitch", "editor.scrollMode.pitch", "ui_icon_scroll_pitch"),
+        VOLUME("editor.msg.changeVolume", "editor.scrollMode.volume",  "ui_icon_sfx_volume");
+
+        companion object {
+
+            val VALUES: List<ScrollMode> = values().toList()
+
+        }
     }
 
     private data class AutosaveState(val result: AutosaveResult, var time: Float)
@@ -1208,10 +1215,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
 
                         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
-                            scrollMode = when (scrollMode) {
-                                ScrollMode.PITCH -> ScrollMode.VOLUME
-                                ScrollMode.VOLUME -> ScrollMode.PITCH
-                            }
+                            cycleScrollMode(if (Gdx.input.isShiftDown()) -1 else 1)
                             updateMessageLabel()
                         }
                     }
@@ -1276,13 +1280,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 Editor.ScrollMode.PITCH -> {
                                     if (selection.any { it is IRepitchable && it.canBeRepitched }) {
                                         msgBuilder.separator().append(
-                                                Localization["editor.msg.repitch", Localization["editor.msg.scroll"]])
+                                                Localization[scrollMode.msgLocalization, Localization["editor.msg.scroll"]])
                                     }
                                 }
                                 Editor.ScrollMode.VOLUME -> {
                                     if (selection.any { it is IVolumetric && it.isVolumetric }) {
                                         msgBuilder.separator().append(
-                                                Localization["editor.msg.changeVolume", Localization["editor.msg.scroll"]])
+                                                Localization[scrollMode.msgLocalization, Localization["editor.msg.scroll"]])
                                     }
                                 }
                             }
@@ -1447,6 +1451,34 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         stage.recentsFilter.shouldUpdate = true
         stage.updateSelected()
+    }
+
+    fun cycleScrollMode(dir: Int): ScrollMode {
+        val last = scrollMode
+        val allValues = ScrollMode.VALUES
+        val indexOfCurrent = allValues.indexOf(last)
+
+        if (indexOfCurrent == -1) {
+            scrollMode = allValues.first()
+        } else if (dir > 0) {
+            val nextIndex = indexOfCurrent + 1
+
+            scrollMode = if (nextIndex >= allValues.size) {
+                allValues.first()
+            } else {
+                allValues[nextIndex]
+            }
+        } else if (dir < 0) {
+            val nextIndex = indexOfCurrent - 1
+
+            scrollMode = if (nextIndex < 0) {
+                allValues.last()
+            } else {
+                allValues[nextIndex]
+            }
+        }
+
+        return last
     }
 
     fun getTrackerOnMouse(klass: Class<out Tracker<*>>?, obeyY: Boolean): Tracker<*>? {
@@ -1858,7 +1890,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
                 Editor.ScrollMode.VOLUME -> {
-                    // TODO add volume/pitch switch button
                     val volumetrics = selection.filter { it is IVolumetric && it.isVolumetric }
                     val oldVolumes: List<Int> = volumetrics.map { (it as IVolumetric).volumePercent }
                     val changeAmount = -amount * (if (control) 25 else 5)
