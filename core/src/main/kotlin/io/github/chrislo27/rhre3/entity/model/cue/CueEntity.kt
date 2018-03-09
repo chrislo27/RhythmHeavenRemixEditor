@@ -79,6 +79,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         set(value) {
             field = value.coerceIn(volumeRange)
         }
+    override var volumeCoefficient: Float = 1f
     override val isMuted: Boolean
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true

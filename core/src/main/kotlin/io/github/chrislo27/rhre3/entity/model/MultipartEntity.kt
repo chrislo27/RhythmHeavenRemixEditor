@@ -49,13 +49,12 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
         set(value) {
             field = value.coerceIn(volumeRange)
-            internal.filterIsInstance<IVolumetric>()
-                    .forEach {
-                        if (it.isVolumetric) {
-                            // TODO make multiplicative, somehow
-                            it.volumePercent = value
-                        }
-                    }
+            updateInternalVolumes()
+        }
+    override var volumeCoefficient: Float = 1f
+        set(value) {
+            field = value
+            updateInternalVolumes()
         }
     override val isMuted: Boolean
         get() = IVolumetric.isRemixMutedExternally(remix)
@@ -68,6 +67,15 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         this.bounds.height = (1f +
                 (datamodel.cues.maxBy(CuePointer::track)?.track ?: error("No cues in datamodel")))
                 .coerceAtLeast(1f)
+    }
+
+    private fun updateInternalVolumes() {
+        internal.filterIsInstance<IVolumetric>()
+                .forEach {
+                    if (it.isVolumetric && it !== this) { // Reference equality check ensures no accidental recursion
+                        it.volumeCoefficient = (volumePercent / 100f) * volumeCoefficient
+                    }
+                }
     }
 
     open fun getInternalEntities(): List<Entity> {

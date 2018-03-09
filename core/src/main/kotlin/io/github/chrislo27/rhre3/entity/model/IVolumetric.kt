@@ -28,6 +28,10 @@ interface IVolumetric {
      * Volume as an integral value of a percent. 100 = 100%
      */
     var volumePercent: Int
+    /**
+     * A coefficient to be applied for [volume]. This is used for parents who affect their children's volumes multiplicatively.
+     */
+    var volumeCoefficient: Float
 
     val isVolumetric: Boolean
     val isMuted: Boolean
@@ -35,6 +39,6 @@ interface IVolumetric {
     val volumeRange: IntRange
         get() = VOLUME_RANGE
     val volume: Float
-        get() = if (isMuted) 0f else volumePercent / 100f
+        get() = if (isMuted) 0f else (volumePercent / 100f * volumeCoefficient)
 
 }
