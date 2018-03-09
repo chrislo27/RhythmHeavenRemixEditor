@@ -63,6 +63,7 @@ make constant beats without laying down multiple patterns.
 **`UP`** or **`W`** - Scroll up (only in editor)<br>
 **`DOWN`** or **`S`** - Scroll down (only in editor)<br>
 **`SHIFT+SCROLL`** - Pan camera (hold **`CTRL`** to increase speed)<br>
+**`TAB`** - Cycle through scroll modes<br>
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
@@ -119,8 +120,14 @@ cues! This is one example of new functionality added to RHRE3.
 
 Pressing **`BACKSPACE`** or **`DELETE`** with a selection made will delete it.
 
-**`SCROLL`** or **`UP`**/**`DOWN`** will change the pitch of any **selected** cues
- by a semitone, if possible. Holding **`CTRL`** will change it in increments of two.
+#### Scroll Mode
+![Scroll mode button](readme/toolbar/scrollmode.png)<br>
+**`SCROLL`** or **`UP`**/**`DOWN`** will do the following based on the
+**scroll mode** (changeable with the button on the toolbar or by pressing **`TAB`**):
+* Change the pitch of any **selected** cues by a semitone, if possible
+  * Holding **`CTRL`** will change it in increments of two
+* Change the volume of any **selected** cues in increments of 5%
+  * Holding **`CTRL`** will change it in increments of 25%
 
 #### Playback Start
 The Playback Start (default green) tracker will be the starting point of the

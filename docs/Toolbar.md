@@ -49,6 +49,15 @@ for the start of each measure (if defined).
 The tapalong button brings up a menu to help you find the BPM of your
 music.
 
+## Scroll Mode
+![Scroll mode](readme/toolbar/scrollmode.png)
+
+This button allows you to toggle what action scrolling (or pressing up and down)
+does on a selection. By default, it changes the pitch. An alternative mode
+is changing the volume.
+
+[See this section for more details](Readme.md#scroll-mode)
+
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
 
