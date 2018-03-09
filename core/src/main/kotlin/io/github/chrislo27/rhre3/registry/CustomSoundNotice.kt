@@ -41,7 +41,7 @@ It is advised that you generate JSON versions of the custom games for more flexi
 
 You can use data.json files if you need to quickly test databasing. For documentation on it, view: http://rhre.readthedocs.io/en/latest/JSON-object-definitions/
 
-Supported audio formats are as follows: ${RHRE3.SUPPORTED_SOUND_TYPES}.
+Supported audio formats are as follows: ${RHRE3.SUPPORTED_DECODING_SOUND_TYPES}.
 
 Optionally, if you put an icon.png in the folder it will use it."""
     }

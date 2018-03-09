@@ -14,7 +14,7 @@ object RHRE3 {
     val DEFAULT_SIZE = WIDTH to HEIGHT
     val MINIMUM_SIZE: Pair<Int, Int> = 640 to 360
 
-    val SUPPORTED_SOUND_TYPES = listOf("ogg", "mp3", "wav")
+    val SUPPORTED_DECODING_SOUND_TYPES = listOf("ogg", "mp3", "wav")
     val tmpMusic: FileHandle by lazy {
         Gdx.files.local("tmpMusic/").apply {
             mkdirs()

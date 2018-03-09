@@ -128,7 +128,7 @@ object GameRegistry : Disposable {
                             return@mapNotNull it
                         }
                         val sfx = it.list { file: File ->
-                            file.extension in RHRE3.SUPPORTED_SOUND_TYPES
+                            file.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
                         }
 
                         if (sfx.isEmpty()) {
@@ -348,7 +348,7 @@ object GameRegistry : Disposable {
                             0, true, false)
 
                 val sfxList = directive.folder.list { fh ->
-                    fh.isFile && fh.extension in RHRE3.SUPPORTED_SOUND_TYPES
+                    fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
                 }.toList()
 
                 game.objects as MutableList
