@@ -1372,16 +1372,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun getHoverText(): String {
         var output: String = ""
-        if (scrollMode == ScrollMode.VOLUME) {
-            val entity = getEntityOnMouse()
-            if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                output = Localization["editor.msg.volume", entity.volumePercent]
-            }
-        }
 
         if (Toolboks.debugMode) {
             val str = StringBuilder()
             val entity = getEntityOnMouse()
+
+            // Moved from non-debug mode
+            if (scrollMode == ScrollMode.VOLUME) {
+//                val entity = getEntityOnMouse()
+                if (entity != null && entity is IVolumetric && entity.isVolumetric) {
+                    output = Localization["editor.msg.volume", entity.volumePercent]
+                }
+            }
 
             if (entity != null) {
                 str.append(entity::class.java.simpleName)
