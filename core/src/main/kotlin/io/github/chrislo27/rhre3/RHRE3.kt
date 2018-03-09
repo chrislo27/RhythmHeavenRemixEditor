@@ -40,8 +40,8 @@ object RHRE3 {
     lateinit var launchArguments: List<String>
 
     init {
-        if (VERSION.suffix != "DEVELOPMENT" && DATABASE_BRANCH != MASTER_DATABASE_BRANCH) {
-            error("Version suffix is not DEVELOPMENT but the database branch is set to $DATABASE_BRANCH")
+        if ((VERSION.suffix != "DEVELOPMENT" && !VERSION.suffix.startsWith("SNAPSHOT")) && DATABASE_BRANCH != MASTER_DATABASE_BRANCH) {
+            error("Version suffix is not DEVELOPMENT or SNAPSHOT but the database branch is set to $DATABASE_BRANCH")
         }
     }
 
