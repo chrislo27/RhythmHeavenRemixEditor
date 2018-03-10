@@ -109,14 +109,11 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
             batch.setColor(1f, 1f, 1f, 1f)
             val tex: Texture = AssetRegistry["ui_bg"]
             val start: Float = MathHelper.getSawtoothWave(5f) - 1f
+            val ratioX = camera.viewportWidth / RHRE3.WIDTH
+            val ratioY = camera.viewportHeight / RHRE3.HEIGHT
             for (x in (start * tex.width).toInt()..camera.viewportWidth.toInt() step tex.width) {
                 for (y in (start * tex.height).toInt()..camera.viewportHeight.toInt() step tex.height) {
-                    batch.draw(tex, x.toFloat(), y.toFloat())
-//                    batch.draw(tex, x.toFloat(), y.toFloat(), tex.width / 2f, tex.height / 2f,
-//                               tex.width.toFloat(), tex.height.toFloat(),
-//                               1f, 1f,
-//                               360f * MathHelper.getSawtoothWave(System.currentTimeMillis() - (25) * (x + y), 2f),
-//                               0, 0, tex.width, tex.height, false, false)
+                    batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, tex.width * ratioX, tex.height * ratioY)
                 }
             }
         }
