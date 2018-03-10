@@ -126,7 +126,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     enum class ScrollMode(val msgLocalization: String, val buttonLocalization: String, val icon: String) {
         PITCH("editor.msg.repitch", "editor.scrollMode.pitch", "ui_icon_scroll_pitch"),
-        VOLUME("editor.msg.changeVolume", "editor.scrollMode.volume",  "ui_icon_sfx_volume");
+        VOLUME("editor.msg.changeVolume", "editor.scrollMode.volume", "ui_icon_sfx_volume");
 
         companion object {
 
@@ -1314,19 +1314,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                             if (first is IStretchable && first.isStretchable) {
                                 ctrlBuilder.separator().append(
-                                        Localization["editor.msg.stretchable${
-                                        if (first is EquidistantEntity)
-                                            ".equidistant"
-                                        else
-                                            (if (first is KeepTheBeatEntity)
-                                                ".keepTheBeat"
-                                            else
-                                                "")}"])
+                                        Localization[if (first is EquidistantEntity) "editor.msg.stretchable.equidistant" else if (first is KeepTheBeatEntity) "editor.msg.stretchable.keepTheBeat" else "editor.msg.stretchable"])
                             }
 
                             if (first is IEditableText) {
                                 ctrlBuilder.separator().append(
-                                        Localization["editor.msg.editabletext.${if (stage.entityTextField.visible) "finish" else "edit"}"])
+                                        Localization[if (stage.entityTextField.visible) "editor.msg.editabletext.finish" else "editor.msg.editabletext.edit"])
                             }
                         }
                     } else {
