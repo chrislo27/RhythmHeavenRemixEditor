@@ -24,11 +24,15 @@ import io.github.chrislo27.toolboks.version.Version
 class EditorVersionScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, EditorVersionScreen>(main) {
 
+    companion object {
+        private val DEFAULT_BEGINNING = false to ""
+    }
+
     override val stage: Stage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<EditorVersionScreen>
 
-    var isBeginning: Boolean = false
+    var isBeginning: Pair<Boolean, String> = DEFAULT_BEGINNING
     private var timeOnScreen = 0f
     private var timeToStayOnScreen = 0f
 
@@ -41,8 +45,8 @@ class EditorVersionScreen(main: RHRE3Application)
         }
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull(if (isBeginning) "editor" else "info")
-            isBeginning = false
+            main.screen = ScreenRegistry.getNonNull(if (isBeginning.first) isBeginning.second else "info")
+            isBeginning = DEFAULT_BEGINNING
         }
 
         stage.bottomStage.elements += object : Button<EditorVersionScreen>(palette, stage.bottomStage,
@@ -121,7 +125,7 @@ class EditorVersionScreen(main: RHRE3Application)
         stage as GenericStage
         stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 5)}"
         timeOnScreen = 0f
-        if (isBeginning) {
+        if (isBeginning.first) {
             stage.backButton.enabled = false
             val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
             timeToStayOnScreen = (-3f / (timesSkipped + 1).coerceAtLeast(1)) + 3f

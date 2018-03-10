@@ -89,8 +89,9 @@ object RemixRecovery {
             val remix = editor.remix
 
             Remix.saveTo(remix, recoveryFile.file(), true)
+            val recoveryChecksum = getChecksumOfZip(recoveryFile)
             recoveryPrefs.putString("lastSavedChecksum", lastChecksum)
-                    .putString("recoveryChecksum", if (lastChecksum.isEmpty()) lastChecksum else getChecksumOfZip(recoveryFile))
+                    .putString("recoveryChecksum", recoveryChecksum)
                     .flush()
 
             Toolboks.LOGGER.info("Saved remix recovery file successfully")

@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.track.PlayState
@@ -15,9 +16,16 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
     override val stage: EditorStage
         get() = editor.stage
 
+    private var firstShowing = true
+
     override fun show() {
         super.show()
         (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
+
+        if (firstShowing) {
+            firstShowing = false
+            RemixRecovery.cacheChecksumAfterLoad(editor.remix)
+        }
     }
 
     override fun hide() {

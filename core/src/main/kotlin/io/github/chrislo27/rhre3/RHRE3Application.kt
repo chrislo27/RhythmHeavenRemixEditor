@@ -171,6 +171,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "saveRemix" to SaveRemixScreen(this)
                 ScreenRegistry += "openRemix" to OpenRemixScreen(this)
                 ScreenRegistry += "exportRemix" to ExportRemixScreen(this)
+                ScreenRegistry += "recoverRemix" to RecoverRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "credits" to CreditsScreen(this)
             }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -21,6 +22,10 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 
 class RegistryLoadingScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, RegistryLoadingScreen>(main) {
+
+    companion object {
+        val DEF_AFTER_LOAD_SCREEN: String = "editor"
+    }
 
     private var registryData: GameRegistry.RegistryData? = null
 
@@ -103,12 +108,13 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
+            val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else "editor"
             main.screen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion)
                 ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
-                    it.isBeginning = true
+                    it.isBeginning = true to normalScreen
                 }
             else
-                ScreenRegistry["editor"]
+                ScreenRegistry[normalScreen]
         }
     }
 
