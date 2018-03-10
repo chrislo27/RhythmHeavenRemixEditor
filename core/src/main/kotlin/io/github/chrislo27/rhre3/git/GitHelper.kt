@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.git
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.Toolboks
@@ -18,9 +17,7 @@ import java.net.URL
 object GitHelper {
 
     val SOUNDS_DIR: FileHandle by lazy {
-        Gdx.files.external(".rhre3/sfx/${RHRE3.DATABASE_BRANCH}/").apply {
-            mkdirs()
-        }
+        RHRE3.RHRE3_FOLDER.child("sfx/${RHRE3.DATABASE_BRANCH}/").apply { mkdirs() }
     }
 
     fun makeRepositoryBuilder(mustExist: Boolean = false): RepositoryBuilder =

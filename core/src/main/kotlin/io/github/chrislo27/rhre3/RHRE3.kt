@@ -32,6 +32,7 @@ object RHRE3 {
     const val DATABASE_RELEASES = "https://github.com/chrislo27/RHRE-database/releases"
     const val RELEASE_API_URL = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest"
     const val OUT_OF_MEMORY_DOC_LINK: String = "http://rhre.readthedocs.io/en/latest/Out-of-memory-on-music/"
+    val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
 
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false

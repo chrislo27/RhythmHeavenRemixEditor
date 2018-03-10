@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -19,6 +20,7 @@ import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
+import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -39,6 +41,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.ref.WeakReference
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -303,7 +306,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     }
 
                     updateBounds {
-                        bounds.set(point.startBeat, tracksWithNotes.indexOf(point.track.second).toFloat() % Editor.TRACK_COUNT,
+                        bounds.set(point.startBeat,
+                                   tracksWithNotes.indexOf(point.track.second).toFloat() % Editor.TRACK_COUNT,
                                    point.duration, 1f)
                     }
 
@@ -522,6 +526,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             lastTickBeat = beat.toInt()
         }
     var cuesMuted = false
+    private var lastActionAfterSave: WeakReference<ReversibleAction<Remix>>? = null
     private var lastTickBeat = Int.MIN_VALUE
     private var scheduleMusicPlaying = true
     @Volatile
@@ -680,6 +685,22 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     fun getGameSection(beat: Float): GameSection? {
         val entry = gameSections.lowerEntry(beat) ?: return null
         return entry.value
+    }
+
+    private fun canActionCountAsModification(action: ReversibleAction<Remix>): Boolean {
+        return action !is EntitySelectionAction
+    }
+
+    fun markAsSaved() {
+        val peek = getUndoStack().peekFirst()
+        lastActionAfterSave = if (getUndoStack().isEmpty() || !canActionCountAsModification(peek)) null else WeakReference(peek)
+    }
+
+    fun hasBeenModifiedAfterSave(): Boolean {
+        val undoStack = getUndoStack()
+        val lastAction = lastActionAfterSave
+        return (lastAction == null && undoStack.isNotEmpty() && canActionCountAsModification(undoStack.peekFirst()))
+                || (undoStack.isNotEmpty() && lastAction?.get() === undoStack.peekFirst() && canActionCountAsModification(undoStack.peekFirst()))
     }
 
     fun entityUpdate(entity: Entity): EntityUpdateResult {

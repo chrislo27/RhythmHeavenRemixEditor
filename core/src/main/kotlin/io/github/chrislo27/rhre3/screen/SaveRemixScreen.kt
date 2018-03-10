@@ -136,6 +136,7 @@ class SaveRemixScreen(main: RHRE3Application)
 
                             Remix.saveTo(editor.remix, correctFile, false)
                             editor.setFileHandles(FileHandle(correctFile))
+                            editor.remix.markAsSaved()
 
                             mainLabel.text = Localization["screen.save.success"]
                             Gdx.app.postRunnable(GameMetadata::persist)

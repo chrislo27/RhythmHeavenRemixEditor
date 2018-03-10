@@ -187,6 +187,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(nextScreenLambda))
 
+            RemixRecovery.addSelfToShutdownHooks()
         }
 
         thread(isDaemon = true) {
