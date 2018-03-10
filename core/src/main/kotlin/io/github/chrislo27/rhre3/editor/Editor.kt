@@ -1365,18 +1365,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun getHoverText(): String {
         var output: String = ""
+        val entity = getEntityOnMouse()
+
+        if (entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
+            if (scrollMode == ScrollMode.VOLUME) {
+                if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
+                    output = Localization["editor.msg.volume", entity.volumePercent]
+                }
+            } else if (scrollMode == ScrollMode.PITCH) {
+                if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
+                    output = Localization["editor.msg.pitch", (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)]
+                }
+            }
+        }
 
         if (Toolboks.debugMode) {
             val str = StringBuilder()
-            val entity = getEntityOnMouse()
-
-            // Moved from non-debug mode
-            if (scrollMode == ScrollMode.VOLUME) {
-//                val entity = getEntityOnMouse()
-                if (entity != null && entity is IVolumetric && entity.isVolumetric) {
-                    output = Localization["editor.msg.volume", entity.volumePercent]
-                }
-            }
 
             if (entity != null) {
                 str.append(entity::class.java.simpleName)

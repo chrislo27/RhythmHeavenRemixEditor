@@ -53,7 +53,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 
     }
 
-    protected open fun getTextForSemitone(semitone: Int): String {
+    open fun getTextForSemitone(semitone: Int): String {
         return Semitones.getSemitoneName(semitone)
     }
 
