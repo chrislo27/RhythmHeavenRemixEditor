@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -53,6 +54,7 @@ class NewRemixScreen(main: RHRE3Application)
                         }
                         editor.remix = editor.createRemix()
                         this@NewRemixScreen.stage.onBackButtonClick()
+                        RemixRecovery.cacheChecksumAfterLoad(editor.remix)
                         Gdx.app.postRunnable {
                             System.gc()
                         }

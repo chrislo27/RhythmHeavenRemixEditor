@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -135,8 +136,9 @@ class SaveRemixScreen(main: RHRE3Application)
                                 file
 
                             Remix.saveTo(editor.remix, correctFile, false)
-                            editor.setFileHandles(FileHandle(correctFile))
-                            editor.remix.markAsSaved()
+                            val newfh = FileHandle(correctFile)
+                            editor.setFileHandles(newfh)
+                            RemixRecovery.cacheChecksum(newfh)
 
                             mainLabel.text = Localization["screen.save.success"]
                             Gdx.app.postRunnable(GameMetadata::persist)

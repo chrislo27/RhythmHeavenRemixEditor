@@ -188,6 +188,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                               .setNextScreen(nextScreenLambda))
 
             RemixRecovery.addSelfToShutdownHooks()
+            Toolboks.LOGGER.info("Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
 
         thread(isDaemon = true) {

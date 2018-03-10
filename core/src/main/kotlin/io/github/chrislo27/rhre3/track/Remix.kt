@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
@@ -41,7 +42,6 @@ import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
-import java.lang.ref.WeakReference
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -526,7 +526,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             lastTickBeat = beat.toInt()
         }
     var cuesMuted = false
-    private var lastActionAfterSave: WeakReference<ReversibleAction<Remix>>? = null
     private var lastTickBeat = Int.MIN_VALUE
     private var scheduleMusicPlaying = true
     @Volatile
@@ -688,19 +687,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     }
 
     private fun canActionCountAsModification(action: ReversibleAction<Remix>): Boolean {
+        if (action is ActionGroup) {
+            if (action.list.all(this@Remix::canActionCountAsModification)) {
+                return true
+            }
+        }
         return action !is EntitySelectionAction
-    }
-
-    fun markAsSaved() {
-        val peek = getUndoStack().peekFirst()
-        lastActionAfterSave = if (getUndoStack().isEmpty() || !canActionCountAsModification(peek)) null else WeakReference(peek)
-    }
-
-    fun hasBeenModifiedAfterSave(): Boolean {
-        val undoStack = getUndoStack()
-        val lastAction = lastActionAfterSave
-        return (lastAction == null && undoStack.isNotEmpty() && canActionCountAsModification(undoStack.peekFirst()))
-                || (undoStack.isNotEmpty() && lastAction?.get() === undoStack.peekFirst() && canActionCountAsModification(undoStack.peekFirst()))
     }
 
     fun entityUpdate(entity: Entity): EntityUpdateResult {

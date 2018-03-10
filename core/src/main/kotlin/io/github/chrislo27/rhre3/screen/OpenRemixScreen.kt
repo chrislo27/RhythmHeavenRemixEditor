@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
@@ -224,7 +225,9 @@ class OpenRemixScreen(main: RHRE3Application)
                                 }
 
                                 if (!result.isAutosave) {
-                                    editor.setFileHandles(FileHandle(file))
+                                    val fh = FileHandle(file)
+                                    editor.setFileHandles(fh)
+                                    RemixRecovery.cacheChecksumAfterLoad(result.remix)
                                 }
                             }
 

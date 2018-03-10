@@ -63,7 +63,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
-import java.lang.ref.WeakReference
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -167,7 +166,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             autosaveFile = null
             lastSaveFile = null
             resetAutosaveTimer()
-            field.markAsSaved()
 
             camera.position.x = field.playbackStart
             camera.update()
@@ -2038,6 +2036,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 "pos: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
                         remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
                         remix.seconds)}\nmvol: ${remix.musicVolumes.volumeAt(
-                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min\nedited: ${remix.hasBeenModifiedAfterSave()}\nmodkeys: [${if (Gdx.input.isControlDown()) "CTRL" else ""}][${if (Gdx.input.isShiftDown()) "SHIFT" else ""}][${if (Gdx.input.isAltDown()) "ALT" else ""}]"
+                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min\nmodkeys: [${if (Gdx.input.isControlDown()) "CTRL" else ""}][${if (Gdx.input.isShiftDown()) "SHIFT" else ""}][${if (Gdx.input.isAltDown()) "ALT" else ""}]"
     }
 }
