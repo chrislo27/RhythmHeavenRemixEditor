@@ -177,8 +177,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             stage.updateSelected(DirtyType.SEARCH_DIRTY)
         }
     var theme: Theme = LoadedThemes.currentTheme
-    val stage: EditorStage = EditorStage(
-            null, stageCamera, main, this)
+    val stage: EditorStage = EditorStage(null, stageCamera, main, this)
     val batch: SpriteBatch
         get() = main.batch
     val subbeatSection = SubbeatSection()
