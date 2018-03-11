@@ -2027,15 +2027,53 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     fun getDebugString(): String? {
 //        val click = clickOccupation
         val range = getBeatRange()
-        return "e: ${remix.entities.count {
-            it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
-        }} / ${remix.entities.size}\n" +
-                "tr: ${remix.trackers.sumBy {
-                    it.map.values.count { it.beat in range || it.endBeat in range }
-                }} / ${remix.trackers.sumBy { it.map.values.size }}\n" +
-                "pos: ♩${THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat)} / ${THREE_DECIMAL_PLACES_FORMATTER.format(
-                        remix.seconds)}\nbpm: ♩=${remix.tempos.tempoAtSeconds(
-                        remix.seconds)}\nmvol: ${remix.musicVolumes.volumeAt(
-                        remix.beat)}\nmidi: ${remix.midiInstruments}\nautosave: $timeUntilAutosave / $autosaveFrequency min\nmodkeys: [${if (Gdx.input.isControlDown()) "CTRL" else ""}][${if (Gdx.input.isShiftDown()) "SHIFT" else ""}][${if (Gdx.input.isAltDown()) "ALT" else ""}]"
+        val str = StringBuilder(100)
+        str.apply {
+            append("e: ")
+            append(remix.entities.count {
+                it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
+            })
+            append(" / ")
+            append(remix.entities.size)
+
+            append("\ntr: ")
+            append(remix.trackers.sumBy {
+                it.map.values.count { it.beat in range || it.endBeat in range }
+            })
+            append(" / ")
+            append(remix.trackers.sumBy { it.map.values.size })
+
+            append("\npos: ♩")
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
+            append(" / ")
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds))
+
+            append("\nbpm: ♩=")
+            append(remix.tempos.tempoAtSeconds(remix.seconds))
+
+            append("\nmusvol: ")
+            append(remix.musicVolumes.volumeAt(remix.beat))
+
+            append("\nmidi: ")
+            append(remix.midiInstruments)
+
+            append("\nautosave: ")
+            append(timeUntilAutosave)
+            append(" / ")
+            append(autosaveFrequency)
+            append(" min")
+
+            append("\nmodkeys: ")
+            if (Gdx.input.isControlDown())
+                append("[CTRL]")
+            if (Gdx.input.isShiftDown())
+                append("[SHIFT]")
+            if (Gdx.input.isAltDown())
+                append("[ALT]")
+
+//            append("\n")
+        }
+
+        return str.toString()
     }
 }
