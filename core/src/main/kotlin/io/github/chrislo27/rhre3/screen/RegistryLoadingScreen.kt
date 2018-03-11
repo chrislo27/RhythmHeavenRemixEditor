@@ -43,8 +43,10 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameIcon = ImageLabel(main.uiPalette, stage.centreStage, stage.centreStage)
         gameIcon.apply {
             this.alignment = Align.bottom or Align.center
-            this.location.set(screenWidth = 0f, screenHeight = 0f, screenY = 0.5f, pixelX = -32f, pixelWidth = 64f,
-                              pixelHeight = 64f)
+            this@RegistryLoadingScreen.stage.centreStage.updatePositions()
+            val width = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realWidth
+            val height = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realHeight
+            this.location.set(screenX = -width / 2f, screenWidth = width, screenHeight = height, screenY = 0.5f - width / 2)
         }
 
         gameTitle = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage)
@@ -82,14 +84,11 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
     override fun render(delta: Float) {
         super.render(delta)
+
         val registryData = registryData ?: return
 
-        val loadOneAtATime = false
-
-        val numLoaded = registryData.gameMap.size
-        val nano = System.nanoTime()
         val progress: Float = try {
-            if (loadOneAtATime) registryData.loadOne() else registryData.loadFor(1 / 60f)
+            registryData.loadFor(1 / 60f)
         } catch (e: Exception) {
             e.printStackTrace()
             System.exit(1)
