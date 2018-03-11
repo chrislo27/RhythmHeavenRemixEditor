@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model
 
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -13,7 +14,7 @@ interface IVolumetric {
         private val volumeTextCache: MutableMap<Int, String> = mutableMapOf()
 
         fun isRemixMutedExternally(remix: Remix): Boolean {
-            return remix.cuesMuted && remix.editor.stage.tapalongStage.visible
+            return remix.cuesMuted && remix.editor.stage.tapalongStage.visible && remix.main.screen is EditorScreen
         }
 
         // Caching
