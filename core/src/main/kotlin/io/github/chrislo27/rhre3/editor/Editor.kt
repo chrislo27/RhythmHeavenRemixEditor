@@ -177,7 +177,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             stage.updateSelected(DirtyType.SEARCH_DIRTY)
         }
     var theme: Theme = LoadedThemes.currentTheme
-    val stage: EditorStage = EditorStage(null, stageCamera, main, this)
+    var scrollMode: ScrollMode = ScrollMode.PITCH
     val batch: SpriteBatch
         get() = main.batch
     val subbeatSection = SubbeatSection()
@@ -194,7 +194,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             field = value
             remix.recomputeCachedData()
         }
-    var scrollMode: ScrollMode = ScrollMode.PITCH
     private val mouseVector: Vector2 = Vector2()
         get() {
             field.set(remix.camera.getInputX(), remix.camera.getInputY())
@@ -217,6 +216,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         private set
     var songTitle: TimedString by songSubtitles
         private set
+    val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
