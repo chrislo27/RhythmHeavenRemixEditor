@@ -1996,14 +1996,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun dispose() {
-//        val file = autosaveFile ?: return
-//        try {
-//            val name = file.nameWithoutExtension() + "_CLOSE.${RHRE3.REMIX_FILE_EXTENSION}"
-//            Toolboks.LOGGER.info("Attempting end of program save at $name")
-//            Remix.saveTo(remix, file.sibling(name).file(), true)
-//        } catch (e: Exception) {
-//            e.printStackTrace()
-//        }
     }
 
     private fun resizeCameraToEntityScale(camera: OrthographicCamera) {
