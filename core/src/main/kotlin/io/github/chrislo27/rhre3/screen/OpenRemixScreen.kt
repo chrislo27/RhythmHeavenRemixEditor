@@ -162,6 +162,120 @@ class OpenRemixScreen(main: RHRE3Application)
         }
     }
 
+    fun loadFile(file: File) {
+        if (isLoading)
+            return
+        isLoading = true
+        launch(CommonPool) {
+            try {
+                remix = null
+                System.gc()
+
+                val newRemix = editor.createRemix()
+                val remixType: RemixType
+                val result = if (file.extension.equals("mid", ignoreCase = true)) {
+                    remixType = RemixType.MIDI
+                    Remix.fromMidiSequence(newRemix, MidiSystem.getSequence(file))
+                } else {
+                    val zipFile = ZipFile(file)
+                    val isRHRE2 = zipFile.getEntry("remix.json") == null
+
+                    remixType = if (isRHRE2) RemixType.RHRE2 else RemixType.RHRE3
+
+                    if (isRHRE2)
+                        Remix.unpackRHRE2(newRemix, zipFile)
+                    else
+                        Remix.unpack(newRemix, zipFile)
+                }
+
+                val toLoad = result.remix.entities.applyFilter()
+                val toLoadIDs = toLoad.map { it.datamodel.id }
+                val toUnload = editor.remix.entities.applyFilter().filter { it.datamodel.id !in toLoadIDs }
+
+                val coroutine: Job = launch(CommonPool) {
+                    isLoadingSounds = true
+                    toUnload.forEach { entity ->
+                        if (entity is ILoadsSounds) {
+                            entity.unloadSounds()
+                        }
+                    }
+                    toLoad.forEach { entity ->
+                        if (entity is ILoadsSounds) {
+                            entity.loadSounds()
+                        }
+                    }
+                    isLoadingSounds = false
+                }
+
+                fun goodBad(str: String, bad: Boolean, badColour: String = "ORANGE"): String {
+                    return if (bad) "[$badColour]$str[]" else "[LIGHT_GRAY]$str[]"
+                }
+
+                loadButton.alsoDo = {
+                    runBlocking {
+                        coroutine.join()
+                    }
+
+                    if (!result.isAutosave) {
+                        val fh = FileHandle(file)
+                        editor.setFileHandles(fh)
+                        RemixRecovery.cacheChecksumAfterLoad(result.remix)
+                    }
+                }
+
+                remix = result.remix
+                val remix = remix!!
+                val missingAssets = result.missing
+                val databaseStr = if (remixType == RemixType.RHRE2)
+                    goodBad(remix.version.toString(), true)
+                else
+                    goodBad(remix.databaseVersion.toString(),
+                            remix.databaseVersion != GameRegistry.data.version)
+
+                mainLabel.text = ""
+
+                if (result.isAutosave) {
+                    mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
+                }
+
+                mainLabel.text += if (remixType == RemixType.MIDI) {
+                    val noteCue = result.extra["noteCue"] as Datamodel?
+                    val noteCount: Any = if (noteCue == null) "N/A" else remix.entities.count { it is ModelEntity<*> && it.datamodel == noteCue }
+                    Localization["screen.open.info.midi", remix.midiInstruments, noteCount, "${noteCue?.name} (${noteCue?.game?.name})"]
+                } else {
+                    Localization["screen.open.info",
+                            goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
+                            databaseStr,
+                            goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
+                            goodBad(if (remixType != RemixType.RHRE3) "?" else missingAssets.second.toString(),
+                                    missingAssets.second > 0, "RED")]
+                }
+                if (GameRegistry.data.version < remix.databaseVersion) {
+                    mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
+                } else if (remix.version < RHRE3.VERSION) {
+                    mainLabel.text += "\n" +
+                            Localization[if (remixType == RemixType.RHRE2)
+                                "screen.open.rhre2Warning"
+                            else
+                                "screen.open.oldWarning"]
+                }
+                if (remix.version > RHRE3.VERSION) {
+                    mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
+                }
+                isLoading = false
+            } catch (t: Throwable) {
+                t.printStackTrace()
+                mainLabel.text = when (t) {
+                    is MusicLoadingException -> t.getLocalizedText()
+                    else -> Localization["screen.open.failed", t::class.java.canonicalName]
+                }
+                remix?.dispose()
+                remix = null
+                isLoading = false
+            }
+        }
+    }
+
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
@@ -171,117 +285,9 @@ class OpenRemixScreen(main: RHRE3Application)
                 val file: File? = fileChooser.showOpenDialog(null)
                 isChooserOpen = false
                 if (file != null && main.screen == this) {
-                    isLoading = true
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
-                    launch(CommonPool) {
-                        try {
-                            remix = null
-                            System.gc()
-
-                            val newRemix = editor.createRemix()
-                            val remixType: RemixType
-                            val result = if (file.extension.equals("mid", ignoreCase = true)) {
-                                remixType = RemixType.MIDI
-                                Remix.fromMidiSequence(newRemix, MidiSystem.getSequence(file))
-                            } else {
-                                val zipFile = ZipFile(file)
-                                val isRHRE2 = zipFile.getEntry("remix.json") == null
-
-                                remixType = if (isRHRE2) RemixType.RHRE2 else RemixType.RHRE3
-
-                                if (isRHRE2)
-                                    Remix.unpackRHRE2(newRemix, zipFile)
-                                else
-                                    Remix.unpack(newRemix, zipFile)
-                            }
-
-                            val toLoad = result.remix.entities.applyFilter()
-                            val toLoadIDs = toLoad.map { it.datamodel.id }
-                            val toUnload = editor.remix.entities.applyFilter().filter { it.datamodel.id !in toLoadIDs }
-
-                            val coroutine: Job = launch(CommonPool) {
-                                isLoadingSounds = true
-                                toUnload.forEach { entity ->
-                                    if (entity is ILoadsSounds) {
-                                        entity.unloadSounds()
-                                    }
-                                }
-                                toLoad.forEach { entity ->
-                                    if (entity is ILoadsSounds) {
-                                        entity.loadSounds()
-                                    }
-                                }
-                                isLoadingSounds = false
-                            }
-
-                            fun goodBad(str: String, bad: Boolean, badColour: String = "ORANGE"): String {
-                                return if (bad) "[$badColour]$str[]" else "[LIGHT_GRAY]$str[]"
-                            }
-
-                            loadButton.alsoDo = {
-                                runBlocking {
-                                    coroutine.join()
-                                }
-
-                                if (!result.isAutosave) {
-                                    val fh = FileHandle(file)
-                                    editor.setFileHandles(fh)
-                                    RemixRecovery.cacheChecksumAfterLoad(result.remix)
-                                }
-                            }
-
-                            remix = result.remix
-                            val remix = remix!!
-                            val missingAssets = result.missing
-                            val databaseStr = if (remixType == RemixType.RHRE2)
-                                goodBad(remix.version.toString(), true)
-                            else
-                                goodBad(remix.databaseVersion.toString(),
-                                        remix.databaseVersion != GameRegistry.data.version)
-
-                            mainLabel.text = ""
-
-                            if (result.isAutosave) {
-                                mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
-                            }
-
-                            mainLabel.text += if (remixType == RemixType.MIDI) {
-                                val noteCue = result.extra["noteCue"] as Datamodel?
-                                val noteCount: Any = if (noteCue == null) "N/A" else remix.entities.count { it is ModelEntity<*> && it.datamodel == noteCue }
-                                Localization["screen.open.info.midi", remix.midiInstruments, noteCount, "${noteCue?.name} (${noteCue?.game?.name})"]
-                            } else {
-                                Localization["screen.open.info",
-                                        goodBad(remix.version.toString(), remix.version != RHRE3.VERSION),
-                                        databaseStr,
-                                        goodBad(missingAssets.first.toString(), missingAssets.first > 0, "RED"),
-                                        goodBad(if (remixType != RemixType.RHRE3) "?" else missingAssets.second.toString(),
-                                                missingAssets.second > 0, "RED")]
-                            }
-                            if (GameRegistry.data.version < remix.databaseVersion) {
-                                mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
-                            } else if (remix.version < RHRE3.VERSION) {
-                                mainLabel.text += "\n" +
-                                        Localization[if (remixType == RemixType.RHRE2)
-                                            "screen.open.rhre2Warning"
-                                        else
-                                            "screen.open.oldWarning"]
-                            }
-                            if (remix.version > RHRE3.VERSION) {
-                                mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
-                            }
-                            isLoading = false
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
-                            mainLabel.text = when (t) {
-                                is MusicLoadingException -> t.getLocalizedText()
-                                else -> Localization["screen.open.failed", t::class.java.canonicalName]
-                            }
-                            remix?.dispose()
-                            remix = null
-                            isLoading = false
-                        }
-                    }
+                    loadFile(file)
                 } else {
                     loadButton.alsoDo = {}
                     (stage as GenericStage).onBackButtonClick()
@@ -292,8 +298,10 @@ class OpenRemixScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        openPicker()
-        remix = null
+        if (!isLoading) {
+            openPicker()
+            remix = null
+        }
     }
 
     override fun hide() {

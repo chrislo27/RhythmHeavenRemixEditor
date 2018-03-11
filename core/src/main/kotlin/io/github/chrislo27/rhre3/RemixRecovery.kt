@@ -9,6 +9,9 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import java.security.MessageDigest
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.zip.ZipFile
 import kotlin.concurrent.thread
 
@@ -82,6 +85,11 @@ object RemixRecovery {
     }
 
     fun saveRemixInRecovery() {
+        if (lastChecksum.isEmpty()) {
+            Toolboks.LOGGER.info("Skipping saving recovery remix because last checksum is empty")
+            return
+        }
+
         try {
             val editorScreen: EditorScreen = ScreenRegistry.getAsType("editor") ?: error(
                     "No editor screen when attempting to save a remix recovery")
@@ -92,6 +100,7 @@ object RemixRecovery {
             val recoveryChecksum = getChecksumOfZip(recoveryFile)
             recoveryPrefs.putString("lastSavedChecksum", lastChecksum)
                     .putString("recoveryChecksum", recoveryChecksum)
+                    .putLong("time", System.currentTimeMillis())
                     .flush()
 
             Toolboks.LOGGER.info("Saved remix recovery file successfully")
@@ -99,6 +108,14 @@ object RemixRecovery {
             Toolboks.LOGGER.warn("Failed to save remix recovery file")
             t.printStackTrace()
         }
+    }
+
+    fun getLastTime(): Long {
+        return recoveryPrefs.getLong("time", -1L)
+    }
+
+    fun getLastLocalDateTime(): LocalDateTime {
+        return LocalDateTime.ofInstant(Instant.ofEpochMilli(getLastTime()), ZoneId.systemDefault())
     }
 
     fun canBeRecovered(): Boolean {
