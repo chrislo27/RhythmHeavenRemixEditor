@@ -191,6 +191,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             updateSelected(DirtyType.SEARCH_DIRTY)
         }
 
+        patternAreaArrowLabel.textColor = if (editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else null
+
         super.render(screen, batch, shapeRenderer)
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
@@ -891,8 +893,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val labelCount = Editor.PATTERN_COUNT
                 val height = 1f / labelCount
 
-                patternAreaArrowLabel = TextLabel(borderedPalette.copy(textColor = Color(Editor.SELECTED_TINT)),
-                                                  patternAreaStage, patternAreaStage).apply {
+                patternAreaArrowLabel = TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
                     this.location.set(
                             screenX = padding2,
                             screenWidth = patternAreaStage.percentageOfWidth(

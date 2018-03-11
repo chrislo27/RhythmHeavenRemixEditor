@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
@@ -46,7 +47,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
                         }
 
                         val selected = index == selection.currentIndex
-                        font.color = if (selected) Editor.SELECTED_TINT else label.color
+                        font.color = if (selected && editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else label.color
                         font.drawCompressed(batch, label.string,
                                             location.realX,
                                             location.realY + location.realHeight / 2 + font.capHeight / 2
