@@ -1367,7 +1367,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         var output: String = ""
         val entity = getEntityOnMouse()
 
-        if (entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
+        if (remix.playState == PlayState.STOPPED && entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
             if (scrollMode == ScrollMode.VOLUME) {
                 if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
                     output = Localization["editor.msg.volume", entity.volumePercent]
