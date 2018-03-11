@@ -198,7 +198,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         var task: String? = ""
             set(value) {
                 field = if (value == "Updating references") {
-                    "Updating references (may take a while)"
+                    "Updating references (please be patient)"
                 } else {
                     value
                 }
