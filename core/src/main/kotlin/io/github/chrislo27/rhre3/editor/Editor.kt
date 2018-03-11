@@ -166,6 +166,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             autosaveFile = null
             lastSaveFile = null
             resetAutosaveTimer()
+            selection = listOf()
 
             camera.position.x = field.playbackStart
             camera.update()
