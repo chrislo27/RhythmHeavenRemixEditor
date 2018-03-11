@@ -97,7 +97,7 @@ object RemixRecovery {
             val remix = editor.remix
 
             Remix.saveTo(remix, recoveryFile.file(), true)
-            val recoveryChecksum = getChecksumOfZip(recoveryFile)
+            val recoveryChecksum = if (remix.isEmpty()) "" else getChecksumOfZip(recoveryFile)
             recoveryPrefs.putString("lastSavedChecksum", lastChecksum)
                     .putString("recoveryChecksum", recoveryChecksum)
                     .putLong("time", System.currentTimeMillis())
@@ -123,8 +123,8 @@ object RemixRecovery {
     }
 
     fun shouldBeRecovered(): Boolean {
-        return canBeRecovered() && recoveryPrefs.getString("lastSavedChecksum", "") != recoveryPrefs.getString(
-                "recoveryChecksum", "")
+        val recovery: String = recoveryPrefs.getString("recoveryChecksum", "")
+        return canBeRecovered() && recovery.isNotEmpty() && recoveryPrefs.getString("lastSavedChecksum", "") != recovery
     }
 
 }

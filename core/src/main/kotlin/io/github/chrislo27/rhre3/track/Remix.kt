@@ -10,7 +10,6 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -19,9 +18,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
-import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -631,6 +628,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         musicSeeking = false
     }
 
+    fun isEmpty(): Boolean {
+        return entities.isEmpty() && trackers.all { it.map.isEmpty() } && timeSignatures.map.isEmpty() && music == null
+    }
+
     /**
      * Computes cached data like [duration], [lastPoint], and [gameSections].
      */
@@ -684,15 +685,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     fun getGameSection(beat: Float): GameSection? {
         val entry = gameSections.lowerEntry(beat) ?: return null
         return entry.value
-    }
-
-    private fun canActionCountAsModification(action: ReversibleAction<Remix>): Boolean {
-        if (action is ActionGroup) {
-            if (action.list.all(this@Remix::canActionCountAsModification)) {
-                return true
-            }
-        }
-        return action !is EntitySelectionAction
     }
 
     fun entityUpdate(entity: Entity): EntityUpdateResult {
