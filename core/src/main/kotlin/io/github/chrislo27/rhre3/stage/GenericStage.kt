@@ -46,27 +46,40 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
                 val start: Float = MathHelper.getSawtoothWave(5f) - 1f
                 val ratioX = camera.viewportWidth / RHRE3.WIDTH
                 val ratioY = camera.viewportHeight / RHRE3.HEIGHT
-                for (x in (start * tex.width).toInt()..camera.viewportWidth.toInt() step tex.width) {
-                    for (y in (start * tex.height).toInt()..camera.viewportHeight.toInt() step tex.height) {
-                        batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, tex.width * ratioX, tex.height * ratioY)
+                for (x in (start * tex.width).toInt()..RHRE3.WIDTH step tex.width) {
+                    for (y in (start * tex.height).toInt()..RHRE3.HEIGHT step tex.height) {
+                        batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, tex.width * ratioX,
+                                   tex.height * ratioY)
                     }
                 }
             }
-        }, TENGOKU {
-            private inner class Square(var x: Float, var y: Float,
-                                       var size: Float = MathUtils.random(20f, 80f),
-                                       var speedX: Float = MathUtils.random(0.075f, 0.2f),
-                                       var speedY: Float = -MathUtils.random(0.075f, 0.2f),
-                                       var rotSpeed: Float = MathUtils.random(90f, 200f) * MathUtils.randomSign(),
-                                       var rotation: Float = MathUtils.random(360f))
+        },
+        TENGOKU {
+            private inner class Square(x: Float, y: Float,
+                                       size: Float = MathUtils.random(20f, 80f),
+                                       speedX: Float = MathUtils.random(0.075f, 0.2f),
+                                       speedY: Float = -MathUtils.random(0.075f, 0.2f),
+                                       rotSpeed: Float = MathUtils.random(90f, 200f) * MathUtils.randomSign(),
+                                       rotation: Float = MathUtils.random(360f))
+                : Particle(x, y, size, size, speedX, speedY, rotSpeed, rotation, "menu_bg_square")
 
-            private val list: MutableList<Square> = mutableListOf()
-            private val maxSquares: Int = 32
+            init {
+                maxParticles = 40
+            }
+
             private val hsv: FloatArray = FloatArray(3)
 
             val top: Color = Color.valueOf("4048e0")
             val bottom: Color = Color.valueOf("d020a0")
-            var cycleSpeed: Float = 1f / 15
+            var cycleSpeed: Float = 1f / 20
+
+            override fun createParticle(initial: Boolean): Particle {
+                return if (!initial) {
+                    Square(-0.5f, 1f + MathUtils.random(1f))
+                } else {
+                    Square(MathUtils.random(1f), MathUtils.random(1f))
+                }
+            }
 
             override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 val width = camera.viewportWidth
@@ -86,37 +99,114 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
                 batch.drawQuad(0f, 0f, bottom, width, 0f, bottom,
                                width, height, top, 0f, height, top)
 
-                if (list.isEmpty()) {
-                    // Populate but already in the scene
-                    while (list.size < maxSquares) {
-                        list += Square(MathUtils.random(1f), MathUtils.random(1f))
-                    }
-                } else if (list.size < maxSquares) {
-                    // Populate from top left
-                    list += Square(-0.5f, 1f + MathUtils.random(1f))
-                }
-
-                // Render squares
-                batch.setColor(1f, 1f, 1f, 0.65f)
-                list.forEach {
-                    it.x += it.speedX * Gdx.graphics.deltaTime
-                    it.y += it.speedY * Gdx.graphics.deltaTime
-                    it.rotation += it.rotSpeed * Gdx.graphics.deltaTime
-
-                    batch.draw(AssetRegistry.get<Texture>("menu_bg_square"), it.x * width, it.y * width,
-                               it.size / 2, it.size / 2, it.size, it.size, ratioX, ratioY, it.rotation,
-                               0, 0, 10, 10, false, false)
-                }
-                batch.setColor(1f, 1f, 1f, 1f)
+                super.render(camera, batch, shapeRenderer)
 
                 // Remove OoB squares
-                list.removeIf {
-                    it.x > 1f + (ratioX * it.size) / width || it.y < -(ratioY * it.size) / height
+                particles.removeIf {
+                    it.x > 1f + (ratioX * it.sizeX) / width || it.y < -(ratioY * it.sizeY) / height
+                }
+            }
+        },
+        KARATE_MAN {
+            private inner class Snowflake(x: Float, y: Float,
+                                          size: Float = 54f,
+                                          speedX: Float = -MathUtils.random(0.075f, 0.25f),
+                                          speedY: Float = -MathUtils.random(0.05f, 0.1f))
+                : Particle(x, y, size, size, speedX, speedY, 0f, 0f, "menu_snowflake")
+
+            init {
+                maxParticles = 32
+            }
+
+            val orangeTop: Color = Color.valueOf("CD3907")
+            val orangeBottom: Color = Color.valueOf("FF9333")
+            val blueTop: Color = Color.valueOf("27649A")
+            val blueBottom: Color = Color.valueOf("72AED5")
+
+            val top = Color()
+            val bottom = Color()
+
+            var cycleSpeed: Float = 1f / 10
+
+            override fun createParticle(initial: Boolean): Particle {
+                return if (!initial) {
+                    Snowflake(1.25f, 0.25f + MathUtils.random(1f))
+                } else {
+                    Snowflake(MathUtils.random(1f), MathUtils.random(1f))
+                }
+            }
+
+            override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                val width = camera.viewportWidth
+                val height = camera.viewportHeight
+                val ratioX = width / RHRE3.WIDTH
+                val ratioY = height / RHRE3.HEIGHT
+
+                if (cycleSpeed > 0f) {
+                    val percentage = MathHelper.getBaseCosineWave(1f / cycleSpeed)
+                    top.set(blueTop)
+                    bottom.set(blueBottom)
+
+                    top.lerp(orangeTop, percentage)
+                    bottom.lerp(orangeBottom, percentage)
+                }
+
+                batch.drawQuad(0f, 0f, bottom, width, 0f, bottom,
+                               width, height, top, 0f, height, top)
+
+                super.render(camera, batch, shapeRenderer)
+
+                // Remove OoB particles
+                particles.removeIf {
+                    it.x < -(ratioX * it.sizeX) / width || it.y < -(ratioY * it.sizeY) / height
                 }
             }
         };
 
-        abstract fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer)
+        companion object {
+            val VALUES: List<BackgroundImpl> = values().toList()
+        }
+
+        protected open class Particle(var x: Float, var y: Float,
+                                      var sizeX: Float, var sizeY: Float,
+                                      var speedX: Float, var speedY: Float,
+                                      var rotSpeed: Float, var rotation: Float,
+                                      var tex: String)
+
+        protected var maxParticles: Int = 0
+        protected val particles: MutableList<Particle> = mutableListOf()
+
+        protected open fun createParticle(initial: Boolean): Particle? = null
+
+        open fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+            val width = camera.viewportWidth
+            val height = camera.viewportHeight
+            val ratioX = width / RHRE3.WIDTH
+            val ratioY = height / RHRE3.HEIGHT
+
+            if (maxParticles > 0 && particles.size < maxParticles) {
+                val initial = particles.size == 0 && maxParticles > 1
+                while (particles.size < maxParticles) {
+                    val particle = createParticle(initial) ?: break
+                    particles += particle
+                }
+            }
+
+            // Render particles
+            batch.setColor(1f, 1f, 1f, 0.65f)
+            particles.forEach {
+                it.x += it.speedX * Gdx.graphics.deltaTime
+                it.y += it.speedY * Gdx.graphics.deltaTime
+                it.rotation += it.rotSpeed * Gdx.graphics.deltaTime
+
+                val tex = AssetRegistry.get<Texture>(it.tex)
+
+                batch.draw(tex, it.x * width, it.y * width,
+                           it.sizeX / 2, it.sizeY / 2, it.sizeX, it.sizeY, ratioX, ratioY, it.rotation,
+                           0, 0, tex.width, tex.height, false, false)
+            }
+            batch.setColor(1f, 1f, 1f, 1f)
+        }
     }
 
     var titleIcon: ImageLabel<S> = ImageLabel(palette, this, this).apply {
@@ -171,7 +261,7 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
     }
 
     var drawBackground: Boolean = true
-    var backgroundImpl: BackgroundImpl = BackgroundImpl.TENGOKU
+    var backgroundImpl: BackgroundImpl = BackgroundImpl.KARATE_MAN
 
     init {
         this.location.screenWidth = SCREEN_WIDTH - PADDING_RATIO.first * 2

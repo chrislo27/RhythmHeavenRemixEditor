@@ -90,6 +90,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_loading_icon", "images/loading/rhre3_animation.png")
 
         AssetRegistry.loadAsset<Texture>("menu_bg_square", "images/menu/bg_square.png")
+        AssetRegistry.loadAsset<Texture>("menu_snowflake", "images/menu/snowflake.png")
 
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
