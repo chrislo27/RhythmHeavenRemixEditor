@@ -506,6 +506,8 @@ object GameRegistry : Disposable {
     }
 
     override fun dispose() {
-        backingData.dispose()
+        if (backingData.ready) {
+            backingData.dispose()
+        }
     }
 }
