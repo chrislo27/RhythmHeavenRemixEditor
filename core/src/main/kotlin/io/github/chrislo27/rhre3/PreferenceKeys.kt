@@ -34,5 +34,6 @@ object PreferenceKeys {
     val RECENT_GAMES = "recentGames"
     val LAST_VERSION = "lastVersion"
     val TIMES_SKIPPED_UPDATE = "timesSkippedUpdate"
+    val BACKGROUND = "background"
 
 }

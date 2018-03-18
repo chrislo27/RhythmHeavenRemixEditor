@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -23,6 +24,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
@@ -85,6 +87,48 @@ class InfoScreen(main: RHRE3Application)
             })
 
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+        }
+
+        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
+            }
+
+            private fun cycle(dir: Int) {
+                val values = GenericStage.BackgroundImpl.VALUES
+                if (dir > 0) {
+                    val index = values.indexOf(GenericStage.backgroundImpl) + 1
+                    GenericStage.backgroundImpl = if (index >= values.size) {
+                        values.first()
+                    } else {
+                        values[index]
+                    }
+                } else if (dir < 0) {
+                    val index = values.indexOf(GenericStage.backgroundImpl) - 1
+                    GenericStage.backgroundImpl = if (index < 0) {
+                        values.last()
+                    } else {
+                        values[index]
+                    }
+                }
+
+                main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.toString()).flush()
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            })
+
+            this.alignment = Align.bottomRight
+            this.location.set(screenHeight = 1f, screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
+            this.location.set(screenX = this.location.screenWidth)
         }
 
         stage.centreStage.also { centre ->

@@ -35,6 +35,8 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
         val PADDING_RATIO = (PADDING / AREA.first) to (PADDING / AREA.second)
         val ICON_SIZE_RATIO = (ICON_SIZE / AREA.first) to (ICON_SIZE / AREA.second)
         val BOTTOM_RATIO = (BOTTOM_SIZE / AREA.first) to (BOTTOM_SIZE / AREA.second)
+
+        var backgroundImpl: BackgroundImpl = BackgroundImpl.KARATE_MAN
     }
 
     enum class BackgroundImpl {
@@ -261,7 +263,6 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
     }
 
     var drawBackground: Boolean = true
-    var backgroundImpl: BackgroundImpl = BackgroundImpl.KARATE_MAN
 
     init {
         this.location.screenWidth = SCREEN_WIDTH - PADDING_RATIO.first * 2

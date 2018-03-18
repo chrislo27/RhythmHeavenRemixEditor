@@ -16,6 +16,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.track.Remix
@@ -147,6 +148,9 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
         AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
+        val defaultNewBackground = GenericStage.BackgroundImpl.TENGOKU
+        val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, defaultNewBackground.name)
+        GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find { it.name.equals(backgroundPref, ignoreCase = true) } ?: defaultNewBackground
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
