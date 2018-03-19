@@ -38,6 +38,7 @@ object AnalyticsHandler : Disposable {
 
     fun initAndIdentify(prefs: Preferences) {
         this.prefs = prefs
+        this.userID = prefs.getString(PREFS_USER_ID, "")
         analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
 
         identify()
