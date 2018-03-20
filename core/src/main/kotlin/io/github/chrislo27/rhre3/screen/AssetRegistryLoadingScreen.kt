@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.screen
 
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
@@ -37,7 +36,7 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
 
         batch.end()
 
-        if (progress >= 1f && Toolboks.debugMode) {
+        if (progress >= 1f) {
             main.screen = nextScreen?.invoke()
         }
     }
