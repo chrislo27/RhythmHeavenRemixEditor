@@ -3,7 +3,7 @@
 # Rhythm Heaven Remix Editor 3
 An audio remix editor for the Rhythm Heaven series
 
-Get a release from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor2/releases).<br>
+Get a download from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor2/releases).<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 
@@ -20,7 +20,7 @@ Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemi
 
 ![Palettes screenshot](.github/rhre3palettes.png)
 
-Rhythm Heaven is not my property - it is the property of Nintendo.<br>
+Rhythm Heaven is not my property -- it is the property of Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to infringe trademark rights.<br>
 This is just a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license).
