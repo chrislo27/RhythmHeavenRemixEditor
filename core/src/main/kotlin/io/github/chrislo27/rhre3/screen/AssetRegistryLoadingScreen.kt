@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.screen
 
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
@@ -21,8 +22,8 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
         batch.setColor(1f, 1f, 1f, 1f)
 
         val width = main.defaultCamera.viewportWidth * 0.75f
-        val height = 32f
-        val line = 4f
+        val height = main.defaultCamera.viewportHeight * 0.05f
+        val line = height / 8f
 
         batch.begin()
 
@@ -36,7 +37,7 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
 
         batch.end()
 
-        if (progress >= 1f) {
+        if (progress >= 1f && Toolboks.debugMode) {
             main.screen = nextScreen?.invoke()
         }
     }
