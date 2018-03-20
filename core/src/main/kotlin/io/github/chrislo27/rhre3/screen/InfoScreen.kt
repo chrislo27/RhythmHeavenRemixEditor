@@ -100,7 +100,7 @@ class InfoScreen(main: RHRE3Application)
                 cycle(-1)
             }
 
-            private fun cycle(dir: Int) {
+            fun cycle(dir: Int) {
                 val values = GenericStage.BackgroundImpl.VALUES
                 if (dir > 0) {
                     val index = values.indexOf(GenericStage.backgroundImpl) + 1
@@ -118,16 +118,28 @@ class InfoScreen(main: RHRE3Application)
                     }
                 }
 
+                (labels.last() as TextLabel).text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}"
+
                 main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.toString()).flush()
             }
         }.apply {
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                this.location.set(screenHeight = 0.75f, screenY = 0.25f)
             })
+            this.addLabel(
+                    TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), this, this.stage).apply {
+                        this.textAlign = Align.bottom or Align.center
+                        this.isLocalizationKey = false
+                        this.location.set(screenY = 0.05f, screenHeight = 0.95f)
+                    })
+
+            this.cycle(0)
 
             this.alignment = Align.bottomRight
-            this.location.set(screenHeight = 1f, screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
+            this.location.set(screenHeight = 1f,
+                              screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
             this.location.set(screenX = this.location.screenWidth)
         }
 
