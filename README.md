@@ -11,7 +11,7 @@ Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 
 ## Requirements
 * [Java 8](https://java.com/en/download/)
-  * Java 9 not supported at the moment
+  * Java 9 and 10 not fully supported at the moment -- use at own risk
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
