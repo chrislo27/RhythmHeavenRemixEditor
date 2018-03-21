@@ -13,6 +13,7 @@
 * [Themes](Themes.md)
 
 ### Troubleshooting
+* [Invalid keystore format or No System TLS error](Invalid-keystore.md)
 * [Out of memory when loading music](Out-of-memory-on-music.md)
 * [Launch arguments](Launch-arguments.md)
 
