@@ -1374,8 +1374,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             } else if (scrollMode == ScrollMode.PITCH) {
                 if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
-                    output = Localization["editor.msg.pitch", (entity as? ModelEntity<*>)?.getTextForSemitone(
-                            entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)]
+                    val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(
+                            entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                    output = if (entity is ShakeEntity) {
+                        semitoneText
+                    } else {
+                        Localization["editor.msg.pitch", semitoneText]
+                    }
                 }
             }
         }
