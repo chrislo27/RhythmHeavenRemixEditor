@@ -3,7 +3,7 @@
 # Rhythm Heaven Remix Editor 3
 An audio remix editor for the Rhythm Heaven series
 
-Get a download from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor2/releases).<br>
+Get a download from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases).<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 
@@ -16,7 +16,7 @@ Read the [documentation here](http://rhre.readthedocs.io/en/latest/).
 * An Internet connection initially
 
 ## Contributing
-Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor2/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor2/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
+Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
 
 ![Palettes screenshot](.github/rhre3palettes.png)
 
