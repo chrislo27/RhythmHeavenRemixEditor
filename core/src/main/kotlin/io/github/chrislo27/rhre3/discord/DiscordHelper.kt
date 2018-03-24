@@ -10,6 +10,7 @@ object DiscordHelper {
 
     const val DISCORD_APP_ID = "278329593012682754"
     const val DEFAULT_LARGE_IMAGE = "square_logo"
+    const val DEFAULT_SMALL_IMAGE = "32_as_512"
     private var inited = false
 
     private val lib: DiscordRPC
@@ -22,7 +23,6 @@ object DiscordHelper {
         inited = true
 
         lib.Discord_Initialize(DISCORD_APP_ID, DiscordEventHandlers(), true, "")
-
 
         Runtime.getRuntime().addShutdownHook(
                 thread(start = false, name = "Discord-RPC Shutdown", block = lib::Discord_Shutdown))
