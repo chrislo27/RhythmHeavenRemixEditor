@@ -268,6 +268,38 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             centre.elements += clearRecentsButton
+            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+
+                override val checkLabelPortion: Float = 0.1f
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
+                    didChangeSettings = true
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.text = "screen.info.discordRichPresence"
+                }
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 5 + buttonHeight * 4,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+
+                this.checkLabel.location.set(screenWidth = checkLabelPortion)
+                this.textLabel.location.set(screenX = checkLabelPortion * 2, screenWidth = 1f - checkLabelPortion * 2)
+
+                addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = checkLabelPortion, screenWidth = checkLabelPortion)
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
+                })
+            }
 
             // Settings
             // Autosave timer

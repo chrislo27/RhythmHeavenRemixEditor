@@ -158,9 +158,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find { it.name.equals(backgroundPref, ignoreCase = true) } ?: defaultNewBackground
         DiscordHelper.init()
         if (preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)) {
-            DiscordHelper.updatePresenceDefault {
-                details = RHRE3.VERSION.toString()
-            }
+            DiscordHelper.updatePresenceDefault()
         }
 
         // set the sound system

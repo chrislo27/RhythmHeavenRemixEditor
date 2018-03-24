@@ -49,7 +49,7 @@ object DiscordHelper {
     }
 
     @Synchronized
-    inline fun updatePresenceDefault(presenceFunc: DefaultRichPresence.() -> Unit) {
+    inline fun updatePresenceDefault(presenceFunc: DefaultRichPresence.() -> Unit = {}) {
         updatePresenceDefault(DefaultRichPresence().apply {
             presenceFunc()
         })
