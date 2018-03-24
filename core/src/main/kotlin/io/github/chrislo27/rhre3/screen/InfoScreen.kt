@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -276,6 +277,11 @@ class InfoScreen(main: RHRE3Application)
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
                     didChangeSettings = true
+                    if (checked) {
+                        DiscordHelper.updatePresenceDefault()
+                    } else {
+                        DiscordHelper.clearPresence()
+                    }
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
