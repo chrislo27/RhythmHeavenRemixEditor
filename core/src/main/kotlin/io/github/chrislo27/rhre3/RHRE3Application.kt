@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -55,6 +56,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             private set
 
         val httpClient: AsyncHttpClient = asyncHttpClient()
+        lateinit var instance: RHRE3Application
+            private set
 
         private const val RAINBOW_STR = "RAINBOW"
 
@@ -119,6 +122,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         val javaVersion = System.getProperty("java.version").trim()
         Toolboks.LOGGER.info("Running on JRE $javaVersion")
 
+        instance = this
+
         // localization stuff
         run {
             Localization.loadBundlesFromLangFile()
@@ -151,6 +156,12 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         val defaultNewBackground = GenericStage.BackgroundImpl.TENGOKU
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, defaultNewBackground.name)
         GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find { it.name.equals(backgroundPref, ignoreCase = true) } ?: defaultNewBackground
+        DiscordHelper.init()
+        if (preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)) {
+            DiscordHelper.updatePresenceDefault {
+                details = RHRE3.VERSION.toString()
+            }
+        }
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
@@ -196,7 +207,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
             Toolboks.LOGGER.info("Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
 
-        thread(isDaemon = true) {
+        thread(isDaemon = true, name = "JavafxStub Launcher") {
             Application.launch(JavafxStub::class.java) // start up
         }
         launch(CommonPool) {

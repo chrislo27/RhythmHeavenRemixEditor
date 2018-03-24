@@ -19,10 +19,12 @@ object PreferenceKeys {
     val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"
     val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
+    val SETTINGS_DISCORD_RPC_ENABLED = "settings_discordRPCEnabled"
 
     val allSettingsKeys: List<String> by lazy {
         listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CHASE_CAMERA,
-               SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING)
+               SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
+               SETTINGS_DISCORD_RPC_ENABLED)
     }
 
     val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"

@@ -47,7 +47,8 @@ object Credits {
                     "OSHI\n" +
                     "jump3r\n" +
                     "musique (forked)\n" +
-                    "Segment",
+                    "Segment\n" +
+                    "java-discord-rpc",
             "you" crediting ""
                                    )
 

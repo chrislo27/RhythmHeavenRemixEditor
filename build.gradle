@@ -71,6 +71,7 @@ project(":core") {
         compile "de.sciss:jump3r:1.0.4"
         compile "com.github.chrislo27:musique-barebones:-SNAPSHOT"
         compile "com.segment.analytics.java:analytics:+"
+        compile "com.github.MinnDevelopment:java-discord-rpc:v1.3.5"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }
