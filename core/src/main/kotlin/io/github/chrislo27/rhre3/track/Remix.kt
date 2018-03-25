@@ -575,6 +575,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 AssetRegistry.pauseAllSounds()
                 music?.music?.pause()
                 SoundSystem.system.pause()
+                DiscordHelper.updatePresence(PresenceState.InEditor)
             }
             PlayState.PLAYING -> {
                 lastMusicPosition = -1f
@@ -612,8 +613,12 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 }
 
                 val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
-                if (editor.stage.presentationModeStage.visible && durationSeconds > 1f) {
-                    DiscordHelper.updatePresence(PresenceState.PresentationMode(durationSeconds))
+                if (durationSeconds > 5f) {
+                    if (editor.stage.presentationModeStage.visible) {
+                        DiscordHelper.updatePresence(PresenceState.Elapsable.PresentationMode(durationSeconds))
+                    } else if (midiInstruments > 0) {
+                        DiscordHelper.updatePresence(PresenceState.Elapsable.PlayingMidi(durationSeconds))
+                    }
                 }
             }
         }

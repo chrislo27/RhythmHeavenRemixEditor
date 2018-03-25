@@ -30,14 +30,20 @@ sealed class PresenceState(open val state: String = "") {
     object ViewingCredits
         : PresenceState("Viewing the credits ❤")
 
-    class PresentationMode(val duration: Float)
-        : PresenceState("In Presentation Mode") {
+    sealed class Elapsable(state: String, val duration: Float)
+        : PresenceState(state) {
         override fun modifyRichPresence(richPresence: DefaultRichPresence) {
             super.modifyRichPresence(richPresence)
             if (duration > 0f) {
                 richPresence.endTimestamp = System.currentTimeMillis() / 1000L + duration.roundToLong()
             }
         }
+
+        class PlayingMidi(duration: Float)
+            : Elapsable("Playing a MIDI", duration)
+
+        class PresentationMode(duration: Float)
+            : Elapsable("In Presentation Mode", duration)
     }
 
 }
