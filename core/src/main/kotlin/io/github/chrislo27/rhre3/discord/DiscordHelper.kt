@@ -16,6 +16,7 @@ object DiscordHelper {
     private val lib: DiscordRPC
         get() = DiscordRPC.INSTANCE
     private var lastPresence: DiscordRichPresence? = null
+    private var lastSent: DiscordRichPresence? = null
     @Volatile
     var enabled = true
         set(value) {
@@ -54,8 +55,10 @@ object DiscordHelper {
     private fun signalUpdate() {
         if (enabled) {
             val last = lastPresence
-            if (last != null) {
+            val lastSent = lastSent
+            if (last !== null && lastSent !== last) {
                 lib.Discord_UpdatePresence(last)
+                this.lastSent = last
             }
         }
     }
