@@ -11,7 +11,7 @@ class DefaultRichPresence(state: String = "", party: Pair<Int, Int> = DEFAULT_PA
         val DEFAULT_PARTY: Pair<Int, Int> = 0 to 0
     }
 
-    constructor(presenceState: PresenceState) : this(presenceState.getState(), presenceState.getPartyCount()) {
+    constructor(presenceState: PresenceState) : this(presenceState.state, presenceState.getPartyCount()) {
         presenceState.modifyRichPresence(this)
     }
 

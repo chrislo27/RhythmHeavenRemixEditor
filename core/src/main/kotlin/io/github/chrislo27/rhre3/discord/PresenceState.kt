@@ -3,34 +3,37 @@ package io.github.chrislo27.rhre3.discord
 import kotlin.math.roundToLong
 
 
-sealed class PresenceState {
+sealed class PresenceState(open val state: String) {
 
-    abstract fun getState(): String
+    constructor() : this("")
 
     open fun getPartyCount(): Pair<Int, Int> = DefaultRichPresence.DEFAULT_PARTY
 
     open fun modifyRichPresence(richPresence: DefaultRichPresence) {
     }
 
-    open class SimplePresenceState(val stateStr: String) : PresenceState() {
-        final override fun getState(): String = stateStr
-    }
+    // ---------------- IMPLEMENTATIONS BELOW ----------------
 
-    object Loading : SimplePresenceState("Loading...")
+    object Loading
+        : PresenceState("Loading...")
 
-    object InEditor : SimplePresenceState("In Editor")
+    object InEditor
+        : PresenceState("In Editor")
 
-    object Exporting : SimplePresenceState("Exporting a remix")
+    object Exporting
+        : PresenceState("Exporting a remix")
 
-    object Uploading : SimplePresenceState("Uploading a remix")
+    object Uploading
+        : PresenceState("Uploading a remix")
 
-    object InSettings : SimplePresenceState("In Info and Settings")
+    object InSettings
+        : PresenceState("In Info and Settings")
 
-    class PresentationMode(val duration: Float) : PresenceState() {
-        override fun getState(): String {
-            return "In Presentation Mode"
-        }
+    object ViewingCredits
+        : PresenceState("Viewing the credits ❤")
 
+    class PresentationMode(val duration: Float)
+        : PresenceState("In Presentation Mode") {
         override fun modifyRichPresence(richPresence: DefaultRichPresence) {
             super.modifyRichPresence(richPresence)
             if (duration > 0f) {
