@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.track.PlayState
@@ -26,6 +28,8 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
             firstShowing = false
             RemixRecovery.cacheChecksumAfterLoad(editor.remix)
         }
+
+        DiscordHelper.updatePresence(PresenceState.InEditor)
     }
 
     override fun hide() {

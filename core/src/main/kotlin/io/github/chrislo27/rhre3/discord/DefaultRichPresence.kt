@@ -5,7 +5,15 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 
 
-class DefaultRichPresence(state: String = "", party: Pair<Int, Int> = 0 to 0) : DiscordRichPresence() {
+class DefaultRichPresence(state: String = "", party: Pair<Int, Int> = DEFAULT_PARTY) : DiscordRichPresence() {
+
+    companion object {
+        val DEFAULT_PARTY: Pair<Int, Int> = 0 to 0
+    }
+
+    constructor(presenceState: PresenceState) : this(presenceState.getState(), presenceState.getPartyCount()) {
+        presenceState.modifyRichPresence(this)
+    }
 
     init {
         details = if (RHRE3.VERSION.suffix == "DEVELOPMENT") "Developing ${RHRE3.VERSION.copy(suffix = "")}" else RHRE3.VERSION.toString()

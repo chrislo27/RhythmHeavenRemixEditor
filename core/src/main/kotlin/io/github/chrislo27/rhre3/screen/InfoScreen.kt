@@ -277,11 +277,7 @@ class InfoScreen(main: RHRE3Application)
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
                     didChangeSettings = true
-                    if (checked) {
-                        DiscordHelper.updatePresenceDefault()
-                    } else {
-                        DiscordHelper.clearPresence()
-                    }
+                    DiscordHelper.enabled = checked
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)

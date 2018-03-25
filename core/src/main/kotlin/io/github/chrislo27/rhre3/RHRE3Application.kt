@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -155,11 +156,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
         val defaultNewBackground = GenericStage.BackgroundImpl.TENGOKU
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, defaultNewBackground.name)
-        GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find { it.name.equals(backgroundPref, ignoreCase = true) } ?: defaultNewBackground
-        DiscordHelper.init()
-        if (preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)) {
-            DiscordHelper.updatePresenceDefault()
-        }
+        GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find {
+            it.name.equals(backgroundPref, ignoreCase = true)
+        } ?: defaultNewBackground
+        DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
+        DiscordHelper.updatePresence(PresenceState.Loading)
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
@@ -202,7 +203,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                               .setNextScreen(nextScreenLambda))
 
             RemixRecovery.addSelfToShutdownHooks()
-            Toolboks.LOGGER.info("Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
+            Toolboks.LOGGER.info(
+                    "Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
 
         thread(isDaemon = true, name = "JavafxStub Launcher") {
@@ -281,7 +283,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         Gdx.files.local("tmpMusic/").emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)
         httpClient.close()
-        AnalyticsHandler.track("Close Program", mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
+        AnalyticsHandler.track("Close Program",
+                               mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
         AnalyticsHandler.dispose()
     }
 

@@ -15,9 +15,20 @@ object DiscordHelper {
 
     private val lib: DiscordRPC
         get() = DiscordRPC.INSTANCE
+    private var lastPresence: DiscordRichPresence? = null
+    @Volatile
+    var enabled = true
+        set(value) {
+            field = value
+            if (value) {
+                signalUpdate()
+            } else {
+                clearPresence()
+            }
+        }
 
     @Synchronized
-    fun init() {
+    fun init(enabled: Boolean = this.enabled) {
         if (inited)
             return
         inited = true
@@ -39,20 +50,29 @@ object DiscordHelper {
     }
 
     @Synchronized
+    private fun signalUpdate() {
+        if (enabled) {
+            val last = lastPresence
+            if (last != null) {
+                lib.Discord_UpdatePresence(last)
+            }
+        }
+    }
+
+    @Synchronized
     fun clearPresence() {
         lib.Discord_ClearPresence()
     }
 
     @Synchronized
-    fun updatePresenceDefault(presence: DiscordRichPresence) {
-        lib.Discord_UpdatePresence(presence)
+    fun updatePresence(presence: DiscordRichPresence) {
+        lastPresence = presence
+        signalUpdate()
     }
 
     @Synchronized
-    inline fun updatePresenceDefault(presenceFunc: DefaultRichPresence.() -> Unit = {}) {
-        updatePresenceDefault(DefaultRichPresence().apply {
-            presenceFunc()
-        })
+    fun updatePresence(presenceState: PresenceState) {
+        updatePresence(DefaultRichPresence(presenceState))
     }
 
 }

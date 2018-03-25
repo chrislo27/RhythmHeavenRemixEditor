@@ -8,6 +8,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
@@ -567,6 +569,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 currentSubtitles.clear()
                 currentShakeEntities.clear()
                 editor.resetAllSongSubtitles()
+                DiscordHelper.updatePresence(PresenceState.InEditor)
             }
             PlayState.PAUSED -> {
                 AssetRegistry.pauseAllSounds()
@@ -606,6 +609,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                     } else {
                         music.music.stop()
                     }
+                }
+
+                val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
+                if (editor.stage.presentationModeStage.visible && durationSeconds > 1f) {
+                    DiscordHelper.updatePresence(PresenceState.PresentationMode(durationSeconds))
                 }
             }
         }
