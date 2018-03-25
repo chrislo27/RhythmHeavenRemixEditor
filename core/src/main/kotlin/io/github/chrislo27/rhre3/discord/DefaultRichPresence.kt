@@ -16,7 +16,13 @@ class DefaultRichPresence(state: String = "", party: Pair<Int, Int> = DEFAULT_PA
     }
 
     init {
-        details = if (RHRE3.VERSION.suffix == "DEVELOPMENT") "Developing ${RHRE3.VERSION.copy(suffix = "")}" else RHRE3.VERSION.toString()
+        details = if (RHRE3.VERSION.suffix == "DEVELOPMENT") {
+            "Developing ${RHRE3.VERSION.copy(suffix = "")}"
+        } else if (RHRE3.VERSION.suffix.startsWith("RC") || RHRE3.VERSION.suffix.startsWith("SNAPSHOT")) {
+            "Testing ${RHRE3.VERSION}"
+        } else {
+            RHRE3.VERSION.toString()
+        }
         startTimestamp = RHRE3Application.instance.startTimeMillis / 1000L // Epoch seconds
         largeImageKey = DiscordHelper.DEFAULT_LARGE_IMAGE
         largeImageText = RHRE3.GITHUB
