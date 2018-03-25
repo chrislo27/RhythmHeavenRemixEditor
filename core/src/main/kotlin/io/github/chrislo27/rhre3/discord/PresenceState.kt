@@ -3,9 +3,7 @@ package io.github.chrislo27.rhre3.discord
 import kotlin.math.roundToLong
 
 
-sealed class PresenceState(open val state: String) {
-
-    constructor() : this("")
+sealed class PresenceState(open val state: String = "") {
 
     open fun getPartyCount(): Pair<Int, Int> = DefaultRichPresence.DEFAULT_PARTY
 
