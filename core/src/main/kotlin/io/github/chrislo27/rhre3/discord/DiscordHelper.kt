@@ -15,7 +15,7 @@ object DiscordHelper {
 
     private val lib: DiscordRPC
         get() = DiscordRPC.INSTANCE
-    private var lastPresence: DiscordRichPresence? = null
+    private var queuedPresence: DiscordRichPresence? = null
     private var lastSent: DiscordRichPresence? = null
     @Volatile
     var enabled = true
@@ -54,11 +54,12 @@ object DiscordHelper {
     @Synchronized
     private fun signalUpdate() {
         if (enabled) {
-            val last = lastPresence
+            val queued = queuedPresence
             val lastSent = lastSent
-            if (last !== null && lastSent !== last) {
-                lib.Discord_UpdatePresence(last)
-                this.lastSent = last
+            if (queued !== null && lastSent !== queued) {
+                lib.Discord_UpdatePresence(queued)
+                this.lastSent = queued
+                queuedPresence = null
             }
         }
     }
@@ -70,7 +71,7 @@ object DiscordHelper {
 
     @Synchronized
     fun updatePresence(presence: DiscordRichPresence) {
-        lastPresence = presence
+        queuedPresence = presence
         signalUpdate()
     }
 
