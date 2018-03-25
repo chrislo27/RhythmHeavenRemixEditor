@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -536,6 +537,7 @@ class InfoScreen(main: RHRE3Application)
         super.show()
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
+        DiscordHelper.updatePresence(PresenceState.InSettings)
     }
 
     override fun hide() {

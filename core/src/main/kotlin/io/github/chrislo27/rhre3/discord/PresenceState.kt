@@ -12,13 +12,19 @@ sealed class PresenceState {
     open fun modifyRichPresence(richPresence: DefaultRichPresence) {
     }
 
-    object Loading : PresenceState() {
-        override fun getState(): String = "Loading..."
+    open class SimplePresenceState(val stateStr: String) : PresenceState() {
+        final override fun getState(): String = stateStr
     }
 
-    object InEditor : PresenceState() {
-        override fun getState(): String = "In Editor"
-    }
+    object Loading : SimplePresenceState("Loading...")
+
+    object InEditor : SimplePresenceState("In Editor")
+
+    object Exporting : SimplePresenceState("Exporting a remix")
+
+    object Uploading : SimplePresenceState("Uploading a remix")
+
+    object InSettings : SimplePresenceState("In Info and Settings")
 
     class PresentationMode(val duration: Float) : PresenceState() {
         override fun getState(): String {

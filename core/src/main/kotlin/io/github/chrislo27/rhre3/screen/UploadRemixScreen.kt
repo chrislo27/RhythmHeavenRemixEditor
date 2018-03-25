@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -397,6 +399,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
         if (!isUploading) {
             isUploading = true
+            DiscordHelper.updatePresence(PresenceState.Uploading)
 
             mainLabel.text = Localization["screen.upload.preparing"]
 

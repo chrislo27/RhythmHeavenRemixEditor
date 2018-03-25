@@ -13,6 +13,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -386,6 +388,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
                     persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
                     launch(CommonPool) {
+                        DiscordHelper.updatePresence(PresenceState.Exporting)
                         try {
                             val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)
                                 file.parentFile.resolve("${file.name}.mp3")
@@ -462,6 +465,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
+        // Two updateLabels calls required (b/c state may change after openPicker)
         updateLabels()
         openPicker()
         updateLabels()
