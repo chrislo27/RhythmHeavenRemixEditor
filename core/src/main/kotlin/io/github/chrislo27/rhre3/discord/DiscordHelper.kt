@@ -32,6 +32,7 @@ object DiscordHelper {
         if (inited)
             return
         inited = true
+        this.enabled = enabled
 
         lib.Discord_Initialize(DISCORD_APP_ID, DiscordEventHandlers(), true, "")
 
