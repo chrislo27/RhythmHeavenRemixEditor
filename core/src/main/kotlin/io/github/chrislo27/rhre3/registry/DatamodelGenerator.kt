@@ -618,9 +618,12 @@ manzaiBirds/umette_umeina"""
 
         game.objects.addAll(addedCues)
 
+        // Deprecations are:
+        // manzaiBirds_manzaiBirds/<ID>
+        // For each deprecated ID for the cue: manzaiBirds_manzaiBirds/<DEP_ID> & manzaiBirds_<DEP_ID>
         val patterns = addedCues.map {
             Pattern(game, "manzaiBirds_${it.id.replace("manzaiBirds/", "")}",
-                    mutableListOf("manzaiBirds_${it.id}") + it.deprecatedIDs.map { "manzaiBirds_$it" },
+                    mutableListOf("manzaiBirds_${it.id}") + it.deprecatedIDs.flatMap { listOf("manzaiBirds_$it", "manzaiBirds_${it.replace("manzaiBirds/", "")}") },
                     it.name,
                     mutableListOf(
                             CuePointer(
@@ -635,7 +638,7 @@ manzaiBirds/umette_umeina"""
         }
         val boings = addedCues.map {
             Pattern(game, "manzaiBirds_${it.id.replace("manzaiBirds/", "")}_boing",
-                    mutableListOf("manzaiBirds_${it.id}_boing") + it.deprecatedIDs.map { "manzaiBirds_$it" },
+                    mutableListOf("manzaiBirds_${it.id}_boing") + it.deprecatedIDs.map { "manzaiBirds_${it}_boing" },
                     "${it.name} BOING!",
                     mutableListOf(
                             CuePointer(
