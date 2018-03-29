@@ -138,7 +138,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                                         "$id/flipB1", 3f)
                                      ), false)
 
-        run attention@ {
+        run attention@{
             (1..8).mapTo(game.objects) {
                 Cue(game, "$id/attention/attention$it",
                     mutableListOf(),
@@ -172,7 +172,7 @@ class FlipperFlopGenerator(val id: String) : DatamodelGenerator() {
                                          ), false)
         }
 
-        run count@ {
+        run count@{
             val flipperRollCounts: String = """$id/count/flipperRollCount1
 $id/count/flipperRollCount2
 $id/count/flipperRollCount3
@@ -552,38 +552,54 @@ class ManzaiBirdsGenerator : DatamodelGenerator() {
 
     val paths: String = """manzaiBirds/aichini_aichinna
 manzaiBirds/amette_amena
-manzaiBirds/chainani_nicchaina
+manzaiBirds/chainani_itchaina
 manzaiBirds/denwari_denwa
-manzaiBirds/domakiyo_otonokoi
 manzaiBirds/futonga_futtonda
 manzaiBirds/hiromega_hiromeida
-manzaiBirds/houchaga_houchou
-manzaiBirds/igakari_katta
+manzaiBirds/ikaga_okotta
 manzaiBirds/ikugawa_ikura
-manzaiBirds/kaero_burikaeru
+manzaiBirds/kaeroga_furikaeru
 manzaiBirds/karega_kare
+manzaiBirds/koucha_o_koutchau
 manzaiBirds/kusaga_kusai
-manzaiBirds/megaminiwa_megani
-manzaiBirds/mikanga_mikannai
+manzaiBirds/megane_niwa_meganei
+manzaiBirds/mikanga_mikkannai
 manzaiBirds/nekoga_nekoronda
 manzaiBirds/okanewa_okkane
-manzaiBirds/okurezu_kitte_okure
+manzaiBirds/okurezu_kite_okure
 manzaiBirds/omochino_kimochi
 manzaiBirds/omoino_hoka_omoi
 manzaiBirds/puringa_tappurin
-manzaiBirds/rakugawa_rakugana
-manzaiBirds/roukada_katarouka
-manzaiBirds/saiyo_minasai
+manzaiBirds/rakudawa_rakudana
+manzaiBirds/roukade_katarouka
+manzaiBirds/saio_minasai
 manzaiBirds/sakana_kana_masakana
 manzaiBirds/saruga_saru
 manzaiBirds/shaiinni_nanari_nashain
 manzaiBirds/suikawa_yasuika
 manzaiBirds/taiga_tabetaina
-manzaiBirds/tainini_kittai
-manzaiBirds/taiyo_gami_taiyou
+manzaiBirds/taini_ikitai
+manzaiBirds/taiyouga_mitaiyou
 manzaiBirds/toireni_ittoire
+manzaiBirds/tonakaiwa_otonakai
 manzaiBirds/torinikuga_torininkui
-manzaiBirds/umette_umena"""
+manzaiBirds/umette_umeina"""
+    val deprecations: Map<String, String> = mapOf(
+            "manzaiBirds/mikanga_mikkannai" to "manzaiBirds/mikanga_mikannai",
+            "manzaiBirds/rakudawa_rakudana" to "manzaiBirds/rakugawa_rakugana",
+            "manzaiBirds/umette_umeina" to "manzaiBirds/umette_umena",
+            "manzaiBirds/koucha_o_koutchau" to "manzaiBirds/houchaga_houchou",
+            "manzaiBirds/kaeroga_furikaeru" to "manzaiBirds/kaero_burikaeru",
+            "manzaiBirds/okurezu_kite_okure" to "manzaiBirds/okurezu_kitte_okure",
+            "manzaiBirds/roukade_katarouka" to "manzaiBirds/roukada_katarouka",
+            "manzaiBirds/chainani_itchaina" to "manzaiBirds/chainani_nicchaina",
+            "manzaiBirds/taini_ikitai" to "manzaiBirds/tainini_kittai",
+            "manzaiBirds/tonakaiwa_otonakai" to "manzaiBirds/domakiyo_otonokoi",
+            "manzaiBirds/saio_minasai" to "manzaiBirds/saiyo_minasai",
+            "manzaiBirds/taiyouga_mitaiyou" to "manzaiBirds/taiyo_gami_taiyou",
+            "manzaiBirds/megane_niwa_meganei" to "manzaiBirds/megaminiwa_megani",
+            "manzaiBirds/ikaga_okotta" to "manzaiBirds/igakari_katta"
+                                                 )
 
     override fun process(folder: FileHandle, dataObject: DataObject, game: Game) {
         val lines = paths.lines()
@@ -592,7 +608,7 @@ manzaiBirds/umette_umena"""
         game.objects as MutableList
 
         lines.mapTo(addedCues) {
-            Cue(game, it, mutableListOf(),
+            Cue(game, it, if (deprecations.containsKey(it)) listOf(deprecations[it]!!) else listOf(),
                 it.replace("manzaiBirds/", "").replace("_", " "),
                 2.5f, false, false,
                 GameRegistry.SFX_FOLDER.child("$it.ogg"),
@@ -603,8 +619,9 @@ manzaiBirds/umette_umena"""
         game.objects.addAll(addedCues)
 
         val patterns = addedCues.map {
-            Pattern(game, "manzaiBirds_${it.id}",
-                    mutableListOf(), it.name,
+            Pattern(game, "manzaiBirds_${it.id.replace("manzaiBirds/", "")}",
+                    mutableListOf("manzaiBirds_${it.id}") + it.deprecatedIDs.map { "manzaiBirds_$it" },
+                    it.name,
                     mutableListOf(
                             CuePointer(
                                     it.id, 0f, 2.5f),
@@ -617,8 +634,9 @@ manzaiBirds/umette_umena"""
                                  ), false)
         }
         val boings = addedCues.map {
-            Pattern(game, "manzaiBirds_${it.id}_boing",
-                    mutableListOf(), "${it.name} BOING!",
+            Pattern(game, "manzaiBirds_${it.id.replace("manzaiBirds/", "")}_boing",
+                    mutableListOf("manzaiBirds_${it.id}_boing") + it.deprecatedIDs.map { "manzaiBirds_$it" },
+                    "${it.name} BOING!",
                     mutableListOf(
                             CuePointer(
                                     it.id, 0f, 1.5f),
