@@ -20,6 +20,9 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     private var firstShowing = true
 
+    private val presenceCycle = 60f
+    private var refreshPresence: Float = 0f
+
     override fun show() {
         super.show()
         (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
@@ -30,6 +33,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
         }
 
         DiscordHelper.updatePresence(PresenceState.InEditor)
+        refreshPresence = presenceCycle
     }
 
     override fun hide() {
@@ -47,6 +51,12 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
     override fun renderUpdate() {
         super.renderUpdate()
         editor.renderUpdate()
+
+        refreshPresence -= Gdx.graphics.deltaTime
+        if (refreshPresence <= 0) {
+            refreshPresence = presenceCycle
+            DiscordHelper.updatePresence(PresenceState.InEditor)
+        }
     }
 
     override fun resize(width: Int, height: Int) {
