@@ -57,7 +57,7 @@ object AnalyticsHandler : Disposable {
 
     private fun getContext(): Map<String, *> {
         return mutableMapOf<String, Any>().apply {
-            put("app", mapOf("version" to RHRE3.VERSION.toString()))
+            put("app", mapOf("version" to RHRE3.VERSION.toString(), "build" to System.getProperty("java.version")?.trim()))
             put("locale", Localization.currentBundle.locale.toString())
             put("os", mapOf("name" to System.getProperty("os.name"),
                             "version" to System.getProperty("os.version")))
