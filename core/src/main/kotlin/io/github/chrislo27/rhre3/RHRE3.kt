@@ -3,6 +3,8 @@ package io.github.chrislo27.rhre3
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.toolboks.version.Version
+import java.time.LocalDate
+import java.time.Month
 
 
 object RHRE3 {
@@ -38,10 +40,15 @@ object RHRE3 {
     const val OUT_OF_MEMORY_DOC_LINK: String = "http://rhre.readthedocs.io/en/latest/Out-of-memory-on-music/"
     val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
 
+    val RHRE_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.MAY, 29)
+    val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)
+    val RHRE2_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.DECEMBER, 6)
+
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
+    var immediateAnniversary: Boolean = false
     lateinit var launchArguments: List<String>
 
     init {

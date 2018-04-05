@@ -1,0 +1,803 @@
+{
+  "version": "v3.9.1-DEVELOPMENT",
+  "databaseVersion": 41,
+  "playbackStart": 25.0,
+  "musicStartSec": 0.0,
+  "isAutosave": false,
+  "midiInstruments": 3,
+  "musicData": {
+    "present": false
+  },
+  "entities": [
+    {
+      "type": "model",
+      "beat": 0.0,
+      "track": 2,
+      "width": 0.5729167,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 0.0,
+      "track": 1,
+      "width": 0.5729167,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 0.0,
+      "track": 0,
+      "width": 0.5729167,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 0.6,
+      "track": 2,
+      "width": 0.37708336,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 0.6,
+      "track": 1,
+      "width": 0.37708336,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 0.6,
+      "track": 0,
+      "width": 0.37708336,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 1.0,
+      "track": 2,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 1.0,
+      "track": 1,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 1.0,
+      "track": 0,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 2.0,
+      "track": 2,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -8,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 2.0,
+      "track": 1,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -3,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 2.0,
+      "track": 0,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 3.0000002,
+      "track": 2,
+      "width": 0.96874976,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 3.0000002,
+      "track": 1,
+      "width": 0.96874976,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 3.0000002,
+      "track": 0,
+      "width": 0.96874976,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 4.0,
+      "track": 2,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": 0,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 4.0,
+      "track": 1,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 4.0,
+      "track": 0,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": 6,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 6.0000005,
+      "track": 2,
+      "width": 0.5624995,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 6.0000005,
+      "track": 1,
+      "width": 0.5729165,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 6.0000005,
+      "track": 0,
+      "width": 0.5729165,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 6.6000004,
+      "track": 2,
+      "width": 0.3770833,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 6.6000004,
+      "track": 1,
+      "width": 0.3770833,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 6.6000004,
+      "track": 0,
+      "width": 0.3770833,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 7.0000005,
+      "track": 2,
+      "width": 0.9687495,
+      "height": 1,
+      "semitone": -5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 7.0000005,
+      "track": 1,
+      "width": 0.9687495,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 7.0000005,
+      "track": 0,
+      "width": 0.9687495,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 8.0,
+      "track": 2,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -8,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 8.0,
+      "track": 1,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": -3,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 8.0,
+      "track": 0,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 9.0,
+      "track": 2,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 0,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 9.0,
+      "track": 1,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 3,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 9.0,
+      "track": 0,
+      "width": 0.96875,
+      "height": 1,
+      "semitone": 9,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 10.000001,
+      "track": 2,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 10.000001,
+      "track": 1,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 10.000001,
+      "track": 0,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 12.000001,
+      "track": 0,
+      "width": 0.57291603,
+      "height": 1,
+      "semitone": -10,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 12.6,
+      "track": 0,
+      "width": 0.37708378,
+      "height": 1,
+      "semitone": -10,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 13.000001,
+      "track": 0,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 14.000001,
+      "track": 2,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": -7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 14.000001,
+      "track": 1,
+      "width": 1.8979168,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 15.000001,
+      "track": 0,
+      "width": 0.947917,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 16.0,
+      "track": 2,
+      "width": 1.5125008,
+      "height": 1,
+      "semitone": -3,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 16.0,
+      "track": 1,
+      "width": 1.5125008,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 16.0,
+      "track": 0,
+      "width": 1.5125008,
+      "height": 1,
+      "semitone": 6,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 17.6,
+      "track": 2,
+      "width": 3.2270832,
+      "height": 1,
+      "semitone": -12,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 17.6,
+      "track": 1,
+      "width": 3.2270832,
+      "height": 1,
+      "semitone": -6,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 17.6,
+      "track": 0,
+      "width": 3.2270832,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 21.000002,
+      "track": 2,
+      "width": 0.57291603,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 21.000002,
+      "track": 1,
+      "width": 0.57291603,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 21.000002,
+      "track": 0,
+      "width": 0.57291603,
+      "height": 1,
+      "semitone": 12,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 21.6,
+      "track": 2,
+      "width": 0.37708473,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 21.6,
+      "track": 1,
+      "width": 0.37708473,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 21.6,
+      "track": 0,
+      "width": 0.37708473,
+      "height": 1,
+      "semitone": 12,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 22.000002,
+      "track": 2,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 22.000002,
+      "track": 1,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 22.000002,
+      "track": 0,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 11,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 23.000002,
+      "track": 2,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 23.000002,
+      "track": 1,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 23.000002,
+      "track": 0,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 24.000002,
+      "track": 2,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 0,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 24.000002,
+      "track": 1,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 5,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 24.000002,
+      "track": 0,
+      "width": 0.94791603,
+      "height": 1,
+      "semitone": 9,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 25.000002,
+      "track": 2,
+      "width": 0.9999981,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 25.000002,
+      "track": 1,
+      "width": 1.9999981,
+      "height": 1,
+      "semitone": 4,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 25.000002,
+      "track": 0,
+      "width": 1.9999981,
+      "height": 1,
+      "semitone": 7,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 26.0,
+      "track": 2,
+      "width": 0.5,
+      "height": 1,
+      "semitone": -10,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 27.0,
+      "track": 2,
+      "width": 0.5,
+      "height": 1,
+      "semitone": -17,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 3
+    },
+    {
+      "type": "model",
+      "beat": 30.0,
+      "track": 0,
+      "width": 0.125,
+      "height": 5,
+      "datamodel": "special_endEntity"
+    }
+  ],
+  "trackers": {
+    "tempos": {
+      "trackers": [
+        {
+          "beat": 0.0,
+          "width": 0.0,
+          "seconds": 0.0,
+          "bpm": 121.00019
+        },
+        {
+          "beat": 20.875,
+          "width": 0.0,
+          "seconds": 10.351224,
+          "bpm": 10.0
+        },
+        {
+          "beat": 21.0,
+          "width": 0.0,
+          "seconds": 11.101224,
+          "bpm": 121.00019
+        }
+      ]
+    },
+    "musicVolumes": {
+      "trackers": []
+    }
+  },
+  "timeSignatures": [
+    {
+      "beat": 0,
+      "divisions": 3,
+      "measure": 1
+    }
+  ]
+}

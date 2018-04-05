@@ -25,14 +25,14 @@ class EditorVersionScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, EditorVersionScreen>(main) {
 
     companion object {
-        private val DEFAULT_BEGINNING = false to ""
+        private val DEFAULT_BEGINNING: Pair<Boolean, ToolboksScreen<*, *>?> = false to null
     }
 
     override val stage: Stage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<EditorVersionScreen>
 
-    var isBeginning: Pair<Boolean, String> = DEFAULT_BEGINNING
+    var isBeginning: Pair<Boolean, ToolboksScreen<*, *>?> = DEFAULT_BEGINNING
     private var timeOnScreen = 0f
     private var timeToStayOnScreen = 0f
 
@@ -45,7 +45,7 @@ class EditorVersionScreen(main: RHRE3Application)
         }
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull(if (isBeginning.first) isBeginning.second else "info")
+            main.screen = if (isBeginning.first) isBeginning.second else ScreenRegistry.getNonNull("info")
             isBeginning = DEFAULT_BEGINNING
         }
 

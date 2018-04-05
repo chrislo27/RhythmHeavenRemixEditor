@@ -46,7 +46,8 @@ class RegistryLoadingScreen(main: RHRE3Application)
             this@RegistryLoadingScreen.stage.centreStage.updatePositions()
             val width = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realWidth
             val height = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realHeight
-            this.location.set(screenX = -width / 2f, screenWidth = width, screenHeight = height, screenY = 0.5f - width / 2)
+            this.location.set(screenX = -width / 2f, screenWidth = width, screenHeight = height,
+                              screenY = 0.5f - width / 2)
         }
 
         gameTitle = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage)
@@ -107,13 +108,17 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
-            val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else "editor"
-            main.screen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion)
+            val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else DEF_AFTER_LOAD_SCREEN
+            val nextScreen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion) {
                 ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
-                    it.isBeginning = true to normalScreen
+                    it.isBeginning = true to ScreenRegistry[normalScreen]
                 }
-            else
+            } else {
                 ScreenRegistry[normalScreen]
+            }
+            val possibleEvent = EventScreen.getPossibleEvent(main, nextScreen)
+
+            main.screen = possibleEvent ?: nextScreen
         }
     }
 

@@ -28,6 +28,7 @@ import io.github.chrislo27.rhre3.util.ReleaseObject
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
+import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.font.FreeTypeFont
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.i18n.NamedLocale
@@ -190,14 +191,16 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "credits" to CreditsScreen(this)
             }
 
-            val nextScreenLambda = {
+            val nextScreenLambda: (() -> ToolboksScreen<*, *>?) = nextScreenLambda@{
                 defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
                 defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
                 defaultCamera.update()
 
                 addOtherScreens()
                 loadWindowSettings()
-                ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
+                val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
+
+                return@nextScreenLambda nextScreen
             }
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(nextScreenLambda))
