@@ -166,7 +166,7 @@ class EventScreen(main: RHRE3Application)
 
                     font.drawCompressed(batch, "Thank you for your continued support over the years.", 0f,
                                         baseY - font.lineHeight * 2, camera.viewportWidth, Align.center)
-                    font.drawCompressed(batch, "Without you, this program would not be possible. Thank you.", 0f,
+                    font.drawCompressed(batch, "Here's to more RHRE!", 0f,
                                         baseY - font.lineHeight * 3, camera.viewportWidth, Align.center)
                 }
                 else -> {
