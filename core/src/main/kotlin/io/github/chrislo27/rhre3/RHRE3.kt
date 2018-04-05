@@ -41,8 +41,8 @@ object RHRE3 {
     val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
 
     val RHRE_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.MAY, 29)
-    val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)
-    val RHRE2_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.DECEMBER, 6)
+    private val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)
+    private val RHRE2_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.DECEMBER, 6)
 
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false
