@@ -917,7 +917,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val height = cellHeight - 15
                 val renderWidth = width * 0.65f
 
-                val startX = (staticCamera.viewportWidth / 2f - renderWidth * remix.midiInstruments / 2f).coerceAtLeast(
+                val startX = (staticCamera.viewportWidth / 2f - renderWidth * remix.midiInstruments / 2f - renderWidth / 4f).coerceAtLeast(
                         0f)
                 val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight
 
