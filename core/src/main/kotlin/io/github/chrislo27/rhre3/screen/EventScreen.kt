@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -41,14 +42,19 @@ class EventScreen(main: RHRE3Application)
         fun getPossibleEvent(main: RHRE3Application, nextScreen: ToolboksScreen<*, *>?): EventScreen? {
             // Event check
             val today: LocalDate = when {
-                RHRE3.immediateAnniversary -> RHRE3.RHRE_ANNIVERSARY
+                RHRE3.immediateAnniversary -> RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
                 else -> LocalDate.now()
             }
 
-            return when (today) {
-                RHRE3.RHRE_ANNIVERSARY -> {
+            val anniversaryButNow: LocalDate = RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
+
+            return when {
+                // RHRE anniversary:
+                // Occurs from day of to a week after (exclusive)
+                today == anniversaryButNow || (today.isAfter(anniversaryButNow)
+                        && today.isBefore(anniversaryButNow.plusWeeks(1))) -> {
                     EventScreen(main).takeIf {
-                        it.loadEventJson(EventScreen.EventType.ANNIVERSARY,
+                        it.loadEventJson(EventType.ANNIVERSARY,
                                          Gdx.files.internal("event/anniversary.json"), nextScreen)
                     }
                 }
@@ -82,7 +88,9 @@ class EventScreen(main: RHRE3Application)
 
             this.nextScreen = nextScreen
             this.eventType = eventType
-            this.canContinue = -1f
+            this.canContinue = if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name,
+                                                               0) == NOW.year) 0f else -1f
+            main.preferences.putInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, NOW.year).flush()
             this.canUpdate = 0
             true
         } catch (e: Exception) {

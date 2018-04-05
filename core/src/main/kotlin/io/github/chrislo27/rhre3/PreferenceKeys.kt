@@ -38,4 +38,6 @@ object PreferenceKeys {
     val TIMES_SKIPPED_UPDATE = "timesSkippedUpdate"
     val BACKGROUND = "background"
 
+    val EVENT_PREFIX = "event_"
+
 }
