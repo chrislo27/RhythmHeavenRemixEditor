@@ -40,13 +40,13 @@ class EventScreen(main: RHRE3Application)
         private val NOW: LocalDate = LocalDate.now()
 
         fun getPossibleEvent(main: RHRE3Application, nextScreen: ToolboksScreen<*, *>?): EventScreen? {
+            val anniversaryButNow: LocalDate = RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
+
             // Event check
             val today: LocalDate = when {
-                RHRE3.immediateAnniversary -> RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
+                RHRE3.immediateAnniversary -> anniversaryButNow
                 else -> LocalDate.now()
             }
-
-            val anniversaryButNow: LocalDate = RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
 
             return when {
                 // RHRE anniversary:
