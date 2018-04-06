@@ -1,7 +1,7 @@
 {
   "version": "v3.9.1-DEVELOPMENT",
   "databaseVersion": 41,
-  "playbackStart": 25.0,
+  "playbackStart": 24.0,
   "musicStartSec": 0.0,
   "isAutosave": false,
   "midiInstruments": 3,
@@ -13,7 +13,7 @@
       "type": "model",
       "beat": 0.0,
       "track": 2,
-      "width": 0.5729167,
+      "width": 0.6666667,
       "height": 1,
       "semitone": -5,
       "volume": 100,
@@ -24,7 +24,7 @@
       "type": "model",
       "beat": 0.0,
       "track": 1,
-      "width": 0.5729167,
+      "width": 0.6666667,
       "height": 1,
       "semitone": -1,
       "volume": 100,
@@ -35,7 +35,7 @@
       "type": "model",
       "beat": 0.0,
       "track": 0,
-      "width": 0.5729167,
+      "width": 0.6666667,
       "height": 1,
       "semitone": 2,
       "volume": 100,
@@ -44,36 +44,36 @@
     },
     {
       "type": "model",
-      "beat": 0.6,
+      "beat": 0.6666667,
+      "track": 0,
+      "width": 0.3333333,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 0.6666667,
+      "track": 1,
+      "width": 0.3333333,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 0.6666667,
       "track": 2,
-      "width": 0.37708336,
+      "width": 0.3333333,
       "height": 1,
       "semitone": -5,
       "volume": 100,
       "datamodel": "gleeClubEn/singLoop",
       "instrument": 3
-    },
-    {
-      "type": "model",
-      "beat": 0.6,
-      "track": 1,
-      "width": 0.37708336,
-      "height": 1,
-      "semitone": -1,
-      "volume": 100,
-      "datamodel": "gleeClubEn/singLoop",
-      "instrument": 2
-    },
-    {
-      "type": "model",
-      "beat": 0.6,
-      "track": 0,
-      "width": 0.37708336,
-      "height": 1,
-      "semitone": 2,
-      "volume": 100,
-      "datamodel": "gleeClubEn/singLoop",
-      "instrument": 1
     },
     {
       "type": "model",
@@ -211,7 +211,7 @@
       "type": "model",
       "beat": 6.0000005,
       "track": 2,
-      "width": 0.5624995,
+      "width": 0.6666665,
       "height": 1,
       "semitone": -5,
       "volume": 100,
@@ -222,7 +222,7 @@
       "type": "model",
       "beat": 6.0000005,
       "track": 1,
-      "width": 0.5729165,
+      "width": 0.6666665,
       "height": 1,
       "semitone": -1,
       "volume": 100,
@@ -233,7 +233,7 @@
       "type": "model",
       "beat": 6.0000005,
       "track": 0,
-      "width": 0.5729165,
+      "width": 0.6666665,
       "height": 1,
       "semitone": 2,
       "volume": 100,
@@ -242,36 +242,36 @@
     },
     {
       "type": "model",
-      "beat": 6.6000004,
+      "beat": 6.666667,
+      "track": 0,
+      "width": 0.33333302,
+      "height": 1,
+      "semitone": 2,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 1
+    },
+    {
+      "type": "model",
+      "beat": 6.666667,
+      "track": 1,
+      "width": 0.33333302,
+      "height": 1,
+      "semitone": -1,
+      "volume": 100,
+      "datamodel": "gleeClubEn/singLoop",
+      "instrument": 2
+    },
+    {
+      "type": "model",
+      "beat": 6.666667,
       "track": 2,
-      "width": 0.3770833,
+      "width": 0.33333302,
       "height": 1,
       "semitone": -5,
       "volume": 100,
       "datamodel": "gleeClubEn/singLoop",
       "instrument": 3
-    },
-    {
-      "type": "model",
-      "beat": 6.6000004,
-      "track": 1,
-      "width": 0.3770833,
-      "height": 1,
-      "semitone": -1,
-      "volume": 100,
-      "datamodel": "gleeClubEn/singLoop",
-      "instrument": 2
-    },
-    {
-      "type": "model",
-      "beat": 6.6000004,
-      "track": 0,
-      "width": 0.3770833,
-      "height": 1,
-      "semitone": 2,
-      "volume": 100,
-      "datamodel": "gleeClubEn/singLoop",
-      "instrument": 1
     },
     {
       "type": "model",
@@ -759,11 +759,13 @@
     },
     {
       "type": "model",
-      "beat": 30.0,
+      "beat": 28.0,
       "track": 0,
-      "width": 0.125,
-      "height": 5,
-      "datamodel": "special_endEntity"
+      "width": 1.0,
+      "height": 1,
+      "semitone": 0,
+      "volume": 100,
+      "datamodel": "extraSFX/audienceApplause"
     }
   ],
   "trackers": {
@@ -773,19 +775,19 @@
           "beat": 0.0,
           "width": 0.0,
           "seconds": 0.0,
-          "bpm": 125
+          "bpm": 125.00019
         },
         {
           "beat": 20.875,
           "width": 0.0,
-          "seconds": 10.351224,
+          "seconds": 10.019984,
           "bpm": 10.0
         },
         {
           "beat": 21.0,
           "width": 0.0,
-          "seconds": 11.101224,
-          "bpm": 125
+          "seconds": 10.769984,
+          "bpm": 125.00019
         }
       ]
     },
