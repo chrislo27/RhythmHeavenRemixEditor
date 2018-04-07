@@ -20,6 +20,7 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -49,8 +50,8 @@ class EventScreen(main: RHRE3Application)
             }
 
             return when {
-                // RHRE anniversary:
-                // Occurs from day of to 3 days after (exclusive)
+            // RHRE anniversary:
+            // Occurs from day of to 3 days after (exclusive)
                 today == anniversaryButNow || (today.isAfter(anniversaryButNow)
                         && today.isBefore(anniversaryButNow.plusDays(3))) -> {
                     EventScreen(main).takeIf {
@@ -70,6 +71,7 @@ class EventScreen(main: RHRE3Application)
         get() = editor.remix
     private var canUpdate = 0
     private var canContinue = -1f
+    private var showNotes = false
     private val camera = OrthographicCamera().apply {
         viewportWidth = RHRE3.WIDTH.toFloat()
         viewportHeight = RHRE3.HEIGHT.toFloat()
@@ -109,6 +111,12 @@ class EventScreen(main: RHRE3Application)
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
+        val font = main.defaultBorderedFont
+        font.setColor(1f, 1f, 1f, 1f)
+        with(editor) {
+            font.scaleFont(this@EventScreen.camera)
+        }
+
         if (remix.midiInstruments > 0) {
             // each cell is 88x136 with a 1 px black border
             val texture = AssetRegistry.get<Texture>("glee_club")
@@ -121,34 +129,42 @@ class EventScreen(main: RHRE3Application)
                     0f)
             val startY = camera.viewportHeight / 2 - height / 2
 
+            val playingEntities = remix.entities.filter { it.playbackCompletion == PlaybackCompletion.PLAYING }
+
             for (i in 0 until remix.midiInstruments) {
-                val playingEntity: Entity? = remix.entities.find {
-                    it.playbackCompletion == PlaybackCompletion.PLAYING && it is CueEntity && it.instrument == i + 1
+                val playingInstruments: List<Entity> = playingEntities.filter {
+                    it is CueEntity && it.instrument == i + 1
                 }
-                val isPlaying = remix.playState != PlayState.STOPPED && playingEntity != null
+                val isPlaying = remix.playState != PlayState.STOPPED && playingInstruments.isNotEmpty()
                 val animation = if (isPlaying) {
                     MathUtils.lerp(0f, 3f, MathHelper.getSawtoothWave(0.2f)).roundToInt().coerceAtMost(2)
                 } else {
                     MathHelper.getSawtoothWave(0.2f).roundToInt()
                 }
 
-                batch.draw(texture, startX + i * (if (startX <= 0f)
-                    camera.viewportWidth / remix.midiInstruments
-                else renderWidth), startY + (i * -height * 0.1f), width.toFloat(),
+                val x = startX + i * (if (startX <= 0f) camera.viewportWidth / remix.midiInstruments else renderWidth)
+                val y = startY + (i * -height * 0.1f)
+
+                batch.draw(texture, x, y, width.toFloat(),
                            height.toFloat(),
                            1 + (animation * (width + 2)),
-                           1 + (if (isPlaying) ((cellHeight + 2) * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable && playingEntity.semitone > IRepitchable.DEFAULT_RANGE.endInclusive) 4 else 3)) else 0),
+                           1 + (if (isPlaying) ((cellHeight + 2) * 3) else 0),
                            width, height, false, false)
+
+                if (showNotes) {
+                    playingInstruments.filter {
+                        it is IRepitchable && it.canBeRepitched
+                    }.forEachIndexed { index, it ->
+                        font.drawCompressed(batch, Semitones.getSemitoneName((it as IRepitchable).semitone), x,
+                                            y - font.capHeight * 0.1f - (index * font.capHeight * 1.25f), width.toFloat(), Align.center)
+                    }
+                }
             }
         }
 
         if (canContinue > 0f) {
-            val font = main.defaultBorderedFont
             val fontAlpha = (canContinue * 2).coerceIn(0f, 1f)
             font.setColor(1f, 1f, 1f, fontAlpha)
-            with(editor) {
-                font.scaleFont(this@EventScreen.camera)
-            }
 
             // keystroke text
             font.drawCompressed(batch, "[ENTER]", 0f, camera.viewportHeight * 0.15f, camera.viewportWidth, Align.center)
@@ -182,9 +198,11 @@ class EventScreen(main: RHRE3Application)
             }
 
             font.setColor(1f, 1f, 1f, 1f)
-            with(editor) {
-                font.unscaleFont()
-            }
+        }
+
+        font.setColor(1f, 1f, 1f, 1f)
+        with(editor) {
+            font.unscaleFont()
         }
 
         batch.end()
@@ -197,7 +215,8 @@ class EventScreen(main: RHRE3Application)
         if (canUpdate < 2) {
             canUpdate++
         } else {
-            remix.timeUpdate(Gdx.graphics.deltaTime * (if (Toolboks.debugMode && Gdx.input.isKeyPressed(Input.Keys.S)) 2f else 1f))
+            remix.timeUpdate(Gdx.graphics.deltaTime * (if (Toolboks.debugMode && Gdx.input.isKeyPressed(
+                            Input.Keys.S)) 2f else 1f))
         }
 
         if (remix.beat >= remix.lastPoint && canContinue < 0f) {
@@ -211,6 +230,10 @@ class EventScreen(main: RHRE3Application)
         if (canContinue >= 0f && (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(
                         Input.Keys.SPACE))) {
             main.screen = nextScreen
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
+            showNotes = !showNotes
         }
 
         if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.R)) {
@@ -242,7 +265,7 @@ class EventScreen(main: RHRE3Application)
     }
 
     override fun getDebugString(): String? {
-        return "type: $eventType\ncanContinue: $canContinue\nnext: ${nextScreen?.let { it::class.java.canonicalName }}"
+        return "I - Show notes | DEBUG: R - Restart | S - Speed up\ntype: $eventType\ncanContinue: $canContinue\nnext: ${nextScreen?.let { it::class.java.canonicalName }}\nnotes: $showNotes" + "\n\n${editor.getDebugString()}"
     }
 
     private fun getNumberSuffix(number: Int): String {

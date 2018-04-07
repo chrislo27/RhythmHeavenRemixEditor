@@ -921,9 +921,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         0f)
                 val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight
 
+                val playingEntities = remix.entities.filter { it.playbackCompletion == PlaybackCompletion.PLAYING }
+
                 for (i in 0 until remix.midiInstruments) {
-                    val playingEntity: Entity? = remix.entities.find {
-                        it.playbackCompletion == PlaybackCompletion.PLAYING && it is CueEntity && it.instrument == i + 1
+                    val playingEntity: Entity? = playingEntities.find {
+                        it is CueEntity && it.instrument == i + 1
                     }
                     val isPlaying = remix.playState != PlayState.STOPPED && playingEntity != null
                     val animation = if (isPlaying) {
