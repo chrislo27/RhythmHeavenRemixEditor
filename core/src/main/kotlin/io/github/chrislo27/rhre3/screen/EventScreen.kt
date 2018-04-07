@@ -197,7 +197,7 @@ class EventScreen(main: RHRE3Application)
         if (canUpdate < 2) {
             canUpdate++
         } else {
-            remix.timeUpdate(Gdx.graphics.deltaTime * (if (Toolboks.debugMode) 2f else 1f))
+            remix.timeUpdate(Gdx.graphics.deltaTime * (if (Toolboks.debugMode && Gdx.input.isKeyPressed(Input.Keys.S)) 2f else 1f))
         }
 
         if (remix.beat >= remix.lastPoint && canContinue < 0f) {
@@ -211,6 +211,11 @@ class EventScreen(main: RHRE3Application)
         if (canContinue >= 0f && (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(
                         Input.Keys.SPACE))) {
             main.screen = nextScreen
+        }
+
+        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            remix.playState = PlayState.STOPPED
+            remix.playState = PlayState.PLAYING
         }
     }
 
