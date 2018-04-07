@@ -11,7 +11,3 @@ So, you've made your remix and it's all ready to go. How do you distribute it?
 the remix as an mp3 file. The maximum file size is 15 MB. picosong's
 [Terms of Service](https://picosong.com/tos)
 and [Acceptable Use Policy](https://picosong.com/aup) apply.
-
-You could also simply distribute the `rhre3` file.
-Other people with the program can open them and listen to it, but is
-far less convenient (especially in version mismatches).
