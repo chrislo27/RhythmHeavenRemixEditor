@@ -32,6 +32,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.registry.Game
+import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
@@ -43,6 +44,7 @@ import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.track.GameSection
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
@@ -1080,7 +1082,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         run stretchCursor@{
-            val shouldStretch = this.selection.size == 1 && remix.entities.any {
+            val shouldStretch = remix.playState == PlayState.STOPPED && this.selection.size == 1 && remix.entities.any {
                 canStretchEntity(mouseVector, it)
             }
 
@@ -1090,6 +1092,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 Gdx.graphics.setCursor(AssetRegistry["cursor_horizontal_resize"])
             }
             wasStretchCursor = shouldStretch
+        }
+
+        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+                remix.recomputeCachedData()
+                val games: List<GameGroup> = remix.gameSections.values.map(GameSection::gameGroup).distinct()
+                if (games.isNotEmpty()) {
+                    Gdx.app.clipboard.contents = games.joinToString(transform = GameGroup::name)
+                    Toolboks.LOGGER.info("Copied list of games to clipboard")
+                } else {
+                    Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
+                }
+            }
         }
 
         if (remix.playState != PlayState.STOPPED)
@@ -2027,7 +2042,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 //        val click = clickOccupation
         val range = getBeatRange()
         val str = StringBuilder(100)
+        val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
         str.apply {
+            append("$debugKey+G - Copy game list to clipboard\n")
+
             append("e: ")
             append(remix.entities.count {
                 it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
