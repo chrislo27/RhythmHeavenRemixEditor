@@ -10,7 +10,7 @@ import java.time.Month
 object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 9, 1, "DEVELOPMENT")
+    val VERSION: Version = Version(3, 9, 1, "")
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
