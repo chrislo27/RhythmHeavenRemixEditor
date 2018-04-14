@@ -1108,11 +1108,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                                         buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 9 + padding * 9)
             }
-//            buttonBarStage.elements += StatsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-//                this.location.set(screenWidth = size,
-//                                  screenX = size * 10 + padding * 10)
-//                this.visible = false
-//            }
+            buttonBarStage.elements += PresentationModeButton(editor, this@EditorStage, palette, buttonBarStage,
+                                                              buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
+            }
 
             // right aligned
             // info button
@@ -1126,7 +1125,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             // language button
             langButton = LangButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 2 + padding))
+                                  screenX = 1f - (size * 3 + padding * 2))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_language"))
                 })
@@ -1134,30 +1133,25 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += langButton
             buttonBarStage.elements += FullscreenButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 3 + padding * 2))
+                                  screenX = 1f - (size * 4 + padding * 3))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_fullscreen"))
                 })
             }
             buttonBarStage.elements += ResetWindowButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 4 + padding * 3))
+                                  screenX = 1f - (size * 5 + padding * 4))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
                 })
             }
             buttonBarStage.elements += ThemeButton(editor, this, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 5 + padding * 4))
+                                  screenX = 1f - (size * 6 + padding * 5))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 })
                 this.enabled = true
-            }
-            buttonBarStage.elements += PresentationModeButton(editor, this@EditorStage, palette, buttonBarStage,
-                                                              buttonBarStage).apply {
-                this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 6 + padding * 5))
             }
             buttonBarStage.elements += ViewButton(editor, this, palette, buttonBarStage,
                                                   buttonBarStage).apply {
