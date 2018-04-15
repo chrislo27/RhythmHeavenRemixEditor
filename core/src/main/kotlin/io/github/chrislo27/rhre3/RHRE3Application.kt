@@ -189,6 +189,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
                 ScreenRegistry += "recoverRemix" to RecoverRemixScreen(this)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "credits" to CreditsScreen(this)
+                ScreenRegistry += "news" to NewsScreen(this)
             }
 
             val nextScreenLambda: (() -> ToolboksScreen<*, *>?) = nextScreenLambda@{

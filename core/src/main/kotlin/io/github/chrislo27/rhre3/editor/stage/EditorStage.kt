@@ -86,6 +86,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var langButton: LangButton
         private set
+    lateinit var newsButton: NewsButton
+        private set
     lateinit var jumpToField: JumpToField
         private set
     lateinit var subtitleLabel: TextLabel<EditorScreen>
@@ -1122,6 +1124,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info_button"))
                 })
             }
+            newsButton = NewsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 2 + padding))
+            }
+            buttonBarStage.elements += newsButton
             // language button
             langButton = LangButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
