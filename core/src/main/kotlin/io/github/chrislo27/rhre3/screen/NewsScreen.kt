@@ -4,14 +4,16 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
+import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
+import io.github.chrislo27.rhre3.screen.NewsScreen.State.FETCHING
+import io.github.chrislo27.rhre3.screen.NewsScreen.State.IN_ARTICLE
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.ImageLabel
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
 
 
 class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, NewsScreen>(main) {
@@ -21,8 +23,33 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     val hasNewNews: Boolean
         get() = true
 
+    enum class State {
+        ARTICLES, IN_ARTICLE, FETCHING, ERROR
+    }
+
+    private var state: State = FETCHING
+        @Synchronized set(value) {
+            field = value
+
+            articleListStage.visible = false
+            fetchingStage.visible = false
+            errorLabel.visible = false
+
+            when (value) {
+                ARTICLES -> articleListStage
+                IN_ARTICLE -> TODO()
+                FETCHING -> fetchingStage
+                ERROR -> errorLabel
+            }.visible = true
+        }
+    private val articleListStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
     private val fetchingStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
     private val centreLoadingIcon: LoadingIcon<NewsScreen> = LoadingIcon(main.uiPalette, fetchingStage)
+    private val errorLabel: TextLabel<NewsScreen> = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage).apply {
+        this.isLocalizationKey = true
+        this.text = "screen.news.cannotLoad"
+        this.textAlign = Align.center
+    }
 
     init {
         val palette = main.uiPalette
@@ -30,7 +57,11 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         stage.titleLabel.text = "screen.news.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull("editor")
+            if (state == IN_ARTICLE) {
+                state = ARTICLES
+            } else {
+                main.screen = ScreenRegistry.getNonNull("editor")
+            }
         }
 
         fetchingStage.elements += centreLoadingIcon.apply {
@@ -46,12 +77,20 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
 
         stage.centreStage.elements += fetchingStage
+        stage.centreStage.elements += errorLabel
+
+        state = state // Change visibility
     }
 
     override fun tickUpdate() {
     }
 
     override fun dispose() {
+    }
+
+    inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
+                              stage: Stage<NewsScreen>) : Button<NewsScreen>(palette, parent, stage) {
+
     }
 
 }
