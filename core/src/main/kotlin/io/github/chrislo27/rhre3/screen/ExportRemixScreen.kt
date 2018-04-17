@@ -72,11 +72,14 @@ class ExportRemixScreen(main: RHRE3Application)
     private var isChooserOpen = false
         set(value) {
             field = value
-            stage as GenericStage
-            stage.backButton.enabled = !isChooserOpen
+            setBackButtonEnabled()
         }
     @Volatile
     private var isExporting = false
+        set(value) {
+            field = value
+            setBackButtonEnabled()
+        }
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
     private val picosongButton: Button<ExportRemixScreen>
@@ -89,6 +92,10 @@ class ExportRemixScreen(main: RHRE3Application)
             val VALUES: List<ExportFileType> by lazy { values().toList() }
             val EXTENSIONS: List<String> by lazy { VALUES.map(ExportFileType::extension) }
         }
+    }
+
+    private fun setBackButtonEnabled() {
+        (stage as GenericStage).backButton.enabled = !isChooserOpen && !isExporting
     }
 
     private fun createFileChooser() =
