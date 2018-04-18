@@ -49,6 +49,7 @@ object RHRE3 {
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
     var immediateAnniversary: Boolean = false
+    var noAnalytics: Boolean = false
     lateinit var launchArguments: List<String>
 
     init {

@@ -54,6 +54,7 @@ object DesktopLauncher {
                     RHRE3.forceGitCheck = "--force-git-check" in args
                     RHRE3.verifyRegistry = "--verify-registry" in args
                     RHRE3.immediateAnniversary = "--immediate-anniversary" in args
+                    RHRE3.noAnalytics = "--no-analytics" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)

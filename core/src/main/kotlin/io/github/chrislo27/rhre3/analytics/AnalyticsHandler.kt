@@ -41,6 +41,10 @@ object AnalyticsHandler : Disposable {
         this.userID = prefs.getString(PREFS_USER_ID, "")
         analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
 
+        if (RHRE3.noAnalytics) {
+            analytics.shutdown()
+        }
+
         identify()
         analytics.flush()
     }
