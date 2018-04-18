@@ -19,17 +19,18 @@ class PanButton(val editor: Editor, val left: Boolean,
 
     init {
         addLabel(ImageLabel(palette, this, this.stage).apply {
-            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_right_chevron")).apply {
                 flip(left, false)
             }
         })
+
+        this.background = false
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
 
-        if (isMouseOver() && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && visible && enabled) {
+        if (isMouseOver() && Gdx.input.isButtonPressed(Input.Buttons.LEFT) && visible && enabled && wasClickedOn) {
             val camera = editor.camera
             camera.position.x += (if (left) -1 else 1) * Gdx.graphics.deltaTime * 5f
             camera.update()

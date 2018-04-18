@@ -75,16 +75,16 @@ The first element is a text field. Type in a beat number to jump straight to it.
 The second element is a button. Left click to change the snap intervals to increasingly
 smaller increments (wraps around to 1/4), and right click to set it to 1/4.
 
-## Views, Presentation Mode, and Theme Chooser
-![Left: Views | Middle: Presentation Mode | Right: Theme Chooser](readme/toolbar/views.png)
+## Presentation Mode, Views, and Theme Chooser
+![Left: Presentation Mode | Middle: Views | Right: Theme Chooser](readme/toolbar/views.png)
 
-The button with an eye on it is the Views menu. You can select different view types there.
-<br>[See this section for more details.](README.md#views)
-
-The middle button is the Presentation Mode button. Use this mode when
+The left button is the Presentation Mode button. Use this mode when
 recording a remix for use on a video sharing site.
 A progress bar will appear, with credits and a link to the project's
 GitHub page, along with the current game being played and the current BPM.
+
+The button with an eye on it is the Views menu. You can select different view types there.
+<br>[See this section for more details.](README.md#views)
 
 The button with the colour palettes is the Theme Chooser. You can pick
 from a variety of pre-built themes, or make your own.

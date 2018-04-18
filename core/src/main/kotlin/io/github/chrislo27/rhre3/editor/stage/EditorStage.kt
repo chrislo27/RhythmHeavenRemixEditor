@@ -966,6 +966,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             minimapBarStage.elements.addAll(filterButtons)
 
             val lastSeriesButton = filterButtons.last()
+
             val searchBarX = lastSeriesButton.location.screenX + lastSeriesButton.location.screenWidth
             val searchBarWidth = 0.5f - searchBarX
             minimapBarStage.updatePositions()
@@ -1000,10 +1001,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
+            val idealMinimapWidth = 0.5f - Tool.VALUES.size * buttonWidth
             minimap = Minimap(editor, palette, minimapBarStage, minimapBarStage).apply {
-                this.location.set(screenX = 0.5f, screenWidth = 0.5f - Tool.VALUES.size * buttonWidth)
+                this.location.set(screenX = 0.5f + buttonWidth / 2, screenWidth = idealMinimapWidth - buttonWidth)
             }
             minimapBarStage.elements += minimap
+
+            minimapBarStage.elements += PanButton(editor, true, palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(screenWidth = buttonWidth / 2, screenHeight = buttonHeight)
+                this.location.set(screenX = 0.5f)
+            }
+            minimapBarStage.elements += PanButton(editor, false, palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(screenWidth = buttonWidth / 2, screenHeight = buttonHeight)
+                this.location.set(screenX = 0.5f + idealMinimapWidth - buttonWidth / 2)
+            }
+
+            minimapBarStage.elements += ColourPane(minimapBarStage, minimapBarStage).apply {
+                this.colour.set(1f, 1f, 1f, 1f)
+                this.location.set(screenX = 0.5f, screenHeight = 1f, screenWidth = 0f, screenY = 0f,
+                                  pixelX = -0.5f, pixelWidth = 1f)
+            }
         }
 
         // Button bar / Toolbar
@@ -1053,14 +1070,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += playButton
             buttonBarStage.elements += pauseButton
             buttonBarStage.elements += stopButton
-            buttonBarStage.elements += PanButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size, screenHeight = 1f)
-                this.location.set(screenX = 0.5f - size / 2 - size * 2 - padding * 2)
-            }
-            buttonBarStage.elements += PanButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size, screenHeight = 1f)
-                this.location.set(screenX = 0.5f - size / 2 + size * 2 + padding * 2)
-            }
 
             buttonBarStage.elements +=
                     IOButton(editor, "newRemix", "screen.new.title", palette, buttonBarStage, buttonBarStage).apply {
