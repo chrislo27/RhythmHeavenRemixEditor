@@ -78,6 +78,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_discord", "images/ui/icons/discord_logo_white.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_sfx_volume", "images/ui/icons/sfx_volume.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_scroll_pitch", "images/ui/icons/scrollpitch.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_right_chevron", "images/ui/icons/right_chevron.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_news", "images/ui/icons/news.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_news_big", "images/ui/icons/news_big.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_news_indicator", "images/ui/icons/news_indicator.png")

@@ -1053,6 +1053,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += playButton
             buttonBarStage.elements += pauseButton
             buttonBarStage.elements += stopButton
+            buttonBarStage.elements += PanButton(editor, true, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenHeight = 1f)
+                this.location.set(screenX = 0.5f - size / 2 - size * 2 - padding * 2)
+            }
+            buttonBarStage.elements += PanButton(editor, false, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenHeight = 1f)
+                this.location.set(screenX = 0.5f - size / 2 + size * 2 + padding * 2)
+            }
 
             buttonBarStage.elements +=
                     IOButton(editor, "newRemix", "screen.new.title", palette, buttonBarStage, buttonBarStage).apply {
