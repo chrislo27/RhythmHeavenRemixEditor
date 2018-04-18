@@ -1141,11 +1141,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 2 + padding))
             }
-//            buttonBarStage.elements += newsButton
+            buttonBarStage.elements += newsButton
             // language button
             langButton = LangButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 2 + padding))
+                                  screenX = 1f - (size * 3 + padding * 2))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_language"))
                 })
@@ -1153,21 +1153,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += langButton
             buttonBarStage.elements += FullscreenButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 3 + padding * 2))
+                                  screenX = 1f - (size * 4 + padding * 3))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_fullscreen"))
                 })
             }
             buttonBarStage.elements += ResetWindowButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 4 + padding * 3))
+                                  screenX = 1f - (size * 5 + padding * 4))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_resetwindow"))
                 })
             }
             buttonBarStage.elements += ThemeButton(editor, this, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 5 + padding * 4))
+                                  screenX = 1f - (size * 6 + padding * 5))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 })
@@ -1176,22 +1176,23 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += ViewButton(editor, this, palette, buttonBarStage,
                                                   buttonBarStage).apply {
                 this.location.set(screenWidth = size,
-                                  screenX = 1f - (size * 6 + padding * 5))
+                                  screenX = 1f - (size * 7 + padding * 6))
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_views"))
                 })
             }
             buttonBarStage.elements += PresentationModeButton(editor, this@EditorStage, palette, buttonBarStage,
                                                               buttonBarStage).apply {
-                this.location.set(screenWidth = size, screenX = 1f - (size * 7 + padding * 6))
+                this.location.set(screenWidth = size,
+                                  screenX = 1f - (size * 8 + padding * 7))
             }
             buttonBarStage.elements += SnapButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 3,
-                                  screenX = 1f - (size * 10 + padding * 7))
+                                  screenX = 1f - (size * 11 + padding * 8))
             }
             jumpToField = JumpToField(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 4,
-                                  screenX = 1f - (size * 14 + padding * 8))
+                                  screenX = 1f - (size * 15 + padding * 9))
                 this.textAlign = Align.center
                 this.background = true
             }
