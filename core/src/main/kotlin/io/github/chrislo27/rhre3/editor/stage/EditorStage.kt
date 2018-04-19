@@ -98,6 +98,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var patternAreaArrowLabel: TextLabel<EditorScreen>
         private set
+    lateinit var patternPreviewButton: PatternPreviewButton
+        private set
 
     val topOfMinimapBar: Float
         get() {
@@ -319,6 +321,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.visible = anyDatamodels
             }
             patternAreaArrowLabel.visible = anyDatamodels
+            patternPreviewButton.update(if (anyDatamodels) filter.currentDatamodel else null)
 
             editor.updateMessageLabel()
 
@@ -910,6 +913,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
                 patternAreaStage.elements += patternAreaArrowLabel
 
+                patternPreviewButton = PatternPreviewButton(editor, borderedPalette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(
+                            screenWidth = patternAreaStage.percentageOfWidth(
+                                    Editor.ICON_SIZE),
+                            screenHeight = height,
+                            screenY = 1f - (height * (1 + (labelCount / 2)))
+                                     )
+                    this.location.set(screenX = 1f - this.location.screenWidth)
+                }
+                patternAreaStage.elements += patternPreviewButton
+
                 patternAreaStage.elements += pickerDisplay.apply {
                     this.location.set(
                             screenHeight = 1f,
@@ -917,7 +931,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenX = upButton.location.screenX + upButton.location.screenWidth +
                                     padding2
                                      )
-                    this.location.set(screenWidth = 1f - this.location.screenX)
+                    this.location.set(screenWidth = 1f - this.location.screenX - patternPreviewButton.location.screenWidth)
                 }
 
             }

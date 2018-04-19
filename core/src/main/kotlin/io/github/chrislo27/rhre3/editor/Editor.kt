@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.SharedLibraryLoader
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
@@ -45,7 +47,9 @@ import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.GameSection
-import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.track.PlayState.PAUSED
+import io.github.chrislo27.rhre3.track.PlayState.PLAYING
+import io.github.chrislo27.rhre3.track.PlayState.STOPPED
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.timesignature.TimeSigValueChange
@@ -139,8 +143,38 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     private data class AutosaveState(val result: AutosaveResult, var time: Float)
 
-    fun createRemix(): Remix {
-        return Remix(camera, this)
+    fun createRemix(addListeners: Boolean = true): Remix {
+        return Remix(camera, this).apply {
+            if (addListeners) {
+                playStateListeners += { old, new ->
+                    when (new) {
+                        STOPPED -> {
+                            resetAllSongSubtitles()
+                            DiscordHelper.updatePresence(PresenceState.InEditor)
+                        }
+                        PAUSED -> {
+                            DiscordHelper.updatePresence(PresenceState.InEditor)
+                        }
+                        PLAYING -> {
+                            if (old == STOPPED) {
+                                if (stage.tapalongStage.visible) {
+                                    stage.tapalongStage.reset()
+                                }
+                            }
+
+                            val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
+                            if (durationSeconds > 5f) {
+                                if (stage.presentationModeStage.visible) {
+                                    DiscordHelper.updatePresence(PresenceState.Elapsable.PresentationMode(durationSeconds))
+                                } else if (midiInstruments > 0) {
+                                    DiscordHelper.updatePresence(PresenceState.Elapsable.PlayingMidi(durationSeconds))
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     val camera: OrthographicCamera by lazy {
@@ -334,7 +368,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f),
                                          Gdx.graphics.deltaTime * 6.5f)
 
-            if (remix.playState == PlayState.PLAYING && remix.currentShakeEntities.isNotEmpty()) {
+            if (remix.playState == PLAYING && remix.currentShakeEntities.isNotEmpty()) {
                 val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
                     acc * ShakeEntity.getShakeIntensity(it.semitone)
                 }
@@ -451,7 +485,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         // waveform
-        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PlayState.PLAYING && ViewType.WAVEFORM in views && otherUI) {
+        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
             batch.setColor(theme.waveform.r, theme.waveform.g, theme.waveform.b, theme.waveform.a * 0.65f)
 
             val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
@@ -605,7 +639,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
             }
 
-            if (remix.playState != PlayState.STOPPED) {
+            if (remix.playState != STOPPED) {
                 renderAboveTracker(null, null, 0, remix.beat,
                                    theme.trackers.playback, triangleHeight = 0f,
                                    bpmText = "♩=${ONE_DECIMAL_PLACE_FORMATTER.format(
@@ -651,9 +685,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // Play-Yan
         if (remix.metronome) {
             val jumpTime = 0.65f
-            val beat = if (remix.playState != PlayState.STOPPED) remix.beat else remix.playbackStart
+            val beat = if (remix.playState != STOPPED) remix.beat else remix.playbackStart
             val beatPercent = (beat + Math.abs(Math.floor(beat.toDouble()) * 2).toFloat()) % 1
-            if (beatPercent <= jumpTime && remix.playState != PlayState.STOPPED) {
+            if (beatPercent <= jumpTime && remix.playState != STOPPED) {
                 val jumpSawtooth = beatPercent / jumpTime
                 val jumpTriangle = if (jumpSawtooth <= 0.5f)
                     jumpSawtooth * 2
@@ -774,7 +808,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun Tracker<*>.render() {
                 renderTracker(container.renderLayer,
                               if (toolIsTrackerBased && currentTracker === this
-                                      && !clickIsTrackerResize && remix.playState == PlayState.STOPPED)
+                                      && !clickIsTrackerResize && remix.playState == STOPPED)
                                   Color.WHITE else getColour(theme),
                               text, beat, width, getSlope())
             }
@@ -929,7 +963,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     val playingEntity: Entity? = playingEntities.find {
                         it is CueEntity && it.instrument == i + 1
                     }
-                    val isPlaying = remix.playState != PlayState.STOPPED && playingEntity != null
+                    val isPlaying = remix.playState != STOPPED && playingEntity != null
                     val animation = if (isPlaying) {
                         MathUtils.lerp(0f, 3f, MathHelper.getSawtoothWave(0.2f)).roundToInt().coerceAtMost(2)
                     } else {
@@ -1024,7 +1058,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
     fun renderUpdate() {
         remix.timeUpdate(Gdx.graphics.deltaTime)
-        if (remix.playState == PlayState.PLAYING) {
+        if (remix.playState == PLAYING) {
             songSubtitles.values.forEach { it.time += Gdx.graphics.deltaTime }
         }
 
@@ -1050,19 +1084,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
                 if (shift) {
                     when (remix.playState) {
-                        PlayState.STOPPED, PlayState.PAUSED -> remix.playState = PlayState.PLAYING
-                        PlayState.PLAYING -> remix.playState = PlayState.PAUSED
+                        STOPPED, PAUSED -> remix.playState = PLAYING
+                        PLAYING -> remix.playState = PAUSED
                     }
                 } else {
                     when (remix.playState) {
-                        PlayState.STOPPED, PlayState.PAUSED -> remix.playState = PlayState.PLAYING
-                        PlayState.PLAYING -> remix.playState = PlayState.STOPPED
+                        STOPPED, PAUSED -> remix.playState = PLAYING
+                        PLAYING -> remix.playState = STOPPED
                     }
                 }
             }
         }
 
-        if (remix.playState == PlayState.PLAYING) {
+        if (remix.playState == PLAYING) {
             val halfWidth = remix.camera.viewportWidth / 2 * remix.camera.zoom
             if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
                 remix.camera.position.x = remix.beat + halfWidth
@@ -1082,7 +1116,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         run stretchCursor@{
-            val shouldStretch = remix.playState == PlayState.STOPPED && this.selection.size == 1 && remix.entities.any {
+            val shouldStretch = remix.playState == STOPPED && this.selection.size == 1 && remix.entities.any {
                 canStretchEntity(mouseVector, it)
             }
 
@@ -1107,7 +1141,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        if (remix.playState != PlayState.STOPPED)
+        if (remix.playState != STOPPED)
             return
 
         val autosaveFile = autosaveFile
@@ -1355,7 +1389,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 }
                 Tool.MULTIPART_SPLIT -> {
                     ctrlBuilder.append(Localization["editor.msg.multipartSplit"])
-                    if (remix.playState == PlayState.STOPPED) {
+                    if (remix.playState == STOPPED) {
                         val multipart = getMultipartOnMouse()
                         if (multipart != null) {
                             if (!multipart.canSplitWithoutColliding()) {
@@ -1384,7 +1418,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         var output: String = ""
         val entity = getEntityOnMouse()
 
-        if (remix.playState == PlayState.STOPPED && entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
+        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
             if (scrollMode == ScrollMode.VOLUME) {
                 if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
                     output = Localization["editor.msg.volume", entity.volumePercent]
@@ -1542,7 +1576,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val isCopying = isDraggingButtonDown && alt
         val isResponsing = isDraggingButtonDown && alt && (control || shift)
 
-        if (clickOccupation != ClickOccupation.None || remix.playState != PlayState.STOPPED)
+        if (clickOccupation != ClickOccupation.None || remix.playState != STOPPED)
             return false
 
         if (stage.centreAreaStage.isMouseOver() && stage.centreAreaStage.visible) {
@@ -1866,7 +1900,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     override fun scrolled(amount: Int): Boolean {
-        if (remix.playState != PlayState.STOPPED) {
+        if (remix.playState != STOPPED) {
             return false
         }
 

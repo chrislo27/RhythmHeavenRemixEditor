@@ -8,9 +8,6 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
-import io.github.chrislo27.rhre3.discord.DiscordHelper
-import io.github.chrislo27.rhre3.discord.PresenceState
-import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -556,10 +553,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         setMusicVolume()
     }
 
+    val playStateListeners: MutableList<(old: PlayState, new: PlayState) -> Unit> = mutableListOf()
     var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
-        if (editor.clickOccupation != ClickOccupation.None)
-            return@vetoable false
-
         val music = music
         when (new) {
             PlayState.STOPPED -> {
@@ -568,14 +563,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 SoundSystem.system.stop()
                 currentSubtitles.clear()
                 currentShakeEntities.clear()
-                editor.resetAllSongSubtitles()
-                DiscordHelper.updatePresence(PresenceState.InEditor)
             }
             PlayState.PAUSED -> {
                 AssetRegistry.pauseAllSounds()
                 music?.music?.pause()
                 SoundSystem.system.pause()
-                DiscordHelper.updatePresence(PresenceState.InEditor)
             }
             PlayState.PLAYING -> {
                 lastMusicPosition = -1f
@@ -594,10 +586,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                     lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
 
-                    if (editor.stage.tapalongStage.visible) {
-                        editor.stage.tapalongStage.reset()
-                    }
-
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
                 }
@@ -609,15 +597,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         seekMusic()
                     } else {
                         music.music.stop()
-                    }
-                }
-
-                val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
-                if (durationSeconds > 5f) {
-                    if (editor.stage.presentationModeStage.visible) {
-                        DiscordHelper.updatePresence(PresenceState.Elapsable.PresentationMode(durationSeconds))
-                    } else if (midiInstruments > 0) {
-                        DiscordHelper.updatePresence(PresenceState.Elapsable.PlayingMidi(durationSeconds))
                     }
                 }
             }
