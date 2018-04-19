@@ -74,6 +74,7 @@ game on the left, and patterns and cues for the selected
 game on the right. Using the Selection tool, you can drag
 from the pattern area up to the track to place down patterns.
 **`SCROLL`** or click on the arrows to cycle through your options.
+You can click on the speaker button on the right to preview the pattern.
 
 In the bottom-right, you will see tools:
 
