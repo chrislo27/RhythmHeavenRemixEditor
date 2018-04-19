@@ -86,8 +86,10 @@ You can access them quickly by pressing `1-5` on the number keys.
 
 To the left of the tool buttons you'll see a minimap.
 **`LEFT CLICK`** will jump the camera to that position.
-Hover over the minimap to bring up a preview. You can also go to the
-Info and Settings menu to disable the minimap and/or the preview.
+Hover over the minimap to bring up a preview.
+Click the buttons on the sides of the minimap to pan the camera.
+Right clicking these buttons will jump to the start and end of the remix respectively.
+You can also go to the Info and Settings menu to disable the minimap and/or the preview.
 
 ![Minimap and preview](readme/minimapPreview.png)
 
