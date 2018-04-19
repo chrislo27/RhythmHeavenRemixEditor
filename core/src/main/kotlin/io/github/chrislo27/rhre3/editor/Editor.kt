@@ -151,11 +151,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         STOPPED -> {
                             resetAllSongSubtitles()
                             DiscordHelper.updatePresence(PresenceState.InEditor)
+                            stage.patternPreviewButton.visible = true
+                            stage.patternPreviewButton.stop()
                         }
                         PAUSED -> {
                             DiscordHelper.updatePresence(PresenceState.InEditor)
+                            stage.patternPreviewButton.visible = false
+                            stage.patternPreviewButton.stop()
                         }
                         PLAYING -> {
+                            stage.patternPreviewButton.visible = false
+                            stage.patternPreviewButton.stop()
+
                             if (old == STOPPED) {
                                 if (stage.tapalongStage.visible) {
                                     stage.tapalongStage.reset()

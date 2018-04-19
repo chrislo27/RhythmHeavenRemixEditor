@@ -556,6 +556,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val playStateListeners: MutableList<(old: PlayState, new: PlayState) -> Unit> = mutableListOf()
     var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
         val music = music
+        playStateListeners.forEach { it.invoke(old, new) }
         when (new) {
             PlayState.STOPPED -> {
                 AssetRegistry.stopAllSounds()

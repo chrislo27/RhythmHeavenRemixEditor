@@ -58,6 +58,10 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
     fun update(currentDatamodel: Datamodel?) {
         datamodel = currentDatamodel
         visible = currentDatamodel != null
+        stop()
+    }
+
+    fun stop() {
         ownRemix.playState = STOPPED
         playState = STOPPED
     }
