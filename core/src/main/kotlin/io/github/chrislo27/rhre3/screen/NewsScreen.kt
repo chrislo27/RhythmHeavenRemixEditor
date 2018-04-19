@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
@@ -37,19 +38,20 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
             when (value) {
                 ARTICLES -> articleListStage
-                IN_ARTICLE -> TODO()
+                IN_ARTICLE -> articleStage
                 FETCHING -> fetchingStage
                 ERROR -> errorLabel
             }.visible = true
         }
     private val articleListStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
     private val fetchingStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
-    private val centreLoadingIcon: LoadingIcon<NewsScreen> = LoadingIcon(main.uiPalette, fetchingStage)
     private val errorLabel: TextLabel<NewsScreen> = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage).apply {
         this.isLocalizationKey = true
         this.text = "screen.news.cannotLoad"
         this.textAlign = Align.center
     }
+    private val articleStage: ArticleStage = ArticleStage(stage.centreStage, stage.centreStage.camera)
+    private val articleButtons: List<ArticleButton>
 
     init {
         val palette = main.uiPalette
@@ -64,6 +66,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             }
         }
 
+        val centreLoadingIcon = LoadingIcon(main.uiPalette, fetchingStage)
         fetchingStage.elements += centreLoadingIcon.apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.location.set(screenHeight = 0.25f, screenY = 0.5f - 0.25f)
@@ -76,10 +79,37 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                               screenHeight = centreLoadingIcon.location.screenHeight / 2)
         }
 
+        // Article button populating
+        val padding = 0.1f
+        articleButtons = (0 until 9).map { index ->
+            val cellX = index % 3
+            val cellY = index / 3
+
+            ArticleButton(palette, articleListStage, articleListStage).apply {
+                this.location.set(screenX = padding * (1 + cellX))
+            }
+        }
+        articleListStage.elements.addAll(articleButtons)
+
         stage.centreStage.elements += fetchingStage
         stage.centreStage.elements += errorLabel
+        stage.centreStage.elements += articleListStage
+        stage.centreStage.elements += articleStage
 
         state = state // Change visibility
+    }
+
+    override fun renderUpdate() {
+        super.renderUpdate()
+    }
+
+    override fun show() {
+        super.show()
+
+        if (state == ERROR) {
+            state = FETCHING
+            // TODO do fetch
+        }
     }
 
     override fun tickUpdate() {
@@ -90,6 +120,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
                               stage: Stage<NewsScreen>) : Button<NewsScreen>(palette, parent, stage) {
+
+    }
+
+    inner class ArticleStage(parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
+        : Stage<NewsScreen>(parent, camera) {
+
 
     }
 
