@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.news.Article
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.FETCHING
@@ -30,7 +31,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         ARTICLES, IN_ARTICLE, FETCHING, ERROR
     }
 
-    private var state: State = IN_ARTICLE
+    private var state: State = ARTICLES // FIXME
         @Synchronized set(value) {
             field = value
 
@@ -47,25 +48,30 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 ERROR -> listOf(errorLabel)
             }.forEach { it.visible = true }
 
-            if (value == IN_ARTICLE) {
-                // Update button
-            } else if (value == ARTICLES) {
+            if (value == ARTICLES) {
                 // Set all to visible
                 // Set articles
                 // Set buttons with no articles to invisible
 
-                updatePaginationStage()
+                articleButtons.forEachIndexed { index, it ->
+                    // TOTO set article
+                    it.visible = it.article != null
+                }
+
+                articlePaginationStage.update(0, 0) // FIXME
             }
         }
     private val articleListStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
     private val fetchingStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
-    private val errorLabel: TextLabel<NewsScreen> = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage).apply {
+    private val errorLabel: TextLabel<NewsScreen> = TextLabel(main.uiPalette, stage.centreStage,
+                                                              stage.centreStage).apply {
         this.isLocalizationKey = true
         this.text = "screen.news.cannotLoad"
         this.textAlign = Align.center
     }
     private val articleStage: ArticleStage = ArticleStage(stage.centreStage, stage.centreStage.camera)
-    private val articlePaginationStage = ArticlePaginationStage(main.uiPalette, stage.bottomStage, stage.bottomStage.camera).apply {
+    private val articlePaginationStage = ArticlePaginationStage(main.uiPalette, stage.bottomStage,
+                                                                stage.bottomStage.camera).apply {
         this.location.set(screenX = 0.25f, screenWidth = 0.5f)
     }
     private val articleLinkButton = ArticleLinkButton(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
@@ -95,8 +101,9 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             this.text = "screen.news.fetching"
             this.isLocalizationKey = true
             this.textAlign = Align.center
-            this.location.set(screenY = centreLoadingIcon.location.screenY + centreLoadingIcon.location.screenHeight + 0.1f,
-                              screenHeight = centreLoadingIcon.location.screenHeight / 2)
+            this.location.set(
+                    screenY = centreLoadingIcon.location.screenY + centreLoadingIcon.location.screenHeight + 0.1f,
+                    screenHeight = centreLoadingIcon.location.screenHeight / 2)
         }
 
         // Article button populating
@@ -111,6 +118,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                   screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
 
                 this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
+                // FIXME
                 if (index == 4) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("playyan_jumping"))
                 if (index == 1) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("logo_256"))
             }
@@ -127,16 +135,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         state = state // Change visibility
     }
 
-    private fun updatePaginationStage() {
-        // Set arrows
-    }
-
     override fun show() {
         super.show()
 
         if (state == ERROR) {
             state = FETCHING
-            // TODO do fetch
+            // TODO schedule fetch
         }
     }
 
@@ -158,10 +162,27 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                               screenHeight = 1f - title.location.screenHeight)
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
         }
+        var article: Article? = null
+            set(value) {
+                field = value
+
+                // TODO set title, thumbnail
+                if (value != null) {
+
+                }
+            }
 
         init {
             addLabel(title)
             addLabel(thumbnail)
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+
+            // TODO set article stage's article
+//            articleStage.prep()
+            state = IN_ARTICLE
         }
     }
 
@@ -189,6 +210,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     inner class ArticleStage(parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
         : Stage<NewsScreen>(parent, camera) {
 
+        var article: Article = Article.BLANK
+            private set
+
+        fun prep(article: Article) {
+            // TODO
+        }
 
     }
 
