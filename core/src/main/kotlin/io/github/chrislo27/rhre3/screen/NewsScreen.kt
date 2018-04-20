@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.Array
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
@@ -13,10 +13,10 @@ import io.github.chrislo27.rhre3.screen.NewsScreen.State.IN_ARTICLE
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import io.github.chrislo27.toolboks.util.gdxutils.random
 
 
 class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, NewsScreen>(main) {
@@ -30,20 +30,32 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         ARTICLES, IN_ARTICLE, FETCHING, ERROR
     }
 
-    private var state: State = ARTICLES
+    private var state: State = IN_ARTICLE
         @Synchronized set(value) {
             field = value
 
             articleListStage.visible = false
             fetchingStage.visible = false
             errorLabel.visible = false
+            articleLinkButton.visible = false
+            articlePaginationStage.visible = false
 
             when (value) {
-                ARTICLES -> articleListStage
-                IN_ARTICLE -> articleStage
-                FETCHING -> fetchingStage
-                ERROR -> errorLabel
-            }.visible = true
+                ARTICLES -> listOf(articleListStage, articlePaginationStage)
+                IN_ARTICLE -> listOf(articleStage, articleLinkButton)
+                FETCHING -> listOf(fetchingStage)
+                ERROR -> listOf(errorLabel)
+            }.forEach { it.visible = true }
+
+            if (value == IN_ARTICLE) {
+                // Update button
+            } else if (value == ARTICLES) {
+                // Set all to visible
+                // Set articles
+                // Set buttons with no articles to invisible
+
+                updatePaginationStage()
+            }
         }
     private val articleListStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
     private val fetchingStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
@@ -53,6 +65,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         this.textAlign = Align.center
     }
     private val articleStage: ArticleStage = ArticleStage(stage.centreStage, stage.centreStage.camera)
+    private val articlePaginationStage = ArticlePaginationStage(main.uiPalette, stage.bottomStage, stage.bottomStage.camera).apply {
+        this.location.set(screenX = 0.25f, screenWidth = 0.5f)
+    }
+    private val articleLinkButton = ArticleLinkButton(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
+        this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+    }
     private val articleButtons: List<ArticleButton>
 
     init {
@@ -93,7 +111,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                   screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
 
                 this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
-                this.thumbnail.image = TextureRegion(AssetRegistry.manager.getAll(Texture::class.java, Array()).toList().random())
+                if (index == 4) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("playyan_jumping"))
+                if (index == 1) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("logo_256"))
             }
         }
         articleListStage.elements.addAll(articleButtons)
@@ -102,12 +121,14 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         stage.centreStage.elements += errorLabel
         stage.centreStage.elements += articleListStage
         stage.centreStage.elements += articleStage
+        stage.bottomStage.elements += articlePaginationStage
+        stage.bottomStage.elements += articleLinkButton
 
         state = state // Change visibility
     }
 
-    override fun renderUpdate() {
-        super.renderUpdate()
+    private fun updatePaginationStage() {
+        // Set arrows
     }
 
     override fun show() {
@@ -144,9 +165,76 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
     }
 
+    inner class ArticleLinkButton(palette: UIPalette, parent: UIElement<NewsScreen>,
+                                  stage: Stage<NewsScreen>) : Button<NewsScreen>(palette, parent, stage) {
+        val title = TextLabel(palette, this, stage).apply {
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.85f
+        }
+        var link: String? = null
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            val link = link
+            if (link != null) {
+                try {
+                    Gdx.net.openURI(link)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
     inner class ArticleStage(parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
         : Stage<NewsScreen>(parent, camera) {
 
+
+    }
+
+    inner class ArticlePaginationStage(palette: UIPalette, parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
+        : Stage<NewsScreen>(parent, camera) {
+
+        val label = TextLabel(palette, this, this).apply {
+            this.location.set(screenX = 0.1f, screenWidth = 0.8f)
+            this.isLocalizationKey = false
+        }
+        val leftButton = object : Button<NewsScreen>(palette, this, this) {
+
+        }.apply {
+            this.location.set(screenX = 0f, screenWidth = 0.1f)
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_right_chevron")).apply {
+                    flip(true, false)
+                }
+            })
+        }
+        val rightButton = object : Button<NewsScreen>(palette, this, this) {
+
+        }.apply {
+            this.location.set(screenX = 0.9f, screenWidth = 0.1f)
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_right_chevron")).apply {
+                    flip(false, false)
+                }
+            })
+        }
+
+        fun update(current: Int, total: Int) {
+            label.text = Localization["screen.news.page", "$current", "$total"]
+            leftButton.visible = current > 1
+            rightButton.visible = current < total
+        }
+
+        init {
+            elements += label
+            elements += leftButton
+            elements += rightButton
+
+            update(0, 0)
+        }
 
     }
 
