@@ -28,7 +28,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         ARTICLES, IN_ARTICLE, FETCHING, ERROR
     }
 
-    private var state: State = FETCHING
+    private var state: State = ARTICLES
         @Synchronized set(value) {
             field = value
 
@@ -80,13 +80,17 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
 
         // Article button populating
-        val padding = 0.1f
+        val padding = 0.025f
         articleButtons = (0 until 9).map { index ->
             val cellX = index % 3
             val cellY = index / 3
 
             ArticleButton(palette, articleListStage, articleListStage).apply {
-                this.location.set(screenX = padding * (1 + cellX))
+                this.location.set(screenWidth = (1f - padding * 4) / 3, screenHeight = (1f - padding * 4) / 3)
+                this.location.set(screenX = padding * (1 + cellX) + this.location.screenWidth * cellX,
+                                  screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
+
+                this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
             }
         }
         articleListStage.elements.addAll(articleButtons)
@@ -120,7 +124,21 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
                               stage: Stage<NewsScreen>) : Button<NewsScreen>(palette, parent, stage) {
+        val title = TextLabel(palette, this, stage).apply {
+            this.location.set(screenHeight = 0.25f)
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.75f
+        }
+        val thumbnail = ImageLabel(palette, this, stage).apply {
+            this.location.set(screenY = title.location.screenHeight,
+                              screenHeight = 1f - title.location.screenHeight)
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+        }
 
+        init {
+            addLabel(title)
+            addLabel(thumbnail)
+        }
     }
 
     inner class ArticleStage(parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
