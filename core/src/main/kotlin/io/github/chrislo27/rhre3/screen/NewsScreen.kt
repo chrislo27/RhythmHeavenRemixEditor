@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Array
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
@@ -15,6 +16,7 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.random
 
 
 class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, NewsScreen>(main) {
@@ -91,6 +93,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                   screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
 
                 this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
+                this.thumbnail.image = TextureRegion(AssetRegistry.manager.getAll(Texture::class.java, Array()).toList().random())
             }
         }
         articleListStage.elements.addAll(articleButtons)
