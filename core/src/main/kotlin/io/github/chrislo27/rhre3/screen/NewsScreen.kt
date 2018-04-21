@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -81,6 +82,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         this.location.set(screenX = 0.15f, screenWidth = 0.7f)
     }
     private val articleButtons: List<ArticleButton>
+
+    private val newsPreferences: Preferences = Gdx.app.getPreferences("RHRE3-news")
 
     init {
         val palette = main.uiPalette
@@ -201,6 +204,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     override fun dispose() {
         ThumbnailFetcher.cancelAll()
         ThumbnailFetcher.removeAll()
+        newsPreferences.flush()
     }
 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
@@ -221,6 +225,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
                 if (value != null) {
                     title.text = value.title
+                    updateTitleColor(value)
                     thumbnail.image = try {
                         if (value.thumbnail.isBlank()) {
                             TextureRegion(AssetRegistry.get<Texture>("logo_256"))
@@ -229,7 +234,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                         } else if (value.thumbnail in ThumbnailFetcher.map) {
                             TextureRegion(ThumbnailFetcher.map[value.thumbnail  ])
                         } else {
-                            ThumbnailFetcher.fetch(value.thumbnail) { tex, ex ->
+                            ThumbnailFetcher.fetch(value.thumbnail) { tex, _ ->
                                 if (tex != null && field == value) {
                                     thumbnail.image = TextureRegion(tex)
                                 } else {
@@ -244,6 +249,10 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 }
             }
 
+        private fun updateTitleColor(article: Article) {
+            title.textColor = if (Articles.isArticleViewed(article, newsPreferences)) Color.LIGHT_GRAY else null
+        }
+
         init {
             addLabel(title)
             addLabel(thumbnail)
@@ -252,8 +261,13 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
 
-            article?.let(articleStage::prep)
-            state = IN_ARTICLE
+            val article = article
+            if (article != null) {
+                article.let(articleStage::prep)
+                Articles.setArticleViewed(article, newsPreferences, true)
+                updateTitleColor(article)
+                state = IN_ARTICLE
+            }
         }
     }
 
