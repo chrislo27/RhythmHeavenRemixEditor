@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -223,6 +224,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                     thumbnail.image = try {
                         if (value.thumbnail.isBlank()) {
                             TextureRegion(AssetRegistry.get<Texture>("logo_256"))
+                        } else if (value.thumbnail.startsWith("tex:")){
+                            TextureRegion(AssetRegistry.get<Texture>(value.thumbnail.substring(4)))
                         } else if (value.thumbnail in ThumbnailFetcher.map) {
                             TextureRegion(ThumbnailFetcher.map[value.thumbnail  ])
                         } else {
@@ -286,14 +289,25 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         val label = TextLabel(palette, this, this).apply {
             this.textAlign = Align.left or Align.top
             this.isLocalizationKey = false
+            this.textWrapping = false
+            this.location.set(screenY = 0.825f, screenHeight = 0.175f)
+            elements += this
+        }
+        val body = TextLabel(palette, this, this).apply {
+            this.textAlign = Align.left or Align.top
+            this.location.set(screenHeight = 0.825f)
+            this.isLocalizationKey = false
             this.textWrapping = true
+            this.textColor = Color.valueOf("#EEEEEEFF")
+            this.fontScaleMultiplier = 0.75f
             elements += this
         }
 
         fun prep(article: Article) {
             this.article = article
 
-            label.text = "[LIGHT_GRAY]${article.publishedDate}[]\n${article.title}\n\n[#DDDDDD]${article.body}[]"
+            label.text = "[LIGHT_GRAY]${article.publishedDate}[]${if (article.experimental) " - EXPERIMENTAL" else ""}\n${article.title}"
+            body.text = article.body
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
             articleLinkButton.link = article.url

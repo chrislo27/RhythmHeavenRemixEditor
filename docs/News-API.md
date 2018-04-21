@@ -38,7 +38,7 @@ Represents a news article.
 | id | string | The article's unique ID. |
 | title | string | The article's title. |
 | body | string | The article's body. |
-| thumbnail | string | The article's thumbnail URL. May be blank, but never null. |
+| thumbnail | string | The article's thumbnail URL. May be blank, but never null. If starting with `tex:`, uses a texture ID. |
 | publishedAt | long | The Epoch milliseconds of publication. |
 | url | string? | If not null, provides a URL to go to with a button. |
 | urlTitle | string? | If not null, provides the title for the URL button. |
