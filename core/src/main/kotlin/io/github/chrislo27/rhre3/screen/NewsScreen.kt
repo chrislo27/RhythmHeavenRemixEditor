@@ -147,12 +147,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
                     // Check new news
                     val lastNews = main.preferences.getString(PreferenceKeys.LAST_NEWS, null)
-                    hasNewNews = if (lastNews == null) {
+                    hasNewNews = if (lastNews.isNullOrBlank() && Articles.articles.isNotEmpty()) {
                         true
                     } else {
-                        Articles.articles.firstOrNull()?.id != lastNews
+                        Articles.articles.firstOrNull()?.id != lastNews && Articles.articles.isNotEmpty()
                     }
-                    main.preferences.putString(PreferenceKeys.LAST_NEWS, Articles.articles.firstOrNull()?.id).flush()
+                    main.preferences.putString(PreferenceKeys.LAST_NEWS, Articles.articles.firstOrNull()?.id ?: Article.BLANK.id).flush()
                 }
                 Articles.FetchState.ERROR -> {
                     state = ERROR
