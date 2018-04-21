@@ -23,12 +23,8 @@ remaining for this 30 minute interval, which resets at Epoch milliseconds 152262
 
 ## Paths
 ### **GET** `/articles`
-#### Querystring Params
-| Field | Type | Description | Default value |
-|-------|------|-------------|---------------|
-| page | int? | The page of articles to return. | 1 |
 
-Returns a json array of Articles.
+Returns a json array of recent Articles with any count greater than zero, or 404 if non-existent.
 
 ### **GET** `/articles/{article.id}`
 Returns the Article with the given ID, or 404 if non-existent.
@@ -40,17 +36,19 @@ Represents a news article.
 | Field | Type | Description |
 |-------|------|-------------|
 | id | string | The article's unique ID. |
+| title | string | The article's title. |
 | body | string | The article's body. |
-| thumbnail | string | The article's thumbnail URL. |
+| thumbnail | string | The article's thumbnail URL. May be blank, but never null. |
 | publishedAt | long | The Epoch milliseconds of publication. |
 | url | string? | If not null, provides a URL to go to with a button. |
-| images | string[] | A string URL array of images. May be empty, but is never null. |
+| images | string[] | A string URL array of image URLs. May be empty, but is never null. |
 
 
 ##### Example
 ```json
 {
   "id": "welcomeToRHRE",
+  "title": "Welcome to RHRE!",
   "body": "This is an example body.\nIt has multiple lines in it.",
   "thumbnail": "http://i.imgur.com/X4Vs7D0.png",
   "publishedAt": 1522627193000,

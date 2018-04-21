@@ -1,12 +1,14 @@
 package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.news.Article
+import io.github.chrislo27.rhre3.news.Articles
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.FETCHING
@@ -18,20 +20,20 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
 
 
 class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, NewsScreen>(main) {
 
     override val stage: GenericStage<NewsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    val hasNewNews: Boolean
-        get() = true
+    val hasNewNews: Boolean = true // FIXME
 
     enum class State {
         ARTICLES, IN_ARTICLE, FETCHING, ERROR
     }
 
-    private var state: State = ARTICLES // FIXME
+    private var state: State = FETCHING
         @Synchronized set(value) {
             field = value
 
@@ -49,16 +51,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             }.forEach { it.visible = true }
 
             if (value == ARTICLES) {
-                // Set all to visible
-                // Set articles
-                // Set buttons with no articles to invisible
-
                 articleButtons.forEachIndexed { index, it ->
-                    // TOTO set article
+                    it.article = Articles.articles.elementAtOrNull(index)
                     it.visible = it.article != null
                 }
 
-                articlePaginationStage.update(0, 0) // FIXME
+                articlePaginationStage.update(1, 1) // Fix when pagination added
             }
         }
     private val articleListStage: Stage<NewsScreen> = Stage(stage.centreStage, stage.centreStage.camera)
@@ -118,9 +116,6 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                   screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
 
                 this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
-                // FIXME
-                if (index == 4) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("playyan_jumping"))
-                if (index == 1) this.thumbnail.image = TextureRegion(AssetRegistry.get<Texture>("logo_256"))
             }
         }
         articleListStage.elements.addAll(articleButtons)
@@ -129,10 +124,33 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         stage.centreStage.elements += errorLabel
         stage.centreStage.elements += articleListStage
         stage.centreStage.elements += articleStage
-        stage.bottomStage.elements += articlePaginationStage
+//        stage.bottomStage.elements += articlePaginationStage // Pagination disabled
         stage.bottomStage.elements += articleLinkButton
 
         state = state // Change visibility
+
+        Articles.fetchStateListeners += { _, new ->
+            when (new) {
+                Articles.FetchState.FETCHING -> {
+                    state = FETCHING
+                    articleButtons.forEach {
+                        it.article = null
+                        it.visible = it.article != null
+                    }
+                }
+                Articles.FetchState.DONE -> {
+                    state = ARTICLES
+                }
+                Articles.FetchState.ERROR -> {
+                    state = ERROR
+                    articleButtons.forEach {
+                        it.article = null
+                        it.visible = it.article != null
+                    }
+                }
+            }
+        }
+        Articles.fetch()
     }
 
     override fun show() {
@@ -140,7 +158,26 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
         if (state == ERROR) {
             state = FETCHING
-            // TODO schedule fetch
+            Articles.fetch()
+        }
+
+        if (Articles.isFetching == Articles.FetchState.ERROR) {
+            state = ERROR
+        } else if (Articles.isFetching == Articles.FetchState.FETCHING) {
+            state = FETCHING
+        }
+
+        if (Articles.isFetching == Articles.FetchState.DONE) {
+            state = ARTICLES
+        }
+    }
+
+    override fun renderUpdate() {
+        super.renderUpdate()
+
+        if (Gdx.input.isControlDown() && Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+            state = FETCHING
+            Articles.fetch()
         }
     }
 
@@ -166,9 +203,15 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             set(value) {
                 field = value
 
-                // TODO set title, thumbnail
+                // TODO set thumbnail
                 if (value != null) {
-
+                    title.text = value.title
+                    thumbnail.image = try {
+                        error("not implemented")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        TextureRegion(AssetRegistry.get<Texture>("logo_256"))
+                    }
                 }
             }
 
@@ -180,8 +223,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
 
-            // TODO set article stage's article
-//            articleStage.prep()
+            article?.let(articleStage::prep)
             state = IN_ARTICLE
         }
     }
