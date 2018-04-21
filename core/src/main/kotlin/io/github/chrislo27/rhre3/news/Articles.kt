@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncHttpClient
 import java.util.concurrent.CopyOnWriteArrayList
@@ -59,7 +60,7 @@ object Articles {
                     articlesJson.forEach { articleJson ->
                         try {
                             val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
-                            if (!article.experimental || RHRE3.EXPERIMENTAL) {
+                            if (!article.experimental || (RHRE3.EXPERIMENTAL && !Toolboks.debugMode)) {
                                 list += article
                             }
                         } catch (e: Exception) {

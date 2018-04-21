@@ -192,9 +192,19 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     override fun renderUpdate() {
         super.renderUpdate()
 
-        if (Gdx.input.isControlDown() && Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            state = FETCHING
-            Articles.fetch()
+        if (Gdx.input.isControlDown()) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                state = FETCHING
+                Articles.fetch()
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.U) && state == ARTICLES) {
+                articleButtons.filter { it.article != null }.forEach { articleButton ->
+                    val article = articleButton.article
+                    if (article != null) {
+                        Articles.setArticleViewed(article, newsPreferences, false)
+                        articleButton.article = article // Refresh title colours
+                    }
+                }
+            }
         }
     }
 
