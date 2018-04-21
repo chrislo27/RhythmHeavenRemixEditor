@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.news.Article
 import io.github.chrislo27.rhre3.news.Articles
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
@@ -187,6 +189,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         if (Articles.isFetching == Articles.FetchState.DONE) {
             state = ARTICLES
         }
+
+        DiscordHelper.updatePresence(PresenceState.ViewingNews)
     }
 
     override fun renderUpdate() {
