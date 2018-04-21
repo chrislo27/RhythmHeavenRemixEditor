@@ -258,7 +258,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                   stage: Stage<NewsScreen>) : Button<NewsScreen>(palette, parent, stage) {
         val title = TextLabel(palette, this, stage).apply {
             this.isLocalizationKey = false
-            this.fontScaleMultiplier = 0.85f
+            this.fontScaleMultiplier = 0.9f
+            this.textWrapping = true
 
             addLabel(this)
         }
@@ -292,7 +293,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         fun prep(article: Article) {
             this.article = article
 
-            label.text = "${article.publishedDate}\n${article.title}\n\n${article.body}"
+            label.text = "[LIGHT_GRAY]${article.publishedDate}[]\n${article.title}\n\n[#DDDDDD]${article.body}[]"
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
             articleLinkButton.link = article.url
