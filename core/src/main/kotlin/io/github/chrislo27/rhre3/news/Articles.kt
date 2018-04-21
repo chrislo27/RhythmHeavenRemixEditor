@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.news
 
 import com.fasterxml.jackson.databind.node.ArrayNode
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.util.JsonHandler
 import kotlinx.coroutines.experimental.launch
@@ -10,7 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object Articles {
 
-    private const val FETCH_URL: String = "https://kawaiidesu.ddns.net:10443/articles"
+    private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/articles"
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
 
@@ -48,7 +49,10 @@ object Articles {
                     val articlesJson = JsonHandler.OBJECT_MAPPER.readTree(body) as ArrayNode
                     articlesJson.forEach { articleJson ->
                         try {
-                            list += JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
+                            val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
+                            if (!article.experimental || RHRE3.EXPERIMENTAL) {
+                                list += article
+                            }
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

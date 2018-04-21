@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.news.Article
 import io.github.chrislo27.rhre3.news.Articles
+import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ARTICLES
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.ERROR
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.FETCHING
@@ -27,7 +29,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
     override val stage: GenericStage<NewsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
-    val hasNewNews: Boolean = true // FIXME
+    var hasNewNews: Boolean = false
+        private set
 
     enum class State {
         ARTICLES, IN_ARTICLE, FETCHING, ERROR
@@ -37,6 +40,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         @Synchronized set(value) {
             field = value
 
+            articleStage.visible = false
             articleListStage.visible = false
             fetchingStage.visible = false
             errorLabel.visible = false
@@ -67,7 +71,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         this.text = "screen.news.cannotLoad"
         this.textAlign = Align.center
     }
-    private val articleStage: ArticleStage = ArticleStage(stage.centreStage, stage.centreStage.camera)
+    private val articleStage: ArticleStage = ArticleStage(main.uiPalette, stage.centreStage, stage.centreStage.camera)
     private val articlePaginationStage = ArticlePaginationStage(main.uiPalette, stage.bottomStage,
                                                                 stage.bottomStage.camera).apply {
         this.location.set(screenX = 0.25f, screenWidth = 0.5f)
@@ -111,8 +115,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             val cellY = index / 3
 
             ArticleButton(palette, articleListStage, articleListStage).apply {
-                this.location.set(screenWidth = (1f - padding * 4) / 3, screenHeight = (1f - padding * 4) / 3)
-                this.location.set(screenX = padding * (1 + cellX) + this.location.screenWidth * cellX,
+                this.location.set(screenWidth = (1f - padding * 3) / 3, screenHeight = (1f - padding * 4) / 3)
+                this.location.set(screenX = padding * (cellX) + this.location.screenWidth * cellX,
                                   screenY = 1f - padding * (1 + cellY) - this.location.screenHeight * (1 + cellY))
 
                 this.title.text = "Lorem ipsum $index @ ($cellX, $cellY)"
@@ -140,6 +144,15 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 }
                 Articles.FetchState.DONE -> {
                     state = ARTICLES
+
+                    // Check new news
+                    val lastNews = main.preferences.getString(PreferenceKeys.LAST_NEWS, null)
+                    hasNewNews = if (lastNews == null) {
+                        true
+                    } else {
+                        Articles.articles.firstOrNull()?.id != lastNews
+                    }
+                    main.preferences.putString(PreferenceKeys.LAST_NEWS, Articles.articles.firstOrNull()?.id).flush()
                 }
                 Articles.FetchState.ERROR -> {
                     state = ERROR
@@ -185,6 +198,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     }
 
     override fun dispose() {
+        ThumbnailFetcher.cancelAll()
+        ThumbnailFetcher.removeAll()
     }
 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
@@ -203,11 +218,22 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             set(value) {
                 field = value
 
-                // TODO set thumbnail
                 if (value != null) {
                     title.text = value.title
                     thumbnail.image = try {
-                        error("not implemented")
+                        if (value.thumbnail.isBlank()) {
+                            TextureRegion(AssetRegistry.get<Texture>("logo_256"))
+                        } else if (value.thumbnail in ThumbnailFetcher.map) {
+                            TextureRegion(ThumbnailFetcher.map[value.thumbnail  ])
+                        } else {
+                            ThumbnailFetcher.fetch(value.thumbnail) { tex, ex ->
+                                if (tex != null && field == value) {
+                                    thumbnail.image = TextureRegion(tex)
+                                } else {
+                                }
+                            }
+                            null
+                        }
                     } catch (e: Exception) {
                         e.printStackTrace()
                         TextureRegion(AssetRegistry.get<Texture>("logo_256"))
@@ -233,6 +259,8 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         val title = TextLabel(palette, this, stage).apply {
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.85f
+
+            addLabel(this)
         }
         var link: String? = null
 
@@ -249,14 +277,25 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
     }
 
-    inner class ArticleStage(parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
+    inner class ArticleStage(palette: UIPalette, parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
         : Stage<NewsScreen>(parent, camera) {
 
         var article: Article = Article.BLANK
             private set
+        val label = TextLabel(palette, this, this).apply {
+            this.textAlign = Align.left or Align.top
+            this.isLocalizationKey = false
+            this.textWrapping = true
+            elements += this
+        }
 
         fun prep(article: Article) {
-            // TODO
+            this.article = article
+
+            label.text = "${article.publishedDate}\n${article.title}\n\n${article.body}"
+            articleLinkButton.visible = article.url != null
+            articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
+            articleLinkButton.link = article.url
         }
 
     }

@@ -37,6 +37,7 @@ object PreferenceKeys {
     val LAST_VERSION = "lastVersion"
     val TIMES_SKIPPED_UPDATE = "timesSkippedUpdate"
     val BACKGROUND = "background"
+    val LAST_NEWS = "lastNews"
 
     val EVENT_PREFIX = "event_"
 

@@ -24,7 +24,7 @@ remaining for this 30 minute interval, which resets at Epoch milliseconds 152262
 ## Paths
 ### **GET** `/articles`
 
-Returns a json array of recent Articles with any count greater than zero, or 404 if non-existent.
+Returns a json array of recent Articles with any count. May be empty.
 
 ### **GET** `/articles/{article.id}`
 Returns the Article with the given ID, or 404 if non-existent.
@@ -41,7 +41,8 @@ Represents a news article.
 | thumbnail | string | The article's thumbnail URL. May be blank, but never null. |
 | publishedAt | long | The Epoch milliseconds of publication. |
 | url | string? | If not null, provides a URL to go to with a button. |
-| images | string[] | A string URL array of image URLs. May be empty, but is never null. |
+| urlTitle | string? | If not null, provides the title for the URL button. |
+| experimental | boolean | If true, means the news is only for DEVELOPMENT, SNAPSHOT, or RC versions. |
 
 
 ##### Example
@@ -52,7 +53,6 @@ Represents a news article.
   "body": "This is an example body.\nIt has multiple lines in it.",
   "thumbnail": "http://i.imgur.com/X4Vs7D0.png",
   "publishedAt": 1522627193000,
-  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor",
-  "images": ["https://i.imgur.com/ERHnJ2O.png"]
+  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor"
 }
 ```
