@@ -18,7 +18,7 @@ object Credits {
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
-            "sfx" crediting "baguette, Huebird, Miracle22, Eggman199, Mariofan5000, The Golden Station",
+            "sfx" crediting "baguette, Huebird, Miracle22, Eggman199, Mariofan5000, The Golden Station, GuardedLolz",
             "gfx" crediting "GlitchyPSIX",
             "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_, " +
                     "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
