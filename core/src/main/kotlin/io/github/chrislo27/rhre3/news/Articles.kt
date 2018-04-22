@@ -51,7 +51,7 @@ object Articles {
             try {
                 articles.clear()
                 val list = mutableListOf<Article>()
-                val req = httpClient.prepareGet(FETCH_URL)
+                val req = httpClient.prepareGet(FETCH_URL).addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                 val response = req.execute().get()
 
                 if (response.statusCode == 200) {
