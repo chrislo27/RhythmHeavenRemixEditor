@@ -1,3 +1,5 @@
+**Before making an issue, please make sure to read the [contributing](.github/CONTRIBUTING.md) file!**
+
 <img align="right" src="core/assets/images/icon/256.png" height="256" width="256">
 
 # Rhythm Heaven Remix Editor 3
@@ -15,9 +17,6 @@ Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)
   * Java 9 and 10 not fully supported at the moment -- use at own risk
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
-
-## Contributing
-Read the contributing [guidelines](https://github.com/chrislo27/RhythmHeavenRemixEditor/wiki/Guidelines-and-Syntactical-Requirements) and [document](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/.github/CONTRIBUTING.md) before submitting a pull request!
 
 ![Palettes screenshot](.github/rhre3palettes.png)
 
