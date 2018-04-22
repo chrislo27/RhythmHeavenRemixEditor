@@ -98,12 +98,15 @@ revert the program to be in windowed mode if it was in fullscreen previously.
 
 The right button puts the program in fullscreen, if possible.
 
-## Language and Info and Settings
-![Left: Language | Right: Info and Settings](readme/toolbar/info.png)
+## Language, News, Info and Settings
+![Left: Language | Middle: News | Right: Info and Settings](readme/toolbar/info.png)
 
 The left button cycles through the languages (right click goes in reverse).
 Note: all localizations are not 100% accurate. We appreciate corrections
 and suggestions!
+
+The middle button goes to the News screen. Here you can stay updated with
+the latest RHRE and custom remixing news.
 
 The right button goes to the Info and Settings screen. From there you can change
 some settings, and view update info and the credits.
