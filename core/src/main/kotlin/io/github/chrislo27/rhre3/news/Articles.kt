@@ -4,6 +4,7 @@ import com.badlogic.gdx.Preferences
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import kotlinx.coroutines.experimental.launch
@@ -51,7 +52,9 @@ object Articles {
             try {
                 articles.clear()
                 val list = mutableListOf<Article>()
-                val req = httpClient.prepareGet(FETCH_URL).addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
+                val req = httpClient.prepareGet(FETCH_URL)
+                        .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
+                        .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                 val response = req.execute().get()
 
                 if (response.statusCode == 200) {

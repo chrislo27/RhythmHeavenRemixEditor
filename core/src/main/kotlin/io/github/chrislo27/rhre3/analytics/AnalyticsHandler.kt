@@ -49,6 +49,10 @@ object AnalyticsHandler : Disposable {
         analytics.flush()
     }
 
+    fun getUUID(): String {
+        return this.userID
+    }
+
     fun identify() {
         analytics.enqueue(IdentifyMessage.builder()
                                   .userId(userID)
