@@ -193,6 +193,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         DiscordHelper.updatePresence(PresenceState.ViewingNews)
     }
 
+    override fun hide() {
+        super.hide()
+
+        hasNewNews = false
+    }
+
     override fun renderUpdate() {
         super.renderUpdate()
 
