@@ -116,7 +116,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
         // Article button populating
         val padding = 0.025f
-        articleButtons = (0 until 9).map { index ->
+        articleButtons = (0 until Articles.ARTICLE_COUNT).map { index ->
             val cellX = index % 3
             val cellY = index / 3
 

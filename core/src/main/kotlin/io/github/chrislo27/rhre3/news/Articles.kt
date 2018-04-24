@@ -14,6 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList
 
 object Articles {
 
+    const val ARTICLE_COUNT = 9
+
     private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/articles"
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
@@ -60,7 +62,7 @@ object Articles {
                 if (response.statusCode == 200) {
                     val body = response.responseBody
                     val articlesJson = JsonHandler.OBJECT_MAPPER.readTree(body) as ArrayNode
-                    articlesJson.forEach { articleJson ->
+                    articlesJson.take(ARTICLE_COUNT).forEach { articleJson ->
                         try {
                             val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
                             if (!article.experimental || (RHRE3.EXPERIMENTAL && !Toolboks.debugMode)) {
