@@ -214,8 +214,13 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                         articleButton.article = article // Refresh title colours
                     }
                 }
+                hasNewNews = true
             }
         }
+    }
+
+    override fun getDebugString(): String? {
+        return "CTRL+R - Refetch | CTRL+U - Mark all unread"
     }
 
     override fun tickUpdate() {
