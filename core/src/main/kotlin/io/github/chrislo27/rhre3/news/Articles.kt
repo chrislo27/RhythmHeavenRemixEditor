@@ -61,7 +61,7 @@ object Articles {
                 if (articleFolder.exists() && articleFolder.isDirectory) {
                     articleFolder.list(".json").forEach {
                         try {
-                            list += JsonHandler.OBJECT_MAPPER.treeToValue(JsonHandler.OBJECT_MAPPER.readTree(it.readString("UTF-8")), Article::class.java)
+                            list += JsonHandler.fromJson<Article>(it.readString("UTF-8"))
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
