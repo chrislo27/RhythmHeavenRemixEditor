@@ -13,7 +13,6 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
-import io.github.chrislo27.rhre3.news.Articles
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
@@ -282,7 +281,11 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         preferences.putString(PreferenceKeys.MIDI_NOTE,
                               preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
         preferences.flush()
-        GameRegistry.dispose()
+        try {
+            GameRegistry.dispose()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         Themes.dispose()
         persistWindowSettings()
         Gdx.files.local("tmpMusic/").emptyDirectory()
