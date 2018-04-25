@@ -292,7 +292,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
             val article = article
             if (article != null) {
-                article.let(articleStage::prep)
+                articleStage.prep(article)
                 Articles.setArticleViewed(article, newsPreferences, true)
                 updateTitleColor(article)
                 state = IN_ARTICLE
