@@ -49,6 +49,11 @@ care of adding the other cues for you!
 game that has a consistent pattern. By *stretching* this entity, you can
 make constant beats without laying down multiple patterns.
 
+## Starting a new remix
+The parameters you need to set when starting a new remix (such as the
+tempo) are covered [in this document](Starting-a-remix.md). You should,
+however, read up on the controls first below!
+
 ## Controls
 ### Generic keystrokes
 **`SPACEBAR`** - Play/stop remix<br/>
