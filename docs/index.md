@@ -7,6 +7,7 @@
 
 ### General Usage
 * [README](README.md)
+* [Starting a remix](Starting-a-remix.md)
 * [Toolbar](Toolbar.md)
 * [Exporting your remix](Exporting.md)
 * [Crediting RHRE3](Crediting.md)
