@@ -262,12 +262,11 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                                 TextureRegion(AssetRegistry.get<Texture>("logo_256"))
                             }
                         } else if (value.thumbnail in ThumbnailFetcher.map) {
-                            TextureRegion(ThumbnailFetcher.map[value.thumbnail  ])
+                            TextureRegion(ThumbnailFetcher.map[value.thumbnail])
                         } else {
                             ThumbnailFetcher.fetch(value.thumbnail) { tex, _ ->
                                 if (tex != null && field == value) {
                                     thumbnail.image = TextureRegion(tex)
-                                } else {
                                 }
                             }
                             null
