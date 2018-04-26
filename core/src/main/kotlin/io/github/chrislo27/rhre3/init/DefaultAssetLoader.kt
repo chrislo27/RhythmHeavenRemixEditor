@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.init
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import io.github.chrislo27.rhre3.registry.Series
@@ -110,6 +111,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         // glee club midi visualization
         AssetRegistry.loadAsset<Texture>("glee_club", "images/chorusmen_rot.png")
+
+        // MIDI stuff
+        AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/singLoop.ogg")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {

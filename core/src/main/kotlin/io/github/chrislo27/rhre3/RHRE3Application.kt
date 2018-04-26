@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
+import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
@@ -199,6 +200,7 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
 
                 addOtherScreens()
                 loadWindowSettings()
+                MidiHandler.isSearching = true
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
 
                 return@nextScreenLambda nextScreen
@@ -294,6 +296,8 @@ class RHRE3Application(logger: Logger, logToFile: Boolean)
         AnalyticsHandler.track("Close Program",
                                mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
         AnalyticsHandler.dispose()
+        MidiHandler.isSearching = false
+        MidiHandler.dispose()
     }
 
     fun persistWindowSettings() {
