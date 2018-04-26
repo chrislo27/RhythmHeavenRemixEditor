@@ -15,7 +15,7 @@ to open the Tapalong menu. Play the remix, and start pressing **`T`**
 to tap along. The predicted tempo will be shown below. You should aim
 for around 50 or more inputs to get a reliable average.
 
-Set the tempo by clicking the Tempo Change tool (or press **`2`** on the number row)
+Set the tempo by clicking the Tempo Change tool (or press **`3`** on the number row)
 and clicking at beat zero. Scroll to change the tempo.
 
 ## 3. Moving the music start tracker
