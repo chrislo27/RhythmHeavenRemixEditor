@@ -17,6 +17,7 @@ import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.drawQuad
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import kotlin.math.roundToInt
 
 
 open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, parent: UIElement<S>?,
@@ -188,7 +189,7 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
 
             if (maxParticles > 0 && particles.size < maxParticles) {
                 val initial = particles.size == 0 && maxParticles > 1
-                while (particles.size < maxParticles) {
+                while (particles.size < (if (!initial) maxParticles else (maxParticles * 0.8f).roundToInt().coerceAtLeast(1))) {
                     val particle = createParticle(initial) ?: break
                     particles += particle
                 }
