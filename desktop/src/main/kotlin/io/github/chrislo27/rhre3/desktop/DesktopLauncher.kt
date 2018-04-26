@@ -7,27 +7,26 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.logging.Logger
-import kotlin.concurrent.thread
 
 object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
         RHRE3.launchArguments = args.toList()
 
-        // TODO console commands
-        thread(isDaemon = true) {
-            while (true) {
-                val input: String = readLine() ?: break
-                val arguments: List<String> = input.split("\\s+".toRegex())
-
-                try {
-//                    if (ConsoleCommands.handle(main, arguments.first(), arguments.drop(1)))
-//                        break
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        }
+        // ONEDAY console commands
+//        thread(isDaemon = true) {
+//            while (true) {
+//                val input: String = readLine() ?: break
+//                val arguments: List<String> = input.split("\\s+".toRegex())
+//
+//                try {
+////                    if (ConsoleCommands.handle(main, arguments.first(), arguments.drop(1)))
+////                        break
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+//        }
 
         val logger = Logger()
         val logToFile = true
@@ -36,8 +35,6 @@ object DesktopLauncher {
                 .editConfig {
                     this.width = app.emulatedSize.first
                     this.height = app.emulatedSize.second
-//                    this.width = 1000
-//                    this.height = 600
                     this.title = app.getTitle()
                     this.fullscreen = false
                     this.foregroundFPS = 60
