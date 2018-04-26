@@ -33,7 +33,7 @@ object MidiHandler : Disposable {
                         while (midiDevice == null && deviceInfo.hasNext()) {
                             try {
                                 val possibleDevice = MidiSystem.getMidiDevice(deviceInfo.next())
-                                if (possibleDevice !is Synthesizer && possibleDevice !is Sequencer) {
+                                if (possibleDevice !is Synthesizer && possibleDevice !is Sequencer && possibleDevice.maxTransmitters != 0) {
                                     this.midiDevice = possibleDevice
                                     possibleDevice.open()
                                     possibleDevice.transmitter.receiver = MidiReceiver(possibleDevice)
@@ -42,8 +42,13 @@ object MidiHandler : Disposable {
                                 }
                             } catch (e: MidiUnavailableException) {
                                 // Ignored
+                                e.printStackTrace()
                             }
                         }
+                    } else if (!device.isOpen) {
+                        (device.transmitter.receiver as? MidiReceiver)?.close()
+                        this.midiDevice?.close()
+                        this.midiDevice = null
                     }
                 }
             }
