@@ -53,7 +53,7 @@ object DesktopLauncher {
                     RHRE3.forceGitFetch = "--force-git-fetch" in args
                     RHRE3.forceGitCheck = "--force-git-check" in args
                     RHRE3.verifyRegistry = "--verify-registry" in args
-                    RHRE3.immediateAnniversary = "--immediate-anniversary" in args
+                    RHRE3.immediateAnniversary = if ("--immediate-anniversary-like-new" in args) 2 else (if ("--immediate-anniversary" in args) 1 else 0)
                     RHRE3.noAnalytics = "--no-analytics" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 

@@ -45,7 +45,7 @@ class EventScreen(main: RHRE3Application)
 
             // Event check
             val today: LocalDate = when {
-                RHRE3.immediateAnniversary -> anniversaryButNow
+                RHRE3.immediateAnniversary > 0 -> anniversaryButNow
                 else -> LocalDate.now()
             }
 
@@ -90,8 +90,7 @@ class EventScreen(main: RHRE3Application)
 
             this.nextScreen = nextScreen
             this.eventType = eventType
-            this.canContinue = if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name,
-                                                               0) == NOW.year) 0f else -1f
+            this.canContinue = if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateAnniversary != 2) 0f else -1f
             main.preferences.putInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, NOW.year).flush()
             this.canUpdate = 0
             true
