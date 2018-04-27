@@ -57,12 +57,13 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
     fun update(currentDatamodel: Datamodel?) {
         datamodel = currentDatamodel
-        visible = currentDatamodel != null
+        visible = visible && currentDatamodel != null
         stop()
     }
 
     fun stop() {
-        ownRemix.playState = STOPPED
+        if (ownRemix.playState != STOPPED)
+            ownRemix.playState = STOPPED
         playState = STOPPED
     }
 
@@ -96,6 +97,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
                     } else null
                     return children
                 }
+
                 val baseBpm: Float? = entity.checkSelfAndChildrenForBaseBpm()
                 val targetTempo = baseBpm ?: 120f
                 ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, 0f, targetTempo))
