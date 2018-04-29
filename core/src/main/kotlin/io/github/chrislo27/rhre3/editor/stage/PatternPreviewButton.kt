@@ -9,9 +9,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlayState.PAUSED
@@ -86,15 +84,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
                 ownRemix.tempos.map.values.toList().forEach { ownRemix.tempos.remove(it) }
                 fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float {
-                    if (this.datamodel is Cue && this.datamodel.usesBaseBpm) {
-                        return this.datamodel.baseBpm
-                    }
-                    return (if (this is MultipartEntity<*> && this.getInternalEntities().isNotEmpty()) {
-                        this.getInternalEntities()
-                                .filterIsInstance<ModelEntity<*>>()
-                                .map(ModelEntity<*>::checkSelfAndChildrenForBaseBpm)
-                                .firstOrNull { it > 0f }
-                    } else null) ?: 0f
+                    return this.datamodel.checkBaseBpm()?.start ?: 0f
                 }
 
                 val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
