@@ -17,6 +17,8 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     var hidden: Boolean = false
     open val pickerName: String = name
     val newlinedName: String by lazy { name.replace(" - ", "\n") }
+    @Suppress("LeakingThis")
+    val possibleBaseBpm: ClosedRange<Float>? by lazy(this::checkBaseBpm)
 
     fun checkBaseBpm(): ClosedRange<Float>? {
         if (this is Cue && this.usesBaseBpm)

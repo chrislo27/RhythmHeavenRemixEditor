@@ -84,7 +84,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
                 ownRemix.tempos.map.values.toList().forEach { ownRemix.tempos.remove(it) }
                 fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float {
-                    return this.datamodel.checkBaseBpm()?.start ?: 0f
+                    return this.datamodel.possibleBaseBpm?.start ?: 0f
                 }
 
                 val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
