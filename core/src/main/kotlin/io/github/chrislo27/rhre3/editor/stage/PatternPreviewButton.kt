@@ -85,21 +85,20 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
                 ownRemix.entities += entity
 
                 ownRemix.tempos.map.values.toList().forEach { ownRemix.tempos.remove(it) }
-                fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float? {
+                fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float {
                     if (this.datamodel is Cue && this.datamodel.usesBaseBpm) {
                         return this.datamodel.baseBpm
                     }
-                    val children: Float? = if (this is MultipartEntity<*> && this.getInternalEntities().isNotEmpty()) {
+                    return (if (this is MultipartEntity<*> && this.getInternalEntities().isNotEmpty()) {
                         this.getInternalEntities()
                                 .filterIsInstance<ModelEntity<*>>()
-                                .mapNotNull(ModelEntity<*>::checkSelfAndChildrenForBaseBpm)
-                                .firstOrNull()
-                    } else null
-                    return children
+                                .map(ModelEntity<*>::checkSelfAndChildrenForBaseBpm)
+                                .firstOrNull { it > 0f }
+                    } else null) ?: 0f
                 }
 
-                val baseBpm: Float? = entity.checkSelfAndChildrenForBaseBpm()
-                val targetTempo = baseBpm ?: 120f
+                val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
+                val targetTempo = if (baseBpm <= 0f) 120f else baseBpm
                 ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, 0f, targetTempo))
 
                 ownRemix.recomputeCachedData()
