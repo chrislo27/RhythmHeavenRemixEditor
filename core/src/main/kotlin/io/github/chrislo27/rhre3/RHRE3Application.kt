@@ -291,7 +291,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         Themes.dispose()
         persistWindowSettings()
-        Gdx.files.local("tmpMusic/").emptyDirectory()
+        RHRE3.tmpMusic.emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)
         httpClient.close()
         AnalyticsHandler.track("Close Program",
