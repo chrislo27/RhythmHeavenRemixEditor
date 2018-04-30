@@ -5,6 +5,9 @@
 # Rhythm Heaven Remix Editor 3
 An audio remix editor for the Rhythm Heaven series
 
+**Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
+downloading the program!**
+
 Get a download from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases).<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
