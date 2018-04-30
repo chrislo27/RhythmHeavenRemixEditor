@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.news
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -21,7 +20,7 @@ object Articles {
     private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/articles"
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
-    private val articleFolder: FileHandle by lazy { Gdx.files.local("articles/") }
+    private val articleFolder: FileHandle by lazy { RHRE3.RHRE3_FOLDER.child("articles/") }
 
     enum class FetchState {
         FETCHING, DONE, ERROR
