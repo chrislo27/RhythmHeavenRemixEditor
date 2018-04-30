@@ -38,7 +38,7 @@ object GameRegistry : Disposable {
         GitHelper.SOUNDS_DIR.child("games/")
     }
     val CUSTOM_FOLDER: FileHandle by lazy {
-        Gdx.files.local("customSounds/")
+        RHRE3.RHRE3_FOLDER.child("customSounds/")
     }
 
     private val backingData: RegistryData = RegistryData()

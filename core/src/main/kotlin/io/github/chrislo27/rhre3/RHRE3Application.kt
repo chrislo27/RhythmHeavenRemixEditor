@@ -46,11 +46,12 @@ import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncHttpClient
 import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
+import java.io.File
 import java.util.*
 import kotlin.concurrent.thread
 
 
-class RHRE3Application(logger: Logger, logToFile: Boolean)
+class RHRE3Application(logger: Logger, logToFile: File?)
     : ToolboksGame(logger, logToFile, RHRE3.VERSION,
                    RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 

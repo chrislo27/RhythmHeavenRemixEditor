@@ -1,8 +1,8 @@
 package io.github.chrislo27.rhre3.theme
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 
@@ -39,7 +39,7 @@ object LoadedThemes {
         themes = Themes.defaultThemes.toMutableList()
         themes as MutableList
 
-        val folder = Gdx.files.local("themes/")
+        val folder = RHRE3.RHRE3_FOLDER.child("themes/")
         folder.mkdirs()
         val files = folder.list(".json").filter { it.nameWithoutExtension() != "example" }
         Toolboks.LOGGER.info("Found ${files.size} json palette files, attempting to read")

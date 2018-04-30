@@ -26,8 +26,8 @@ However, you will be a lot more limited.
 
 
 The sounds must be placed in a folder inside this directory.
-Each folder is a \"game\", and you can have multiple folders.
-You cannot have folder names identical to IDs already used. The editor will crash if this happens.
+Each folder is a "game", and you can have multiple folders.
+You cannot have folder names identical to IDs already used. There will be undefined behaviour.
 
 
 Each sound will be limited to these factors:
