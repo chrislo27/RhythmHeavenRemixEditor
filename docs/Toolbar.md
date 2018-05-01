@@ -21,8 +21,8 @@ sing cues by default. Be careful, because you will lose all unsaved changes.
 
 The **Save Remix** button will ask you where to save your remix.
 
-## Exporting
-![Export button](readme/toolbar/export.png)
+## Exporting and Uploading
+![Export/Upload button](readme/toolbar/export.png)
 
 This will allow you to export your remixes as WAV, MP3, OGG (Vorbis), or FLAC
 files, as long as you have placed an End Remix entity.
