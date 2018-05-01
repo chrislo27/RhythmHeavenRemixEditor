@@ -352,7 +352,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else if (filter == searchFilter) {
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
-                    gameStageText.text = Localization["editor.nothing.customs", GameRegistry.CUSTOM_FOLDER.name()]
+                    gameStageText.text = Localization["editor.nothing.customs", "<user>/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
                 }
             }
 
