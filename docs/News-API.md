@@ -27,7 +27,7 @@ remaining for this 30 minute interval, which resets at Epoch milliseconds 152262
 | Querystring | Type | Description |
 |-------------|------|-------------|
 | experimental | boolean | If `true`, will return experimental articles (used for debugging). |
-| limit | uint | If present, eturns only up to this amount of articles. Must be in range \[1, 50].|
+| limit | uint | If present, returns only up to this amount of articles. Must be in range \[1, 50]. Defaults to 16.|
 
 Returns a json array of recent Articles with any count. May be empty.
 
