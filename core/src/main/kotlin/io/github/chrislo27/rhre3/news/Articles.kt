@@ -70,6 +70,10 @@ object Articles {
                 val req = httpClient.prepareGet(FETCH_URL)
                         .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                         .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                        .addQueryParam("limit", "${(ARTICLE_COUNT - list.size).coerceIn(1, ARTICLE_COUNT)}")
+                if (RHRE3.EXPERIMENTAL && !Toolboks.debugMode) {
+                    req.addQueryParam("experimental", "true")
+                }
                 val response = req.execute().get()
 
                 if (response.statusCode == 200) {
@@ -78,9 +82,7 @@ object Articles {
                     articlesJson.forEach { articleJson ->
                         try {
                             val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
-                            if (!article.experimental || (RHRE3.EXPERIMENTAL && !Toolboks.debugMode)) {
-                                list += article
-                            }
+                            list += article
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

@@ -24,6 +24,11 @@ remaining for this 30 minute interval, which resets at Epoch milliseconds 152262
 ## Paths
 ### **GET** `/articles`
 
+| Querystring | Type | Description |
+|-------------|------|-------------|
+| experimental | boolean | If `true`, will return experimental articles (used for debugging). |
+| limit | uint | If present, eturns only up to this amount of articles. Must be in range \[1, 50].|
+
 Returns a json array of recent Articles with any count. May be empty.
 
 ### **GET** `/articles/{article.id}`
