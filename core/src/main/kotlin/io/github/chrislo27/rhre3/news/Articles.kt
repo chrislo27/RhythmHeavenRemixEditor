@@ -71,7 +71,7 @@ object Articles {
                         .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                         .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                         .addQueryParam("limit", "${(ARTICLE_COUNT - list.size).coerceIn(1, ARTICLE_COUNT)}")
-                if (RHRE3.EXPERIMENTAL && !Toolboks.debugMode) {
+                if (RHRE3.EXPERIMENTAL || Toolboks.debugMode) {
                     req.addQueryParam("experimental", "true")
                 }
                 val response = req.execute().get()
