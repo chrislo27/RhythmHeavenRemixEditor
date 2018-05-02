@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -104,6 +105,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     lateinit var baseBpmLabel: TextLabel<EditorScreen>
         private set
     lateinit var bottomBaseBpmLabel: TextLabel<EditorScreen>
+        private set
+    lateinit var customSoundsFolderButton: Button<EditorScreen>
         private set
 
     val topOfMinimapBar: Float
@@ -344,6 +347,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             editor.updateMessageLabel()
 
             gameStageText.text = ""
+            customSoundsFolderButton.visible = false
             if (filter.areGroupsEmpty) {
                 if (filter == favouritesFilter) {
                     gameStageText.text = Localization["editor.nothing.favourites"]
@@ -353,6 +357,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
                     gameStageText.text = Localization["editor.nothing.customs", "<user>/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
+                    customSoundsFolderButton.visible = true
                 }
             }
 
@@ -695,6 +700,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.fontScaleMultiplier = 0.9f
                 }
                 pickerStage.elements += gameStageText
+                customSoundsFolderButton = object : Button<EditorScreen>(palette, pickerStage, pickerStage){
+                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                        super.onLeftClick(xPercent, yPercent)
+
+                        Gdx.net.openURI("file:///${GameRegistry.CUSTOM_FOLDER.file().absolutePath}")
+                    }
+                }.apply {
+                    this.location.set(0.225f, 0.05f, 0.05f, 0.2f)
+                    this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                        renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                        image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+                    })
+                    this.visible = false
+                }
+                pickerStage.elements += customSoundsFolderButton
 
                 for (y in 0 until Editor.ICON_COUNT_Y) {
                     for (x in 0 until Editor.ICON_COUNT_X + 3) {
