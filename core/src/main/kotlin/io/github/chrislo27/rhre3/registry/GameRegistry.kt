@@ -150,7 +150,6 @@ object GameRegistry : Disposable {
 
         init {
             currentObj = JsonHandler.fromJson(currentObjFh.readString())
-//            changelog = JsonHandler.fromJson(GitHelper.SOUNDS_DIR.child("changelogs/$version.json").readString())
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
         }
@@ -353,10 +352,11 @@ object GameRegistry : Disposable {
 
                 game.objects as MutableList
                 sfxList.forEach { fh ->
-                    val name = fh.nameWithoutExtension()
+                    val loops = fh.nameWithoutExtension().endsWith(".loop")
+                    val name = if (!loops) fh.nameWithoutExtension() else (fh.nameWithoutExtension().substringBeforeLast(".loop") + " - loop")
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
                                         true, true, fh, null, null,
-                                        listOf(), 0f, false)
+                                        listOf(), 0f, loops)
                 }
             }
 
