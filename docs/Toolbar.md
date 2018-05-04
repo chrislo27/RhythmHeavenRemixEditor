@@ -56,7 +56,7 @@ This button allows you to toggle what action scrolling (or pressing up and down)
 does on a selection. By default, it changes the pitch. An alternative mode
 is changing the volume.
 
-[See this section for more details](Readme.md#scroll-mode)
+[See this section for more details](../Readme.md#scroll-mode)
 
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
@@ -84,7 +84,7 @@ A progress bar will appear, with credits and a link to the project's
 GitHub page, along with the current game being played and the current BPM.
 
 The button with an eye on it is the Views menu. You can select different view types there.
-<br>[See this section for more details.](README.md#views)
+<br>[See this section for more details.](../README.md#views)
 
 The button with the colour palettes is the Theme Chooser. You can pick
 from a variety of pre-built themes, or make your own.
