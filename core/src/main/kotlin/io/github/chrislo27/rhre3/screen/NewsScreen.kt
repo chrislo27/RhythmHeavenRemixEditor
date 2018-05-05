@@ -238,6 +238,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             this.location.set(screenHeight = 0.25f)
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.75f
+            this.textWrapping = false
         }
         val thumbnail = ImageLabel(palette, this, stage).apply {
             this.location.set(screenY = title.location.screenHeight,

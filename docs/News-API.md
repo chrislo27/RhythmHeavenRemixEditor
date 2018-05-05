@@ -58,6 +58,7 @@ Represents a news article.
   "body": "This is an example body.\nIt has multiple lines in it.",
   "thumbnail": "http://i.imgur.com/X4Vs7D0.png",
   "publishedAt": 1522627193000,
-  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor"
+  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor",
+  "urlTitle": "RHRE GitHub Page"
 }
 ```
