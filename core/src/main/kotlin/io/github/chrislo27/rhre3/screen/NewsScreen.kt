@@ -53,7 +53,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
             when (value) {
                 ARTICLES -> listOf(articleListStage, articlePaginationStage)
-                IN_ARTICLE -> listOf(articleStage, articleLinkButton)
+                IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
                 ERROR -> listOf(errorLabel)
             }.forEach { it.visible = true }
@@ -355,6 +355,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
             articleLinkButton.link = article.url
+            articleLinkButton.visible
         }
 
     }
