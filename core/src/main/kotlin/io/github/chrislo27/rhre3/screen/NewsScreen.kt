@@ -48,7 +48,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articleListStage.visible = false
             fetchingStage.visible = false
             errorLabel.visible = false
-            articleLinkButton.visible = false
+            articleLinkButton.visible = value == IN_ARTICLE && articleLinkButton.visible
             articlePaginationStage.visible = false
 
             when (value) {
@@ -355,7 +355,6 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
             articleLinkButton.link = article.url
-            articleLinkButton.visible
         }
 
     }
