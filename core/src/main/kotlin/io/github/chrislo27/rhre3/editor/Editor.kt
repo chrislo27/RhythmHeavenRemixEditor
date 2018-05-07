@@ -584,7 +584,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
                                    trackerTime: String = getTrackerTime(beat),
-                                   triangleHeight: Float = 0.4f, bpmText: String? = null) {
+                                   triangleHeight: Float = 0.4f, bpmText: String? = null, showMusicUnsnap: Boolean = false) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
                 val x = beat - toScaleX(TRACK_LINE * 1.5f) / 2
                 val y = trackYOffset
@@ -609,11 +609,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                 1f, Align.left)
                 }
 
+                val line = borderedFont.lineHeight
+
                 if (controlKey != null) {
-                    val line = borderedFont.lineHeight
                     borderedFont.scaleMul(0.75f)
                     borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f,
                                                 Align.right)
+                }
+
+                if (showMusicUnsnap) {
+//                    borderedFont.scaleMul(0.75f)
+                    borderedFont.drawCompressed(batch, Localization["tracker.music.unsnap"], x + 0.05f, y + height - line, 1f,
+                                                Align.left)
                 }
 
                 borderedFont.scaleFont(camera)
@@ -630,7 +637,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             renderAboveTracker("tracker.music", "tracker.music.controls",
                                1, remix.musicStartSec, theme.trackers.musicStart,
-                               cachedMusicStart.second)
+                               cachedMusicStart.second, showMusicUnsnap = clickOccupation is ClickOccupation.Music)
             renderAboveTracker("tracker.playback", "tracker.playback.controls",
                                0, remix.playbackStart, theme.trackers.playback, cachedPlaybackStart.second)
 
@@ -1225,7 +1232,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 when (clickOccupation) {
                     is ClickOccupation.Music -> {
                         setSubbeatSectionToMouse()
-                        remix.musicStartSec = nearestSnap
+                        remix.musicStartSec = if (Gdx.input.isShiftDown()) camera.getInputX() else nearestSnap
                     }
                     is ClickOccupation.Playback -> {
                         setSubbeatSectionToMouse()
