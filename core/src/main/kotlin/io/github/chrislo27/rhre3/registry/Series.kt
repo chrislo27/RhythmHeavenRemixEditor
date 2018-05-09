@@ -5,7 +5,7 @@ import java.util.*
 
 enum class Series {
 
-    OTHER, TENGOKU, DS, FEVER, MEGAMIX, SIDE, CUSTOM;
+    OTHER, TENGOKU, DS, FEVER, MEGAMIX, /*SWITCH,*/ SIDE, CUSTOM;
 
     companion object {
         val VALUES: List<Series> = Series.values().toList()
