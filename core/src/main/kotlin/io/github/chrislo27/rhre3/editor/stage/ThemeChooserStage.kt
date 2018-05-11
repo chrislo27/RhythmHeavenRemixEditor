@@ -1,13 +1,17 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.theme.LoadedThemes
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
@@ -57,12 +61,26 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 resetButtons()
             }
         }.apply {
-            this.location.set(0.05f, 0.025f, 0.9f, 0.075f)
+            this.location.set(0.05f, 0.025f, 0.775f, 0.075f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.text = "editor.themeChooser.reset"
                 this.textWrapping = true
                 this.fontScaleMultiplier = 0.75f
+            })
+        }
+
+        this.elements += object : Button<EditorScreen>(palette, this, this) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+
+                Gdx.net.openURI("file:///${LoadedThemes.THEMES_FOLDER.file().absolutePath}")
+            }
+        }.apply {
+            this.location.set(0.85f, 0.025f, 0.1f, 0.075f)
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
             })
         }
 

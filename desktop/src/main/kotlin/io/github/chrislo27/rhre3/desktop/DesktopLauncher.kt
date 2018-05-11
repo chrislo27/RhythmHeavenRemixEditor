@@ -7,6 +7,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.logging.Logger
+import java.io.File
 
 object DesktopLauncher {
 
@@ -29,8 +30,7 @@ object DesktopLauncher {
 //        }
 
         val logger = Logger()
-        val logToFile = true
-        val app = RHRE3Application(logger, logToFile)
+        val app = RHRE3Application(logger, File(System.getProperty("user.home") + "/.rhre3/logs"))
         ToolboksDesktopLauncher(app)
                 .editConfig {
                     this.width = app.emulatedSize.first

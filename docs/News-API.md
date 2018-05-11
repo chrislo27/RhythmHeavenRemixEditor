@@ -24,6 +24,11 @@ remaining for this 30 minute interval, which resets at Epoch milliseconds 152262
 ## Paths
 ### **GET** `/articles`
 
+| Querystring | Type | Description |
+|-------------|------|-------------|
+| experimental | boolean | If `true`, will return experimental articles (used for debugging). |
+| limit | uint | If present, returns only up to this amount of articles. Must be in range \[1, 50]. Defaults to 16.|
+
 Returns a json array of recent Articles with any count. May be empty.
 
 ### **GET** `/articles/{article.id}`
@@ -53,6 +58,7 @@ Represents a news article.
   "body": "This is an example body.\nIt has multiple lines in it.",
   "thumbnail": "http://i.imgur.com/X4Vs7D0.png",
   "publishedAt": 1522627193000,
-  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor"
+  "url": "https://github.com/chrislo27/RhythmHeavenRemixEditor",
+  "urlTitle": "RHRE GitHub Page"
 }
 ```

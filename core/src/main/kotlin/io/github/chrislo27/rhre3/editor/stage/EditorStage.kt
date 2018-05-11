@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -32,6 +33,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
 import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class EditorStage(parent: UIElement<EditorScreen>?,
@@ -99,6 +101,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     lateinit var patternAreaArrowLabel: TextLabel<EditorScreen>
         private set
     lateinit var patternPreviewButton: PatternPreviewButton
+        private set
+    lateinit var baseBpmLabel: TextLabel<EditorScreen>
+        private set
+    lateinit var bottomBaseBpmLabel: TextLabel<EditorScreen>
+        private set
+    lateinit var customSoundsFolderButton: Button<EditorScreen>
         private set
 
     val topOfMinimapBar: Float
@@ -288,6 +296,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.visible = anyVariants
             }
 
+            val anyDatamodels = !filter.areDatamodelsEmpty
+            baseBpmLabel.visible = anyDatamodels
+            bottomBaseBpmLabel.visible = false
             if (!filter.areDatamodelsEmpty) {
                 val objects = filter.currentDatamodelList.list
 
@@ -315,8 +326,18 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 while (pickerDisplay.labels.size > objects.size) {
                     pickerDisplay.labels.removeAt(pickerDisplay.labels.size - 1)
                 }
+
+                val possibleBaseBpm = filter.currentDatamodel.possibleBaseBpm
+                if (possibleBaseBpm == null) {
+                    baseBpmLabel.visible = false
+                } else {
+                    baseBpmLabel.text = "♩=" + possibleBaseBpm.start.roundToInt()
+                    if (possibleBaseBpm.start.roundToInt() != possibleBaseBpm.endInclusive.roundToInt()) {
+                        bottomBaseBpmLabel.visible = true
+                        bottomBaseBpmLabel.text = "♩=" + possibleBaseBpm.endInclusive.roundToInt()
+                    }
+                }
             }
-            val anyDatamodels = !filter.areDatamodelsEmpty
             datamodelScrollButtons.forEach {
                 it.visible = anyDatamodels
             }
@@ -326,6 +347,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             editor.updateMessageLabel()
 
             gameStageText.text = ""
+            customSoundsFolderButton.visible = false
             if (filter.areGroupsEmpty) {
                 if (filter == favouritesFilter) {
                     gameStageText.text = Localization["editor.nothing.favourites"]
@@ -334,7 +356,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else if (filter == searchFilter) {
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
-                    gameStageText.text = Localization["editor.nothing.customs", GameRegistry.CUSTOM_FOLDER.name()]
+                    gameStageText.text = Localization["editor.nothing.customs", "<user>/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
+                    customSoundsFolderButton.visible = true
                 }
             }
 
@@ -677,6 +700,21 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.fontScaleMultiplier = 0.9f
                 }
                 pickerStage.elements += gameStageText
+                customSoundsFolderButton = object : Button<EditorScreen>(palette, pickerStage, pickerStage){
+                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                        super.onLeftClick(xPercent, yPercent)
+
+                        Gdx.net.openURI("file:///${GameRegistry.CUSTOM_FOLDER.file().absolutePath}")
+                    }
+                }.apply {
+                    this.location.set(0.225f, 0.05f, 0.05f, 0.2f)
+                    this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                        renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                        image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+                    })
+                    this.visible = false
+                }
+                pickerStage.elements += customSoundsFolderButton
 
                 for (y in 0 until Editor.ICON_COUNT_Y) {
                     for (x in 0 until Editor.ICON_COUNT_X + 3) {
@@ -912,8 +950,37 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.text = Editor.ARROWS[4]
                 }
                 patternAreaStage.elements += patternAreaArrowLabel
+                baseBpmLabel = TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(
+                            screenX = padding2 / 2,
+                            screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE) + padding2,
+                            screenHeight = 0.05f
+                                     )
+                    this.location.set(screenY = 0.5f + 0.1f)
+                    this.isLocalizationKey = false
+                    this.textAlign = Align.center or Align.bottom
+                    this.textWrapping = false
+                    this.text = ""
+                    this.fontScaleMultiplier = 0.5f
+                }
+                patternAreaStage.elements += baseBpmLabel
+                bottomBaseBpmLabel = TextLabel(borderedPalette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(
+                            screenX = padding2 / 2,
+                            screenWidth = patternAreaStage.percentageOfWidth(Editor.ICON_SIZE) + padding2,
+                            screenHeight = 0.05f
+                                     )
+                    this.location.set(screenY = 0.5f - 0.1f - this.location.screenHeight)
+                    this.isLocalizationKey = false
+                    this.textAlign = Align.center or Align.bottom
+                    this.textWrapping = false
+                    this.text = ""
+                    this.fontScaleMultiplier = 0.5f
+                }
+                patternAreaStage.elements += bottomBaseBpmLabel
 
-                patternPreviewButton = PatternPreviewButton(editor, borderedPalette, patternAreaStage, patternAreaStage).apply {
+                patternPreviewButton = PatternPreviewButton(editor, borderedPalette, patternAreaStage,
+                                                            patternAreaStage).apply {
                     this.location.set(
                             screenWidth = patternAreaStage.percentageOfWidth(
                                     Editor.ICON_SIZE),
@@ -931,7 +998,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             screenX = upButton.location.screenX + upButton.location.screenWidth +
                                     padding2
                                      )
-                    this.location.set(screenWidth = 1f - this.location.screenX - patternPreviewButton.location.screenWidth)
+                    this.location.set(
+                            screenWidth = 1f - this.location.screenX - patternPreviewButton.location.screenWidth)
                 }
 
             }

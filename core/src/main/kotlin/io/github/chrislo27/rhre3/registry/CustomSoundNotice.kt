@@ -5,7 +5,7 @@ import io.github.chrislo27.rhre3.RHRE3
 
 object CustomSoundNotice {
 
-    const val DURATION = 0.5f
+    const val DURATION = 1.0f
 
     @JvmStatic
     fun getCustomSoundNotice(): String {
@@ -22,28 +22,29 @@ I can be reached at gaben@valvesoftware.com, and my favorite class is the Spy. T
     @JvmStatic
     fun getActualCustomSoundNotice(): String {
         return """This folder is where you can add custom sounds without having to go through the hassle of the json setup.
-However, you will be a lot more limited.
+However, you will be a lot more limited in your abilities.
 
 
 The sounds must be placed in a folder inside this directory.
-Each folder is a \"game\", and you can have multiple folders.
-You cannot have folder names identical to IDs already used. The editor will crash if this happens.
+Each folder is a "game", and you can have multiple folders.
+You cannot have folder names identical to IDs already used.
 
 
-Each sound will be limited to these factors:
+Each sound will have these properties:
   * $DURATION beats long by default
-  * Loaded UNCOMPRESSED sound data should be under a megabyte. The editor may run out of memory if you have too many large files.
-  * You will be able to stretch the cues.
-  * You will be able to change the duration of the cues.
-  * The cues will not loop. If you want them to loop, you will have to manually add a game using the JSON files.
+  * Stretchable (can change duration)
+  * Repitchable (can change pitch)
+  * The cues will loop ONLY if the name (not extension) of the file ends with ".loop".
+    * For example, "siren.ogg" will NOT loop, but "siren.loop.ogg" WILL loop.
+
+Keep in mind that the editor may run out of memory if you have too many large sound files.
 
 It is advised that you generate JSON versions of the custom games for more flexibility.
-
-You can use data.json files if you need to quickly test databasing. For documentation on it, view: http://rhre.readthedocs.io/en/latest/JSON-object-definitions/
+You can use data.json files if you need to quickly test databasing changes. For documentation on it, view: http://rhre.readthedocs.io/en/latest/JSON-object-definitions/
 
 Supported audio formats are as follows: ${RHRE3.SUPPORTED_DECODING_SOUND_TYPES}.
 
-Optionally, if you put an icon.png in the folder it will use it."""
+Optionally, if you put an icon.png in the folder it will use it as the game icon."""
     }
 
 }

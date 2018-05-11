@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.10.1`.
+This readme is up to date with version `v3.11.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -151,6 +151,9 @@ If you notice that everything is slightly offbeat, or the music has a period of 
 consider moving this tracker backwards so the actual music will start on time.
 
 ![Music Start tracker](https://i.imgur.com/qdxWqL1.png)
+
+If you hold **`SHIFT`** after starting to move the music start tracker,
+you will unlock snapping and be free to move it as precisely as needed.
 
 >Note: As of `v3.7.0`, the Music Start tracker only shows the seconds.
 For each beat on the track, the Music Start tracker will be at that

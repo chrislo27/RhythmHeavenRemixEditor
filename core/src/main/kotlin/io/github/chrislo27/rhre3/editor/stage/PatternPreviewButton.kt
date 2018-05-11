@@ -9,9 +9,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlayState.PAUSED
@@ -85,21 +83,12 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
                 ownRemix.entities += entity
 
                 ownRemix.tempos.map.values.toList().forEach { ownRemix.tempos.remove(it) }
-                fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float? {
-                    if (this.datamodel is Cue && this.datamodel.usesBaseBpm) {
-                        return this.datamodel.baseBpm
-                    }
-                    val children: Float? = if (this is MultipartEntity<*> && this.getInternalEntities().isNotEmpty()) {
-                        this.getInternalEntities()
-                                .filterIsInstance<ModelEntity<*>>()
-                                .mapNotNull(ModelEntity<*>::checkSelfAndChildrenForBaseBpm)
-                                .firstOrNull()
-                    } else null
-                    return children
+                fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float {
+                    return this.datamodel.possibleBaseBpm?.start ?: 0f
                 }
 
-                val baseBpm: Float? = entity.checkSelfAndChildrenForBaseBpm()
-                val targetTempo = baseBpm ?: 120f
+                val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
+                val targetTempo = if (baseBpm <= 0f) 120f else baseBpm
                 ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, 0f, targetTempo))
 
                 ownRemix.recomputeCachedData()

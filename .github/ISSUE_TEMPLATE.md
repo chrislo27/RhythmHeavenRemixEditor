@@ -1,5 +1,5 @@
 ### Information
-**Log file**: [Upload your appropriate log file here, it contains system information and other important info to help debug the problem]()
+**Log file**: [Upload your appropriate log file (found in `\<user>/.rhre3/logs`) here, it contains system information and other important info to help debug the problem]()
 
 **Editor version**: (insert relevant editor version here)
 

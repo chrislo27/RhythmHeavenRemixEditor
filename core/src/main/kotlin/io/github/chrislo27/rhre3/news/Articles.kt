@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.news
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
 import com.fasterxml.jackson.databind.node.ArrayNode
@@ -21,7 +20,7 @@ object Articles {
     private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/articles"
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
-    private val articleFolder: FileHandle by lazy { Gdx.files.local("articles/") }
+    private val articleFolder: FileHandle by lazy { RHRE3.RHRE3_FOLDER.child("articles/") }
 
     enum class FetchState {
         FETCHING, DONE, ERROR
@@ -71,6 +70,10 @@ object Articles {
                 val req = httpClient.prepareGet(FETCH_URL)
                         .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                         .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                        .addQueryParam("limit", "${(ARTICLE_COUNT - list.size).coerceIn(1, ARTICLE_COUNT)}")
+                if (RHRE3.EXPERIMENTAL || Toolboks.debugMode) {
+                    req.addQueryParam("experimental", "true")
+                }
                 val response = req.execute().get()
 
                 if (response.statusCode == 200) {
@@ -79,9 +82,7 @@ object Articles {
                     articlesJson.forEach { articleJson ->
                         try {
                             val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
-                            if (!article.experimental || (RHRE3.EXPERIMENTAL && !Toolboks.debugMode)) {
-                                list += article
-                            }
+                            list += article
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }

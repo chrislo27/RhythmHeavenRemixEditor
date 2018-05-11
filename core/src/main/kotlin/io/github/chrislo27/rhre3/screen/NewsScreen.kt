@@ -48,12 +48,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articleListStage.visible = false
             fetchingStage.visible = false
             errorLabel.visible = false
-            articleLinkButton.visible = false
+            articleLinkButton.visible = value == IN_ARTICLE && articleLinkButton.visible
             articlePaginationStage.visible = false
 
             when (value) {
                 ARTICLES -> listOf(articleListStage, articlePaginationStage)
-                IN_ARTICLE -> listOf(articleStage, articleLinkButton)
+                IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
                 ERROR -> listOf(errorLabel)
             }.forEach { it.visible = true }
@@ -238,6 +238,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             this.location.set(screenHeight = 0.25f)
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.75f
+            this.textWrapping = false
         }
         val thumbnail = ImageLabel(palette, this, stage).apply {
             this.location.set(screenY = title.location.screenHeight,

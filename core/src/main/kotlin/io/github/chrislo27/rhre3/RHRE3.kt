@@ -10,16 +10,17 @@ import java.time.Month
 object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 10, 1, "")
+    val VERSION: Version = Version(3, 11, 0, "")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
     val MINIMUM_SIZE: Pair<Int, Int> = 640 to 360
+    val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
 
     val SUPPORTED_DECODING_SOUND_TYPES = listOf("ogg", "mp3", "wav")
     val tmpMusic: FileHandle by lazy {
-        Gdx.files.local("tmpMusic/").apply {
+        RHRE3_FOLDER.child("tmpMusic/").apply {
             mkdirs()
         }
     }
@@ -39,7 +40,6 @@ object RHRE3 {
     const val DATABASE_RELEASES = "https://github.com/chrislo27/RHRE-database/releases"
     const val RELEASE_API_URL = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest"
     const val OUT_OF_MEMORY_DOC_LINK: String = "http://rhre.readthedocs.io/en/latest/Out-of-memory-on-music/"
-    val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
 
     val RHRE_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.MAY, 29)
     private val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)

@@ -21,15 +21,15 @@ sing cues by default. Be careful, because you will lose all unsaved changes.
 
 The **Save Remix** button will ask you where to save your remix.
 
-## Exporting
-![Export button](readme/toolbar/export.png)
+## Exporting and Uploading
+![Export/Upload button](readme/toolbar/export.png)
 
 This will allow you to export your remixes as WAV, MP3, OGG (Vorbis), or FLAC
 files, as long as you have placed an End Remix entity.
 If you export the remix as an MP3, you can upload directly
 to [picosong](http://picosong.com) afterwards too.
 
-[See this article for more info.](Exporting.md)
+[See this article for more info.](Exporting)
 
 ## Undo/Redo
 ![Undo and redo buttons](readme/toolbar/undoredo.png)
@@ -56,13 +56,13 @@ This button allows you to toggle what action scrolling (or pressing up and down)
 does on a selection. By default, it changes the pitch. An alternative mode
 is changing the volume.
 
-[See this section for more details](Readme.md#scroll-mode)
+[See this section for more details](Readme#scroll-mode)
 
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
 
 The playback buttons are self-explanatory.
-Pressing play will start the remix from the [Playback Start](README.md#playback-start)
+Pressing play will start the remix from the [Playback Start](README#playback-start)
 marker (or from where it was paused). <br>
 Pressing pause will pause the remix, and pressing play again will continue playback.
 Pressing stop will stop the remix and reset its position to the Playback Start marker.
@@ -84,11 +84,11 @@ A progress bar will appear, with credits and a link to the project's
 GitHub page, along with the current game being played and the current BPM.
 
 The button with an eye on it is the Views menu. You can select different view types there.
-<br>[See this section for more details.](README.md#views)
+<br>[See this section for more details.](README#views)
 
 The button with the colour palettes is the Theme Chooser. You can pick
 from a variety of pre-built themes, or make your own.
-<br>[See this article for more details.](Themes.md)
+<br>[See this article for more details.](Themes)
 
 ## Window settings
 ![Left: Reset Window | Right: Fullscreen](readme/toolbar/window.png)

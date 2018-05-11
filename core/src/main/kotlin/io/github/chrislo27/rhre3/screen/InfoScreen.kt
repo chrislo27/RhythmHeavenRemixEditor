@@ -192,6 +192,22 @@ class InfoScreen(main: RHRE3Application)
                 this.text = "DB VERSION"
             }
             centre.elements += dbVersionLabel
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+
+                    Gdx.net.openURI("file:///${GameRegistry.CUSTOM_FOLDER.file().absolutePath}")
+                }
+            }.apply {
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
+                                  screenWidth = buttonWidth * 0.15f,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+                })
+            }
 
             // info buttons
             // Credits
