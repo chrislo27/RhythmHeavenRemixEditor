@@ -270,6 +270,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             versionTextWidth = layout.width
             batch.end()
             batch.projectionMatrix = oldProj
+            font.setColor(1f, 1f, 1f, 1f)
 
             font.data.setScale(1f)
         }
