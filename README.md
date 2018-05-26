@@ -28,4 +28,5 @@ All used properties of Nintendo (such as names, audio, graphics, etc.) in this s
 This is just a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license).
 
-RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).
+RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).<br>
+Please view the [Privacy Policy](PRIVACY_POLICY.md) for information on data collection.
