@@ -164,7 +164,7 @@ class MusicSelectScreen(main: RHRE3Application)
                 label.text = Localization["screen.music.loadingMusic"]
             } else {
                 label.text = Localization["screen.music.currentMusic",
-                        if (editor.remix.music == null) Localization["screen.music.noMusic"] else editor.remix.music!!.handle.name()]
+                        if (music == null) Localization["screen.music.noMusic"] else music.handle.name()]
             }
 //            if (music != null) {
 //                if (music.handle.extension().equals("wav", true)) {
