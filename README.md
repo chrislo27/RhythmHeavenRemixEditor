@@ -8,16 +8,16 @@ An audio remix editor for the Rhythm Heaven series
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
 downloading the program!**
 
-Get a download from the [Releases tab](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases).<br>
+[![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
 Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR) -- a tool to set remixing challenges<br>
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
 
 ## Requirements
 * [Java 8](https://java.com/en/download/)
-  * Java 9 and 10 not fully supported at the moment -- use at own risk
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
