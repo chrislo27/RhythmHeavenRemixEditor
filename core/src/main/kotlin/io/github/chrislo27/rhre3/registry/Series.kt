@@ -3,9 +3,9 @@ package io.github.chrislo27.rhre3.registry
 import java.util.*
 
 
-enum class Series {
+enum class Series(val disableIfEmpty: Boolean = false) {
 
-    OTHER, TENGOKU, DS, FEVER, MEGAMIX, /*SWITCH,*/ SIDE, CUSTOM;
+    OTHER, TENGOKU, DS, FEVER, MEGAMIX, SWITCH(disableIfEmpty = true), SIDE, CUSTOM;
 
     companion object {
         val VALUES: List<Series> = Series.values().toList()
