@@ -94,6 +94,7 @@ object GameRegistry : Disposable {
 
             gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
+        val seriesCount: Map<Series, Int> = mutableMapOf()
         //        val changelog: ChangelogObject
         private val currentObj: CurrentObject
         val version: Int
@@ -166,6 +167,11 @@ object GameRegistry : Disposable {
                         GameGroupListComparator))
             }.associateTo(gameGroupsMap as MutableMap) { it }
             gameGroupsList
+
+            seriesCount as MutableMap
+            Series.VALUES.associateTo(seriesCount) { series ->
+                series to gameList.count { it.series == series }
+            }
 
             hasCustom = gameList.any(Game::isCustom)
 

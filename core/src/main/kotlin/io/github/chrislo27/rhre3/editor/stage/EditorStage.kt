@@ -227,8 +227,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             filterButtons.forEach {
                 it.selected = it.filter === filter
-                if (it.filter is SeriesFilter && it.filter.series.disableIfEmpty && it.enabled) {
-                    it.enabled = !it.filter.areGroupsEmpty
+                if (it.filter is SeriesFilter && it.filter.series.disableIfEmpty) {
+                    it.enabled = if (GameRegistry.isDataLoading()) false else GameRegistry.data.seriesCount[it.filter.series] != 0
                 }
             }
             toolButtons.forEach {
