@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
 import io.github.chrislo27.rhre3.entity.model.IEditableText
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -311,9 +312,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
                     var color = Color.WHITE
-                    val label: PickerDisplay.Label = pickerDisplay.labels.getOrAdd(index, {
+                    val label: PickerDisplay.Label = pickerDisplay.labels.getOrAdd(index) {
                         PickerDisplay.Label("", Color.WHITE)
-                    })
+                    }
                     if (Toolboks.debugMode) {
                         text += " [GRAY](${datamodel.id})[]"
                     }
@@ -537,7 +538,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                     text = (if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false))
                         editor.remix.currentSubtitles
-                    else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n") { it.subtitle }
+                    else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n", transform = SubtitleEntity::subtitle)
 
                     super.render(screen, batch, shapeRenderer)
                 }
@@ -810,7 +811,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             }
                         } else {
                             val isVariant = x == Editor.ICON_COUNT_X + 1
-                            val button = GameButton(x, y, isVariant, palette, pickerStage, pickerStage, { _, _ ->
+                            val button = GameButton(x, y, isVariant, palette, pickerStage, pickerStage) { _, _ ->
                                 this as GameButton
                                 if (visible && this.game != null) {
                                     val filter = editor.pickerSelection.filter
@@ -823,7 +824,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     }
                                     updateSelected()
                                 }
-                            }).apply {
+                            }.apply {
                                 this.setLocation(x, y)
                             }
                             if (isVariant) {
@@ -1069,13 +1070,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             toolButtons as MutableList
             Tool.VALUES.forEachIndexed { index, tool ->
-                toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage,
-                                          { x, y ->
-                                              if (editor.clickOccupation == ClickOccupation.None) {
-                                                  editor.currentTool = tool
-                                                  updateSelected()
-                                              }
-                                          }).apply {
+                toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage) { x, y ->
+                    if (editor.clickOccupation == ClickOccupation.None) {
+                        editor.currentTool = tool
+                        updateSelected()
+                    }
+                }.apply {
                     this.location.set(
                             screenWidth = buttonWidth,
                             screenHeight = buttonHeight,
