@@ -227,9 +227,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             filterButtons.forEach {
                 it.selected = it.filter === filter
-                if (it.filter is SeriesFilter && it.filter.series.disableIfEmpty) {
-                    it.enabled = if (GameRegistry.isDataLoading()) false else GameRegistry.data.seriesCount[it.filter.series] != 0
-                }
             }
             toolButtons.forEach {
                 it.selected = it.tool == editor.currentTool
@@ -361,6 +358,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else if (filter is CustomFilter) {
                     gameStageText.text = Localization["editor.nothing.customs", "<user>/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
                     customSoundsFolderButton.visible = true
+                } else if (filter is SeriesFilter) {
+                    gameStageText.text = Localization["editor.nothing.series"]
                 }
             }
 
