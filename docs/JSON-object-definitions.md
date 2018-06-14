@@ -38,11 +38,11 @@ the `type` field, which is used by the JSON deserializer to determine
 what object type to deserialize at runtime. This is called *polymorphism*.
 
 The `series` field is a string showing what series this game belongs to.<br>
->Note: if this is not present it defaults to "Other". There are other values
-possible that are not explained here because they should not be used.
+>Note: if this is not present it defaults to "other".
 
 | Series | Field Value |
 |-------------|------------|
+| Other | `Other` |
 | GBA | `tengoku` |
 | DS | `ds` |
 | Fever | `fever` |
