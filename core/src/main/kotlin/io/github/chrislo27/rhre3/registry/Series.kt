@@ -7,7 +7,7 @@ enum class Series {
 
     OTHER,
     TENGOKU, DS, FEVER, MEGAMIX,
-    SWITCH,
+//    SWITCH,
     SIDE;
 
     companion object {
