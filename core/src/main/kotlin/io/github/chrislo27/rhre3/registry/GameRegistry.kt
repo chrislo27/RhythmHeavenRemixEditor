@@ -344,7 +344,7 @@ object GameRegistry : Disposable {
                 }
                 game = Game(id,
                             nameWithoutExt,
-                            Series.CUSTOM,
+                            Series.OTHER,
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture("images/missing_game_icon.png"),

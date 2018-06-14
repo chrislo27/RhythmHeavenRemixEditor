@@ -7,11 +7,7 @@ class SeriesFilter(val series: Series) : SimpleFilter({ it.series == series }) {
 
     companion object {
         val allSeriesFilters: Map<Series, Filter> = Series.VALUES.associate {
-            if (it == Series.CUSTOM) {
-                it to CustomFilter()
-            } else {
-                it to SeriesFilter(it)
-            }
+            it to SeriesFilter(it)
         }
     }
 

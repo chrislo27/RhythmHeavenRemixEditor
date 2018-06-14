@@ -1030,6 +1030,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
                 filterButtons += tmp
             }
+            filterButtons += FilterButton(CustomFilter(), "editor.customSfx", palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(
+                        screenWidth = buttonWidth,
+                        screenHeight = buttonHeight,
+                        screenX = filterButtons.size * buttonWidth
+                                 )
+                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_custom"))
+            }
             filterButtons += FilterButton(recentsFilter, "editor.recents",
                                           palette, minimapBarStage, minimapBarStage).apply {
                 this.location.set(
