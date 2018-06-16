@@ -371,7 +371,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val adjustedCameraX: Float
         val adjustedCameraY: Float
         if (adjustCamera) {
-            camera.position.y = 1f
+            camera.position.y = 1f // 1 + 3.25/(trackCount - minTrackCount)
+            // zoom -> 1 + 1 / (trackCount - minTrackCount)
             camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f),
                                          Gdx.graphics.deltaTime * 6.5f)
 
