@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.ShakeScreen
@@ -498,6 +499,14 @@ object GameRegistry : Disposable {
                         if (pointer.duration <= 0) {
                             builder.append(
                                     "Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
+                        }
+                    }
+                }
+
+                if (model is ResponseModel) {
+                    model.responseIDs.forEach { id ->
+                        if (objectMap[id] == null) {
+                            builder.append("Model ${model.id} has a non-existent response ID: $id\n")
                         }
                     }
                 }
