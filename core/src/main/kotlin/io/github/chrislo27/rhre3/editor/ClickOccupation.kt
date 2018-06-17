@@ -188,7 +188,7 @@ sealed class ClickOccupation {
         fun isPlacementValid(): Boolean {
             if (isInDeleteZone())
                 return false
-            if (top > Editor.TRACK_COUNT)
+            if (top > editor.remix.trackCount)
                 return false
 
             // EXCEPTIONS for the end entity

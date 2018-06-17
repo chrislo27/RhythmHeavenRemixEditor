@@ -76,8 +76,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 tree.put("playbackStart", playbackStart)
                 tree.put("musicStartSec", musicStartSec)
 
-                tree.put("isAutosave", isAutosave)
+                tree.put("trackCount", trackCount)
 
+                tree.put("isAutosave", isAutosave)
                 tree.put("midiInstruments", midiInstruments)
 
                 // music
@@ -135,6 +136,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             remix.musicStartSec = tree["musicStartSec"]?.floatValue() ?: 0f
 
             remix.midiInstruments = tree["midiInstruments"]?.intValue() ?: 0
+
+            remix.trackCount = tree["trackCount"]?.intValue() ?: Editor.DEFAULT_TRACK_COUNT
 
             var missing = 0
             var missingCustom = 0
@@ -303,7 +306,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
                     updateBounds {
                         bounds.set(point.startBeat,
-                                   tracksWithNotes.indexOf(point.track.second).toFloat() % Editor.TRACK_COUNT,
+                                   tracksWithNotes.indexOf(point.track.second).toFloat() % remix.trackCount,
                                    point.duration, 1f)
                     }
 
@@ -531,6 +534,13 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
      */
     var midiInstruments = 0
         private set
+    var trackCount: Int by Delegates.vetoable(Editor.DEFAULT_TRACK_COUNT) { _, _, new ->
+        val allowed = new >= 1
+        if (allowed) {
+            entities.filterIsInstance<EndEntity>().forEach { it.onTrackSizeChange(new) }
+        }
+        allowed
+    }
 
     var duration: Float = Float.POSITIVE_INFINITY
         private set
@@ -619,6 +629,17 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         musicSeeking = true
         music.music.setPosition(seconds - musicStartSec)
         musicSeeking = false
+    }
+
+    fun wouldEntitiesFitNewTrackCount(newCount: Int): Boolean {
+        if (newCount < 1) {
+            return false
+        }
+        if (isEmpty()) {
+            return true
+        }
+
+        return entities.filterNot { it is EndEntity }.map { (it.bounds.y + it.bounds.height).roundToInt() }.max() ?: 1 <= newCount
     }
 
     fun isEmpty(): Boolean {

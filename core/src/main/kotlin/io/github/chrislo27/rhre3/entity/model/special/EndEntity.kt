@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.track.Remix
@@ -14,8 +13,12 @@ class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix
     override val supportsCopying: Boolean = false
 
     init {
-        this.bounds.height = Editor.TRACK_COUNT.toFloat()
+        this.bounds.height = remix.trackCount.toFloat()
         this.bounds.width = 0.125f
+    }
+
+    fun onTrackSizeChange(newSize: Int) {
+        this.bounds.height = newSize.toFloat()
     }
 
     // not used

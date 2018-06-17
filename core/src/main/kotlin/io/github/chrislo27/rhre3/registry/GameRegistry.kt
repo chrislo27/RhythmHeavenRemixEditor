@@ -492,9 +492,9 @@ object GameRegistry : Disposable {
                         if (objectMap[pointer.id] == null) {
                             builder.append("Model ${model.id} has an invalid pointer: ${pointer.id}\n")
                         }
-                        if (pointer.track >= Editor.TRACK_COUNT) {
+                        if (pointer.track >= Editor.MIN_TRACK_COUNT) {
                             builder.append(
-                                    "Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / ${Editor.TRACK_COUNT}\n")
+                                    "Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
                         }
                         if (pointer.duration <= 0) {
                             builder.append(

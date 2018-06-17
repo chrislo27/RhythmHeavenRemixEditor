@@ -87,8 +87,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         const val ICON_COUNT_X: Int = 13
         const val ICON_COUNT_Y: Int = 4
 
-        const val TRACK_COUNT: Int = 5
-        const val TRACK_LINE: Float = 2f
+        // Technically, there is only an absolute minimum of 1, these limits below are just for the UI
+        val MIN_TRACK_COUNT: Int = 5
+        val MAX_TRACK_COUNT: Int = 10
+        val DEFAULT_TRACK_COUNT: Int = 5
+        val TRACK_COUNT_RANGE: IntRange = MIN_TRACK_COUNT..MAX_TRACK_COUNT
+        const val TRACK_LINE_THICKNESS: Float = 2f
         const val PATTERN_COUNT: Int = 5
 
         const val MESSAGE_BAR_HEIGHT: Int = 28
@@ -371,10 +375,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val adjustedCameraX: Float
         val adjustedCameraY: Float
         if (adjustCamera) {
-            camera.position.y = 1f // 1 + 3.25/(trackCount - minTrackCount)
-            // zoom -> 1 + 1 / (trackCount - minTrackCount)
-            camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f),
-                                         Gdx.graphics.deltaTime * 6.5f)
+            val transitionTime = Gdx.graphics.deltaTime * 6.5f
+//            camera.position.y = MathUtils.lerp(camera.position.y, 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f, transitionTime)
+            camera.position.y = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
+            camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 1f,
+                                         transitionTime)
 
             if (remix.playState == PLAYING && remix.currentShakeEntities.isNotEmpty()) {
                 val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
@@ -405,7 +410,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.begin()
 
         val font = main.defaultFont
-        val trackYOffset = toScaleY(-TRACK_LINE / 2f)
+        val trackYOffset = toScaleY(-TRACK_LINE_THICKNESS / 2f)
 
         font.scaleFont(camera)
 
@@ -414,16 +419,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             batch.color = theme.trackLine
             val startX = beatRange.start.toFloat()
             val width = beatRange.endInclusive.toFloat() - startX
-            for (i in 0..TRACK_COUNT) {
+            for (i in 0..remix.trackCount) {
                 batch.fillRect(startX, trackYOffset + i.toFloat(), width,
-                               toScaleY(TRACK_LINE))
+                               toScaleY(TRACK_LINE_THICKNESS))
             }
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
         // game boundaries view (background)
         if (isGameBoundariesInViews) {
-            val squareHeight = TRACK_COUNT.toFloat()
+            val squareHeight = remix.trackCount.toFloat()
             val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
 
             remix.gameSections.values.forEach { section ->
@@ -467,9 +472,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
                 }
 
-                val xOffset = toScaleX(TRACK_LINE) / -2
-                batch.fillRect(i.toFloat() + xOffset, trackYOffset, toScaleX(TRACK_LINE),
-                               TRACK_COUNT + toScaleY(TRACK_LINE))
+                val xOffset = toScaleX(TRACK_LINE_THICKNESS) / -2
+                batch.fillRect(i.toFloat() + xOffset, trackYOffset, toScaleX(TRACK_LINE_THICKNESS),
+                               remix.trackCount + toScaleY(TRACK_LINE_THICKNESS))
 
                 val flashAnimation = subbeatSection.flashAnimation > 0
                 val actuallyInRange = (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end)
@@ -478,8 +483,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                    theme.trackLine.a * 0.35f *
                                            if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
                     for (j in 1 until Math.round(1f / snap)) {
-                        batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(TRACK_LINE),
-                                       TRACK_COUNT + toScaleY(TRACK_LINE))
+                        batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(TRACK_LINE_THICKNESS),
+                                       remix.trackCount + toScaleY(TRACK_LINE_THICKNESS))
                     }
                 }
             }
@@ -502,8 +507,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             val isPresentationMode = stage.presentationModeStage.visible
             val viewportWidth = if (isPresentationMode) camera.viewportWidth * 0.5f else camera.viewportWidth
-            val height = if (!isPresentationMode) TRACK_COUNT / 2f else 1f
-            val centre = TRACK_COUNT / 2f
+            val height = if (!isPresentationMode) remix.trackCount / 2f else 1f
+            val centre = remix.trackCount / 2f
 
             BeadsSoundSystem.audioContext.getValues(BeadsSoundSystem.sampleArray)
 
@@ -540,9 +545,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     batch.color = theme.trackLine
                     font.color = theme.trackLine
                     val x = section.startBeat
-                    val height = TRACK_COUNT * 2f + 0.5f
+                    val height = Editor.MIN_TRACK_COUNT * 2f + 0.5f + (remix.trackCount - Editor.MIN_TRACK_COUNT)
                     val maxTextWidth = 5f
-                    batch.fillRect(x, 0f, toScaleX(TRACK_LINE) * 2, height)
+                    batch.fillRect(x, 0f, toScaleX(TRACK_LINE_THICKNESS) * 2, height)
                     batch.draw(triangle, x, height - 1f, 0.25f, 1f)
 
                     for (i in 0 until (sectionWidth / 6f).toInt().coerceAtLeast(1)) {
@@ -587,11 +592,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                    trackerTime: String = getTrackerTime(beat),
                                    triangleHeight: Float = 0.4f, bpmText: String? = null, showMusicUnsnap: Boolean = false) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
-                val x = beat - toScaleX(TRACK_LINE * 1.5f) / 2
+                val x = beat - toScaleX(TRACK_LINE_THICKNESS * 1.5f) / 2
                 val y = trackYOffset
-                val height = (TRACK_COUNT + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE)
+                val height = (remix.trackCount + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE_THICKNESS)
                 batch.setColor(color.toFloatBits())
-                batch.fillRect(x, y, toScaleX(TRACK_LINE * 1.5f),
+                batch.fillRect(x, y, toScaleX(TRACK_LINE_THICKNESS * 1.5f),
                                height - triangleHeight / 2)
                 batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
                            x, y + height - triangleHeight, triangleWidth, triangleHeight)
@@ -670,7 +675,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             for (i in beatRange) {
                 val width = ENTITY_WIDTH * 0.4f
                 val x = i - width / 2f
-                val y = TRACK_COUNT + toScaleY(TRACK_LINE + TRACK_LINE) + font.capHeight
+                val y = remix.trackCount + toScaleY(TRACK_LINE_THICKNESS + TRACK_LINE_THICKNESS) + font.capHeight
                 val text = if (i == 0) ZERO_BEAT_SYMBOL else "${Math.abs(i)}"
                 if (stage.jumpToField.hasFocus && i == stage.jumpToField.text.toIntOrNull() ?: Int.MAX_VALUE) {
                     val glow = MathHelper.getTriangleWave(1f)
@@ -714,12 +719,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     jumpTriangle * jumpTriangle) * (if (remix.timeSignatures.getMeasurePart(beat) == 0) 2f else 1f)
 
                 batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
-                           TRACK_COUNT + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
+                           remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
                            0, 0, 26, 35, false, false)
             } else {
                 val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
                 batch.draw(AssetRegistry.get<Texture>("playyan_walking"), beat,
-                           TRACK_COUNT * 1f,
+                           remix.trackCount * 1f,
                            toScaleX(26f), toScaleY(35f),
                            step * 26, 0, 26, 35, false, false)
             }
@@ -729,14 +734,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         run timeSignatures@{
             val timeSignatures = remix.timeSignatures
             val bigFont = main.timeSignatureFont
-            val heightOfTrack = TRACK_COUNT.toFloat() - toScaleY(TRACK_LINE) * 2f
+            val heightOfTrack = remix.trackCount.toFloat() - toScaleY(TRACK_LINE_THICKNESS) * 2f
             val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
             bigFont.scaleFont(camera)
             bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
 
             timeSignatures.map.values.forEach { tracker ->
                 val x = tracker.beat
-                val startY = 0f + toScaleY(TRACK_LINE)
+                val startY = 0f + toScaleY(TRACK_LINE_THICKNESS)
 
                 if (currentTool == Tool.TIME_SIGNATURE && tracker.beat == inputBeat) {
                     bigFont.color = theme.selection.selectionBorder
@@ -799,7 +804,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                 // lines
                 batch.color = color
-                val lineWidth = toScaleX(TRACK_LINE)
+                val lineWidth = toScaleX(TRACK_LINE_THICKNESS)
                 batch.fillRect(beat, y, lineWidth, height)
                 batch.fillRect(beat + width, y, -lineWidth, height)
 
@@ -1153,6 +1158,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+//                if (remix.trackCount > MIN_TRACK_COUNT) {
+                    remix.trackCount--
+//                }
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+//                if (remix.trackCount < MAX_TRACK_COUNT) {
+                    remix.trackCount++
+//                }
             }
         }
 
@@ -2102,7 +2115,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             append(" / ")
             append(remix.entities.size)
 
-            append("\ntr: ")
+            append("\ntrackers: ")
             append(remix.trackers.sumBy {
                 it.map.values.count { it.beat in range || it.endBeat in range }
             })
@@ -2128,6 +2141,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             append(" / ")
             append(autosaveFrequency)
             append(" min")
+
+            append("\ntrack: ")
+            append(remix.trackCount)
 
             append("\nmodkeys: ")
             if (Gdx.input.isControlDown())

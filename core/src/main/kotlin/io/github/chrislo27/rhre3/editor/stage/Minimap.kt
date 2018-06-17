@@ -60,7 +60,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                     val y = location.realY
                     val pxHeight = location.realHeight
                     val pxWidth = location.realWidth
-                    val unitHeight = pxHeight / Editor.TRACK_COUNT
+                    val unitHeight = pxHeight / remix.trackCount
                     val unitWidth = pxWidth / maxX
 
                     // entities
@@ -75,7 +75,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
                     // horizontal lines
                     batch.color = editor.theme.trackLine
-                    for (i in 1..Editor.TRACK_COUNT) {
+                    for (i in 1..remix.trackCount) {
                         batch.fillRect(x, y + i * unitHeight - 0.5f, pxWidth, 1f)
                     }
                     batch.fillRect(x - 0.5f, y, 1f, pxHeight)
