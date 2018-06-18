@@ -635,9 +635,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         if (newCount < 1) {
             return false
         }
-        if (isEmpty()) {
-            return true
-        }
 
         return entities.filterNot { it is EndEntity }.map { (it.bounds.y + it.bounds.height).roundToInt() }.max() ?: 1 <= newCount
     }
