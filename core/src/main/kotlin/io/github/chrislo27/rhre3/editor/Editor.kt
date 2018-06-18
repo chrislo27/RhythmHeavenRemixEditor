@@ -737,7 +737,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val heightOfTrack = remix.trackCount.toFloat() - toScaleY(TRACK_LINE_THICKNESS) * 2f
             val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
             bigFont.scaleFont(camera)
-            bigFont.scaleMul((heightOfTrack * 0.5f - 0.1f) / bigFont.capHeight)
+            bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
             timeSignatures.map.values.forEach { tracker ->
                 val x = tracker.beat
