@@ -1219,6 +1219,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                                         buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 9 + padding * 9)
             }
+            buttonBarStage.elements += TrackChangeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
+            }
 
             // right aligned
             // info button

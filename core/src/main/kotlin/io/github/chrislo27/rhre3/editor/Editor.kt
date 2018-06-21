@@ -1159,16 +1159,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
             } else {
-                val trackCount = remix.trackCount
-                if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-                    if (trackCount > MIN_TRACK_COUNT && remix.wouldEntitiesFitNewTrackCount(trackCount - 1)) {
-                        remix.mutate(TrackResizeAction(this, trackCount, trackCount - 1))
-                    }
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-                    if (trackCount < MAX_TRACK_COUNT) {
-                        remix.mutate(TrackResizeAction(this, trackCount, trackCount + 1))
-                    }
-                }
+//                val trackCount = remix.trackCount
+//                if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
+//                    if (trackCount > MIN_TRACK_COUNT && remix.wouldEntitiesFitNewTrackCount(trackCount - 1)) {
+//                        remix.mutate(TrackResizeAction(this, trackCount, trackCount - 1))
+//                    }
+//                } else if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
+//                    if (trackCount < MAX_TRACK_COUNT) {
+//                        remix.mutate(TrackResizeAction(this, trackCount, trackCount + 1))
+//                    }
+//                }
             }
         }
 

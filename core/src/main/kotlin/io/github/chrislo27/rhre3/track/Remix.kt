@@ -636,8 +636,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             return false
         }
 
-        return entities.filterNot { it is EndEntity }.map { (it.bounds.y + it.bounds.height).roundToInt() }.max() ?: 1 <= newCount
+        return entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } == null
     }
+
+    fun canIncreaseTrackCount(): Boolean = trackCount < Editor.MAX_TRACK_COUNT
+    fun canDecreaseTrackCount(): Boolean = trackCount > Editor.MIN_TRACK_COUNT
 
     fun isEmpty(): Boolean {
         return entities.isEmpty() && trackers.all { it.map.isEmpty() } && timeSignatures.map.isEmpty() && music == null
