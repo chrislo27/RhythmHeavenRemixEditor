@@ -72,7 +72,7 @@ however, read up on the controls first below!
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
-<br>For more info, [**see this page**](Toolbar.md).
+<br>For detailed info, [**see this page**](Toolbar.md).
 
 On the bottom half of the screen, you will see icons for each
 game on the left, and patterns and cues for the selected

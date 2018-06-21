@@ -58,6 +58,15 @@ is changing the volume.
 
 [See this section for more details](Readme#scroll-mode)
 
+## Change Track Size
+![Change track size](readme/toolbar/changetrack.png)
+
+This button allows you to change how many lines, or rows are available
+on the track. Left click to increase the size, and right click to decrease
+the size. Be careful! You cannot decrease the row count if cues are
+in the way. When this happens, right clicking the button will select the
+impeding entity, and select it for you.
+
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
 
