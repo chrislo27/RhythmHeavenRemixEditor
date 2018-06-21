@@ -38,9 +38,10 @@ object Semitones {
     fun getSemitoneName(semitone: Int): String {
         val abs = Math.abs(Math.floorMod(semitone, SEMITONES_IN_OCTAVE))
         if (!usedKeyNames.containsKey(semitone)) {
+            val repeats = Math.abs(Math.floorDiv(semitone, SEMITONES_IN_OCTAVE))
             usedKeyNames[semitone] = keyNames[abs]!! +
                     if ((semitone >= 12 || semitone <= -1))
-                        (if (semitone > 0) "+" else "-").repeat(Math.abs(Math.floorDiv(semitone, SEMITONES_IN_OCTAVE)))
+                        (if (repeats > 1) "$repeats" else "") + (if (semitone > 0) "+" else "-")
                     else ""
         }
 
