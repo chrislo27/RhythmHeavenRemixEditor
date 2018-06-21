@@ -29,7 +29,6 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
     }
 
     override fun getHoverText(): String {
-        // TODO cache?
         return Localization["editor.trackChange"] + "\n" +
                 Localization[if (remix.canIncreaseTrackCount()) "editor.trackChange.increase" else "editor.trackChange.max"] + "\n" +
                 Localization[if (!remix.canDecreaseTrackCount()) "editor.trackChange.min" else if (remix.entitiesTouchTrackTop) "editor.trackChange.impedance" else "editor.trackChange.decrease"]
