@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.action.TrackResizeAction
@@ -8,10 +10,8 @@ import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
-import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.UIElement
-import io.github.chrislo27.toolboks.ui.UIPalette
+import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.ui.*
 import kotlin.math.roundToInt
 
 
@@ -21,11 +21,18 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
     private val remix: Remix
         get() = editor.remix
 
+    init {
+        addLabel(ImageLabel(palette, this, this.stage).apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_track_change_button"))
+        })
+    }
+
     override fun getHoverText(): String {
         // TODO cache?
         return Localization["editor.trackChange"] + "\n" +
                 Localization[if (remix.canIncreaseTrackCount()) "editor.trackChange.increase" else "editor.trackChange.max"] + "\n" +
-                Localization[if (!remix.canDecreaseTrackCount()) "editor.trackChange.min" else if (!remix.wouldEntitiesFitNewTrackCount(remix.trackCount - 1)) "editor.trackChange.impedance" else "editor.trackChange.decrease"]
+                Localization[if (!remix.canDecreaseTrackCount()) "editor.trackChange.min" else if (remix.entitiesTouchTrackTop) "editor.trackChange.impedance" else "editor.trackChange.decrease"]
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {

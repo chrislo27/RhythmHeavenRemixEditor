@@ -546,6 +546,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         private set
     var lastPoint: Float = 0f
         private set
+    var entitiesTouchTrackTop: Boolean = false
+        private set
 
     val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
     val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
@@ -653,6 +655,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         entities.sortBy { it.bounds.x }
         duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
+        entitiesTouchTrackTop = entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } != null
 
         gameSections.clear()
         val reversedEntities = entities.takeWhile { it !is EndEntity }
