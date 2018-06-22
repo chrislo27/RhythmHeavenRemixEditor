@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.tracker.Tracker
-import io.github.chrislo27.rhre3.util.BpmUtils
+import io.github.chrislo27.rhre3.util.SwingUtils
+import io.github.chrislo27.rhre3.util.TempoUtils
 
 
 class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
@@ -41,12 +42,14 @@ class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
         return theme.trackers.tempoChange
     }
 
+    // FIXME below
+
     fun secondsToBeats(seconds: Float): Float {
-        return endBeat + BpmUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds))
+        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), 0.65f, 1f)
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        return seconds + BpmUtils.beatsToSeconds(beat - this.endBeat, tempoAt(beat))
+        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, 0.65f, 1f), tempoAt(beat))
     }
 
     // Remnants of stretchable tempo changes

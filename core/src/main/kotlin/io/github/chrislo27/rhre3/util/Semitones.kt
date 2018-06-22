@@ -1,14 +1,5 @@
 package io.github.chrislo27.rhre3.util
 
-
-object BpmUtils {
-    fun beatsToSeconds(beat: Float, bpm: Float): Float =
-            beat / (bpm / 60)
-
-    fun secondsToBeats(seconds: Float, bpm: Float): Float =
-            seconds * (bpm / 60)
-}
-
 object Semitones {
 
     const val SEMITONES_IN_OCTAVE = 12

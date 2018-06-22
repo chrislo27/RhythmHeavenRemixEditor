@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.track.tracker.tempo
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
-import io.github.chrislo27.rhre3.util.BpmUtils
+import io.github.chrislo27.rhre3.util.TempoUtils
 import java.util.*
 
 
@@ -44,7 +44,7 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
 
         old.forEach {
             val previous: TempoChange? = backingMap.lowerEntry(it.beat)?.value
-            it.seconds = previous?.beatsToSeconds(it.beat) ?: BpmUtils.beatsToSeconds(it.beat, defaultTempo)
+            it.seconds = previous?.beatsToSeconds(it.beat) ?: TempoUtils.beatsToSeconds(it.beat, defaultTempo)
 
             backingMap[it.beat] = it
             backingSecondsMap[it.seconds] = it
@@ -52,13 +52,13 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
     }
 
     fun secondsToBeats(seconds: Float): Float {
-        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return BpmUtils.secondsToBeats(seconds, defaultTempo)
+        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
 
         return tc.secondsToBeats(seconds)
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        val tc: TempoChange = backingMap.floorEntry(beat)?.value ?: return BpmUtils.beatsToSeconds(beat, defaultTempo)
+        val tc: TempoChange = backingMap.floorEntry(beat)?.value ?: return TempoUtils.beatsToSeconds(beat, defaultTempo)
 
         return tc.beatsToSeconds(beat)
     }
