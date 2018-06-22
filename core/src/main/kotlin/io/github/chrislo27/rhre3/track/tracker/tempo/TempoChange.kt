@@ -8,7 +8,7 @@ import io.github.chrislo27.rhre3.util.SwingUtils
 import io.github.chrislo27.rhre3.util.TempoUtils
 
 
-class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, swing: Int = MIN_SWING)
+class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, swing: Int = SWING_STRAIGHT)
     : Tracker<TempoChange>(container, beat, 0.0f) {
 
     companion object {
