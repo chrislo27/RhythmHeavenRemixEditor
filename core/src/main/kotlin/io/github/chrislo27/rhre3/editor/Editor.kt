@@ -61,6 +61,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -1133,7 +1134,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
-                remix.camera.position.x = remix.beat + remix.camera.viewportWidth * 0.25f
+                // Use linear time to prevent nauseation
+                remix.camera.position.x = TempoUtils.secondsToBeats(remix.seconds, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
             }
         }
 
