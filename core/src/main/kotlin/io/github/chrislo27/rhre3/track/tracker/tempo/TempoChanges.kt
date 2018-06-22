@@ -44,15 +44,7 @@ class TempoChanges(val defaultTempo: Float = 120f) : TrackerContainer<TempoChang
 
         old.forEach {
             val previous: TempoChange? = backingMap.lowerEntry(it.beat)?.value
-            if (previous == null) {
-                // Use simple linear beats when no other tempo changes are available
-                // Handling swing is not required
-                it.seconds = BpmUtils.beatsToSeconds(it.beat, defaultTempo)
-            } else {
-                // previous end seconds + delta beats to seconds
-                // any reference to "previous" uses the end of the tempo change if it's non-zero-width
-                it.seconds = BpmUtils.beatsToSeconds(it.beat - previous.endBeat, previous.bpm) + previous.seconds
-            }
+            it.seconds = previous?.beatsToSeconds(it.beat) ?: BpmUtils.beatsToSeconds(it.beat, defaultTempo)
 
             backingMap[it.beat] = it
             backingSecondsMap[it.seconds] = it
