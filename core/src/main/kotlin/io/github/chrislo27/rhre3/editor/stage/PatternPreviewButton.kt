@@ -32,7 +32,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
         init {
             ownEditor.remix = ownEditor.createRemix(false)
-            ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, 0f, ownRemix.tempos.defaultTempo))
+            ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, ownRemix.tempos.defaultTempo))
         }
     }
 
@@ -89,7 +89,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
                 val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
                 val targetTempo = if (baseBpm <= 0f) 120f else baseBpm
-                ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, 0f, targetTempo))
+                ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, targetTempo))
 
                 ownRemix.recomputeCachedData()
 

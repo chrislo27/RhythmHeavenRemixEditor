@@ -7,6 +7,7 @@ import io.github.chrislo27.rhre3.theme.Theme
 abstract class Tracker<SELF : Tracker<SELF>>(val container: TrackerContainer<SELF>,
                                              var beat: Float, width: Float) {
 
+    open val allowsResize: Boolean = true
     var width: Float = width
         set(value) {
             field = value.coerceAtLeast(0f)

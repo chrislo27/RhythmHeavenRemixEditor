@@ -1729,7 +1729,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (button == Input.Buttons.RIGHT && tracker != null) {
                     remix.mutate(TrackerAction(tracker, true))
                 } else if (button == Input.Buttons.LEFT) {
-                    if (tracker != null) {
+                    if (tracker != null && tracker.allowsResize) {
                         val left = MathUtils.isEqual(tracker.beat, mouseX, snap * 0.5f)
                         val right = MathUtils.isEqual(tracker.endBeat, mouseX, snap * 0.5f)
                         if (left || right) {
@@ -1738,7 +1738,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     } else if (getTrackerOnMouse(tool.trackerClass.java, false) == null) {
                         val tr = when (tool) {
                             Tool.TEMPO_CHANGE -> {
-                                TempoChange(remix.tempos, beat, 0f, remix.tempos.tempoAt(beat))
+                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat))
                             }
                             Tool.MUSIC_VOLUME -> {
                                 MusicVolumeChange(remix.musicVolumes, beat,
