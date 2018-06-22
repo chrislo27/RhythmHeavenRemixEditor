@@ -8,7 +8,7 @@ import io.github.chrislo27.rhre3.util.SwingUtils
 import io.github.chrislo27.rhre3.util.TempoUtils
 
 
-class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
+class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, swing: Int = MIN_SWING)
     : Tracker<TempoChange>(container, beat, 0.0f) {
 
     companion object {
@@ -16,10 +16,18 @@ class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
         val MIN_TEMPO: Float = 1.0f
         val MAX_TEMPO: Float = 600f
 
+        val ABS_MIN_SWING: Int = 1
+        val MIN_SWING: Int = 50
+        val MAX_SWING: Int = 99
+        val SWING_STRAIGHT: Int = 50
+        val SWING_SWING: Int = 65
+        val SWING_SHUFFLE: Int = 70
+
     }
 
     override val allowsResize: Boolean = false
     var seconds: Float = 0f
+    val swing: Int = swing.coerceIn(ABS_MIN_SWING, MAX_SWING)
 
     init {
         text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
@@ -35,6 +43,7 @@ class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
     }
 
     override fun createResizeCopy(beat: Float, width: Float): TempoChange {
+        // Legacy, tempo changes cannot be resized anymore
         return TempoChange(container as TempoChanges, beat, bpm)
     }
 
@@ -42,14 +51,12 @@ class TempoChange(container: TempoChanges, beat: Float,  val bpm: Float)
         return theme.trackers.tempoChange
     }
 
-    // FIXME below
-
     fun secondsToBeats(seconds: Float): Float {
-        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), 0.65f, 1f)
+        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), swing / 100f, 1f)
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, 0.65f, 1f), tempoAt(beat))
+        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, swing / 100f, 1f), tempoAt(beat))
     }
 
     // Remnants of stretchable tempo changes
