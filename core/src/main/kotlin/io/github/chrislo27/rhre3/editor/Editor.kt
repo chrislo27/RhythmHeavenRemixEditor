@@ -739,28 +739,38 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             bigFont.scaleFont(camera)
             bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
-            timeSignatures.map.values.forEach { tracker ->
-                val x = tracker.beat
+            fun renderTimeSignature(beat: Int, lowerText: String, upperText: String) {
+                val x = beat
                 val startY = 0f + toScaleY(TRACK_LINE_THICKNESS)
 
-                if (currentTool == Tool.TIME_SIGNATURE && tracker.beat == inputBeat) {
+                val lowerWidth = bigFont.getTextWidth(lowerText, 1f, false)
+                val upperWidth = bigFont.getTextWidth(upperText, 1f, false)
+                val biggerWidth = Math.max(lowerWidth, upperWidth)
+
+                bigFont.drawCompressed(batch, lowerText,
+                                       x + biggerWidth * 0.5f - lowerWidth * 0.5f,
+                                       startY + bigFont.capHeight,
+                                       1f, Align.left)
+                bigFont.drawCompressed(batch, upperText,
+                                       x + biggerWidth * 0.5f - upperWidth * 0.5f,
+                                       startY + heightOfTrack,
+                                       1f, Align.left)
+            }
+
+            timeSignatures.map.values.forEach { timeSig ->
+                if (currentTool == Tool.TIME_SIGNATURE && timeSig.beat == inputBeat) {
                     bigFont.color = theme.selection.selectionBorder
                 } else {
                     bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
                 }
 
-                val lowerWidth = bigFont.getTextWidth(tracker.lowerText, 1f, false)
-                val upperWidth = bigFont.getTextWidth(tracker.upperText, 1f, false)
-                val biggerWidth = Math.max(lowerWidth, upperWidth)
+                renderTimeSignature(timeSig.beat, timeSig.lowerText, timeSig.upperText)
+            }
 
-                bigFont.drawCompressed(batch, tracker.lowerText,
-                                       x + biggerWidth * 0.5f - lowerWidth * 0.5f,
-                                       startY + bigFont.capHeight,
-                                       1f, Align.left)
-                bigFont.drawCompressed(batch, tracker.upperText,
-                                       x + biggerWidth * 0.5f - upperWidth * 0.5f,
-                                       startY + heightOfTrack,
-                                       1f, Align.left)
+            if (currentTool == Tool.TIME_SIGNATURE && remix.timeSignatures.map[inputBeat] == null) {
+                bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * MathUtils.lerp(0.2f, 0.35f, MathHelper.getTriangleWave(2f)))
+                val last = remix.timeSignatures.getTimeSignature(inputBeat.toFloat())
+                renderTimeSignature(inputBeat, last?.lowerText ?: "4", last?.upperText ?: "4")
             }
 
             bigFont.setColor(1f, 1f, 1f, 1f)
