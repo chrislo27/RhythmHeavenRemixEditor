@@ -27,15 +27,16 @@ class RecoverRemixScreen(main: RHRE3Application)
     private val label: TextLabel<RecoverRemixScreen>
 
     init {
+        val palette = main.uiPalette
         stage as GenericStage
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
         stage.titleLabel.text = "screen.recovery.title"
         stage.backButton.visible = true
+        stage.backButton.palette = palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f))
         stage.onBackButtonClick = {
             main.screen = ScreenRegistry.getNonNull("editor")
         }
-
-        val palette = main.uiPalette
 
         label = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.location.set(0f, 0f, 1f, 0.6f)
