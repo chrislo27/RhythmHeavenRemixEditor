@@ -1177,7 +1177,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 // Use linear time to prevent nauseation
                 val lastTempoChange: TempoChange? = (remix.tempos.secondsMap as NavigableMap).floorEntry(remix.seconds)?.value
                 val secondsOffset = lastTempoChange?.seconds ?: 0f
-                remix.camera.position.x = secondsOffset + TempoUtils.secondsToBeats(remix.seconds - secondsOffset, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
+                remix.camera.position.x = (lastTempoChange?.endBeat ?: 0f) + TempoUtils.secondsToBeats(remix.seconds - secondsOffset, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
             }
         }
 
