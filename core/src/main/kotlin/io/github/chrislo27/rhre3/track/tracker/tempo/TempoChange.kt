@@ -34,8 +34,13 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     }
 
     fun scrollSwing(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
-        if (control) {
+        if (shift && !control) {
             return TempoChange(container as TempoChanges, beat, bpm, swing.copy(division = if (swing.division == Swing.EIGHTH_DIVISION) Swing.SIXTEENTH_DIVISION else Swing.EIGHTH_DIVISION))
+        } else if (control) {
+            val change = amount * (if (shift) 5 else 1)
+            if ((change < 0 && swing.ratio > Swing.MIN_SWING) || (change > 0 && swing.ratio < Swing.MAX_SWING)) {
+                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = (swing.ratio + change).coerceIn(Swing.MIN_SWING, Swing.MAX_SWING)))
+            }
         } else {
             val list = Swing.SWING_LIST
             val currentIndex: Int = if (swing.ratio < list.first().ratio) -1 else list.let { _ ->

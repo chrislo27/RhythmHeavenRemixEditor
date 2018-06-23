@@ -10,4 +10,23 @@ Swing tool (press **`6`**, or click the button in the bottom-right).
 
 >If you want to change the swing setting (straight to swing, or vice-versa) but keep the same tempo, you'll have to place another tempo change with the same tempo and a different swing setting.
 
-FILL THIS IN
+**`Scroll`** on *a tempo change* to change the swing ratio. Your
+options are below:
+
+| Swing Name | Swing Ratio |
+|------------|-------------|
+| Straight | 50% |
+| Swing | 65% |
+| Shuffle | 75% |
+
+A ratio of 50% means 50% of the time will be an on-beat, and 50% of the time will be an offbeat.
+Likewise, Swing's 65% means on-beats are 65% of the time, and offbeats are the other 35%, causing a swinging rhythm.
+
+Holding **`CTRL`** will change the ratio in increments of 1%.<br>
+Holding **`CTRL+SHIFT`** will change the ratio in increments of 5%.
+
+If you hold **`SHIFT`** and **`scroll`**, you will change the division setting.
+You can change it between eighth notes and sixteenth notes. This decides
+how "onbeats" and "offbeats" are decided (every eighth note or every sixteenth note).
+
+

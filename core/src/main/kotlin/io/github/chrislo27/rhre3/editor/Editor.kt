@@ -875,13 +875,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             16 -> Swing.SIXTEENTH_SYMBOL
                             else -> "${noteType}th"
                         }
-                        val text: String = when (it.swing.ratio) {
-                            in Swing.ABS_MIN_SWING..Swing.STRAIGHT.ratio -> "Straight"
-                            in Swing.STRAIGHT.ratio until Swing.SWING.ratio -> "Light Swing" // Generally unused
-                            in Swing.SWING.ratio until Swing.SHUFFLE.ratio -> "Swing"
-                            in Swing.SHUFFLE.ratio..Swing.MAX_SWING -> "Shuffle"
-                            else -> "Straight"
-                        } + " ($note)"
+                        val text: String = Swing.SWING_NAMES.entries.lastOrNull { entry -> entry.key.ratio <= it.swing.ratio }?.let { entry ->
+                            if (entry.key == Swing.STRAIGHT && it.swing.ratio != entry.key.ratio) {
+                                Swing.SWING_NAMES[Swing.SWING]
+                            } else entry.value
+                        } ?: "Inverted Swing"
 
                         if (tool == Tool.SWING) {
                             borderedFont.color = getColorForTracker(it)
@@ -894,7 +892,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         val lh = borderedFont.capHeight * 1.1f
 
                         borderedFont.scaleMul(0.75f)
-                        borderedFont.drawCompressed(batch, "", it.beat, y + lh, 2f, Align.left)
+                        borderedFont.drawCompressed(batch, "${it.swing.ratio}%, $note", it.beat, y + lh, 2f, Align.left)
                         borderedFont.scaleMul(1 / 0.75f)
                     }
 
