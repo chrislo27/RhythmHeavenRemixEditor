@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.track.PlayState.PLAYING
 import io.github.chrislo27.rhre3.track.PlayState.STOPPED
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
+import io.github.chrislo27.rhre3.util.Swing
 import io.github.chrislo27.toolboks.ui.*
 
 
@@ -32,7 +33,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
         init {
             ownEditor.remix = ownEditor.createRemix(false)
-            ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, ownRemix.tempos.defaultTempo))
+            ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, ownRemix.tempos.defaultTempo, Swing.STRAIGHT))
         }
     }
 
@@ -89,7 +90,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
                 val baseBpm: Float = entity.checkSelfAndChildrenForBaseBpm()
                 val targetTempo = if (baseBpm <= 0f) 120f else baseBpm
-                ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, targetTempo))
+                ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, targetTempo, Swing.STRAIGHT))
 
                 ownRemix.recomputeCachedData()
 

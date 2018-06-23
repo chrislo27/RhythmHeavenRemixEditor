@@ -36,7 +36,7 @@ object SwingUtils {
      * Converts linear beats to swing beats.
      *
      * @param ratio between 0.5 and 1.0 EXCLUSIVELY
-     * @param division The note division as a ratio of quarter notes. Usually 1.0 or 0.5 (8th and 16th respectively).
+     * @param division The note division as a ratio of eighth notes. Usually 1.0 or 0.5 (8th and 16th respectively).
      */
     fun linearToSwing(linear: Float, ratio: Float, division: Float): Float {
         val base: Int = Math.floor(linear.toDouble() / division).toInt()
@@ -48,11 +48,27 @@ object SwingUtils {
      * Converts swing beats to linear beats.
      *
      * @param ratio between 0.5 and 1.0 EXCLUSIVELY
-     * @param division The note division as a ratio of quarter notes. Usually 1.0 or 0.5 (8th and 16th respectively).
+     * @param division The note division as a ratio of eighth notes. Usually 1.0 or 0.5 (8th and 16th respectively).
      */
     fun swingToLinear(swing: Float, ratio: Float, division: Float): Float {
         val base: Int = Math.floor(swing.toDouble() / division).toInt()
 
         return base * division + basicSwingToLinear(swing % division, ratio)
     }
+
+    /**
+     * Converts linear beats to swing beats.
+     */
+    fun linearToSwing(linear: Float, swing: Swing): Float {
+        return linearToSwing(linear, swing.ratio / 100f, swing.division)
+    }
+
+    /**
+     * Converts swing beats to linear beats.
+     */
+    fun swingToLinear(swung: Float, swing: Swing): Float {
+        return swingToLinear(swung, swing.ratio / 100f, swing.division)
+    }
+
+
 }

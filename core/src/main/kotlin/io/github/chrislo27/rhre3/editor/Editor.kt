@@ -61,7 +61,6 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.Semitones
-import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -1135,7 +1134,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
-                remix.camera.position.x = TempoUtils.secondsToBeats(remix.seconds, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
+                remix.camera.position.x = remix.tempos.secondsToBeats(remix.seconds) + remix.camera.viewportWidth * 0.25f
             }
         }
 
@@ -1450,6 +1449,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 Tool.MUSIC_VOLUME -> {
                     ctrlBuilder.append(Localization["editor.msg.musicVolume"])
                 }
+                Tool.SWING -> {
+                    ctrlBuilder.append(Localization["editor.msg.swing"])
+                }
             }
         }
 
@@ -1740,7 +1742,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     } else if (getTrackerOnMouse(tool.trackerClass.java, false) == null) {
                         val tr = when (tool) {
                             Tool.TEMPO_CHANGE -> {
-                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat))
+                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat), remix.tempos.swingAt(beat))
                             }
                             Tool.MUSIC_VOLUME -> {
                                 MusicVolumeChange(remix.musicVolumes, beat,
@@ -1748,8 +1750,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                   Math.round(remix.musicVolumes.volumeAt(beat) * 100)
                                                           .coerceIn(0, MusicVolumeChange.MAX_VOLUME))
                             }
-                            else -> error(
-                                    "Tracker creation not supported for tool $tool")
+                            else -> error("Tracker creation not supported for tool $tool")
                         }
                         val action: TrackerAction = TrackerAction(tr, false)
                         remix.mutate(action)
