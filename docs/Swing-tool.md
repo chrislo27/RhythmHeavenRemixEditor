@@ -16,11 +16,11 @@ options are below:
 | Swing Name | Swing Ratio |
 |------------|-------------|
 | Straight | 50% |
-| Swing | 65% |
-| Shuffle | 75% |
+| Swing | 60% |
+| Shuffle | 70% |
 
 A ratio of 50% means 50% of the time will be an on-beat, and 50% of the time will be an offbeat.
-Likewise, Swing's 65% means on-beats are 65% of the time, and offbeats are the other 35%, causing a swinging rhythm.
+Likewise, Swing's 60% means on-beats are 60% of the time, and offbeats are the other 40%, causing a swinging rhythm.
 
 Holding **`CTRL`** will change the ratio in increments of 1%.<br>
 Holding **`CTRL+SHIFT`** will change the ratio in increments of 5%.

@@ -18,8 +18,8 @@ data class Swing(val ratio: Int, val division: Float) {
         val SIXTEENTH_SYMBOL = "♬"
 
         val STRAIGHT: Swing = Swing(50, EIGHTH_DIVISION)
-        val SWING: Swing = Swing(65, EIGHTH_DIVISION)
-        val SHUFFLE: Swing = Swing(75, EIGHTH_DIVISION)
+        val SWING: Swing = Swing(60, EIGHTH_DIVISION)
+        val SHUFFLE: Swing = Swing(70, EIGHTH_DIVISION)
 
         val SWING_NAMES: Map<Swing, String> = mapOf(STRAIGHT to "Straight", SWING to "Swing", SHUFFLE to "Shuffle")
         val SWING_LIST: List<Swing> = SWING_NAMES.keys.toList()
