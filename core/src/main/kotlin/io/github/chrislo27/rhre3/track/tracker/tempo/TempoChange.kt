@@ -13,10 +13,8 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     : Tracker<TempoChange>(container, beat, 0.0f) {
 
     companion object {
-
         val MIN_TEMPO: Float = 1.0f
         val MAX_TEMPO: Float = 600f
-
     }
 
     override val allowsResize: Boolean = false
@@ -45,11 +43,11 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     }
 
     fun secondsToBeats(seconds: Float): Float {
-        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), swing.ratio / 100f, 1f)
+        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), swing)
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, swing.ratio / 100f, 1f), tempoAt(beat))
+        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, swing), tempoAt(beat))
     }
 
     // Remnants of stretchable tempo changes
