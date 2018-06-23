@@ -4,7 +4,7 @@ The Swing tool allows you to have parts of your remix have a [swing rhythm](http
 This can be extremely useful for songs that do have a swing rhythm, or
 if you want to make a custom game with a "bouncy" rhythm (Lockstep 2 comes to mind).
 
-Swing is controlled by tempo changes. To edit them, you will use the
+Swing is controlled by *individual* tempo changes. To edit them, you will use the
 Swing tool (press **`6`**, or click the button in the bottom-right).
 <br>![Swing tool icon](https://i.imgur.com/Qrstwhq.png)
 

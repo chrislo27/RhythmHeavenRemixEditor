@@ -61,6 +61,8 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.rhre3.util.Swing
+import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -835,10 +837,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 batch.setColor(1f, 1f, 1f, 1f)
             }
 
+            fun getColorForTracker(tracker: Tracker<*>): Color {
+                return if (currentTracker === tracker && remix.playState == STOPPED && !clickIsTrackerResize && (toolIsTrackerBased || (tool == Tool.SWING && currentTracker is TempoChange))) Color.WHITE else tracker.getColour(theme)
+            }
+
             fun Tracker<*>.render() {
-                renderTracker(container.renderLayer,
-                              if (currentTracker === this && remix.playState == STOPPED && !clickIsTrackerResize && (toolIsTrackerBased || (tool == Tool.SWING && currentTracker is TempoChange))) Color.WHITE else getColour(theme),
-                              text, beat, width, getSlope())
+                renderTracker(container.renderLayer, getColorForTracker(this), text, beat, width, getSlope())
             }
 
             remix.trackersReverseView.forEach {
@@ -858,6 +862,47 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 currentTracker?.render()
             }
 
+            // Swing indicators
+            borderedFont.setColor(1f, 1f, 1f, 1f)
+            run {
+                val tempos = remix.tempos
+                var lastSwing: Swing = tempos.defaultSwing
+                tempos.map.values.forEach {
+                    if ((it.beat in beatRange || it.endBeat in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
+                        val noteType = (8 / it.swing.division).roundToInt()
+                        val note: String = when (noteType) {
+                            8 -> Swing.EIGHTH_SYMBOL
+                            16 -> Swing.SIXTEENTH_SYMBOL
+                            else -> "${noteType}th"
+                        }
+                        val text: String = when (it.swing.ratio) {
+                            in Swing.ABS_MIN_SWING..Swing.STRAIGHT.ratio -> "Straight"
+                            in Swing.STRAIGHT.ratio until Swing.SWING.ratio -> "Light Swing" // Generally unused
+                            in Swing.SWING.ratio until Swing.SHUFFLE.ratio -> "Swing"
+                            in Swing.SHUFFLE.ratio..Swing.MAX_SWING -> "Shuffle"
+                            else -> "Straight"
+                        } + " ($note)"
+
+                        if (tool == Tool.SWING) {
+                            borderedFont.color = getColorForTracker(it)
+                        } else {
+                            borderedFont.setColor(1f, 1f, 1f, 1f)
+                        }
+                        val y = remix.trackCount + 1f
+                        borderedFont.drawCompressed(batch, text, it.beat, y, 2f, Align.left)
+
+                        val lh = borderedFont.capHeight * 1.1f
+
+                        borderedFont.scaleMul(0.75f)
+                        borderedFont.drawCompressed(batch, "", it.beat, y + lh, 2f, Align.left)
+                        borderedFont.scaleMul(1 / 0.75f)
+                    }
+
+                    lastSwing = it.swing
+                }
+            }
+
+            borderedFont.setColor(1f, 1f, 1f, 1f)
             borderedFont.unscaleFont()
         }
 
@@ -1132,7 +1177,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
-                remix.camera.position.x = remix.tempos.secondsToBeats(remix.seconds) + remix.camera.viewportWidth * 0.25f
+                val lastTempoChange: TempoChange? = (remix.tempos.secondsMap as NavigableMap).floorEntry(remix.seconds)?.value
+                val secondsOffset = lastTempoChange?.seconds ?: 0f
+                remix.camera.position.x = secondsOffset + TempoUtils.secondsToBeats(remix.seconds - secondsOffset, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
             }
         }
 
@@ -2049,6 +2096,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val tracker = getTrackerOnMouse(tool.trackerClass?.java, true)
             if (tracker != null) {
                 val result = tracker.scroll(-amount, control, shift)
+
+                if (result != null) {
+                    val lastAction: TrackerValueChange? = remix.getUndoStack().peekFirst() as? TrackerValueChange?
+
+                    if (lastAction != null && lastAction.current === tracker) {
+                        lastAction.current = result
+                        lastAction.redo(remix)
+                    } else {
+                        remix.mutate(TrackerValueChange(tracker, result))
+                    }
+                }
+
+                return true
+            }
+        } else if (tool == Tool.SWING) {
+            val tracker = getTrackerOnMouse(TempoChange::class.java, true) as? TempoChange?
+            if (tracker != null) {
+                val result = tracker.scrollSwing(-amount, control, shift)
 
                 if (result != null) {
                     val lastAction: TrackerValueChange? = remix.getUndoStack().peekFirst() as? TrackerValueChange?

@@ -33,6 +33,42 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
         return TempoChange(container as TempoChanges, beat, (bpm + change).coerceIn(MIN_TEMPO, MAX_TEMPO), swing)
     }
 
+    fun scrollSwing(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
+        if (control) {
+            return TempoChange(container as TempoChanges, beat, bpm, swing.copy(division = if (swing.division == Swing.EIGHTH_DIVISION) Swing.SIXTEENTH_DIVISION else Swing.EIGHTH_DIVISION))
+        } else {
+            val list = Swing.SWING_LIST
+            val currentIndex: Int = if (swing.ratio < list.first().ratio) -1 else list.let { _ ->
+                var last: Int = 0
+
+                for (it in 0 until list.size) {
+                    if (this.swing.ratio > list[last].ratio)
+                        last = it
+                }
+
+                last
+            }
+
+            val nextIndex: Int = if (currentIndex == -1) {
+                0
+            } else {
+                val futureNext = currentIndex + amount
+                if (futureNext < 0)
+                    list.size - 1
+                else if (futureNext >= list.size)
+                    0
+                else
+                    futureNext
+            }
+
+            if (nextIndex != currentIndex) {
+                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = list[nextIndex].ratio))
+            }
+        }
+
+        return null
+    }
+
     override fun createResizeCopy(beat: Float, width: Float): TempoChange {
         // Legacy, tempo changes cannot be resized anymore
         return TempoChange(container as TempoChanges, beat, bpm, swing)

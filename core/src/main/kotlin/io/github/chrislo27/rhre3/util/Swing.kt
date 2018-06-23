@@ -14,10 +14,14 @@ data class Swing(val ratio: Int, val division: Float) {
 
         val EIGHTH_DIVISION = 1.0f
         val SIXTEENTH_DIVISION = 0.5f
+        val EIGHTH_SYMBOL = "♪"
+        val SIXTEENTH_SYMBOL = "♬"
 
         val STRAIGHT: Swing = Swing(50, EIGHTH_DIVISION)
         val SWING: Swing = Swing(65, EIGHTH_DIVISION)
         val SHUFFLE: Swing = Swing(75, EIGHTH_DIVISION)
+
+        val SWING_LIST: List<Swing> = listOf(STRAIGHT, SWING, SHUFFLE)
     }
 
 }
