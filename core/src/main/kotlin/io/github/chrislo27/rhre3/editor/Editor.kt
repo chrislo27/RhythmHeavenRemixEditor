@@ -790,7 +790,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val clickOccupation = clickOccupation
             val toolIsTrackerBased = tool.isTrackerRelated
             val clickIsTrackerResize = clickOccupation is TrackerResize
-            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java, true)
+            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java ?: (if (tool == Tool.SWING) TempoChange::class.java else null), true)
 
             fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float, slope: Int) {
                 val heightPerLayer = 0.75f
@@ -837,9 +837,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             fun Tracker<*>.render() {
                 renderTracker(container.renderLayer,
-                              if (toolIsTrackerBased && currentTracker === this
-                                      && !clickIsTrackerResize && remix.playState == STOPPED)
-                                  Color.WHITE else getColour(theme),
+                              if (currentTracker === this && remix.playState == STOPPED && !clickIsTrackerResize && (toolIsTrackerBased || (tool == Tool.SWING && currentTracker is TempoChange))) Color.WHITE else getColour(theme),
                               text, beat, width, getSlope())
             }
 

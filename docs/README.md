@@ -86,8 +86,8 @@ In the bottom-right, you will see tools:
 ![Tools](readme/tools.png)
 
 From first to last: **Selection**, **Multipart Split**, **Tempo Change**,
-**Music Volume**, and **Time Signature**. They will be explained below.
-You can access them quickly by pressing `1-5` on the number keys.
+**Music Volume**, **Time Signature**, and **Swing**. They will be explained below.
+You can access them quickly by pressing `1-6` on the number keys.
 
 To the left of the tool buttons you'll see a minimap.
 **`LEFT CLICK`** will jump the camera to that position.
@@ -198,6 +198,9 @@ mid-remix as a value over 4 (that is, everything is in X/4 time). If you
 are fluent with music theory, you will use this tool to your advantage
 to create measures so your patterns don't sound "off". You can only place this
 on whole, non-negative beats.
+
+## Swing tool
+The Swing tool is covered [in its own article here.](Swing-tool.md)
 
 # Tapalong
 The tapalong menu is recurring from RHRE2, this time it is inline with the
