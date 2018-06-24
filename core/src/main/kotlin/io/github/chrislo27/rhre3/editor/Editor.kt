@@ -2207,6 +2207,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             append("\nbpm: ♩=")
             append(remix.tempos.tempoAtSeconds(remix.seconds))
 
+            append("\nswing: ")
+            val swing = remix.tempos.swingAtSeconds(remix.seconds)
+            append(swing.ratio).append("%, ").append(swing.division)
+
             append("\nmusvol: ")
             append(remix.musicVolumes.volumeAt(remix.beat))
 
