@@ -591,7 +591,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         THREE_DECIMAL_PLACES_FORMATTER.format(time.toDouble()), seconds]
             }
 
-            fun renderAboveTracker(textKey: String?, controlKey: String?, units: Int, beat: Float, color: Color,
+            fun renderAboveTracker(text: String?, controlText: String?, units: Int, beat: Float, color: Color,
                                    trackerTime: String = getTrackerTime(beat),
                                    triangleHeight: Float = 0.4f, bpmText: String? = null, showMusicUnsnap: Boolean = false) {
                 val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
@@ -607,8 +607,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 borderedFont.scaleFont(camera)
                 borderedFont.scaleMul(0.75f)
                 borderedFont.color = batch.color
-                if (textKey != null) {
-                    borderedFont.drawCompressed(batch, Localization[textKey], x - 1.05f, y + height, 1f, Align.right)
+                if (text != null) {
+                    borderedFont.drawCompressed(batch, text, x - 1.05f, y + height, 1f, Align.right)
                 }
                 borderedFont.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
                 if (bpmText != null) {
@@ -620,9 +620,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                 val line = borderedFont.lineHeight
 
-                if (controlKey != null) {
+                if (controlText != null) {
                     borderedFont.scaleMul(0.75f)
-                    borderedFont.drawCompressed(batch, Localization[controlKey], x - 1.05f, y + height - line, 1f,
+                    borderedFont.drawCompressed(batch, controlText, x - 1.05f, y + height - line, 1f,
                                                 Align.right)
                 }
 
@@ -644,10 +644,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 cachedMusicStart = remix.musicStartSec to getTrackerTime(remix.musicStartSec, noBeat = true)
             }
 
-            renderAboveTracker("tracker.music", "tracker.music.controls",
+            renderAboveTracker(Localization["tracker.music"], Localization["tracker.music.controls"],
                                1, remix.musicStartSec, theme.trackers.musicStart,
                                cachedMusicStart.second, showMusicUnsnap = clickOccupation is ClickOccupation.Music)
-            renderAboveTracker("tracker.playback", "tracker.playback.controls",
+            renderAboveTracker(Localization["tracker.playback"], Localization["tracker.playback.controls"],
                                0, remix.playbackStart, theme.trackers.playback, cachedPlaybackStart.second)
 
             if (stage.tapalongMarkersEnabled) {
@@ -655,9 +655,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 tapalong.seconds.forEach {
                     val beat = remix.tempos.secondsToBeats((it.remixSec ?: return@forEach) + remix.musicStartSec)
                     if (beat in beatRange) {
-                        renderAboveTracker(null, null,
-                                           1, beat,
-                                           theme.trackLine)
+                        renderAboveTracker(null, null, 1, beat, theme.trackLine)
                     }
                 }
             }
