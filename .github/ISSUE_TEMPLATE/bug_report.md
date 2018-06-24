@@ -16,3 +16,8 @@ about: Create a bug report to help us improve
 **Expected behaviour**: <what was *supposed* to happen?>
 
 **Actual behaviour**: <what *really* happened?>
+
+## Steps to reproduce issue
+1. Step one
+2. Step two
+3. etc.
