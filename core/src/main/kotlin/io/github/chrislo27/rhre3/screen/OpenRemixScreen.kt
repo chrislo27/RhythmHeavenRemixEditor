@@ -298,8 +298,7 @@ class OpenRemixScreen(main: RHRE3Application)
         }
     }
 
-    override fun show() {
-        super.show()
+    fun attemptOpenPicker() {
         if (!isLoading) {
             openPicker()
             remix = null
