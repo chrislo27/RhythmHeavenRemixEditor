@@ -162,7 +162,7 @@ class OpenRemixScreen(main: RHRE3Application)
         }
     }
 
-    fun loadFile(file: File) {
+    fun loadFile(file: File, overrideAutosave: Boolean? = null) {
         if (isLoading)
             return
         isLoading = true
@@ -192,6 +192,8 @@ class OpenRemixScreen(main: RHRE3Application)
                 val toLoadIDs = toLoad.map { it.datamodel.id }
                 val toUnload = editor.remix.entities.applyFilter().filter { it.datamodel.id !in toLoadIDs }
 
+                val isAutosave = overrideAutosave ?: result.isAutosave
+
                 val coroutine: Job = launch(CommonPool) {
                     isLoadingSounds = true
                     toUnload.forEach { entity ->
@@ -216,10 +218,10 @@ class OpenRemixScreen(main: RHRE3Application)
                         coroutine.join()
                     }
 
-                    if (!result.isAutosave) {
+                    if (!isAutosave) {
                         val fh = FileHandle(file)
                         editor.setFileHandles(fh)
-                        RemixRecovery.cacheChecksumAfterLoad(result.remix)
+                        RemixRecovery.cacheRemixChecksum(result.remix)
                     }
                 }
 
@@ -234,7 +236,7 @@ class OpenRemixScreen(main: RHRE3Application)
 
                 mainLabel.text = ""
 
-                if (result.isAutosave) {
+                if (isAutosave) {
                     mainLabel.text += Localization["screen.open.autosave"] + "\n\n"
                 }
 

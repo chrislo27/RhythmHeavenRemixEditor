@@ -29,7 +29,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
         if (firstShowing) {
             firstShowing = false
-            RemixRecovery.cacheChecksumAfterLoad(editor.remix)
+            RemixRecovery.cacheRemixChecksum(editor.remix)
         }
 
         DiscordHelper.updatePresence(PresenceState.InEditor)

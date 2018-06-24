@@ -54,7 +54,7 @@ class NewRemixScreen(main: RHRE3Application)
                         }
                         editor.remix = editor.createRemix()
                         this@NewRemixScreen.stage.onBackButtonClick()
-                        RemixRecovery.cacheChecksumAfterLoad(editor.remix)
+                        RemixRecovery.cacheRemixChecksum(editor.remix)
                         Gdx.app.postRunnable {
                             System.gc()
                         }

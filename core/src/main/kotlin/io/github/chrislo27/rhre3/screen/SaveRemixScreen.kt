@@ -135,10 +135,11 @@ class SaveRemixScreen(main: RHRE3Application)
                             else
                                 file
 
-                            Remix.saveTo(editor.remix, correctFile, false)
+                            val remix = editor.remix
+                            Remix.saveTo(remix, correctFile, false)
                             val newfh = FileHandle(correctFile)
                             editor.setFileHandles(newfh)
-                            RemixRecovery.cacheChecksum(newfh)
+                            RemixRecovery.cacheChecksumOfFile(newfh)
 
                             mainLabel.text = Localization["screen.save.success"]
                             Gdx.app.postRunnable(GameMetadata::persist)

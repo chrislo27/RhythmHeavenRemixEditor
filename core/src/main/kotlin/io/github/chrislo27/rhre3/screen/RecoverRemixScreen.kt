@@ -63,7 +63,7 @@ class RecoverRemixScreen(main: RHRE3Application)
                 super.onLeftClick(xPercent, yPercent)
 
                 val screen = ScreenRegistry.getNonNullAsType<OpenRemixScreen>("openRemix")
-                screen.loadFile(RemixRecovery.recoveryFile.file())
+                screen.loadFile(RemixRecovery.recoveryFile.file(), overrideAutosave = true)
                 main.screen = ScreenRegistry["editor"] // This forces the last checksum to be of a blank remix
                 main.screen = screen
             }

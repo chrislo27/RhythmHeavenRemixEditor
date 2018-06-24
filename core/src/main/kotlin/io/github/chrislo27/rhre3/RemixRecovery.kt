@@ -75,12 +75,12 @@ object RemixRecovery {
         return result.toString()
     }
 
-    fun cacheChecksumAfterLoad(remix: Remix) {
-        Remix.saveTo(remix, lastLoadedFile.file(), true)
-        cacheChecksum(lastLoadedFile)
+    fun cacheRemixChecksum(remix: Remix) {
+        Remix.saveTo(remix, lastLoadedFile.file(), false)
+        cacheChecksumOfFile(lastLoadedFile)
     }
 
-    fun cacheChecksum(fileHandle: FileHandle) {
+    fun cacheChecksumOfFile(fileHandle: FileHandle) {
         lastChecksum = getChecksumOfZip(fileHandle)
     }
 
@@ -96,7 +96,7 @@ object RemixRecovery {
             val editor = editorScreen.editor
             val remix = editor.remix
 
-            Remix.saveTo(remix, recoveryFile.file(), true)
+            Remix.saveTo(remix, recoveryFile.file(), false)
             val recoveryChecksum = if (remix.isEmpty()) "" else getChecksumOfZip(recoveryFile)
             recoveryPrefs.putString("lastSavedChecksum", lastChecksum)
                     .putString("recoveryChecksum", recoveryChecksum)
