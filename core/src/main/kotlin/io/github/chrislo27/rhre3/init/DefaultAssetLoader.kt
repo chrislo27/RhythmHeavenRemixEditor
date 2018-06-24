@@ -107,6 +107,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")
         AssetRegistry.loadAsset<Texture>("playyan_jumping", "images/playyan/jumping_26.png")
+        AssetRegistry.loadAsset<Texture>("playyan_pogo", "images/playyan/pogo.png")
 
         // goat
         AssetRegistry.loadAsset<Texture>("goat_full", "images/goat/goat_full.png")

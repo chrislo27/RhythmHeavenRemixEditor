@@ -732,7 +732,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 }
 
-                batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
+                batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
                            remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
                            0, 0, 26, 35, false, false)
             } else {
