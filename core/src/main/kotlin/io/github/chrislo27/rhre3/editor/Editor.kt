@@ -74,6 +74,7 @@ import kotlinx.coroutines.experimental.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
@@ -706,29 +707,36 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         // Play-Yan
         if (remix.metronome) {
-            val jumpTime = 0.65f
             val beat = if (remix.playState != STOPPED) remix.beat else remix.playbackStart
-            val beatPercent = (beat + Math.abs(Math.floor(beat.toDouble()) * 2).toFloat()) % 1
-            if (beatPercent <= jumpTime && remix.playState != STOPPED) {
-                val jumpSawtooth = beatPercent / jumpTime
-                val jumpTriangle = if (jumpSawtooth <= 0.5f)
-                    jumpSawtooth * 2
-                else
-                    1f - (jumpSawtooth - 0.5f) * 2
-                val jumpHeight = (if (jumpSawtooth <= 0.5f)
-                    jumpSawtooth * 2
-                else
-                    jumpTriangle * jumpTriangle) * (if (remix.timeSignatures.getMeasurePart(beat) == 0) 2f else 1f)
-
-                batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
-                           remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
-                           0, 0, 26, 35, false, false)
-            } else {
+            fun drawWalking() {
                 val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
                 batch.draw(AssetRegistry.get<Texture>("playyan_walking"), beat,
                            remix.trackCount * 1f,
                            toScaleX(26f), toScaleY(35f),
                            step * 26, 0, 26, 35, false, false)
+            }
+            if (remix.playState != STOPPED) {
+                val beatPercent = beat % 1f
+                val playbackStartPercent = remix.playbackStart % 1f
+                val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
+                val currentSwing = remix.tempos.swingAt(beat)
+                val ratio = currentSwing.ratio / 100f
+                val jumpHeight: Float = when {
+                    currentSwing.ratio == 50 -> MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
+                    else -> {
+                         if (beatPercent <= ratio) {
+                             MathUtils.sin(MathUtils.PI * beatPercent * (1f / ratio))
+                        } else {
+                             MathUtils.sin(MathUtils.PI * (beatPercent - ratio) * (1f / (1f - ratio))) * 0.5f
+                        }.absoluteValue
+                    }
+                }
+
+                batch.draw(AssetRegistry.get<Texture>("playyan_jumping"), beat,
+                           remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
+                           0, 0, 26, 35, false, false)
+            } else {
+                drawWalking()
             }
         }
 
