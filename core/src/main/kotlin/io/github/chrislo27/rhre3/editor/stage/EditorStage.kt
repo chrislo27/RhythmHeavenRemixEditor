@@ -80,6 +80,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val searchFilter = SearchFilter(this)
     val favouritesFilter = FavouritesFilter()
     val recentsFilter = RecentFilter()
+    val storedPatternsFilter = StoredPatternsFilter()
 
     lateinit var playButton: PlaybackButton
         private set
@@ -361,6 +362,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     customSoundsFolderButton.visible = true
                 } else if (filter is SeriesFilter) {
                     gameStageText.text = Localization["editor.nothing.series"]
+                } else if (filter is StoredPatternsFilter) {
+                    gameStageText.text = Localization["editor.storedPatterns.add"]
                 }
             }
 
@@ -1055,6 +1058,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         screenX = filterButtons.size * buttonWidth
                                  )
                 this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_favourites"))
+            }
+            filterButtons += FilterButton(storedPatternsFilter, "editor.storedPatterns",
+                                          palette, minimapBarStage, minimapBarStage).apply {
+                this.location.set(
+                        screenWidth = buttonWidth,
+                        screenHeight = buttonHeight,
+                        screenX = filterButtons.size * buttonWidth
+                                 )
+                this.label.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_tab_stored_patterns"))
             }
             minimapBarStage.elements.addAll(filterButtons)
 

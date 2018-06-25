@@ -158,22 +158,14 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         val type = node["type"]?.asText(null) ?: return@forEach
                         val isCustom = node["isCustom"]?.asBoolean(false) ?: false
 
-                        val entity: Entity = when (type) {
-                            "model" -> {
-                                val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
-                                        ?: return@forEach
+                        val entity: Entity = Entity.getEntityFromType(type, node, remix) ?: run {
+                            missing++
+                            if (isCustom)
+                                missingCustom++
 
-                                GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null) ?: run {
-                                    missing++
-                                    if (isCustom)
-                                        missingCustom++
-
-                                    Toolboks.LOGGER.warn(
-                                            "Missing ${if (isCustom) "custom " else ""}asset: $datamodelID")
-                                    return@forEach
-                                }
-                            }
-                            else -> error("Unsupported entity type: $type")
+                            Toolboks.LOGGER.warn(
+                                    "Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
+                            return@forEach
                         }
 
                         entity.readData(node)

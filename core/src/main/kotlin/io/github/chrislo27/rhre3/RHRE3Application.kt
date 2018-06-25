@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.midi.MidiHandler
+import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
@@ -169,6 +170,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         } ?: defaultNewBackground
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
+        PatternStorage.load(Gdx.app.getPreferences("RHRE3-patterns"))
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)
@@ -337,6 +339,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         AnalyticsHandler.dispose()
         MidiHandler.isSearching = false
         MidiHandler.dispose()
+        PatternStorage.persist()
     }
 
     fun persistWindowSettings() {

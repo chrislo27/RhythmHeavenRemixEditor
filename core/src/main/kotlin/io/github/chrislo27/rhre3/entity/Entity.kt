@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
@@ -20,6 +21,20 @@ fun List<Entity>.areAnyResponseCopyable(): Boolean {
 }
 
 abstract class Entity(val remix: Remix) {
+
+    companion object {
+        fun getEntityFromType(type: String, node: ObjectNode, remix: Remix): Entity? {
+            return when (type) {
+                "model" -> {
+                    val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
+                            ?: error("Entity of type 'model' is missing field ${ModelEntity.JSON_DATAMODEL}")
+
+                    GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null)
+                }
+                else -> error("Unsupported entity type: $type")
+            }
+        }
+    }
 
     var isSelected: Boolean = false
     val bounds: Rectangle = Rectangle()

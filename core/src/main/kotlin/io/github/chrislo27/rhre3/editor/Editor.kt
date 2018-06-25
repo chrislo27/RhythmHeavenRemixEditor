@@ -14,6 +14,8 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.SharedLibraryLoader
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -33,6 +35,8 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
+import io.github.chrislo27.rhre3.patternstorage.PatternStorage
+import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -41,6 +45,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
+import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
@@ -60,6 +65,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.rhre3.util.Swing
 import io.github.chrislo27.rhre3.util.TempoUtils
@@ -722,10 +728,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val jumpHeight: Float = when {
                     currentSwing.ratio == 50 -> MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
                     else -> {
-                         if (beatPercent <= ratio) {
-                             MathUtils.sin(MathUtils.PI * beatPercent * (1f / ratio))
+                        if (beatPercent <= ratio) {
+                            MathUtils.sin(MathUtils.PI * beatPercent * (1f / ratio))
                         } else {
-                             MathUtils.sin(MathUtils.PI * (beatPercent - ratio) * (1f / (1f - ratio))) * 0.5f
+                            MathUtils.sin(MathUtils.PI * (beatPercent - ratio) * (1f / (1f - ratio))) * 0.5f
                         }.absoluteValue
                     }
                 }
@@ -920,23 +926,27 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     val mouseY = remix.camera.getInputY()
                     val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
                     val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
+                    val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
 
-                    batch.setColor(1f, 0f, 0f, 0.25f * alpha)
-                    batch.fillRect(left, y,
-                                   remix.camera.viewportWidth * remix.camera.zoom,
-                                   -remix.camera.viewportHeight * remix.camera.zoom)
-                    batch.setColor(oldColor)
+                    if (!overStoreArea) {
+                        batch.setColor(1f, 0f, 0f, 0.25f * alpha)
+                        batch.fillRect(left, y,
+                                       remix.camera.viewportWidth * remix.camera.zoom,
+                                       -remix.camera.viewportHeight * remix.camera.zoom)
+                        batch.setColor(oldColor)
 
-                    val deleteFont = main.defaultFontLarge
-                    deleteFont.scaleFont(camera)
-                    deleteFont.scaleMul(0.5f)
-                    deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
+                        val deleteFont = main.defaultFontLarge
+                        deleteFont.scaleFont(camera)
+                        deleteFont.scaleMul(0.5f)
 
-                    deleteFont.drawCompressed(batch, Localization["editor.delete"], left, y + -1f + font.capHeight / 2,
-                                              remix.camera.viewportWidth * remix.camera.zoom, Align.center)
+                        deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
-                    deleteFont.setColor(1f, 1f, 1f, 1f)
-                    deleteFont.unscaleFont()
+                        deleteFont.drawCompressed(batch, Localization["editor.delete"], left, y + -1f + font.capHeight / 2,
+                                                  remix.camera.viewportWidth * remix.camera.zoom, Align.center)
+
+                        deleteFont.setColor(1f, 1f, 1f, 1f)
+                        deleteFont.unscaleFont()
+                    }
                 }
                 is ClickOccupation.CreatingSelection -> {
                     val oldColor = batch.packedColor
@@ -1444,7 +1454,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
                                 if (clickOccupation.isInDeleteZone()) {
-                                    msgBuilder.separator().append(Localization["editor.msg.deletingSelection"])
+                                    msgBuilder.separator().append(Localization[if (pickerSelection.filter != stage.storedPatternsFilter) "editor.msg.deletingSelection" else "editor.msg.storingSelection"])
                                 } else {
                                     msgBuilder.separator().append(Localization["editor.msg.invalidPlacement"])
                                 }
@@ -1808,30 +1818,57 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         } else if (stage.patternAreaStage.isMouseOver() && stage.patternAreaStage.visible
                 && currentTool == Tool.SELECTION && isDraggingButtonDown) {
-            // only for new
-            val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
-            val entity = datamodel.createEntity(remix, null)
+            // only for new/stored pattern
+            val isStored = pickerSelection.filter == stage.storedPatternsFilter
+            val entities: List<Entity>
 
-            if (entity is ILoadsSounds) {
-                entity.loadSounds()
+            if (!isStored) {
+                val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
+                val entity = datamodel.createEntity(remix, null)
+
+                if (Toolboks.debugMode) {
+                    entity.datamodel.game.objects.forEach { obj ->
+                        if (obj is Cue) {
+                            obj.loadSounds()
+                        }
+                    }
+                }
+
+                entities = listOf(entity)
+            } else {
+                try {
+                    val pattern: StoredPattern = if (PatternStorage.patterns.isEmpty()) return true else PatternStorage.patterns.values.first()
+
+                    val result = (JsonHandler.OBJECT_MAPPER.readTree(pattern.data) as ArrayNode).map { node ->
+                        Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)
+                    }.filterNotNull()
+
+                    if (result.isEmpty())
+                        return true
+
+                    entities = result
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    return true
+                }
             }
 
-            if (Toolboks.debugMode) {
-                entity.datamodel.game.objects.forEach { obj ->
-                    if (obj is Cue) {
-                        obj.loadSounds()
-                    }
+            entities.forEach { entity ->
+                if (entity is ILoadsSounds) {
+                    entity.loadSounds()
                 }
             }
 
             val oldSelection = this.selection
-            this.selection = listOf(entity)
+            this.selection = entities.toList()
             val selection = ClickOccupation.SelectionDrag(this, this.selection.first(), Vector2(0f, 0f),
                                                           true, false, oldSelection, StretchRegion.NONE)
             selection.setPositionRelativeToMouse()
-            entity.updateInterpolation(true)
+            entities.forEach {
+                it.updateInterpolation(true)
+            }
 
-            remix.entities += entity
+            remix.entities.addAll(entities)
 
             this.clickOccupation = selection
         }
@@ -1864,6 +1901,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
             val validPlacement = clickOccupation.isPlacementValid()
             val deleting = clickOccupation.isInDeleteZone()
+            val storing = deleting && pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
 
             /*
              Placement = drag from picker or copy
@@ -1871,13 +1909,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
              Outcomes:
 
+             New or copy:
              Correct placement -> results in a place+selection action
              Invalid placement -> remove, restore old selection
 
+             Existing:
              Correct movement  -> results in a move action
              Invalid movement  -> return
              Delete movement   -> remove+selection action
              */
+
+            fun storePattern() {
+                main.screen = PatternStoreScreen(main, this, selection.toList())
+            }
 
             if (clickOccupation.isNewOrCopy) {
                 if (validPlacement) {
@@ -1891,6 +1935,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                 (this.selection.first { it is ModelEntity<*> } as ModelEntity<*>).datamodel.game)
                     }
                 } else {
+                    if (storing) {
+                        storePattern()
+                    }
+
                     // delete silently
                     remix.entities.removeAll(selection)
                     // restore original selection
@@ -1900,7 +1948,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (validPlacement) {
                     // move action
                     remix.addActionWithoutMutating(EntityMoveAction(this, this.selection, clickOccupation.oldBounds))
-                } else if (deleting) {
+                } else if (deleting && !storing) {
                     // remove+selection action
                     remix.entities.removeAll(this.selection)
                     remix.addActionWithoutMutating(ActionGroup(listOf(
@@ -1909,6 +1957,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                                                      )))
                     this.selection = listOf()
                 } else {
+                    if (storing) {
+                        storePattern()
+                    }
+
                     // revert positions silently
                     clickOccupation.oldBounds.forEachIndexed { index, rect ->
                         val entity = selection[index]

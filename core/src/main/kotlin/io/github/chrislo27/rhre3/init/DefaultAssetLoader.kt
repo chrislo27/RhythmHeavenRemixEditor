@@ -79,6 +79,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_favourites", "images/ui/icons/favouritesTab.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_custom", "images/ui/icons/customTab.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_tab_recents", "images/ui/icons/recentsTab.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_tab_stored_patterns", "images/ui/icons/chest.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_discord", "images/ui/icons/discord_logo_white.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_sfx_volume", "images/ui/icons/sfx_volume.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_scroll_pitch", "images/ui/icons/scrollpitch.png")
@@ -86,6 +87,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_news", "images/ui/icons/news.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_news_big", "images/ui/icons/news_big.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_news_indicator", "images/ui/icons/news_indicator.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_pattern_store", "images/ui/icons/chestOpen.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_pattern_delete", "images/ui/icons/chestX.png")
 
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
