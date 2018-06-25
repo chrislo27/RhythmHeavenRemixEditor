@@ -29,13 +29,13 @@ abstract class Filter {
         get() = currentDatamodelList.current
     val currentGameList: GameList
         get() = gamesPerGroup[currentGroup]!!
-    val currentDatamodelList: DatamodelList
+    open val currentDatamodelList: DatamodelList
         get() = datamodelsPerGame[currentGame]!!
     val areGroupsEmpty: Boolean
         get() = gameGroups.isEmpty()
     val areGamesEmpty: Boolean
         get() = areGroupsEmpty || gamesPerGroup[currentGroup]?.isEmpty != false
-    val areDatamodelsEmpty: Boolean
+    open val areDatamodelsEmpty: Boolean
         get() = areGamesEmpty || datamodelsPerGame[currentGame]?.isEmpty != false
     val maxGroupIndex: Int
         get() = (gameGroups.size - 1).coerceAtLeast(0)

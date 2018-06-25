@@ -104,6 +104,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var patternPreviewButton: PatternPreviewButton
         private set
+    lateinit var deleteStoredPatternButton: DeleteStoredPatternButton
+        private set
     lateinit var baseBpmLabel: TextLabel<EditorScreen>
         private set
     lateinit var bottomBaseBpmLabel: TextLabel<EditorScreen>
@@ -302,13 +304,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             baseBpmLabel.visible = anyDatamodels
             bottomBaseBpmLabel.visible = false
             if (!filter.areDatamodelsEmpty) {
-                val objects = filter.currentDatamodelList.list
-
                 fun <T> MutableList<T>.getOrAdd(index: Int, function: (Int) -> T): T {
                     return getOrNull(index) ?: function(index).also {
                         add(it)
                     }
                 }
+
+                val objects = filter.currentDatamodelList.list
 
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
@@ -344,7 +346,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.visible = anyDatamodels
             }
             patternAreaArrowLabel.visible = anyDatamodels
-            patternPreviewButton.update(if (anyDatamodels) filter.currentDatamodel else null)
+            if (filter == storedPatternsFilter) {
+                deleteStoredPatternButton.visible = storedPatternsFilter.currentPattern != null
+                patternPreviewButton.visible = false
+            } else {
+                patternPreviewButton.update(if (anyDatamodels) filter.currentDatamodel else null)
+                deleteStoredPatternButton.visible = false
+            }
 
             editor.updateMessageLabel()
 
@@ -996,6 +1004,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.location.set(screenX = 1f - this.location.screenWidth)
                 }
                 patternAreaStage.elements += patternPreviewButton
+                deleteStoredPatternButton = DeleteStoredPatternButton(editor, this, palette, patternAreaStage, patternAreaStage).apply {
+                    this.location.set(patternPreviewButton.location.screenX, patternPreviewButton.location.screenY, patternPreviewButton.location.screenWidth, patternPreviewButton.location.screenHeight)
+                    this.visible = false
+                }
+                patternAreaStage.elements += deleteStoredPatternButton
 
                 patternAreaStage.elements += pickerDisplay.apply {
                     this.location.set(

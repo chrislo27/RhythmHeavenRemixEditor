@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
+import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -92,6 +92,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entitie
             this.canPaste = true
             this.canInputNewlines = false
             this.background = true
+            this.hasFocus = true
         }
 
         stage.centreStage.elements += textField

@@ -24,10 +24,10 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
     val labels: MutableList<Label> = mutableListOf()
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        if (editor.pickerSelection.filter.areDatamodelsEmpty)
+        val filter = editor.pickerSelection.filter
+        if (filter.areDatamodelsEmpty)
             return
-        val selection = editor.pickerSelection.filter.datamodelsPerGame[editor.pickerSelection.filter.currentGame]
-                ?: return
+        val selection = filter.currentDatamodelList
         val oldScroll = selection.smoothScroll
         selection.smoothScroll = MathUtils.lerp(oldScroll, selection.currentIndex.toFloat(),
                                                 Gdx.graphics.deltaTime / 0.075f)

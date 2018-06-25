@@ -11,37 +11,35 @@ object PatternStorage {
 
     private lateinit var preferences: Preferences
 
-    val patterns: Map<UUID, StoredPattern> = mutableMapOf()
+    val patterns: Map<UUID, StoredPattern> = linkedMapOf()
 
     fun load(prefs: Preferences) {
         patterns as MutableMap
         preferences = prefs
-        preferences.get().filter { it.key.startsWith("pattern_") }
-                .forEach { key, value ->
-                    try {
-                        // Check UUID is valid
-                        UUID.fromString(key.substringAfter("pattern_"))
-
-                        val pattern = JsonHandler.fromJson<StoredPattern>(value as String)
-                        patterns[pattern.uuid] = pattern
-                    } catch (e: IllegalArgumentException) {
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
+        preferences.getString("patterns", null)?.let { json ->
+            try {
+                val array = JsonHandler.fromJson<Array<StoredPattern>>(json)
+                array.forEach { patterns[it.uuid] = it }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
     }
 
     fun persist() {
         if (this::preferences.isInitialized) {
-            preferences.clear()
+            val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
+
 
             patterns.values.forEach {
                 try {
-                    preferences.putString("pattern_" + it.uuid.toString(), JsonHandler.toJson(it))
+                    array.addPOJO(it)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
+
+            preferences.putString("patterns", JsonHandler.toJson(array))
 
             preferences.flush()
         }
@@ -50,6 +48,12 @@ object PatternStorage {
     fun addPattern(pattern: StoredPattern): PatternStorage {
         patterns as MutableMap
         patterns[pattern.uuid] = pattern
+        return this
+    }
+
+    fun deletePattern(pattern: StoredPattern): PatternStorage {
+        patterns as MutableMap
+        patterns.remove(pattern.uuid, pattern)
         return this
     }
 

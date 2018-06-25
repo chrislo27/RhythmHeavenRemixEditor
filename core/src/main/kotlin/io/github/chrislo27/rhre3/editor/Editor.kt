@@ -35,7 +35,6 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
-import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
@@ -164,7 +163,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         STOPPED -> {
                             resetAllSongSubtitles()
                             DiscordHelper.updatePresence(PresenceState.InEditor)
-                            stage.patternPreviewButton.visible = true
+                            stage.patternPreviewButton.visible = editor.pickerSelection.filter != editor.stage.storedPatternsFilter
                             stage.patternPreviewButton.stop()
                         }
                         PAUSED -> {
@@ -1837,10 +1836,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 entities = listOf(entity)
             } else {
                 try {
-                    val pattern: StoredPattern = if (PatternStorage.patterns.isEmpty()) return true else PatternStorage.patterns.values.first()
+                    val pattern: StoredPattern = stage.storedPatternsFilter.currentPattern ?: return true
 
                     val result = (JsonHandler.OBJECT_MAPPER.readTree(pattern.data) as ArrayNode).map { node ->
-                        Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)
+                        Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)?.also {
+                            it.readData(node)
+                        }
                     }.filterNotNull()
 
                     if (result.isEmpty())
