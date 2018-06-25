@@ -1453,7 +1453,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
                                 if (clickOccupation.isInDeleteZone()) {
-                                    msgBuilder.separator().append(Localization[if (pickerSelection.filter != stage.storedPatternsFilter) "editor.msg.deletingSelection" else "editor.msg.storingSelection"])
+                                    msgBuilder.separator().append(Localization[if (pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()) "editor.msg.storingSelection" else "editor.msg.deletingSelection"])
                                 } else {
                                     msgBuilder.separator().append(Localization["editor.msg.invalidPlacement"])
                                 }
