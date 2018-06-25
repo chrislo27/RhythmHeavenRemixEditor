@@ -60,7 +60,7 @@ object PatternStorage {
     }
 
     private fun resort() {
-        val values = patterns.values.toList().sortedBy(StoredPattern::name)
+        val values = patterns.values.toList().sortedBy { it.name.toLowerCase(Locale.ROOT) }
 
         patterns as MutableMap
         patterns.clear()
