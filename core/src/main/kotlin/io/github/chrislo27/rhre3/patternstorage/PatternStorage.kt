@@ -24,6 +24,7 @@ object PatternStorage {
                 e.printStackTrace()
             }
         }
+        resort()
     }
 
     fun persist() {
