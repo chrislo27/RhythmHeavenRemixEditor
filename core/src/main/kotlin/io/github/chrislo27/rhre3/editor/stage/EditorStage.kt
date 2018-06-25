@@ -104,7 +104,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var patternPreviewButton: PatternPreviewButton
         private set
-    lateinit var deleteStoredPatternButton: DeleteStoredPatternButton
+    lateinit var editStoredPatternButton: EditStoredPatternButton
         private set
     lateinit var baseBpmLabel: TextLabel<EditorScreen>
         private set
@@ -347,11 +347,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             patternAreaArrowLabel.visible = anyDatamodels
             if (filter == storedPatternsFilter) {
-                deleteStoredPatternButton.visible = storedPatternsFilter.currentPattern != null
+                editStoredPatternButton.visible = storedPatternsFilter.currentPattern != null
                 patternPreviewButton.visible = false
             } else {
                 patternPreviewButton.update(if (anyDatamodels) filter.currentDatamodel else null)
-                deleteStoredPatternButton.visible = false
+                editStoredPatternButton.visible = false
             }
 
             editor.updateMessageLabel()
@@ -1004,11 +1004,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.location.set(screenX = 1f - this.location.screenWidth)
                 }
                 patternAreaStage.elements += patternPreviewButton
-                deleteStoredPatternButton = DeleteStoredPatternButton(editor, this, palette, patternAreaStage, patternAreaStage).apply {
+                editStoredPatternButton = EditStoredPatternButton(editor, this, borderedPalette, patternAreaStage, patternAreaStage).apply {
                     this.location.set(patternPreviewButton.location.screenX, patternPreviewButton.location.screenY, patternPreviewButton.location.screenWidth, patternPreviewButton.location.screenHeight)
                     this.visible = false
                 }
-                patternAreaStage.elements += deleteStoredPatternButton
+                patternAreaStage.elements += editStoredPatternButton
 
                 patternAreaStage.elements += pickerDisplay.apply {
                     this.location.set(

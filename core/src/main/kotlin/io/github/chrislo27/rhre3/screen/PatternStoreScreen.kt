@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
@@ -15,11 +16,12 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextField
 import io.github.chrislo27.toolboks.ui.TextLabel
 import java.util.*
 
-class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entities: List<Entity>)
+class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern?, val entities: List<Entity>?)
     : ToolboksScreen<RHRE3Application, PatternStoreScreen>(main) {
 
     override val stage: GenericStage<PatternStoreScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -28,7 +30,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entitie
     private lateinit var textField: TextField<PatternStoreScreen>
 
     init {
-        stage.titleLabel.text = "screen.patternStore.title"
+        stage.titleLabel.text = if (pattern != null) "screen.patternStore.edit.title" else "screen.patternStore.title"
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pattern_store"))
         stage.backButton.visible = true
         stage.onBackButtonClick = {
@@ -43,11 +45,34 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entitie
             this.text = "screen.patternStore.enterName"
         }
 
+        if (pattern != null) {
+            stage.bottomStage.elements += object : Button<PatternStoreScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                                                           clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = PatternDeleteScreen(main, editor, pattern, this@PatternStoreScreen)
+                }
+            }.apply {
+                val backBtnLoc = this@PatternStoreScreen.stage.backButton.location
+                this.location.set(1f - backBtnLoc.screenX - backBtnLoc.screenWidth, backBtnLoc.screenY, backBtnLoc.screenWidth, backBtnLoc.screenHeight)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pattern_delete"))
+                })
+            }
+        }
+
         button = object : Button<PatternStoreScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
 
-                PatternStorage.addPattern(StoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson())).persist()
+                if (pattern == null) {
+                    PatternStorage.addPattern(StoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities!!)))
+                            .persist()
+                } else {
+                    PatternStorage.deletePattern(pattern)
+                            .addPattern(StoredPattern(pattern.uuid, textField.text.trim(), pattern.data))
+                            .persist()
+                }
                 editor.stage.updateSelected()
                 main.screen = ScreenRegistry["editor"]
             }
@@ -71,7 +96,6 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entitie
         textField = object : TextField<PatternStoreScreen>(palette, stage.centreStage, stage.centreStage) {
             init {
                 characterLimit = PatternStorage.MAX_PATTERN_NAME_SIZE
-                onTextChange("")
             }
 
             override fun onEnterPressed(): Boolean {
@@ -93,16 +117,25 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val entitie
             this.canInputNewlines = false
             this.background = true
             this.hasFocus = true
+            onTextChange("")
         }
 
         stage.centreStage.elements += textField
         stage.bottomStage.elements += button
 
-        if (entities.isEmpty())
+        if (entities?.size == 0)
             error("Entities are empty")
+
+        stage.updatePositions()
+        textField.apply {
+            if (pattern != null) {
+                text = pattern.name
+                this.caret = text.length + 1
+            }
+        }
     }
 
-    fun entitiesToJson(): String {
+    fun entitiesToJson(entities: List<Entity>): String {
         val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
 
         val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }

@@ -1921,7 +1921,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
              */
 
             fun storePattern() {
-                main.screen = PatternStoreScreen(main, this, selection.toList())
+                main.screen = PatternStoreScreen(main, this, null, selection.toList())
             }
 
             if (clickOccupation.isNewOrCopy) {

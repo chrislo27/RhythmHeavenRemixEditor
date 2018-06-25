@@ -89,6 +89,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_news_indicator", "images/ui/icons/news_indicator.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_pattern_store", "images/ui/icons/chestOpen.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_pattern_delete", "images/ui/icons/chestX.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_pencil", "images/ui/icons/pencil.png")
 
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")

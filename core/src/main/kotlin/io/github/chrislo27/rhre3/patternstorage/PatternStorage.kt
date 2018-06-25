@@ -48,13 +48,23 @@ object PatternStorage {
     fun addPattern(pattern: StoredPattern): PatternStorage {
         patterns as MutableMap
         patterns[pattern.uuid] = pattern
+        resort()
         return this
     }
 
     fun deletePattern(pattern: StoredPattern): PatternStorage {
         patterns as MutableMap
         patterns.remove(pattern.uuid, pattern)
+        resort()
         return this
+    }
+
+    private fun resort() {
+        val values = patterns.values.toList().sortedBy(StoredPattern::name)
+
+        patterns as MutableMap
+        patterns.clear()
+        values.forEach { patterns[it.uuid] = it }
     }
 
 }

@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.screen
 
+import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -13,7 +15,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
 
-class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern)
+class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern, val lastScreen: Screen?)
     : ToolboksScreen<RHRE3Application, PatternDeleteScreen>(main) {
 
     override val stage: GenericStage<PatternDeleteScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -21,11 +23,11 @@ class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val patter
     private val button: Button<PatternDeleteScreen>
 
     init {
-        stage.titleLabel.text = "screen.patternStore.delete"
+        stage.titleLabel.text = "screen.patternStore.delete.title"
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pattern_delete"))
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry["editor"]
+            main.screen = lastScreen ?: ScreenRegistry["editor"]
         }
 
         val palette = main.uiPalette
@@ -35,7 +37,8 @@ class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val patter
             this.text = "screen.patternStore.delete.confirmation"
         }
 
-        button = object : Button<PatternDeleteScreen>(palette, stage.bottomStage, stage.bottomStage) {
+        button = object : Button<PatternDeleteScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                                   clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
 
