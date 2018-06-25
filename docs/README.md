@@ -202,6 +202,12 @@ on whole, non-negative beats.
 ## Swing tool
 The Swing tool is covered [in its own article here.](Swing-tool.md)
 
+# Stored Patterns
+By clicking on the Stored Patterns tab (the chest icon), you can
+drag down selections and store them for later.
+
+![Example of stored pattern](https://user-images.githubusercontent.com/6299069/41878164-d3b84ba6-7888-11e8-8f73-7aa7508302d9.png)
+
 # Tapalong
 The tapalong menu is recurring from RHRE2, this time it is inline with the
 editor. The main purpose of tapalong is to be able to tap to the rhythm of
