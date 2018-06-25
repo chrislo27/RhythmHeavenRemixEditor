@@ -145,6 +145,27 @@ class InfoScreen(main: RHRE3Application)
             this.location.set(screenX = this.location.screenWidth)
         }
 
+        stage.bottomStage.elements += object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+
+            var last = Int.MIN_VALUE
+            override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                val current = main.liveUsers
+                if (last != current) {
+                    last = current
+                    this.text = if (current > 0) "$current" else ""
+                }
+                super.render(screen, batch, shapeRenderer)
+            }
+        }.apply {
+            this.alignment = Align.bottomRight
+            this.isLocalizationKey = false
+            this.textAlign = Align.right
+            this.fontScaleMultiplier = 0.5f
+            this.location.set(screenHeight = 1f,
+                              screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
+            this.location.set(screenX = this.location.screenWidth, screenY = -0.75f)
+        }
+
         stage.centreStage.also { centre ->
             val padding = 0.025f
             val buttonWidth = 0.4f

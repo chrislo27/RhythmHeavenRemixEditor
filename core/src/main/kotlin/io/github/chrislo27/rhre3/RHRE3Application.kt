@@ -47,6 +47,7 @@ import org.asynchttpclient.AsyncHttpClient
 import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
 import java.io.File
+import java.net.UnknownHostException
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -107,7 +108,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     var versionTextWidth: Float = -1f
         private set
 
+    @Volatile
     var githubVersion: Version = Version.RETRIEVING
+        private set
+    @Volatile
+    var liveUsers: Int = -1 // -1 = getting, -2 = unavailable
         private set
 
     private val rainbowColor: Color = Color()
@@ -216,6 +221,38 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
         thread(isDaemon = true, name = "JavafxStub Launcher") {
             Application.launch(JavafxStub::class.java) // start up
+        }
+        thread(isDaemon = true, name = "Live User Count") {
+            Thread.sleep(2500L)
+            var failures = 0
+            while (!Thread.interrupted()) {
+                try {
+                    val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
+                            .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                            .execute().get()
+
+                    if (req.statusCode == 200) {
+                        val liveUsers = req.responseBody?.trim()?.toIntOrNull()
+                        if (liveUsers != null) {
+                            failures = 0
+                            this.liveUsers = liveUsers.coerceAtLeast(0)
+                        } else {
+                            failures++
+                            this.liveUsers = -2
+                        }
+                    } else {
+                        failures++
+                        this.liveUsers = -2
+                    }
+                } catch (e: Exception) {
+                    if (e !is UnknownHostException)
+                        e.printStackTrace()
+                    this.liveUsers = -2
+                    failures++
+                }
+
+                Thread.sleep(60_000L * (failures + 1))
+            }
         }
         launch(CommonPool) {
             try {
