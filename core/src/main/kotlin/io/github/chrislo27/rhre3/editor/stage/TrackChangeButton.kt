@@ -39,6 +39,7 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         super.onLeftClick(xPercent, yPercent)
         if (remix.playState == PlayState.STOPPED && remix.canIncreaseTrackCount()) {
             remix.mutate(TrackResizeAction(editor, remix.trackCount, remix.trackCount + 1))
+            remix.recomputeCachedData()
         }
     }
 
@@ -56,6 +57,7 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
                 editor.camera.position.x = entities.first().bounds.x
             } else {
                 remix.mutate(TrackResizeAction(editor, remix.trackCount, remix.trackCount - 1))
+                remix.recomputeCachedData()
             }
         }
     }

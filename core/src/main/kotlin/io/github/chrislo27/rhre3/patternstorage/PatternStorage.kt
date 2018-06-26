@@ -31,7 +31,6 @@ object PatternStorage {
         if (this::preferences.isInitialized) {
             val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
 
-
             patterns.values.forEach {
                 try {
                     array.addPOJO(it)
