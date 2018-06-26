@@ -641,7 +641,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     }
 
     /**
-     * Computes cached data like [duration], [lastPoint], and [gameSections].
+     * Call whenever entities move.
      */
     fun recomputeCachedData() {
         entities.sortBy { it.bounds.x }
