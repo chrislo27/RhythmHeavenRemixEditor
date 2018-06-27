@@ -201,6 +201,14 @@ class InfoScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = RHRE3.VERSION.toString()
             }
+            centre.elements += ImageLabel(palette, centre, centre).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("logo_ex_32"))
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
+                                  screenWidth = buttonWidth * 0.11f,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            }
             dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
 
             }.apply {
@@ -222,7 +230,7 @@ class InfoScreen(main: RHRE3Application)
             }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
-                                  screenWidth = buttonWidth * 0.15f,
+                                  screenWidth = buttonWidth * 0.11f,
                                   screenHeight = buttonHeight * 0.8f)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     renderType = ImageLabel.ImageRendering.ASPECT_RATIO
@@ -558,6 +566,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+
         }
 
         stage.updatePositions()
