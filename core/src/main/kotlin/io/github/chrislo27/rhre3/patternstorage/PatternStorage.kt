@@ -36,7 +36,7 @@ object PatternStorage {
             }
         }
 
-        resort()
+        sort()
     }
 
     fun persist() {
@@ -70,18 +70,18 @@ object PatternStorage {
     fun addPattern(pattern: StoredPattern): PatternStorage {
         patterns as MutableMap
         patterns[pattern.uuid] = pattern
-        resort()
+        sort()
         return this
     }
 
     fun deletePattern(pattern: StoredPattern): PatternStorage {
         patterns as MutableMap
         patterns.remove(pattern.uuid, pattern)
-        resort()
+        sort()
         return this
     }
 
-    private fun resort() {
+    private fun sort() {
         val values = patterns.values.toList().sortedBy { it.name.toLowerCase(Locale.ROOT) }
 
         patterns as MutableMap
