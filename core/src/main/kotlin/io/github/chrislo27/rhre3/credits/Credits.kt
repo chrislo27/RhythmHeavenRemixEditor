@@ -49,13 +49,14 @@ object Credits {
                     "musique (forked)\n" +
                     "Segment\n" +
                     "java-discord-rpc",
+            "donators" crediting "",
             "you" crediting ""
                                    )
 
     private infix fun String.crediting(persons: String): Credit =
             Credit(this, persons)
 
-    class Credit(val type: String, val persons: String) {
+    data class Credit(val type: String, val persons: String) {
 
         private val localization: String by lazy {
             "credits.title.$type"
