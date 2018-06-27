@@ -24,6 +24,10 @@ import java.util.*
 class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern?, val entities: List<Entity>?)
     : ToolboksScreen<RHRE3Application, PatternStoreScreen>(main) {
 
+    companion object {
+        private const val ALLOW_SAME_NAMES = true
+    }
+
     override val stage: GenericStage<PatternStoreScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val button: Button<PatternStoreScreen>
@@ -125,7 +129,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
 
                 val trimmed = text.trim()
                 val already = PatternStorage.patterns.values.any { it !== pattern && it.name == trimmed }
-                button.enabled = trimmed.isNotEmpty() && !already
+                button.enabled = trimmed.isNotEmpty() && (ALLOW_SAME_NAMES || !already)
                 alreadyExists.visible = already
 
                 charsRemaining.text = "${trimmed.length} / ${PatternStorage.MAX_PATTERN_NAME_SIZE}"
