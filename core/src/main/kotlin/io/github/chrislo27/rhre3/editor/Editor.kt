@@ -99,7 +99,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val MIN_TRACK_COUNT: Int = 5
         val MAX_TRACK_COUNT: Int = 10
         val DEFAULT_TRACK_COUNT: Int = 5
-        val TRACK_COUNT_RANGE: IntRange = MIN_TRACK_COUNT..MAX_TRACK_COUNT
         const val TRACK_LINE_THICKNESS: Float = 2f
         const val PATTERN_COUNT: Int = 5
 
