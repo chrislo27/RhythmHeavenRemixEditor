@@ -152,7 +152,7 @@ class InfoScreen(main: RHRE3Application)
                 val current = main.liveUsers
                 if (last != current) {
                     last = current
-                    this.text = if (current > 0) "$current" else ""
+                    this.text = if (current > 0) "$current online" else ""
                 }
                 super.render(screen, batch, shapeRenderer)
             }
