@@ -14,7 +14,7 @@ class SubbeatSection {
         if (time <= 0f)
             error("Time cannot be negative ($time)")
         flashAnimation = 1f
-        flashAnimation = time
+        flashAnimationSpeed = time
     }
 
 }
