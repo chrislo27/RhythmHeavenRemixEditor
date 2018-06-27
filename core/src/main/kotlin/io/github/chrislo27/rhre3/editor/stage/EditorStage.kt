@@ -88,7 +88,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var stopButton: PlaybackButton
         private set
-    lateinit var langButton: LangButton
+    lateinit var langButton: LangButton<EditorScreen>
         private set
     lateinit var newsButton: NewsButton
         private set

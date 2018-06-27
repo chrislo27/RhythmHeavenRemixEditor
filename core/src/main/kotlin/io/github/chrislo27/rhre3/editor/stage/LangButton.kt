@@ -3,9 +3,9 @@ package io.github.chrislo27.rhre3.editor.stage
 import io.github.chrislo27.rhre3.PreferenceKeys.LANGUAGE
 import io.github.chrislo27.rhre3.PreferenceKeys.LANG_INDEX
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
+import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.Stage
@@ -14,9 +14,9 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 import java.util.*
 
 
-class LangButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
-                 stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+class LangButton<S : ToolboksScreen<*, *>>(val editor: Editor, palette: UIPalette, parent: UIElement<S>,
+                                           stage: Stage<S>)
+    : Button<S>(palette, parent, stage), EditorStage.HasHoverText {
 
     private val main = editor.main
 
