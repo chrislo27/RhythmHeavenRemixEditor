@@ -10,6 +10,7 @@ object DiscordHelper {
 
     const val DISCORD_APP_ID = "278329593012682754"
     const val DEFAULT_LARGE_IMAGE = "square_logo"
+    const val EXPANSION_LARGE_IMAGE = "logo_ex"
     const val DEFAULT_SMALL_IMAGE = "32_as_512"
     private var inited = false
 

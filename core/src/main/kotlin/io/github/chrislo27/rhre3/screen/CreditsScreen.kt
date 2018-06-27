@@ -70,7 +70,7 @@ class CreditsScreen(main: RHRE3Application)
                                           location.realWidth, Align.center, true)
 
                                 batch.setColor(1f, 1f, 1f, 1f)
-                                val logo = AssetRegistry.get<Texture>("logo_ex_512")
+                                val logo = AssetRegistry.get<Texture>("logo_512")
                                 val logoSize = 256f * multiplier
                                 batch.draw(logo, location.realX + location.realWidth / 2 - logoSize / 2,
                                            y + 16f * multiplier,

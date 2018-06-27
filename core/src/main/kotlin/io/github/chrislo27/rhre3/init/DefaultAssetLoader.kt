@@ -16,7 +16,10 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
             AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
         }
         listOf(32, 64, 128, 256, 512).forEach {
-            AssetRegistry.loadAsset<Texture>("logo_ex_$it", "images/icon/expansion/$it.png")
+            AssetRegistry.loadAsset<Texture>("logo_ex_$it", "images/icon/ex/$it.png")
+        }
+        listOf(128, 256, 512).forEach {
+            AssetRegistry.loadAsset<Texture>("logo_expansion_$it", "images/icon/expansion/$it.png")
         }
 
         Series.VALUES.forEach {

@@ -59,8 +59,11 @@ object DesktopLauncher {
 //                    sizes.forEach {
 //                        this.addIcon("images/icon/$it.png", Files.FileType.Internal)
 //                    }
-                    listOf(256, 128, 64, 32).forEach {
+                    listOf(256, 128).forEach {
                         this.addIcon("images/icon/expansion/$it.png", Files.FileType.Internal)
+                    }
+                    listOf(64, 32).forEach {
+                        this.addIcon("images/icon/ex/$it.png", Files.FileType.Internal)
                     }
                     listOf(24, 16).forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
