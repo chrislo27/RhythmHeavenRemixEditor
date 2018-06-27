@@ -15,6 +15,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         listOf(16, 24, 32, 64, 128, 256, 512).forEach {
             AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
         }
+        listOf(32, 64, 128, 256, 512).forEach {
+            AssetRegistry.loadAsset<Texture>("logo_ex_$it", "images/icon/expansion/$it.png")
+        }
 
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
@@ -127,11 +130,14 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
         run {
-            val sizes: List<Int> = listOf(512, 256, 128, 64, 32, 24, 16)
-            sizes.forEach {
+            listOf(512, 256, 128, 64, 32, 24, 16).forEach {
                 assets[AssetRegistry.bindAsset("rhre3_icon_$it", "images/icon/$it.png").first] = Texture(
                         "images/icon/$it.png")
             }
+//            listOf(512, 256, 128, 64, 32).forEach {
+//                assets[AssetRegistry.bindAsset("rhre3_icon_ex_$it", "images/icon/$it.png").first] = Texture(
+//                        "images/icon/expansion/$it.png")
+//            }
         }
 
         assets["cursor_horizontal_resize"] =

@@ -54,9 +54,15 @@ object DesktopLauncher {
                     RHRE3.noAnalytics = "--no-analytics" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
-                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
-
-                    sizes.forEach {
+//                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
+//
+//                    sizes.forEach {
+//                        this.addIcon("images/icon/$it.png", Files.FileType.Internal)
+//                    }
+                    listOf(256, 128, 64, 32).forEach {
+                        this.addIcon("images/icon/expansion/$it.png", Files.FileType.Internal)
+                    }
+                    listOf(24, 16).forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
                     }
                 }
