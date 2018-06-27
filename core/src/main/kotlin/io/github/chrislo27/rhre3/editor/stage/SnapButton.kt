@@ -1,5 +1,8 @@
 package io.github.chrislo27.rhre3.editor.stage
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -33,12 +36,20 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     }
 
     private fun updateAndFlash() {
-        editor.subbeatSection.setFlash(0.75f)
+        editor.subbeatSection.setFlash(0.5f)
         editor.snap = snapFloat
+        hoverTime = 0f
     }
 
     override fun getHoverText(): String {
         return Localization["editor.snap", fractionString]
+    }
+
+    override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+        super.render(screen, batch, shapeRenderer)
+        if (hoverTime > 1f && !wasClickedOn) {
+            editor.subbeatSection.setFlash(Gdx.graphics.deltaTime)
+        }
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
