@@ -53,6 +53,7 @@ class InfoScreen(main: RHRE3Application)
             preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && it < VersionHistory.ANALYTICS
     } ?: false
+    private val onlineLabel: TextLabel<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -145,14 +146,14 @@ class InfoScreen(main: RHRE3Application)
             this.location.set(screenX = this.location.screenWidth)
         }
 
-        stage.bottomStage.elements += object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+        onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
 
             var last = Int.MIN_VALUE
             override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 val current = main.liveUsers
                 if (last != current) {
                     last = current
-                    this.text = if (current > 0) "$current online" else ""
+                    this.text = if (current > 0) Localization["screen.info.online", current] else ""
                 }
                 super.render(screen, batch, shapeRenderer)
             }
@@ -165,6 +166,7 @@ class InfoScreen(main: RHRE3Application)
                               screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
             this.location.set(screenX = this.location.screenWidth, screenY = -0.75f)
         }
+        stage.bottomStage.elements += onlineLabel
 
         stage.centreStage.also { centre ->
             val padding = 0.025f
@@ -205,7 +207,7 @@ class InfoScreen(main: RHRE3Application)
                 this.image = TextureRegion(AssetRegistry.get<Texture>("logo_ex_32"))
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
-                                  screenWidth = buttonWidth * 0.11f,
+                                  screenWidth = buttonWidth * 0.09f,
                                   screenHeight = buttonHeight * 0.8f)
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             }
@@ -230,7 +232,7 @@ class InfoScreen(main: RHRE3Application)
             }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
-                                  screenWidth = buttonWidth * 0.11f,
+                                  screenWidth = buttonWidth * 0.09f,
                                   screenHeight = buttonHeight * 0.8f)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     renderType = ImageLabel.ImageRendering.ASPECT_RATIO
@@ -585,6 +587,7 @@ class InfoScreen(main: RHRE3Application)
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
         DiscordHelper.updatePresence(PresenceState.InSettings)
+        onlineLabel.text = ""
     }
 
     override fun hide() {
