@@ -170,7 +170,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         } ?: defaultNewBackground
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
-        PatternStorage.load(Gdx.app.getPreferences("RHRE3-patterns"))
+        PatternStorage.load()
 
         // set the sound system
         SoundSystem.setSoundSystem(BeadsSoundSystem)

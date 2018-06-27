@@ -1,7 +1,9 @@
 package io.github.chrislo27.rhre3.patternstorage
 
-import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
 
 
@@ -9,39 +11,59 @@ object PatternStorage {
 
     val MAX_PATTERN_NAME_SIZE: Int = 32
 
-    private lateinit var preferences: Preferences
+    private val FOLDER: FileHandle by lazy {
+        RHRE3.RHRE3_FOLDER.child("storedPatterns/").apply {
+            mkdirs()
+        }
+    }
 
     val patterns: Map<UUID, StoredPattern> = linkedMapOf()
 
-    fun load(prefs: Preferences) {
+    fun load() {
         patterns as MutableMap
-        preferences = prefs
-        preferences.getString("patterns", null)?.let { json ->
+        patterns.clear()
+
+        val files = FOLDER.list(".json")
+        files.forEach { fh ->
             try {
-                val array = JsonHandler.fromJson<Array<StoredPattern>>(json)
-                array.forEach { patterns[it.uuid] = it }
+                val json = fh.readString("UTF-8")
+                val p = JsonHandler.fromJson<StoredPattern>(json)
+                p.filename = fh.name()
+                patterns[p.uuid] = p
             } catch (e: Exception) {
+                Toolboks.LOGGER.warn("Failed to load stored pattern ${fh.name()}")
                 e.printStackTrace()
             }
         }
+
         resort()
     }
 
     fun persist() {
-        if (this::preferences.isInitialized) {
-            val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
+        val values = patterns.values.toList()
 
-            patterns.values.forEach {
-                try {
-                    array.addPOJO(it)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
+        values.mapNotNull { pattern ->
+            val fh = FOLDER.child(pattern.uuid.toString() + ".json")
+
+            try {
+                fh.writeString(JsonHandler.toJson(pattern), false, "UTF-8")
+                pattern.filename = fh.name()
+
+                pattern
+            } catch (e: Exception) {
+                Toolboks.LOGGER.warn("Failed to save stored pattern ${pattern.name} (${pattern.uuid})")
+                e.printStackTrace()
+                null
             }
-
-            preferences.putString("patterns", JsonHandler.toJson(array))
-
-            preferences.flush()
+        }.fold(JsonHandler.OBJECT_MAPPER.createArrayNode()) { arrayNode, pattern ->
+            arrayNode.addObject().apply {
+                this.put("file", pattern.filename)
+                this.put("name", pattern.name)
+                this.put("uuid", pattern.uuid.toString())
+            }
+            arrayNode
+        }.also { arrayNode ->
+            FOLDER.child("list/").apply { mkdirs() }.child("list.json").writeString(JsonHandler.toJson(arrayNode), false, "UTF-8")
         }
     }
 

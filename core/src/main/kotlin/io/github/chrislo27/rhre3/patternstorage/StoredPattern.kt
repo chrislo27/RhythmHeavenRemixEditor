@@ -10,6 +10,8 @@ import java.util.*
 
 data class StoredPattern(val uuid: UUID, val name: String, val data: String) {
 
+    @Transient var filename: String? = null
+
     @delegate:Transient
     val datamodel: Datamodel by lazy {
         object : Datamodel(GameRegistry.data.gameMap[GameRegistry.SPECIAL_GAME_ID]!!, uuid.toString(), listOf(), name) {

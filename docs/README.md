@@ -208,6 +208,10 @@ drag down selections and store them for later.
 
 ![Example of stored pattern](https://user-images.githubusercontent.com/6299069/41878164-d3b84ba6-7888-11e8-8f73-7aa7508302d9.png)
 
+If you'd like to share these with others, navigate to `<user home>/.rhre3/storedPatterns` and you'll
+see a lot of `.json` files. Each one is a stored pattern. To see which one is which,
+go to the `list` folder and open the `list.json` file.
+
 # Tapalong
 The tapalong menu is recurring from RHRE2, this time it is inline with the
 editor. The main purpose of tapalong is to be able to tap to the rhythm of
