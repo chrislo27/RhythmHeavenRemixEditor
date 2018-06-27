@@ -129,16 +129,14 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
-        run {
-            listOf(512, 256, 128, 64, 32, 24, 16).forEach {
-                assets[AssetRegistry.bindAsset("rhre3_icon_$it", "images/icon/$it.png").first] = Texture(
-                        "images/icon/$it.png")
-            }
-//            listOf(512, 256, 128, 64, 32).forEach {
-//                assets[AssetRegistry.bindAsset("rhre3_icon_ex_$it", "images/icon/$it.png").first] = Texture(
-//                        "images/icon/expansion/$it.png")
-//            }
-        }
+//        listOf(512, 256, 128, 64, 32, 24, 16).forEach {
+//            assets[AssetRegistry.bindAsset("rhre3_icon_$it", "images/icon/$it.png").first] = Texture(
+//                    "images/icon/$it.png")
+//        }
+//        listOf(512, 256, 128, 64, 32).forEach {
+//            assets[AssetRegistry.bindAsset("rhre3_icon_ex_$it", "images/icon/$it.png").first] = Texture(
+//                    "images/icon/expansion/$it.png")
+//        }
 
         assets["cursor_horizontal_resize"] =
                 Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")),
