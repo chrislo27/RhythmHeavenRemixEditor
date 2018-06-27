@@ -35,6 +35,15 @@ class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val patter
         stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.isLocalizationKey = true
             this.text = "screen.patternStore.delete.confirmation"
+            this.textWrapping = true
+            this.location.set(screenY = 0.5f, screenHeight = 0.25f)
+        }
+        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.isLocalizationKey = false
+            this.textColor = Color.LIGHT_GRAY
+            this.text = pattern.name
+            this.textWrapping = false
+            this.location.set(screenY = 0.25f, screenHeight = 0.25f)
         }
 
         button = object : Button<PatternDeleteScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),

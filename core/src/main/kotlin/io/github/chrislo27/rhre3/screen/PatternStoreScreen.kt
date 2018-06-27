@@ -45,6 +45,14 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
             this.text = "screen.patternStore.enterName"
         }
 
+        val alreadyExists = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenY = 0.15f, screenHeight = 0.15f)
+            this.isLocalizationKey = true
+            this.text = "screen.patternStore.alreadyExists"
+            this.visible = false
+        }
+        stage.centreStage.elements +=  alreadyExists
+
         if (pattern != null) {
             stage.bottomStage.elements += object : Button<PatternStoreScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
                                                                                            clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage) {
@@ -56,7 +64,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 val backBtnLoc = this@PatternStoreScreen.stage.backButton.location
                 this.location.set(1f - backBtnLoc.screenX - backBtnLoc.screenWidth, backBtnLoc.screenY, backBtnLoc.screenWidth, backBtnLoc.screenHeight)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pattern_delete"))
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_x"))
                 })
             }
         }
@@ -89,7 +97,8 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
             this.isLocalizationKey = false
             this.text = "0 / ?"
             this.textAlign = Align.right
-            this.location.set(screenX = 0.25f, screenWidth = 0.5f, screenY = 0.4f, screenHeight = 0.1f)
+            this.fontScaleMultiplier = 0.75f
+            this.location.set(screenX = 0.25f, screenWidth = 0.5f, screenY = 0.4125f, screenHeight = 0.1f)
         }
         stage.centreStage.elements += charsRemaining
 
@@ -106,10 +115,20 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 return false
             }
 
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                text = ""
+            }
+
             override fun onTextChange(oldText: String) {
                 super.onTextChange(oldText)
-                button.enabled = text.isNotBlank()
-                charsRemaining.text = "${text.length} / ${PatternStorage.MAX_PATTERN_NAME_SIZE}"
+
+                val trimmed = text.trim()
+                val already = PatternStorage.patterns.values.any { it !== pattern && it.name == trimmed }
+                button.enabled = trimmed.isNotEmpty() && !already
+                alreadyExists.visible = already
+
+                charsRemaining.text = "${trimmed.length} / ${PatternStorage.MAX_PATTERN_NAME_SIZE}"
             }
         }.apply {
             this.location.set(screenY = 0.5f, screenHeight = 0.1f, screenX = 0.25f, screenWidth = 0.5f)
