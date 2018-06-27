@@ -463,6 +463,7 @@ class InfoScreen(main: RHRE3Application)
                     if (bufferSupported && !editor.stage.minimap.bufferSupported) {
                         bufferSupported = false
                         textLabel.text = "screen.info.minimapPreview.unsupported"
+                        textLabel.fontScaleMultiplier = fontScale * fontScale
                         checked = false
                     }
                     enabled = bufferSupported && !preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
@@ -481,7 +482,7 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
 
                 this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale * fontScale
+                    this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
                     this.text = "screen.info.minimapPreview"
                 }
