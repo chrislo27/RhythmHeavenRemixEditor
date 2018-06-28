@@ -71,10 +71,11 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
 
         batch.setColor(1f, 1f, 1f, 1f)
         val logo = AssetRegistry.get<Texture>("logo_1024")
-        val logoSize = camera.viewportWidth * 0.35f
+        val logoSize = camera.viewportWidth * 0.3f
+        val expansionSize = logoSize * 1.4f
         batch.draw(logo, camera.viewportWidth * 0.5f - logoSize / 2f, camera.viewportHeight - logoSize, logoSize, logoSize)
 
-        batch.draw(AssetRegistry.get<Texture>("logo_expansion_text"), camera.viewportWidth * 0.5f - logoSize / 2f, gradientY * 2 + (camera.viewportHeight - logoSize), logoSize, logoSize)
+        batch.draw(AssetRegistry.get<Texture>("logo_expansion_text"), camera.viewportWidth * 0.5f - expansionSize / 2f, gradientY * 2 + (camera.viewportHeight * 1.1f - expansionSize), expansionSize, expansionSize)
 
         val font = main.defaultBorderedFont
         font.setColor(1f, 1f, 1f, 1f)
