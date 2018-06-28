@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
@@ -18,6 +19,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.version.Version
 
 
 class RegistryLoadingScreen(main: RHRE3Application)
@@ -116,9 +118,11 @@ class RegistryLoadingScreen(main: RHRE3Application)
             } else {
                 ScreenRegistry[normalScreen]
             }
-            val possibleEvent = EventScreen.getPossibleEvent(main, nextScreen)
+            val lastVersion: Version? = Version.fromStringOrNull(main.preferences.getString(PreferenceKeys.LAST_VERSION, ""))
+            val expansionSplash = if (RHRE3.forceExpansionSplash || (lastVersion != null && RHRE3.VERSION > lastVersion && RHRE3.VERSION.minor == 12 && !main.preferences.getBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, false))) ExpansionSplashScreen(main, nextScreen) else null
+            val possibleEvent = EventScreen.getPossibleEvent(main, expansionSplash ?: nextScreen)
 
-            main.screen = possibleEvent ?: nextScreen
+            main.screen = possibleEvent ?: (expansionSplash ?: nextScreen)
         }
     }
 

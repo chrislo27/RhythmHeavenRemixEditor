@@ -40,5 +40,6 @@ object PreferenceKeys {
     val LAST_NEWS = "lastNews"
 
     val EVENT_PREFIX = "event_"
+    val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"
 
 }

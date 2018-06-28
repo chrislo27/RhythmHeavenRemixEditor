@@ -51,6 +51,7 @@ object RHRE3 {
     var verifyRegistry: Boolean = false
     var immediateAnniversary: Int = 0
     var noAnalytics: Boolean = false
+    var forceExpansionSplash: Boolean = false
     lateinit var launchArguments: List<String>
 
     init {

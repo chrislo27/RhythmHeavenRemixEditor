@@ -12,7 +12,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
     override fun addManagedAssets(manager: AssetManager) {
-        listOf(16, 24, 32, 64, 128, 256, 512).forEach {
+        listOf(16, 24, 32, 64, 128, 256, 512, 1024).forEach {
             AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
         }
         listOf(32, 64, 128, 256, 512).forEach {
@@ -21,6 +21,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         listOf(128, 256, 512).forEach {
             AssetRegistry.loadAsset<Texture>("logo_expansion_$it", "images/icon/expansion/$it.png")
         }
+        AssetRegistry.loadAsset<Texture>("logo_expansion_text", "images/icon/expansion/expansion_text.png")
 
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
