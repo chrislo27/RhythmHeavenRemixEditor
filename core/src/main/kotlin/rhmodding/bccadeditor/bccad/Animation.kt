@@ -37,16 +37,22 @@ class Animation(val name: String) {
         }
     }
 
-    fun render(batch: SpriteBatch, sheet: Texture, sprites: List<Sprite>, frameNum: Int, offsetX: Float, offsetY: Float) {
+    fun getCurrentStep(frameNum: Int): AnimationStep? {
         val totalFrames = steps.sumBy { it.duration.toInt() }
         val frame = frameNum % totalFrames
 
         var currentFrame = 0
-        steps.firstOrNull {
+        return steps.firstOrNull {
             val result = frame in currentFrame..(currentFrame + it.duration)
             currentFrame += it.duration
             result
-        }?.render(batch, sheet, sprites, offsetX, offsetY)
+        }
+    }
+
+    fun render(batch: SpriteBatch, sheet: Texture, sprites: List<Sprite>, frameNum: Int, offsetX: Float, offsetY: Float): AnimationStep? {
+        val step =  getCurrentStep(frameNum)
+        step?.render(batch, sheet, sprites, offsetX, offsetY)
+        return step
     }
 
     fun toBytes(): List<Byte> {
