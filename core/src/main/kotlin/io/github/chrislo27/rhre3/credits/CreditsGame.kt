@@ -152,6 +152,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
         list
     }
+    private val lastBeatBeats: List<Int> = listOf(DURATION.roundToInt() + 2)
 
     private val D_READY = DanceState(1, dancersReady, vocalistReady, leadReady)
     private val D_BEAT = DanceState(28, dancersBeat, vocalistBeat, leadBeat)
@@ -331,6 +332,9 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             didDanceBeatDancers = true
             lightingOnFront = false
             kururin = false
+        }
+        if (freshInList(lastBeatBeats)) {
+            leadFaceState = TimedDanceState(currentFrame, D_SING_1, 30)
         }
         if (didDanceBeat) {
             isLeftBeat = !isLeftBeat
