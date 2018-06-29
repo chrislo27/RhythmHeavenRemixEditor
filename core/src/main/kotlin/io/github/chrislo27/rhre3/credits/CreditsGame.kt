@@ -529,6 +529,11 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             if (frameUsedSax <= 0)
                 frameUsedSax = currentFrame
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            if (currentFrame - vocalistFaceState.startFrame > 12) {
+                vocalistFaceState = TimedDanceState(currentFrame, if (MathUtils.randomBoolean()) D_SING_1 else D_SING_0)
+            }
+        }
 
     }
 
