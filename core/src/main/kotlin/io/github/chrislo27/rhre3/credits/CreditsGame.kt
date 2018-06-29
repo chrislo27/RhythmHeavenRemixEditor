@@ -11,15 +11,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import rhmodding.bccadeditor.bccad.Animation
 import rhmodding.bccadeditor.bccad.BCCAD
+import rhmodding.bccadeditor.bccad.Sprite
 import kotlin.math.roundToInt
 
 
@@ -47,8 +51,8 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val checkeredRegion: TextureRegion by lazy { TextureRegion(bgTex, 2, 1, 499, 365) }
     private val stageRegion: TextureRegion by lazy { TextureRegion(bgTex, 504, 0, 289, 176) }
     private val gradientRegion: TextureRegion by lazy { TextureRegion(bgTex, 801, 1, 23, 366) }
-    private val twoLightsRegion: TextureRegion by lazy { TextureRegion(bgTex, 833, 242, 164, 230)}
-    private val fourLightsRegion: TextureRegion by lazy { TextureRegion(bgTex, 537, 306, 231, 157)}
+    private val twoLightsRegion: TextureRegion by lazy { TextureRegion(bgTex, 833, 242, 164, 230) }
+    private val fourLightsRegion: TextureRegion by lazy { TextureRegion(bgTex, 537, 306, 231, 157) }
 
     private val dancersReady: Animation = bccad.animations.first { it.name == "D_ready" }
     private val dancersBeat: Animation = bccad.animations.first { it.name == "D_beat" }
@@ -93,6 +97,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val leadSing1: Animation = bccad.animations.first { it.name == "L_face_sing01" }
 
     private val microphone: Animation = bccad.animations.first { it.name == "mike" }
+    private val textBox: Sprite = bccad.sprites[221]
 
     private val beatBeats: List<Int> = listOf(1, 3, 5, 7, 9, 11, 12, 13, 14, 15)
     private val countInBeats: List<Int> = listOf(12, 13, 14, 15)
@@ -165,6 +170,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private var isLeftBeat = true
     private var isLeftBeatDancers = true
     private var lightingOnFront = true
+    private var kururin = false
 
     private var dancersState = TimedDanceState(0, D_READY)
     private var vocalistState = TimedDanceState(0, D_READY)
@@ -285,6 +291,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             leadState = newDanceState
             didDanceBeat = true
             lightingOnFront = true
+            kururin = true
         } else if (freshInList(spinItBeats, 2f)) { // dancers
             val newFaceState = TimedDanceState(currentFrame + 5, D_SING_0)
             dancersFaceState = newFaceState
@@ -293,6 +300,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             dancersState = newDanceState
             didDanceBeatDancers = true
             lightingOnFront = false
+            kururin = false
         }
         if (freshInList(spinItBeats, 1f)) { // boys
             val newDanceState = TimedDanceState(currentFrame, if (isLeftBeat) D_TURN_L else D_TURN_R)
@@ -300,11 +308,13 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             leadState = newDanceState
             didDanceBeat = true
             lightingOnFront = true
+            kururin = true
         } else if (freshInList(spinItBeats, 3f)) { // dancers
             val newDanceState = TimedDanceState(currentFrame, if (isLeftBeatDancers) D_TURN_L else D_TURN_R)
             dancersState = newDanceState
             didDanceBeatDancers = true
             lightingOnFront = false
+            kururin = false
         }
         if (didDanceBeat) {
             isLeftBeat = !isLeftBeat
@@ -402,6 +412,23 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         val font = main.defaultFont
         font.scaleFont()
         font.setColor(0f, 0f, 0f, 1f)
+
+        // kururin
+        if (kururin) {
+            val newFont = main.defaultFontLarge
+            newFont.scaleFont()
+            newFont.setColor(0f, 0f, 0f, 1f)
+            val x = camera.viewportWidth / 2 + stageX
+            val y = 48f
+            textBox.render(batch, sheet, x + OFFSET, y + OFFSET)
+
+            newFont.scaleMul(0.5f)
+            newFont.drawCompressed(batch, "くるりん！", x - 64f, y + newFont.capHeight / 2, 128f, Align.center)
+            newFont.scaleMul(1 / 0.5f)
+
+            newFont.setColor(1f, 1f, 1f, 1f)
+            newFont.unscaleFont()
+        }
 
         font.setColor(1f, 1f, 1f, 1f)
         font.unscaleFont()
