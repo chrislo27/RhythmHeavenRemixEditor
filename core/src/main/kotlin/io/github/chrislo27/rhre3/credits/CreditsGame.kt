@@ -11,11 +11,15 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.screen.HidesVersionText
 import io.github.chrislo27.rhre3.util.TempoUtils
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
@@ -27,11 +31,11 @@ import rhmodding.bccadeditor.bccad.Sprite
 import kotlin.math.roundToInt
 
 
-class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, CreditsGame>(main) {
+class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, CreditsGame>(main), HidesVersionText {
 
     companion object {
         private const val TEMPO = 175f
-        private const val DURATION = 224.999f
+        private const val DURATION = 223f
         private const val LAST_SHAKE = 222
         private const val OFFSET = -512f
     }
@@ -163,6 +167,11 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val D_SING_0 = DanceState(28, dancersSing0, vocalistSing0, leadSing0)
     private val D_SING_1 = DanceState(28, dancersSing1, vocalistSing1, leadSing1)
 
+    private val creditsText = Credits.list.drop(1).joinToString(separator = "") {
+        "[YELLOW]${it.text}[]\n${it.persons}\n\n"
+    } + Localization["licenseInfo"]
+    private var creditsTextHeight: Float = -1f
+
     private var seconds: Float = -0.509f
     private val beat: Float
         get() = TempoUtils.secondsToBeats(seconds, TEMPO)
@@ -180,6 +189,11 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private var leadFaceState = TimedDanceState(0, D_FACE)
     private var currentFrame: Int = 0
 
+    private var frameUsedSax: Int = 0
+
+    override val hidesVersionText: Boolean
+        get() = beat >= 7f
+
     override fun render(delta: Float) {
         super.render(delta)
 
@@ -189,7 +203,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        val stageX: Float = Interpolation.exp5.apply(((beat - 6) / 2f).coerceIn(0f, 1f)) * -70f
+        val stageX: Float = if (beat < DURATION - 7f) Interpolation.exp5.apply(((beat - 6) / 2f).coerceIn(0f, 1f)) * -70f else (1f - Interpolation.exp5.apply(((beat - (DURATION - 7f)) / 2f).coerceIn(0f, 1f))) * -70f
 
         // Stage
         batch.draw(gradientRegion, 0f, 0f, camera.viewportWidth, camera.viewportHeight)
@@ -414,7 +428,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         font.setColor(0f, 0f, 0f, 1f)
 
         // kururin
-        if (kururin) {
+        if (kururin || beat > DURATION + 2f) {
             val newFont = main.defaultFontLarge
             newFont.scaleFont()
             newFont.setColor(0f, 0f, 0f, 1f)
@@ -423,11 +437,44 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             textBox.render(batch, sheet, x + OFFSET, y + OFFSET)
 
             newFont.scaleMul(0.5f)
-            newFont.drawCompressed(batch, "くるりん！", x - 64f, y + newFont.capHeight / 2, 128f, Align.center)
+            newFont.drawCompressed(batch, if (kururin) "くるりん！" else "Thank you!\n[ESC]", x - 100f, y + newFont.capHeight / 2 + (if (kururin) 0f else newFont.capHeight / 2), 200f, Align.center)
             newFont.scaleMul(1 / 0.5f)
 
             newFont.setColor(1f, 1f, 1f, 1f)
             newFont.unscaleFont()
+        }
+
+        // Credits text
+        run {
+            val font = main.defaultBorderedFont
+            font.setColor(1f, 1f, 1f, 1f)
+            font.scaleFont()
+
+            font.scaleMul(0.75f)
+
+            val targetWidth = camera.viewportWidth * 0.25f
+            val x = camera.viewportWidth * 0.7f
+            val y = MathUtils.lerp(0f, (creditsTextHeight + (camera.viewportHeight - font.capHeight)), (beat - 7f) / (DURATION - 15f))
+
+            if (creditsTextHeight < 0) {
+                creditsTextHeight = font.draw(batch, creditsText, x, 0f, targetWidth, Align.left, true).height
+            }
+
+            val logo = AssetRegistry.get<Texture>("logo_512")
+            batch.setColor(1f, 1f, 1f, y.coerceIn(0f, 1f))
+            batch.draw(logo, x, (y - 64f).coerceAtLeast(0f) + camera.viewportHeight * 0.35f, targetWidth, targetWidth)
+            batch.setColor(1f, 1f, 1f, 1f)
+
+            font.draw(batch, creditsText, x, y - font.capHeight, targetWidth, Align.left, true)
+
+            // controls
+            font.setColor(1f, 1f, 1f, (if (frameUsedSax > 0) (1f - ((currentFrame - frameUsedSax - 30) / 30f)) else (if (beat > DURATION - 5f) (1f - (beat - (DURATION - 5f))) else 1f)).coerceIn(0f, 1f))
+            font.draw(batch, Localization["credits.saxophone"], 2f, font.lineHeight)
+            font.setColor(1f, 1f, 1f, 1f)
+
+            font.scaleMul(1 / 0.75f)
+
+            font.unscaleFont()
         }
 
         font.setColor(1f, 1f, 1f, 1f)
@@ -435,7 +482,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
         batch.end()
 
-        batch.projectionMatrix = oldProjMatrix
+        batch.projectionMatrix = main.defaultCamera.combined
 
         currentFrame++
         if (currentFrame - dancersState.startFrame >= dancersState.danceState.durationFrames + dancersState.linger) {
@@ -466,6 +513,21 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             main.screen = ScreenRegistry["info"]
+        }
+
+        if (Toolboks.debugMode) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                seconds -= Gdx.graphics.deltaTime * 10
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                seconds += Gdx.graphics.deltaTime * 10
+            }
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            vocalistFaceState = TimedDanceState(currentFrame, if (MathUtils.randomBoolean()) D_SING_1 else D_SING_0)
+            if (frameUsedSax <= 0)
+                frameUsedSax = currentFrame
         }
 
     }
