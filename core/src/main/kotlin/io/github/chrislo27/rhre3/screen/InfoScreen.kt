@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
@@ -245,7 +246,8 @@ class InfoScreen(main: RHRE3Application)
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    main.screen = ScreenRegistry.getNonNull("credits")
+//                    main.screen = ScreenRegistry.getNonNull("credits")
+                    main.screen = CreditsGame(main)
                 }
             }.apply {
 

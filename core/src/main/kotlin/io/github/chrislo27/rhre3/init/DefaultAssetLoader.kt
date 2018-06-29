@@ -130,6 +130,10 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         // MIDI stuff
         AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/singLoop.ogg")
+
+        // Credits
+        AssetRegistry.loadAsset<Texture>("credits_frog", "credits/frog_rot.png")
+        AssetRegistry.loadAsset<Texture>("credits_bg", "credits/frog_bg.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
