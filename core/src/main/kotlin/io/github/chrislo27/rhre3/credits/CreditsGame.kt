@@ -196,6 +196,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
     override val hidesVersionText: Boolean
         get() = beat >= 7f
+    private var skipFrame = true
 
     override fun render(delta: Float) {
         super.render(delta)
@@ -514,8 +515,12 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     override fun renderUpdate() {
         super.renderUpdate()
 
-        lastBeat = beat
-        seconds += Gdx.graphics.deltaTime
+        if (skipFrame) {
+            skipFrame = false
+        } else {
+            lastBeat = beat
+            seconds += Gdx.graphics.deltaTime
+        }
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             main.screen = ScreenRegistry["info"]
@@ -546,9 +551,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     override fun show() {
         super.show()
         DiscordHelper.updatePresence(PresenceState.ViewingCredits)
-        music.play()
         sheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         bgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        music.play()
+        skipFrame = true
     }
 
     override fun hide() {
