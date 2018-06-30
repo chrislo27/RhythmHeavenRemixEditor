@@ -250,11 +250,15 @@ class InfoScreen(main: RHRE3Application)
                     main.screen = CreditsGame(main)
                 }
             }.apply {
-
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
                     this.text = "screen.info.credits"
+                })
+                addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0f, screenWidth = 0.1f)
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("weird_wakaaa"))
                 })
 
                 this.location.set(screenX = 1f - (padding + buttonWidth),

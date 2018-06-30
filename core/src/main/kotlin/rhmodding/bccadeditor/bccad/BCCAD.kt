@@ -1,12 +1,10 @@
 package rhmodding.bccadeditor.bccad
 
-import java.io.File
+import com.badlogic.gdx.files.FileHandle
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.file.Files
-import java.nio.file.Paths
 
-class BCCAD(file: File) {
+class BCCAD(file: FileHandle) {
 	var timestamp: Int
 	var sheetW: Short
 	var sheetH: Short
@@ -14,7 +12,7 @@ class BCCAD(file: File) {
 	val animations = mutableListOf<Animation>()
 
 	init {
-		val b = Files.readAllBytes(Paths.get(file.absolutePath))
+		val b = file.readBytes()
 		val buf = ByteBuffer.wrap(b)
 		buf.order(ByteOrder.LITTLE_ENDIAN)
 		buf.position(0)

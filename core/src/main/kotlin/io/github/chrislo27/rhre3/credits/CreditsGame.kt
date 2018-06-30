@@ -46,7 +46,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         setToOrtho(false, 240 / 9f * 16f, 240f)
     }
     private val music: Music by lazy { Gdx.audio.newMusic(GitHelper.SOUNDS_DIR.child("etc/jumpinjazzsfx.ogg")) }
-    private val bccad: BCCAD = BCCAD(Gdx.files.internal("credits/frog.bccad").file())
+    private val bccad: BCCAD = BCCAD(Gdx.files.internal("credits/frog.bccad"))
     private val sheet: Texture by lazy { AssetRegistry.get<Texture>("credits_frog") }
     private val bgTex: Texture by lazy { AssetRegistry.get<Texture>("credits_bg") }
     private val frameBuffer: FrameBuffer = FrameBuffer(Pixmap.Format.RGBA8888, camera.viewportWidth.roundToInt(), camera.viewportHeight.roundToInt(), false)
