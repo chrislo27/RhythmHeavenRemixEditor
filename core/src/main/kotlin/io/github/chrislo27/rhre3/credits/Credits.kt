@@ -26,7 +26,7 @@ object Credits {
                     "iRonnoc5, sp00pster, Steppy",
             "rhre2" crediting
                     "(◉.◉)☂, ahemtoday, Altonotone, ArendAlphaEagle, Armodillomatt12, baguette, Chef May, " +
-                    "Chocolate2890, ChorusSquid, Chowder, David Mismo, Dragoneteur, Eggman199, " +
+                    "ChocolateJake, ChorusSquid, Chowder, David Mismo, Dragoneteur, Eggman199, " +
                     "fartiliumstation, Gabgab2222, GlitchyPSIX, GuardedLolz, Haydorf, " +
                     "Huebird of Happiness, iRonnoc5, Kana, Killble, Locorito, Lovestep, Mariofan5000, megaminerzero, " +
                     "Miracle22, mistuh_salmon, Pengu12345, quantic, F Yeah, Rhythm Heaven! Tumblr, " +
