@@ -35,7 +35,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     companion object {
         private const val TEMPO = 175f
         private const val DURATION = 223f
-        private const val LAST_SHAKE = 210
+        private const val LAST_SHAKE = 214
         private const val OFFSET = -512f
     }
 
