@@ -481,6 +481,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             font.unscaleFont()
         }
 
+        if (beat >= DURATION) {
+            lightingOnFront = true
+        }
+
         font.setColor(1f, 1f, 1f, 1f)
         font.unscaleFont()
 
