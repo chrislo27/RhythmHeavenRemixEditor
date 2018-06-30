@@ -3,10 +3,7 @@ package io.github.chrislo27.rhre3.credits
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.graphics.OrthographicCamera
-import com.badlogic.gdx.graphics.Pixmap
-import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
@@ -38,7 +35,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     companion object {
         private const val TEMPO = 175f
         private const val DURATION = 223f
-        private const val LAST_SHAKE = 222
+        private const val LAST_SHAKE = 210
         private const val OFFSET = -512f
     }
 
@@ -107,7 +104,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
     private val beatBeats: List<Int> = listOf(1, 3, 5, 7, 9, 11, 12, 13, 14, 15)
     private val countInBeats: List<Int> = listOf(12, 13, 14, 15)
-    private val yahooBeats: List<Int> = listOf(21, 29, 37, 45, 69, 77, 85, 93, 121, 133, 137, 141, 145, 157, 173, 189, 213, 217)
+    private val yahooBeats: List<Int> = listOf(21, 29, 37, 45, 69, 77, 85, 93, 121, 133, 137, 141, 145, 157, 173, 189, 211, 215, 219)
     private val yyyBeats: List<Int> = listOf(51, 99, 164, 199, 203)
     private val spinItBeats: List<Int> = listOf(60, 108, 148, 180)
     private val danceBeats: List<Int> = listOf(16..LAST_SHAKE).flatten().let {
@@ -171,7 +168,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val D_SING_1 = DanceState(28, dancersSing1, vocalistSing1, leadSing1)
 
     private val creditsText = Credits.list.drop(1).joinToString(separator = "") {
-        "[YELLOW]${it.text}[]\n${it.persons}\n\n"
+        "[#${Color(Color.YELLOW).fromHsv((Credits.list.indexOf(it) - 1f) / Credits.list.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
     } + Localization["licenseInfo"]
     private var creditsTextHeight: Float = -1f
 
@@ -195,7 +192,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private var frameUsedSax: Int = 0
 
     override val hidesVersionText: Boolean
-        get() = beat >= 7f
+        get() = beat >= 6f
     private var skipFrame = true
 
     override fun render(delta: Float) {
@@ -468,7 +465,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             }
 
             val logo = AssetRegistry.get<Texture>("logo_512")
-            batch.setColor(1f, 1f, 1f, y.coerceIn(0f, 1f))
+            batch.setColor(1f, 1f, 1f, ((y + 1f) / 2f).coerceIn(0f, 1f))
             batch.draw(logo, x, (y - 64f).coerceAtLeast(0f) + camera.viewportHeight * 0.35f, targetWidth, targetWidth)
             batch.setColor(1f, 1f, 1f, 1f)
 
