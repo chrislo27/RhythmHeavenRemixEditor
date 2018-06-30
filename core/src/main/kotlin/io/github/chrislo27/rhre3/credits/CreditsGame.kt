@@ -472,10 +472,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             font.draw(batch, creditsText, x, y - font.capHeight, targetWidth, Align.left, true)
 
             // controls
+            if (frameUsedSax <= 0 && beat > DURATION - 7f)
+                frameUsedSax = currentFrame
             val controlsAlpha = if (frameUsedSax > 0) {
                 (1f - ((currentFrame - frameUsedSax - 30) / 30f))
-            } else if (beat > DURATION - 7f) {
-                (1f - (beat - (DURATION - 7f)))
             } else 1f
             font.setColor(1f, 1f, 1f, controlsAlpha.coerceIn(0f, 1f))
             font.draw(batch, Localization["credits.saxophone"], 2f, font.lineHeight)
@@ -543,7 +543,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             vocalistFaceState = TimedDanceState(currentFrame, if (MathUtils.randomBoolean()) D_SING_1 else D_SING_0)
-            if (frameUsedSax <= 0 && beat < DURATION - 7f)
+            if (frameUsedSax <= 0)
                 frameUsedSax = currentFrame
         }
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
