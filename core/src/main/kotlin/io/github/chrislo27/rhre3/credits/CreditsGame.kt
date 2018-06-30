@@ -551,11 +551,15 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
     override fun show() {
         super.show()
+        music.play()
+        skipFrame = true
+    }
+
+    override fun showTransition() {
+        super.showTransition()
         DiscordHelper.updatePresence(PresenceState.ViewingCredits)
         sheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
         bgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        music.play()
-        skipFrame = true
     }
 
     override fun hide() {
