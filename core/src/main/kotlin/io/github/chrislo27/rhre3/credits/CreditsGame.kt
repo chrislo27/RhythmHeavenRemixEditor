@@ -47,7 +47,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val camera = OrthographicCamera().apply {
         setToOrtho(false, 240 / 9f * 16f, 240f)
     }
-    private val music: Music by lazy { Gdx.audio.newMusic(GitHelper.SOUNDS_DIR.child("etc/jumpinjazzsfx.ogg")) }
+    private val music: Music by lazy { Gdx.audio.newMusic(
+             GitHelper.SOUNDS_DIR.child("etc/jumpinjazzsfx.ogg")
+//            Gdx.files.internal("etc/jumpinjazzsfx.ogg")
+                                                         ) }
     private val bccad: BCCAD = BCCAD(Base64.getDecoder().decode(Gdx.files.internal("credits/frog.bin").readString("UTF-8")))
     private val sheet: Texture by lazy { AssetRegistry.get<Texture>("credits_frog") }
     private val bgTex: Texture by lazy { AssetRegistry.get<Texture>("credits_bg") }
@@ -104,10 +107,11 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val microphone: Animation = bccad.animations.first { it.name == "mike" }
     private val textBox: Sprite = bccad.sprites[221]
 
-    private val beatBeats: List<Int> = listOf(1, 3, 5, 7, 9, 11, 12, 13, 14, 15)
+    private val beatBeats: List<Int> = listOf(1, 3, 12, 13, 14, 15)
+    private val dancerBeatBeats: List<Int> = listOf(1, 3, 13, 14, 15)
     private val countInBeats: List<Int> = listOf(12, 13, 14, 15)
-    private val yahooBeats: List<Int> = listOf(21, 29, 37, 45, 69, 77, 85, 93, 121, 133, 137, 141, 145, 157, 173, 189, 211, 215, 219)
-    private val yyyBeats: List<Int> = listOf(51, 99, 164, 199, 203)
+    private val yahooBeats: List<Int> = listOf(5, 9, 21, 37, 45, 69, 77, 93, 121, 125, 133, 137, 141, 145, 157, 173, 189, 211, 215, 219)
+    private val yyyBeats: List<Int> = listOf(28, 51, 84, 99, 164, 199, 203)
     private val spinItBeats: List<Int> = listOf(60, 108, 148, 180)
     private val danceBeats: List<Int> = listOf(16..LAST_SHAKE).flatten().let {
         val list = it.toMutableList()
@@ -219,7 +223,6 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         // Bouncing to beat
         if (freshInList(beatBeats)) {
             val newDanceState = TimedDanceState(currentFrame, D_BEAT)
-            dancersState = newDanceState
             vocalistState = newDanceState
             leadState = newDanceState
 
@@ -227,6 +230,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             if (freshInList(countInBeats)) {
                 leadFaceState = TimedDanceState(currentFrame, D_SING_1)
             }
+        }
+        if (freshInList(dancerBeatBeats)) {
+            val newDanceState = TimedDanceState(currentFrame, D_BEAT)
+            dancersState = newDanceState
         }
         // Normal dancing
         var didDanceBeat = false
