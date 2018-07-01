@@ -108,7 +108,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val textBox: Sprite = bccad.sprites[221]
 
     private val beatBeats: List<Int> = listOf(1, 3, 12, 13, 14, 15)
-    private val dancerBeatBeats: List<Int> = listOf(1, 3, 13, 14, 15)
+    private val dancerBeatBeats: List<Int> = listOf(1, 3, 5, 9, 13, 14, 15)
     private val countInBeats: List<Int> = listOf(12, 13, 14, 15)
     private val yahooBeats: List<Int> = listOf(5, 9, 21, 37, 45, 69, 77, 93, 121, 125, 133, 137, 141, 145, 157, 173, 189, 211, 215, 219)
     private val yyyBeats: List<Int> = listOf(28, 51, 84, 99, 164, 199, 203)
