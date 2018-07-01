@@ -477,8 +477,10 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             val controlsAlpha = if (frameUsedSax > 0) {
                 (1f - ((currentFrame - frameUsedSax) / 30f))
             } else 1f
-            font.setColor(1f, 1f, 1f, controlsAlpha.coerceIn(0f, 1f))
-            font.draw(batch, Localization["credits.saxophone"], 2f, font.lineHeight)
+            if (controlsAlpha > 0) {
+                font.setColor(1f, 1f, 1f, controlsAlpha.coerceIn(0f, 1f))
+                font.draw(batch, Localization["credits.saxophone"], 2f, font.lineHeight)
+            }
             font.setColor(1f, 1f, 1f, 1f)
 
             font.scaleMul(1 / 0.75f)
