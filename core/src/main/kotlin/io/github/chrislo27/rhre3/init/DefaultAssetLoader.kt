@@ -117,6 +117,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("weird_wakaaa", "images/wakaaa.png")
         AssetRegistry.loadAsset<Texture>("weird_wakamad", "images/wakamad.png")
         AssetRegistry.loadAsset<Texture>("weird_wakasuave", "images/wakasuave.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/wakamette.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
 
         // play-yan
