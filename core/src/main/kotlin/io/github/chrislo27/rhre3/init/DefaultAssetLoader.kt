@@ -113,12 +113,12 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("menu_bg_square", "images/menu/bg_square.png")
         AssetRegistry.loadAsset<Texture>("menu_snowflake", "images/menu/snowflake.png")
 
-        AssetRegistry.loadAsset<Texture>("weird_wakame", "images/wakame.png")
-        AssetRegistry.loadAsset<Texture>("weird_wakaaa", "images/wakaaa.png")
-        AssetRegistry.loadAsset<Texture>("weird_wakamad", "images/wakamad.png")
-        AssetRegistry.loadAsset<Texture>("weird_wakasuave", "images/wakasuave.png")
-        AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/wakamette.png")
-        AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/yeehaw.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakame", "images/etc/wakame.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakaaa", "images/etc/wakaaa.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakamad", "images/etc/wakamad.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakasuave", "images/etc/wakasuave.png")
+        AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/etc/wakamette.png")
+        AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/etc/yeehaw.png")
 
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")
