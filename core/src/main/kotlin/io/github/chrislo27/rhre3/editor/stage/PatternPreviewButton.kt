@@ -18,11 +18,12 @@ import io.github.chrislo27.rhre3.track.PlayState.STOPPED
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.Swing
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 
 
-class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
-                           stage: Stage<EditorScreen>) : Button<EditorScreen>(palette, parent, stage) {
+class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
+    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     companion object {
         private val TEXTS: List<String> = listOf(Editor.VOLUME_CHAR, "■", "♬")
@@ -48,6 +49,10 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
     private var datamodel: Datamodel? = null
     private var playState: PlayState = STOPPED
+
+    override fun getHoverText(): String {
+        return Localization[if (playState == STOPPED) "editor.previewPattern" else "editor.previewPattern.stop"]
+    }
 
     init {
         addLabel(label)
