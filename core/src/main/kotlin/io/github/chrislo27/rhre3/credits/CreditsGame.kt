@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
@@ -36,7 +37,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     companion object {
         private const val TEMPO = 175f
         private const val DURATION = 223f
-        private const val LAST_SHAKE = 214
+        private const val LAST_SHAKE = 220
         private const val OFFSET = -512f
     }
 
@@ -168,7 +169,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private val D_SING_0 = DanceState(28, dancersSing0, vocalistSing0, leadSing0)
     private val D_SING_1 = DanceState(28, dancersSing1, vocalistSing1, leadSing1)
 
-    private val creditsText = Credits.list.drop(1).joinToString(separator = "") {
+    private val creditsText = "[#BFD0EC]${RHRE3.TITLE}[]\n\n\n\n" + Credits.list.drop(1).joinToString(separator = "") {
         "[#${Color(Color.YELLOW).fromHsv((Credits.list.indexOf(it) - 1f) / Credits.list.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
     } + Localization["licenseInfo"]
     private var creditsTextHeight: Float = -1f
@@ -442,8 +443,14 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             textBox.render(batch, sheet, x + OFFSET, y + OFFSET)
 
             newFont.scaleMul(0.5f)
-            newFont.drawCompressed(batch, if (kururin) "くるりん！" else "Thank you!\n[ESC]", x - 100f, y + newFont.capHeight / 2 + (if (kururin) 0f else newFont.capHeight / 2), 200f, Align.center)
+            newFont.drawCompressed(batch, if (kururin) "くるりん！" else "Thank you!", x - 100f, y + newFont.capHeight / 2, 200f, Align.center)
             newFont.scaleMul(1 / 0.5f)
+
+            if (!kururin) {
+                newFont.scaleMul(0.25f)
+                newFont.drawCompressed(batch, "[ESC]", x - 100f, y - newFont.capHeight * 3.5f, 200f, Align.center)
+                newFont.scaleMul(1f / 0.25f)
+            }
 
             newFont.setColor(1f, 1f, 1f, 1f)
             newFont.unscaleFont()
@@ -466,8 +473,15 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             }
 
             val logo = AssetRegistry.get<Texture>("logo_512")
-            batch.setColor(1f, 1f, 1f, ((y + 1f) / 2f).coerceIn(0f, 1f))
-            batch.draw(logo, x, (y - 64f).coerceAtLeast(0f) + camera.viewportHeight * 0.35f, targetWidth, targetWidth)
+            val logoAlpha = ((y + 1f) / 2f).coerceIn(0f, 1f)
+            val logoY = (y - (camera.viewportHeight * 0.5f - targetWidth / 2f - font.lineHeight)).coerceAtLeast(0f) + (camera.viewportHeight * 0.5f - targetWidth / 2f)
+            batch.setColor(1f, 1f, 1f, logoAlpha)
+            batch.draw(logo, x, logoY, targetWidth, targetWidth)
+            font.setColor(1f, 1f, 1f, logoAlpha)
+//            font.scaleMul(0.75f)
+//            font.drawCompressed(batch, RHRE3.TITLE, x, logoY - font.capHeight, targetWidth, Align.center)
+            font.setColor(1f, 1f, 1f, 1f)
+//            font.scaleMul(1f / 0.75f)
             batch.setColor(1f, 1f, 1f, 1f)
 
             font.draw(batch, creditsText, x, y - font.capHeight, targetWidth, Align.left, true)
