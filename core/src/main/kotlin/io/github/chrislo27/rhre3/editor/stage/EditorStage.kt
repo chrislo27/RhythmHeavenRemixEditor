@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.editor.stage
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -18,10 +19,7 @@ import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameMetadata
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.rhre3.registry.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -29,10 +27,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
-import io.github.chrislo27.toolboks.util.gdxutils.getInputX
-import io.github.chrislo27.toolboks.util.gdxutils.getInputY
-import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
-import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -127,6 +122,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     private var isDirty = DirtyType.CLEAN
     private var wasDebug = false
 
+    private var quickSwitch: QuickSwitch? = null
+
     enum class DirtyType {
         CLEAN, DIRTY, SEARCH_DIRTY
     }
@@ -134,6 +131,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     interface HasHoverText {
         fun getHoverText(): String
     }
+
+    data class QuickSwitch(val button: FilterButton,
+                           val groupScroll: Int = button.filter.groupScroll,
+                           val currentGroup: GameGroup? = if (button.filter.areGroupsEmpty) null else button.filter.currentGroup,
+                           val currentGame: Game? = if (button.filter.areGamesEmpty) null else button.filter.currentGame)
 
     init {
         Localization.listeners += {
@@ -210,6 +212,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         patternAreaArrowLabel.textColor = if (editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else null
 
         super.render(screen, batch, shapeRenderer)
+
+        if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown()) {
+            val quickSwitch = quickSwitch
+            if (Gdx.input.isKeyJustPressed(Input.Keys.F) && quickSwitch != null && !isTyping) { // Quick switch
+                val qsCopy = quickSwitch
+                val button = qsCopy.button
+                val filter = button.filter
+
+                button.onLeftClick(0f, 0f)
+
+                filter.groupScroll = qsCopy.groupScroll
+                if (qsCopy.currentGroup != null)
+                    filter.currentGroupIndex = filter.gameGroups.indexOf(qsCopy.currentGroup).coerceAtLeast(0)
+                if (!filter.areGamesEmpty && qsCopy.currentGame != null) {
+                    filter.currentGameList.currentIndex = filter.currentGameList.list.indexOf(qsCopy.currentGame).coerceAtLeast(0)
+                }
+
+                updateSelected()
+            }
+        }
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
             val pickerSelection = editor.pickerSelection
@@ -382,6 +404,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     fun updateSelected(type: DirtyType = DirtyType.DIRTY) {
         isDirty = type
+    }
+
+    fun createQuickSwitch(): QuickSwitch? {
+        val fb = filterButtons.firstOrNull(FilterButton::selected) ?: return null
+        return QuickSwitch(fb)
     }
 
     init {
@@ -715,7 +742,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.fontScaleMultiplier = 0.9f
                 }
                 pickerStage.elements += gameStageText
-                customSoundsFolderButton = object : Button<EditorScreen>(palette, pickerStage, pickerStage){
+                customSoundsFolderButton = object : Button<EditorScreen>(palette, pickerStage, pickerStage) {
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
 
@@ -825,6 +852,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             val isVariant = x == Editor.ICON_COUNT_X + 1
                             val button = GameButton(x, y, isVariant, palette, pickerStage, pickerStage) { _, _ ->
                                 this as GameButton
+
+                                quickSwitch = createQuickSwitch() ?: quickSwitch
+
                                 if (visible && this.game != null) {
                                     val filter = editor.pickerSelection.filter
                                     if (isVariant) {
@@ -1324,6 +1354,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         this.updateSelected()
     }
 
+
     abstract inner class SelectableButton(palette: UIPalette, parent: UIElement<EditorScreen>,
                                           stage: Stage<EditorScreen>,
                                           val onLeftClickFunc: SelectableButton.(Float, Float) -> Unit = { x, y -> })
@@ -1440,6 +1471,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            quickSwitch = createQuickSwitch() ?: quickSwitch
             super.onLeftClick(xPercent, yPercent)
             editor.pickerSelection.filter = filter
             updateSelected()

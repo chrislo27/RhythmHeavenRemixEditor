@@ -63,6 +63,7 @@ however, read up on the controls first below!
 **`CTRL+S`** - Save remix<br/>
 **`CTRL+Z`** - Undo<br/>
 **`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
+**`F`** - Quick switch to last game (doesn't work in search results)<br>
 **`HOME`** - Jump to beat 0<br/>
 **`END`** - Jump to last entity/End Remix entity<br>
 **`UP`** or **`W`** - Scroll up (only in editor)<br>
