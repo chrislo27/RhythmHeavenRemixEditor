@@ -46,13 +46,12 @@ class OpenRemixScreen(main: RHRE3Application)
     private val editorScreen: EditorScreen by lazy { ScreenRegistry.getNonNullAsType<EditorScreen>("editor") }
     private val editor: Editor
         get() = editorScreen.editor
-    override val stage: Stage<OpenRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    override val stage: GenericStage<OpenRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     @Volatile
     private var isChooserOpen = false
         set(value) {
             field = value
-            stage as GenericStage
             stage.backButton.enabled = !isChooserOpen
         }
     @Volatile
@@ -95,9 +94,11 @@ class OpenRemixScreen(main: RHRE3Application)
                 .distinctBy { it.datamodel.id }
     }
 
+    private val icon: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder")) }
+    private val rhre2Icon: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("logo_rhre2_128")) }
+
     init {
-        stage as GenericStage
-        stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+        stage.titleIcon.image = icon
         stage.titleLabel.text = "screen.open.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
@@ -158,7 +159,7 @@ class OpenRemixScreen(main: RHRE3Application)
         super.renderUpdate()
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            (stage as GenericStage).onBackButtonClick()
+            stage.onBackButtonClick()
         }
     }
 
@@ -173,6 +174,7 @@ class OpenRemixScreen(main: RHRE3Application)
 
                 val newRemix = editor.createRemix()
                 val remixType: RemixType
+                stage.titleIcon.image = icon
                 val result = if (file.extension.equals("mid", ignoreCase = true)) {
                     remixType = RemixType.MIDI
                     Remix.fromMidiSequence(newRemix, MidiSystem.getSequence(file))
@@ -182,10 +184,12 @@ class OpenRemixScreen(main: RHRE3Application)
 
                     remixType = if (isRHRE2) RemixType.RHRE2 else RemixType.RHRE3
 
-                    if (isRHRE2)
+                    if (isRHRE2) {
+                        stage.titleIcon.image = rhre2Icon
                         Remix.unpackRHRE2(newRemix, zipFile)
-                    else
+                    } else {
                         Remix.unpack(newRemix, zipFile)
+                    }
                 }
 
                 val toLoad = result.remix.entities.applyFilter()
@@ -253,16 +257,16 @@ class OpenRemixScreen(main: RHRE3Application)
                                     missingAssets.second > 0, "RED")]
                 }
                 if (GameRegistry.data.version < remix.databaseVersion) {
-                    mainLabel.text += "\n" + Localization["screen.open.oldDatabase"]
+                    mainLabel.text += "\n\n" + Localization["screen.open.oldDatabase"]
                 } else if (remix.version < RHRE3.VERSION) {
-                    mainLabel.text += "\n" +
+                    mainLabel.text += "\n\n" +
                             Localization[if (remixType == RemixType.RHRE2)
                                 "screen.open.rhre2Warning"
                             else
                                 "screen.open.oldWarning"]
                 }
                 if (remix.version > RHRE3.VERSION) {
-                    mainLabel.text += "\n" + Localization["screen.open.oldWarning2"]
+                    mainLabel.text += "\n\n" + Localization["screen.open.oldWarning2"]
                 }
                 isLoading = false
             } catch (t: Throwable) {
@@ -292,7 +296,7 @@ class OpenRemixScreen(main: RHRE3Application)
                     loadFile(file)
                 } else {
                     loadButton.alsoDo = {}
-                    (stage as GenericStage).onBackButtonClick()
+                    stage.onBackButtonClick()
                 }
             }
         }
@@ -303,6 +307,11 @@ class OpenRemixScreen(main: RHRE3Application)
             openPicker()
             remix = null
         }
+    }
+
+    override fun show() {
+        super.show()
+        stage.titleIcon.image = icon
     }
 
     override fun hide() {
@@ -333,7 +342,7 @@ class OpenRemixScreen(main: RHRE3Application)
             alsoDo()
             editor.remix.recomputeCachedData()
             editor.stage.updateSelected(EditorStage.DirtyType.SEARCH_DIRTY)
-            (this@OpenRemixScreen.stage as GenericStage).onBackButtonClick()
+            this@OpenRemixScreen.stage.onBackButtonClick()
             Gdx.app.postRunnable {
                 System.gc()
             }

@@ -22,6 +22,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
             AssetRegistry.loadAsset<Texture>("logo_expansion_$it", "images/icon/expansion/$it.png")
         }
         AssetRegistry.loadAsset<Texture>("logo_expansion_text", "images/icon/expansion/expansion_text.png")
+        AssetRegistry.loadAsset<Texture>("logo_rhre2_128", "images/icon/rhre2/128.png")
 
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
