@@ -156,6 +156,8 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         list
     }
     private val lastBeatBeats: List<Int> = listOf(DURATION.roundToInt() + 2)
+    private val saxophoneBeats: List<IntRange> = listOf(16..20, 24..28, 32..36, 40..45, 47..54, 55..60, 64..68, 72..76, 80..84, 88..92, 95..102, 103..108, 120..128, 152..158, 159..166, 168..174, 175..182, 184..190, 191..198, 199..201, 203..205, 207..212)
+    private val saxophonePlayed: FloatArray = FloatArray(saxophoneBeats.size * 2) // Alternating between start of saxophoneBeats to inbetweens (the start isn't counted)
 
     private val D_READY = DanceState(1, dancersReady, vocalistReady, leadReady)
     private val D_BEAT = DanceState(28, dancersBeat, vocalistBeat, leadBeat)
@@ -200,6 +202,8 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     override val hidesVersionText: Boolean
         get() = beat >= 6f
     private var skipFrame = true
+
+    private var finalAccuracy: Float = 0f
 
     override fun render(delta: Float) {
         super.render(delta)
@@ -343,6 +347,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         }
         if (freshInList(lastBeatBeats)) {
             leadFaceState = TimedDanceState(currentFrame, D_SING_1, 30)
+            finalAccuracy = computeAccuracy()
         }
         if (didDanceBeat) {
             isLeftBeat = !isLeftBeat
@@ -455,8 +460,18 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             newFont.scaleMul(1 / 0.5f)
 
             if (!kururin) {
+                val saxAcc = (finalAccuracy * 100f).roundToInt().coerceIn(0, 100)
+
+                val acc: String = when {
+                    saxAcc < 60 -> "[#00A7FF]"
+                    saxAcc in 60..79 -> "[#00A100]"
+                    saxAcc >= 80 -> "[#FF1800]"
+                    else -> "[#FFFFFF]"
+                } + saxAcc + "%[]"
+
                 newFont.scaleMul(0.25f)
-                newFont.drawCompressed(batch, "[ESC]", x - 100f, y - newFont.capHeight * 3.5f, 200f, Align.center)
+                newFont.drawCompressed(batch, Localization["credits.saxAccuracy", acc], x - 100f, y - newFont.capHeight * 2.25f, 200f, Align.center)
+                newFont.drawCompressed(batch, "[ESC]", x - 100f, y - newFont.capHeight * 3.75f, 200f, Align.center)
                 newFont.scaleMul(1f / 0.25f)
             }
 
@@ -522,6 +537,25 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
         batch.projectionMatrix = main.defaultCamera.combined
 
+        if (beat < LAST_SHAKE && beat >= saxophoneBeats.first().start && (vocalistFaceState.danceState == D_SING_0 || vocalistFaceState.danceState == D_SING_1)) {
+            var index: Int = -1
+            for (i in 0 until saxophoneBeats.size) {
+                val range = saxophoneBeats[i]
+                val next = saxophoneBeats.getOrNull(i + 1)?.start ?: LAST_SHAKE
+                if (beat in range) {
+                    index = i * 2
+                    break
+                } else if (beat in range.endInclusive..next) {
+                    index = i * 2 + 1
+                    break
+                }
+            }
+
+            if (index >= 0) {
+                saxophonePlayed[index] += TempoUtils.secondsToBeats(Gdx.graphics.deltaTime, TEMPO)
+            }
+        }
+
         currentFrame++
         if (currentFrame - dancersState.startFrame >= dancersState.danceState.durationFrames + dancersState.linger) {
             dancersState = TimedDanceState(currentFrame, D_READY)
@@ -541,6 +575,28 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         if (currentFrame - leadFaceState.startFrame >= leadFaceState.danceState.durationFrames + leadFaceState.linger) {
             leadFaceState = TimedDanceState(currentFrame, D_FACE)
         }
+    }
+
+    fun computeAccuracy(): Float {
+        // Acc = good% - bad%
+
+        var goodSum = 0f
+        var badSum = 0f
+        for (i in 0 until saxophonePlayed.size) {
+            val range = saxophoneBeats[i / 2]
+            if (i % 2 == 0) {
+                goodSum += (saxophonePlayed[i] / (range.endInclusive - range.start).coerceAtLeast(1)).coerceAtMost(1f)
+            } else {
+                val next = saxophoneBeats.getOrNull(i + 1)?.start ?: LAST_SHAKE
+                badSum += (saxophonePlayed[i] / (next - range.endInclusive).coerceAtLeast(1)).coerceAtMost(1f)
+            }
+        }
+
+        val goodAvg = goodSum / saxophoneBeats.size
+        val badAvg = badSum / saxophoneBeats.size
+
+        // Scaling! It's impossible to get 100% since you have to be frame perfect
+        return ((goodAvg - badAvg) / 0.975f).coerceIn(0f, 1f)
     }
 
     override fun renderUpdate() {
@@ -610,7 +666,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     }
 
     override fun getDebugString(): String? {
-        return "seconds: $seconds\nbeat: $beat"
+        return "seconds: $seconds\nbeat: $beat\n\nacc: ${computeAccuracy()}"
     }
 
     override fun tickUpdate() {
