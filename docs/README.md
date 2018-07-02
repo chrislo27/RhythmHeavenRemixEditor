@@ -55,7 +55,7 @@ tempo) are covered [in this document](Starting-a-remix.md). You should,
 however, read up on the controls first below!
 
 ## Controls
-### Generic keystrokes
+### In-Editor Shortcuts
 **`SPACEBAR`** - Play/stop remix<br/>
 **`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
 **`CTRL+N`** - New remix<br/>
