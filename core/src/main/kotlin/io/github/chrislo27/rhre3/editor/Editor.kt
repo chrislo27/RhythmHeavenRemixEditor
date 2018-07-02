@@ -2033,10 +2033,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (stage.isTyping || clickOccupation != ClickOccupation.None || stage.tapalongStage.visible)
                     return false
                 val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
-                if (number in 0 until Tool.VALUES.size) {
-                    currentTool = Tool.VALUES[number]
-                    stage.updateSelected()
-                    return true
+                if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown()) {
+                    if (number in 0 until Tool.VALUES.size) {
+                        currentTool = Tool.VALUES[number]
+                        stage.updateSelected()
+                        return true
+                    }
                 }
             }
         }
