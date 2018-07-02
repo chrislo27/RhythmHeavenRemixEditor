@@ -9,6 +9,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -61,7 +62,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
     fun update(currentDatamodel: Datamodel?) {
         datamodel = currentDatamodel
-        visible = visible && currentDatamodel != null
+        visible = visible && currentDatamodel != null && (currentDatamodel.game.id != GameRegistry.SPECIAL_GAME_ID)
         stop()
     }
 
