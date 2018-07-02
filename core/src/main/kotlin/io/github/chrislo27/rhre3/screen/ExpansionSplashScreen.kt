@@ -35,8 +35,9 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
     private val bottomColorGlow: Color = Color.valueOf("3C669E")
     private val tempBottomColor: Color = Color(bottomColor)
     private var timeElapsed = 0f
-    private val logoAlpha get() = Interpolation.circleOut.apply((timeElapsed / 4).coerceAtMost(1f)).coerceIn(0f, 1f)
-    private val textAlpha get() = Interpolation.circleOut.apply(((timeElapsed - 2) / 2).coerceIn(0f, 1f)).coerceIn(0f, 1f)
+    private val interpolation: Interpolation get() = Interpolation.pow5Out
+    private val logoAlpha get() = interpolation.apply((timeElapsed / 4).coerceAtMost(1f)).coerceIn(0f, 1f)
+    private val textAlpha get() = interpolation.apply(((timeElapsed - 2) / 2).coerceIn(0f, 1f)).coerceIn(0f, 1f)
 
     private fun BitmapFont.scaleFont() {
         this.setUseIntegerPositions(false)
