@@ -230,6 +230,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             if (freshInList(countInBeats)) {
                 leadFaceState = TimedDanceState(currentFrame, D_SING_1)
             }
+            lightingOnFront = true
         }
         if (freshInList(dancerBeatBeats)) {
             val newDanceState = TimedDanceState(currentFrame, D_BEAT)
