@@ -470,7 +470,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
                 } + saxAcc + "%[]"
 
                 newFont.scaleMul(0.25f)
-                newFont.drawCompressed(batch, Localization["credits.saxAccuracy", acc], x - 100f, y - newFont.capHeight * 2.25f, 200f, Align.center)
+                newFont.drawCompressed(batch, Localization["credits.saxAccuracy", acc], x - 100f, y - newFont.capHeight * 2f, 200f, Align.center)
                 newFont.drawCompressed(batch, "[ESC]", x - 100f, y - newFont.capHeight * 3.75f, 200f, Align.center)
                 newFont.scaleMul(1f / 0.25f)
             }
