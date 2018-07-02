@@ -11,10 +11,10 @@ object Credits {
             "programming" crediting "chrislo27",
             "localization" crediting
                     """[LIGHT_GRAY]Français (French)[]
-                |inkedsplat, Pengu123, minenice55
+                |Pengu123, minenice55, inkedsplat
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet
+                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
