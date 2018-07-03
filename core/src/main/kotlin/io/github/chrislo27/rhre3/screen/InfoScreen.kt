@@ -257,6 +257,7 @@ class InfoScreen(main: RHRE3Application)
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.text = "screen.info.credits"
                 })
                 addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -280,6 +281,7 @@ class InfoScreen(main: RHRE3Application)
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.text = "screen.info.version"
                 })
 
@@ -298,6 +300,7 @@ class InfoScreen(main: RHRE3Application)
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.text = "screen.info.database"
                 })
 
@@ -318,6 +321,7 @@ class InfoScreen(main: RHRE3Application)
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.text = "screen.info.clearRecents"
                 })
 
@@ -343,6 +347,7 @@ class InfoScreen(main: RHRE3Application)
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.discordRichPresence"
                 }
@@ -353,7 +358,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 2.5f, screenWidth = 1f - checkLabelPortion * 2.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 2.25f, screenWidth = 1f - checkLabelPortion * 2.25f)
 
                 addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.location.set(screenX = checkLabelPortion, screenWidth = checkLabelPortion)
@@ -422,6 +427,7 @@ class InfoScreen(main: RHRE3Application)
                 this.addLabel(TextLabel(palette, this, this.stage).apply {
                     this.isLocalizationKey = false
                     this.text = ""
+                    this.textWrapping = false
                     this.fontScaleMultiplier = fontScale
                 })
 
@@ -443,11 +449,12 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.chaseCamera"
                 }
@@ -470,11 +477,12 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.disableMinimap"
                 }
@@ -514,7 +522,7 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -541,11 +549,12 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale * fontScale
+                    this.fontScaleMultiplier = fontScale * 0.9f
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.subtitleOrder"
                 }
@@ -568,11 +577,12 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.endAtLastCue"
                 }
@@ -595,11 +605,12 @@ class InfoScreen(main: RHRE3Application)
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
 
                 this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.5f, screenWidth = 1f - checkLabelPortion * 1.5f)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
+                    this.textWrapping = false
                     this.textAlign = Align.left
                     this.text = "screen.info.smoothDragging"
                 }
