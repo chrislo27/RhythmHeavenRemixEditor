@@ -215,11 +215,12 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         batch.setColor(1f, 1f, 1f, 1f)
 
         val stageX: Float = if (beat < DURATION - 7f) Interpolation.exp5.apply(((beat - 6) / 2f).coerceIn(0f, 1f)) * -70f else (1f - Interpolation.exp5.apply(((beat - (DURATION - 7f)) / 2f).coerceIn(0f, 1f))) * -70f
+        val stageY: Float = -7f
 
         // Stage
         batch.draw(gradientRegion, 0f, 0f, camera.viewportWidth, camera.viewportHeight)
         batch.draw(checkeredRegion, camera.viewportWidth / 2 - checkeredRegion.regionWidth / 2, 0f)
-        batch.draw(stageRegion, camera.viewportWidth / 2 - stageRegion.regionWidth / 2 + stageX, -10f)
+        batch.draw(stageRegion, camera.viewportWidth / 2 - stageRegion.regionWidth / 2 + stageX, -10f + stageY)
 
         fun freshInList(list: List<Int>, beatOffset: Float = 0f): Boolean = (lastBeat - beatOffset).toInt() < (beat - beatOffset).toInt() && ((beat - beatOffset).toInt()) in list
 
@@ -362,11 +363,11 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             val y = 115f
             val currentAnimation: Animation = dancersState.danceState.dancers
             val frame = (currentFrame - dancersState.startFrame).coerceIn(0, dancersState.danceState.durationFrames - 1)
-            val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + OFFSET + stageX, y + OFFSET)
+            val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + OFFSET + stageX, y + OFFSET + stageY)
             if (currentStep != null && dancersState.danceState != D_TURN_L && dancersState.danceState != D_TURN_R) {
                 val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
                 val part = sprite.parts.last()
-                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f))
+                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
             }
         }
 
@@ -378,37 +379,37 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             batch.flush()
             batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA)
             val lightsRegion = fourLightsRegion
-            batch.draw(lightsRegion, camera.viewportWidth / 2 - lightsRegion.regionWidth / 2 + stageX, camera.viewportHeight - lightsRegion.regionHeight + 28f)
+            batch.draw(lightsRegion, camera.viewportWidth / 2 - lightsRegion.regionWidth / 2 + stageX, camera.viewportHeight - lightsRegion.regionHeight + 28f + stageY)
             batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
         }
 
         fun frontArea() {
             run {
-                val x = camera.viewportWidth / 2 - 40f
+                val x = camera.viewportWidth / 2 - 38f
                 val y = 48f
                 val currentAnimation = vocalistState.danceState.vocalist
                 val frame = (currentFrame - vocalistState.startFrame).coerceIn(0, vocalistState.danceState.durationFrames - 1)
-                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y)
+                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
                 if (currentStep != null && vocalistState.danceState != DV_TURN_L && vocalistState.danceState != DV_TURN_R) {
                     val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
                     val part = sprite.parts.last()
-                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f))
+                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
                 }
             }
             run {
-                val x = camera.viewportWidth / 2 + 40f
+                val x = camera.viewportWidth / 2 + 38f
                 val y = 48f
                 val currentAnimation = vocalistState.danceState.lead
                 val frame = (currentFrame - leadState.startFrame).coerceIn(0, leadState.danceState.durationFrames - 1)
-                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y)
+                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
                 if (currentStep != null && leadState.danceState != D_TURN_L && leadState.danceState != D_TURN_R) {
                     val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
                     val part = sprite.parts.last()
-                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f))
+                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
                 }
             }
 
-            microphone.render(batch, sheet, bccad.sprites, 0, OFFSET + camera.viewportWidth / 2 - 32f + stageX, OFFSET + 32f)
+            microphone.render(batch, sheet, bccad.sprites, 0, OFFSET + camera.viewportWidth / 2 - 38f + stageX, OFFSET + 38f + stageY)
         }
 
         frontArea()
@@ -434,7 +435,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             batch.flush()
             batch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_SRC_ALPHA)
             val lightsRegion = twoLightsRegion
-            batch.draw(lightsRegion, camera.viewportWidth / 2 - lightsRegion.regionWidth / 2 + stageX, camera.viewportHeight - lightsRegion.regionHeight + 28f)
+            batch.draw(lightsRegion, camera.viewportWidth / 2 - lightsRegion.regionWidth / 2 + stageX, camera.viewportHeight - lightsRegion.regionHeight + 28f + stageY)
             batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA)
         } else {
             batch.setColor(0f, 0f, 0f, 0.5f)
@@ -452,7 +453,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
             newFont.scaleFont()
             newFont.setColor(0f, 0f, 0f, 1f)
             val x = camera.viewportWidth / 2 + stageX
-            val y = 48f
+            val y = 48f + stageY
             textBox.render(batch, sheet, x + OFFSET, y + OFFSET)
 
             newFont.scaleMul(0.5f)
