@@ -200,7 +200,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     private var frameUsedSax: Int = 0
 
     override val hidesVersionText: Boolean
-        get() = beat >= 6f
+        get() = beat >= 4f
     private var skipFrame = true
 
     private var finalAccuracy: Float = 0f
@@ -214,7 +214,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        val stageX: Float = if (beat < DURATION - 7f) Interpolation.exp5.apply(((beat - 6) / 2f).coerceIn(0f, 1f)) * -70f else (1f - Interpolation.exp5.apply(((beat - (DURATION - 7f)) / 2f).coerceIn(0f, 1f))) * -70f
+        val stageX: Float = if (beat < DURATION - 7f) Interpolation.exp5.apply(((beat - 4) / 2f).coerceIn(0f, 1f)) * -70f else (1f - Interpolation.exp5.apply(((beat - (DURATION - 7f)) / 2f).coerceIn(0f, 1f))) * -70f
         val stageY: Float = -7f
 
         // Stage
@@ -490,14 +490,14 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
             val targetWidth = camera.viewportWidth * 0.25f
             val x = camera.viewportWidth * 0.7f
-            val y = MathUtils.lerp(0f, (creditsTextHeight + (camera.viewportHeight - font.capHeight)), (beat - 7f) / (DURATION - 15f))
+            val y = MathUtils.lerp(0f, (creditsTextHeight + (camera.viewportHeight - font.capHeight)), (beat - 14f) / (DURATION - 22f))
 
             if (creditsTextHeight < 0) {
                 creditsTextHeight = font.draw(batch, creditsText, x, 0f, targetWidth, Align.left, true).height
             }
 
             val logo = AssetRegistry.get<Texture>("logo_512")
-            val logoAlpha = ((y + 1f) / 2f).coerceIn(0f, 1f)
+            val logoAlpha = ((beat - 5f) / 0.5f).coerceIn(0f, 1f)
             val logoY = (y - (camera.viewportHeight * 0.5f - targetWidth / 2f - font.lineHeight)).coerceAtLeast(0f) + (camera.viewportHeight * 0.5f - targetWidth / 2f)
             batch.setColor(1f, 1f, 1f, logoAlpha)
             batch.draw(logo, x, logoY, targetWidth, targetWidth)
