@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
@@ -459,7 +460,7 @@ class ExportRemixScreen(main: RHRE3Application)
             if (!isBeads) {
                 label.text = Localization["screen.export.cannot", Localization["screen.export.needsBeadsSound"]]
             } else if (!hasEndRemix) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"]]
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} > Special Entities > End Remix[]"]
             }
         } else {
             if (throwable == null) {
