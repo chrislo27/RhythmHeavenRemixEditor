@@ -250,8 +250,14 @@ class InfoScreen(main: RHRE3Application)
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-//                    main.screen = ScreenRegistry.getNonNull("credits")
-                    main.screen = TransitionScreen(main, this@InfoScreen, CreditsGame(main), FadeOut(0.5f, Color.BLACK), FadeIn(0.75f, Color.BLACK))
+
+                    try {
+                        val credits = CreditsGame(main)
+                        main.screen = TransitionScreen(main, this@InfoScreen, credits, FadeOut(0.5f, Color.BLACK), FadeIn(0.75f, Color.BLACK))
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        main.screen = CreditsScreen(main)
+                    }
                 }
             }.apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
