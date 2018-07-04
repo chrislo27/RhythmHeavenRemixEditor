@@ -590,7 +590,7 @@ class InfoScreen(main: RHRE3Application)
                     this.isLocalizationKey = true
                     this.textWrapping = false
                     this.textAlign = Align.left
-                    this.text = "screen.info.endAtLastCue"
+                    this.text = "screen.info.stopAtLastCue"
                 }
 
                 this.location.set(screenX = padding,
