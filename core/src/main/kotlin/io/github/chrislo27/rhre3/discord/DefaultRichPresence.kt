@@ -24,7 +24,7 @@ class DefaultRichPresence(state: String = "",
     init {
         details = if (RHRE3.VERSION.suffix == "DEVELOPMENT") {
             "Developing ${RHRE3.VERSION.copy(suffix = "")}"
-        } else if (RHRE3.VERSION.suffix.startsWith("RC") || RHRE3.VERSION.suffix.startsWith("SNAPSHOT") || RHRE3.VERSION.suffix.startsWith("DEV")) {
+        } else if (RHRE3.VERSION.suffix.startsWith("RC") || RHRE3.VERSION.suffix.startsWith("SNAPSHOT")) {
             "Testing ${RHRE3.VERSION}"
         } else {
             "Using ${RHRE3.VERSION}"
