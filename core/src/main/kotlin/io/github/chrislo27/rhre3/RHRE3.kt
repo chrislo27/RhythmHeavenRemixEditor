@@ -31,7 +31,7 @@ object RHRE3 {
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
-    val DATABASE_BRANCH: String = if (VERSION.suffix == "DEVELOPMENT") {
+    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEVELOPMENT")) {
         DEV_DATABASE_BRANCH
     } else {
         MASTER_DATABASE_BRANCH
@@ -55,8 +55,7 @@ object RHRE3 {
     lateinit var launchArguments: List<String>
 
     init {
-        if ((VERSION.suffix != "DEVELOPMENT" && !VERSION.suffix.startsWith(
-                        "SNAPSHOT")) && DATABASE_BRANCH != MASTER_DATABASE_BRANCH) {
+        if ((!VERSION.suffix.startsWith("DEVELOPMENT") && !VERSION.suffix.startsWith("SNAPSHOT")) && DATABASE_BRANCH != MASTER_DATABASE_BRANCH) {
             error("Version suffix is not DEVELOPMENT or SNAPSHOT but the database branch is set to $DATABASE_BRANCH")
         }
     }
