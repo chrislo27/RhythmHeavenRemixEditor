@@ -27,7 +27,7 @@ class DefaultRichPresence(state: String = "",
         } else if (RHRE3.VERSION.suffix.startsWith("RC") || RHRE3.VERSION.suffix.startsWith("SNAPSHOT") || RHRE3.VERSION.suffix.startsWith("DEV")) {
             "Testing ${RHRE3.VERSION}"
         } else {
-            RHRE3.VERSION.toString()
+            "Using ${RHRE3.VERSION}"
         }
         val hasExpansion = RHRE3.VERSION >= VersionHistory.RHRE_EXPANSION
         startTimestamp = RHRE3Application.instance.startTimeMillis / 1000L // Epoch seconds
