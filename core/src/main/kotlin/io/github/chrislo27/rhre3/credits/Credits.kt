@@ -29,7 +29,7 @@ object Credits {
                     "ChocolateJake, ChorusSquid, Chowder, David Mismo, Dragoneteur, Eggman199, " +
                     "fartiliumstation, Gabgab2222, GlitchyPSIX, GuardedLolz, Haydorf, " +
                     "Huebird of Happiness, iRonnoc5, Kana, Killble, Locorito, Lovestep, Mariofan5000, megaminerzero, " +
-                    "Miracle22, mistuh_salmon, Pengu12345, quantic, F Yeah, Rhythm Heaven! Tumblr, " +
+                    "Miracle22, mistuh_salmon, Pengu123, quantic, F Yeah, Rhythm Heaven! Tumblr, " +
                     "Serena Strawberry, Strawzzboy64, The Golden Station, TheGarnet_, TheNewOrchestra, " +
                     "TheRhythmKid, TieSoul, ToonLucas22, Whistler_420" +
                     "\nRhythm Heaven and /r/RhythmHeaven Discord servers",
