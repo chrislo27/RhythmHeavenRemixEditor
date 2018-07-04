@@ -13,11 +13,13 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.drawQuad
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import kotlin.math.roundToInt
 
 
@@ -84,7 +86,7 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
 
         batch.setColor(1f, 1f, 1f, 1f)
         val logo = AssetRegistry.get<Texture>("logo_1024")
-        val logoSize = camera.viewportHeight * MathUtils.lerp(0.8f, 0.55f, textAlpha)
+        val logoSize = camera.viewportHeight * MathUtils.lerp(0.8f, 0.5f, textAlpha)
         val expansionSize = logoSize * 1.4f
         batch.draw(logo, camera.viewportWidth * 0.5f - logoSize / 2f, camera.viewportHeight - logoSize, logoSize, logoSize)
 
@@ -96,14 +98,19 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
 
         // keystroke text ➡
         val textY = gradientHeight * textAlpha - gradientHeight
-        font.drawCompressed(batch, "Welcome to the RHRExpansion.", 0f, textY + camera.viewportHeight * 0.35f, camera.viewportWidth, Align.center)
-        font.drawCompressed(batch, "➡ Resize the track\n➡ Store your own patterns\n➡ Use swing tempo\n[X]➡ []And more...", camera.viewportWidth * 0.35f, textY + camera.viewportHeight * 0.30f, camera.viewportWidth * 0.3f, Align.left)
-        font.drawCompressed(batch, "View the release changelog for more details.", 0f, textY + camera.viewportHeight * 0.1125f, camera.viewportWidth, Align.center)
+        font.drawCompressed(batch, "Welcome to the RHRExpansion.", 0f, textY + camera.viewportHeight * 0.4f, camera.viewportWidth, Align.center)
+        font.drawCompressed(batch, "➡ Resize the track\n➡ Store your own patterns\n➡ Use swing tempo\n[X]➡ []And more...", camera.viewportWidth * 0.35f, textY + camera.viewportHeight * 0.3f, camera.viewportWidth * 0.3f, Align.left)
+        font.drawCompressed(batch, "View the release changelog for more details.", 0f, textY + camera.viewportHeight * 0.1f, camera.viewportWidth, Align.center)
 
         font.setColor(1f, 1f, 1f, enterAlpha)
         font.drawCompressed(batch, "[[[#00FFFF${(enterAlpha * 255).roundToInt().toString(16).padStart(2, '0')}]ENTER[]]", 0f, textY + camera.viewportHeight * 0.05f, camera.viewportWidth, Align.center)
 
         font.setColor(1f, 1f, 1f, 1f)
+
+        font.scaleMul(0.75f)
+        font.drawCompressed(batch, "Made possible by donators -- thank you.", 0f, textY + camera.viewportHeight * 0.3625f, camera.viewportWidth, Align.center)
+        font.scaleMul(1f / 0.75f)
+
         font.unscaleFont()
 
 
@@ -119,6 +126,9 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             timeElapsed = 0f
         } else if (enterAlpha >= 1f && (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
+            if (!main.preferences.getBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, false)) {
+                AnalyticsHandler.track("View Expansion Splash", mapOf())
+            }
             main.preferences.putBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, true).flush()
             main.screen = nextScreen
         }
