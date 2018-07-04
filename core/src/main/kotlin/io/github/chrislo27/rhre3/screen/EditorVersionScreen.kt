@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -117,6 +118,10 @@ class EditorVersionScreen(main: RHRE3Application)
         if (timeOnScreen >= timeToStayOnScreen) {
             stage as GenericStage
             stage.backButton.enabled = true
+
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                stage.onBackButtonClick()
+            }
         }
     }
 
