@@ -20,6 +20,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.drawQuad
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import org.lwjgl.opengl.Display
 import kotlin.math.roundToInt
 
 
@@ -117,7 +118,9 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
         batch.end()
         batch.projectionMatrix = oldProj
 
-        timeElapsed += Gdx.graphics.deltaTime
+        if (Display.isActive()) {
+            timeElapsed += Gdx.graphics.deltaTime
+        }
     }
 
     override fun renderUpdate() {
