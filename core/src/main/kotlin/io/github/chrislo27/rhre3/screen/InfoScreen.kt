@@ -645,7 +645,6 @@ class InfoScreen(main: RHRE3Application)
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
         DiscordHelper.updatePresence(PresenceState.InSettings)
-        onlineLabel.text = ""
     }
 
     override fun hide() {
