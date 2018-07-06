@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -135,7 +136,7 @@ class CreditsScreen(main: RHRE3Application)
         maxScroll = 1f
 
         text = Credits.list.joinToString(separator = "") {
-            "[RAINBOW]${it.text}[]\n${it.persons}\n\n"
+            "[#${Color(Color.YELLOW).fromHsv((Credits.list.indexOf(it) * 1f) / Credits.list.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
         } + Localization["licenseInfo"]
 
         maxScroll = (font.getTextHeight(text, element.location.realWidth,

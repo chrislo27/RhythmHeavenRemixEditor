@@ -259,6 +259,12 @@ class InfoScreen(main: RHRE3Application)
                         main.screen = CreditsScreen(main)
                     }
                 }
+
+                override fun onRightClick(xPercent: Float, yPercent: Float) {
+                    super.onRightClick(xPercent, yPercent)
+
+                    main.screen = CreditsScreen(main)
+                }
             }.apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
