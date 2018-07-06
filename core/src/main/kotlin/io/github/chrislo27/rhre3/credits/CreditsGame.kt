@@ -597,7 +597,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
         val badAvg = badSum / saxophoneBeats.size
 
         // Scaling! It's impossible to get 100% since you have to be frame perfect
-        return ((goodAvg - badAvg) / 0.975f).coerceIn(0f, 1f)
+        return ((goodAvg - badAvg) / 0.95f).coerceIn(0f, 1f)
     }
 
     override fun renderUpdate() {
