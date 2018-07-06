@@ -226,6 +226,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         thread(isDaemon = true, name = "Live User Count") {
             Thread.sleep(2500L)
             var failures = 0
+            fun failed() {
+                failures++
+                this.liveUsers = -2
+            }
             while (!Thread.interrupted()) {
                 try {
                     val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
@@ -239,18 +243,15 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                             failures = 0
                             this.liveUsers = liveUsers.coerceAtLeast(0)
                         } else {
-                            failures++
-                            this.liveUsers = -2
+                            failed()
                         }
                     } else {
-                        failures++
-                        this.liveUsers = -2
+                        failed()
                     }
                 } catch (e: Exception) {
                     if (e !is UnknownHostException)
                         e.printStackTrace()
-                    this.liveUsers = -2
-                    failures++
+                    failed()
                 }
 
                 Thread.sleep(60_000L * (failures + 1))
