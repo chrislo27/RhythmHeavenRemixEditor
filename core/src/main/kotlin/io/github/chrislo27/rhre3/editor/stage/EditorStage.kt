@@ -28,6 +28,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import org.apache.commons.lang.SystemUtils
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -389,7 +390,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else if (filter == searchFilter) {
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
-                    gameStageText.text = Localization["editor.nothing.customs", "<user>/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
+                    gameStageText.text = Localization["editor.nothing.customs", "${if (SystemUtils.IS_OS_WINDOWS) "<user>" else "~"}/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
                     customSoundsFolderButton.visible = true
                 } else if (filter is SeriesFilter) {
                     gameStageText.text = Localization["editor.nothing.series"]

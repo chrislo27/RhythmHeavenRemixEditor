@@ -5,7 +5,7 @@ Have you ever wanted to tweak it or make an entirely new one?
 
 This is very simple to do!
 
-Every time you start the editor, a folder `<user>/.rhre3/themes` will be made,
+Every time you start the editor, a folder `~/.rhre3/themes` (`<user>/.rhre3/themes` on Windows) will be made,
 and inside of that folder will be one more folder called `examples`. Inside
 the `examples` folder, every built-in theme will be put into a
 `example_#.json` file, where the `#` is just a number. You can open
