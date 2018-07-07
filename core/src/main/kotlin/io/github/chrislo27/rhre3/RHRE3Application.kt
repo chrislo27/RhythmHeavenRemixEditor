@@ -341,7 +341,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         AnalyticsHandler.dispose()
         MidiHandler.isSearching = false
         MidiHandler.dispose()
-        PatternStorage.persist()
     }
 
     fun persistWindowSettings() {
