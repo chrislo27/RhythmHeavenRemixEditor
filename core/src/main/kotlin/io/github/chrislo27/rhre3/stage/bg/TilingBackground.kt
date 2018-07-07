@@ -9,21 +9,21 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import kotlin.math.roundToInt
 
 
-open class TilingBackground(id: String, val period: Float, val widthCoeff: Float = 1f, val heightCoeff: Float = 1f,
+open class TilingBackground(id: String, val period: Float, val speedX: Float = 1f, val speedY: Float = 1f, val widthCoeff: Float = 1f, val heightCoeff: Float = 1f,
                             val textureProvider: () -> Texture)
     : Background(id) {
 
     override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         batch.setColor(1f, 1f, 1f, 1f)
         val tex: Texture = textureProvider()
-        val start: Float = MathHelper.getSawtoothWave(period) - 1f
+        val start: Float = MathHelper.getSawtoothWave(period)
         val ratioX = camera.viewportWidth / RHRE3.WIDTH
         val ratioY = camera.viewportHeight / RHRE3.HEIGHT
 
         val w = (tex.width * widthCoeff).roundToInt()
         val h = (tex.height * heightCoeff).roundToInt()
-        for (x in (start * w).toInt()..RHRE3.WIDTH step w) {
-            for (y in (start * h).toInt()..RHRE3.HEIGHT step h) {
+        for (x in (start * w * speedX - (w)).toInt()..RHRE3.WIDTH step w) {
+            for (y in (start * h * speedY - (h)).toInt()..RHRE3.HEIGHT step h) {
                 batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, w * ratioX, h * ratioY)
             }
         }
