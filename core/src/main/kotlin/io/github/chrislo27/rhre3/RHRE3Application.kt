@@ -48,7 +48,6 @@ import org.asynchttpclient.AsyncHttpClient
 import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
 import java.io.File
-import java.net.UnknownHostException
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -243,14 +242,15 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                             failures = 0
                             this.liveUsers = liveUsers.coerceAtLeast(0)
                         } else {
+                            Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
                             failed()
                         }
                     } else {
+                        Toolboks.LOGGER.warn("Request status code is not 200, got ${req.statusCode}")
                         failed()
                     }
                 } catch (e: Exception) {
-                    if (e !is UnknownHostException)
-                        e.printStackTrace()
+                    e.printStackTrace()
                     failed()
                 }
 
