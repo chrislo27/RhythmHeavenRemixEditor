@@ -52,6 +52,7 @@ import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
 import net.beadsproject.beads.ugens.RangeLimiter
 import net.beadsproject.beads.ugens.RecordToFile
+import org.xiph.libvorbis.vorbis_comment
 import java.io.File
 import java.util.*
 import javax.sound.sampled.AudioFileFormat
@@ -248,13 +249,14 @@ class ExportRemixScreen(main: RHRE3Application)
             remix.playState = PlayState.STOPPED
 
             if (success) {
+                val commentTag = "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}"
                 when (fileType) {
                     WAV -> {
                         // nothing
                     }
                     MP3 -> {
                         val args = arrayOf("--ignore-tag-errors",
-                                           "--tc", "Made with Rhythm Heaven Remix Editor ${RHRE3.VERSION}",
+                                           "--tc", commentTag,
                                            recorderFile.path, file.path)
                         val main = Main()
                         main.support.addPropertyChangeListener("progress") { event ->
@@ -270,8 +272,15 @@ class ExportRemixScreen(main: RHRE3Application)
                             else -> error("Unsupported encoder for file type $fileType")
                         }
                         val encoder: Encoder = pair.first
-                        if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false)))
-                            error("Failed to open $fileType encoder")
+                        if (encoder is VorbisEncoder) {
+                            if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false), VorbisEncoder.DEFAULT_BITRATE, vorbis_comment().apply {
+                                        vorbis_comment_add_tag("Comments", commentTag)
+                                    }))
+                                error("Failed to open $fileType encoder")
+                        } else {
+                            if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false)))
+                                error("Failed to open $fileType encoder")
+                        }
 
                         val buffer: ByteArray = ByteArray(8192)
                         val stream = recorderFile.inputStream()
@@ -435,7 +444,7 @@ class ExportRemixScreen(main: RHRE3Application)
                                                            "sfxDatabase" to GameRegistry.data.version,
                                                            "fileType" to fileType.extension,
                                                            "fileSize" to correctFile.length()
-                                                                         ))
+                                                        ))
                         } catch (t: Throwable) {
                             t.printStackTrace()
                             updateLabels(t)
