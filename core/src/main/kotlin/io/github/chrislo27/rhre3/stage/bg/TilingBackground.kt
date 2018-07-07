@@ -6,9 +6,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.util.MathHelper
+import kotlin.math.roundToInt
 
 
-open class TilingBackground(id: String, val period: Float, val textureProvider: () -> Texture)
+open class TilingBackground(id: String, val period: Float, val widthCoeff: Float = 1f, val heightCoeff: Float = 1f,
+                            val textureProvider: () -> Texture)
     : Background(id) {
 
     override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -17,9 +19,12 @@ open class TilingBackground(id: String, val period: Float, val textureProvider: 
         val start: Float = MathHelper.getSawtoothWave(period) - 1f
         val ratioX = camera.viewportWidth / RHRE3.WIDTH
         val ratioY = camera.viewportHeight / RHRE3.HEIGHT
-        for (x in (start * tex.width).toInt()..RHRE3.WIDTH step tex.width) {
-            for (y in (start * tex.height).toInt()..RHRE3.HEIGHT step tex.height) {
-                batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, tex.width * ratioX, tex.height * ratioY)
+
+        val w = (tex.width * widthCoeff).roundToInt()
+        val h = (tex.height * heightCoeff).roundToInt()
+        for (x in (start * w).toInt()..RHRE3.WIDTH step w) {
+            for (y in (start * h).toInt()..RHRE3.HEIGHT step h) {
+                batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, w * ratioX, h * ratioY)
             }
         }
     }

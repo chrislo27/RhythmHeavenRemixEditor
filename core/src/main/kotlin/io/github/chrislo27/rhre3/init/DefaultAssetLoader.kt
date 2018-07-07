@@ -33,8 +33,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_selector", "images/selector/generic.png")
         AssetRegistry.loadAsset<Texture>("ui_selector_favourite", "images/selector/favourite.png")
 
-        AssetRegistry.loadAsset<Texture>("ui_bg", "images/ui/bg.png")
-
         AssetRegistry.loadAsset<Texture>("tracker_right_tri", "images/ui/tracker_right_triangle.png")
         AssetRegistry.loadAsset<Texture>("tracker_tri", "images/ui/tracker_triangle.png")
         AssetRegistry.loadAsset<Texture>("tracker_right_tri_bordered", "images/ui/tracker_triangle_right_bordered.png")
@@ -108,7 +106,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_search_filter_useInRemix", "images/ui/searchbar/useInRemix.png")
 
         AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
-        AssetRegistry.loadAsset<Texture>("ui_spinning_circle", "images/ui/circle.png")
         AssetRegistry.loadAsset<Texture>("ui_loading_icon", "images/loading/rhre3_animation.png")
 
         AssetRegistry.loadAsset<Texture>("menu_bg_square", "images/menu/bg_square.png")
@@ -120,6 +117,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("weird_wakasuave", "images/etc/wakasuave.png")
         AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/etc/wakamette.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/etc/yeehaw.png")
+
+        // Menu backgrounds
+        AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")
 
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")
