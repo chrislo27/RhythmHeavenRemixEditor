@@ -120,6 +120,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")
+        AssetRegistry.loadAsset<Texture>("bg_polkadot", "images/menu/polkadot.png")
 
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")

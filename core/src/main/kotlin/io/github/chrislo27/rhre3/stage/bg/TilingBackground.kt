@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.util.MathHelper
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
@@ -22,8 +23,8 @@ open class TilingBackground(id: String, val period: Float, val speedX: Float = 1
 
         val w = (tex.width * widthCoeff).roundToInt()
         val h = (tex.height * heightCoeff).roundToInt()
-        for (x in (start * w * speedX - (w)).toInt()..RHRE3.WIDTH step w) {
-            for (y in (start * h * speedY - (h)).toInt()..RHRE3.HEIGHT step h) {
+        for (x in (start * w * speedX - (w * speedX.absoluteValue)).toInt()..RHRE3.WIDTH step w) {
+            for (y in (start * h * speedY - (h * speedY.absoluteValue)).toInt()..RHRE3.HEIGHT step h) {
                 batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, w * ratioX, h * ratioY)
             }
         }
