@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.track.Remix
@@ -157,18 +158,18 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
+
         GameMetadata.setPreferencesInstance(preferences)
         if (preferences.getString(PreferenceKeys.LAST_VERSION, null) != RHRE3.VERSION.toString()) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
         AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
-        val defaultNewBackground = GenericStage.BackgroundImpl.TENGOKU
-        val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, defaultNewBackground.name)
-        GenericStage.backgroundImpl = GenericStage.BackgroundImpl.VALUES.find {
-            it.name.equals(backgroundPref, ignoreCase = true)
-        } ?: defaultNewBackground
+        val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
+        GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
+
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
+
         PatternStorage.load()
 
         // set the sound system

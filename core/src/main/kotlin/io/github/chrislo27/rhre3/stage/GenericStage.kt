@@ -1,23 +1,18 @@
 package io.github.chrislo27.rhre3.stage
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
-import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.drawQuad
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
-import kotlin.math.roundToInt
 
 
 open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalette, parent: UIElement<S>?,
@@ -37,179 +32,7 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
         val ICON_SIZE_RATIO = (ICON_SIZE / AREA.first) to (ICON_SIZE / AREA.second)
         val BOTTOM_RATIO = (BOTTOM_SIZE / AREA.first) to (BOTTOM_SIZE / AREA.second)
 
-        var backgroundImpl: BackgroundImpl = BackgroundImpl.KARATE_MAN
-    }
-
-    enum class BackgroundImpl {
-
-        TILED {
-            override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                batch.setColor(1f, 1f, 1f, 1f)
-                val tex: Texture = AssetRegistry["ui_bg"]
-                val start: Float = MathHelper.getSawtoothWave(5f) - 1f
-                val ratioX = camera.viewportWidth / RHRE3.WIDTH
-                val ratioY = camera.viewportHeight / RHRE3.HEIGHT
-                for (x in (start * tex.width).toInt()..RHRE3.WIDTH step tex.width) {
-                    for (y in (start * tex.height).toInt()..RHRE3.HEIGHT step tex.height) {
-                        batch.draw(tex, x.toFloat() * ratioX, y.toFloat() * ratioY, tex.width * ratioX,
-                                   tex.height * ratioY)
-                    }
-                }
-            }
-        },
-        TENGOKU {
-            private inner class Square(x: Float, y: Float,
-                                       size: Float = MathUtils.random(20f, 80f),
-                                       speedX: Float = MathUtils.random(0.075f, 0.2f),
-                                       speedY: Float = -MathUtils.random(0.075f, 0.2f),
-                                       rotSpeed: Float = MathUtils.random(90f, 200f) * MathUtils.randomSign(),
-                                       rotation: Float = MathUtils.random(360f))
-                : Particle(x, y, size, size, speedX, speedY, rotSpeed, rotation, "menu_bg_square")
-
-            init {
-                maxParticles = 40
-            }
-
-            private val hsv: FloatArray = FloatArray(3)
-
-            val top: Color = Color.valueOf("4048e0")
-            val bottom: Color = Color.valueOf("d020a0")
-            var cycleSpeed: Float = 1f / 20
-
-            override fun createParticle(initial: Boolean): Particle {
-                return if (!initial) {
-                    Square(-0.5f, 1f + MathUtils.random(1f))
-                } else {
-                    Square(MathUtils.random(1f), MathUtils.random(1f))
-                }
-            }
-
-            override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                val width = camera.viewportWidth
-                val height = camera.viewportHeight
-                val ratioX = width / RHRE3.WIDTH
-                val ratioY = height / RHRE3.HEIGHT
-
-                if (cycleSpeed > 0f) {
-                    top.toHsv(hsv)
-                    hsv[0] = (hsv[0] - Gdx.graphics.deltaTime * cycleSpeed * 360f) % 360f
-                    top.fromHsv(hsv)
-                    bottom.toHsv(hsv)
-                    hsv[0] = (hsv[0] - Gdx.graphics.deltaTime * cycleSpeed * 360f) % 360f
-                    bottom.fromHsv(hsv)
-                }
-
-                batch.drawQuad(0f, 0f, bottom, width, 0f, bottom,
-                               width, height, top, 0f, height, top)
-
-                super.render(camera, batch, shapeRenderer)
-
-                // Remove OoB squares
-                particles.removeIf {
-                    it.x > 1f + (ratioX * it.sizeX) / width || it.y < -(ratioY * it.sizeY) / height
-                }
-            }
-        },
-        KARATE_MAN {
-            private inner class Snowflake(x: Float, y: Float,
-                                          size: Float = 54f,
-                                          speedX: Float = -MathUtils.random(0.075f, 0.25f),
-                                          speedY: Float = -MathUtils.random(0.05f, 0.1f))
-                : Particle(x, y, size, size, speedX, speedY, 0f, 0f, "menu_snowflake")
-
-            init {
-                maxParticles = 32
-            }
-
-            val orangeTop: Color = Color.valueOf("CD3907")
-            val orangeBottom: Color = Color.valueOf("FF9333")
-            val blueTop: Color = Color.valueOf("27649A")
-            val blueBottom: Color = Color.valueOf("72AED5")
-
-            val top = Color()
-            val bottom = Color()
-
-            var cycleSpeed: Float = 1f / 10
-
-            override fun createParticle(initial: Boolean): Particle {
-                return if (!initial) {
-                    Snowflake(1.25f, 0.25f + MathUtils.random(1f))
-                } else {
-                    Snowflake(MathUtils.random(1f), MathUtils.random(1f))
-                }
-            }
-
-            override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                val width = camera.viewportWidth
-                val height = camera.viewportHeight
-                val ratioX = width / RHRE3.WIDTH
-                val ratioY = height / RHRE3.HEIGHT
-
-                if (cycleSpeed > 0f) {
-                    val percentage = MathHelper.getBaseCosineWave(1f / cycleSpeed)
-                    top.set(blueTop)
-                    bottom.set(blueBottom)
-
-                    top.lerp(orangeTop, percentage)
-                    bottom.lerp(orangeBottom, percentage)
-                }
-
-                batch.drawQuad(0f, 0f, bottom, width, 0f, bottom,
-                               width, height, top, 0f, height, top)
-
-                super.render(camera, batch, shapeRenderer)
-
-                // Remove OoB particles
-                particles.removeIf {
-                    it.x < -(ratioX * it.sizeX) / width || it.y < -(ratioY * it.sizeY) / height
-                }
-            }
-        };
-
-        companion object {
-            val VALUES: List<BackgroundImpl> = values().toList()
-        }
-
-        protected open class Particle(var x: Float, var y: Float,
-                                      var sizeX: Float, var sizeY: Float,
-                                      var speedX: Float, var speedY: Float,
-                                      var rotSpeed: Float, var rotation: Float,
-                                      var tex: String)
-
-        protected var maxParticles: Int = 0
-        protected val particles: MutableList<Particle> = mutableListOf()
-
-        protected open fun createParticle(initial: Boolean): Particle? = null
-
-        open fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-            val width = camera.viewportWidth
-            val height = camera.viewportHeight
-            val ratioX = width / RHRE3.WIDTH
-            val ratioY = height / RHRE3.HEIGHT
-
-            if (maxParticles > 0 && particles.size < maxParticles) {
-                val initial = particles.size == 0 && maxParticles > 1
-                while (particles.size < (if (!initial) maxParticles else (maxParticles * 0.8f).roundToInt().coerceAtLeast(1))) {
-                    val particle = createParticle(initial) ?: break
-                    particles += particle
-                }
-            }
-
-            // Render particles
-            batch.setColor(1f, 1f, 1f, 0.65f)
-            particles.forEach {
-                it.x += it.speedX * Gdx.graphics.deltaTime
-                it.y += it.speedY * Gdx.graphics.deltaTime
-                it.rotation += it.rotSpeed * Gdx.graphics.deltaTime
-
-                val tex = AssetRegistry.get<Texture>(it.tex)
-
-                batch.draw(tex, it.x * width, it.y * width,
-                           it.sizeX / 2, it.sizeY / 2, it.sizeX, it.sizeY, ratioX, ratioY, it.rotation,
-                           0, 0, tex.width, tex.height, false, false)
-            }
-            batch.setColor(1f, 1f, 1f, 1f)
-        }
+        var backgroundImpl: Background = Background.defaultBackground
     }
 
     var titleIcon: ImageLabel<S> = ImageLabel(palette, this, this).apply {

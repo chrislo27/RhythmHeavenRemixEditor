@@ -23,6 +23,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.util.FadeIn
 import io.github.chrislo27.rhre3.util.FadeOut
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -109,7 +110,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             fun cycle(dir: Int) {
-                val values = GenericStage.BackgroundImpl.VALUES
+                val values = Background.backgrounds
                 if (dir > 0) {
                     val index = values.indexOf(GenericStage.backgroundImpl) + 1
                     GenericStage.backgroundImpl = if (index >= values.size) {
@@ -128,7 +129,7 @@ class InfoScreen(main: RHRE3Application)
 
                 (labels.last() as TextLabel).text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}"
 
-                main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.toString()).flush()
+                main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.id).flush()
             }
         }.apply {
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
