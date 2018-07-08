@@ -18,13 +18,13 @@ class SpaceDanceBackground(id: String, val color: Color = Color.valueOf("0029D6"
 
     val starfield1: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_starfield"), 1, 2, 510, 374) }
     val starfield2: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_starfield"), 513, 2, 510, 374) }
-    val smallTwinkle: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 2, 74, 78, 78) }
-    val bigTwinkle: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 82, 74, 78, 78) }
-    val bigDiamond: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 162, 74, 78, 78) }
-    val smallDiamond: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 242, 74, 78, 78) }
-    val starburst: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 114, 2, 70, 70) }
-    val dentedStar: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 186, 2, 70, 70) }
-    val starCross: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 258, 2, 70, 70) }
+//    val smallTwinkle: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 2, 74, 78, 78) }
+//    val bigTwinkle: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 82, 74, 78, 78) }
+//    val bigDiamond: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 162, 74, 78, 78) }
+//    val smallDiamond: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 242, 74, 78, 78) }
+//    val starburst: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 114, 2, 70, 70) }
+//    val dentedStar: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 186, 2, 70, 70) }
+//    val starCross: TextureRegion by lazy { TextureRegion(AssetRegistry.get<Texture>("bg_sd_stars"), 258, 2, 70, 70) }
 
     var veloX: Float = 0f
     var veloY: Float = 0f
