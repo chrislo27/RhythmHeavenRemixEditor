@@ -104,7 +104,6 @@ class EventScreen(main: RHRE3Application)
         super.render(delta)
 
         val batch = main.batch
-        val oldProj = batch.projectionMatrix
         camera.update()
         batch.projectionMatrix = camera.combined
         batch.begin()
@@ -205,7 +204,7 @@ class EventScreen(main: RHRE3Application)
         }
 
         batch.end()
-        batch.projectionMatrix = oldProj
+        batch.projectionMatrix = main.defaultCamera.combined
     }
 
     override fun renderUpdate() {
