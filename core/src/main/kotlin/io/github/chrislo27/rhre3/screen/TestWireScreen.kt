@@ -4,11 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
-import kotlin.math.roundToInt
+import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 
 
 class TestWireScreen(main: RHRE3Application)
@@ -64,27 +65,29 @@ class TestWireScreen(main: RHRE3Application)
         elapsedTime += Gdx.graphics.deltaTime
     }
 
-    fun reset() {
-        elapsedTime = 0f
+    fun reset(extraTime: Float = 0f) {
+        elapsedTime = -extraTime
         frames.clear()
-        val interval = 0.15f
-        repeat((2.5f / interval).roundToInt()) {
-            frames += Frame(1f + it * interval)
+        val frameCount = 20
+        val duration = 2.75f
+        repeat(frameCount) {
+            val percent = it.toFloat() / frameCount
+            frames += Frame(Interpolation.pow2Out.apply(1f, duration, percent) + extraTime)
         }
-        longestTime = frames.maxBy(Frame::time)?.time ?: 1f
-        shortestTime = frames.minBy(Frame::time)?.time ?: 0f
+        longestTime = (frames.maxBy(Frame::time)?.time ?: 1f) - extraTime
+        shortestTime = (frames.minBy(Frame::time)?.time ?: 0f) - extraTime
     }
 
     override fun renderUpdate() {
         super.renderUpdate()
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-            reset()
+            reset(if (Gdx.input.isShiftDown()) 5f else 0f)
         }
     }
 
     override fun getDebugString(): String? {
-        return "frames: ${frames.size}\nelapsed: $elapsedTime\nlongest: $longestTime"
+        return "R: Restart\nSHIFT+R: Restart with 3 sec black\n\nframes: ${frames.size}\nelapsed: $elapsedTime\nlongest: $longestTime"
     }
 
     override fun tickUpdate() {
