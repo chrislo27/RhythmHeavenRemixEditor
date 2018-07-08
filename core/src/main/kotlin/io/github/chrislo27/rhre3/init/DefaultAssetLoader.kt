@@ -23,7 +23,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         }
         AssetRegistry.loadAsset<Texture>("logo_expansion_text", "images/icon/expansion/expansion_text.png")
         AssetRegistry.loadAsset<Texture>("logo_rhre2_128", "images/icon/rhre2/128.png")
-        AssetRegistry.loadAsset<Texture>("logo_wireframe_1024", "images/icon/wireframe/1024.png")
+//        AssetRegistry.loadAsset<Texture>("logo_wireframe_1024", "images/icon/wireframe/1024.png")
 
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
@@ -122,6 +122,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")
         AssetRegistry.loadAsset<Texture>("bg_polkadot", "images/menu/polkadot.png")
+        AssetRegistry.loadAsset<Texture>("bg_sd_stars", "images/menu/sd_stars.png")
+        AssetRegistry.loadAsset<Texture>("bg_sd_starfield", "images/menu/sd_starfield.png")
 
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")
