@@ -286,6 +286,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
 
             remix.midiInstruments = tracksWithNotes.size
+            remix.trackCount = remix.midiInstruments.coerceIn(Editor.DEFAULT_TRACK_COUNT, Editor.MAX_TRACK_COUNT)
 
             val defaultCue = GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!! as Cue
             val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(
