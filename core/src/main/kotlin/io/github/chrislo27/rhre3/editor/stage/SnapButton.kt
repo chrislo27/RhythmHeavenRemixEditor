@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 
@@ -47,7 +48,8 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
-        if (hoverTime > 1f && !wasClickedOn) {
+        val minHover = 1f
+        if (hoverTime > minHover && !wasClickedOn && editor.remix.playState == PlayState.STOPPED) {
             editor.subbeatSection.setFlash(Gdx.graphics.deltaTime)
         }
     }
