@@ -121,7 +121,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
             }
             val lastVersion: Version? = Version.fromStringOrNull(main.preferences.getString(PreferenceKeys.LAST_VERSION, ""))
             val expansionSplash = if (RHRE3.forceExpansionSplash || (lastVersion != null && RHRE3.VERSION.minor == 12 && !main.preferences.getBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, false))) ExpansionSplashScreen(main, nextScreen) else null
-            val possibleEvent: Screen? = EventScreen.getPossibleEvent(main, expansionSplash ?: nextScreen) ?: TestWireScreen(main)
+            val possibleEvent: Screen? = EventScreen.getPossibleEvent(main, expansionSplash ?: nextScreen)/* ?: TestWireScreen(main)*/
 
             main.screen = possibleEvent ?: (expansionSplash ?: nextScreen)
         }
