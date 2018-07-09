@@ -97,6 +97,7 @@ The button with an eye on it is the Views menu. You can select different view ty
 
 The button with the colour palettes is the Theme Chooser. You can pick
 from a variety of pre-built themes, or make your own.
+**`RIGHT CLICK`** this button to toggle between solid-colour backgrounds and (animated) menu backgrounds.
 <br>[See this article for more details.](Themes)
 
 ## Window settings
