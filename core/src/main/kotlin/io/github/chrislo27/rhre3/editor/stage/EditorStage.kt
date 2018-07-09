@@ -401,6 +401,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             isDirty = DirtyType.CLEAN
         }
+
+        val filter = editor.pickerSelection.filter
+        if (filter is StoredPatternsFilter) {
+            gameStageText.text = Localization[if (editor.clickOccupation is ClickOccupation.SelectionDrag && pickerStage.isMouseOver() && !patternAreaStage.isMouseOver()) "editor.msg.storingSelection" else "editor.storedPatterns.add"]
+        }
     }
 
     fun updateSelected(type: DirtyType = DirtyType.DIRTY) {
