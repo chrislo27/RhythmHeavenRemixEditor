@@ -48,6 +48,7 @@ import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
+import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.GameSection
@@ -369,6 +370,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
+
+        if (main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)) {
+            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer)
+        }
 
         run {
             val themeTex: Texture = theme.textureObj ?: return@run

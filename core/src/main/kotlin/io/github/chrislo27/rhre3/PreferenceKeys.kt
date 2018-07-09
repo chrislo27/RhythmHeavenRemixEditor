@@ -6,6 +6,7 @@ object PreferenceKeys {
     private val DATABASE_VERSION = "databaseVersion"
     val DATABASE_VERSION_BRANCH = "${DATABASE_VERSION}_${RHRE3.DATABASE_BRANCH}"
     val THEME_INDEX = "themeIndex"
+    val THEME_USES_MENU = "themeUsesMenu"
     val LANG_INDEX = "languageIndex"
     val LANGUAGE = "language"
     val WINDOW_STATE = "windowState"
