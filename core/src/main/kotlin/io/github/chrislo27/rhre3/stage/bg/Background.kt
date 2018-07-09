@@ -17,12 +17,13 @@ abstract class Background(val id: String) {
                     KarateManBackground("karateMan"),
                     TilingBackground("rhdsPolkaDots", 5f, speedX = 3f, speedY = -3f, widthCoeff = 0.5f, heightCoeff = 0.5f) { AssetRegistry["bg_polkadot"] },
                     SpaceDanceBackground("spaceDance"),
+                    RetroBackground("retro"),
                     TilingBackground("tiled", 5f, speedX = 1f, speedY = 1f) { AssetRegistry["bg_tile"] }
                   )
         }
-        val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) + listOf("TENGOKU" to backgrounds.first { it.id == "tengoku" }, "KARATE_MAN" to backgrounds.first { it.id == "karateMan" }, "TILED" to backgrounds.first { it.id == "tiled" }) }
+        val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) }
         val defaultBackground: Background
-            get() = backgroundMap["tengoku"]!!
+            get() = backgroundMap["retro"]!!
     }
 
 }
