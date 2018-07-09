@@ -201,9 +201,9 @@ class InfoScreen(main: RHRE3Application)
             }
             // current program version
             centre.elements += TextLabel(palette, centre, centre).apply {
-                this.location.set(screenX = 1f - (padding + buttonWidth),
+                this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
-                                  screenWidth = buttonWidth,
+                                  screenWidth = buttonWidth - buttonWidth * 0.09f * 2,
                                   screenHeight = buttonHeight * 0.8f)
                 this.isLocalizationKey = false
                 this.textWrapping = false
@@ -220,9 +220,9 @@ class InfoScreen(main: RHRE3Application)
             dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
 
             }.apply {
-                this.location.set(screenX = 1f - (padding + buttonWidth),
+                this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
-                                  screenWidth = buttonWidth,
+                                  screenWidth = buttonWidth - buttonWidth * 0.09f * 2,
                                   screenHeight = buttonHeight * 0.8f)
                 this.isLocalizationKey = false
                 this.textWrapping = false
