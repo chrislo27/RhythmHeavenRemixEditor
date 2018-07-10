@@ -759,19 +759,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             fun renderTimeSignature(beat: Int, lowerText: String, upperText: String) {
                 val x = beat
                 val startY = 0f + toScaleY(TRACK_LINE_THICKNESS)
+                val maxWidth = 1f
 
-                val lowerWidth = bigFont.getTextWidth(lowerText, 1f, false)
-                val upperWidth = bigFont.getTextWidth(upperText, 1f, false)
+                val lowerWidth = bigFont.getTextWidth(lowerText, 1f, false).coerceAtMost(maxWidth)
+                val upperWidth = bigFont.getTextWidth(upperText, 1f, false).coerceAtMost(maxWidth)
                 val biggerWidth = Math.max(lowerWidth, upperWidth)
 
                 bigFont.drawCompressed(batch, lowerText,
                                        x + biggerWidth * 0.5f - lowerWidth * 0.5f,
                                        startY + bigFont.capHeight,
-                                       1f, Align.left)
+                                       maxWidth, Align.left)
                 bigFont.drawCompressed(batch, upperText,
                                        x + biggerWidth * 0.5f - upperWidth * 0.5f,
                                        startY + heightOfTrack,
-                                       1f, Align.left)
+                                       maxWidth, Align.left)
             }
 
             timeSignatures.map.values.forEach { timeSig ->
