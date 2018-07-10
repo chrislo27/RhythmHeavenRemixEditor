@@ -14,6 +14,9 @@ Renderer: GDI Generic
    at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:126)
 ```
 
-Please use Java 8u45. You may download it on Oracle's website (requires registration),
-or from FileHippo below. Note that this may only be a fix if and only if you are certain your GPU supports OpenGL 2 or higher, and are running Windows 10 on an Intel CPU with integrated graphics.<br>
-[Download Java 8u45 from FileHippo](https://filehippo.com/download_jre/60816/)
+Please use Java 8u25. You may download it on Oracle's website (requires registration),
+or from Google Drive below. Note that this may only be a fix if and only if you are certain your GPU
+supports OpenGL 2 or higher, and are running Windows 10 on an Intel CPU with integrated
+graphics. You should be aware of the potential security risks that using an older Java
+version may have, but as long as if you are careful this is okay.<br>
+[Download Java 8u25](https://drive.google.com/uc?export=download&id=1Miriy1i3GdkN9nDgRlDZdsYagxJhq3Ui)
