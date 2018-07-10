@@ -18,6 +18,7 @@
 ### Troubleshooting
 * [Invalid keystore format or No System TLS error](Invalid-keystore.md)
 * [Out of memory when loading music](Out-of-memory-on-music.md)
+* [Windows 10 GDI Generic error possible fix](win-10-intel-gpu.md)
 * [Launch arguments](Launch-arguments.md)
 
 ### Advanced Editing and Documentation
