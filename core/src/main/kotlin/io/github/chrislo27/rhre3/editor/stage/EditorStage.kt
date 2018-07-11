@@ -391,8 +391,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
                     gameStageText.text = Localization["editor.nothing.customs", "${if (OSUtils.IS_WINDOWS) "<user>" else "~"}/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
-                    customSoundsFolderButton.location.set(screenY = 0.5f * pickerStage.percentageOfHeight(Editor.ICON_PADDING), screenX = 0.25f - customSoundsFolderButton.location.screenWidth / 2f)
-                    customSoundsFolderButton.stage.updatePositions()
+                    val screenX = 0.25f - customSoundsFolderButton.location.screenWidth / 2f
+                    if (customSoundsFolderButton.location.screenX != screenX) {
+                        customSoundsFolderButton.location.set(screenY = 0.5f * pickerStage.percentageOfHeight(Editor.ICON_PADDING), screenX = screenX)
+                        customSoundsFolderButton.stage.updatePositions()
+                    }
                 } else if (filter is SeriesFilter) {
                     gameStageText.text = Localization["editor.nothing.series"]
                 } else if (filter is StoredPatternsFilter) {
