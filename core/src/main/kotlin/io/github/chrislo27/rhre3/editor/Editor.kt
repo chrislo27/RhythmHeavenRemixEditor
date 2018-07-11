@@ -34,6 +34,7 @@ import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
+import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
@@ -45,6 +46,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.InfoScreen
 import io.github.chrislo27.rhre3.screen.PatternStoreScreen
+import io.github.chrislo27.rhre3.screen.TexEntChooserScreen
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
@@ -470,9 +472,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val smoothDragging = main.preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
         remix.entities.forEach {
-            it.updateInterpolation(!smoothDragging)
-            if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
-                it.render(batch)
+            if (it !is TextureEntity) {
+                it.updateInterpolation(!smoothDragging)
+                if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
+                    it.render(batch)
+                }
             }
         }
 
@@ -506,6 +510,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 subbeatSection.flashAnimation -= Gdx.graphics.deltaTime / subbeatSection.flashAnimationSpeed
                 if (subbeatSection.flashAnimation < 0)
                     subbeatSection.flashAnimation = 0f
+            }
+        }
+
+        // Texture entities get rendered here
+        remix.entities.forEach {
+            if (it is TextureEntity) {
+                it.updateInterpolation(!smoothDragging)
+                if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
+                    it.render(batch)
+                }
             }
         }
 
@@ -1477,6 +1491,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             if (first is IEditableText) {
                                 ctrlBuilder.separator().append(
                                         Localization[if (stage.entityTextField.visible) "editor.msg.editabletext.finish" else "editor.msg.editabletext.edit"])
+                            } else if (first is TextureEntity) {
+                                ctrlBuilder.separator().append(Localization["editor.msg.textureentity"])
                             }
                         }
                     } else {
@@ -1692,14 +1708,20 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val tool = currentTool
             if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
-                if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && firstEntityInMouse is IEditableText) {
+                if (button == Input.Buttons.RIGHT && firstEntityInMouse != null && selection.size == 1) {
                     if (firstEntityInMouse in this.selection) {
-                        val field = stage.entityTextField
-                        field.visible = true
-                        field.text = firstEntityInMouse.text
-                        field.canInputNewlines = firstEntityInMouse.canInputNewlines
-                        field.hasFocus = true
-                        updateMessageLabel()
+                        if (firstEntityInMouse is IEditableText) {
+                            val field = stage.entityTextField
+                            field.visible = true
+                            field.text = firstEntityInMouse.text
+                            field.canInputNewlines = firstEntityInMouse.canInputNewlines
+                            field.hasFocus = true
+                            updateMessageLabel()
+                        } else if (firstEntityInMouse is TextureEntity) {
+                            // Open file chooser
+                            main.screen = TexEntChooserScreen(main, firstEntityInMouse)
+                            updateMessageLabel()
+                        }
                     }
                 } else if (isAnyTrackerButtonDown) {
                     clickOccupation = if (isMusicTrackerButtonDown) {

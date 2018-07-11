@@ -60,6 +60,7 @@ object RemixRecovery {
 
             StreamUtils.closeQuietly(zipFile)
         } catch (t: Throwable) {
+            t.printStackTrace()
         }
 
         // https://www.samclarke.com/kotlin-hash-strings/

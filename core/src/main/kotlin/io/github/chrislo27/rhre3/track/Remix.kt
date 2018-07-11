@@ -1,7 +1,12 @@
 package io.github.chrislo27.rhre3.track
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.PixmapIO
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
+import com.badlogic.gdx.utils.GdxRuntimeException
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.PreferenceKeys
@@ -17,6 +22,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.EndEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -39,6 +45,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -56,16 +63,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         val DEFAULT_MIDI_NOTE: String = "gleeClubEn/singLoop"
 
         class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
-                            val isAutosave: Boolean, val extra: MutableMap<String, Any> = mutableMapOf())
-
-        /*
-
-        To correctly do persistent data:
-
-        * Update tracker blocks of code when new trackers are added, use VersionHistory to check correctly
-        * Update when statement in fromJson
-
-         */
+                            val isAutosave: Boolean,
+                            val extra: MutableMap<String, Any> = mutableMapOf())
 
         fun toJson(remix: Remix, isAutosave: Boolean): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
@@ -93,6 +92,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                         obj.put("filename", music.handle.name())
                         obj.put("extension", music.handle.extension())
                     }
+                }
+
+                tree.putArray("textures").also { ar ->
+                    textureCache.forEach { ar.add(it.key) }
                 }
 
                 // entities
@@ -378,6 +381,35 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 buf.close()
                 stream.closeEntry()
             }
+
+            if (remix.textureCache.isNotEmpty()) {
+                remix.textureCache.forEach { name, tex ->
+                    stream.putNextEntry(ZipEntry("$name.png"))
+
+                    if (!tex.textureData.isPrepared) {
+                        tex.textureData.prepare()
+                    }
+                    val pixmap: Pixmap = tex.textureData.consumePixmap()
+
+                    try {
+                        val writer = PixmapIO.PNG((pixmap.width.toFloat() * pixmap.height.toFloat() * 1.5f).toInt()) // Guess at deflated size.
+                        try {
+                            writer.setFlipY(false)
+                            writer.write(stream, pixmap)
+                        } finally {
+                            writer.dispose()
+                        }
+                    } catch (ex: IOException) {
+                        throw GdxRuntimeException("Error writing PNG", ex)
+                    } finally {
+                        if (tex.textureData.disposePixmap()) {
+                            pixmap.dispose()
+                        }
+                    }
+
+                    stream.closeEntry()
+                }
+            }
         }
 
         fun unpack(remix: Remix, zip: ZipFile): RemixLoadInfo {
@@ -398,6 +430,42 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 musicStream.close()
 
                 remix.music = MusicData(fh, remix)
+            }
+
+            val texs = objectNode["textures"] as? ArrayNode?
+            if (texs != null) {
+                val toLoad = texs.size()
+                val loaded: MutableMap<String, Pair<Texture?, Throwable?>> = mutableMapOf()
+                texs.forEach { node ->
+                    Gdx.app.postRunnable {
+                        val name = node.asText()
+                        try {
+                            val entry = zip.getEntry("$name.png")
+                            val bytes = zip.getInputStream(entry).let { stream ->
+                                val b = stream.readBytes()
+                                stream.close()
+                                b
+                            }
+                            val texture = Texture(Pixmap(bytes, 0, bytes.size))
+                            loaded[name] = texture to null
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            loaded[name] = null to t
+                        }
+                    }
+                }
+
+                while (loaded.size < toLoad) {
+                    Thread.sleep(10L)
+                }
+
+                if (loaded.any { it.value.second != null }) {
+                    throw loaded.values.first { it.second != null }.second!!
+                } else {
+                    loaded.forEach { key, pair ->
+                        remix.textureCache[key] = pair.first!!
+                    }
+                }
             }
 
             return result
@@ -558,6 +626,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         setMusicVolume()
     }
 
+    val textureCache: MutableMap<String, Texture> = mutableMapOf()
+
     val playStateListeners: MutableList<(old: PlayState, new: PlayState) -> Unit> = mutableListOf()
     var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
         val music = music
@@ -679,6 +749,20 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             gameSections[section.startBeat] = section
         }
+
+        val textureEntities = entities.filterIsInstance<TextureEntity>()
+        if (textureEntities.isEmpty()) {
+            if (textureCache.isNotEmpty()) {
+                textureCache.values.toList().forEach(Texture::dispose)
+                textureCache.clear()
+            }
+        } else {
+            textureCache.keys.toList().filter { key ->
+                textureEntities.none { it.textureHash == key }
+            }.forEach { key ->
+                textureCache.remove(key)
+            }
+        }
     }
 
     fun getLastEntityPoint(): Float {
@@ -788,6 +872,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
     override fun dispose() {
         music?.dispose()
+        textureCache.values.forEach(Texture::dispose)
     }
 
 }

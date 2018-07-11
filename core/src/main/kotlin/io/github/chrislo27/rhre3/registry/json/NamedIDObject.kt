@@ -15,7 +15,8 @@ import io.github.chrislo27.rhre3.entity.model.IVolumetric
         JsonSubTypes.Type(RandomCueObject::class),
         JsonSubTypes.Type(EndRemixObject::class),
         JsonSubTypes.Type(SubtitleEntityObject::class),
-        JsonSubTypes.Type(ShakeEntityObject::class)
+        JsonSubTypes.Type(ShakeEntityObject::class),
+        JsonSubTypes.Type(TextureEntityObject::class)
              )
 sealed class NamedIDObject {
 
@@ -147,3 +148,6 @@ class SubtitleEntityObject : NamedIDObject() {
 
 @JsonTypeName("shakeEntity")
 class ShakeEntityObject : NamedIDObject()
+
+@JsonTypeName("textureEntity")
+class TextureEntityObject : NamedIDObject()
