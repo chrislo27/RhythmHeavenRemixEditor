@@ -381,7 +381,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             editor.updateMessageLabel()
 
             gameStageText.text = ""
-            customSoundsFolderButton.visible = false
+            customSoundsFolderButton.visible = filter is CustomFilter
             if (filter.areGroupsEmpty) {
                 if (filter == favouritesFilter) {
                     gameStageText.text = Localization["editor.nothing.favourites"]
@@ -391,7 +391,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
                     gameStageText.text = Localization["editor.nothing.customs", "${if (OSUtils.IS_WINDOWS) "<user>" else "~"}/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_FOLDER.name()]
-                    customSoundsFolderButton.visible = true
+                    customSoundsFolderButton.location.set(screenY = 0.5f * pickerStage.percentageOfHeight(Editor.ICON_PADDING), screenX = 0.25f - customSoundsFolderButton.location.screenWidth / 2f)
+                    customSoundsFolderButton.stage.updatePositions()
                 } else if (filter is SeriesFilter) {
                     gameStageText.text = Localization["editor.nothing.series"]
                 } else if (filter is StoredPatternsFilter) {
@@ -711,10 +712,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         run pickerAndCo@{
             val iconWidth = pickerStage.percentageOfWidth(Editor.ICON_SIZE)
             val iconHeight = pickerStage.percentageOfHeight(Editor.ICON_SIZE)
-            val iconWidthPadded = pickerStage.percentageOfWidth(
-                    Editor.ICON_SIZE + Editor.ICON_PADDING)
-            val iconHeightPadded = pickerStage.percentageOfHeight(
-                    Editor.ICON_SIZE + Editor.ICON_PADDING)
+            val iconWidthPadded = pickerStage.percentageOfWidth(Editor.ICON_SIZE + Editor.ICON_PADDING)
+            val iconHeightPadded = pickerStage.percentageOfHeight(Editor.ICON_SIZE + Editor.ICON_PADDING)
             val startX = pickerStage.percentageOfWidth(
                     (pickerStage.location.realWidth / 2f) -
                             ((Editor.ICON_SIZE + Editor.ICON_PADDING) * (Editor.ICON_COUNT_X + 3)
@@ -755,7 +754,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         Gdx.net.openURI("file:///${GameRegistry.CUSTOM_FOLDER.file().absolutePath}")
                     }
                 }.apply {
-                    this.location.set(0.225f, 0.05f, 0.05f, 0.2f)
+                    setLocation(Editor.ICON_COUNT_X, 0)
+                    this.location.set(screenY = 0.5f - this.location.screenHeight / 2f)
                     this.addLabel(ImageLabel(palette, this, this.stage).apply {
                         renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                         image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
