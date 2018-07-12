@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.credits
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -25,6 +26,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import org.lwjgl.openal.AL10
 import rhmodding.bccadeditor.bccad.Animation
 import rhmodding.bccadeditor.bccad.BCCAD
 import rhmodding.bccadeditor.bccad.Sprite
@@ -32,7 +34,8 @@ import java.util.*
 import kotlin.math.roundToInt
 
 
-class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, CreditsGame>(main), HidesVersionText {
+class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
+    : ToolboksScreen<RHRE3Application, CreditsGame>(main), HidesVersionText {
 
     companion object {
         private const val TEMPO = 175f
@@ -182,7 +185,7 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
 
     private var seconds: Float = -0.509f
     private val beat: Float
-        get() = TempoUtils.secondsToBeats(seconds, TEMPO)
+        get() = TempoUtils.secondsToBeats(seconds, TEMPO * speedMultiplier)
     private var lastBeat: Float = beat
     private var isLeftBeat = true
     private var isLeftBeatDancers = true
@@ -639,7 +642,14 @@ class CreditsGame(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Cre
     override fun show() {
         super.show()
         music.play()
+        (music as? OpenALMusic)?.let {
+            val sourceIDField = OpenALMusic::class.java.getDeclaredField("sourceID")
+            sourceIDField.isAccessible = true
+            AL10.alSourcef(sourceIDField.getInt(it), AL10.AL_PITCH, speedMultiplier)
+        }
         skipFrame = true
+        sheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+        bgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
     }
 
     override fun showTransition() {

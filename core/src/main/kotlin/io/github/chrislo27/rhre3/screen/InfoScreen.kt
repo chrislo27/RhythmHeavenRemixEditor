@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -35,6 +36,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -269,11 +271,26 @@ class InfoScreen(main: RHRE3Application)
             // info buttons
             // Credits
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+
+                init {
+                    addLabel(TextLabel(palette, this, this.stage).apply {
+                        this.fontScaleMultiplier = fontScale
+                        this.isLocalizationKey = true
+                        this.textWrapping = false
+                        this.text = "screen.info.credits"
+                    })
+                }
+
+                private val label: TextLabel<InfoScreen>
+                    get() = labels.first { it is TextLabel } as TextLabel
+
+                private var lastShift = false
+
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
                     try {
-                        val credits = CreditsGame(main)
+                        val credits = CreditsGame(main, if (Gdx.input.isShiftDown()) 1.25f else 1f)
                         main.screen = TransitionScreen(main, this@InfoScreen, credits, FadeOut(0.5f, Color.BLACK), FadeIn(0.75f, Color.BLACK))
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -286,13 +303,27 @@ class InfoScreen(main: RHRE3Application)
 
                     main.screen = CreditsScreen(main)
                 }
+
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    val shiftDown = Gdx.input.isShiftDown()
+                    if (lastShift != shiftDown) {
+                        lastShift = shiftDown
+                        label.textColor = if (shiftDown) {
+                            Colors.get("RAINBOW")
+                        } else {
+                            null
+                        }
+                        if (shiftDown) {
+                            label.isLocalizationKey = false
+                            label.text = "Tempo Up!"
+                        } else {
+                            label.isLocalizationKey = true
+                            label.text = "screen.info.credits"
+                        }
+                    }
+                    super.render(screen, batch, shapeRenderer)
+                }
             }.apply {
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.text = "screen.info.credits"
-                })
                 addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.location.set(screenX = 0f, screenWidth = 0.1f)
                     this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
