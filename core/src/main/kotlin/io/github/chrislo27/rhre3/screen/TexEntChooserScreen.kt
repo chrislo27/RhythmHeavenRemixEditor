@@ -131,7 +131,6 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
                             }
                             entity.textureHash = hash
 
-                            mainLabel.text = Localization["screen.texent.success"]
                             stage.onBackButtonClick()
                         } catch (t: Throwable) {
                             t.printStackTrace()
