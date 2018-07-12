@@ -36,6 +36,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.version.Version
 
@@ -279,10 +280,17 @@ class InfoScreen(main: RHRE3Application)
                         this.textWrapping = false
                         this.text = "screen.info.credits"
                     })
+                    addLabel(ImageLabel(palette, this, this.stage).apply {
+                        this.location.set(screenX = 0f, screenWidth = 0.1f)
+                        this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                        this.image = TextureRegion(AssetRegistry.get<Texture>("weird_wakaaa"))
+                    })
                 }
 
-                private val label: TextLabel<InfoScreen>
+                private val textLabel: TextLabel<InfoScreen>
                     get() = labels.first { it is TextLabel } as TextLabel
+                private val imageLabel: ImageLabel<InfoScreen>
+                    get() = labels.first { it is ImageLabel } as ImageLabel
 
                 private var lastShift = false
 
@@ -308,27 +316,26 @@ class InfoScreen(main: RHRE3Application)
                     val shiftDown = Gdx.input.isShiftDown()
                     if (lastShift != shiftDown) {
                         lastShift = shiftDown
-                        label.textColor = if (shiftDown) {
+                        textLabel.textColor = if (shiftDown) {
                             Colors.get("RAINBOW")
                         } else {
                             null
                         }
                         if (shiftDown) {
-                            label.isLocalizationKey = false
-                            label.text = "Tempo Up!"
+                            textLabel.isLocalizationKey = false
+                            textLabel.text = "Tempo Up!"
                         } else {
-                            label.isLocalizationKey = true
-                            label.text = "screen.info.credits"
+                            textLabel.isLocalizationKey = true
+                            textLabel.text = "screen.info.credits"
+                            imageLabel.rotation = 0f
                         }
+                    }
+                    if (shiftDown) {
+                        imageLabel.rotation = MathHelper.getSawtoothWave(1.5f) * -360f
                     }
                     super.render(screen, batch, shapeRenderer)
                 }
             }.apply {
-                addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = 0f, screenWidth = 0.1f)
-                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("weird_wakaaa"))
-                })
 
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = padding,
