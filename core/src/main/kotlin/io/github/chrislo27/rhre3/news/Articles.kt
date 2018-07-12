@@ -17,7 +17,7 @@ object Articles {
 
     const val ARTICLE_COUNT = 9
 
-    private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/articles"
+    private const val FETCH_URL: String = "https://zorldo.auroranet.me:10443/rhre3/articles"
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
     private val articleFolder: FileHandle by lazy { RHRE3.RHRE3_FOLDER.child("articles/") }

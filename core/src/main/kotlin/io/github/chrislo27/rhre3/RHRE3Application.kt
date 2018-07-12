@@ -46,6 +46,7 @@ import javafx.application.Application
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncHttpClient
+import org.asynchttpclient.DefaultAsyncHttpClientConfig
 import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
 import java.io.File
@@ -61,7 +62,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         lateinit var languages: List<NamedLocale>
             private set
 
-        val httpClient: AsyncHttpClient = asyncHttpClient()
+        val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder().setFollowRedirect(true))
         lateinit var instance: RHRE3Application
             private set
 
