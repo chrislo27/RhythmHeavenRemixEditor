@@ -246,6 +246,26 @@ class InfoScreen(main: RHRE3Application)
                 })
             }
 
+            // Donate button
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+
+                    Gdx.net.openURI("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958")
+                }
+            }.apply {
+                addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_donate"))
+                })
+
+                this.location.set(screenX = 0.5f - (0.1f / 2),
+                                  screenY = padding,
+                                  screenWidth = 0.1f,
+                                  screenHeight = buttonHeight)
+                this.visible = false
+            }
+
             // info buttons
             // Credits
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
