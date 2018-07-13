@@ -160,6 +160,7 @@ sealed class ClickOccupation {
         val height: Int by lazy {
             Math.round(top - bottom)
         }
+        private var firstSetPosition = true
 
         fun setFirstPosition(x: Float, y: Float) {
             // reducing object creation due to rapid calling
@@ -180,6 +181,17 @@ sealed class ClickOccupation {
         }
 
         fun setPositionRelativeToMouse(snap: Float = editor.snap, intY: Boolean = true) {
+            if (firstSetPosition) {
+                firstSetPosition = false
+                editor.remix.entities.sortWith(Comparator { o1, o2 ->
+                    when {
+                        o1 in editor.selection && o2 !in editor.selection -> 1
+                        o1 !in editor.selection && o2 in editor.selection -> -1
+                        else -> 0
+                    }
+                })
+            }
+
             val y = editor.remix.camera.getInputY() - mouseOffset.y
             setFirstPosition(MathHelper.snapToNearest(editor.remix.camera.getInputX() - mouseOffset.x, snap),
                              if (intY) Math.round(y).toFloat() else y)
