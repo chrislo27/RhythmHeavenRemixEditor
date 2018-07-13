@@ -53,11 +53,11 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articlePaginationStage.visible = false
 
             when (value) {
-                ARTICLES -> listOf(articleListStage, articlePaginationStage)
+                ARTICLES -> listOf(articleListStage, articlePaginationStage, refreshButton)
                 IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
-                ERROR -> listOf(errorLabel)
-            }.forEach { it.visible = true }
+                ERROR -> listOf(errorLabel, refreshButton)
+            }.forEach { (@Suppress("Unchecked_Cast")(it as UIElement<NewsScreen>)).visible = true }
 
             if (value == ARTICLES) {
                 articleButtons.forEachIndexed { index, it ->
