@@ -48,15 +48,16 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articleListStage.visible = false
             fetchingStage.visible = false
             errorLabel.visible = false
+            refreshButton.visible = false
             articleLinkButton.visible = value == IN_ARTICLE && articleLinkButton.visible
             articlePaginationStage.visible = false
 
             when (value) {
-                ARTICLES -> listOf(articleListStage, articlePaginationStage)
+                ARTICLES -> listOf(articleListStage, articlePaginationStage, refreshButton)
                 IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
-                ERROR -> listOf(errorLabel)
-            }.forEach { it.visible = true }
+                ERROR -> listOf(errorLabel, refreshButton)
+            }.forEach { (it as UIElement<NewsScreen>).visible = true }
 
             if (value == ARTICLES) {
                 articleButtons.forEachIndexed { index, it ->
@@ -83,6 +84,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     private val articleLinkButton = ArticleLinkButton(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
         this.location.set(screenX = 0.15f, screenWidth = 0.7f)
     }
+    private val refreshButton: Button<NewsScreen>
     private val articleButtons: List<ArticleButton>
 
     private val newsPreferences: Preferences = Gdx.app.getPreferences("RHRE3-news")
@@ -99,6 +101,22 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 main.screen = ScreenRegistry.getNonNull("editor")
             }
         }
+
+        refreshButton = object : Button<NewsScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                refresh()
+            }
+        }.apply {
+            val backButton = this@NewsScreen.stage.backButton
+            this.location.set(backButton.location.screenX, backButton.location.screenY, backButton.location.screenWidth, backButton.location.screenHeight)
+            this.location.set(screenX = 1f - (this.location.screenX + this.location.screenWidth))
+
+            addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
+            })
+        }
+        stage.bottomStage.elements += refreshButton
 
         val centreLoadingIcon = LoadingIcon(main.uiPalette, fetchingStage)
         fetchingStage.elements += centreLoadingIcon.apply {
@@ -204,8 +222,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
         if (Gdx.input.isControlDown()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
-                state = FETCHING
-                Articles.fetch()
+                refresh()
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.U) && state == ARTICLES) {
                 articleButtons.filter { it.article != null }.forEach { articleButton ->
                     val article = articleButton.article
@@ -217,6 +234,11 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 hasNewNews = true
             }
         }
+    }
+
+    private fun refresh() {
+        state = FETCHING
+        Articles.fetch()
     }
 
     override fun getDebugString(): String? {
