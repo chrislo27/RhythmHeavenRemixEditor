@@ -3,7 +3,6 @@ buildscript {
         mavenLocal()
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
@@ -34,7 +33,6 @@ allprojects {
         maven { url "https://kotlin.bintray.com/kotlinx/" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://repo.eclipse.org/content/groups/releases/' }
-        maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.1" }
         maven { url "http://dl.bintray.com/spookygames/oss" }
     }
 }
@@ -62,7 +60,7 @@ project(":core") {
         compile "com.github.oshi:oshi-core:3.4.4"
         compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5"
+        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.23.4"
         compile "org.asynchttpclient:async-http-client:2.4.4"
         compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.4"
         compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4"
