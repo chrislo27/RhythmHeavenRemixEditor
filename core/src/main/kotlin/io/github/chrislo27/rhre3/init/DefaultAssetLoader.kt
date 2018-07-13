@@ -127,7 +127,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("bg_sd_starfield", "images/menu/sd_starfield.png")
 
         // play-yan
-        AssetRegistry.loadAsset<Texture>("playyan_walking", "images/playyan/walking.png")
         AssetRegistry.loadAsset<Texture>("playyan_jumping", "images/playyan/jumping_26.png")
         AssetRegistry.loadAsset<Texture>("playyan_pogo", "images/playyan/pogo.png")
 
@@ -155,6 +154,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 //            assets[AssetRegistry.bindAsset("rhre3_icon_ex_$it", "images/icon/$it.png").first] = Texture(
 //                    "images/icon/expansion/$it.png")
 //        }
+
+        assets["playyan_walking"] = Texture("images/playyan/walking.png")
 
         assets["cursor_horizontal_resize"] =
                 Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")),
