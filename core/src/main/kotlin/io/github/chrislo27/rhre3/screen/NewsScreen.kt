@@ -53,11 +53,11 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             articlePaginationStage.visible = false
 
             when (value) {
-                ARTICLES -> listOf(articleListStage, articlePaginationStage, refreshButton)
+                ARTICLES -> listOf(articleListStage, articlePaginationStage)
                 IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
-                ERROR -> listOf(errorLabel, refreshButton)
-            }.forEach { (it as UIElement<NewsScreen>).visible = true }
+                ERROR -> listOf(errorLabel)
+            }.forEach { it.visible = true }
 
             if (value == ARTICLES) {
                 articleButtons.forEachIndexed { index, it ->
@@ -84,7 +84,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     private val articleLinkButton = ArticleLinkButton(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
         this.location.set(screenX = 0.15f, screenWidth = 0.7f)
     }
-    private val refreshButton: Button<NewsScreen>
+    private val refreshButton: RefreshButton
     private val articleButtons: List<ArticleButton>
 
     private val newsPreferences: Preferences = Gdx.app.getPreferences("RHRE3-news")
@@ -102,12 +102,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             }
         }
 
-        refreshButton = object : Button<NewsScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                refresh()
-            }
-        }.apply {
+        refreshButton = RefreshButton(palette, stage.bottomStage, stage.bottomStage).apply {
             val backButton = this@NewsScreen.stage.backButton
             this.location.set(backButton.location.screenX, backButton.location.screenY, backButton.location.screenWidth, backButton.location.screenHeight)
             this.location.set(screenX = 1f - (this.location.screenX + this.location.screenWidth))
@@ -425,6 +420,14 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             update(0, 0)
         }
 
+    }
+
+    inner class RefreshButton(palette: UIPalette, parent: UIElement<NewsScreen>, stage: Stage<NewsScreen>)
+        : Button<NewsScreen>(palette, parent, stage) {
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            refresh()
+        }
     }
 
 }
