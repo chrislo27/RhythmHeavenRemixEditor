@@ -89,9 +89,6 @@ object GameMetadata {
                 GameRegistry.data.gameMap[it]
             }
         }
-
-        // ensures old IDs are gone
-        persist()
     }
 
     fun persist() {

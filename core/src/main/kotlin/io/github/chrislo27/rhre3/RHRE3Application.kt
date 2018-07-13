@@ -322,7 +322,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
     override fun dispose() {
         super.dispose()
-        GameMetadata.persist()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
         preferences.putString(PreferenceKeys.MIDI_NOTE,
                               preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
