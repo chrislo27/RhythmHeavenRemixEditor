@@ -742,16 +742,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
                 val currentSwing = remix.tempos.swingAt(beat)
                 val ratio = currentSwing.ratio / 100f
-                val jumpHeight: Float = when {
-                    currentSwing.ratio == 50 -> MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
-                    else -> {
-                        if (beatPercent <= ratio) {
-                            MathUtils.sin(MathUtils.PI * beatPercent * (1f / ratio))
-                        } else {
-                            MathUtils.sin(MathUtils.PI * (beatPercent - ratio) * (1f / (1f - ratio))) * 0.5f
-                        }.absoluteValue
-                    }
-                }
+                val jumpHeight: Float = MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
 
                 batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
                            remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
