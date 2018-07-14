@@ -741,7 +741,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val playbackStartPercent = remix.playbackStart % 1f
                 val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
                 val currentSwing = remix.tempos.swingAt(beat)
-                val ratio = currentSwing.ratio / 100f
                 val jumpHeight: Float = MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
 
                 batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
@@ -890,17 +889,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 var lastSwing: Swing = tempos.defaultSwing
                 tempos.map.values.forEach {
                     if ((it.beat in beatRange || it.endBeat in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
-                        val noteType = (8 / it.swing.division).roundToInt()
-                        val note: String = when (noteType) {
-                            8 -> Swing.EIGHTH_SYMBOL
-                            16 -> Swing.SIXTEENTH_SYMBOL
-                            else -> "${noteType}th"
-                        }
-                        val text: String = Swing.SWING_NAMES.entries.lastOrNull { entry -> entry.key.ratio <= it.swing.ratio }?.let { entry ->
-                            if (entry.key == Swing.STRAIGHT && it.swing.ratio != entry.key.ratio) {
-                                Swing.SWING_NAMES[Swing.SWING]
-                            } else entry.value
-                        } ?: "Inverted Swing"
+                        val noteSymbol: String = it.swing.getNoteSymbol()
+                        val swingName: String = it.swing.getSwingName()
 
                         if (tool == Tool.SWING) {
                             borderedFont.color = getColorForTracker(it)
@@ -908,12 +898,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             borderedFont.setColor(1f, 1f, 1f, 1f)
                         }
                         val y = remix.trackCount + 1f
-                        borderedFont.drawCompressed(batch, text, it.beat, y, 2f, Align.left)
+                        borderedFont.drawCompressed(batch, swingName, it.beat, y, 2f, Align.left)
 
                         val lh = borderedFont.capHeight * 1.1f
 
                         borderedFont.scaleMul(0.75f)
-                        borderedFont.drawCompressed(batch, "${it.swing.ratio}%, $note", it.beat, y + lh, 2f, Align.left)
+                        borderedFont.drawCompressed(batch, "${it.swing.ratio}%, $noteSymbol", it.beat, y + lh, 2f, Align.left)
                         borderedFont.scaleMul(1 / 0.75f)
                     }
 

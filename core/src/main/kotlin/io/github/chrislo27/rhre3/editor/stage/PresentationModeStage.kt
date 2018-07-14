@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.Swing
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
@@ -150,20 +151,29 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
         return "${seconds / 60}:${if (sec < 10) "0" else ""}${Math.max(0, sec)}"
     }
 
-    private var timeSeconds by Delegates.observable(0) { _, old, new ->
+    private var timeSeconds: Int by Delegates.observable(0) { _, old, new ->
         if (new != old) {
             timeLabel.text = secondsToText(new)
         }
     }
-    private var durationSeconds by Delegates.observable(0) { _, old, new ->
+    private var durationSeconds: Int by Delegates.observable(0) { _, old, new ->
         if (new != old) {
             durationLabel.text = secondsToText(new)
         }
     }
-    private var bpm by Delegates.observable(Float.NEGATIVE_INFINITY) { _, old, new ->
+    private var bpm: Float by Delegates.observable(Float.NEGATIVE_INFINITY) { _, old, new ->
         if (new != old) {
-            bpmLabel.text = "${String.format("%.1f", new)} BPM"
+            setBpmLabelText()
         }
+    }
+    private var swing: Swing by Delegates.observable(Swing.STRAIGHT) { _, old, new ->
+        if (new != old) {
+            setBpmLabelText()
+        }
+    }
+
+    private fun setBpmLabelText() {
+        bpmLabel.text = (if (swing != Swing.STRAIGHT) "${swing.getNoteSymbol()} ${swing.getSwingName()}\n" else "") + "${String.format("%.1f", bpm)} BPM"
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -177,6 +187,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
         timeSeconds = remix.tempos.beatsToSeconds(remix.beat).toInt()
         durationSeconds = remix.tempos.beatsToSeconds(remix.lastPoint).toInt()
         bpm = remix.tempos.tempoAt(remix.beat)
+        swing = remix.tempos.swingAt(remix.beat)
 
         progress = (remix.seconds / remix.tempos.beatsToSeconds(remix.lastPoint)).coerceIn(0f, 1f)
 
