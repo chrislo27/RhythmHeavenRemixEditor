@@ -84,7 +84,7 @@ class DonatePleaseScreen(main: RHRE3Application, val nextScreen: Screen?)
 
                 So I kindly ask you to [YELLOW]consider a donation[]. I suggest donating what you feel
                 RHRE is worth to you. This message will only appear once, and won't bother you again.
-                If you do make a donation, I will greatly appreciate it.
+                All donations are greatly appreciated, and go to serving RHRE in the long-term!
 
                 Thank you,
                 chrislo27
