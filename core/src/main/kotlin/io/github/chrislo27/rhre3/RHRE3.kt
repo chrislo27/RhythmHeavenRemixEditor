@@ -29,6 +29,7 @@ object RHRE3 {
     const val GITHUB: String = "https://github.com/chrislo27/RhythmHeavenRemixEditor"
     const val GITHUB_RELEASES = "$GITHUB/releases"
     const val DATABASE_URL: String = "https://github.com/chrislo27/RHRE-database.git"
+    const val DONATION_URL: String = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958"
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
     val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEVELOPMENT")) {

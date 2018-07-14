@@ -254,7 +254,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
-                    Gdx.net.openURI("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958")
+                    Gdx.net.openURI(RHRE3.DONATION_URL)
                 }
             }.apply {
                 addLabel(ImageLabel(palette, this, this.stage).apply {
