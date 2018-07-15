@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.midi.MidiHandler
+import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -332,6 +333,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             e.printStackTrace()
         }
         Themes.dispose()
+        ThumbnailFetcher.dispose()
         persistWindowSettings()
         RHRE3.tmpMusic.emptyDirectory()
         SoundSystem.allSystems.forEach(SoundSystem::dispose)

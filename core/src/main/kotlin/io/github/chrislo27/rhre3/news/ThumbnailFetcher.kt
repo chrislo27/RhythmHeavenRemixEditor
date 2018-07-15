@@ -5,6 +5,7 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.PixmapIO
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import org.asynchttpclient.AsyncHttpClient
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentMap
 import kotlin.concurrent.thread
 
 
-object ThumbnailFetcher {
+object ThumbnailFetcher : Disposable {
 
     private val httpClient: AsyncHttpClient
         get() = RHRE3Application.httpClient
@@ -32,6 +33,12 @@ object ThumbnailFetcher {
                     .filter { (System.currentTimeMillis() - it.lastModified()) / (1000 * 60 * 60 * 24) > 7 }
                     .forEach { it.delete() }
         })
+    }
+
+    @Synchronized
+    override fun dispose() {
+        cancelAll()
+        removeAll()
     }
 
     @Synchronized
