@@ -228,6 +228,10 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 }
                 hasNewNews = true
             }
+        } else {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+                stage.backButton.onLeftClick(0f, 0f)
+            }
         }
     }
 
