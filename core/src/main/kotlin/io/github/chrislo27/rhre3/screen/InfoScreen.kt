@@ -293,6 +293,7 @@ class InfoScreen(main: RHRE3Application)
                     get() = labels.first { it is ImageLabel } as ImageLabel
 
                 private var lastShift = false
+                private var spinStart: Long = System.currentTimeMillis()
 
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -324,6 +325,7 @@ class InfoScreen(main: RHRE3Application)
                         if (shiftDown) {
                             textLabel.isLocalizationKey = false
                             textLabel.text = "Tempo Up!"
+                            spinStart = System.currentTimeMillis()
                         } else {
                             textLabel.isLocalizationKey = true
                             textLabel.text = "screen.info.credits"
@@ -331,7 +333,7 @@ class InfoScreen(main: RHRE3Application)
                         }
                     }
                     if (shiftDown) {
-                        imageLabel.rotation = MathHelper.getSawtoothWave(1.5f) * -360f
+                        imageLabel.rotation = MathHelper.getSawtoothWave(System.currentTimeMillis() - spinStart, 1.5f) * -360f
                     }
                     super.render(screen, batch, shapeRenderer)
                 }
