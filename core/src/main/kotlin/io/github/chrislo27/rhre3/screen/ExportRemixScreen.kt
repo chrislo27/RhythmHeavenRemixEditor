@@ -86,6 +86,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private val mainLabel: TextLabel<ExportRemixScreen>
     private val picosongButton: Button<ExportRemixScreen>
     private var picosongFunc: (() -> UploadRemixScreen)? = null
+    private val readyButton: Button<ExportRemixScreen>
 
     private enum class ExportFileType(val extension: String) {
         WAV("wav"), MP3("mp3"), OGG_VORBIS("ogg"), FLAC("flac");
@@ -135,14 +136,14 @@ class ExportRemixScreen(main: RHRE3Application)
                 this.visible = isChooserOpen
             }
         }.apply {
-            this.location.set(screenHeight = 0.25f)
+            this.location.set(screenHeight = 0.1f)
             this.textAlign = Align.center
             this.isLocalizationKey = true
             this.text = "closeChooser"
             this.visible = false
         }
         mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+            this.location.set(screenHeight = 0.9f, screenY = 0.1f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
@@ -170,6 +171,26 @@ class ExportRemixScreen(main: RHRE3Application)
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
         stage.bottomStage.elements += picosongButton
+
+        readyButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                openPicker()
+                updateLabels()
+                this.visible = false
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.export.fileChooserTitle"
+            })
+
+            this.visible = false
+
+            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+        }
+        stage.bottomStage.elements += readyButton
 
         stage.updatePositions()
         updateLabels(null)
@@ -463,6 +484,7 @@ class ExportRemixScreen(main: RHRE3Application)
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val isBeads = SoundSystem.system == BeadsSoundSystem
         picosongFunc = null
+        readyButton.visible = false
         picosongButton.visible = false
         isCapableOfExporting = isBeads && hasEndRemix
         if (!isCapableOfExporting) {
@@ -473,7 +495,8 @@ class ExportRemixScreen(main: RHRE3Application)
             }
         } else {
             if (throwable == null) {
-                label.text = ""
+                label.text = "${Localization["screen.export.prepare"]}\n\n${Localization["screen.export.uploadHint"]}"
+                readyButton.visible = true
             } else {
                 label.text = Localization["screen.export.failed", throwable::class.java.canonicalName]
             }
@@ -482,9 +505,6 @@ class ExportRemixScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        // Two updateLabels calls required (b/c state may change after openPicker)
-        updateLabels()
-        openPicker()
         updateLabels()
     }
 
