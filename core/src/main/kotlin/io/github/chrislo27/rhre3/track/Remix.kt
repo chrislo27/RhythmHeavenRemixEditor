@@ -873,6 +873,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     override fun dispose() {
         music?.dispose()
         textureCache.values.forEach(Texture::dispose)
+        textureCache.clear()
     }
 
 }
