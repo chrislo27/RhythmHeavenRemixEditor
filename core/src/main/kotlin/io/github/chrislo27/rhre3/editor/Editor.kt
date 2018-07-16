@@ -1372,16 +1372,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         clickOccupation.updateRectangle()
                     }
                     ClickOccupation.None -> {
-                        if (selection.isNotEmpty() && !stage.isTyping &&
-                                (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) ||
-                                        Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE))) {
-                            remix.entities.removeAll(this.selection)
-                            remix.addActionWithoutMutating(ActionGroup(listOf(
-                                    EntityRemoveAction(this, this.selection,
-                                                       this.selection.map { Rectangle(it.bounds) }),
-                                    EntitySelectionAction(this, this.selection.toList(), listOf())
-                                                                             )))
-                            this.selection = listOf()
+                        if (selection.isNotEmpty() && !stage.isTyping) {
+                            if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
+                                remix.entities.removeAll(this.selection)
+                                remix.addActionWithoutMutating(ActionGroup(listOf(
+                                        EntityRemoveAction(this, this.selection,
+                                                           this.selection.map { Rectangle(it.bounds) }),
+                                        EntitySelectionAction(this, this.selection.toList(), listOf())
+                                                                                 )))
+                                this.selection = listOf()
+                            } else if (Gdx.input.isKeyJustPressed(Input.Keys.INSERT)) {
+                                main.screen = PatternStoreScreen(main, this, null, selection.toList())
+                            }
                         }
 
                         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
