@@ -2,6 +2,8 @@ package io.github.chrislo27.rhre3.editor.stage
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Interpolation
+import io.github.chrislo27.rhre3.editor.CameraPan
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.action.TrackResizeAction
@@ -54,7 +56,7 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
                 if (!(editor.selection.containsAll(entities) && editor.selection.size == entities.size)) {
                     remix.mutate(EntitySelectionAction(editor, editor.selection.toList(), entities))
                 }
-                editor.camera.position.x = entities.first().bounds.x
+                editor.cameraPan = CameraPan(editor.camera.position.x, entities.first().bounds.x, 0.5f, Interpolation.exp10Out)
             } else {
                 remix.mutate(TrackResizeAction(editor, remix.trackCount, remix.trackCount - 1))
                 remix.recomputeCachedData()

@@ -214,6 +214,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
     }
 
+    var cameraPan: CameraPan? = null
+
     val pickerSelection: PickerSelection = PickerSelection()
     var remix: Remix = createRemix()
         set(value) {
@@ -222,6 +224,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             autosaveFile = null
             lastSaveFile = null
+            cameraPan = null
             resetAutosaveTimer()
             selection = listOf()
 
@@ -394,6 +397,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             camera.position.y = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
             camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 1f,
                                          transitionTime)
+            val cameraPan = cameraPan
+            if (cameraPan != null) {
+                if (remix.playState == STOPPED) {
+                    cameraPan.update(Gdx.graphics.deltaTime, camera)
+                    if (cameraPan.done) {
+                        this.cameraPan = null
+                    }
+                } else {
+                    this.cameraPan = null
+                }
+            }
 
             if (remix.playState == PLAYING && remix.currentShakeEntities.isNotEmpty()) {
                 val shakeValue = remix.currentShakeEntities.fold(1f) { acc, it ->
@@ -1278,18 +1292,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (!stage.isTyping) {
             if (left) {
                 camera.position.x -= cameraDelta
+                cameraPan = null
                 camera.update()
             }
             if (right) {
                 camera.position.x += cameraDelta
+                cameraPan = null
                 camera.update()
             }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.HOME)) {
                 camera.position.x = 0f
+                cameraPan = null
                 camera.update()
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
                 camera.position.x = remix.getLastEntityPoint()
+                cameraPan = null
                 camera.update()
             }
 

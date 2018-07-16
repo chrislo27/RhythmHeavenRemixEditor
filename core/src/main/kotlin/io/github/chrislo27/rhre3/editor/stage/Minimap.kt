@@ -7,8 +7,10 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Interpolation
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.rhre3.editor.CameraPan
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
@@ -108,7 +110,18 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                             && remix.playState == PlayState.STOPPED
                             && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                         val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
-                        editor.camera.position.x = percent * maxX
+                        val endX = percent * maxX
+                        val cameraPan = editor.cameraPan
+                        val interpolationX = Interpolation.exp10Out
+                        val duration = 0.25f
+                        val startX = editor.camera.position.x
+                        if (cameraPan == null) {
+                            editor.cameraPan = CameraPan(startX, endX, duration, interpolationX)
+                        } else if (cameraPan.endX != endX) {
+                            editor.cameraPan = CameraPan(startX, endX, (duration * cameraPan.progress).coerceAtLeast(duration * 0.5f), interpolationX)
+                        }
+
+//                        editor.camera.position.x = endX // Instant snap to new position on minimap
                     }
                 }
 
