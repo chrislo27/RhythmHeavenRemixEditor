@@ -1542,19 +1542,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         var output: String = ""
         val entity = getEntityOnMouse()
 
-        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None && entity in selection) {
-            if (scrollMode == ScrollMode.VOLUME) {
-                if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
-                    output = Localization["editor.msg.volume", entity.volumePercent]
-                }
-            } else if (scrollMode == ScrollMode.PITCH) {
-                if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
-                    val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(
-                            entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
-                    output = if (entity is ShakeEntity) {
-                        semitoneText
-                    } else {
-                        Localization["editor.msg.pitch", semitoneText]
+        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None) {
+            if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
+                output += entity.renderText
+            }
+            if (entity in selection) {
+                if (scrollMode == ScrollMode.VOLUME) {
+                    if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
+                        output += Localization["editor.msg.volume", entity.volumePercent]
+                    }
+                } else if (scrollMode == ScrollMode.PITCH) {
+                    if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
+                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(
+                                entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                        output += if (entity is ShakeEntity) {
+                            semitoneText
+                        } else {
+                            Localization["editor.msg.pitch", semitoneText]
+                        }
                     }
                 }
             }
@@ -1575,7 +1580,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (output.isNotEmpty()) {
                     sb.append('\n')
                 }
-                output = sb.append("[LIGHT_GRAY]").append(str).append("[]").toString()
+                output += sb.append("[LIGHT_GRAY]").append(str).append("[]").toString()
             }
         }
 

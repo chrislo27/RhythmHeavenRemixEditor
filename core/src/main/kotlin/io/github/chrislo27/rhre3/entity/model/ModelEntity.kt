@@ -14,10 +14,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.drawRect
-import io.github.chrislo27.toolboks.util.gdxutils.fillRect
-import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
-import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import io.github.chrislo27.toolboks.util.gdxutils.*
 
 
 abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
@@ -33,6 +30,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     open val renderText: String
         get() = datamodel.newlinedName
     val isSpecialEntity: Boolean = datamodel.game === GameRegistry.data.specialGame
+    var needsNameTooltip: Boolean = false
+        private set
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
@@ -138,17 +137,18 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         font.data.setScale(oldFontSizeX * fontScale, oldFontSizeY * fontScale)
         // width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
         val allottedWidth = width - 2 * (remix.editor.toScaleX(BORDER))
-        //        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
+        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
         fun computeHeight(): Float =
                 font.getTextHeight(text, allottedWidth, true)
 
-//        val textHeight = computeHeight()
+        val textHeight = computeHeight()
         val textX = x + 1 * (remix.editor.toScaleX(BORDER))
         val textY = y + height / 2
-//        if (textHeight > allottedHeight) {
-//            val ratio = allottedHeight / (textHeight - (font.lineHeight - font.capHeight))
-//            font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
-//        }
+        if (textHeight > allottedHeight) {
+            val ratio = allottedWidth / (font.getTextWidth(text, allottedWidth, false))
+            font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
+        }
+        needsNameTooltip = textHeight > allottedHeight
         font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
 
         when (remix.editor.scrollMode) {
