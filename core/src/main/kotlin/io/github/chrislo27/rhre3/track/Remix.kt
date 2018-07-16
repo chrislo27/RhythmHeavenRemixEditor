@@ -141,7 +141,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
 
             remix.midiInstruments = tree["midiInstruments"]?.intValue() ?: 0
 
-            remix.trackCount = tree["trackCount"]?.intValue() ?: Editor.DEFAULT_TRACK_COUNT
+            remix.trackCount = tree["trackCount"]?.intValue()?.coerceAtLeast(1) ?: Editor.DEFAULT_TRACK_COUNT
 
             var missing = 0
             var missingCustom = 0
