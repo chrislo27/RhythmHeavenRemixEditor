@@ -19,9 +19,7 @@ the folder *containing the jar file* and run
 `java -jar RHRE3.jar`.
 
 ## How does a remix work?
-Remixes in RHRE3 have changed since RHRE2.
-
-They are now no longer dictated by the last cue, but instead go on forever
+Remixes will go on forever
 until you place an **End Remix** entity.
 You can find this at `Misc. > Special Entities > End Remix`.
 
@@ -30,10 +28,8 @@ You can find this at `Misc. > Special Entities > End Remix`.
 If you are familiar with music theory, this also is used in sheet music
 to end the music piece.
 You can only have **one** of these in the track at any given time.<br/>
-If you liked the old RHRE2 way of ending remixes, there's an option in the
-Info Screen.
 
-Cues and patterns are examples of *entities*. RHRE3 adds three new entities:
+Cues and patterns are examples of *entities*. RHRE3 adds three new types of entities:
 random cue, equidistant, and keep the beat.
 
 **Random cues** will randomly play a cue or pattern each time you play the remix.
@@ -58,6 +54,8 @@ however, read up on the controls first below!
 ### In-Editor Shortcuts
 **`SPACEBAR`** - Play/stop remix<br/>
 **`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
+**`BACKSPACE`** or **`DEL`** - Delete selection<br/>
+**`INSERT`** - Store selection as a stored pattern (as of v3.12.0)<br/>
 **`CTRL+N`** - New remix<br/>
 **`CTRL+O`** - Open remix<br/>
 **`CTRL+S`** - Save remix<br/>
