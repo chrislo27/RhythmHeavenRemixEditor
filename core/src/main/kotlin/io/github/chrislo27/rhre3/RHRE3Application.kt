@@ -115,7 +115,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     var githubVersion: Version = Version.RETRIEVING
         private set
     @Volatile
-    var liveUsers: Int = -1 // -1 = getting, -2 = unavailable
+    var liveUsers: Int = -1
         private set
 
     private val rainbowColor: Color = Color()
@@ -235,7 +235,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 var failures = 0
                 fun failed() {
                     failures++
-                    this.liveUsers = -2
+                    this.liveUsers = -1
                 }
                 while (!Thread.interrupted() && RHRE3.noOnlineCounter) {
                     try {
