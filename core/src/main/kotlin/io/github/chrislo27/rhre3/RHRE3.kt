@@ -53,6 +53,8 @@ object RHRE3 {
     var immediateAnniversary: Int = 0
     var noAnalytics: Boolean = false
     var forceExpansionSplash: Boolean = false
+    var noOnlineCounter: Boolean = false
+
     lateinit var launchArguments: List<String>
 
     init {

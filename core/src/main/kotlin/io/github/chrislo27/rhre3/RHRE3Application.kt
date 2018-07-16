@@ -225,39 +225,45 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         thread(isDaemon = true, name = "JavafxStub Launcher") {
             Application.launch(JavafxStub::class.java) // start up
         }
-        thread(isDaemon = true, name = "Live User Count") {
-            Thread.sleep(2500L)
-            var failures = 0
-            fun failed() {
-                failures++
-                this.liveUsers = -2
-            }
-            while (!Thread.interrupted()) {
-                try {
-                    val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
-                            .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
-                            .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
-                            .execute().get()
 
-                    if (req.statusCode == 200) {
-                        val liveUsers = req.responseBody?.trim()?.toIntOrNull()
-                        if (liveUsers != null) {
-                            failures = 0
-                            this.liveUsers = liveUsers.coerceAtLeast(0)
+        if (RHRE3.noOnlineCounter) {
+            this.liveUsers = 0
+            Toolboks.LOGGER.info("No online counter by request from launch args")
+        } else {
+            thread(isDaemon = true, name = "Live User Count") {
+                Thread.sleep(2500L)
+                var failures = 0
+                fun failed() {
+                    failures++
+                    this.liveUsers = -2
+                }
+                while (!Thread.interrupted() && RHRE3.noOnlineCounter) {
+                    try {
+                        val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
+                                .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
+                                .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                                .execute().get()
+
+                        if (req.statusCode == 200) {
+                            val liveUsers = req.responseBody?.trim()?.toIntOrNull()
+                            if (liveUsers != null) {
+                                failures = 0
+                                this.liveUsers = liveUsers.coerceAtLeast(0)
+                            } else {
+                                Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
+                                failed()
+                            }
                         } else {
-                            Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
+                            Toolboks.LOGGER.warn("Request status code is not 200, got ${req.statusCode}")
                             failed()
                         }
-                    } else {
-                        Toolboks.LOGGER.warn("Request status code is not 200, got ${req.statusCode}")
+                    } catch (e: Exception) {
+                        e.printStackTrace()
                         failed()
                     }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    failed()
-                }
 
-                Thread.sleep(60_000L * (failures + 1))
+                    Thread.sleep(60_000L * (failures + 1))
+                }
             }
         }
         launch(CommonPool) {

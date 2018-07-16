@@ -13,3 +13,4 @@ They are put after `java -jar RHRE3.jar`.
 | `--beads-sound-system` | `v3.3.0` to `v3.6.4` | Forces the use of the Beads sound system. This does nothing as the libGDX sound system is disabled due to a bug (as of v3.3.0). |
 | `--no-analytics` | `v3.10.0` | Disables sending of analytics. |
 | `--force-expansion-splash` | `v3.12.0` | Forces the RHRExpansion splash screen to appear on startup. |
+| `--no-online-counter` | `v3.12.0` | Prevents the program from sending and retrieving online user counts. |
