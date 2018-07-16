@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.Subtit
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SONG_TITLE
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SUBTITLE
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.toolboks.ui.TextField
 
 
 class SubtitleEntity(remix: Remix, datamodel: Subtitle)
@@ -18,7 +19,7 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     override val isStretchable: Boolean = true
     var subtitle: String = ""
     override val renderText: String
-        get() = "${datamodel.name}\n\"$subtitle[]\""
+        get() = "${datamodel.name}\n\"${subtitle.replace("\r", "").replace("\r\n", "${TextField.NEWLINE_WRAP}").replace('\r', TextField.NEWLINE_WRAP).replace('\n', TextField.NEWLINE_WRAP)}[]\""
     override var text: String
         get() = subtitle
         set(value) {
