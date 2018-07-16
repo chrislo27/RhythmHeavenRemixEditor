@@ -118,7 +118,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                         if (cameraPan == null) {
                             editor.cameraPan = CameraPan(startX, endX, duration, interpolationX)
                         } else if (cameraPan.endX != endX) {
-                            editor.cameraPan = CameraPan(startX, endX, (duration * cameraPan.progress).coerceAtLeast(duration * 0.5f), interpolationX)
+                            editor.cameraPan = CameraPan(startX, endX, (duration * (1f - cameraPan.progress)).coerceAtLeast(duration * 0.5f), interpolationX)
                         }
 
 //                        editor.camera.position.x = endX // Instant snap to new position on minimap
