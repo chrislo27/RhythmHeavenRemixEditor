@@ -145,7 +145,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val textX = x + 1 * (remix.editor.toScaleX(BORDER))
         val textY = y + height / 2
         if (textHeight > allottedHeight) {
-            val ratio = allottedWidth / (font.getTextWidth(text, allottedWidth, false))
+            val ratio = Math.min(allottedWidth / (font.getTextWidth(text, allottedWidth, false)), allottedHeight / textHeight)
             font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
         }
         needsNameTooltip = textHeight > allottedHeight
