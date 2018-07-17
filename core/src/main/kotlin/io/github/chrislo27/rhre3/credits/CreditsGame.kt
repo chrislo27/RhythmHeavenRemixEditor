@@ -541,15 +541,15 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 
         batch.projectionMatrix = main.defaultCamera.combined
 
-        if (beat < LAST_SHAKE && beat >= saxophoneBeats.first().start && (vocalistFaceState.danceState == D_SING_0 || vocalistFaceState.danceState == D_SING_1)) {
+        if (beat < LAST_SHAKE && beat >= saxophoneBeats.first().first && (vocalistFaceState.danceState == D_SING_0 || vocalistFaceState.danceState == D_SING_1)) {
             var index: Int = -1
             for (i in 0 until saxophoneBeats.size) {
                 val range = saxophoneBeats[i]
-                val next = saxophoneBeats.getOrNull(i + 1)?.start ?: LAST_SHAKE
+                val next = saxophoneBeats.getOrNull(i + 1)?.first ?: LAST_SHAKE
                 if (beat in range) {
                     index = i * 2
                     break
-                } else if (beat in range.endInclusive..next) {
+                } else if (beat in range.last..next) {
                     index = i * 2 + 1
                     break
                 }
@@ -589,10 +589,10 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         for (i in 0 until saxophonePlayed.size) {
             val range = saxophoneBeats[i / 2]
             if (i % 2 == 0) {
-                goodSum += (saxophonePlayed[i] / (range.endInclusive - range.start).coerceAtLeast(1)).coerceAtMost(1f)
+                goodSum += (saxophonePlayed[i] / (range.last - range.first).coerceAtLeast(1)).coerceAtMost(1f)
             } else {
-                val next = saxophoneBeats.getOrNull(i + 1)?.start ?: LAST_SHAKE
-                badSum += (saxophonePlayed[i] / (next - range.endInclusive).coerceAtLeast(1)).coerceAtMost(1f)
+                val next = saxophoneBeats.getOrNull(i + 1)?.first ?: LAST_SHAKE
+                badSum += (saxophonePlayed[i] / (next - range.last).coerceAtLeast(1)).coerceAtMost(1f)
             }
         }
 

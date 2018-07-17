@@ -462,7 +462,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
 
             remix.gameSections.values.forEach { section ->
-                if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
+                if (section.startBeat > beatRange.last || section.endBeat < beatRange.first)
                     return@forEach
                 val tex = section.game.icon
 
@@ -576,7 +576,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // game boundaries view (dividers)
         if (isGameBoundariesInViews) {
             remix.gameSections.values.forEach { section ->
-                if (section.startBeat > beatRange.endInclusive || section.endBeat < beatRange.start)
+                if (section.startBeat > beatRange.last || section.endBeat < beatRange.first)
                     return@forEach
                 val icon = section.game.icon
                 val sectionWidth = section.endBeat - section.startBeat
@@ -1078,7 +1078,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                                height * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable)
                                    (Semitones.getALPitch(playingEntity.semitone)) else 1f),
                                1 + (animation * (width + 2)),
-                               1 + (if (isPlaying) ((cellHeight + 2) * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable && playingEntity.semitone > IRepitchable.DEFAULT_RANGE.endInclusive) 4 else 3)) else 0),
+                               1 + (if (isPlaying) ((cellHeight + 2) * (if (isPlaying && playingEntity != null && playingEntity is IRepitchable && playingEntity.semitone > IRepitchable.DEFAULT_RANGE.last) 4 else 3)) else 0),
                                width, height, false, false)
                 }
             }
@@ -2106,13 +2106,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             if (new in it.semitoneRange) {
                                 it.semitone = new
                                 return@fold true
-                            } else if (it.semitoneRange.endInclusive in (current + 1)..(new - 1)) {
-                                // new > it.range.endInclusive && current < it.range.endInclusive
-                                it.semitone = it.semitoneRange.endInclusive
+                            } else if (it.semitoneRange.last in (current + 1)..(new - 1)) {
+                                it.semitone = it.semitoneRange.last
                                 return@fold true
-                            } else if (it.semitoneRange.start in (new + 1)..(current - 1)) {
-                                // new < it.range.start && current > it.range.start
-                                it.semitone = it.semitoneRange.start
+                            } else if (it.semitoneRange.first in (new + 1)..(current - 1)) {
+                                it.semitone = it.semitoneRange.first
                                 return@fold true
                             }
                         }
@@ -2141,13 +2139,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             if (new in it.volumeRange) {
                                 it.volumePercent = new
                                 return@fold true
-                            } else if (it.volumeRange.endInclusive in (current + 1)..(new - 1)) {
-                                // new > it.range.endInclusive && current < it.range.endInclusive
-                                it.volumePercent = it.volumeRange.endInclusive
+                            } else if (it.volumeRange.last in (current + 1)..(new - 1)) {
+                                it.volumePercent = it.volumeRange.last
                                 return@fold true
-                            } else if (it.volumeRange.start in (new + 1)..(current - 1)) {
-                                // new < it.range.start && current > it.range.start
-                                it.volumePercent = it.volumeRange.start
+                            } else if (it.volumeRange.first in (new + 1)..(current - 1)) {
+                                it.volumePercent = it.volumeRange.first
                                 return@fold true
                             }
                         }
