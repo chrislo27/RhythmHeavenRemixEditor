@@ -368,8 +368,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
      */
     fun render(adjustCamera: Boolean, otherUI: Boolean) {
         val beatRange = getBeatRange()
-        val beatRangeStartFloat = beatRange.start.toFloat()
-        val beatRangeEndFloat = beatRange.endInclusive.toFloat()
+        val beatRangeStartFloat = beatRange.first.toFloat()
+        val beatRangeEndFloat = beatRange.last.toFloat()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
@@ -2279,8 +2279,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val range = getBeatRange()
         val str = StringBuilder(100)
         val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
-        val rangeStartF = range.start.toFloat()
-        val rangeEndF = range.endInclusive.toFloat()
+        val rangeStartF = range.first.toFloat()
+        val rangeEndF = range.last.toFloat()
         str.apply {
             append("$debugKey+G - Copy game list to clipboard\n")
 
