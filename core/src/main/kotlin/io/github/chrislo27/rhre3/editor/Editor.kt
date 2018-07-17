@@ -368,6 +368,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
      */
     fun render(adjustCamera: Boolean, otherUI: Boolean) {
         val beatRange = getBeatRange()
+        val beatRangeStartFloat = beatRange.start.toFloat()
+        val beatRangeEndFloat = beatRange.endInclusive.toFloat()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         val bgColour = theme.background
         Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
@@ -445,8 +447,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         // horizontal track lines
         run trackLines@{
             batch.color = theme.trackLine
-            val startX = beatRange.start.toFloat()
-            val width = beatRange.endInclusive.toFloat() - startX
+            val startX = beatRangeStartFloat
+            val width = beatRangeEndFloat - startX
             for (i in 0..remix.trackCount) {
                 batch.fillRect(startX, trackYOffset + i.toFloat(), width,
                                toScaleY(TRACK_LINE_THICKNESS))
@@ -488,7 +490,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 it.updateInterpolation(!smoothDragging)
-                if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
+                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
                     it.render(batch)
                 }
             }
@@ -531,7 +533,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         remix.entities.forEach {
             if (it is TextureEntity) {
                 it.updateInterpolation(!smoothDragging)
-                if (it.inRenderRange(beatRange.start.toFloat(), beatRange.endInclusive.toFloat())) {
+                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
                     it.render(batch)
                 }
             }
@@ -2277,19 +2279,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val range = getBeatRange()
         val str = StringBuilder(100)
         val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
+        val rangeStartF = range.start.toFloat()
+        val rangeEndF = range.endInclusive.toFloat()
         str.apply {
             append("$debugKey+G - Copy game list to clipboard\n")
 
             append("e: ")
             append(remix.entities.count {
-                it.inRenderRange(range.start.toFloat(), range.endInclusive.toFloat())
+                it.inRenderRange(rangeStartF, rangeEndF)
             })
             append(" / ")
             append(remix.entities.size)
 
             append("\ntrackers: ")
             append(remix.trackers.sumBy {
-                it.map.values.count { it.beat in range || it.endBeat in range }
+                it.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
             })
             append(" / ")
             append(remix.trackers.sumBy { it.map.values.size })

@@ -138,10 +138,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         // width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
         val allottedWidth = width - 2 * (remix.editor.toScaleX(BORDER))
         val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
-        fun computeHeight(): Float =
-                font.getTextHeight(text, allottedWidth, true)
 
-        val textHeight = computeHeight()
+        val textHeight = font.getTextHeight(text, allottedWidth, true)
         val textX = x + 1 * (remix.editor.toScaleX(BORDER))
         val textY = y + height / 2
         if (textHeight > allottedHeight) {
@@ -149,7 +147,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
         }
         needsNameTooltip = textHeight > allottedHeight
-        font.draw(batch, text, textX, textY + computeHeight() / 2, allottedWidth, Align.right, true)
+        font.draw(batch, text, textX, textY + font.getTextHeight(text, allottedWidth, true) / 2, allottedWidth, Align.right, true)
 
         when (remix.editor.scrollMode) {
             Editor.ScrollMode.PITCH -> {
