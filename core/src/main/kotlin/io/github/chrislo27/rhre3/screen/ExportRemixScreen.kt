@@ -41,7 +41,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.Stage
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 import javafx.application.Platform
 import javafx.stage.FileChooser
@@ -66,7 +66,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private val editorScreen: EditorScreen by lazy { ScreenRegistry.getNonNullAsType<EditorScreen>("editor") }
     private val editor: Editor
         get() = editorScreen.editor
-    override val stage: Stage<ExportRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    override val stage: GenericStage<ExportRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     private val remix: Remix
         get() = editor.remix
 
@@ -86,6 +86,8 @@ class ExportRemixScreen(main: RHRE3Application)
     private val mainLabel: TextLabel<ExportRemixScreen>
     private val picosongButton: Button<ExportRemixScreen>
     private var picosongFunc: (() -> UploadRemixScreen)? = null
+    private val folderButton: Button<ExportRemixScreen>
+    private var folderFile: File? = null
     private val readyButton: Button<ExportRemixScreen>
 
     private enum class ExportFileType(val extension: String) {
@@ -98,7 +100,7 @@ class ExportRemixScreen(main: RHRE3Application)
     }
 
     private fun setBackButtonEnabled() {
-        (stage as GenericStage).backButton.enabled = !isChooserOpen && !isExporting
+        stage.backButton.enabled = !isChooserOpen && !isExporting
     }
 
     private fun createFileChooser() =
@@ -118,7 +120,6 @@ class ExportRemixScreen(main: RHRE3Application)
             }
 
     init {
-        stage as GenericStage
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_export_big"))
         stage.titleLabel.text = "screen.export.title"
         stage.backButton.visible = true
@@ -192,6 +193,26 @@ class ExportRemixScreen(main: RHRE3Application)
         }
         stage.bottomStage.elements += readyButton
 
+        folderButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                val ff = folderFile
+                if (ff != null) {
+                    Gdx.net.openURI("file:///${(ff.takeUnless { it.isFile } ?: ff.parentFile).absolutePath}")
+                }
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+            })
+
+            this.visible = false
+
+            this.location.set(this@ExportRemixScreen.stage.backButton.location)
+            this.location.set(screenX = 0.5f - this.location.screenWidth / 2f)
+        }
+        stage.bottomStage.elements += folderButton
+
         stage.updatePositions()
         updateLabels(null)
     }
@@ -200,7 +221,7 @@ class ExportRemixScreen(main: RHRE3Application)
         super.renderUpdate()
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            (stage as GenericStage).onBackButtonClick()
+            stage.onBackButtonClick()
         }
     }
 
@@ -341,6 +362,9 @@ class ExportRemixScreen(main: RHRE3Application)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
 
+            folderFile = file
+            folderButton.visible = true
+
             isExporting = false
         }
 
@@ -351,8 +375,6 @@ class ExportRemixScreen(main: RHRE3Application)
                                            remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()) * 1000.0
             val endMs = remix.tempos.beatsToSeconds(remix.duration) * 1000.0
             val durationMs = endMs - startMs
-
-            fun Float.beatToMsRelative(): Double = (remix.tempos.beatsToSeconds(this) * 1000.0) - startMs
 
             // reset things
             remix.playbackStart = remix.tempos.secondsToBeats(startMs.toFloat() / 1000f)
@@ -483,9 +505,11 @@ class ExportRemixScreen(main: RHRE3Application)
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val isBeads = SoundSystem.system == BeadsSoundSystem
-        picosongFunc = null
         readyButton.visible = false
         picosongButton.visible = false
+        picosongFunc = null
+        folderButton.visible = false
+        folderFile = null
         isCapableOfExporting = isBeads && hasEndRemix
         if (!isCapableOfExporting) {
             if (!isBeads) {
@@ -513,6 +537,8 @@ class ExportRemixScreen(main: RHRE3Application)
         BeadsSoundSystem.stop()
         picosongButton.visible = false
         picosongFunc = null
+        folderButton.visible = false
+        folderFile = null
     }
 
     override fun dispose() {
