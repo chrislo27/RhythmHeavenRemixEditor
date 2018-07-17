@@ -556,7 +556,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             }
 
             if (index >= 0) {
-                saxophonePlayed[index] += TempoUtils.secondsToBeats(Gdx.graphics.deltaTime, TEMPO)
+                saxophonePlayed[index] += TempoUtils.secondsToBeats(Gdx.graphics.deltaTime, TEMPO * speedMultiplier)
             }
         }
 
@@ -600,7 +600,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         val badAvg = badSum / saxophoneBeats.size
 
         // Scaling! It's impossible to get 100% since you have to be frame perfect
-        return ((goodAvg - badAvg) / 0.95f).coerceIn(0f, 1f)
+        return ((goodAvg - badAvg) / 0.965f).coerceIn(0f, 1f)
     }
 
     override fun renderUpdate() {
