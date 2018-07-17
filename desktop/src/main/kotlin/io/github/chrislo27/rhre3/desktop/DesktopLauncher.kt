@@ -54,6 +54,8 @@ object DesktopLauncher {
                     RHRE3.noAnalytics = "--no-analytics" in args
                     RHRE3.forceExpansionSplash = "--force-expansion-splash" in args
                     RHRE3.noOnlineCounter = "--no-online-counter" in args
+                    RHRE3.outputGeneratedDatamodels = "--output-generated-datamodels" in args
+                    RHRE3.outputCustomSfx = "--output-custom-sfx" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
 //                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)

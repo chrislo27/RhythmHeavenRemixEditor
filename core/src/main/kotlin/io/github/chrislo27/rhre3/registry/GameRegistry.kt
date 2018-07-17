@@ -303,6 +303,7 @@ object GameRegistry : Disposable {
 
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                     when (obj) {
+                        // Note: if this is updated, remember to update GameToJson
                         is CueObject ->
                             Cue(game, obj.id, obj.deprecatedIDs, obj.name,
                                 obj.duration,
@@ -338,7 +339,12 @@ object GameRegistry : Disposable {
                     }
                 }
 
-                DatamodelGenerator.generators[game.id]?.process(folder, dataObject, game)
+                DatamodelGenerator.generators[game.id]?.let {
+                    it.process(folder, dataObject, game)
+                    if (RHRE3.outputGeneratedDatamodels) {
+                        Toolboks.LOGGER.info("JSON output for ${game.id}:\n${JsonHandler.toJson(game.toJsonObject())}\n")
+                    }
+                }
             } else {
                 val nameWithoutExt = folder.nameWithoutExtension()
                 val id = CUSTOM_PREFIX + nameWithoutExt

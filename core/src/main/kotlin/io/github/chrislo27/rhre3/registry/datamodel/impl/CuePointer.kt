@@ -5,10 +5,22 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.json.CuePointerObject
 
-fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(
-        this)
+fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(this)
+fun CuePointer.toJsonObject(): CuePointerObject {
+    return CuePointerObject().also {
+        it.id = this.id
+        it.beat = this.beat
+        it.duration = this.backingDuration
+        it.semitone = this.semitone
+        it.volume = this.volume
+        it.track = this.track
+        it.metadata = this.metadata
+    }
+}
 
 fun List<CuePointerObject>.mapToDatamodel(): List<CuePointer> = this.map(::CuePointer)
+
+fun List<CuePointer>.mapToJsonObject(): List<CuePointerObject> = this.map(CuePointer::toJsonObject)
 
 class CuePointer {
 

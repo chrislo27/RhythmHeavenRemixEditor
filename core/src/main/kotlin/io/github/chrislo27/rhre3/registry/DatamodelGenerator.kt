@@ -10,12 +10,7 @@ abstract class DatamodelGenerator {
 
     companion object {
 
-        val generators: Map<String, DatamodelGenerator> =
-                mapOf(
-                        "flipperFlopEn" to FlipperFlopGenerator("flipperFlopEn"),
-                        "bossaNovaEn" to BossaNovaGenerator("bossaNovaEn"),
-                        "manzaiBirds" to ManzaiBirdsGenerator()
-                     )
+        val generators: Map<String, DatamodelGenerator> = mapOf()
 
     }
 

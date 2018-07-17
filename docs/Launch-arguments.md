@@ -14,3 +14,5 @@ They are put after `java -jar RHRE3.jar`.
 | `--no-analytics` | `v3.10.0` | Disables sending of analytics. |
 | `--force-expansion-splash` | `v3.12.0` | Forces the RHRExpansion splash screen to appear on startup. |
 | `--no-online-counter` | `v3.12.0` | Prevents the program from sending and retrieving online user counts. |
+| `--output-generated-datamodels` | `v3.12.0` | Writes out games that are generated internally in JSON format to console on start-up. |
+| `--output-custom-sfx` | `v3.12.0` | Writes out games that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
