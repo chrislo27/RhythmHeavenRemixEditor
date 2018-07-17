@@ -44,9 +44,9 @@ object LoadedThemes {
         val folder = THEMES_FOLDER
         folder.mkdirs()
         val files = folder.list(".json").filter { it.nameWithoutExtension() != "example" }
-        Toolboks.LOGGER.info("Found ${files.size} json palette files, attempting to read")
+        Toolboks.LOGGER.info("Found ${files.size} json palette files")
         files.forEachIndexed { index, it ->
-            Toolboks.LOGGER.info("Attempting to parse ${it.name()}")
+            Toolboks.LOGGER.info("Attempting to parse theme ${it.name()}")
             try {
                 val themeObj: Theme = JsonHandler.fromJson(it.readString("UTF-8"))
                 if (!themeObj.nameIsLocalization && themeObj.name == Theme.DEFAULT_NAME) {
@@ -55,13 +55,13 @@ object LoadedThemes {
                 val uninitialized = themeObj.getUninitialized()
                 if (uninitialized.isEmpty()) {
                     themes += themeObj
-                    Toolboks.LOGGER.info("Loaded ${it.name()} successfully")
+                    Toolboks.LOGGER.info("Loaded theme ${it.name()} successfully")
                 } else {
                     Toolboks.LOGGER.info(
-                            "Couldn't load ${it.name()}, missing fields (see examples for details): ${uninitialized.map { it.name }}")
+                            "Couldn't load theme ${it.name()}, missing fields (see examples for details): ${uninitialized.map { it.name }}")
                 }
             } catch (e: Exception) {
-                Toolboks.LOGGER.error("Failed to parse ${it.name()}, skipping")
+                Toolboks.LOGGER.error("Failed to parse theme ${it.name()}, skipping")
                 e.printStackTrace()
             }
         }
