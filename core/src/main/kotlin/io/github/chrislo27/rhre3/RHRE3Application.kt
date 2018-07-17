@@ -209,7 +209,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
                 addOtherScreens()
                 loadWindowSettings()
-                MidiHandler.isSearching = true
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
 
                 return@nextScreenLambda nextScreen
@@ -347,7 +346,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         AnalyticsHandler.track("Close Program",
                                mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
         AnalyticsHandler.dispose()
-        MidiHandler.isSearching = false
         MidiHandler.dispose()
     }
 

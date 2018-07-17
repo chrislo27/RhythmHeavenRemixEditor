@@ -11,47 +11,33 @@ import kotlin.concurrent.thread
 
 object MidiHandler : Disposable {
 
-    private const val SEARCH_INTERVAL = 1000L
     private const val MIDI_NOTE_ID = "sfx_sing_loop"
     @Volatile
     private var midiDevice: MidiDevice? = null
-    @Volatile
-    var isSearching: Boolean = false
 
-    init {
-        thread(isDaemon = true) {
-            while (!Thread.interrupted()) {
+    private val thread: Thread = thread(isDaemon = true, name = "MidiHandler daemon thread") {
+        val device = midiDevice
+        if (device == null) {
+            val deviceInfo = MidiSystem.getMidiDeviceInfo().iterator()
+            while (midiDevice == null && deviceInfo.hasNext()) {
                 try {
-                    Thread.sleep(SEARCH_INTERVAL)
-                } catch (e: InterruptedException) {
-                    // Ignored
-                }
-                if (isSearching) {
-                    val device = midiDevice
-                    if (device == null) {
-                        val deviceInfo = MidiSystem.getMidiDeviceInfo().iterator()
-                        while (midiDevice == null && deviceInfo.hasNext()) {
-                            try {
-                                val possibleDevice = MidiSystem.getMidiDevice(deviceInfo.next())
-                                if (possibleDevice !is Synthesizer && possibleDevice !is Sequencer && possibleDevice.maxTransmitters != 0) {
-                                    this.midiDevice = possibleDevice
-                                    possibleDevice.open()
-                                    possibleDevice.transmitter.receiver = MidiReceiver(possibleDevice)
-                                    Toolboks.LOGGER.info("Got midi device: ${possibleDevice.deviceInfo}")
-                                    break
-                                }
-                            } catch (e: MidiUnavailableException) {
-                                // Ignored
-                                e.printStackTrace()
-                            }
-                        }
-                    } else if (!device.isOpen) {
-                        (device.transmitter.receiver as? MidiReceiver)?.close()
-                        this.midiDevice?.close()
-                        this.midiDevice = null
+                    val possibleDevice = MidiSystem.getMidiDevice(deviceInfo.next())
+                    if (possibleDevice !is Synthesizer && possibleDevice !is Sequencer && possibleDevice.maxTransmitters != 0) {
+                        this.midiDevice = possibleDevice
+                        possibleDevice.open()
+                        possibleDevice.transmitter.receiver = MidiReceiver(possibleDevice)
+                        Toolboks.LOGGER.info("Got midi device: ${possibleDevice.deviceInfo}")
+                        break
                     }
+                } catch (e: MidiUnavailableException) {
+                    // Ignored
+                    e.printStackTrace()
                 }
             }
+        } else if (!device.isOpen) {
+            (device.transmitter.receiver as? MidiReceiver)?.close()
+            this.midiDevice?.close()
+            this.midiDevice = null
         }
     }
 
