@@ -374,6 +374,10 @@ object GameRegistry : Disposable {
                                         true, true, fh, null, null,
                                         listOf(), 0f, loops)
                 }
+
+                if (RHRE3.outputCustomSfx) {
+                    Toolboks.LOGGER.info("JSON output for custom SFX in folder ${folder.name()} (${game.id}):\n${JsonHandler.toJson(game.toJsonObject())}\n")
+                }
             }
 
             val existingGame: Game? = gameMap[game.id]
