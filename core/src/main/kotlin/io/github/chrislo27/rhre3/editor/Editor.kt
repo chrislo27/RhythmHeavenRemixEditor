@@ -512,7 +512,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val actuallyInRange = (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end)
                 if (flashAnimation || actuallyInRange) {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
-                                   theme.trackLine.a * 0.35f *
+                                   theme.trackLine.a * 0.3f *
                                            if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
                     for (j in 1 until Math.round(1f / snap)) {
                         batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(TRACK_LINE_THICKNESS),
