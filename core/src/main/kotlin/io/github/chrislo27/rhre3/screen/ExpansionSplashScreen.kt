@@ -132,7 +132,7 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
                 AnalyticsHandler.track("View Expansion Splash", mapOf())
             }
             main.preferences.putBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, true).flush()
-            main.screen = DonatePleaseScreen(main, nextScreen)
+            main.screen = SupportScreen(main, nextScreen)
         }
     }
 

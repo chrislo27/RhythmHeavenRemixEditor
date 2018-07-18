@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -16,14 +17,14 @@ import io.github.chrislo27.toolboks.ui.Checkbox
 import io.github.chrislo27.toolboks.ui.TextLabel
 
 
-class DonatePleaseScreen(main: RHRE3Application, val nextScreen: Screen?)
-    : ToolboksScreen<RHRE3Application, DonatePleaseScreen>(main) {
+class SupportScreen(main: RHRE3Application, val nextScreen: Screen?)
+    : ToolboksScreen<RHRE3Application, SupportScreen>(main) {
 
-    override val stage: GenericStage<DonatePleaseScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    override val stage: GenericStage<SupportScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private var timeElapsed: Float = 0f
-    private lateinit var checkbox: Checkbox<DonatePleaseScreen>
-    private val button: Button<DonatePleaseScreen>
+    private lateinit var checkbox: Checkbox<SupportScreen>
+    private val button: Button<SupportScreen>
 
     init {
         stage.backButton.visible = false
@@ -31,13 +32,15 @@ class DonatePleaseScreen(main: RHRE3Application, val nextScreen: Screen?)
         stage.titleLabel.isLocalizationKey = false
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_credits"))
 
-        button = object : Button<DonatePleaseScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
+        button = object : Button<SupportScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                if (checkbox.checked) {
+                val checked = checkbox.checked
+                if (checked) {
                     Gdx.net.openURI(RHRE3.DONATION_URL)
                 }
 
+                AnalyticsHandler.track("Support Screen", mapOf("skipped" to !checked))
                 main.screen = nextScreen
             }
         }.apply {
@@ -49,9 +52,9 @@ class DonatePleaseScreen(main: RHRE3Application, val nextScreen: Screen?)
             this.enabled = false
         }
         stage.bottomStage.elements += button
-        val buttonLabel: TextLabel<DonatePleaseScreen> = button.labels.first() as TextLabel<DonatePleaseScreen>
+        val buttonLabel: TextLabel<SupportScreen> = button.labels.first() as TextLabel<SupportScreen>
 
-        checkbox = object : TrueCheckbox<DonatePleaseScreen>(main.uiPalette, stage.centreStage, stage.centreStage) {
+        checkbox = object : TrueCheckbox<SupportScreen>(main.uiPalette, stage.centreStage, stage.centreStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 if (checked) {
