@@ -30,6 +30,9 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
     object ViewingCredits
         : PresenceState("Viewing the credits ❤", "credits")
 
+    object ViewingCreditsTempoUp
+        : PresenceState("Tempo Up Credits!", "credits")
+
     object ViewingNews
         : PresenceState("Reading the news", "news")
 
