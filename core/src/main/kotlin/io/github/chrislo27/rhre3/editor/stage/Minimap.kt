@@ -141,7 +141,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             editor.camera.position.x = centreX
             editor.camera.zoom = 1f
             editor.camera.update()
-            editor.render(adjustCamera = false, otherUI = false)
+            editor.render(updateDelta = false, otherUI = false)
             editor.camera.position.x = oldCamX
             editor.camera.zoom = oldCamZoom
             editor.camera.update()

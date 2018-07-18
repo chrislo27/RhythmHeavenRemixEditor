@@ -361,12 +361,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
     }
 
-    fun render() = render(adjustCamera = true, otherUI = true)
+    fun render() = render(updateDelta = true, otherUI = true)
 
     /**
      * Pre-stage render.
      */
-    fun render(adjustCamera: Boolean, otherUI: Boolean) {
+    fun render(updateDelta: Boolean, otherUI: Boolean) {
         val beatRange = getBeatRange()
         val beatRangeStartFloat = beatRange.first.toFloat()
         val beatRangeEndFloat = beatRange.last.toFloat()
@@ -379,7 +379,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.setColor(1f, 1f, 1f, 1f)
 
         if (main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)) {
-            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, if (adjustCamera) Gdx.graphics.deltaTime else 0f)
+            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, if (updateDelta) Gdx.graphics.deltaTime else 0f)
         }
 
         run {
@@ -393,7 +393,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val oldCameraY = camera.position.y
         val adjustedCameraX: Float
         val adjustedCameraY: Float
-        if (adjustCamera) {
+        if (updateDelta) {
             val transitionTime = Gdx.graphics.deltaTime * 6.5f
 //            camera.position.y = MathUtils.lerp(camera.position.y, 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f, transitionTime)
             camera.position.y = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
@@ -522,7 +522,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
             batch.setColor(1f, 1f, 1f, 1f)
 
-            if (subbeatSection.flashAnimation > 0) {
+            if (subbeatSection.flashAnimation > 0 && updateDelta) {
                 subbeatSection.flashAnimation -= Gdx.graphics.deltaTime / subbeatSection.flashAnimationSpeed
                 if (subbeatSection.flashAnimation < 0)
                     subbeatSection.flashAnimation = 0f
