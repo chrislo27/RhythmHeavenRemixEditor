@@ -99,7 +99,7 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
         // keystroke text ➡
         val textY = gradientHeight * textAlpha - gradientHeight
         font.drawCompressed(batch, "Welcome to the RHRExpansion.", 0f, textY + camera.viewportHeight * 0.4f, camera.viewportWidth, Align.center)
-        font.drawCompressed(batch, "➡ Resize the track\n➡ Store your own patterns\n➡ Use swing tempo\n[X]➡ []And more...", camera.viewportWidth * 0.35f, textY + camera.viewportHeight * 0.3f, camera.viewportWidth * 0.3f, Align.left)
+        font.drawCompressed(batch, "➡ Resize the track\n➡ Store your own patterns\n➡ Use swing tempo\n[X]➡ []And lots more...", camera.viewportWidth * 0.35f, textY + camera.viewportHeight * 0.3f, camera.viewportWidth * 0.3f, Align.left)
         font.drawCompressed(batch, "View the release changelog for more details.", 0f, textY + camera.viewportHeight * 0.1f, camera.viewportWidth, Align.center)
 
         font.setColor(1f, 1f, 1f, enterAlpha)
