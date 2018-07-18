@@ -16,14 +16,20 @@ object DiscordHelper {
 
     private val lib: DiscordRPC
         get() = DiscordRPC.INSTANCE
+    @Volatile
     private var queuedPresence: DiscordRichPresence? = null
+    @Volatile
     private var lastSent: DiscordRichPresence? = null
     @Volatile
     var enabled = true
         set(value) {
+            val old = field
             field = value
             if (value) {
-                signalUpdate()
+                if (!old) {
+                    queuedPresence = lastSent
+                }
+                signalUpdate(true)
             } else {
                 clearPresence()
             }
@@ -53,11 +59,11 @@ object DiscordHelper {
     }
 
     @Synchronized
-    private fun signalUpdate() {
+    private fun signalUpdate(force: Boolean = false) {
         if (enabled) {
             val queued = queuedPresence
             val lastSent = lastSent
-            if (queued !== null && lastSent !== queued) {
+            if (force || (queued !== null && lastSent !== queued)) {
                 lib.Discord_UpdatePresence(queued)
                 this.lastSent = queued
                 queuedPresence = null
