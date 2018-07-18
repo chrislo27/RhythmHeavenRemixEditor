@@ -28,7 +28,7 @@ class KarateManBackground(id: String, maxParticles: Int = 32,
     private val top = Color()
     private val bottom = Color()
 
-    override fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         val width = camera.viewportWidth
         val height = camera.viewportHeight
         val ratioX = width / RHRE3.WIDTH

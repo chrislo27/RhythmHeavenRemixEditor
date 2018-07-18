@@ -14,7 +14,7 @@ open class TilingBackground(id: String, val period: Float, val speedX: Float = 1
                             val textureProvider: () -> Texture)
     : Background(id) {
 
-    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         batch.setColor(1f, 1f, 1f, 1f)
         val tex: Texture = textureProvider()
         val start: Float = MathHelper.getSawtoothWave(period)

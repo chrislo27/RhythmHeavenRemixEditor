@@ -379,7 +379,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         batch.setColor(1f, 1f, 1f, 1f)
 
         if (main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)) {
-            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer)
+            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, if (adjustCamera) Gdx.graphics.deltaTime else 0f)
         }
 
         run {

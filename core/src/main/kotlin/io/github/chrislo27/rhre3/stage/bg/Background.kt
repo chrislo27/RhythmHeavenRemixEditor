@@ -8,7 +8,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 abstract class Background(val id: String) {
 
-    abstract fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer)
+    abstract fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float)
 
     companion object {
         val backgrounds: List<Background> by lazy {

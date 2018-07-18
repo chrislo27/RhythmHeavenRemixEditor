@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.stage.bg
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -15,11 +14,11 @@ abstract class ParticleBasedBackground(id: String, val maxParticles: Int)
 
     protected val particles: MutableList<Particle> = mutableListOf()
 
-    abstract fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer)
+    abstract fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float)
     abstract fun createParticle(initial: Boolean): Particle?
 
-    final override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        renderBackground(camera, batch, shapeRenderer)
+    final override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
+        renderBackground(camera, batch, shapeRenderer, delta)
         val width = camera.viewportWidth
         val height = camera.viewportHeight
         val ratioX = width / RHRE3.WIDTH
@@ -36,10 +35,9 @@ abstract class ParticleBasedBackground(id: String, val maxParticles: Int)
         // Render particles
         batch.setColor(1f, 1f, 1f, 0.65f)
         particles.forEach {
-            it.x += it.speedX * Gdx.graphics.deltaTime
-            it.y += it.speedY * Gdx.graphics.deltaTime
-            it.rotation += it.rotSpeed * Gdx.graphics.deltaTime
-
+            it.x += it.speedX * delta
+            it.y += it.speedY * delta
+            it.rotation += it.rotSpeed * delta
             val tex = AssetRegistry.get<Texture>(it.tex)
 
             batch.draw(tex, it.x * width, it.y * width,

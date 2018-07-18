@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.stage
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
@@ -108,7 +109,7 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
                         shapeRenderer: ShapeRenderer) {
         val oldColor: Float = batch.packedColor
         if (drawBackground) {
-            backgroundImpl.render(camera, batch, shapeRenderer)
+            backgroundImpl.render(camera, batch, shapeRenderer, Gdx.graphics.deltaTime)
             batch.setColor(1f, 1f, 1f, 1f)
         }
         batch.setColor(0f, 0f, 0f, 0.65f)

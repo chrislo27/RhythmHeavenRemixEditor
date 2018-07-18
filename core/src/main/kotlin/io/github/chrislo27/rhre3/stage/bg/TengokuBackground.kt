@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.stage.bg
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -27,7 +26,7 @@ class TengokuBackground(id: String,
 
     private val hsv: FloatArray = FloatArray(3)
 
-    override fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         val width = camera.viewportWidth
         val height = camera.viewportHeight
         val ratioX = width / RHRE3.WIDTH
@@ -35,10 +34,10 @@ class TengokuBackground(id: String,
 
         if (cycleSpeed > 0f) {
             topColor.toHsv(hsv)
-            hsv[0] = (hsv[0] - Gdx.graphics.deltaTime * cycleSpeed * 360f) % 360f
+            hsv[0] = (hsv[0] - delta * cycleSpeed * 360f) % 360f
             topColor.fromHsv(hsv)
             bottomColor.toHsv(hsv)
-            hsv[0] = (hsv[0] - Gdx.graphics.deltaTime * cycleSpeed * 360f) % 360f
+            hsv[0] = (hsv[0] - delta * cycleSpeed * 360f) % 360f
             bottomColor.fromHsv(hsv)
         }
 

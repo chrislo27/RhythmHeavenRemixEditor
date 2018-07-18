@@ -20,7 +20,7 @@ class RetroBackground(id: String, var cycleSpeed: Float = 1f / 15f)
     private val color2: Color = Color()
     private val hColor: Color = Color()
 
-    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         val width = camera.viewportWidth
         val height = camera.viewportHeight
 

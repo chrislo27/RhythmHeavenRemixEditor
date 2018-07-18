@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.stage.bg
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -41,7 +40,7 @@ class SpaceDanceBackground(id: String, val color: Color = Color.valueOf("0029D6"
         veloY = MathUtils.random(75f) * MathUtils.randomSign()
     }
 
-    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         if (first) {
             first = false
             starfield1.texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
@@ -68,12 +67,12 @@ class SpaceDanceBackground(id: String, val color: Color = Color.valueOf("0029D6"
             }
         }
 
-        x += Gdx.graphics.deltaTime * veloX
-        y += Gdx.graphics.deltaTime * veloY
+        x += delta * veloX
+        y += delta * veloY
         x %= width
         y %= height
 
-        timeToChangeDir += Gdx.graphics.deltaTime
+        timeToChangeDir += delta
         if (timeToChangeDir >= timeBetweenDirChanges) {
             timeToChangeDir %= timeBetweenDirChanges
             changeDirection()

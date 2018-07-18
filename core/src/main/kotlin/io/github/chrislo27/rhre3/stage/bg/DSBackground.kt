@@ -9,7 +9,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 class DSBackground(id: String, val color: Color = Color(1f, 1f, 1f, 1f))
     : Background(id) {
-    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
         batch.color = color
         batch.fillRect(0f, 0f, camera.viewportWidth, camera.viewportHeight)
         batch.setColor(1f, 1f, 1f, 1f)

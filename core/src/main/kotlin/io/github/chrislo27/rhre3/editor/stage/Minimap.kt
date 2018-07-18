@@ -32,6 +32,8 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
     private val remix: Remix
         get() = editor.remix
     private var timeHovered: Float = 0f
+    private val minimumHoverTime: Float = 1f
+    private val transitionTime: Float = 0.1f
     private lateinit var buffer: FrameBuffer
     var bufferSupported: Boolean = true
         private set
@@ -126,7 +128,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                 }
 
         // Preview
-        if (timeHovered >= 1f && bufferSupported && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)
+        if (timeHovered + transitionTime >= minimumHoverTime && bufferSupported && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)
                 && editor.main.preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)) {
             val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
             val centreX = percent * maxX
@@ -153,14 +155,16 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             val w = location.realWidth
             val h = location.realWidth * (bufSecH.toFloat() / buffer.width)
             val outline = 2f
-            batch.color = editor.theme.background
-            batch.fillRect(x, y, w, h)
-            batch.setColor(editor.theme.trackLine.r, editor.theme.trackLine.g, editor.theme.trackLine.b, 1f)
+            val alpha = ((timeHovered - minimumHoverTime + transitionTime) / transitionTime).coerceIn(0f, 1f)
+//            batch.color = editor.theme.background
+//            batch.fillRect(x, y, w, h)
+            batch.setColor(editor.theme.trackLine.r, editor.theme.trackLine.g, editor.theme.trackLine.b, alpha)
             batch.drawRect(x - outline, y,
                            w + outline * 2, h + outline, outline)
-            batch.setColor(1f, 1f, 1f, 1f)
+            batch.setColor(1f, 1f, 1f, alpha)
             batch.draw(buffer.colorBufferTexture,
                        x, y, w, h, 0, buffer.height - bufSecH, buffer.width, bufSecH, false, true)
+            batch.setColor(1f, 1f, 1f, 1f)
         }
     }
 
