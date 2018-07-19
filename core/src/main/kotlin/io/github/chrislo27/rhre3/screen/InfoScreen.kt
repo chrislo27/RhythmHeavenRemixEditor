@@ -266,7 +266,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenY = padding,
                                   screenWidth = 0.1f,
                                   screenHeight = buttonHeight)
-//                this.visible = false
+                this.visible = false
             }
 
             // info buttons
