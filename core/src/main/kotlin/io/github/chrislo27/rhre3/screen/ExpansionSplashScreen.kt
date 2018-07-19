@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
@@ -125,7 +126,7 @@ class ExpansionSplashScreen(main: RHRE3Application, val nextScreen: Screen?)
     override fun renderUpdate() {
         super.renderUpdate()
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.R)) {
             timeElapsed = 0f
         } else if (enterAlpha >= 1f && (Gdx.input.isKeyJustPressed(Input.Keys.ENTER) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE))) {
             if (!main.preferences.getBoolean(PreferenceKeys.SEEN_EXPANSION_SPLASH, false)) {
