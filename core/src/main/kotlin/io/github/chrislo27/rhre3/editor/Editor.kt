@@ -601,7 +601,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         font.drawCompressed(batch,
                                             if (stage.presentationModeStage.visible) section.game.group else section.game.name,
                                             left, height - 2.25f,
-                                            (sectionWidth - 0.25f).coerceAtMost(maxTextWidth), Align.left)
+                                            (sectionWidth - 0.25f).coerceIn(0f, maxTextWidth), Align.left)
                     }
                 }
                 batch.setColor(1f, 1f, 1f, 1f)
