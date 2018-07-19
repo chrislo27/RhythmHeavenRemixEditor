@@ -236,7 +236,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                     failures++
                     this.liveUsers = -1
                 }
-                while (!Thread.interrupted() && RHRE3.noOnlineCounter) {
+                while (!Thread.interrupted() && !RHRE3.noOnlineCounter) {
                     try {
                         val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
                                 .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
