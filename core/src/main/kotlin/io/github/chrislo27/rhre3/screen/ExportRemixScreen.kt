@@ -209,7 +209,7 @@ class ExportRemixScreen(main: RHRE3Application)
             this.visible = false
 
             this.location.set(this@ExportRemixScreen.stage.backButton.location)
-            this.location.set(screenX = 0.5f - this.location.screenWidth / 2f)
+            this.location.set(screenX = 1f - this.location.screenWidth)
         }
         stage.bottomStage.elements += folderButton
 
