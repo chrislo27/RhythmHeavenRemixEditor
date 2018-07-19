@@ -220,14 +220,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val qsCopy = quickSwitch
                 val button = qsCopy.button
                 val filter = button.filter
+                val gameList = filter.currentGameList
 
                 button.onLeftClick(0f, 0f)
 
                 filter.groupScroll = qsCopy.groupScroll
                 if (qsCopy.currentGroup != null)
                     filter.currentGroupIndex = filter.gameGroups.indexOf(qsCopy.currentGroup).coerceAtLeast(0)
-                if (!filter.areGamesEmpty && qsCopy.currentGame != null) {
-                    filter.currentGameList.currentIndex = filter.currentGameList.list.indexOf(qsCopy.currentGame).coerceAtLeast(0)
+                if (!filter.areGamesEmpty && qsCopy.currentGame != null && gameList != null) {
+                    gameList.currentIndex = gameList.list.indexOf(qsCopy.currentGame).coerceAtLeast(0)
                 }
 
                 updateSelected()
@@ -295,13 +296,14 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             variantButtons.forEach {
                 it.game = null
             }
-            (if (filter.areGroupsEmpty) null else filter.currentGroup)?.also { group ->
+            filter.currentGroup?.also { group ->
+                val currentGameList = filter.currentGameList ?: return@also
                 filter.gamesPerGroup[group]?.list?.forEachIndexed { index, game ->
-                    val y = index - (filter.currentGameList.scroll)
+                    val y = index - (currentGameList.scroll)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
                         variantButtons[y].apply {
                             this.game = game
-                            if (filter.currentGameList.currentIndex == index) {
+                            if (currentGameList.currentIndex == index) {
                                 this.selected = true
                             }
 
@@ -326,14 +328,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val anyDatamodels = !filter.areDatamodelsEmpty
             baseBpmLabel.visible = anyDatamodels
             bottomBaseBpmLabel.visible = false
-            if (!filter.areDatamodelsEmpty) {
+            val currentDatamodelList = filter.currentDatamodelList
+            if (!filter.areDatamodelsEmpty && currentDatamodelList != null) {
                 fun <T> MutableList<T>.getOrAdd(index: Int, function: (Int) -> T): T {
                     return getOrNull(index) ?: function(index).also {
                         add(it)
                     }
                 }
 
-                val objects = filter.currentDatamodelList.list
+                val objects = currentDatamodelList.list
 
                 objects.forEachIndexed { index, datamodel ->
                     var text = datamodel.name
@@ -344,7 +347,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     if (Toolboks.debugMode) {
                         text += " [GRAY](${datamodel.id})[]"
                     }
-                    if (index != filter.currentDatamodelList.currentIndex && datamodel is Cue) {
+                    if (index != currentDatamodelList.currentIndex && datamodel is Cue) {
                         color = Editor.CUE_PATTERN_COLOR
                     }
                     label.string = text
@@ -354,7 +357,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     pickerDisplay.labels.removeAt(pickerDisplay.labels.size - 1)
                 }
 
-                val possibleBaseBpm = filter.currentDatamodel.possibleBaseBpm
+                val possibleBaseBpm = filter.currentDatamodel?.possibleBaseBpm
                 if (possibleBaseBpm == null) {
                     baseBpmLabel.visible = false
                 } else {
@@ -495,10 +498,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     when (stage.camera.getInputX()) {
                     // datamodel
                         in (location.realX + location.realWidth * 0.5f)..(location.realX + location.realWidth) -> {
-                            if (!filter.areDatamodelsEmpty) {
-                                val old = filter.currentDatamodelList.currentIndex
-                                filter.currentDatamodelList.currentIndex += amount
-                                if (old != filter.currentDatamodelList.currentIndex) {
+                            val currentDatamodelList = filter.currentDatamodelList
+                            if (!filter.areDatamodelsEmpty && currentDatamodelList != null) {
+                                val old = currentDatamodelList.currentIndex
+                                currentDatamodelList.currentIndex += amount
+                                if (old != currentDatamodelList.currentIndex) {
                                     updateSelected()
                                     return true
                                 }
@@ -506,10 +510,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         }
                     // variants
                         in (variantButtons.first().location.realX)..(location.realX + location.realWidth * 0.5f) -> {
-                            if (!filter.areGamesEmpty) {
-                                val old = filter.currentGameList.scroll
-                                filter.currentGameList.scroll += amount
-                                if (old != filter.currentGameList.scroll) {
+                            val currentGameList = filter.currentGameList
+                            if (!filter.areGamesEmpty && currentGameList != null) {
+                                val old = currentGameList.scroll
+                                currentGameList.scroll += amount
+                                if (old != currentGameList.scroll) {
                                     updateSelected()
                                     return true
                                 }
@@ -789,10 +794,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     } else {
                                         if (isVariant) {
                                             val gameList = filter.currentGameList
+                                            val scroll = gameList?.scroll ?: 0
                                             if (isUp) {
-                                                label.text = Editor.ARROWS[if (gameList.scroll > 0) 0 else 2]
+                                                label.text = Editor.ARROWS[if (scroll > 0) 0 else 2]
                                             } else {
-                                                label.text = Editor.ARROWS[if (gameList.scroll < gameList.maxScroll) 1 else 3]
+                                                label.text = Editor.ARROWS[if (scroll < gameList?.maxScroll ?: 0) 1 else 3]
                                             }
                                         } else {
                                             if (isUp) {
@@ -807,8 +813,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                                     super.onLeftClick(xPercent, yPercent)
                                     val filter = editor.pickerSelection.filter
+                                    val gameList = filter.currentGameList ?: return
                                     if (isVariant) {
-                                        val gameList = filter.currentGameList
                                         if (isUp) {
                                             if (gameList.scroll > 0) {
                                                 gameList.scroll--
@@ -867,8 +873,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 if (visible && this.game != null) {
                                     val filter = editor.pickerSelection.filter
                                     if (isVariant) {
-                                        if (!filter.areGamesEmpty) {
-                                            filter.currentGameList.currentIndex = y + filter.currentGameList.scroll
+                                        val currentGameList = filter.currentGameList
+                                        if (!filter.areGamesEmpty && currentGameList != null) {
+                                            currentGameList.currentIndex = y + currentGameList.scroll
                                         }
                                     } else {
                                         filter.currentGroupIndex = (y + filter.groupScroll) * Editor.ICON_COUNT_X + x
@@ -902,10 +909,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val filter = editor.pickerSelection.filter
                         val label = this.labels.first() as TextLabel
 
-                        if (GameRegistry.isDataLoading() || filter.areDatamodelsEmpty) {
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (GameRegistry.isDataLoading() || currentDatamodelList == null) {
                             label.text = Editor.ARROWS[2]
                         } else {
-                            if (filter.currentDatamodelList.currentIndex > 0) {
+                            if (currentDatamodelList.currentIndex > 0) {
                                 label.text = Editor.ARROWS[0]
                             } else {
                                 label.text = Editor.ARROWS[2]
@@ -916,8 +924,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         val filter = editor.pickerSelection.filter
-                        if (!filter.areDatamodelsEmpty && filter.currentDatamodelList.currentIndex > 0) {
-                            filter.currentDatamodelList.currentIndex--
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex > 0) {
+                            currentDatamodelList.currentIndex--
                             updateSelected()
                         }
                     }
@@ -945,10 +954,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val filter = editor.pickerSelection.filter
                         val label = this.labels.first() as TextLabel
 
-                        if (GameRegistry.isDataLoading() || filter.areDatamodelsEmpty) {
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (GameRegistry.isDataLoading() || currentDatamodelList == null) {
                             label.text = Editor.ARROWS[3]
                         } else {
-                            if (filter.currentDatamodelList.currentIndex < filter.currentDatamodelList.maxIndex) {
+                            if (currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
                                 label.text = Editor.ARROWS[1]
                             } else {
                                 label.text = Editor.ARROWS[3]
@@ -959,8 +969,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         val filter = editor.pickerSelection.filter
-                        if (!filter.areDatamodelsEmpty && filter.currentDatamodelList.currentIndex < filter.currentDatamodelList.maxIndex) {
-                            filter.currentDatamodelList.currentIndex++
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
+                            currentDatamodelList.currentIndex++
                             updateSelected()
                         }
                     }

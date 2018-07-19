@@ -21,16 +21,16 @@ abstract class Filter {
         set(value) {
             field = value.coerceIn(0, maxGroupIndex)
         }
-    val currentGroup: GameGroup
-        get() = gameGroups[currentGroupIndex]
-    val currentGame: Game
-        get() = currentGameList.current
-    val currentDatamodel: Datamodel
-        get() = currentDatamodelList.current
-    val currentGameList: GameList
-        get() = gamesPerGroup[currentGroup]!!
-    open val currentDatamodelList: DatamodelList
-        get() = datamodelsPerGame[currentGame]!!
+    val currentGroup: GameGroup?
+        get() = gameGroups.getOrNull(currentGroupIndex)
+    val currentGame: Game?
+        get() = currentGameList?.current
+    val currentDatamodel: Datamodel?
+        get() = currentDatamodelList?.current
+    val currentGameList: GameList?
+        get() = gamesPerGroup[currentGroup]
+    open val currentDatamodelList: DatamodelList?
+        get() = datamodelsPerGame[currentGame]
     val areGroupsEmpty: Boolean
         get() = gameGroups.isEmpty()
     val areGamesEmpty: Boolean

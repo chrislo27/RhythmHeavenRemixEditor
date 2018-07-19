@@ -1858,7 +1858,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             val entities: List<Entity>
 
             if (!isStored) {
-                val datamodel: Datamodel = if (pickerSelection.filter.areDatamodelsEmpty) return true else pickerSelection.filter.currentDatamodel
+                val datamodel: Datamodel = pickerSelection.filter.currentDatamodel ?: return true
                 val entity = datamodel.createEntity(remix, null)
 
                 if (Toolboks.debugMode) {

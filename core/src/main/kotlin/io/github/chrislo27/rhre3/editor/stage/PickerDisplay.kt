@@ -27,7 +27,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
         val filter = editor.pickerSelection.filter
         if (filter.areDatamodelsEmpty)
             return
-        val selection = filter.currentDatamodelList
+        val selection = filter.currentDatamodelList ?: return
         val oldScroll = selection.smoothScroll
         selection.smoothScroll = MathUtils.lerp(oldScroll, selection.currentIndex.toFloat(),
                                                 Gdx.graphics.deltaTime / 0.075f)
