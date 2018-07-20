@@ -79,6 +79,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
+import java.nio.charset.Charset
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -1560,7 +1561,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
-                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone( entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
                         if (output.isNotEmpty()) {
                             output += "\n"
                         }
@@ -1882,6 +1883,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     val result = (JsonHandler.OBJECT_MAPPER.readTree(pattern.data) as ArrayNode).map { node ->
                         Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)?.also {
                             it.readData(node)
+
+                            // Load textures if necessary
+                            val texHashNode = node["_textureData_hash"]
+                            val texDataNode = node["_textureData_data"]
+                            if (texHashNode != null && texDataNode != null) {
+                                val texHash = texHashNode.asText()
+                                if (!remix.textureCache.containsKey(texHash)) {
+                                    try {
+                                        val bytes = Base64.getDecoder().decode(texDataNode.asText().toByteArray(Charset.forName("UTF-8")))
+                                        remix.textureCache[texHash] = Texture(Pixmap(bytes, 0, bytes.size))
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                    }
+                                }
+                            }
                         }
                     }.filterNotNull()
 

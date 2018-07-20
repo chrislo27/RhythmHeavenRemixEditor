@@ -8,9 +8,11 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -19,6 +21,8 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextField
 import io.github.chrislo27.toolboks.ui.TextLabel
+import java.io.ByteArrayOutputStream
+import java.nio.charset.Charset
 import java.util.*
 
 class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern?, val entities: List<Entity>?)
@@ -55,7 +59,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
             this.text = "screen.patternStore.alreadyExists"
             this.visible = false
         }
-        stage.centreStage.elements +=  alreadyExists
+        stage.centreStage.elements += alreadyExists
 
         if (pattern != null) {
             stage.bottomStage.elements += object : Button<PatternStoreScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
@@ -78,7 +82,8 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 super.onLeftClick(xPercent, yPercent)
 
                 if (pattern == null) {
-                    PatternStorage.addPattern(StoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities!!)))
+                    val entities = entities!!
+                    PatternStorage.addPattern(StoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities.first().remix, entities)))
                             .persist()
                 } else {
                     PatternStorage.deletePattern(pattern)
@@ -158,7 +163,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
         }
     }
 
-    fun entitiesToJson(entities: List<Entity>): String {
+    fun entitiesToJson(remix: Remix, entities: List<Entity>): String {
         val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
 
         val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }
@@ -172,10 +177,26 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
             }
         }
 
+        val texturesStored: MutableSet<String> = mutableSetOf()
+
         entities.forEach { entity ->
             val node = array.addObject()
 
             node.put("type", entity.jsonType)
+            if (entity is TextureEntity) {
+                val hash = entity.textureHash
+                if (hash != null && hash !in texturesStored) {
+                    val texture = remix.textureCache[hash]
+                    if (texture != null) {
+                        node.put("_textureData_hash", hash)
+                        node.put("_textureData_data", Base64.getEncoder().encode(ByteArrayOutputStream().also { baos ->
+                            Remix.writeTexture(baos, texture)
+                        }.toByteArray()).toString(Charset.forName("UTF-8")))
+
+                        texturesStored += hash
+                    }
+                }
+            }
 
             entity.saveData(node)
         }

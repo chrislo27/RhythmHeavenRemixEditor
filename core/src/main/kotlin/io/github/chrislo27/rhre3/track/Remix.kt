@@ -46,6 +46,7 @@ import io.github.chrislo27.toolboks.version.Version
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.io.OutputStream
 import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
@@ -386,32 +387,16 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 remix.textureCache.forEach { name, tex ->
                     stream.putNextEntry(ZipEntry("$name.png"))
 
-                    if (!tex.textureData.isPrepared) {
-                        tex.textureData.prepare()
-                    }
-                    val pixmap: Pixmap = tex.textureData.consumePixmap()
-
-                    try {
-                        val writer = PixmapIO.PNG((pixmap.width.toFloat() * pixmap.height.toFloat() * 1.5f).toInt()) // Guess at deflated size.
-                        try {
-                            writer.setFlipY(false)
-                            writer.write(stream, pixmap)
-                        } finally {
-                            writer.dispose()
-                        }
-                    } catch (ex: IOException) {
-                        throw GdxRuntimeException("Error writing PNG", ex)
-                    } finally {
-                        if (tex.textureData.disposePixmap()) {
-                            pixmap.dispose()
-                        }
-                    }
+                    writeTexture(stream, tex)
 
                     stream.closeEntry()
                 }
             }
         }
 
+        /**
+         * Must NOT be called in the GL context thread! Will deadlock if this happens.
+         */
         fun unpack(remix: Remix, zip: ZipFile): RemixLoadInfo {
             val jsonStream = zip.getInputStream(zip.getEntry("remix.json"))
             val objectNode: ObjectNode = JsonHandler.OBJECT_MAPPER.readTree(jsonStream) as ObjectNode
@@ -542,6 +527,29 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             val stream = ZipOutputStream(FileOutputStream(file))
             pack(remix, stream, isAutosave)
             stream.close()
+        }
+
+        fun writeTexture(stream: OutputStream, tex: Texture) {
+            if (!tex.textureData.isPrepared) {
+                tex.textureData.prepare()
+            }
+            val pixmap: Pixmap = tex.textureData.consumePixmap()
+
+            try {
+                val writer = PixmapIO.PNG((pixmap.width.toFloat() * pixmap.height.toFloat() * 1.5f).toInt()) // Guess at deflated size.
+                try {
+                    writer.setFlipY(false)
+                    writer.write(stream, pixmap)
+                } finally {
+                    writer.dispose()
+                }
+            } catch (ex: IOException) {
+                throw GdxRuntimeException("Error writing PNG", ex)
+            } finally {
+                if (tex.textureData.disposePixmap()) {
+                    pixmap.dispose()
+                }
+            }
         }
     }
 
