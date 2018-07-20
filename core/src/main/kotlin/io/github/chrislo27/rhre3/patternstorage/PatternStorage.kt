@@ -43,7 +43,7 @@ object PatternStorage {
         val values = patterns.values.toList()
 
         values.mapNotNull { pattern ->
-            val fh = FOLDER.child(pattern.uuid.toString() + ".json")
+            val fh = FOLDER.child(pattern.filename ?: ("${pattern.uuid}.json"))
 
             try {
                 fh.writeString(JsonHandler.toJson(pattern), false, "UTF-8")
