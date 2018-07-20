@@ -1553,12 +1553,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             if (entity in selection) {
                 if (scrollMode == ScrollMode.VOLUME) {
                     if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
+                        if (output.isNotEmpty()) {
+                            output += "\n"
+                        }
                         output += Localization["editor.msg.volume", entity.volumePercent]
                     }
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
-                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(
-                                entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                        if (output.isNotEmpty()) {
+                            output += "\n"
+                        }
                         output += if (entity is ShakeEntity) {
                             semitoneText
                         } else {
