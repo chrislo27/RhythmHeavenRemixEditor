@@ -30,6 +30,8 @@ import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncCompletionHandlerBase
 import org.asynchttpclient.AsyncHandler
 import org.asynchttpclient.AsyncHttpClient
+import org.asynchttpclient.DefaultAsyncHttpClientConfig
+import org.asynchttpclient.Dsl.asyncHttpClient
 import org.asynchttpclient.request.body.multipart.FilePart
 import org.asynchttpclient.request.body.multipart.StringPart
 import java.io.File
@@ -55,8 +57,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
     @Volatile
     private var isUploading = false
 
-    private val http: AsyncHttpClient
-        get() = RHRE3Application.httpClient
+    private val http: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder().setFollowRedirect(false))
 
     private val gotoButton: Button<UploadRemixScreen>
     private val copyButton: Button<UploadRemixScreen>
@@ -505,6 +506,11 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
     }
 
     override fun dispose() {
+        try {
+            http.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun hide() {
