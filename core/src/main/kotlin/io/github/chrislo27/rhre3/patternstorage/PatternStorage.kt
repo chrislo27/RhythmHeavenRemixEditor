@@ -39,7 +39,7 @@ object PatternStorage {
         sort()
     }
 
-    fun persist() {
+    fun persist(deleteAllOthers: Boolean = false) {
         val values = patterns.values.toList()
 
         values.mapNotNull { pattern ->
@@ -65,6 +65,8 @@ object PatternStorage {
         }.also { arrayNode ->
             FOLDER.child("list/").apply { mkdirs() }.child("list.json").writeString(JsonHandler.toJson(arrayNode), false, "UTF-8")
         }
+        val filenames = values.mapNotNull(StoredPattern::filename)
+        FOLDER.list().filter { it.name() !in filenames }.forEach { it.delete() }
     }
 
     fun addPattern(pattern: StoredPattern): PatternStorage {
