@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
+import io.github.chrislo27.rhre3.editor.stage.advopt.CopyGamesUsedButton
 import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
@@ -1372,6 +1373,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.background = true
             }
             buttonBarStage.elements += jumpToField
+            buttonBarStage.elements += CopyGamesUsedButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                val endX = 1f - (size * 15 + padding * 10)
+                this.location.set(screenX = 0.5f + (size * 1.5f + padding * 2))
+                this.location.set(screenWidth = endX - this.location.screenX)
+            }
         }
 
         this.updatePositions()

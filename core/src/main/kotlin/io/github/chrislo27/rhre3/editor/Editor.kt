@@ -1237,11 +1237,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-                remix.recomputeCachedData()
-                val games: List<GameGroup> = remix.gameSections.values.map(GameSection::gameGroup).distinct()
+                val games = getGamesUsedInRemix()
                 if (games.isNotEmpty()) {
-                    Gdx.app.clipboard.contents = games.joinToString(transform = GameGroup::name)
-                    Toolboks.LOGGER.info("Copied list of games to clipboard")
+                    Gdx.app.clipboard.contents = games
+                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\n")
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
@@ -2289,6 +2288,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         resizeCameraToEntityScale(camera)
         resizeCameraToPixelScale(staticCamera)
         stage.updatePositions()
+    }
+
+    fun getGamesUsedInRemix(): String {
+        remix.recomputeCachedData()
+        val games: List<GameGroup> = remix.gameSections.values.map(GameSection::gameGroup).distinct()
+        return if (games.isEmpty()) "" else games.joinToString(transform = GameGroup::name)
     }
 
     fun getDebugString(): String? {
