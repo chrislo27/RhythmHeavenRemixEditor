@@ -38,7 +38,6 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -246,7 +245,8 @@ class InfoScreen(main: RHRE3Application)
                         else if (this.text == RHRE3.VERSION.toString())
                             resetTextIn = 0f
                     }
-                    color.setHSB(MathHelper.getSawtoothWave(1f), ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f), 1f)
+                    val alpha = ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f)
+                    color.set(1f, 1f, 1f, 1f).lerp(0f, 1f, 1f, 1f, alpha)
                     super.render(screen, batch, shapeRenderer)
                 }
             }.apply {
