@@ -229,10 +229,11 @@ class InfoScreen(main: RHRE3Application)
 
                     if (clicks >= 5) {
                         clicks = 0
-                        val old = main.preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_USER, false)
-                        main.preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_USER, !old).flush()
+                        val old = main.advancedOptions
+                        main.advancedOptions = !old
+                        main.preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, main.advancedOptions).flush()
 
-                        this.text = "Adv. Options ${if (!old) "enabled" else "disabled"}"
+                        this.text = "Adv. Options ${if (main.advancedOptions) "enabled" else "disabled"}"
                         resetTextIn = 5f
                     }
                 }

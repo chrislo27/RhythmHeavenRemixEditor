@@ -118,6 +118,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     var liveUsers: Int = -1
         private set
 
+    var advancedOptions: Boolean = false
+
     private val rainbowColor: Color = Color()
 
     override val programLaunchArguments: List<String>
@@ -168,6 +170,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
+        advancedOptions = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
