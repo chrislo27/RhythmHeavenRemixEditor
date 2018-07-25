@@ -38,6 +38,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
+import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -58,6 +59,7 @@ class InfoScreen(main: RHRE3Application)
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
     private lateinit var clearRecentsButton: Button<InfoScreen>
     private lateinit var dbVersionLabel: TextLabel<InfoScreen>
+    private lateinit var versionLabel: TextLabel<InfoScreen>
     private var didChangeSettings: Boolean = Version.fromStringOrNull(
             preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && it < VersionHistory.ANALYTICS
@@ -203,7 +205,50 @@ class InfoScreen(main: RHRE3Application)
                 this.text = "screen.info.info"
             }
             // current program version
-            centre.elements += TextLabel(palette, centre, centre).apply {
+            versionLabel = object : TextLabel<InfoScreen>(palette, centre, centre){
+                private var clicks = 0
+                private var timeSinceLastClick = System.currentTimeMillis()
+                private val CLICKS_RESET = 3000L
+                private var resetTextIn: Float = 0f
+                private val color = Color(1f, 1f, 1f, 1f)
+
+                init {
+                    this.textColor = color
+                }
+
+                override fun canBeClickedOn(): Boolean = true
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    if (System.currentTimeMillis() - timeSinceLastClick >= CLICKS_RESET) {
+                        clicks = 0
+                    }
+                    resetTextIn = 0f
+                    clicks++
+                    timeSinceLastClick = System.currentTimeMillis()
+
+                    if (clicks >= 5) {
+                        clicks = 0
+                        val old = main.preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_USER, false)
+                        main.preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_USER, !old).flush()
+
+                        this.text = "Adv. Options ${if (!old) "enabled" else "disabled"}"
+                        resetTextIn = 5f
+                    }
+                }
+
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    if (resetTextIn > 0f) {
+                        resetTextIn -= Gdx.graphics.deltaTime
+                        if (resetTextIn <= 0f)
+                            this.text = RHRE3.VERSION.toString()
+                        else if (this.text == RHRE3.VERSION.toString())
+                            resetTextIn = 0f
+                    }
+                    color.setHSB(MathHelper.getSawtoothWave(1f), ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f), 1f)
+                    super.render(screen, batch, shapeRenderer)
+                }
+            }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
                                   screenWidth = buttonWidth - buttonWidth * 0.09f * 2,
@@ -212,6 +257,7 @@ class InfoScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = RHRE3.VERSION.toString()
             }
+            centre.elements += versionLabel
             centre.elements += ImageLabel(palette, centre, centre).apply {
                 this.image = TextureRegion(AssetRegistry.get<Texture>("logo_ex_32"))
                 this.location.set(screenX = 1f - (padding + buttonWidth),
@@ -711,6 +757,7 @@ class InfoScreen(main: RHRE3Application)
         super.show()
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
+        versionLabel.text = RHRE3.VERSION.toString()
         DiscordHelper.updatePresence(PresenceState.InSettings)
     }
 
