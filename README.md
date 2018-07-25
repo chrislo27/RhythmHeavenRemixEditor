@@ -23,6 +23,14 @@ Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)
 
 ![Palettes screenshot](.github/rhre3palettes.png)
 
+## Installation
+Installation is straightforward.
+1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases) and download the `RHRE3_X.zip` file.
+2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
+3. Open the extracted folder, and double click the file labeled `run_windows.bat` or `run_macOS-linux.sh` depending on your operating system.
+4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
+5. Read the [README](http://rhre.readthedocs.io/en/latest/README/) and get remixing!
+
 Rhythm Heaven is not my property -- it is the property of Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to infringe trademark rights.<br>
 This is just a community project and this is available for others to use
