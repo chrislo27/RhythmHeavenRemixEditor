@@ -234,7 +234,7 @@ class InfoScreen(main: RHRE3Application)
                         main.preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, main.advancedOptions).flush()
 
                         this.text = "Adv. Options ${if (main.advancedOptions) "enabled" else "disabled"}"
-                        resetTextIn = 5f
+                        resetTextIn = 3f
                     }
                 }
 

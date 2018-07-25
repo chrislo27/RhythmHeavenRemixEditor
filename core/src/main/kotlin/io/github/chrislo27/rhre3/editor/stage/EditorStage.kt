@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
+import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.registry.*
@@ -1297,6 +1298,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             buttonBarStage.elements += TrackChangeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
+            }
+            buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size * 5, screenX = size * 11 + padding * 11)
             }
 
             // right aligned
