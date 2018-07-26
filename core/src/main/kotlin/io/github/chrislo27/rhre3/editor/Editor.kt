@@ -1210,12 +1210,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
         }
 
-        when (currentTool) {
-            Tool.MULTIPART_SPLIT -> {
-                updateMessageLabel()
-            }
-            else -> {
-            }
+        if (currentTool == Tool.MULTIPART_SPLIT) {
+            updateMessageLabel()
         }
 
         run stretchCursor@{
