@@ -120,6 +120,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
     }
 
     class SmallPatternObject {
+        var type: String = "pattern"
         lateinit var id: String
         lateinit var deprecatedIDs: List<String>
         lateinit var name: String
