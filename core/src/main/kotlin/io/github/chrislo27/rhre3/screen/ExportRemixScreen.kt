@@ -751,6 +751,7 @@ class ExportRemixScreen(main: RHRE3Application)
             val endSeconds = percentToSeconds(endPercent)
             leftLabel.text = "♩ ${remix.tempos.secondsToBeats(startSeconds).toInt()} (${secondsToText(startSeconds.toInt())}) "
             rightLabel.text = " ♩ ${remix.tempos.secondsToBeats(endSeconds).roundToInt()} (${secondsToText(endSeconds.roundToInt())})"
+            partial = startPercent != 0f || endPercent != 1f
         }
 
         private fun secondsToText(seconds: Int): String {
