@@ -424,10 +424,16 @@ class ExportRemixScreen(main: RHRE3Application)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: (if (!playSuccessDing && success) Unit else Toolboks.LOGGER.warn("Export SFX (success=$success) not found"))
 
-            folderFile = file
-            folderButton.visible = true
+            if (playSuccessDing) {
+                folderFile = file
+                folderButton.visible = true
+            }
 
             isExporting = false
+
+            if (!playSuccessDing) {
+                stage.backButton.enabled = false
+            }
         }
 
         try {
