@@ -680,13 +680,19 @@ class ExportRemixScreen(main: RHRE3Application)
                     // bar
                     val barWidth = width * selectionPercent
                     val barX = x + width * startPercent
-                    val darken = 0.95f
                     batch.setColor(color.r, color.g, color.b, 1f)
                     batch.fillRect(barX, y, barWidth, height)
                     // bar darker outline
-                    val barOutline = 1f
-                    batch.setColor(color.r * darken, color.g * darken, color.b * darken, barOutline)
-                    batch.drawRect(barX, y, barWidth, height, 2f)
+                    val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
+                    val arrowWidth = Math.min(barWidth / 2f, height * 0.5f)
+                    batch.setColor(0f, 0f, 0f, 0.2f)
+                    batch.draw(arrowTex, barX + arrowWidth, y, barWidth - arrowWidth * 2, height,
+                               arrowTex.width / 2, 0, arrowTex.width / 2,
+                               arrowTex.height, false, false)
+                    batch.draw(arrowTex, barX, y, arrowWidth, height,
+                               0, 0, arrowTex.width / 2, arrowTex.height, false, false)
+                    batch.draw(arrowTex, barX + barWidth, y, -arrowWidth, height,
+                               0, 0, arrowTex.width / 2, arrowTex.height, false, false)
 
                     // border
                     batch.setColor(1f, 1f, 1f, 1f)
