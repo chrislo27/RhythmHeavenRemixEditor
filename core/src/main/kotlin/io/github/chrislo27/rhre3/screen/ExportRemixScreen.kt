@@ -678,28 +678,26 @@ class ExportRemixScreen(main: RHRE3Application)
                     batch.fillRect(x, y, width, height)
 
                     // bar
-                    val barWidth = width * selectionPercent
-                    val barX = x + width * startPercent
+                    val barFullWidth = width - lineThickness * 2f
+                    val barWidth = barFullWidth * selectionPercent
+                    val barX = x + lineThickness + barFullWidth * startPercent
                     batch.setColor(color.r, color.g, color.b, 1f)
                     batch.fillRect(barX, y, barWidth, height)
                     // bar darker outline
                     val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
-                    val arrowWidth = Math.min(barWidth / 2f, height * 0.5f)
+                    val arrowHeight = height - lineThickness * 2f
+                    val arrowheadWidth = Math.min(barWidth / 2f, height * 0.5f)
                     batch.setColor(0f, 0f, 0f, 0.2f)
-                    batch.draw(arrowTex, barX + arrowWidth, y, barWidth - arrowWidth * 2, height,
-                               arrowTex.width / 2, 0, arrowTex.width / 2,
-                               arrowTex.height, false, false)
-                    batch.draw(arrowTex, barX, y, arrowWidth, height,
-                               0, 0, arrowTex.width / 2, arrowTex.height, false, false)
-                    batch.draw(arrowTex, barX + barWidth, y, -arrowWidth, height,
-                               0, 0, arrowTex.width / 2, arrowTex.height, false, false)
+                    batch.draw(arrowTex, barX + arrowheadWidth, y + lineThickness, barWidth - arrowheadWidth * 2, arrowHeight, arrowTex.width / 2, 0, arrowTex.width / 2, arrowTex.height, false, false)
+                    batch.draw(arrowTex, barX, y + lineThickness, arrowheadWidth, arrowHeight, 0, 0, arrowTex.width / 2, arrowTex.height, false, false)
+                    batch.draw(arrowTex, barX + barWidth, y + lineThickness, -arrowheadWidth, arrowHeight, 0, 0, arrowTex.width / 2, arrowTex.height, false, false)
 
                     // border
                     batch.setColor(1f, 1f, 1f, 1f)
-                    batch.drawRect(x - lineThickness, y - lineThickness, width + lineThickness * 2, height + lineThickness * 2, lineThickness)
+                    batch.drawRect(x, y, width, height, lineThickness)
 
                     if (wasClickedOn) {
-                        val inputPercent = ((stage.camera.getInputX() - location.realX) / location.realWidth).coerceIn(0f, 1f)
+                        val inputPercent = ((stage.camera.getInputX() - x - lineThickness) / barFullWidth).coerceIn(0f, 1f)
 
                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                             if (inputPercent < endPercent) {
