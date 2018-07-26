@@ -70,7 +70,6 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.rhre3.util.Swing
-import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -1207,9 +1206,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
-                val lastTempoChange: TempoChange? = (remix.tempos.secondsMap as NavigableMap).floorEntry(remix.seconds)?.value
-                val secondsOffset = lastTempoChange?.seconds ?: 0f
-                remix.camera.position.x = (lastTempoChange?.endBeat ?: 0f) + TempoUtils.secondsToBeats(remix.seconds - secondsOffset, remix.tempos.tempoAtSeconds(remix.seconds)) + remix.camera.viewportWidth * 0.25f
+                remix.camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds) + remix.camera.viewportWidth * 0.25f
             }
         }
 
@@ -1240,7 +1237,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val games = getGamesUsedInRemix()
                 if (games.isNotEmpty()) {
                     Gdx.app.clipboard.contents = games
-                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\n")
+                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\nte")
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }

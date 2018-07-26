@@ -70,6 +70,24 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
         return tc.beatsToSeconds(beat)
     }
 
+    /**
+     * Same as [secondsToBeats] but disregards swing
+     */
+    fun linearSecondsToBeats(seconds: Float): Float {
+        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
+
+        return tc.beat + TempoUtils.secondsToBeats(seconds - tc.seconds, tc.bpm)
+    }
+
+    /**
+     * Same as [beatsToSeconds] but disregards swing
+     */
+    fun linearBeatsToSeconds(beat: Float): Float {
+        val tc: TempoChange = backingMap.floorEntry(beat)?.value ?: return TempoUtils.beatsToSeconds(beat, defaultTempo)
+
+        return tc.seconds + TempoUtils.beatsToSeconds(beat - tc.beat, tc.bpm)
+    }
+
     fun tempoAt(beat: Float): Float {
         return backingMap.lowerEntry(beat)?.value?.tempoAt(beat) ?: defaultTempo
     }
