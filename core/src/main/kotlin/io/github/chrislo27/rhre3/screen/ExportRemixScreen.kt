@@ -696,7 +696,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
                     // border
                     batch.setColor(1f, 1f, 1f, 1f)
-                    batch.drawRect(x, y, width, height, lineThickness)
+                    batch.drawRect(x - lineThickness, y - lineThickness, width + lineThickness * 2, height + lineThickness * 2, lineThickness)
 
                     if (wasClickedOn) {
                         val inputPercent = ((stage.camera.getInputX() - location.realX) / location.realWidth).coerceIn(0f, 1f)
