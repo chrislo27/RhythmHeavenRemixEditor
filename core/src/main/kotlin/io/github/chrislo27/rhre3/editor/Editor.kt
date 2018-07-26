@@ -44,9 +44,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.screen.InfoScreen
-import io.github.chrislo27.rhre3.screen.PatternStoreScreen
-import io.github.chrislo27.rhre3.screen.TexEntChooserScreen
+import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
@@ -1166,7 +1164,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
         val shift = Gdx.input.isShiftDown()
         val control = Gdx.input.isControlDown()
-//        val alt = Gdx.input.isAltDown()
+        val alt = Gdx.input.isAltDown()
         val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
@@ -1237,17 +1235,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
-            } else {
-//                val trackCount = remix.trackCount
-//                if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) {
-//                    if (trackCount > MIN_TRACK_COUNT && remix.wouldEntitiesFitNewTrackCount(trackCount - 1)) {
-//                        remix.mutate(TrackResizeAction(this, trackCount, trackCount - 1))
-//                    }
-//                } else if (Gdx.input.isKeyJustPressed(Input.Keys.U)) {
-//                    if (trackCount < MAX_TRACK_COUNT) {
-//                        remix.mutate(TrackResizeAction(this, trackCount, trackCount + 1))
-//                    }
-//                }
             }
         }
 
@@ -1310,11 +1297,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                     main.screen = ScreenRegistry.getNonNull("newRemix")
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-                    main.screen = ScreenRegistry.getNonNull("openRemix")
+                    val screen = ScreenRegistry.getNonNull("openRemix")
+                    main.screen = screen
+                    (screen as? OpenRemixScreen)?.attemptOpenPicker()
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
                     main.screen = ScreenRegistry.getNonNull("saveRemix")
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-//                    remix.mutate(EntitySelectionAction(this, selection.toList(), remix.entities.toList()))
+                } else if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                    if (!shift && !alt) {
+                        // Export screen
+                        main.screen = ExportRemixScreen(main)
+                    }
                 }
             }
 
@@ -1553,7 +1545,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                     }
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
-                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone( entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
+                        val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
                         if (output.isNotEmpty()) {
                             output += "\n"
                         }
