@@ -228,7 +228,17 @@ class ExportRemixScreen(main: RHRE3Application)
                     }
                     export(exportFile, MP3, false)
 
-                    main.screen = UploadRemixScreen(main, exportFile, exportFile.name)
+                    val fileSize = exportFile.length()
+
+                    Gdx.app.postRunnable {
+                        println(fileSize)
+                        if (fileSize > MAX_PICOSONG_BYTES) {
+                            this@ExportRemixScreen.stage.backButton.enabled = true
+                            this@ExportRemixScreen.mainLabel.text = Localization["screen.export.uploadImmediately.cannot"]
+                        } else {
+                            main.screen = UploadRemixScreen(main, exportFile, exportFile.name)
+                        }
+                    }
 
                     // Analytics
                     AnalyticsHandler.track("Export Remix",
