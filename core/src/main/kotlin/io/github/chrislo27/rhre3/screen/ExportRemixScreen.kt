@@ -466,10 +466,14 @@ class ExportRemixScreen(main: RHRE3Application)
                 })
             }
 
-            // Start recording at a certain time
-            context.out.addDependent(DelayTrigger(context, startSeconds * 1000 - startMs, addBead {
+            if (startSeconds * 1000 <= startMs) {
                 context.out.addDependent(recorder)
-            }))
+            } else {
+                // Start recording at a certain time
+                context.out.addDependent(DelayTrigger(context, startSeconds * 1000 - startMs, addBead {
+                    context.out.addDependent(recorder)
+                }))
+            }
 
             // SFX
             context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
@@ -489,7 +493,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
             // run!
             context.out.pause(false)
-            context.runForNMillisecondsNonRealTime(durationMs)
+            context.runForNMillisecondsNonRealTime(durationMs.coerceAtLeast(1.0))
         } catch (e: Exception) {
             e.printStackTrace()
             finalize(false)
@@ -587,6 +591,7 @@ class ExportRemixScreen(main: RHRE3Application)
         picosongFunc = null
         folderButton.visible = false
         folderFile = null
+        selectionStage.visible = false
         isCapableOfExporting = isBeads && (hasEndRemix || canOmitEndRemix)
         if (!isCapableOfExporting) {
             if (!isBeads) {
@@ -599,6 +604,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 label.text = "${Localization["screen.export.prepare"]}\n\n${Localization["screen.export.uploadHint"]}"
                 readyButton.visible = true
                 uploadImmediatelyButton.visible = true
+                selectionStage.visible = true
             } else {
                 label.text = Localization["screen.export.failed", throwable::class.java.canonicalName]
             }
