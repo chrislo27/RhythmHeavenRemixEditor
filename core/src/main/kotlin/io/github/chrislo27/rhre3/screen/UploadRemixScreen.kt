@@ -53,7 +53,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
         private const val PICOSONG_SKIP_FIELDS_URL = "http://picosong.com/success/"
     }
 
-    override val stage: Stage<UploadRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    override val stage: GenericStage<UploadRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     @Volatile
     private var isUploading = false
 
@@ -74,7 +74,6 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
     private val genreField: TextField<UploadRemixScreen>
 
     init {
-        stage as GenericStage
         verifyFields = mutableMapOf()
         val palette = main.uiPalette
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_update"))
@@ -91,11 +90,11 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                 get() = super.visible && isUploading
         }.apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f * 0.25f)
         }
 
         mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+            this.location.set(screenHeight = 0.8f, screenY = 0.2f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
@@ -391,7 +390,6 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
     override fun renderUpdate() {
         super.renderUpdate()
 
-        stage as GenericStage
         stage.backButton.enabled = !isUploading
     }
 
