@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.12.3`.
+This readme is up to date with version `v3.13.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -59,6 +59,7 @@ however, read up on the controls first below!
 **`CTRL+N`** - New remix<br/>
 **`CTRL+O`** - Open remix<br/>
 **`CTRL+S`** - Save remix<br/>
+**`CTRL+E`** - Export/upload remix<br/>
 **`CTRL+Z`** - Undo<br/>
 **`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
 **`F`** - Quick switch to last game (doesn't work in search results)<br>

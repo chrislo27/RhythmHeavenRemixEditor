@@ -2,8 +2,13 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.tulskiy.musique.audio.Encoder
 import com.tulskiy.musique.audio.formats.flac.FLACEncoder
@@ -40,9 +45,10 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.ImageLabel
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.drawRect
+import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import kotlinx.coroutines.experimental.CommonPool
@@ -57,6 +63,7 @@ import java.io.File
 import java.util.*
 import javax.sound.sampled.AudioFileFormat
 import javax.sound.sampled.AudioFormat
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
@@ -82,6 +89,7 @@ class ExportRemixScreen(main: RHRE3Application)
             field = value
             setBackButtonEnabled()
         }
+    private var partial = false
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
     private val picosongButton: Button<ExportRemixScreen>
@@ -89,6 +97,8 @@ class ExportRemixScreen(main: RHRE3Application)
     private val folderButton: Button<ExportRemixScreen>
     private var folderFile: File? = null
     private val readyButton: Button<ExportRemixScreen>
+    private lateinit var uploadImmediatelyButton: Button<ExportRemixScreen>
+    private val selectionStage: SelectionStage
 
     private enum class ExportFileType(val extension: String) {
         WAV("wav"), MP3("mp3"), OGG_VORBIS("ogg"), FLAC("flac");
@@ -130,6 +140,7 @@ class ExportRemixScreen(main: RHRE3Application)
         }
 
         val palette = main.uiPalette
+
         stage.centreStage.elements += object : TextLabel<ExportRemixScreen>(palette, stage.centreStage,
                                                                             stage.centreStage) {
             override fun frameUpdate(screen: ExportRemixScreen) {
@@ -143,13 +154,20 @@ class ExportRemixScreen(main: RHRE3Application)
             this.text = "closeChooser"
             this.visible = false
         }
+
         mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.location.set(screenHeight = 0.9f, screenY = 0.1f)
+            this.location.set(screenHeight = 0.8f, screenY = 0.2f)
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
+
+        selectionStage = SelectionStage(palette, stage.centreStage, stage.centreStage.camera).apply {
+            this.location.set(screenHeight = 0.1f, screenY = 0.1f)
+
+        }
+        stage.centreStage.elements += selectionStage
 
         picosongButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -178,7 +196,10 @@ class ExportRemixScreen(main: RHRE3Application)
                 super.onLeftClick(xPercent, yPercent)
                 openPicker()
                 updateLabels()
+
                 this.visible = false
+                uploadImmediatelyButton.visible = false
+                selectionStage.visible = false
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -189,9 +210,49 @@ class ExportRemixScreen(main: RHRE3Application)
 
             this.visible = false
 
-            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+            this.location.set(screenX = 0.225f, screenWidth = 0.55f)
         }
         stage.bottomStage.elements += readyButton
+
+        uploadImmediatelyButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+
+                this.visible = false
+                readyButton.visible = false
+                selectionStage.visible = false
+
+                launch {
+                    val exportFile = File.createTempFile("rhre3-quickupload-", ".mp3").apply {
+                        deleteOnExit()
+                    }
+                    export(exportFile, MP3, false)
+
+                    main.screen = UploadRemixScreen(main, exportFile, exportFile.name)
+
+                    // Analytics
+                    AnalyticsHandler.track("Export Remix",
+                                           mapOf(
+                                                   "sfxDatabase" to GameRegistry.data.version,
+                                                   "fileType" to MP3.extension,
+                                                   "fileSize" to exportFile.length(),
+                                                   "partial" to partial,
+                                                   "uploadImmediately" to true
+                                                ))
+                }
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.export.uploadImmediately"
+            })
+
+            this.visible = false
+
+            this.location.set(screenX = 0.8f, screenWidth = 0.2f)
+        }
+        stage.bottomStage.elements += uploadImmediatelyButton
 
         folderButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -226,7 +287,9 @@ class ExportRemixScreen(main: RHRE3Application)
     }
 
     @Synchronized
-    private fun export(file: File, fileType: ExportFileType) {
+    private fun export(file: File, fileType: ExportFileType, playSuccessDing: Boolean,
+                       startSeconds: Float = selectionStage.percentToSeconds(selectionStage.startPercent),
+                       endSeconds: Float = selectionStage.percentToSeconds(selectionStage.endPercent)) {
         if (isExporting || !isCapableOfExporting)
             return
         isExporting = true
@@ -272,7 +335,6 @@ class ExportRemixScreen(main: RHRE3Application)
         val limiter = RangeLimiter(context, 2)
         recorder.addInput(limiter)
         limiter.addInput(context.out)
-        context.out.addDependent(recorder)
 
         val oldStart = remix.playbackStart
 
@@ -356,11 +418,11 @@ class ExportRemixScreen(main: RHRE3Application)
             BeadsSoundSystem.resume()
 
             if (success) {
-                (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
+                (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)?.takeIf { playSuccessDing }
             } else {
                 (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
-                    ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
+                    ?: (if (!playSuccessDing && success) Unit else Toolboks.LOGGER.warn("Export SFX (success=$success) not found"))
 
             folderFile = file
             folderButton.visible = true
@@ -370,10 +432,8 @@ class ExportRemixScreen(main: RHRE3Application)
 
         try {
             // prep triggers
-            val startMs = Math.min(remix.musicStartSec.toDouble(),
-                                   remix.tempos.beatsToSeconds(
-                                           remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()) * 1000.0
-            val endMs = remix.tempos.beatsToSeconds(remix.duration) * 1000.0
+            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat() * 1000.0
+            val endMs = endSeconds * 1000.0
             val durationMs = endMs - startMs
 
             // reset things
@@ -400,6 +460,11 @@ class ExportRemixScreen(main: RHRE3Application)
                 })
             }
 
+            // Start recording at a certain time
+            context.out.addDependent(DelayTrigger(context, startSeconds * 1000 - startMs, addBead {
+                context.out.addDependent(recorder)
+            }))
+
             // SFX
             context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
                 addMessageListener(addBead {
@@ -418,7 +483,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
             // run!
             context.out.pause(false)
-            context.runForNMillisecondsNonRealTime(durationMs + 500) // padding
+            context.runForNMillisecondsNonRealTime(durationMs)
         } catch (e: Exception) {
             e.printStackTrace()
             finalize(false)
@@ -458,7 +523,7 @@ class ExportRemixScreen(main: RHRE3Application)
                                 it.extension == file.extension.toLowerCase(Locale.ROOT)
                             } ?: MP3
 
-                            export(correctFile, fileType)
+                            export(correctFile, fileType, true)
 
                             val canUploadToPicosong = fileType == MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
 
@@ -488,7 +553,9 @@ class ExportRemixScreen(main: RHRE3Application)
                                                    mapOf(
                                                            "sfxDatabase" to GameRegistry.data.version,
                                                            "fileType" to fileType.extension,
-                                                           "fileSize" to correctFile.length()
+                                                           "fileSize" to correctFile.length(),
+                                                           "partial" to partial,
+                                                           "uploadImmediately" to false
                                                         ))
                         } catch (t: Throwable) {
                             t.printStackTrace()
@@ -497,7 +564,7 @@ class ExportRemixScreen(main: RHRE3Application)
                         }
                     }
                 } else {
-                    (stage as GenericStage).onBackButtonClick()
+                    stage.onBackButtonClick()
                 }
             }
         }
@@ -506,13 +573,15 @@ class ExportRemixScreen(main: RHRE3Application)
     private fun updateLabels(throwable: Throwable? = null) {
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
+        val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
         val isBeads = SoundSystem.system == BeadsSoundSystem
         readyButton.visible = false
+        uploadImmediatelyButton.visible = false
         picosongButton.visible = false
         picosongFunc = null
         folderButton.visible = false
         folderFile = null
-        isCapableOfExporting = isBeads && hasEndRemix
+        isCapableOfExporting = isBeads && (hasEndRemix || canOmitEndRemix)
         if (!isCapableOfExporting) {
             if (!isBeads) {
                 label.text = Localization["screen.export.cannot", Localization["screen.export.needsBeadsSound"]]
@@ -523,6 +592,7 @@ class ExportRemixScreen(main: RHRE3Application)
             if (throwable == null) {
                 label.text = "${Localization["screen.export.prepare"]}\n\n${Localization["screen.export.uploadHint"]}"
                 readyButton.visible = true
+                uploadImmediatelyButton.visible = true
             } else {
                 label.text = Localization["screen.export.failed", throwable::class.java.canonicalName]
             }
@@ -547,5 +617,137 @@ class ExportRemixScreen(main: RHRE3Application)
     }
 
     override fun tickUpdate() {
+    }
+
+    inner class SelectionStage(palette: UIPalette, parent: UIElement<ExportRemixScreen>?, camera: OrthographicCamera)
+        : Stage<ExportRemixScreen>(parent, camera) {
+
+        private val remix: Remix
+            get() = editor.remix
+
+        val leftLabel: TextLabel<ExportRemixScreen>
+        val rightLabel: TextLabel<ExportRemixScreen>
+
+        val remixStartSeconds: Float = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat()
+        val remixEndSeconds: Float = remix.tempos.beatsToSeconds(if (remix.duration == Float.POSITIVE_INFINITY) remix.lastPoint else remix.duration)
+        private val remixAbsDuration = remixEndSeconds - remixStartSeconds
+
+        private val playbackStartSeconds = remix.tempos.beatsToSeconds(remix.playbackStart)
+        var startPercent: Float = if (remixAbsDuration > 0f && playbackStartSeconds in remixStartSeconds..remixEndSeconds - 1f) (secondsToPercent(playbackStartSeconds)).coerceIn(0f, 1f) else 0f
+        var endPercent: Float = 1f
+
+        init {
+            val timeLabelWidth = 0.2f
+
+            leftLabel = TextLabel(palette, this, this.stage).apply {
+                this.location.set(screenX = 0f, screenWidth = timeLabelWidth)
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.right
+            }
+            rightLabel = TextLabel(palette, this, this.stage).apply {
+                this.location.set(screenX = 1f - timeLabelWidth, screenWidth = timeLabelWidth)
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.left
+            }
+
+            elements += leftLabel
+            elements += rightLabel
+            elements += TextLabel(palette, this, this.stage).apply {
+                this.location.set(screenY = -1f)
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.export.durationControls"
+                this.fontScaleMultiplier = 0.75f
+            }
+
+            elements += object : UIElement<ExportRemixScreen>(this, this) {
+                val color = Color.valueOf("26AB57")
+                override fun render(screen: ExportRemixScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    val loc = this.location
+                    val x = loc.realX
+                    val y = loc.realY
+                    val width = loc.realWidth
+                    val height = loc.realHeight
+                    val lineThickness = 4f
+                    val selectionPercent = endPercent - startPercent
+
+                    // background
+                    batch.setColor(0f, 0f, 0f, 0.8f)
+                    batch.fillRect(x, y, width, height)
+
+                    // bar
+                    val barWidth = width * selectionPercent
+                    val barX = x + width * startPercent
+                    val darken = 0.95f
+                    batch.setColor(color.r, color.g, color.b, 1f)
+                    batch.fillRect(barX, y, barWidth, height)
+                    // bar darker outline
+                    val barOutline = 1f
+                    batch.setColor(color.r * darken, color.g * darken, color.b * darken, barOutline)
+                    batch.drawRect(barX, y, barWidth, height, 2f)
+
+                    // border
+                    batch.setColor(1f, 1f, 1f, 1f)
+                    batch.drawRect(x, y, width, height, lineThickness)
+
+                    if (wasClickedOn) {
+                        val inputPercent = ((stage.camera.getInputX() - location.realX) / location.realWidth).coerceIn(0f, 1f)
+
+                        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                            if (inputPercent < endPercent) {
+                                startPercent = inputPercent
+                                updateLabels()
+                            }
+                        } else if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                            if (inputPercent > startPercent) {
+                                endPercent = inputPercent
+                                updateLabels()
+                            }
+                        }
+                    }
+                }
+
+                override fun canBeClickedOn(): Boolean {
+                    return true
+                }
+
+                override fun keyTyped(character: Char): Boolean {
+                    val sup = super.keyTyped(character)
+                    if (!sup) {
+                        if (character == 'r') {
+                            startPercent = 0f
+                            endPercent = 1f
+                            updateLabels()
+                            return true
+                        }
+                    }
+
+                    return sup
+                }
+            }.apply {
+                this.location.set(screenX = timeLabelWidth, screenWidth = 1f - timeLabelWidth * 2)
+            }
+
+            updateLabels()
+        }
+
+        fun percentToSeconds(percent: Float): Float = MathUtils.lerp(remixStartSeconds, remixEndSeconds, percent)
+        fun secondsToPercent(seconds: Float): Float = (seconds - remixStartSeconds) / (remixEndSeconds - remixStartSeconds)
+
+        fun updateLabels() {
+            val startSeconds = percentToSeconds(startPercent)
+            val endSeconds = percentToSeconds(endPercent)
+            leftLabel.text = "♩ ${remix.tempos.secondsToBeats(startSeconds).toInt()} (${secondsToText(startSeconds.toInt())}) "
+            rightLabel.text = " ♩ ${remix.tempos.secondsToBeats(endSeconds).roundToInt()} (${secondsToText(endSeconds.roundToInt())})"
+        }
+
+        private fun secondsToText(seconds: Int): String {
+            val abs = seconds.absoluteValue
+            val sec = abs % 60
+            return "${if (seconds < 0) "-" else ""}${abs / 60}:${if (sec < 10) "0" else ""}${Math.max(0, sec)}"
+        }
+
     }
 }

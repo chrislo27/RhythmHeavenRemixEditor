@@ -1265,10 +1265,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         })
                     }
             buttonBarStage.elements +=
-                    IOButton(editor, "exportRemix", "editor.exportButton", palette, buttonBarStage,
-                             buttonBarStage).apply {
-                        this.location.set(screenWidth = size,
-                                          screenX = size * 3 + padding * 3)
+                    ExportButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                        this.location.set(screenWidth = size, screenX = size * 3 + padding * 3)
                         this.addLabel(ImageLabel(palette, this, this.stage).apply {
                             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_export"))
                         })
