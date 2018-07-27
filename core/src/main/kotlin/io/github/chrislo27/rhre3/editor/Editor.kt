@@ -803,7 +803,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 renderTimeSignature(timeSig.beat, timeSig.lowerText, timeSig.upperText)
             }
 
-            if (currentTool == Tool.TIME_SIGNATURE && remix.timeSignatures.map[inputBeat] == null) {
+            if (currentTool == Tool.TIME_SIGNATURE && remix.timeSignatures.map[inputBeat] == null && remix.playState == STOPPED) {
                 bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * MathUtils.lerp(0.2f, 0.35f, MathHelper.getTriangleWave(2f)))
                 val last = remix.timeSignatures.getTimeSignature(inputBeat.toFloat())
                 renderTimeSignature(inputBeat, last?.lowerText ?: "4", last?.upperText ?: "4")
