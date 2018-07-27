@@ -46,9 +46,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import io.github.chrislo27.toolboks.util.gdxutils.drawRect
-import io.github.chrislo27.toolboks.util.gdxutils.fillRect
-import io.github.chrislo27.toolboks.util.gdxutils.getInputX
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import kotlinx.coroutines.experimental.CommonPool
@@ -719,7 +717,11 @@ class ExportRemixScreen(main: RHRE3Application)
                     batch.drawRect(x, y, width, height, lineThickness)
 
                     if (wasClickedOn) {
-                        val inputPercent = ((stage.camera.getInputX() - x - lineThickness) / barFullWidth).coerceIn(0f, 1f)
+                        var inputPercent = ((stage.camera.getInputX() - x - lineThickness) / barFullWidth).coerceIn(0f, 1f)
+
+                        if (Gdx.input.isShiftDown() && !Gdx.input.isControlDown() && !Gdx.input.isAltDown()) {
+                            inputPercent = secondsToPercent(remix.tempos.beatsToSeconds(remix.tempos.secondsToBeats(percentToSeconds(inputPercent)).roundToInt().toFloat()).coerceIn(remixStartSeconds, remixEndSeconds)).coerceIn(0f, 1f)
+                        }
 
                         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                             if (inputPercent < endPercent) {
