@@ -600,7 +600,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         val badAvg = badSum / saxophoneBeats.size
 
         // Scaling! It's impossible to get 100% since you have to be frame perfect
-        return ((goodAvg - badAvg) / 0.965f).coerceIn(0f, 1f)
+        return ((goodAvg - badAvg * 2f) / 0.95f).coerceIn(0f, 1f)
     }
 
     override fun renderUpdate() {
