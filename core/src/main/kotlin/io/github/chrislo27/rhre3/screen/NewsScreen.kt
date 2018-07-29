@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -21,6 +20,7 @@ import io.github.chrislo27.rhre3.screen.NewsScreen.State.FETCHING
 import io.github.chrislo27.rhre3.screen.NewsScreen.State.IN_ARTICLE
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -33,7 +33,12 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
     override val stage: GenericStage<NewsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
+    @Volatile
     var hasNewNews: Boolean = false
+        private set
+
+    @Volatile
+    var readNews: Set<String> = setOf()
         private set
 
     enum class State {
@@ -57,7 +62,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 IN_ARTICLE -> listOf(articleStage)
                 FETCHING -> listOf(fetchingStage)
                 ERROR -> listOf(errorLabel, refreshButton)
-            }.forEach { (@Suppress("Unchecked_Cast")(it as UIElement<NewsScreen>)).visible = true }
+            }.forEach { (@Suppress("Unchecked_Cast") (it as UIElement<NewsScreen>)).visible = true }
 
             if (value == ARTICLES) {
                 articleButtons.forEachIndexed { index, it ->
@@ -86,8 +91,6 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     }
     private val refreshButton: RefreshButton
     private val articleButtons: List<ArticleButton>
-
-    private val newsPreferences: Preferences = Gdx.app.getPreferences("RHRE3-news")
 
     init {
         val palette = main.uiPalette
@@ -165,13 +168,20 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                     state = ARTICLES
 
                     // Check new news
-                    val lastNews = main.preferences.getString(PreferenceKeys.LAST_NEWS, null)
-                    hasNewNews = if (lastNews.isNullOrBlank() && Articles.articles.isNotEmpty()) {
-                        true
-                    } else {
-                        Articles.articles.firstOrNull()?.id != lastNews && Articles.articles.isNotEmpty()
+                    try {
+                        val json = main.preferences.getString(PreferenceKeys.LAST_NEWS, null)
+
+                        hasNewNews = if (json != null) {
+                            val articleList = JsonHandler.fromJson<List<String>>(json)
+                            Articles.articles.any { it.id !in articleList }
+                        } else {
+                            true
+                        }
+                    } catch (e: Exception) {
+                        // Probably a json error
+                        e.printStackTrace()
                     }
-                    main.preferences.putString(PreferenceKeys.LAST_NEWS, Articles.articles.firstOrNull()?.id ?: Article.BLANK.id).flush()
+                    main.preferences.putString(PreferenceKeys.LAST_NEWS, JsonHandler.toJson(Articles.articles.take(Articles.ARTICLE_COUNT).map(Article::id).distinct().toTypedArray())).flush()
                 }
                 Articles.FetchState.ERROR -> {
                     state = ERROR
@@ -182,6 +192,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 }
             }
         }
+        readReadArticles()
         Articles.fetch()
     }
 
@@ -222,7 +233,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 articleButtons.filter { it.article != null }.forEach { articleButton ->
                     val article = articleButton.article
                     if (article != null) {
-                        Articles.setArticleViewed(article, newsPreferences, false)
+                        setArticleRead(article, false)
                         articleButton.article = article // Refresh title colours
                     }
                 }
@@ -250,7 +261,36 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     override fun dispose() {
         ThumbnailFetcher.cancelAll()
         ThumbnailFetcher.removeAll()
-        newsPreferences.flush()
+        persistReadArticles()
+    }
+
+    private fun setArticleRead(article: Article, read: Boolean) {
+        if (read) {
+            if (article.id !in readNews)
+                readNews += article.id
+        } else {
+            readNews -= article.id
+        }
+        persistReadArticles()
+    }
+
+    private fun persistReadArticles() {
+        main.preferences.putString(PreferenceKeys.READ_NEWS, JsonHandler.toJson(readNews.toTypedArray())).flush()
+    }
+
+    private fun readReadArticles() {
+        try {
+            val json = main.preferences.getString(PreferenceKeys.READ_NEWS, null)
+
+            readNews = if (json != null) {
+                JsonHandler.fromJson<List<String>>(json).toSet()
+            } else {
+                setOf()
+            }
+        } catch (e: Exception) {
+            // Probably a json error
+            e.printStackTrace()
+        }
     }
 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<NewsScreen>,
@@ -276,7 +316,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                     thumbnail.image = try {
                         if (value.thumbnail.isBlank()) {
                             TextureRegion(AssetRegistry.get<Texture>("logo_256"))
-                        } else if (value.thumbnail.startsWith("tex:")){
+                        } else if (value.thumbnail.startsWith("tex:")) {
                             val id = value.thumbnail.substring(4)
                             if (AssetRegistry.containsAsType<Texture>(id)) {
                                 TextureRegion(AssetRegistry.get<Texture>(id))
@@ -301,7 +341,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             }
 
         private fun updateTitleColor(article: Article) {
-            title.textColor = if (Articles.isArticleViewed(article, newsPreferences)) Color.LIGHT_GRAY else null
+            title.textColor = if (article.id in readNews) Color.LIGHT_GRAY else null
         }
 
         init {
@@ -315,7 +355,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             val article = article
             if (article != null) {
                 articleStage.prep(article)
-                Articles.setArticleViewed(article, newsPreferences, true)
+                setArticleRead(article, true)
                 updateTitleColor(article)
                 state = IN_ARTICLE
             }

@@ -40,7 +40,8 @@ object PreferenceKeys {
     val LAST_VERSION = "lastVersion"
     val TIMES_SKIPPED_UPDATE = "timesSkippedUpdate"
     val BACKGROUND = "background"
-    val LAST_NEWS = "lastNews"
+    val LAST_NEWS = "lastNewsArticles"
+    val READ_NEWS = "readNewsArticles"
 
     val EVENT_PREFIX = "event_"
     val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"

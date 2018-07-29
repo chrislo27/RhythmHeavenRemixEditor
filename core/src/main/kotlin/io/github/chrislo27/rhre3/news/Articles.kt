@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.news
 
-import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.files.FileHandle
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
@@ -38,14 +37,6 @@ object Articles {
         }
     val articles: CopyOnWriteArrayList<Article> = CopyOnWriteArrayList()
     val fetchStateListeners: MutableList<(old: FetchState, new: FetchState) -> Unit> = mutableListOf()
-
-    fun isArticleViewed(article: Article, preferences: Preferences): Boolean {
-        return preferences.getBoolean(article.id, false)
-    }
-
-    fun setArticleViewed(article: Article, preferences: Preferences, viewed: Boolean) {
-        preferences.putBoolean(article.id, viewed).flush()
-    }
 
     fun fetch() {
         if (isFetching == FetchState.FETCHING)
