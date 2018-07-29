@@ -163,11 +163,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
 
+        AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
         GameMetadata.setPreferencesInstance(preferences)
         if (preferences.getString(PreferenceKeys.LAST_VERSION, null) != RHRE3.VERSION.toString()) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0).flush()
         }
-        AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
         advancedOptions = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
