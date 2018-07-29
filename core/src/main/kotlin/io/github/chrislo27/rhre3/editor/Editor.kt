@@ -1227,7 +1227,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         }
 
         if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G) && shift && !alt) {
                 val games = getGamesUsedInRemix()
                 if (games.isNotEmpty()) {
                     Gdx.app.clipboard.contents = games
@@ -2289,7 +2289,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("$debugKey+G - Copy game list to clipboard\n")
+            append("$debugKey+SHIFT+G - Copy game list to clipboard\n")
 
             append("e: ")
             append(remix.entities.count {
@@ -2325,7 +2325,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             append("\nautosave: ")
             append(timeUntilAutosave)
-            append(" / ")
+            append(" sec / ")
             append(autosaveFrequency)
             append(" min")
 
