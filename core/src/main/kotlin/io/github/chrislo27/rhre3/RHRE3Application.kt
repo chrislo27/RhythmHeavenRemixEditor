@@ -35,7 +35,6 @@ import io.github.chrislo27.toolboks.ToolboksGame
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.font.FreeTypeFont
 import io.github.chrislo27.toolboks.i18n.Localization
-import io.github.chrislo27.toolboks.i18n.NamedLocale
 import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
@@ -60,12 +59,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                    RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
 
     companion object {
-        lateinit var languages: List<NamedLocale>
+        lateinit var instance: RHRE3Application
             private set
 
         val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder().setFollowRedirect(true))
-        lateinit var instance: RHRE3Application
-            private set
 
         private const val RAINBOW_STR = "RAINBOW"
 
