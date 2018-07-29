@@ -35,6 +35,7 @@ object GameRegistry : Disposable {
     const val ICON_FILENAME: String = "icon.png"
     const val SPECIAL_GAME_ID: String = "special"
     const val CUSTOM_PREFIX: String = "custom_"
+    val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
 
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
@@ -127,19 +128,19 @@ object GameRegistry : Disposable {
             val custom = CUSTOM_FOLDER.list { fh ->
                 fh.isDirectory
             }.mapNotNull {
-                        if (it.child("data.json").exists()) {
-                            return@mapNotNull it
-                        }
-                        val sfx = it.list { file: File ->
-                            file.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
-                        }
+                if (it.child("data.json").exists()) {
+                    return@mapNotNull it
+                }
+                val sfx = it.list { file: File ->
+                    file.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
+                }
 
-                        if (sfx.isEmpty()) {
-                            return@mapNotNull null
-                        } else {
-                            return@mapNotNull it
-                        }
-                    }.toList()
+                if (sfx.isEmpty()) {
+                    return@mapNotNull null
+                } else {
+                    return@mapNotNull it
+                }
+            }.toList()
 
             list.map { SfxDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
                     custom.map { SfxDirectory(it, true, it.child(DATA_JSON_FILENAME)) }
@@ -231,8 +232,8 @@ object GameRegistry : Disposable {
                             }
                         }
                     }.forEach {
-                                it.join()
-                            }
+                        it.join()
+                    }
                 }
             }
 
@@ -253,16 +254,20 @@ object GameRegistry : Disposable {
                     val results = coroutines.map {
                         it.await()
                     }.sortedBy { it.game.id }
-                    val failures = results.count { !it.success }
+                    val failures = results.count { !it.success && !it.game.jsonless }
 
                     results.filter { it.message.isNotBlank() }.forEach {
                         Toolboks.LOGGER.warn("Verification message for ${it.game.id}:\n${it.message}")
                     }
 
+                    Thread.sleep(250L)
+
                     Toolboks.LOGGER.info(
                             "Registry checked in ${(System.nanoTime() - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
+                        Thread.sleep(500L)
+
                         class RegistryVerificationError : RuntimeException()
 
                         RegistryVerificationError().printStackTrace()
@@ -298,12 +303,12 @@ object GameRegistry : Disposable {
                         //                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
-                            dataObject.priority, directive.isCustom, dataObject.noDisplay)
+                            dataObject.priority, directive.isCustom, dataObject.noDisplay, false)
                 val baseFileHandle = directive.folder.parent()
 
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
                     when (obj) {
-                        // Note: if this is updated, remember to update GameToJson
+                    // Note: if this is updated, remember to update GameToJson
                         is CueObject ->
                             Cue(game, obj.id, obj.deprecatedIDs, obj.name,
                                 obj.duration,
@@ -335,7 +340,7 @@ object GameRegistry : Disposable {
                         is ShakeEntityObject ->
                             ShakeScreen(game, obj.id, obj.deprecatedIDs, obj.name)
                         is TextureEntityObject ->
-                                TextureModel(game, obj.id, obj.deprecatedIDs, obj.name)
+                            TextureModel(game, obj.id, obj.deprecatedIDs, obj.name)
                     }
                 }
 
@@ -360,7 +365,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             nameWithoutExt,
                             true,
-                            0, true, false)
+                            0, true, false, true)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
@@ -459,18 +464,22 @@ object GameRegistry : Disposable {
             gameMap.values.forEach(Disposable::dispose)
         }
 
-        private suspend fun verify(game: Game): VerificationResult {
+        private fun verify(game: Game): VerificationResult {
             val builder = StringBuilder()
 
             /*
             Game verification:
+            * Game ID matches regex
             * Non-custom games have an icon
             * Non-custom games that are series specific have the right series
              */
-            if (!game.isCustom && game.icon === AssetRegistry.missingTexture) {
+            if (!ID_REGEX.matches(game.id)) {
+                builder.append("Game ID (${game.id}) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces\n")
+            }
+            if (game.icon === AssetRegistry.missingTexture) {
                 builder.append("Game ${game.id} has a missing texture\n")
             }
-            if (!game.isCustom && game.series != Series.SIDE) {
+            if (game.series != Series.SIDE) {
                 if ((game.name.contains("(Fever)") && game.series != Series.FEVER) ||
                         (game.name.contains("(DS)") && game.series != Series.DS) ||
                         (game.name.contains("(Megamix)") && game.series != Series.MEGAMIX) ||
@@ -479,11 +488,20 @@ object GameRegistry : Disposable {
                 }
 
                 if (game.name.contains("(Wii)")) {
-                    builder.append("Game ${game.id} has (Wii) in its name: ${game.name}")
+                    builder.append("Game ${game.id} has (Wii) in its name (should be Fever): ${game.name}\n")
                 }
             }
 
             game.objects.forEach { model ->
+                // ID verification
+                if (!ID_REGEX.matches(model.id)) {
+                    builder.append("Model ID (${model.id}) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces\n")
+                }
+                val separator = if (model is Cue) "/" else "_"
+                if (!model.id.startsWith(game.id + separator)) {
+                    builder.append("Model ID (${model.id}) should start with \"${game.id}$separator\"\n")
+                }
+
                 /*
                 Model verification:
                 * Duration > 0
@@ -526,7 +544,7 @@ object GameRegistry : Disposable {
             }
 
             val msg = builder.toString()
-            return VerificationResult(game, msg.isBlank() || game.isCustom, msg)
+            return VerificationResult(game, msg.isBlank(), msg)
         }
 
         private data class VerificationResult(val game: Game, val success: Boolean, val message: String)
