@@ -234,7 +234,7 @@ class ExportRemixScreen(main: RHRE3Application)
                             this@ExportRemixScreen.stage.backButton.enabled = true
                             this@ExportRemixScreen.mainLabel.text = Localization["screen.export.uploadImmediately.cannot"]
                         } else {
-                            main.screen = UploadRemixScreen(main, exportFile, exportFile.name)
+                            main.screen = UploadRemixScreen(main, exportFile, exportFile.name, true)
                         }
                     }
 
@@ -339,6 +339,7 @@ class ExportRemixScreen(main: RHRE3Application)
             File.createTempFile("rhre3-export-tmp-${System.currentTimeMillis()}", ".wav").apply {
                 this.deleteOnExit()
             } else file
+        val deleteAfterFile: File? = if (fileType != WAV) recorderFile else null
         val recorder = RecordToFile(context, 2, recorderFile, AudioFileFormat.Type.WAVE)
         val limiter = RangeLimiter(context, 2)
         recorder.addInput(limiter)
@@ -420,6 +421,8 @@ class ExportRemixScreen(main: RHRE3Application)
                         encoder.close()
                     }
                 }
+
+                deleteAfterFile?.delete()
             }
 
             BeadsSoundSystem.isRealtime = true
@@ -560,7 +563,7 @@ class ExportRemixScreen(main: RHRE3Application)
                                 val originalName = correctFile.name
                                 correctFile.copyTo(tempFile, true);
                                 {
-                                    UploadRemixScreen(main, tempFile, originalName)
+                                    UploadRemixScreen(main, tempFile, originalName, true)
                                 }
                             } else {
                                 null

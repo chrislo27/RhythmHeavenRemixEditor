@@ -39,7 +39,7 @@ import java.nio.charset.Charset
 import kotlin.math.roundToLong
 
 
-class UploadRemixScreen(main: RHRE3Application, private val file: File, private val filename: String)
+class UploadRemixScreen(main: RHRE3Application, private val file: File, private val filename: String, private val deleteFileAfter: Boolean)
     : ToolboksScreen<RHRE3Application, UploadRemixScreen>(main) {
 
     companion object {
@@ -476,6 +476,8 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                     mainLabel.text = Localization["screen.upload.failed", e.javaClass.name, e.message]
                     playEndSound(false)
                 } finally {
+                    if (deleteFileAfter)
+                        file.delete()
                     isUploading = false
                 }
             }
