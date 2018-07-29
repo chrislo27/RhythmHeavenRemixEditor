@@ -1231,7 +1231,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 val games = getGamesUsedInRemix()
                 if (games.isNotEmpty()) {
                     Gdx.app.clipboard.contents = games
-                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\nte")
+                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\n")
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
