@@ -14,5 +14,6 @@ class Article(val id: String, val title: String, val body: String,
     }
 
     val publishedDate: LocalDate by lazy(Instant.ofEpochMilli(publishedAt).atZone(ZoneId.systemDefault())::toLocalDate)
+    @Transient var genuine: Boolean = false
 
 }

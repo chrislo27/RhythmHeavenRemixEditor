@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.news.Article
@@ -358,6 +359,10 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 setArticleRead(article, true)
                 updateTitleColor(article)
                 state = IN_ARTICLE
+
+                if (article.genuine) {
+                    AnalyticsHandler.track("View News Article", mapOf("articleID" to article.id))
+                }
             }
         }
     }
@@ -371,14 +376,19 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
 
             addLabel(this)
         }
-        var link: String? = null
+        var link: Pair<String?, Article?> = null to null
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
             val link = link
-            if (link != null) {
+            if (link.first != null) {
                 try {
-                    Gdx.net.openURI(link)
+                    Gdx.net.openURI(link.first)
+
+                    val article = link.second
+                    if (article != null && article.genuine) {
+                        AnalyticsHandler.track("Click News Link", mapOf("articleID" to article.id))
+                    }
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
@@ -415,7 +425,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
             body.text = article.body
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""
-            articleLinkButton.link = article.url
+            articleLinkButton.link = article.url to article
         }
 
     }

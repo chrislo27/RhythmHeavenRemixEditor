@@ -73,6 +73,7 @@ object Articles {
                     articlesJson.forEach { articleJson ->
                         try {
                             val article = JsonHandler.OBJECT_MAPPER.treeToValue(articleJson, Article::class.java)
+                            article.genuine = true
                             list += article
                         } catch (e: Exception) {
                             e.printStackTrace()
