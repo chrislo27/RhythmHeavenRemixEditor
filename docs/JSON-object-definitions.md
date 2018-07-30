@@ -28,9 +28,9 @@ at the end of the name. Ex: (`string?`, `number?`) This means that the field is 
 | Name | Syntax | Example | Purpose |
 |------|--------|---------|---|
 | string | "<stuff>" | "hello" | Text |
-| boolean | `true`/`false` | `true` | To indicate truth values |
-| number | 0-9, decimals allowed | 1.0 | Numbers that can have decimals |
-| integer | 0-9, no decimals | 150 | Non-decimal numbers |
+| boolean | `true` or `false` | `true` | To indicate truth values |
+| number | digits of 0-9, decimals allowed | 1.0 | Numbers that can have decimals |
+| integer | digits 0-9, no decimals | 150 | Non-decimal numbers |
 | array | `[]` | `["first", "second", "third"]` | A "list" of other types |
 | id | same as string | "spaceDanceEn" | A unique identifer for this object, see ID rules above |
 
