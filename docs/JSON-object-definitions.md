@@ -66,7 +66,7 @@ If this game appears in multiple series, for example both in RHDS and Megamix,
 the name of the series used should be in parentheses after the name of the game.
 Use official game name titles wherever possible; use fan-translated names as a last resort.<br>
 Example of series: `Space Dance (Megamix)` and `Space Dance (GBA)`.<br>
-Example of using official game titles: ~~`Cosmo Dance`~~, use `Cosmic Dance`
+Example of using official game titles: instead of `Cosmo Dance`, use `Cosmic Dance`
 
 Series' names:
 
