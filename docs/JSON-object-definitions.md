@@ -67,11 +67,14 @@ the name of the series used should be in parentheses after the name of the game,
 and the name of the minigame should use the most recent English-localized name.
 Example: `Space Dance (Megamix)` and `Space Dance (GBA)`.
 
-Series names:<br>
-* Rhythm Tengoku - GBA
-* Rhythm Heaven (Gold) - DS
-* Rhythm Heaven Fever - Fever
-* Rhythm Heaven Megamix - Megamix
+Series' names:
+
+| Game | Suffix |
+|---|---|
+| Rhythm Tengoku | (GBA) |
+| Rhythm Heaven | (DS) |
+| Rhythm Heaven Fever | (Fever) |
+| Rhythm Heaven Megamix | (Megamix) |
 
 The `objects` array is an array of various object types, which will be
 explained below. It is **very important** that each object definition contain
