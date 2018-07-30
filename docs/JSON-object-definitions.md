@@ -1,8 +1,32 @@
 # JSON Object Definitions for Databasing
 
-All `data.json` files for each game are a `DataObject`.
+## ID rules
+IDs must only consist of ASCII alphanumerics, -, spaces, /, and _.
+
+`DataObject` IDs are always just lowerCamelCase.
+`CueObject` IDs are always `gameID/filename`.
+Everything else is always `gameID_id`.
+
+Examples:<br>
+`coolGame` - Name of the game<br>
+`coolGame/buzzer` - A sound in the `coolGame` folder named `buzzer`<br>
+`coolGame_pattern` - A pattern for `coolGame`
+
+## Data types
+There are several data types available to you to use. Each field
+has a specific data type that cannot be swapped with another.
+
+| Name | Syntax | Example | Purpose |
+|------|--------|---------|---|
+| string | "<stuff>" | "hello" | Text |
+| boolean | `true`/`false` | `true` | To indicate truth values |
+| integer | 0-9, no decimals | 150 | Non-decimal numbers |
+| decimal | 0-9, decimals allowed | 1.0 | Numbers that can have decimals |
+| array | `[]` | `["first", "second", "third"]` | A "list" of other types |
 
 ## `DataObject` structure
+All `data.json` files for each game are a `DataObject`.
+
 ```json
 {
   "id": "lowerCamelCaseID",
@@ -33,9 +57,8 @@ Example: `Space Dance (Megamix)` and `Space Dance (GBA)`.
   * Rhythm Heaven Megamix - Megamix
 
 The `objects` array is an array of various object types, which will be
-explained below. It is **very important** that each object type contain
-the `type` field, which is used by the JSON deserializer to determine
-what object type to deserialize at runtime. This is called *polymorphism*.
+explained below. It is **very important** that each object definition contain
+the `type` field, which is used to determine the object's type.
 
 The `series` field is a string showing what series this game belongs to.<br>
 >Note: if this is not present it defaults to "other".
@@ -66,8 +89,7 @@ Count-Ins, or Special Entities.
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
 to this current object for older save files. This field is always the same
 even in other object types, and is always present whenever there is an
-`id` field **EXCEPT FOR** metadata-like objects like `CuePointerObject`,
-or `DataObject`.
+`id` field **EXCEPT FOR** `CuePointerObject` and `DataObject`.
 
 ## `CuePointerObject` structure
 ```json
@@ -83,26 +105,19 @@ or `DataObject`.
 }
 ```
 
-This object is special. First of all, it **doesn't** have deprecated IDs
-like other ID-based objects do. This is specifically an object that
-"points" to a `CueObject`. It's basically the definition for spawning
-cue objects. The usage of this object WILL vary from other object types,
-and if you need more data on what's used/isn't used per object, see the
-specific comments. For example, `PatternObject` (shown later below) uses the base
-implementation of `CuePointerObject`.
+`CuePointerObject` is used to store extra data like pitch for creating entities.
+You will find them in multipart objects like patterns.
 
-As a result, this object will never appear by itself. The fields are similar
-to `CueObject`'s own cues, so you can look there. **Note that** the only
-fields shown here ARE the ones it has, and not every field from `CueObject`
-is inherited.
+**Note that** the only fields shown here ARE the ones it has, but
+not every field from `CueObject` may be used depending on the situation.
 
 The `semitone` property is an integer indicating the number of semitones
 to repitch by. This works on normally non-repitchable entities, but is
 not recommended. Has no effect on non-SFX entities.
 
 The `volume` property is an integer indicating the volume percentage.
-Has no effect on non-SFX entities. The default value is 100.
-The range of values should be kept at 0-300.
+The default value is 100.
+The range of values should be kept at 0-300. Has no effect on non-SFX entities.
 (All negative values will be coerced to zero. Values higher than 300 are not changed, however.)
 
 The `metadata` object can be null, and acts as a key/value map.<br>
@@ -135,7 +150,7 @@ Below is a list of potential properties:
 ```
 
 A `CueObject` defines a sound to be loaded by the editor. It also contains
-metadata such as the duration and its abilities.
+metadata such as the duration and its editable abilities.
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,
@@ -150,7 +165,7 @@ time you should be using capitals are for the following: proper noun I,
 "Remix X", "Fever" (in the context of the game).
 If this is syllabic (part of a longer sound cue), you should add a hyphen with
 spaces surrounding it to break up words. The program will automatically convert these
-into newlines. **Do not use newline characters.**
+into newlines. **Do not use newline characters.**<br>
 Example (First Contact): `alien - 1`, `alien - 2`, etc.
 
 The `duration` field is the duration of the cue in beats.
@@ -174,7 +189,7 @@ use with the call and response/copycat tool.
 
 If `baseBpm` is used, the sound effect will be pitched
 accordingly during playback based on the current tempo relative to the value
-set in `baseBpm`.
+set in `baseBpm`. Example: When playing at 180 BPM and the base BPM is 120, the sound effect will be sped up by 1.5x.
 
 The `loops` field is a boolean indicating if the sound should loop.
 
@@ -200,10 +215,7 @@ settings for each cue, such as its position (in beats and track number), its
 pitch adjustment (`semitone`), and `duration` (defaults to original duration).
 
 The `id` field is structured like this: `dataObjectID_lowerCamelCase`.
-If the parent data object's ID is `spaceDance`, and this pattern's ID is `turnRight`,
-therefore this ID is `spaceDance_turnRight`. You'll notice this is similar to
-the cue ID naming convention, but it always has underscores and never has forward
-slashes.
+See the ID rules section for more info.
 
 The optional `stretchable` field indicates if this pattern is stretchable.
 
@@ -231,13 +243,14 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
 
 The `EquidistantObject` represents a pattern where each cue is
 *equidistant* from each other. That is to say, if the `distance` is 2.0
-beats, each cue will be 2.0 beats apart. The `stretchable` field indicates
-if this entity is stretchable or not (ex: Bouncy Road).
+beats, each cue will be 2.0 beats apart based on left endpoints.
+The `stretchable` field indicates if this entity is stretchable or not (ex: Bouncy Road).
+
+Examples of games with equidistant objects: Bouncy Road, Sneaky Spirits, Built to Scale (DS)
 
 See `PatternObject` for the ID and name structure.
 
-The `CuePointerObjects` used *are in order* and do **NOT** use these fields:
-`beat`, `duration`.
+The `CuePointerObjects` used *are in order* and do **NOT** use the `beat` and `duration` fields.
 
 ## `KeepTheBeatObject` structure
 
@@ -259,15 +272,17 @@ The `CuePointerObjects` used *are in order* and do **NOT** use these fields:
 The `KeepTheBeatObject` is similar to the `EquidistantObject`, but it
 repeats over and over. This is for things like
 Lockstep marching patterns, or Flipper-Flop, but is not limited to
-same-beat patterns. This is like a pattern that repeats or is truncated.
+same-beat patterns. This is a type of pattern that can repeat itself.
+
+Examples of games with keep-the-beat objects: Lockstep, Tap Troupe, Flipper-Flop, Rhythm Rally
 
 The `defaultDuration` field is the duration when initially placed. It also
-acts as the "duration" for when to repeat the pattern, unless the cues
-are longer than this value.
+acts as the interval for when to repeat the pattern in `cues`.
+>Note, if the total duration of `cues` is longer than `defaultDuration`, the repeating interval will be this longer value.
 
 See `PatternObject` for the ID and name structure.
 
-The `CuePointerObjects` used *are in order* and are not changed.
+The `CuePointerObjects` used *are in order* and use all fields.
 
 ## `RandomCueObject` structure
 
@@ -289,11 +304,13 @@ The `CuePointerObjects` used *are in order* and are not changed.
 ```
 
 The `RandomCueObject` is like a pattern except it only chooses one of the
-cues in the `cues` array at random **when played**.
+objects in the `cues` array at random **when played**.
 The `CuePointerObject` is unchanged, but the `beat` field inside
-will be ignored (always zero). You are not actually limited to cues,
-contrary to what the name of this is. (I would've changed the name
-if I could refactor it correctly...)
+will be ignored.
+
+You are not limited to just using `CueObjects` in the `cues` array.
+
+Examples of games with random cue objects: Ringside (has variants), First Contact (speech sounds)
 
 See `PatternObject` for the `id` and `name` fields.
 
