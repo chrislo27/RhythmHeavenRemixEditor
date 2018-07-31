@@ -20,16 +20,17 @@ data class Swing(val ratio: Int, val division: Float) {
         val SIXTEENTH_SYMBOL = "♬"
 
         val STRAIGHT: Swing = Swing(50, EIGHTH_DIVISION)
-        val SWING: Swing = Swing(60, EIGHTH_DIVISION)
-        val SHUFFLE: Swing = Swing(70, EIGHTH_DIVISION)
+        val LIGHT_SWING: Swing = Swing(60, EIGHTH_DIVISION)
+        val MEDIUM_SWING: Swing = Swing(67, EIGHTH_DIVISION)
+        val HARD_SWING: Swing = Swing(75, EIGHTH_DIVISION)
 
-        val SWING_NAMES: Map<Swing, String> = mapOf(STRAIGHT to "Straight", SWING to "Swing", SHUFFLE to "Shuffle")
+        val SWING_NAMES: Map<Swing, String> = mapOf(STRAIGHT to "Straight", LIGHT_SWING to "Light Swing", MEDIUM_SWING to "Swing", HARD_SWING to "Hard Swing")
         val SWING_LIST: List<Swing> = SWING_NAMES.keys.toList()
 
         fun getSwingNameFromRatio(ratio: Int): String {
             return SWING_NAMES.entries.lastOrNull { entry -> entry.key.ratio <= ratio }?.let { entry ->
                 if (entry.key == STRAIGHT && ratio != entry.key.ratio) {
-                    SWING_NAMES[Swing.SWING]
+                    SWING_NAMES[Swing.LIGHT_SWING]
                 } else entry.value
             } ?: "Inverted Swing"
         }
