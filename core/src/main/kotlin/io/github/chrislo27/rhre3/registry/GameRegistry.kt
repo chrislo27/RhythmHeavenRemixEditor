@@ -90,6 +90,7 @@ object GameRegistry : Disposable {
 
             objectMap.values.toList()
         }
+        val noDeprecationsObjectMap: Map<String, Datamodel> = mutableMapOf()
         val gameGroupsMap: Map<String, GameGroup> = mutableMapOf()
         val gameGroupsList: List<GameGroup> by lazy {
             if (!ready)
@@ -284,6 +285,7 @@ object GameRegistry : Disposable {
                 return 1f
 
             objectMap as MutableMap
+            noDeprecationsObjectMap as MutableMap
 
             val directive = folders[index]
             val folder: FileHandle = directive.folder
@@ -419,6 +421,7 @@ object GameRegistry : Disposable {
                     duplicateObjs += it.id
                 }
                 objectMap[it.id] = it
+                noDeprecationsObjectMap[it.id] = it
                 it.deprecatedIDs.forEach { dep ->
                     objectMap[dep] = it
                 }
@@ -475,6 +478,8 @@ object GameRegistry : Disposable {
         private fun verify(game: Game): VerificationResult {
             val builder = StringBuilder()
 
+            fun String.starSubstitute(): String = if (this.startsWith(game.id)) (this.replaceFirst(game.id, "*")) else this
+
             /*
             Game verification:
             * Non-custom games have an icon
@@ -499,7 +504,7 @@ object GameRegistry : Disposable {
             game.objects.forEach { model ->
                 val separator = if (model is Cue) "/" else "_"
                 if (!model.id.startsWith(game.id + separator)) {
-                    builder.append("Model ID (${model.id}) should start with \"${game.id}$separator\"\n")
+                    builder.append("Model ID (${model.id}) should start with \"*$separator\" (or the fully-qualified \"${game.id}$separator\")\n")
                 }
 
                 /*
@@ -521,7 +526,9 @@ object GameRegistry : Disposable {
                 if (model is ContainerModel) {
                     model.cues.forEach { pointer ->
                         if (objectMap[pointer.id] == null) {
-                            builder.append("Model ${model.id} has an invalid pointer: ${pointer.id}\n")
+                            builder.append("Model ${model.id} has an invalid cue pointer ID: ${pointer.id}\n")
+                        } else if (objectMap[pointer.id] != null && noDeprecationsObjectMap[pointer.id] == null) {
+                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${objectMap[pointer.id]?.id?.starSubstitute()}\n")
                         }
                         if (pointer.track >= Editor.MIN_TRACK_COUNT) {
                             builder.append(
@@ -533,11 +540,30 @@ object GameRegistry : Disposable {
                         }
                     }
                 }
+                
+                if (model is Cue) {
+                    if (model.introSound != null) {
+                        if (objectMap[model.introSound] == null) {
+                            builder.append("Cue ${model.id} has an invalid introSound ID: ${model.introSound}\n")
+                        } else if (objectMap[model.introSound] != null && noDeprecationsObjectMap[model.introSound] == null) {
+                            builder.append("Cue ${model.id} refers to a deprecated introSound ID: ${model.introSound}, replace with ${objectMap[model.introSound]?.id?.starSubstitute()}\n")
+                        }
+                    }
+                    if (model.endingSound != null) {
+                        if (objectMap[model.endingSound] == null) {
+                            builder.append("Cue ${model.id} has an invalid endingSound ID: ${model.endingSound}\n")
+                        } else if (objectMap[model.endingSound] != null && noDeprecationsObjectMap[model.endingSound] == null) {
+                            builder.append("Cue ${model.id} refers to a deprecated endingSound ID: ${model.endingSound}, replace with ${objectMap[model.endingSound]?.id?.starSubstitute()}\n")
+                        }
+                    }
+                }
 
                 if (model is ResponseModel) {
                     model.responseIDs.forEach { id ->
                         if (objectMap[id] == null) {
                             builder.append("Model ${model.id} has a non-existent response ID: $id\n")
+                        } else if (objectMap[id] != null && noDeprecationsObjectMap[id] == null) {
+                            builder.append("Model ${model.id} refers to a deprecated response ID: $id, replace with ${objectMap[id]?.id?.starSubstitute()}\n")
                         }
                     }
                 }
