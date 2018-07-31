@@ -34,6 +34,7 @@ import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
@@ -1528,27 +1529,26 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
     }
 
     fun getHoverText(): String {
-        var output: String = ""
+        val output: MutableList<String> = mutableListOf()
         val entity = getEntityOnMouse()
 
         if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None) {
             if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
                 output += entity.renderText
             }
+            if (Toolboks.debugMode && entity is SubtitleEntity && entity.subtitle.isNotBlank()) {
+                val charCount = entity.subtitle.count { it != ' ' && it != '-' && it != '(' && it != ')' && it != '\n' }
+                val duration = remix.tempos.linearBeatsToSeconds(entity.bounds.x + entity.bounds.width) - remix.tempos.linearBeatsToSeconds(entity.bounds.x)
+                output += "${(charCount / duration).roundToInt()} CPS"
+            }
             if (entity in selection) {
                 if (scrollMode == ScrollMode.VOLUME) {
                     if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
-                        if (output.isNotEmpty()) {
-                            output += "\n"
-                        }
                         output += Localization["editor.msg.volume", entity.volumePercent]
                     }
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
                         val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
-                        if (output.isNotEmpty()) {
-                            output += "\n"
-                        }
                         output += if (entity is ShakeEntity) {
                             semitoneText
                         } else {
@@ -1570,15 +1570,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             }
 
             if (str.isNotEmpty()) {
-                val sb = StringBuilder(output)
-                if (output.isNotEmpty()) {
-                    sb.append('\n')
-                }
-                output += sb.append("[LIGHT_GRAY]").append(str).append("[]").toString()
+                output += "[LIGHT_GRAY]$str[]"
             }
         }
 
-        return output
+        return output.joinToString(separator = "\n")
     }
 
     fun getMultipartOnMouse(): MultipartEntity<*>? {
