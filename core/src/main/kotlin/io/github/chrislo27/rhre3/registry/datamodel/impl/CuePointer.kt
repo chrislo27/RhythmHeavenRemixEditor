@@ -22,6 +22,11 @@ fun List<CuePointerObject>.mapToDatamodel(): List<CuePointer> = this.map(::CuePo
 fun List<CuePointerObject>.mapToDatamodel(starSubstitution: String): List<CuePointer> = this.map { CuePointer(it, starSubstitution) }
 
 fun List<CuePointer>.mapToJsonObject(): List<CuePointerObject> = this.map(CuePointer::toJsonObject)
+fun List<CuePointer>.mapToJsonObject(starSubstitution: String): List<CuePointerObject> = this.map(CuePointer::toJsonObject).onEach {
+    if (it.id.startsWith(starSubstitution)) {
+        it.id = "*" + it.id.substringAfter(starSubstitution)
+    }
+}
 
 class CuePointer {
 

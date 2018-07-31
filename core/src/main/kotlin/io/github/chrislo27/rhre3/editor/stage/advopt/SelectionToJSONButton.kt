@@ -73,7 +73,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
                 val bottommost = selection.minBy { it.bounds.y }!!
                 val leftmost = selection.minBy { it.bounds.x }!!
                 val json = JsonHandler.toJson(SmallPatternObject().also {
-                    it.id = "INSERT_ID_HERE"
+                    it.id = "*_INSERT-ID"
                     it.deprecatedIDs = listOf()
                     it.name = "INSERT NAME HERE"
                     it.cues = selection.map { entity ->

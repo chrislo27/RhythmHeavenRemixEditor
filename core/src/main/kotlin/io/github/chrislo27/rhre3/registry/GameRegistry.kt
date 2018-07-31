@@ -355,7 +355,7 @@ object GameRegistry : Disposable {
                 DatamodelGenerator.generators[game.id]?.let {
                     it.process(folder, dataObject, game)
                     if (RHRE3.outputGeneratedDatamodels) {
-                        Toolboks.LOGGER.info("JSON output for ${game.id}:\n${JsonHandler.toJson(game.toJsonObject())}\n")
+                        Toolboks.LOGGER.info("JSON output for ${game.id}:\n${JsonHandler.toJson(game.toJsonObject(true))}\n")
                     }
                 }
             } else {
@@ -389,7 +389,7 @@ object GameRegistry : Disposable {
                 }
 
                 if (RHRE3.outputCustomSfx) {
-                    Toolboks.LOGGER.info("JSON output for custom SFX in folder ${folder.name()} (${game.id}):\n${JsonHandler.toJson(game.toJsonObject())}\n")
+                    Toolboks.LOGGER.info("JSON output for custom SFX in folder ${folder.name()} (${game.id}):\n${JsonHandler.toJson(game.toJsonObject(true))}\n")
                 }
             }
 

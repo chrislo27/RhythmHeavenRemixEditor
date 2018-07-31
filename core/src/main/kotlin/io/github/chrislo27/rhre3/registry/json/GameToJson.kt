@@ -8,7 +8,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TextureModel
 
 
-fun Game.toJsonObject(): DataObject {
+fun Game.toJsonObject(starSubstitution: Boolean): DataObject {
     val obj = DataObject()
 
     obj.id = id
@@ -19,73 +19,77 @@ fun Game.toJsonObject(): DataObject {
     obj.priority = priority
     obj.series = series.lowerCaseName
 
+    fun String.starSubstitute(): String = if (!starSubstitution) this else ("*" + this.substringAfter(id))
+    fun List<CuePointer>.starSubstituteAndMapToJson(): List<CuePointerObject> = if (!starSubstitution) mapToJsonObject() else mapToJsonObject(id)
+
     val objects: List<NamedIDObject> = this.objects.map { datamodel ->
         // The reverse of what happens in GameRegistry, except not compile-time checked
         when (datamodel) {
             is Cue -> {
                 CueObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
 
                     it.baseBpm = datamodel.baseBpm
                     it.duration = datamodel.duration
                     it.fileExtension = datamodel.soundHandle.extension()
-                    it.introSound = datamodel.introSound
-                    it.endingSound = datamodel.endingSound
+                    it.introSound = datamodel.introSound?.starSubstitute()
+                    it.endingSound = datamodel.endingSound?.starSubstitute()
                     it.repitchable = datamodel.repitchable
                     it.loops = datamodel.loops
                     it.stretchable = datamodel.stretchable
+                    it.responseIDs = datamodel.responseIDs.map(String::starSubstitute)
                 }
             }
             is Equidistant -> {
                 EquidistantObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
 
                     it.stretchable = datamodel.stretchable
                     it.distance = datamodel.duration
 
-                    it.cues = datamodel.cues.mapToJsonObject()
+                    it.cues = datamodel.cues.starSubstituteAndMapToJson()
                 }
             }
             is KeepTheBeat -> {
                 KeepTheBeatObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
 
                     it.defaultDuration = datamodel.duration
 
-                    it.cues = datamodel.cues.mapToJsonObject()
+                    it.cues = datamodel.cues.starSubstituteAndMapToJson()
                 }
             }
             is Pattern -> {
                 PatternObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
 
                     it.stretchable = datamodel.stretchable
 
-                    it.cues = datamodel.cues.mapToJsonObject()
+                    it.cues = datamodel.cues.starSubstituteAndMapToJson()
                 }
             }
             is RandomCue -> {
                 RandomCueObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
 
-                    it.responseIDs = datamodel.responseIDs
+                    it.responseIDs = datamodel.responseIDs.map(String::starSubstitute)
 
-                    it.cues = datamodel.cues.mapToJsonObject()
+                    it.cues = datamodel.cues.starSubstituteAndMapToJson()
                 }
             }
             is EndRemix -> {
                 EndRemixObject().also {
-                    it.id = datamodel.id
+                    it.id = datamodel.id.starSubstitute()
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
                 }
