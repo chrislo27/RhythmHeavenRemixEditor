@@ -3,14 +3,28 @@
 ## ID rules
 IDs must only consist of ASCII alphanumerics, -, spaces, /, and _.
 
-**Game** type IDs are always just lowerCamelCase.
-**Cue** type IDs are always `gameID/filename`.
-**Pattern** type IDs are always `gameID_id`.
+**Game** type IDs are always just `lowerCamelCase`.
+**Cue** type IDs are `gameID/filename`.
+**Pattern** type IDs are `gameID_id`.
 
 Examples:<br>
 `coolGame` - Name of the game<br>
 `coolGame/buzzer` - A sound in the `coolGame` folder named `buzzer`<br>
 `coolGame_pattern` - A pattern for `coolGame`
+
+### Shortened IDs (*-substitution)
+Writing out the game ID prefix over and over for your cues is quite annoying.
+That's why there's a shorthand syntax to substitute the current game's name in, called
+*-substitution (star-substitution). Every instance of an asterisk `*` will be replaced with the parent game's ID.
+
+The only IDs that are star-substituable are cue/pattern IDs, response IDs, and IDs used in `CuePointerObjects`.
+
+Examples (`coolGame` is the game ID):<br>
+`coolGame/buzzer` can be shortened to `*/buzzer`<br>
+`coolGame_pattern` can be shortered to `*_pattern`<br>
+
+Note that this only works in the same `DataObject` the star-ID is in. If you're referring to
+other cues or patterns NOT from this same DataObject, you must put its full ID.
 
 ### A note on deprecated IDs
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
@@ -20,7 +34,7 @@ to this current object for older save files. You will see them frequently.
 There are several data types available to you to use. Each field
 has a specific data type that cannot be swapped with another.
 
-All types cannot be `null` unless otherwise stated.
+All types **cannot** be `null` unless otherwise stated.
 
 >Note: In the following tables for the object types, you may see a question mark (?)
 at the end of the name. Ex: (`string?`, `number?`) This means that the field is optional, and doesn't have to be included if it's not necessary.
@@ -147,7 +161,7 @@ Example:<br>
 ```json
 {
   "type": "cue",
-  "id": "dataObjectID/lowerCamelCaseID",
+  "id": "*/lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable cue name",
   "duration": 1.0,
@@ -217,7 +231,7 @@ set in `baseBpm`. Example: When playing at 180 BPM and the base BPM is 120, the 
 ```json
 {
   "type": "pattern",
-  "id": "gameID_lowerCamelCaseID",
+  "id": "*_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable pattern name",
   "cues": [ // array of CuePointerObjects
@@ -250,7 +264,7 @@ The array of `CuePointerObject`s uses the standard cue pointer object fields.
 ```json
 {
   "type": "equidistant",
-  "id": "gameID_lowerCamelCaseID",
+  "id": "*_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable name",
   "distance": 1.0,
@@ -288,7 +302,7 @@ The `CuePointerObjects` used are *ordered* and do **NOT** use the `beat` and `du
 ```json
 {
   "type": "keepTheBeat",
-  "id": "gameID_lowerCamelCaseID",
+  "id": "*_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable name",
   "defaultDuration": 2.0,
@@ -328,7 +342,7 @@ The `CuePointerObjects` used are *ordered*.
 ```json
 {
   "type": "randomCue",
-  "id": "gameID_lowerCamelCaseID",
+  "id": "*_lowerCamelCaseID",
   "deprecatedIDs": [],
   "name": "human-readable name, usually 'random X'",
   "cues": [ // array of CuePointerObjects

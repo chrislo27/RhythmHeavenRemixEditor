@@ -291,8 +291,10 @@ object GameRegistry : Disposable {
             val game: Game
 
             if (datajsonFile.exists()) {
-                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"),
-                                                                    DataObject::class.java)
+                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), DataObject::class.java)
+                val gameID = dataObject.id
+                if (!gameID.matches(ID_REGEX))
+                    error("Game ID ($gameID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
 
                 game = Game(dataObject.id,
                             dataObject.name,
@@ -306,41 +308,47 @@ object GameRegistry : Disposable {
                             dataObject.priority, directive.isCustom, dataObject.noDisplay, false)
                 val baseFileHandle = directive.folder.parent()
 
+                fun String.starSubstitution(): String = replace("*", gameID)
+                fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
+
                 dataObject.objects.mapTo(game.objects as MutableList) { obj ->
+                    val objID = obj.id.starSubstitution()
+                    if (!objID.matches(ID_REGEX))
+                        error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
+                    
                     when (obj) {
                     // Note: if this is updated, remember to update GameToJson
                         is CueObject ->
-                            Cue(game, obj.id, obj.deprecatedIDs, obj.name,
+                            Cue(game, objID, obj.deprecatedIDs, obj.name,
                                 obj.duration,
                                 obj.stretchable, obj.repitchable,
-                                baseFileHandle.child(
-                                        "${obj.id}.${obj.fileExtension}"),
-                                obj.introSound, obj.endingSound,
-                                obj.responseIDs,
+                                baseFileHandle.child("$objID.${obj.fileExtension}"),
+                                obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
+                                obj.responseIDs.starSubstitution(),
                                 obj.baseBpm, obj.loops)
                         is EquidistantObject ->
-                            Equidistant(game, obj.id, obj.deprecatedIDs,
+                            Equidistant(game, objID, obj.deprecatedIDs,
                                         obj.name, obj.distance,
                                         obj.stretchable,
-                                        obj.cues.mapToDatamodel())
+                                        obj.cues.mapToDatamodel(gameID))
                         is KeepTheBeatObject ->
-                            KeepTheBeat(game, obj.id, obj.deprecatedIDs,
+                            KeepTheBeat(game, objID, obj.deprecatedIDs,
                                         obj.name, obj.defaultDuration,
-                                        obj.cues.mapToDatamodel())
+                                        obj.cues.mapToDatamodel(gameID))
                         is PatternObject ->
-                            Pattern(game, obj.id, obj.deprecatedIDs,
-                                    obj.name, obj.cues.mapToDatamodel(), obj.stretchable)
+                            Pattern(game, objID, obj.deprecatedIDs,
+                                    obj.name, obj.cues.mapToDatamodel(gameID), obj.stretchable)
                         is RandomCueObject ->
-                            RandomCue(game, obj.id, obj.deprecatedIDs,
-                                      obj.name, obj.cues.mapToDatamodel(), obj.responseIDs)
+                            RandomCue(game, objID, obj.deprecatedIDs,
+                                      obj.name, obj.cues.mapToDatamodel(gameID), obj.responseIDs.starSubstitution())
                         is EndRemixObject ->
-                            EndRemix(game, obj.id, obj.deprecatedIDs, obj.name)
+                            EndRemix(game, objID, obj.deprecatedIDs, obj.name)
                         is SubtitleEntityObject ->
-                            Subtitle(game, obj.id, obj.deprecatedIDs, obj.name, obj.subtitleType)
+                            Subtitle(game, objID, obj.deprecatedIDs, obj.name, obj.subtitleType)
                         is ShakeEntityObject ->
-                            ShakeScreen(game, obj.id, obj.deprecatedIDs, obj.name)
+                            ShakeScreen(game, objID, obj.deprecatedIDs, obj.name)
                         is TextureEntityObject ->
-                            TextureModel(game, obj.id, obj.deprecatedIDs, obj.name)
+                            TextureModel(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
 
@@ -469,13 +477,9 @@ object GameRegistry : Disposable {
 
             /*
             Game verification:
-            * Game ID matches regex
             * Non-custom games have an icon
             * Non-custom games that are series specific have the right series
              */
-            if (!ID_REGEX.matches(game.id)) {
-                builder.append("Game ID (${game.id}) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces\n")
-            }
             if (game.icon === AssetRegistry.missingTexture) {
                 builder.append("Game ${game.id} has a missing texture\n")
             }
@@ -488,15 +492,11 @@ object GameRegistry : Disposable {
                 }
 
                 if (game.name.contains("(Wii)")) {
-                    builder.append("Game ${game.id} has (Wii) in its name (should be Fever): ${game.name}\n")
+                    builder.append("Game ${game.id} has (Wii) in its name, should be (Fever): ${game.name}\n")
                 }
             }
 
             game.objects.forEach { model ->
-                // ID verification
-                if (!ID_REGEX.matches(model.id)) {
-                    builder.append("Model ID (${model.id}) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces\n")
-                }
                 val separator = if (model is Cue) "/" else "_"
                 if (!model.id.startsWith(game.id + separator)) {
                     builder.append("Model ID (${model.id}) should start with \"${game.id}$separator\"\n")

@@ -19,6 +19,7 @@ fun CuePointer.toJsonObject(): CuePointerObject {
 }
 
 fun List<CuePointerObject>.mapToDatamodel(): List<CuePointer> = this.map(::CuePointer)
+fun List<CuePointerObject>.mapToDatamodel(starSubstitution: String): List<CuePointer> = this.map { CuePointer(it, starSubstitution) }
 
 fun List<CuePointer>.mapToJsonObject(): List<CuePointerObject> = this.map(CuePointer::toJsonObject)
 
@@ -43,8 +44,8 @@ class CuePointer {
 
     val metadata: Map<String, Any?>
 
-    constructor(obj: CuePointerObject) {
-        id = obj.id
+    constructor(obj: CuePointerObject, starSubstitution: String?) {
+        id = if (starSubstitution == null) obj.id else obj.id.replace("*", starSubstitution)
         beat = obj.beat
         backingDuration = obj.duration
         semitone = obj.semitone
@@ -52,6 +53,8 @@ class CuePointer {
         track = obj.track
         metadata = obj.metadata ?: mapOf()
     }
+
+    constructor(obj: CuePointerObject) : this(obj, null)
 
     constructor(id: String, beat: Float, duration: Float = 0f, semitone: Int = 0, track: Int = 0,
                 volume: Int = IVolumetric.DEFAULT_VOLUME,
@@ -62,7 +65,7 @@ class CuePointer {
         this.semitone = semitone
         this.track = track
         this.volume = volume.coerceAtLeast(0)
-        this.metadata = mapOf()
+        this.metadata = metadata
     }
 
 
