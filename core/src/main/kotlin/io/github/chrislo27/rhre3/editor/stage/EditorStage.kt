@@ -886,6 +886,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 }
                             }.apply {
                                 this.setLocation(x, y)
+                                this.visible = false
                             }
                             if (isVariant) {
                                 variantButtons += button
