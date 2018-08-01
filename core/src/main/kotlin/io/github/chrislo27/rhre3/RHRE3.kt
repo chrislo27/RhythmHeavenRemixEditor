@@ -10,7 +10,7 @@ import java.time.Month
 object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 13, 0, "DEVELOPMENT")
+    val VERSION: Version = Version(3, 13, 0, "RC1")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     const val WIDTH = 1280
     const val HEIGHT = 720
@@ -32,7 +32,7 @@ object RHRE3 {
     const val DONATION_URL: String = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958"
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
-    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEVELOPMENT")) {
+    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEVELOPMENT") || VERSION.suffix.startsWith("RC")) {
         DEV_DATABASE_BRANCH
     } else {
         MASTER_DATABASE_BRANCH
@@ -58,11 +58,5 @@ object RHRE3 {
     var outputCustomSfx: Boolean = false
 
     lateinit var launchArguments: List<String>
-
-    init {
-        if ((!VERSION.suffix.startsWith("DEVELOPMENT") && !VERSION.suffix.startsWith("SNAPSHOT")) && DATABASE_BRANCH != MASTER_DATABASE_BRANCH) {
-            error("Version suffix is not DEVELOPMENT or SNAPSHOT but the database branch is set to $DATABASE_BRANCH")
-        }
-    }
 
 }
