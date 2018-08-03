@@ -117,7 +117,8 @@ object FileChooser {
         }.apply {
             val mapped = extensionFilters.associate { filter ->
                 val ext = filter.extensions.map { it.substringAfter(".") }.toTypedArray()
-                filter to FileNameExtensionFilter(filter.name + " (${ext.joinToString { "*.$it" }})", *ext)
+                val shouldPutExtsInName = !filter.name.trim().endsWith(")")
+                filter to FileNameExtensionFilter(filter.name + if (shouldPutExtsInName) " (${ext.joinToString { "*.$it" }})" else "", *ext)
             }
             mapped.values.forEach(this::addChoosableFileFilter)
             if (selectedFilter != null) {

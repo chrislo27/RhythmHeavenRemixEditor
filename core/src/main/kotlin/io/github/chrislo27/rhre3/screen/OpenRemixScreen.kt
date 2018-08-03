@@ -20,17 +20,13 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.attemptRememberDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.rhre3.util.err.MusicLoadingException
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
-import io.github.chrislo27.rhre3.util.persistDirectory
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import javafx.application.Platform
-import javafx.stage.FileChooser
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
@@ -61,22 +57,6 @@ class OpenRemixScreen(main: RHRE3Application)
 
     private enum class RemixType {
         RHRE3, RHRE2, MIDI
-    }
-
-    private fun createFileChooser() = FileChooser().apply {
-        this.initialDirectory = attemptRememberDirectory(main,
-                                                         PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
-
-        this.extensionFilters.clear()
-        val filter = FileChooser.ExtensionFilter(Localization["screen.open.fileFilterSupported"],
-                                                 "*.${RHRE3.REMIX_FILE_EXTENSION}",
-                                                 "*.brhre2",
-                                                 "*.mid")
-
-        this.extensionFilters += filter
-        this.selectedExtensionFilter = this.extensionFilters.first()
-
-        this.title = Localization["screen.open.fileChooserTitle"]
     }
 
     private val loadButton: LoadButton
@@ -285,18 +265,20 @@ class OpenRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            Platform.runLater {
+            launch {
                 isChooserOpen = true
-                val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showOpenDialog(null)
-                isChooserOpen = false
-                if (file != null && main.screen == this) {
-                    fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, fileChooser.initialDirectory)
-                    loadFile(file)
-                } else {
-                    loadButton.alsoDo = {}
-                    stage.onBackButtonClick()
+                val initialDirectory: File? = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
+                val fileFilters = listOf(FileChooserExtensionFilter(Localization["screen.open.fileFilterSupported"], "*.${RHRE3.REMIX_FILE_EXTENSION}", "*.brhre2", "*.mid"))
+                FileChooser.openFileChooser(Localization["screen.open.fileChooserTitle"], initialDirectory, null, fileFilters, fileFilters.first()) { file ->
+                    isChooserOpen = false
+                    if (file != null) {
+                        val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
+                        persistDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD, newInitialDirectory)
+                        loadFile(file)
+                    } else {
+                        loadButton.alsoDo = {}
+                        stage.onBackButtonClick()
+                    }
                 }
             }
         }

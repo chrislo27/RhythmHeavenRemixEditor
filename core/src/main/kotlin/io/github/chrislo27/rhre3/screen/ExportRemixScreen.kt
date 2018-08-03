@@ -37,9 +37,7 @@ import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.attemptRememberDirectory
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
-import io.github.chrislo27.rhre3.util.persistDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -47,9 +45,6 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import javafx.application.Platform
-import javafx.stage.FileChooser
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import net.beadsproject.beads.core.Bead
 import net.beadsproject.beads.ugens.Clock
@@ -110,22 +105,6 @@ class ExportRemixScreen(main: RHRE3Application)
     private fun setBackButtonEnabled() {
         stage.backButton.enabled = !isChooserOpen && !isExporting
     }
-
-    private fun createFileChooser() =
-            FileChooser().apply {
-                this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT)
-                        ?: getDefaultDirectory()
-                val formalExtensions = "MP3, OGG, FLAC, WAV"
-                val extensions = arrayOf("*.mp3", "*.ogg", "*.flac", "*.wav")
-
-                this.extensionFilters.clear()
-                val filter = FileChooser.ExtensionFilter(Localization["screen.export.fileFilter", formalExtensions], *extensions)
-
-                this.extensionFilters += filter
-                this.selectedExtensionFilter = this.extensionFilters.first()
-
-                this.title = Localization["screen.export.fileChooserTitle"]
-            }
 
     init {
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_export_big"))
@@ -523,69 +502,76 @@ class ExportRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen && !isExporting && isCapableOfExporting) {
-            Platform.runLater {
+            launch {
                 isChooserOpen = true
-                mainLabel.text = Localization["screen.export.uploadHint"]
-                val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showSaveDialog(null)
-                isChooserOpen = false
-                mainLabel.text = ""
-                if (file != null && main.screen == this) {
-                    fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, fileChooser.initialDirectory)
-                    launch(CommonPool) {
-                        DiscordHelper.updatePresence(PresenceState.Exporting)
-                        try {
-                            val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)
-                                file.parentFile.resolve("${file.name}.mp3")
-                            else
-                                file
-                            val fileType = ExportFileType.VALUES.firstOrNull {
-                                it.extension == file.extension.toLowerCase(Locale.ROOT)
-                            } ?: MP3
-
-                            export(correctFile, fileType, true)
-
-                            val canUploadToPicosong = fileType == MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
-
-                            mainLabel.text = Localization[
-                                    if (fileType == MP3)
-                                        (if (correctFile.length() <= MAX_PICOSONG_BYTES)
-                                            "screen.export.success.picosong.yes"
-                                        else "screen.export.success.picosong.no")
-                                    else "screen.export.success", PICOSONG_AUP_URL, PICOSONG_TOS_URL]
-
-                            picosongButton.visible = canUploadToPicosong
-                            picosongFunc = if (canUploadToPicosong) {
-                                val tempFile = File.createTempFile("rhre3exportupload", ".mp3").apply {
-                                    deleteOnExit()
-                                }
-                                val originalName = correctFile.name
-                                correctFile.copyTo(tempFile, true);
-                                {
-                                    UploadRemixScreen(main, tempFile, originalName, true)
-                                }
-                            } else {
-                                null
-                            }
-
-                            // Analytics
-                            AnalyticsHandler.track("Export Remix",
-                                                   mapOf(
-                                                           "sfxDatabase" to GameRegistry.data.version,
-                                                           "fileType" to fileType.extension,
-                                                           "fileSize" to correctFile.length(),
-                                                           "partial" to partial,
-                                                           "uploadImmediately" to false
-                                                        ))
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
-                            updateLabels(t)
-                            isExporting = false
-                        }
+                Gdx.app.postRunnable {
+                    mainLabel.text = Localization["screen.export.uploadHint"]
+                }
+                val filters = listOf(FileChooserExtensionFilter(Localization["screen.export.fileFilter", "MP3, OGG, FLAC, WAV"], "*.mp3", "*.ogg", "*.flac", "*.wav"))
+                FileChooser.saveFileChooser(Localization["screen.export.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
+                    isChooserOpen = false
+                    Gdx.app.postRunnable {
+                        mainLabel.text = ""
                     }
-                } else {
-                    stage.onBackButtonClick()
+                    if (file != null) {
+                        val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
+                        persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, newInitialDirectory)
+                        launch {
+                            DiscordHelper.updatePresence(PresenceState.Exporting)
+                            try {
+                                val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)
+                                    file.parentFile.resolve("${file.name}.mp3")
+                                else
+                                    file
+                                val fileType = ExportFileType.VALUES.firstOrNull {
+                                    it.extension == file.extension.toLowerCase(Locale.ROOT)
+                                } ?: MP3
+
+                                export(correctFile, fileType, true)
+
+                                val canUploadToPicosong = fileType == MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
+
+                                Gdx.app.postRunnable {
+                                    mainLabel.text = Localization[
+                                            if (fileType == MP3)
+                                                (if (correctFile.length() <= MAX_PICOSONG_BYTES)
+                                                    "screen.export.success.picosong.yes"
+                                                else "screen.export.success.picosong.no")
+                                            else "screen.export.success", PICOSONG_AUP_URL, PICOSONG_TOS_URL]
+
+                                    picosongButton.visible = canUploadToPicosong
+                                    picosongFunc = if (canUploadToPicosong) {
+                                        val tempFile = File.createTempFile("rhre3exportupload", ".mp3").apply {
+                                            deleteOnExit()
+                                        }
+                                        val originalName = correctFile.name
+                                        correctFile.copyTo(tempFile, true);
+                                        {
+                                            UploadRemixScreen(main, tempFile, originalName, true)
+                                        }
+                                    } else {
+                                        null
+                                    }
+                                }
+
+                                // Analytics
+                                AnalyticsHandler.track("Export Remix",
+                                                       mapOf(
+                                                               "sfxDatabase" to GameRegistry.data.version,
+                                                               "fileType" to fileType.extension,
+                                                               "fileSize" to correctFile.length(),
+                                                               "partial" to partial,
+                                                               "uploadImmediately" to false
+                                                            ))
+                            } catch (t: Throwable) {
+                                t.printStackTrace()
+                                updateLabels(t)
+                                isExporting = false
+                            }
+                        }
+                    } else {
+                        stage.onBackButtonClick()
+                    }
                 }
             }
         }
