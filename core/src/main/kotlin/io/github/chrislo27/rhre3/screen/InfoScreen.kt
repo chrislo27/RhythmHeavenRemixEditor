@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Texture
@@ -268,7 +269,29 @@ class InfoScreen(main: RHRE3Application)
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             }
             dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
+                private var clicks = 0
+                private var timeSinceLastClick = System.currentTimeMillis()
+                private val color = Color(1f, 1f, 1f, 1f)
 
+                init {
+                    this.textColor = color
+                }
+
+                override fun canBeClickedOn(): Boolean = true
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    clicks++
+                    timeSinceLastClick = System.currentTimeMillis()
+
+                    AssetRegistry.get<Sound>("weird_sfx_honk").play()
+                }
+
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    val alpha = ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f)
+                    color.set(1f, 1f, 1f, 1f).lerp(1f, 0f, 0f, 1f, alpha)
+                    super.render(screen, batch, shapeRenderer)
+                }
             }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
