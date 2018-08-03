@@ -1376,8 +1376,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
                         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
                             if (!control && !alt && !shift) {
-                                cycleScrollMode(if (Gdx.input.isShiftDown()) -1 else 1)
+                                cycleScrollMode(if (shift) -1 else 1)
                                 updateMessageLabel()
+                            } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && !alt) {
+                                val reverse = shift
                             }
                         }
                     }
