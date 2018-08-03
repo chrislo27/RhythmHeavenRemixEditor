@@ -62,7 +62,6 @@ object FileChooser {
             // Test for JavaFX first
             try {
                 Class.forName("javafx.stage.FileChooser")
-                throw ClassNotFoundException()
                 uiMode = UIMode.JAVAFX
                 Toolboks.LOGGER.info("[FileChooser] Set UIMode to JavaFX")
                 // Load the Platform (pre-J9)
