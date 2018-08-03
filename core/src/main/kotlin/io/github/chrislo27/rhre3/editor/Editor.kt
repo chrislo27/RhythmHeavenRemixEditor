@@ -1375,8 +1375,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                         }
 
                         if (Gdx.input.isKeyJustPressed(Input.Keys.TAB)) {
-                            cycleScrollMode(if (Gdx.input.isShiftDown()) -1 else 1)
-                            updateMessageLabel()
+                            if (!control && !alt && !shift) {
+                                cycleScrollMode(if (Gdx.input.isShiftDown()) -1 else 1)
+                                updateMessageLabel()
+                            }
                         }
                     }
                     is TrackerResize -> {
