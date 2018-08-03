@@ -26,7 +26,6 @@ import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.JavafxStub
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
 import io.github.chrislo27.toolboks.ResizeAction
@@ -42,7 +41,6 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
-import javafx.application.Application
 import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.launch
 import org.asynchttpclient.AsyncHttpClient
@@ -220,9 +218,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                     "Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
 
-        thread(isDaemon = true, name = "JavafxStub Launcher") {
-            Application.launch(JavafxStub::class.java) // start up
-        }
+        // TODO load javaFX or swing
 
         if (RHRE3.noOnlineCounter) {
             this.liveUsers = 0
