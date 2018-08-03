@@ -880,8 +880,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 renderTracker(container.renderLayer, getColorForTracker(this), text, beat, width, getSlope())
             }
 
-            remix.trackersReverseView.forEach {
-                it.map.values.forEach {
+            remix.trackersReverseView.forEach { container ->
+                container.map.values.forEach {
                     if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat in beatRange || it.endBeat in beatRange)) {
                         it.render()
                     }
@@ -1378,8 +1378,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                             if (!control && !alt && !shift) {
                                 cycleScrollMode(if (shift) -1 else 1)
                                 updateMessageLabel()
-                            } else if (Gdx.input.isKeyPressed(Input.Keys.CONTROL_LEFT) && !alt) {
-                                val reverse = shift
                             }
                         }
                     }
@@ -1664,8 +1662,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (klass == null || (obeyY && remix.camera.getInputY() > 0f))
             return null
         val mouseX = remix.camera.getInputX()
-        remix.trackers.forEach {
-            val result = it.map.values.firstOrNull {
+        remix.trackers.forEach { container ->
+            val result = container.map.values.firstOrNull {
                 if (it::class.java != klass)
                     false
                 else if (it.isZeroWidth)
@@ -2299,8 +2297,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
             append(remix.entities.size)
 
             append("\ntrackers: ")
-            append(remix.trackers.sumBy {
-                it.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
+            append(remix.trackers.sumBy { container ->
+                container.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
             })
             append(" / ")
             append(remix.trackers.sumBy { it.map.values.size })
