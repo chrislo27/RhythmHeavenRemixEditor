@@ -17,7 +17,7 @@ Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
 
 ## Requirements
-* [Java  or newer](https://java.com/en/download/)
+* [Java 8 or newer](https://java.com/en/download/)
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
