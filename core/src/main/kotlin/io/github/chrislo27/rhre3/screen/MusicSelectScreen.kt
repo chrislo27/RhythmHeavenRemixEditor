@@ -12,18 +12,14 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.MusicData
-import io.github.chrislo27.rhre3.util.attemptRememberDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.rhre3.util.err.MusicLoadingException
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
-import io.github.chrislo27.rhre3.util.persistDirectory
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import javafx.application.Platform
-import javafx.stage.FileChooser
-import java.io.File
+import kotlinx.coroutines.experimental.launch
 
 
 class MusicSelectScreen(main: RHRE3Application)
@@ -39,22 +35,6 @@ class MusicSelectScreen(main: RHRE3Application)
     @Volatile
     private var isLoading = false
     private val mainLabel: TextLabel<MusicSelectScreen>
-
-    private fun createFileChooser() =
-            FileChooser().apply {
-                this.initialDirectory = attemptRememberDirectory(main,
-                                                                 PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory()
-                val key = "screen.music.fileFilter"
-                val extensions = arrayOf("*.ogg", "*.mp3", "*.wav")
-
-                this.extensionFilters.clear()
-                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
-
-                this.extensionFilters += filter
-                this.selectedExtensionFilter = this.extensionFilters.first()
-
-                this.title = Localization["screen.music.fileChooserTitle"]
-            }
 
     init {
         stage as GenericStage
@@ -129,27 +109,28 @@ class MusicSelectScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            Platform.runLater {
+            launch {
                 isChooserOpen = true
-                val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showOpenDialog(null)
-                isChooserOpen = false
-                if (file != null && main.screen == this) {
-                    isLoading = true
-                    fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, fileChooser.initialDirectory)
-                    try {
-                        updateLabels(null)
-                        val handle = FileHandle(file)
-                        val musicData = MusicData(handle, editor.remix)
-                        editor.remix.music = musicData
-                        isLoading = false
-                        updateLabels(null)
-                    } catch (t: Throwable) {
-                        t.printStackTrace()
-                        updateLabels(t)
-                    } finally {
-                        isLoading = false
+                val filters = listOf(FileChooserExtensionFilter(Localization["screen.music.fileFilter"], "*.ogg", "*.mp3", "*.wav"))
+                FileChooser.openFileChooser(Localization["screen.music.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
+                    isChooserOpen = false
+                    if (file != null) {
+                        isLoading = true
+                        val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
+                        persistDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC, newInitialDirectory)
+                        try {
+                            updateLabels(null)
+                            val handle = FileHandle(file)
+                            val musicData = MusicData(handle, editor.remix)
+                            editor.remix.music = musicData
+                            isLoading = false
+                            updateLabels(null)
+                        } catch (t: Throwable) {
+                            t.printStackTrace()
+                            updateLabels(t)
+                        } finally {
+                            isLoading = false
+                        }
                     }
                 }
             }
