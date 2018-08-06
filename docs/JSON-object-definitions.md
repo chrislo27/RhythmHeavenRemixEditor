@@ -1,7 +1,7 @@
 # JSON Object Definitions for Databasing
 
 ## ID rules
-IDs must only consist of ASCII alphanumerics, -, spaces, /, and _.
+IDs must only consist of ASCII alphanumerics, hyphens `-`, forward slashes `/`, and underscores `_`.
 
 **Game** type IDs are always just `lowerCamelCase`.
 **Cue** type IDs are `gameID/filename`.
