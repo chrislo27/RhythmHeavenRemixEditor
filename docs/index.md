@@ -24,6 +24,7 @@
 ### Advanced Editing and Documentation
 * [JSON Object Definitions for databasing](JSON-object-definitions.md)
 * [Localization files](Localization.md)
+* [Remix file format](Remix-file-format.md)
 
 ### RHRE2 (out of date, archived)
 * [Lua scripting](RHRE2/Scripting.md)
