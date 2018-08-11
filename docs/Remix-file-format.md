@@ -89,7 +89,7 @@ Entity objects can have varying fields depending on the type of entity.
 | `semitone` | integer | Optional, defaults to 0. | The number of semitones to pitch this entity up or down. If the entity cannot be repitched at all, this has no effect. If the entity is a shake entity (`datamodel` is `special_shakeEntity`), this controls the shake intensity (`2^(semitone / 12)`). |
 | `volume` | integer | Optional, defaults to 100. | The number of percentage points of volume that this entity should be played back at. Always between 0-300 in RHRE3. |
 | `texHash` | string | Optional. **Can be null.** Appears only when `datamodel` is `special_textureEntity`, | The texture hash that this texture entity refers to. If null or not present, it indicates that this texture entity has no texture yet. |
-| `subtitle` | string | Only present if `datamodel` is a subtitle entity, specifically `special_subtitleEntity`, `special_songTitleEntity`, and `special_songArtistEntity`. | The subtitle text for this subtitle entity. If not present, defaults to "\<failed to read text>". |
+| `subtitle` | string | Only present if `datamodel` is a subtitle entity, specifically `special_subtitleEntity`, `special_songTitleEntity`, and `special_songArtistEntity`. | The subtitle text for this subtitle entity. If not present, defaults to "`<failed to read text>`". |
 
 Example:<br>
 ```json
