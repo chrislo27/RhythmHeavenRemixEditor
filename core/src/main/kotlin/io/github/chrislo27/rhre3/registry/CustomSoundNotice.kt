@@ -40,7 +40,7 @@ Each sound will have these properties:
 Keep in mind that the editor may run out of memory if you have too many large sound files.
 
 It is advised that you generate JSON versions of the custom games for more flexibility.
-You can use data.json files if you need to quickly test databasing changes. For documentation on it, view: http://rhre.readthedocs.io/en/latest/JSON-object-definitions/
+You can use data.json files if you need to quickly test databasing changes. For documentation on it, view: https://rhre.readthedocs.io/en/latest/JSON-object-definitions/
 
 Supported audio formats are as follows: ${RHRE3.SUPPORTED_DECODING_SOUND_TYPES}.
 
