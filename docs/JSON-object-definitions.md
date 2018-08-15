@@ -26,6 +26,20 @@ Examples (`coolGame` is the game ID):<br>
 Note that this only works in the same `DataObject` the star-ID is in. If you're referring to
 other cues or patterns NOT from this same DataObject, you must put its full ID.
 
+### Language suffixes
+Some games may be language-specific. You should use the correct icon overlay in
+the `example/` folder in the SFX Database, and use the following table for language suffixes (capitalize the first letter when necessary):
+
+| Language | Suffix |
+|---|---|
+| English | `en` |
+| Japanese | `ja` |
+| Korean | `ko` |
+| Spanish | `es` |
+| French | `fr` |
+| Italian | `it` |
+| German | `de`
+
 ### A note on deprecated IDs
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
 to this current object for older save files. You will see them frequently.
