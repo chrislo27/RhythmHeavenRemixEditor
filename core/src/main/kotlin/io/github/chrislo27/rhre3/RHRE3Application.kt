@@ -38,6 +38,7 @@ import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
+import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
@@ -53,8 +54,7 @@ import kotlin.concurrent.thread
 
 
 class RHRE3Application(logger: Logger, logToFile: File?)
-    : ToolboksGame(logger, logToFile, RHRE3.VERSION,
-                   RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE) {
+    : ToolboksGame(logger, logToFile, RHRE3.VERSION, RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE), CloseListener {
 
     companion object {
         lateinit var instance: RHRE3Application
@@ -343,6 +343,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         AnalyticsHandler.dispose()
         MidiHandler.dispose()
     }
+
+    override fun attemptClose(): Boolean = (screen as? CloseListener)?.attemptClose() != false
 
     fun persistWindowSettings() {
         val isFullscreen = Gdx.graphics.isFullscreen
