@@ -101,6 +101,7 @@ object GameRegistry : Disposable {
         val seriesCount: Map<Series, Int> = mutableMapOf()
         //        val changelog: ChangelogObject
         private val currentObj: CurrentObject
+        val sfxCredits: List<String>
         val version: Int
             get() = currentObj.version
         val editorVersion: Version
@@ -149,12 +150,23 @@ object GameRegistry : Disposable {
         private val currentObjFh: FileHandle by lazy {
             GitHelper.SOUNDS_DIR.child("current.json")
         }
+        private val sfxCreditsFh: FileHandle by lazy {
+            GitHelper.SOUNDS_DIR.child("credits.json")
+        }
 
         private var index: Int = 0
         var lastLoadedID: String? = null
 
         init {
-            currentObj = JsonHandler.fromJson(currentObjFh.readString())
+            currentObj = JsonHandler.fromJson(currentObjFh.readString("UTF-8"))
+            sfxCredits = sfxCreditsFh.takeIf(FileHandle::exists)?.readString("UTF-8")?.let {
+                try {
+                    JsonHandler.fromJson(it, Array<String>::class.java).toList()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+            } ?: listOf()
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
         }
