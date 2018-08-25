@@ -11,17 +11,13 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.stage.GenericStage
-import io.github.chrislo27.rhre3.util.attemptRememberDirectory
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
-import io.github.chrislo27.rhre3.util.persistDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.TextLabel
-import javafx.application.Platform
-import javafx.stage.FileChooser
-import java.io.File
+import kotlinx.coroutines.experimental.launch
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -42,22 +38,6 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
         }
     private val mainLabel: TextLabel<TexEntChooserScreen>
 
-    private fun createFileChooser() =
-            FileChooser().apply {
-                this.initialDirectory = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT)
-                        ?: getDefaultDirectory()
-                val key = "screen.texent.fileFilter"
-                val extensions = arrayOf("*.png", "*.jpg")
-
-                this.extensionFilters.clear()
-                val filter = FileChooser.ExtensionFilter(Localization[key], *extensions)
-
-                this.extensionFilters += filter
-                this.selectedExtensionFilter = this.extensionFilters.first()
-
-                this.title = Localization["screen.texent.fileChooserTitle"]
-            }
-
     init {
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
         stage.titleLabel.text = "screen.texent.title"
@@ -70,7 +50,7 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
 
         val palette = main.uiPalette
         stage.centreStage.elements += object : TextLabel<TexEntChooserScreen>(palette, stage.centreStage,
-                                                                          stage.centreStage) {
+                                                                              stage.centreStage) {
             override fun frameUpdate(screen: TexEntChooserScreen) {
                 super.frameUpdate(screen)
                 this.visible = isChooserOpen
@@ -105,40 +85,41 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            Platform.runLater {
+            launch {
                 isChooserOpen = true
-                val fileChooser = createFileChooser()
-                val file: File? = fileChooser.showOpenDialog(null)
-                isChooserOpen = false
-                if (file != null && main.screen == this) {
-                    fileChooser.initialDirectory = if (!file.isDirectory) file.parentFile else file
-                    persistDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT, fileChooser.initialDirectory)
-                    Gdx.app.postRunnable {
-                        try {
-                            val remix = editor.remix
+                val filters = listOf(FileChooserExtensionFilter(Localization["screen.texent.fileFilter"], "*.png", "*.jpg", "*.bmp"))
+                FileChooser.openFileChooser(Localization["screen.texent.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
+                    isChooserOpen = false
+                    if (file != null && main.screen == this) {
+                        val initialDirectory = if (!file.isDirectory) file.parentFile else file
+                        persistDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT, initialDirectory)
+                        Gdx.app.postRunnable {
+                            try {
+                                val remix = editor.remix
 
-                            // Attempt load texture
-                            val texture = Texture(FileHandle(file))
-                            val hash: String = MessageDigest.getInstance("SHA-1").let {
-                                it.update(file.readBytes())
-                                BigInteger(1, it.digest()).toString(16)
+                                // Attempt load texture
+                                val texture = Texture(FileHandle(file))
+                                val hash: String = MessageDigest.getInstance("SHA-1").let {
+                                    it.update(file.readBytes())
+                                    BigInteger(1, it.digest()).toString(16)
+                                }
+
+                                if (remix.textureCache.containsKey(hash)) {
+                                    texture.dispose()
+                                } else {
+                                    remix.textureCache[hash] = texture
+                                }
+                                entity.textureHash = hash
+
+                                stage.onBackButtonClick()
+                            } catch (t: Throwable) {
+                                t.printStackTrace()
+                                updateLabels(t)
                             }
-
-                            if (remix.textureCache.containsKey(hash)) {
-                                texture.dispose()
-                            } else {
-                                remix.textureCache[hash] = texture
-                            }
-                            entity.textureHash = hash
-
-                            stage.onBackButtonClick()
-                        } catch (t: Throwable) {
-                            t.printStackTrace()
-                            updateLabels(t)
                         }
+                    } else {
+                        stage.onBackButtonClick()
                     }
-                } else {
-                    stage.onBackButtonClick()
                 }
             }
         }
