@@ -64,6 +64,9 @@ class DataObject {
     var priority: Int = 0
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var searchHints: List<String>? = null
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var noDisplay: Boolean = false
 
     lateinit var objects: List<NamedIDObject>

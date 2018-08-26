@@ -319,7 +319,7 @@ object GameRegistry : Disposable {
                         //                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
-                            dataObject.priority, directive.isCustom, dataObject.noDisplay, false)
+                            dataObject.priority, directive.isCustom, dataObject.noDisplay, dataObject.searchHints ?: listOf(), jsonless = false)
                 val baseFileHandle = directive.folder.parent()
 
                 fun String.starSubstitution(): String = replace("*", gameID)
@@ -387,7 +387,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             nameWithoutExt,
                             true,
-                            0, true, false, true)
+                            0, true, false, listOf(), jsonless = true)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES

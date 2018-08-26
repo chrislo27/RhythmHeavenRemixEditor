@@ -57,7 +57,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             val hadFocus = hasFocus
             super.onLeftClick(xPercent, yPercent)
-            editor.pickerSelection.filter = editorStage.searchFilter
+            editor.pickerSelection.filter = searchFilter
             editorStage.updateSelected(
                     if (!hadFocus) EditorStage.DirtyType.SEARCH_DIRTY else EditorStage.DirtyType.DIRTY)
         }

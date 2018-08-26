@@ -54,7 +54,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
             GAME_NAME -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     query in group.name.toLowerCase(Locale.ROOT)
-                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                            || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) } }
                 }
 
                 gameGroups.associateTo(gamesPerGroup) {
@@ -62,7 +62,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                         if (query in it.name.toLowerCase(Locale.ROOT)) {
                             this.list.addAll(it.games)
                         } else {
-                            it.games.filterTo(this.list) { game -> query in game.name.toLowerCase(Locale.ROOT) }
+                            it.games.filterTo(this.list) { game -> query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) } }
                         }
                     }
                 }
@@ -97,7 +97,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
             CALL_AND_RESPONSE -> {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     group.games.any { game ->
-                        query in game.name.toLowerCase(Locale.ROOT) && game.hasCallAndResponse
+                        game.hasCallAndResponse && query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) }
                     }
                 }
 
@@ -116,7 +116,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
                     (group.isFavourited && query in group.name.toLowerCase(Locale.ROOT))
                             || group.games.any { game ->
-                        game.isFavourited && query in game.name.toLowerCase(Locale.ROOT)
+                        game.isFavourited && query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) }
                     }
                 }
 
@@ -140,7 +140,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                         .map(ModelEntity<*>::datamodel)
                         .map(Datamodel::game)
                         .distinct()
-                        .filter { query in it.name.toLowerCase(Locale.ROOT) }
+                        .filter { game -> query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) } }
                         .groupBy(Game::gameGroup)
                         .asSequence()
                         .associateTo(gamesPerGroup) {
