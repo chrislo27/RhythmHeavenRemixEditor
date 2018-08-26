@@ -267,6 +267,8 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth * 0.09f,
                                   screenHeight = buttonHeight * 0.8f)
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+
+                this.visible = RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor
             }
             dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
                 private var clicks = 0
