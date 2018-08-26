@@ -28,6 +28,7 @@ import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.util.FadeIn
 import io.github.chrislo27.rhre3.util.FadeOut
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -205,12 +206,13 @@ class InfoScreen(main: RHRE3Application)
                 this.text = "screen.info.info"
             }
             // current program version
-            versionLabel = object : TextLabel<InfoScreen>(palette, centre, centre){
+            versionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
                 private var clicks = 0
                 private var timeSinceLastClick = System.currentTimeMillis()
                 private val CLICKS_RESET = 3000L
                 private var resetTextIn: Float = 0f
                 private val color = Color(1f, 1f, 1f, 1f)
+                private val notes = listOf(0, 2, 4, 5, 7)
 
                 init {
                     this.textColor = color
@@ -223,7 +225,8 @@ class InfoScreen(main: RHRE3Application)
                     if (System.currentTimeMillis() - timeSinceLastClick >= CLICKS_RESET) {
                         clicks = 0
                     }
-                    resetTextIn = 0f
+//                    resetTextIn = 0f
+                    AssetRegistry.get<Sound>("weird_sfx_bts_c").play(0.5f, Semitones.getALPitch((if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS)) notes.asReversed() else notes).getOrElse(clicks) { 0 }), 0f)
                     clicks++
                     timeSinceLastClick = System.currentTimeMillis()
 
@@ -235,6 +238,11 @@ class InfoScreen(main: RHRE3Application)
 
                         this.text = "Adv. Options ${if (main.advancedOptions) "enabled" else "disabled"}"
                         resetTextIn = 3f
+
+                        AssetRegistry.get<Sound>("weird_sfx_bts_pew").play(0.5f)
+                        if (!old) {
+                            AssetRegistry.get<Sound>("weird_sfx_bts_c").play(0.5f, Semitones.getALPitch(12), 0f)
+                        }
                     }
                 }
 
@@ -286,7 +294,7 @@ class InfoScreen(main: RHRE3Application)
                     clicks++
                     timeSinceLastClick = System.currentTimeMillis()
 
-                    AssetRegistry.get<Sound>("weird_sfx_honk").play()
+                    AssetRegistry.get<Sound>("weird_sfx_honk").play(0.5f)
                 }
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
