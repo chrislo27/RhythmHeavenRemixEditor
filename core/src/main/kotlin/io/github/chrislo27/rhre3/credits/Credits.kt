@@ -30,8 +30,8 @@ object Credits {
                         "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, WinterAlexander, RHModding Discord server",
                 "resources" crediting
                         "Rhythm Heaven assets by Nintendo\n" +
-                        "[#FF8900]Kotlin[] by JetBrains\n" +
-                        "[DARK_GRAY]lib[][#E10000]GDX[] by Badlogic Games\n" +
+                        "[#FF8900]Kotlin[]\n" +
+                        "[DARK_GRAY]lib[][#E10000]GDX[]\n" +
                         "LWJGL\n" +
                         "Toolboks\n" +
                         "Beads\n" +
