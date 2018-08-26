@@ -7,7 +7,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 
 object Credits {
 
-    private val sfxCreditsFallback: String = "baguette, Huebird, Miracle22, Eggman199, Mariofan5000, The Golden Station, GuardedLolz, GlitchyPSIX, sp00pster, Lvl100Feraligatr, WaluigiTime64, Draster"
+    private val sfxCreditsFallback: String = "baguette, Huebird, Miracle22, Eggman199, Mariofan5000, The Golden Station, GuardedLolz, GlitchyPSIX, sp00pster, Lvl100Feraligatr, WaluigiTime64, Draster, Maxanum"
 
     fun generateList(): List<Credit> {
         return listOf(
@@ -28,14 +28,6 @@ object Credits {
                         "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
                         "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
                         "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, WinterAlexander, RHModding Discord server",
-                "rhre2" crediting
-                        "(◉.◉)☂, ahemtoday, Altonotone, ArendAlphaEagle, Armodillomatt12, baguette, Chef May, " +
-                        "ChocolateJake, ChorusSquid, Chowder, David Mismo, Dragoneteur, Eggman199, " +
-                        "fartiliumstation, Gabgab2222, GlitchyPSIX, GuardedLolz, Haydorf, " +
-                        "Huebird of Happiness, iRonnoc5, Kana, Killble, Locorito, Lovestep, Mariofan5000, Maxanum, megaminerzero, " +
-                        "Miracle22, mistuh_salmon, Pengu123, quantic, " +
-                        "Serena Strawberry, Strawzzboy64, The Golden Station, TheGarnet_, TheNewOrchestra, " +
-                        "TheRhythmKid, TieSoul, ToonLucas22, Whistler_420",
                 "resources" crediting
                         "Rhythm Heaven assets by Nintendo\n" +
                         "[#FF8900]Kotlin[] by JetBrains\n" +
