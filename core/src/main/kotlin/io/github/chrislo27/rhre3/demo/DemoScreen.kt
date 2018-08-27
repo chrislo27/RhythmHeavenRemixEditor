@@ -45,7 +45,7 @@ class DemoScreen(main: RHRE3Application, val nextScreen: Screen?)
         label = TextLabel(main.uiPalette, stage.centreStage, stage.centreStage).apply {
             this.isLocalizationKey = false
             this.textAlign = Align.center
-            this.text = "This is a special demo version of RHRE ${RHRE3.VERSION.copy(suffix = "")}.\nIt contains the new [CYAN]swing[], [CYAN]track resize[], and [CYAN]stored pattern[] features.\n\nThis version is only valid from\n[LIGHT_GRAY]${Demo.localStartTime.toString().replace("T", " ")} ${ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ROOT)}[] to [LIGHT_GRAY]${Demo.localEndTime.toString().replace("T", " ")} ${ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ROOT)}[],\nand will immediately exit once time expires.\n\nAn internet connection is required at startup.\n\nUpdated documentation is available at\n[LIGHT_GRAY]http://rhre.readthedocs.io/en/dev/README/[]"
+            this.text = "This is a special demo version of RHRE ${RHRE3.VERSION.copy(suffix = "")}.\nIt contains the new [CYAN]swing[], [CYAN]track resize[], and [CYAN]stored pattern[] features.\n\nThis version is only valid from\n[LIGHT_GRAY]${Demo.localStartTime.toString().replace("T", " ")} ${ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ROOT)}[] to [LIGHT_GRAY]${Demo.localEndTime.toString().replace("T", " ")} ${ZoneId.systemDefault().getDisplayName(TextStyle.SHORT, Locale.ROOT)}[],\nand will immediately exit once time expires.\n\nAn internet connection is required at startup.\n\nUpdated documentation is available at\n[LIGHT_GRAY]https://rhre.readthedocs.io/en/dev/README/[]"
         }
         stage.centreStage.elements += label
 
@@ -136,7 +136,7 @@ class DemoScreen(main: RHRE3Application, val nextScreen: Screen?)
         stage.bottomStage.elements += object : Button<DemoScreen>(main.uiPalette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                Gdx.net.openURI("http://rhre.readthedocs.io/en/dev/README/")
+                Gdx.net.openURI("https://rhre.readthedocs.io/en/dev/README/")
             }
         }.apply {
             this.addLabel(
