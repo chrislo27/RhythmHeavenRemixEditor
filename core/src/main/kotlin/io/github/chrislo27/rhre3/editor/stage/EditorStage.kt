@@ -208,7 +208,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
-            updateSelected(DirtyType.SEARCH_DIRTY)
+            updateSelected(DirtyType.DIRTY)
         }
 
         patternAreaArrowLabel.textColor = if (editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else null
