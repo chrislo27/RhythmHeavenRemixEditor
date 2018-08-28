@@ -13,8 +13,8 @@
    viewBox="0 0 126.79902 119.53719"
    version="1.1"
    id="svg4136"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="128.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="logo.svg"
    style="enable-background:new"
    inkscape:export-xdpi="569.43866"
    inkscape:export-ydpi="569.43866">
@@ -73,21 +73,31 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
      id="namedview4244"
      showgrid="false"
-     inkscape:zoom="3.3125"
-     inkscape:cx="70.265202"
-     inkscape:cy="72.701986"
+     inkscape:zoom="37.476659"
+     inkscape:cx="153.38248"
+     inkscape:cy="99.249075"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer6"
+     inkscape:current-layer="layer3"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true">
+    <sodipodi:guide
+       position="121.14708,72.787436"
+       orientation="0,1"
+       id="guide856"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <g
      inkscape:groupmode="layer"
      id="layer7"
@@ -227,8 +237,7 @@
      inkscape:groupmode="layer"
      id="layer3"
      inkscape:label="Square 1"
-     transform="translate(-0.39277638,-5.5767548)"
-     sodipodi:insensitive="true">
+     transform="translate(-0.39277638,-5.5767548)">
     <g
        transform="translate(0.2813681,-1.1500425)"
        id="g4445"
@@ -238,7 +247,7 @@
          style="opacity:1;fill:url(#linearGradient4443);fill-opacity:1;stroke:none;stroke-width:0.09375"
          inkscape:connector-curvature="0"
          id="path4138"
-         d="m 6.2584928,6.7267973 114.9999972,0 0,45.7497597 c 0,0 -114.9468312,0.999888 -114.9999972,1 z" />
+         d="M 6.2584928,6.7267973 H 121.25849 l 0,46.7497597 c 0,0 -114.9468312,-1.12e-4 -114.9999972,0 z" />
       <rect
          y="11.020523"
          x="10.075604"
