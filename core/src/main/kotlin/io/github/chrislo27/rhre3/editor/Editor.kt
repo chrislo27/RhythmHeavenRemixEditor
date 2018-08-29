@@ -1255,6 +1255,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 } else {
                     Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
                 }
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+                main.screen = AnalyzeBeatsScreen(main, this)
             }
         }
 

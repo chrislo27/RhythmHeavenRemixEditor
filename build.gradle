@@ -70,6 +70,7 @@ project(":core") {
         compile "com.github.chrislo27:musique-barebones:8354a9b1a0"
         compile "com.segment.analytics.java:analytics:+"
         compile "com.github.MinnDevelopment:java-discord-rpc:v2.0.1"
+        compile "com.github.chrislo27:beatdetect:2253fd2"
 
         compile fileTree(dir: 'libs', include: ['*.jar'])
     }

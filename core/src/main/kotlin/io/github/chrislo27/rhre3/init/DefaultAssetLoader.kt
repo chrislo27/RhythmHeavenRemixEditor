@@ -100,6 +100,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_x", "images/ui/icons/x.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_donate", "images/ui/donate.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_bug", "images/ui/icons/bug.png")
+        AssetRegistry.loadAsset<Texture>("ui_icon_cuenumber", "images/ui/icons/cuenumber.png")
 
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
