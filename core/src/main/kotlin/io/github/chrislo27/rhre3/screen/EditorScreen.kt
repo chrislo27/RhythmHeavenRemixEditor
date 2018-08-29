@@ -14,7 +14,7 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 
 class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, EditorScreen>(main) {
 
-    val editor: Editor = Editor(main, main.defaultCamera)
+    val editor: Editor = Editor(main, main.defaultCamera, true)
     override val stage: EditorStage
         get() = editor.stage
 

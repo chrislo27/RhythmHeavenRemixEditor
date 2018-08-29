@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import java.util.concurrent.CopyOnWriteArrayList
 import javax.sound.midi.*
 import kotlin.concurrent.thread
 
@@ -12,6 +13,7 @@ import kotlin.concurrent.thread
 object MidiHandler : Disposable {
 
     private const val MIDI_NOTE_ID = "sfx_sing_loop"
+    val noteListeners: MutableList<MidiNoteListener> = CopyOnWriteArrayList()
     @Volatile
     private var midiDevice: MidiDevice? = null
 
@@ -45,11 +47,17 @@ object MidiHandler : Disposable {
         midiDevice?.close()
     }
 
+    interface MidiNoteListener {
+
+        fun noteOn(note: MidiReceiver.Note)
+
+        fun noteOff(note: MidiReceiver.Note)
+
+    }
+
     class MidiReceiver(val device: MidiDevice) : Receiver {
 
-        private val notes: MutableMap<Int, Note> = mutableMapOf()
-
-        inner class Note(val semitone: Int, val volume: Float) {
+        class Note(val semitone: Int, val volume: Float) {
 
             private val soundID: Long
 
@@ -70,6 +78,8 @@ object MidiHandler : Disposable {
             }
         }
 
+        private val notes: MutableMap<Int, Note> = mutableMapOf()
+
         override fun send(message: MidiMessage?, timeStamp: Long) {
             if (message == null || message !is ShortMessage)
                 return
@@ -80,13 +90,20 @@ object MidiHandler : Disposable {
 
             fun on() {
                 notes.remove(semitone)?.onRemove()
-                notes[semitone] = Note(semitone, volume)
+                val note = Note(semitone, volume)
+                notes[semitone] = note
 //                println("Note on: ${Semitones.getSemitoneName(semitone)} $volume")
+
+                MidiHandler.noteListeners.forEach { it.noteOn(note) }
             }
 
             fun off() {
-                notes.remove(semitone)?.onRemove()
+                val note = notes.remove(semitone)
+                note?.onRemove()
 //                println("Note off: ${Semitones.getSemitoneName(semitone)}")
+
+                if (note != null)
+                    MidiHandler.noteListeners.forEach { it.noteOff(note) }
             }
 
             when (command) {

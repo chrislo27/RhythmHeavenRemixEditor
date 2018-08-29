@@ -36,6 +36,7 @@ import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
+import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
@@ -85,7 +86,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
-class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
+class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attachMidiListeners: Boolean)
     : Disposable, InputProcessor {
 
     companion object {
@@ -302,6 +303,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
 
             cachedPlaybackStart = Float.POSITIVE_INFINITY to ""
             cachedMusicStart = Float.POSITIVE_INFINITY to ""
+        }
+
+        if (attachMidiListeners) {
+            MidiHandler.noteListeners += object : MidiHandler.MidiNoteListener {
+                override fun noteOn(note: MidiHandler.MidiReceiver.Note) {
+                    Gdx.app.postRunnable {
+                        val selection = this@Editor.selection
+                        if (remix.playState != STOPPED || clickOccupation != ClickOccupation.None || selection.isEmpty()) return@postRunnable
+                        changePitchOfSelection(note.semitone, false, true, selection)
+                    }
+                }
+
+                override fun noteOff(note: MidiHandler.MidiReceiver.Note) {
+//                    Gdx.app.postRunnable {
+//                        if (remix.playState != STOPPED) return@postRunnable
+//                    }
+                }
+            }
         }
     }
 
@@ -1929,6 +1948,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
                 remix.addActionWithoutMutating(clickOccupation)
             }
             this.clickOccupation = ClickOccupation.None
+
             return true
         } else if (clickOccupation is ClickOccupation.Playback &&
                 button == Input.Buttons.RIGHT) {
@@ -2086,6 +2106,44 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         return false
     }
 
+    private fun changePitchOfSelection(change: Int, delta: Boolean, canExceedLimits: Boolean, selection: List<Entity>) {
+        val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
+        val oldPitches = repitchables.map { (it as IRepitchable).semitone }
+
+        val anyChanged = selection.fold(false) { acc, it ->
+            if (it is IRepitchable && it.canBeRepitched) {
+                val current = it.semitone
+                val new = if (delta) (current + change) else change
+                if (!canExceedLimits) {
+                    if (new in it.semitoneRange) {
+                        it.semitone = new
+                        return@fold true
+                    } else if (it.semitoneRange.last in (current + 1)..(new - 1)) {
+                        it.semitone = it.semitoneRange.last
+                        return@fold true
+                    } else if (it.semitoneRange.first in (new + 1)..(current - 1)) {
+                        it.semitone = it.semitoneRange.first
+                        return@fold true
+                    }
+                } else {
+                    it.semitone = new
+                    return@fold true
+                }
+            }
+            acc
+        }
+
+        if (anyChanged) {
+            val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction
+
+            if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
+                lastAction.reloadNewPitches()
+            } else {
+                remix.addActionWithoutMutating(EntityRepitchAction(this, repitchables, oldPitches))
+            }
+        }
+    }
+
     override fun scrolled(amount: Int): Boolean {
         if (remix.playState != STOPPED) {
             return false
@@ -2098,37 +2156,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera)
         if (tool == Tool.SELECTION && selection.isNotEmpty() && !shift) {
             when (scrollMode) {
                 Editor.ScrollMode.PITCH -> {
-                    val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
-                    val oldPitches = repitchables.map { (it as IRepitchable).semitone }
-                    val changeAmount = -amount * (if (control) 2 else 1)
-
-                    val anyChanged = selection.fold(false) { acc, it ->
-                        if (it is IRepitchable && it.canBeRepitched) {
-                            val current = it.semitone
-                            val new = current + changeAmount
-                            if (new in it.semitoneRange) {
-                                it.semitone = new
-                                return@fold true
-                            } else if (it.semitoneRange.last in (current + 1)..(new - 1)) {
-                                it.semitone = it.semitoneRange.last
-                                return@fold true
-                            } else if (it.semitoneRange.first in (new + 1)..(current - 1)) {
-                                it.semitone = it.semitoneRange.first
-                                return@fold true
-                            }
-                        }
-                        acc
-                    }
-
-                    if (anyChanged) {
-                        val lastAction: EntityRepitchAction? = remix.getUndoStack().peekFirst() as? EntityRepitchAction
-
-                        if (lastAction != null && lastAction.entities.containsAll(repitchables)) {
-                            lastAction.reloadNewPitches()
-                        } else {
-                            remix.addActionWithoutMutating(EntityRepitchAction(this, repitchables, oldPitches))
-                        }
-                    }
+                    changePitchOfSelection(-amount * (if (control) 2 else 1), true, false, selection)
                 }
                 Editor.ScrollMode.VOLUME -> {
                     val volumetrics = selection.filter { it is IVolumetric && it.isVolumetric }

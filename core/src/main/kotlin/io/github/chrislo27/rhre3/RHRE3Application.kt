@@ -181,6 +181,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         // load themes
         LoadedThemes.reloadThemes(preferences, true)
 
+        // MIDI input
+        MidiHandler
+
         // screens
         run {
             ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
