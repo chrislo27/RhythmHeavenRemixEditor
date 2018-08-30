@@ -62,6 +62,7 @@ project(":core") {
         compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
         compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.23.4"
         compile "org.asynchttpclient:async-http-client:2.4.4"
+        compile "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
         compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.4"
         compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4"
         compile "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
