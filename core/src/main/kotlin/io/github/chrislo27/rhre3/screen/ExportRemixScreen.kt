@@ -466,13 +466,16 @@ class ExportRemixScreen(main: RHRE3Application)
             }
 
             // SFX
-            context.out.addDependent(Clock(context, (1f / 60f) * 1000).apply {
+            context.out.addDependent(Clock(context, ((1.0 / 100.0) * 1000.0).toFloat()).apply {
                 addMessageListener(addBead {
                     remix.seconds = (context.time + startMs).toFloat() / 1000.0f
                     remix.entities.forEach {
                         remix.entityUpdate(it)
                     }
-
+                })
+            })
+            context.out.addDependent(Clock(context, 1000f / 60).apply {
+                addMessageListener(addBead {
                     val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100).toInt()
                     updateProgress("pcm", percent, 1)
                 })
