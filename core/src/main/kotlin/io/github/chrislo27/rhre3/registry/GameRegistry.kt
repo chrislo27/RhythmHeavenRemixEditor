@@ -309,14 +309,14 @@ object GameRegistry : Disposable {
                 val gameID = dataObject.id
                 if (!gameID.matches(ID_REGEX))
                     error("Game ID ($gameID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
+                if (folder.name() != gameID)
+                    error("Game ID does not match folder name")
 
                 game = Game(dataObject.id,
                             dataObject.name,
                             Series.valueOf(dataObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
-                            if (directive.textureFh.exists()) Texture(directive.textureFh)
-                            else Texture("images/missing_game_icon.png"),
-                        //                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
+                            if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture("images/missing_game_icon.png"),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
                             dataObject.priority, directive.isCustom, dataObject.noDisplay, dataObject.searchHints ?: listOf(), jsonless = false)
