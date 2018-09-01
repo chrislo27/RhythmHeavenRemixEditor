@@ -94,6 +94,13 @@ class OpenRemixScreen(main: RHRE3Application)
 
         val palette = main.uiPalette
 
+        stage.centreStage.elements += object : LoadingIcon<OpenRemixScreen>(palette, stage.centreStage) {
+            override var visible: Boolean = true
+                get() = super.visible && (isLoading || isLoadingSounds)
+        }.apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
+        }
         stage.centreStage.elements += object : TextLabel<OpenRemixScreen>(palette, stage.centreStage,
                                                                           stage.centreStage) {
             override fun frameUpdate(screen: OpenRemixScreen) {
@@ -114,13 +121,6 @@ class OpenRemixScreen(main: RHRE3Application)
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
-        stage.centreStage.elements += object : LoadingIcon<OpenRemixScreen>(palette, stage.centreStage) {
-            override var visible: Boolean = true
-                get() = super.visible && (isLoading || isLoadingSounds)
-        }.apply {
-            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
-        }
         loadButton = LoadButton(palette, stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.25f, screenWidth = 0.5f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
