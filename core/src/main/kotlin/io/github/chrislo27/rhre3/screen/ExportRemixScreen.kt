@@ -47,6 +47,7 @@ import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.experimental.launch
 import net.beadsproject.beads.core.Bead
+import net.beadsproject.beads.core.UGen
 import net.beadsproject.beads.ugens.Clock
 import net.beadsproject.beads.ugens.DelayTrigger
 import net.beadsproject.beads.ugens.RangeLimiter
@@ -465,8 +466,40 @@ class ExportRemixScreen(main: RHRE3Application)
                 }))
             }
 
-            // SFX
-            context.out.addDependent(Clock(context, ((1.0 / 100.0) * 1000.0).toFloat()).apply {
+            // SFX timing
+            // The clock resolution will change depending on the tempo in the remix at any point in time
+            // The theoretical coarsest resolution should be 1/32 beats per clock cycle (0.03125) (based on snap divisions)
+            // But, to be safe, the coarsest ideal resolution will be 1/50 beats per clock cycle
+            // The computed ms interval value should be between 0.1 and 10 ms to ensure precision
+            val clockTimerControl: UGen = object : UGen(context, 1) {
+                override fun calculateBuffer() {
+                    // NO-OP
+                }
+                override fun setValue(value: Float) {
+                    // NO-OP, always computed
+                }
+
+                override fun getValueDouble(): Double {
+                    // To compute:
+                    // Find out how many ms are in a beat, based on the tempo.
+                    val tempo = remix.tempos.tempoAtSeconds(remix.seconds)
+                    val msPerBeat = (1.0 / tempo) * 60_000
+                    // Target resolution is 1/50 beats per cycle, so divide by 50
+                    return (msPerBeat / 50.0).coerceIn(0.1, 10.0)
+                    // In theory, the 0.1 ms threshold will not be met. The maximum BPM is 600, which results in a timing of 2 ms.
+                }
+
+                override fun getValue(i: Int, j: Int): Float {
+                    return getValueDouble(i, j).toFloat()
+                }
+                override fun getValue(): Float {
+                    return valueDouble.toFloat()
+                }
+                override fun getValueDouble(i: Int, j: Int): Double {
+                    return valueDouble
+                }
+            }
+            context.out.addDependent(Clock(context, clockTimerControl).apply {
                 addMessageListener(addBead {
                     remix.seconds = (context.time + startMs).toFloat() / 1000.0f
                     remix.entities.forEach {
@@ -474,6 +507,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     }
                 })
             })
+            // Update labels at 60 fps
             context.out.addDependent(Clock(context, 1000f / 60).apply {
                 addMessageListener(addBead {
                     val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100).toInt()
