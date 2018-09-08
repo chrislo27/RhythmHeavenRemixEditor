@@ -1388,6 +1388,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                         EntitySelectionAction(this, this.selection.toList(), listOf())
                                                                                  )))
                                 this.selection = listOf()
+
+                                updateMessageLabel()
                             } else if (Gdx.input.isKeyJustPressed(Input.Keys.INSERT)) {
                                 main.screen = PatternStoreScreen(main, this, null, selection.toList())
                             }
@@ -1423,8 +1425,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     (Gdx.input.isKeyJustPressed(Input.Keys.Y) ||
                             (shift && Gdx.input.isKeyJustPressed(Input.Keys.Z)))) {
                 remix.redo()
+                updateMessageLabel()
             } else if (remix.canUndo() && Gdx.input.isKeyJustPressed(Input.Keys.Z) && !shift) {
                 remix.undo()
+                updateMessageLabel()
             }
         }
 
