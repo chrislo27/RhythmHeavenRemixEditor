@@ -21,7 +21,13 @@ Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
+## Features
 ![Palettes screenshot](.github/rhre3palettes.png)
+
+* Drag-and-drop common RH game patterns into your remix
+* Change tempo and music volumes easily
+* Automatic SFX database updating as community fixes/additions get pulled
+* Every Rhythm Heaven minigame is here!
 
 ## Installation
 Installation is straightforward.
