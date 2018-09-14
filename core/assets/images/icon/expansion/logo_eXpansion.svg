@@ -13,8 +13,8 @@
    viewBox="0 0 126.79902 126.79902"
    version="1.1"
    id="svg4136"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="logo_EX.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="logo_eXpansion.svg"
    style="enable-background:new"
    inkscape:export-filename="C:\Users\dell\Pictures\rhre3big.png"
    inkscape:export-xdpi="569.43866"
@@ -27,7 +27,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -150,13 +150,13 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1366"
-     inkscape:window-height="705"
+     inkscape:window-width="1920"
+     inkscape:window-height="1018"
      id="namedview4244"
      showgrid="false"
-     inkscape:zoom="1.9667969"
-     inkscape:cx="70.807924"
-     inkscape:cy="60.886845"
+     inkscape:zoom="2.7814708"
+     inkscape:cx="171.7384"
+     inkscape:cy="137.34477"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -167,7 +167,15 @@
      fit-margin-bottom="0"
      inkscape:object-paths="true"
      inkscape:snap-bbox="true"
-     inkscape:bbox-nodes="true" />
+     inkscape:bbox-nodes="true"
+     showguides="true"
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="121.14708,72.787437"
+       orientation="0,1"
+       id="guide888"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <g
      inkscape:groupmode="layer"
      id="layer7"
@@ -424,7 +432,7 @@
          style="opacity:1;fill:url(#linearGradient4443);fill-opacity:1;stroke:none;stroke-width:0.09375"
          inkscape:connector-curvature="0"
          id="path4138"
-         d="M 6.2584928,6.7267973 H 121.25849 V 52.476557 c 0,0 -114.9468312,0.999888 -114.9999972,1 z" />
+         d="M 6.2584928,6.7267973 H 121.25849 l 0,46.7497597 c 0,0 -114.9468312,-1.12e-4 -114.9999972,0 z" />
       <rect
          y="11.020523"
          x="10.075604"

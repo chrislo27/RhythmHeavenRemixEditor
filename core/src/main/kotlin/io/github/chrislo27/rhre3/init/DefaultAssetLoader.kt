@@ -121,6 +121,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/etc/wakamette.png")
         AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/etc/yeehaw.png")
         AssetRegistry.loadAsset<Sound>("weird_sfx_honk", "sound/honk.ogg")
+        AssetRegistry.loadAsset<Sound>("weird_sfx_bts_c", "sound/c.ogg")
+        AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
 
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")

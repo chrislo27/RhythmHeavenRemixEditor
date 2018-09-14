@@ -11,7 +11,7 @@ abstract class ScrollList<T> {
             field = value.coerceIn(0, maxIndex)
         }
     val maxIndex: Int get() = (list.size - 1).coerceAtLeast(0)
-    val current: T get() = list[currentIndex]
+    val current: T? get() = list.getOrNull(currentIndex)
 
     var scroll: Int = 0
         set(value) {

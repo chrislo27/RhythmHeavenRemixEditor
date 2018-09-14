@@ -21,7 +21,13 @@ Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)
 * A graphics driver that supports OpenGL 2.0 or higher
 * An Internet connection initially
 
+## Features
 ![Palettes screenshot](.github/rhre3palettes.png)
+
+* Drag-and-drop common RH game patterns into your remix
+* Change tempo and music volumes easily
+* Automatic SFX database updating as community fixes/additions get pulled
+* Every Rhythm Heaven minigame is here!
 
 ## Installation
 Installation is straightforward.
@@ -31,6 +37,8 @@ Installation is straightforward.
 4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
 5. Read the [README](http://rhre.readthedocs.io/en/latest/README/) and get remixing!
 
+
+## Other information
 Rhythm Heaven is not my property -- it is the property of Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to infringe trademark rights.<br>
 This is just a community project and this is available for others to use

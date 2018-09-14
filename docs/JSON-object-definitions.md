@@ -38,7 +38,7 @@ the `example/` folder in the SFX Database, and use the following table for langu
 | Spanish | `es` |
 | French | `fr` |
 | Italian | `it` |
-| German | `de`
+| German | `de` |
 
 ### A note on deprecated IDs
 `deprecatedIDs` is an array of old IDs that are no longer used, but refer
@@ -75,6 +75,7 @@ All `data.json` files for each game are a `DataObject`.
   "group": "Human-Readable Name",
   "groupDefault": false,
   "priority": 0,
+  "searchHints": [],
   "noDisplay": false
 }
 ```
@@ -87,6 +88,7 @@ All `data.json` files for each game are a `DataObject`.
 | group | string? | Name of game without language/game info (see below) |
 | groupDefault | boolean? | Whether this game is the first to show in its group |
 | priority | integer? | Priority for sorting games in the picker. Higher numbers are earlier, lower numbers are later (can be negative). |
+| searchHints | (array of strings)? | Other tags to search this game by in the picker. Optional, defaults to empty array. |
 | noDisplay | boolean? | Whether to hide this game (default false) |
 
 The `name` field is a properly Title Case capitalized name. This is in English.

@@ -29,7 +29,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
     companion object {
         private val TEXTS: List<String> = listOf(Editor.VOLUME_CHAR, "■", "♬")
 
-        private val ownEditor: Editor = Editor(RHRE3Application.instance, RHRE3Application.instance.defaultCamera)
+        private val ownEditor: Editor = Editor(RHRE3Application.instance, RHRE3Application.instance.defaultCamera, false)
         private val ownRemix: Remix
             get() = ownEditor.remix
 

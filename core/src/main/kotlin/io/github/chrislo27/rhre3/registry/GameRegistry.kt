@@ -101,6 +101,7 @@ object GameRegistry : Disposable {
         val seriesCount: Map<Series, Int> = mutableMapOf()
         //        val changelog: ChangelogObject
         private val currentObj: CurrentObject
+        val sfxCredits: List<String>
         val version: Int
             get() = currentObj.version
         val editorVersion: Version
@@ -149,12 +150,23 @@ object GameRegistry : Disposable {
         private val currentObjFh: FileHandle by lazy {
             GitHelper.SOUNDS_DIR.child("current.json")
         }
+        private val sfxCreditsFh: FileHandle by lazy {
+            GitHelper.SOUNDS_DIR.child("credits.json")
+        }
 
         private var index: Int = 0
         var lastLoadedID: String? = null
 
         init {
-            currentObj = JsonHandler.fromJson(currentObjFh.readString())
+            currentObj = JsonHandler.fromJson(currentObjFh.readString("UTF-8"))
+            sfxCredits = sfxCreditsFh.takeIf(FileHandle::exists)?.readString("UTF-8")?.let {
+                try {
+                    JsonHandler.fromJson(it, Array<String>::class.java).toList()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    null
+                }
+            } ?: listOf()
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
         }
@@ -297,17 +309,17 @@ object GameRegistry : Disposable {
                 val gameID = dataObject.id
                 if (!gameID.matches(ID_REGEX))
                     error("Game ID ($gameID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
+                if (folder.name() != gameID)
+                    error("Game ID does not match folder name")
 
                 game = Game(dataObject.id,
                             dataObject.name,
                             Series.valueOf(dataObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
-                            if (directive.textureFh.exists()) Texture(directive.textureFh)
-                            else Texture("images/missing_game_icon.png"),
-                        //                            (if (directive.isCustom) "(Custom) " else "") + (dataObject.group ?: dataObject.name),
+                            if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture("images/missing_game_icon.png"),
                             dataObject.group ?: dataObject.name,
                             dataObject.groupDefault,
-                            dataObject.priority, directive.isCustom, dataObject.noDisplay, false)
+                            dataObject.priority, directive.isCustom, dataObject.noDisplay, dataObject.searchHints ?: listOf(), jsonless = false)
                 val baseFileHandle = directive.folder.parent()
 
                 fun String.starSubstitution(): String = replace("*", gameID)
@@ -375,7 +387,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             nameWithoutExt,
                             true,
-                            0, true, false, true)
+                            0, true, false, listOf(), jsonless = true)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES

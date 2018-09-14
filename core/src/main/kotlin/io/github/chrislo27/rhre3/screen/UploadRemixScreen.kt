@@ -45,12 +45,12 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
     companion object {
         const val MAX_PICOSONG_BYTES: Int = 16000000
         private const val PICOSONG_USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
-        private const val PICOSONG_UPLOAD_URL = "http://picosong.com/async-upload/"
-        const val PICOSONG_MAIN_URL = "http://picosong.com/"
-        const val PICOSONG_TOS_URL = "http://picosong.com/tos"
-        const val PICOSONG_AUP_URL = "http://picosong.com/aup"
-        private const val PICOSONG_NEXT_URL = "http://picosong.com/next/"
-        private const val PICOSONG_SKIP_FIELDS_URL = "http://picosong.com/success/"
+        private const val PICOSONG_UPLOAD_URL = "https://picosong.com/async-upload/"
+        const val PICOSONG_MAIN_URL = "https://picosong.com/"
+        const val PICOSONG_TOS_URL = "https://picosong.com/tos"
+        const val PICOSONG_AUP_URL = "https://picosong.com/aup"
+        private const val PICOSONG_NEXT_URL = "https://picosong.com/next/"
+        private const val PICOSONG_SKIP_FIELDS_URL = "https://picosong.com/success/"
     }
 
     override val stage: GenericStage<UploadRemixScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -318,7 +318,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                     .addHeader("Accept-Language", "en-US,en;q=0.5")
                                     .addHeader("Connection", "keep-alive")
                                     .addHeader("Host", "picosong.com")
-                                    .addHeader("Referer", "http://picosong.com/")
+                                    .addHeader("Referer", PICOSONG_MAIN_URL)
                                     .addHeader("User-Agent", PICOSONG_USER_AGENT)
                                     .addHeader("X-Requested-With", "XMLHttpRequest")
                                     .setCookies(cookies)
@@ -337,7 +337,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                                             "Redirect location header not found:\n$res")
                                     copyButton.visible = true
                                     mainLabel.text = Localization["screen.upload.finalize"]
-                                    Gdx.net.openURI(location)
+                                    Gdx.net.openURI(location.replaceFirst("http://", "https://"))
                                 } else {
                                     error("Bad status code (not 302):\n$res")
                                 }
@@ -352,14 +352,14 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
                     // Analytics
                     launch(CommonPool) {
-                        val regex = "<h2 class=\"short-link text-center\"><a href=\"http://picosong\\.com/([a-zA-Z0-9]+)\">".toRegex()
+                        val regex = "<h2 class=\"short-link text-center\"><a href=\"https?://picosong\\.com/([a-zA-Z0-9]+)\">".toRegex()
                         val body = http.prepareGet("$PICOSONG_SKIP_FIELDS_URL$picosongEditID/")
                                 .addHeader("Accept", "application/json, text/javascript, */*")
                                 .addHeader("Accept-Encoding", "gzip, deflate")
                                 .addHeader("Accept-Language", "en-US,en;q=0.5")
                                 .addHeader("Connection", "keep-alive")
                                 .addHeader("Host", "picosong.com")
-                                .addHeader("Referer", "http://picosong.com/")
+                                .addHeader("Referer", PICOSONG_MAIN_URL)
                                 .addHeader("User-Agent", PICOSONG_USER_AGENT)
                                 .execute().get().responseBody
 
@@ -421,7 +421,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                             .addHeader("Accept-Language", "en-US,en;q=0.5")
                             .addHeader("Connection", "keep-alive")
                             .addHeader("Host", "picosong.com")
-                            .addHeader("Referer", "http://picosong.com/")
+                            .addHeader("Referer", PICOSONG_MAIN_URL)
                             .addHeader("User-Agent", PICOSONG_USER_AGENT)
                             .addHeader("X-Requested-With", "XMLHttpRequest")
                             .setBodyParts(listOf(

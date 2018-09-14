@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.badlogic.gdx.backends.lwjgl.LwjglInput
 import io.github.chrislo27.toolboks.ToolboksGame
+import io.github.chrislo27.toolboks.util.CloseListener
 
 
 /**
@@ -25,7 +26,13 @@ class ToolboksDesktopLauncher(val game: ToolboksGame) {
     }
 
     fun launch(): LwjglApplication {
-        val app = LwjglApplication(game, config)
+        val app = object : LwjglApplication(game, config) {
+            override fun exit() {
+                if ((game as? CloseListener)?.attemptClose() != false) {
+                    super.exit()
+                }
+            }
+        }
         return app
     }
 

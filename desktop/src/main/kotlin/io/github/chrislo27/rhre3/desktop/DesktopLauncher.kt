@@ -4,6 +4,7 @@ import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.logging.Logger
@@ -13,21 +14,6 @@ object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
         RHRE3.launchArguments = args.toList()
-
-        // ONEDAY console commands
-//        thread(isDaemon = true) {
-//            while (true) {
-//                val input: String = readLine() ?: break
-//                val arguments: List<String> = input.split("\\s+".toRegex())
-//
-//                try {
-////                    if (ConsoleCommands.handle(main, arguments.first(), arguments.drop(1)))
-////                        break
-//                } catch (e: Exception) {
-//                    e.printStackTrace()
-//                }
-//            }
-//        }
 
         val logger = Logger()
         val app = RHRE3Application(logger, File(System.getProperty("user.home") + "/.rhre3/logs"))
@@ -58,14 +44,18 @@ object DesktopLauncher {
                     RHRE3.outputCustomSfx = "--output-custom-sfx" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
-//                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
-//
-//                    sizes.forEach {
-//                        this.addIcon("images/icon/$it.png", Files.FileType.Internal)
-//                    }
-                    listOf(256, 128, 64, 32).forEach {
-                        this.addIcon("images/icon/ex/$it.png", Files.FileType.Internal)
+                    if (RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor) {
+                        // RHRExpansion icons
+                        listOf(256, 128, 64, 32).forEach {
+                            this.addIcon("images/icon/ex/$it.png", Files.FileType.Internal)
+                        }
+                    } else {
+                        val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
+                        sizes.forEach {
+                            this.addIcon("images/icon/$it.png", Files.FileType.Internal)
+                        }
                     }
+
                     listOf(24, 16).forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
                     }

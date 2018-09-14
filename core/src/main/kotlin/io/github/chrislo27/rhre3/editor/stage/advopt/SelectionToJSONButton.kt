@@ -72,13 +72,15 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
             try {
                 val bottommost = selection.minBy { it.bounds.y }!!
                 val leftmost = selection.minBy { it.bounds.x }!!
+                val firstGame = selection.first().datamodel.game
+                val allSameParentId = selection.all { it.datamodel.game == firstGame }
                 val json = JsonHandler.toJson(SmallPatternObject().also {
-                    it.id = "*_INSERT-ID"
+                    it.id = "*_"
                     it.deprecatedIDs = listOf()
-                    it.name = "INSERT NAME HERE"
+                    it.name = ""
                     it.cues = selection.map { entity ->
                         SmallCuePointer().also { pointer ->
-                            pointer.id = entity.datamodel.id
+                            pointer.id = if (allSameParentId) entity.datamodel.id.replaceFirst(firstGame.id, "*") else entity.datamodel.id
                             pointer.duration = entity.bounds.width
                             pointer.beat = entity.bounds.x - leftmost.bounds.x
                             pointer.track = (entity.bounds.y - bottommost.bounds.y).roundToInt()

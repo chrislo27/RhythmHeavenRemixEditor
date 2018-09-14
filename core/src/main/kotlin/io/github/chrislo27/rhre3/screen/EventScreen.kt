@@ -66,7 +66,7 @@ class EventScreen(main: RHRE3Application)
 
     private var nextScreen: ToolboksScreen<*, *>? = null
     private var eventType = EventType.NONE
-    private val editor = Editor(main, main.defaultCamera)
+    private val editor = Editor(main, main.defaultCamera, false)
     private val remix: Remix
         get() = editor.remix
     private var canUpdate = 0

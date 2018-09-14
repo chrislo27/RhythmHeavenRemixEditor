@@ -135,8 +135,9 @@ class CreditsScreen(main: RHRE3Application)
         scroll = 0f
         maxScroll = 1f
 
-        text = Credits.list.joinToString(separator = "") {
-            "[#${Color(Color.YELLOW).fromHsv((Credits.list.indexOf(it) * 1f) / Credits.list.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
+        val list = Credits.generateList()
+        text = list.joinToString(separator = "") {
+            "[#${Color(Color.YELLOW).fromHsv((list.indexOf(it) * 1f) / list.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
         } + Localization["licenseInfo"]
 
         maxScroll = (font.getTextHeight(text, element.location.realWidth,
