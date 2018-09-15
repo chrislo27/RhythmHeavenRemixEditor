@@ -329,9 +329,9 @@ object GameRegistry : Disposable {
                     val objID = obj.id.starSubstitution()
                     if (!objID.matches(ID_REGEX))
                         error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
-                    
+
                     when (obj) {
-                    // Note: if this is updated, remember to update GameToJson
+                        // Note: if this is updated, remember to update GameToJson
                         is CueObject ->
                             Cue(game, objID, obj.deprecatedIDs, obj.name,
                                 obj.duration,
@@ -412,6 +412,11 @@ object GameRegistry : Disposable {
             if (existingGame != null) {
                 if (isOverwriting) {
                     Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
+                    // Deprecation check
+                    val missingDeps = existingGame.objects.filter { exObj -> game.objects.none { it.id == exObj.id } }
+                    if (missingDeps.isNotEmpty()) {
+                        Toolboks.LOGGER.warn("These objects were REMOVED from ${game.id} when it was overwritten: ${missingDeps.map { it.id }}")
+                    }
                 } else if (existingGame.isCustom && !game.isCustom) {
                     Toolboks.LOGGER.info(
                             "Ignoring non-custom game ${game.id} because a custom game already exists with the same ID")
@@ -552,7 +557,7 @@ object GameRegistry : Disposable {
                         }
                     }
                 }
-                
+
                 if (model is Cue) {
                     if (model.introSound != null) {
                         if (objectMap[model.introSound] == null) {
