@@ -310,7 +310,7 @@ object GameRegistry : Disposable {
                 if (!gameID.matches(ID_REGEX))
                     error("Game ID ($gameID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
                 if (folder.name() != gameID)
-                    error("Game ID does not match folder name")
+                    error("Game ID ($gameID) does not match folder name ${folder.name()}")
 
                 game = Game(dataObject.id,
                             dataObject.name,
