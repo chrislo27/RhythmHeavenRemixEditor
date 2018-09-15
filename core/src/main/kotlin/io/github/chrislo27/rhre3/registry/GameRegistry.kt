@@ -413,7 +413,7 @@ object GameRegistry : Disposable {
                 if (isOverwriting) {
                     Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
                     // Deprecation check
-                    val missingDeps = existingGame.objects.filter { exObj -> game.objects.none { it.id == exObj.id } }
+                    val missingDeps = existingGame.objects.filter { exObj -> !game.objectsMap.containsKey(exObj.id) }
                     if (missingDeps.isNotEmpty()) {
                         Toolboks.LOGGER.warn("These objects were REMOVED from ${game.id} when it was overwritten: ${missingDeps.map { it.id }}")
                     }

@@ -20,6 +20,12 @@ data class Game(val id: String, val name: String, val series: Series,
     val hasCallAndResponse: Boolean by lazy {
         placeableObjects.any { it is ResponseModel && it.responseIDs.isNotEmpty() }
     }
+    val objectsMap: Map<String, Datamodel> by lazy {
+        objects.associateBy { it.id }
+    }
+    val placeableObjectsMap: Map<String, Datamodel> by lazy {
+        placeableObjects.associateBy { it.id }
+    }
 
     val gameGroup: GameGroup
         get() = GameRegistry.data.gameGroupsMap[group] ?: error("No valid game group for $id with group $group")
