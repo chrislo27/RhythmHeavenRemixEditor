@@ -444,7 +444,7 @@ object GameRegistry : Disposable {
                 }
             }
 
-            if (!isOverwriting && duplicateObjs.isNotEmpty()) {
+            if (duplicateObjs.isNotEmpty()) {
                 error("Duplicate objects in game ${game.id}: $duplicateObjs")
             }
 
