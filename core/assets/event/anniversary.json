@@ -1,13 +1,15 @@
 {
-  "version": "v3.9.1-DEVELOPMENT",
-  "databaseVersion": 41,
-  "playbackStart": 21.0,
+  "version": "v3.13.3",
+  "databaseVersion": 74,
+  "playbackStart": 24.0,
   "musicStartSec": 0.0,
+  "trackCount": 5,
   "isAutosave": false,
   "midiInstruments": 3,
   "musicData": {
     "present": false
   },
+  "textures": [],
   "entities": [
     {
       "type": "model",
@@ -744,6 +746,14 @@
       "semitone": 0,
       "volume": 100,
       "datamodel": "extraSFX/audienceApplause"
+    },
+    {
+      "type": "model",
+      "beat": 36.0,
+      "track": 0,
+      "width": 0.125,
+      "height": 5,
+      "datamodel": "special_endEntity"
     }
   ],
   "trackers": {
@@ -751,21 +761,24 @@
       "trackers": [
         {
           "beat": 0.0,
-          "width": 0.0,
           "seconds": 0.0,
-          "bpm": 125.00019
+          "bpm": 125.00019,
+          "swingRatio": 50,
+          "swingDivision": 1.0
         },
         {
           "beat": 20.875,
-          "width": 0.0,
           "seconds": 10.019984,
-          "bpm": 10.0
+          "bpm": 10.0,
+          "swingRatio": 50,
+          "swingDivision": 1.0
         },
         {
           "beat": 21.0,
-          "width": 0.0,
           "seconds": 10.769984,
-          "bpm": 125.00019
+          "bpm": 125.00019,
+          "swingRatio": 50,
+          "swingDivision": 1.0
         }
       ]
     },
