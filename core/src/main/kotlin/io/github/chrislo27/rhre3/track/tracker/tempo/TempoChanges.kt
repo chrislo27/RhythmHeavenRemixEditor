@@ -22,6 +22,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
                     .put("beat", it.beat)
                     .put("seconds", it.seconds)
                     .put("bpm", it.bpm)
+                    .put("width", it.width)
                     .put("swingRatio", it.swing.ratio)
                     .put("swingDivision", it.swing.division)
         }
@@ -37,7 +38,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
             add(TempoChange(this,
                             it["beat"].asDouble().toFloat(),
                             it["bpm"].asDouble(defaultTempo.toDouble()).toFloat(),
-                            swing),
+                            swing, it["width"]?.floatValue()?.coerceAtLeast(0f) ?: 0f),
                 shouldUpdate = false)
         }
         update()
@@ -51,7 +52,12 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
 
         old.forEach {
             val previous: TempoChange? = backingMap.lowerEntry(it.beat)?.value
-            it.seconds = previous?.beatsToSeconds(it.beat) ?: TempoUtils.beatsToSeconds(it.beat, defaultTempo) // If not present, use straight beats
+            it.seconds = if (previous == null) {
+                TempoUtils.beatsToSeconds(it.beat, defaultTempo) // If not present, use straight beats
+            } else {
+                TempoUtils.beatsToSeconds(it.beat - previous.endBeat, previous.bpm) + previous.endSeconds
+            }
+            it.widthSeconds = TempoChange.getSecondsDuration(it.width, it.previousBpm, it.bpm)
 
             backingMap[it.beat] = it
             backingSecondsMap[it.seconds] = it
@@ -76,7 +82,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
     fun linearSecondsToBeats(seconds: Float): Float {
         val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
 
-        return tc.beat + TempoUtils.secondsToBeats(seconds - tc.seconds, tc.bpm)
+        return tc.secondsToBeats(seconds)
     }
 
     /**
@@ -85,7 +91,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
     fun linearBeatsToSeconds(beat: Float): Float {
         val tc: TempoChange = backingMap.floorEntry(beat)?.value ?: return TempoUtils.beatsToSeconds(beat, defaultTempo)
 
-        return tc.seconds + TempoUtils.beatsToSeconds(beat - tc.beat, tc.bpm)
+        return tc.beatsToSeconds(beat)
     }
 
     fun tempoAt(beat: Float): Float {

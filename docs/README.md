@@ -184,7 +184,7 @@ Hold **`CONTROL`** - Change value by 5x
 The **tempo change** tool has changed slightly from RHRE2. You can change the tempo
 mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
-0.5 BPM.
+0.5 BPM. You can also click and drag the ends to make it a linear gradient of change, but this isn't very useful in practice.
 
 ![Music volume changes](https://i.imgur.com/HQSTPeT.png)<br>
 The **music volume** tool is new in RHRE3. You can change the music volume
