@@ -21,10 +21,10 @@ data class Game(val id: String, val name: String, val series: Series,
         placeableObjects.any { it is ResponseModel && it.responseIDs.isNotEmpty() }
     }
     val objectsMap: Map<String, Datamodel> by lazy {
-        objects.associateBy { it.id }
+        objects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map {dep -> dep to it} }
     }
     val placeableObjectsMap: Map<String, Datamodel> by lazy {
-        placeableObjects.associateBy { it.id }
+        placeableObjects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map {dep -> dep to it} }
     }
 
     val gameGroup: GameGroup
