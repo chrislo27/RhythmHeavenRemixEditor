@@ -377,7 +377,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 editStoredPatternButton.visible = storedPatternsFilter.currentPattern != null
                 patternPreviewButton.visible = false
             } else {
-                patternPreviewButton.visible = true // Allows the update method to change visibility
+                patternPreviewButton.visible = editor.remix.playState == PlayState.STOPPED // Allows the update method to change visibility if stopped
                 patternPreviewButton.update(if (anyDatamodels) filter.currentDatamodel else null)
                 editStoredPatternButton.visible = false
             }
