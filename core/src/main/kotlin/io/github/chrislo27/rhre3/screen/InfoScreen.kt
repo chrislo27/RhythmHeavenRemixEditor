@@ -61,9 +61,8 @@ class InfoScreen(main: RHRE3Application)
     private lateinit var clearRecentsButton: Button<InfoScreen>
     private lateinit var dbVersionLabel: TextLabel<InfoScreen>
     private lateinit var versionLabel: TextLabel<InfoScreen>
-    private var didChangeSettings: Boolean = Version.fromStringOrNull(
-            preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
-        !it.isUnknown && it < VersionHistory.ANALYTICS
+    private var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
+        !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
     private val onlineLabel: TextLabel<InfoScreen>
 
@@ -805,7 +804,7 @@ class InfoScreen(main: RHRE3Application)
                                    mapOf(
                                            "settings" to PreferenceKeys.allSettingsKeys.associate {
                                                it.replace("settings_", "") to (map[it] ?: "null")
-                                           }
+                                           } + ("background" to map[PreferenceKeys.BACKGROUND])
                                         ))
         }
 

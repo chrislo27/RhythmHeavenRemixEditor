@@ -18,12 +18,13 @@ abstract class Background(val id: String) {
                     TilingBackground("rhdsPolkaDots", 5f, speedX = 3f, speedY = -3f, widthCoeff = 0.5f, heightCoeff = 0.5f) { AssetRegistry["bg_polkadot"] },
                     SpaceDanceBackground("spaceDance"),
                     RetroBackground("retro"),
+                    TilingBackground("tapTrial", 5f, speedX = 0f, speedY = 1f) { AssetRegistry["bg_tapTrial"] },
                     TilingBackground("tiled", 5f, speedX = 1f, speedY = 1f) { AssetRegistry["bg_tile"] }
                   )
         }
         val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) }
         val defaultBackground: Background
-            get() = backgroundMap["retro"]!!
+            get() = backgroundMap["tengoku"]!!
     }
 
 }

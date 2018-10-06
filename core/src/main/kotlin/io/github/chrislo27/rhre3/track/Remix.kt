@@ -267,7 +267,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                                 val microseconds: Int = ((data[0].toInt() and 0xFF) shl 16) or ((data[1].toInt() and 0xFF) shl 8) or (data[2].toInt() and 0xFF)
                                 val bpm: Float = 60_000_000f / microseconds
 
-                                remix.tempos.add(TempoChange(remix.tempos, event.tick * beatsPerTick, bpm, Swing.STRAIGHT))
+                                remix.tempos.add(TempoChange(remix.tempos, event.tick * beatsPerTick, bpm, Swing.STRAIGHT, 0f))
                             }
                             0x58 /* TIME_SIGNATURE */ -> {
                                 val data = message.data
@@ -470,7 +470,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             remix.version = Version.fromString(remixObject.version ?: "v2.17.0")
 
             remixObject.bpmChanges?.forEach {
-                remix.tempos.add(TempoChange(remix.tempos, it.beat, it.tempo, Swing.STRAIGHT))
+                remix.tempos.add(TempoChange(remix.tempos, it.beat, it.tempo, Swing.STRAIGHT, 0f))
             }
             remix.musicVolumes.add(
                     MusicVolumeChange(remix.musicVolumes,

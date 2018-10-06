@@ -209,7 +209,6 @@ class ExportRemixScreen(main: RHRE3Application)
                     val fileSize = exportFile.length()
 
                     Gdx.app.postRunnable {
-                        println(fileSize)
                         if (fileSize > MAX_PICOSONG_BYTES) {
                             this@ExportRemixScreen.stage.backButton.enabled = true
                             this@ExportRemixScreen.mainLabel.text = Localization["screen.export.uploadImmediately.cannot"]

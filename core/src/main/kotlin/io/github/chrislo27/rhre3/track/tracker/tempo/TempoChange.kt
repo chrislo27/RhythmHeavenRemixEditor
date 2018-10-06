@@ -1,24 +1,41 @@
 package io.github.chrislo27.rhre3.track.tracker.tempo
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.util.Swing
 import io.github.chrislo27.rhre3.util.SwingUtils
 import io.github.chrislo27.rhre3.util.TempoUtils
+import java.util.*
 
 
-class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swing: Swing)
-    : Tracker<TempoChange>(container, beat, 0.0f) {
+class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swing: Swing, width: Float)
+    : Tracker<TempoChange>(container, beat, width) {
 
     companion object {
         val MIN_TEMPO: Float = 1.0f
         val MAX_TEMPO: Float = 600f
+
+        fun getSecondsDuration(beatWidth: Float, startBpm: Float, endBpm: Float): Float {
+            return ((2 * beatWidth) / (startBpm + endBpm)) * 60f
+        }
+
+        fun getBeatDuration(secondsWidth: Float, startBpm: Float, endBpm: Float): Float {
+            return (secondsWidth / 60f) * (startBpm + endBpm) / 2f
+        }
     }
 
-    override val allowsResize: Boolean = false
+    override val allowsResize: Boolean = true
     var seconds: Float = 0f
+    var widthSeconds: Float = 0f
+
+    val endSeconds: Float
+        get() = seconds + widthSeconds
+
+    val previousBpm: Float
+        get() = (container.map as NavigableMap).lowerEntry(beat)?.value?.bpm ?: (container as TempoChanges).defaultTempo
 
     init {
         text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
@@ -30,16 +47,16 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
         if ((change < 0 && bpm <= MIN_TEMPO) || (change > 0 && bpm >= MAX_TEMPO))
             return null
 
-        return TempoChange(container as TempoChanges, beat, (bpm + change).coerceIn(MIN_TEMPO, MAX_TEMPO), swing)
+        return TempoChange(container as TempoChanges, beat, (bpm + change).coerceIn(MIN_TEMPO, MAX_TEMPO), swing, width)
     }
 
     fun scrollSwing(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
         if (shift && !control) {
-            return TempoChange(container as TempoChanges, beat, bpm, swing.copy(division = if (swing.division == Swing.EIGHTH_DIVISION) Swing.SIXTEENTH_DIVISION else Swing.EIGHTH_DIVISION))
+            return TempoChange(container as TempoChanges, beat, bpm, swing.copy(division = if (swing.division == Swing.EIGHTH_DIVISION) Swing.SIXTEENTH_DIVISION else Swing.EIGHTH_DIVISION), width)
         } else if (control) {
             val change = amount * (if (shift) 5 else 1)
             if ((change < 0 && swing.ratio > Swing.MIN_SWING) || (change > 0 && swing.ratio < Swing.MAX_SWING)) {
-                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = (swing.ratio + change).coerceIn(Swing.MIN_SWING, Swing.MAX_SWING)))
+                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = (swing.ratio + change).coerceIn(Swing.MIN_SWING, Swing.MAX_SWING)), width)
             }
         } else {
             val list = Swing.SWING_LIST
@@ -58,16 +75,15 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
                 0
             } else {
                 val futureNext = currentIndex + amount
-                if (futureNext < 0)
-                    list.size - 1
-                else if (futureNext >= list.size)
-                    0
-                else
-                    futureNext
+                when {
+                    futureNext < 0 -> list.size - 1
+                    futureNext >= list.size -> 0
+                    else -> futureNext
+                }
             }
 
             if (nextIndex != currentIndex) {
-                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = list[nextIndex].ratio))
+                return TempoChange(container as TempoChanges, beat, bpm, swing.copy(ratio = list[nextIndex].ratio), width)
             }
         }
 
@@ -75,8 +91,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     }
 
     override fun createResizeCopy(beat: Float, width: Float): TempoChange {
-        // Legacy, tempo changes cannot be resized anymore
-        return TempoChange(container as TempoChanges, beat, bpm, swing)
+        return TempoChange(container as TempoChanges, beat, bpm, swing, width)
     }
 
     override fun getColour(theme: Theme): Color {
@@ -84,21 +99,40 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     }
 
     fun secondsToBeats(seconds: Float): Float {
-        return endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.seconds, tempoAtSeconds(seconds)), swing)
+        val secondsWidth = seconds - this.seconds
+        return if (seconds >= endSeconds) {
+            endBeat + SwingUtils.linearToSwing(TempoUtils.secondsToBeats(seconds - this.endSeconds, tempoAtSeconds(seconds)), swing)
+        } else {
+            beat + SwingUtils.linearToSwing(getBeatDuration(secondsWidth, previousBpm, tempoAtSeconds(seconds)), swing)
+        }
     }
 
     fun beatsToSeconds(beat: Float): Float {
-        return seconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, swing), tempoAt(beat))
+        val beatWidth = beat - this.beat
+        return if (beat >= endBeat) {
+            endSeconds + TempoUtils.beatsToSeconds(SwingUtils.swingToLinear(beat - this.endBeat, swing), tempoAt(beat))
+        } else {
+            seconds + SwingUtils.swingToLinear(getSecondsDuration(beatWidth, previousBpm, tempoAt(beat)), swing)
+        }
     }
 
-    // Remnants of stretchable tempo changes
+    // Stretchable tempo changes
 
     fun tempoAt(beat: Float): Float {
-        return bpm
+        val endBeat = this.endBeat
+        return if (!isZeroWidth && beat in this.beat..endBeat) {
+            MathUtils.lerp(this.previousBpm, this.bpm, (beat - this.beat) / width)
+        } else {
+            bpm
+        }
     }
 
     fun tempoAtSeconds(seconds: Float): Float {
-        return bpm
+        return if (!isZeroWidth && seconds in this.seconds..this.endSeconds) {
+            MathUtils.lerp(this.previousBpm, this.bpm, (seconds - this.seconds) / widthSeconds)
+        } else {
+            bpm
+        }
     }
 
 }
