@@ -1,4 +1,4 @@
-site_name: Rhythm Heaven Remix Editor 3 Documentation
-theme: mkdocs
+site_name: Rhythm Heaven Remix Editor Documentation
+theme: readthedocs
 
 repo_url: https://github.com/chrislo27/RhythmHeavenRemixEditor
