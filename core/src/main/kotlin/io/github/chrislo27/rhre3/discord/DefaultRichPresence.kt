@@ -32,7 +32,7 @@ class DefaultRichPresence(state: String = "",
         val hasExpansion = RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor
         startTimestamp = RHRE3Application.instance.startTimeMillis / 1000L // Epoch seconds
         largeImageKey = if (hasExpansion) DiscordHelper.EXPANSION_LARGE_IMAGE else DiscordHelper.DEFAULT_LARGE_IMAGE
-        largeImageText = RHRE3.GITHUB
+        largeImageText = RHRE3.TITLE + " - " + RHRE3.GITHUB
         smallImageKey = smallIcon
         smallImageText = smallIconText
         this.state = state

@@ -179,7 +179,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
     private val D_SING_1 = DanceState(28, dancersSing1, vocalistSing1, leadSing1)
 
     private val creditsList: List<Credits.Credit> = Credits.generateList()
-    private val creditsText = "[#BFD0EC]${RHRE3.TITLE}[]\n\n\n\n" + creditsList.drop(1).joinToString(separator = "") {
+    private val creditsText = "[#BFD0EC]${RHRE3.TITLE_3}[]\n\n\n\n" + creditsList.drop(1).joinToString(separator = "") {
         "[#${Color(Color.YELLOW).fromHsv((creditsList.indexOf(it) - 1f) / creditsList.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
     } + Localization["licenseInfo"]
     private var creditsTextHeight: Float = -1f

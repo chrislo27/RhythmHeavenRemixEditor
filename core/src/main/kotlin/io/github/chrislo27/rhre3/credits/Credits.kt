@@ -62,7 +62,7 @@ object Credits {
         private val isTitle by lazy { type == "title" }
 
         val text: String
-            get() = if (isTitle) RHRE3.TITLE else Localization[localization]
+            get() = if (isTitle) RHRE3.TITLE_3 else Localization[localization]
 
     }
 
