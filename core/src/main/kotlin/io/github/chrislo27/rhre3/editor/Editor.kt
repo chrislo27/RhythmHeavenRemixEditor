@@ -1016,6 +1016,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                         // dimension strings
                         if (rect.height - toScaleY * 2 >= font.capHeight) {
+                            font.color = theme.trackLine
                             val widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
                             val heightStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.height.toDouble())
 
