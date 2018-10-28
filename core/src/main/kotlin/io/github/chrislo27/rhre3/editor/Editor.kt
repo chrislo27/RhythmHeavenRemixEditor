@@ -1073,10 +1073,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         font.color = theme.trackLine
                         font.scaleMul(0.75f)
                         // Mixed number notation, add decimal if no snapping
-                        font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight, textWidth, Align.center)
+                        font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
                         if (main.advancedOptions) {
                             // 0x48 notation
-                            font.drawCompressed(batch, TickflowUtils.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.3f, textWidth, Align.center)
+                            font.drawCompressed(batch, TickflowUtils.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.4f, textWidth, Align.center)
                         }
                         font.scaleMul(1 / 0.75f)
                     }
