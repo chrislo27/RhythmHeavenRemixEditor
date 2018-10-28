@@ -1072,8 +1072,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         val textWidth = rightTextPoint - leftTextPoint
                         font.color = theme.trackLine
                         font.scaleMul(0.75f)
-                        // Mixed number notation, decimal if no snapping
-                        font.drawCompressed(batch, (if (currentSnap == 0f) TWO_DECIMAL_PLACE_FORMATTER.format(width) else (RulerUtils.widthToMixedNumber(width, currentSnap))) + " ♩", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight, textWidth, Align.center)
+                        // Mixed number notation, add decimal if no snapping
+                        font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight, textWidth, Align.center)
                         if (main.advancedOptions) {
                             // 0x48 notation
                             font.drawCompressed(batch, TickflowUtils.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.3f, textWidth, Align.center)
