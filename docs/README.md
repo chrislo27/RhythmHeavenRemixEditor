@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.13.1`.
+This readme is up to date with version `v3.15.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -85,9 +85,9 @@ In the bottom-right, you will see tools:
 
 ![Tools](readme/tools.png)
 
-From first to last: **Selection**, **Multipart Split**, **Tempo Change**,
-**Music Volume**, **Time Signature**, and **Swing**. They will be explained below.
-You can access them quickly by pressing `1-6` on the number keys.
+From left to right: **Selection**, **Multipart Split**, **Tempo Change**,
+**Music Volume**, **Time Signature**, **Swing**, and **Ruler**. They will be explained below.
+You can access them quickly by pressing `1-7` on the number keys. Pressing `R` will also select the Ruler tool.
 
 To the left of the tool buttons you'll see a minimap.
 **`LEFT CLICK`** will jump the camera to that position.
@@ -201,6 +201,13 @@ on whole, non-negative beats.
 
 ## Swing tool
 The Swing tool is covered [in its own article here.](Swing-tool.md)
+
+## Ruler tool
+The Ruler tool helps you measure beat distances. This is mostly intended for
+modding Rhythm Heaven Megamix. Hold `LEFT CLICK` to draw the ruler.
+Holding `SHIFT` disables the snapping.
+
+![Screenshot](readme/rulerTickflow.png)
 
 # Stored Patterns
 By clicking on the Stored Patterns tab (the chest icon), you can
