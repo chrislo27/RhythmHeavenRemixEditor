@@ -7,10 +7,10 @@ object RulerUtils {
 
     fun widthToMixedNumber(beats: Float, snap: Float): String {
         if (snap <= 0f) return "$beats"
-        val whole = Math.floor(beats.toDouble()).roundToInt()
-        val decimalPart = (beats - whole).coerceAtLeast(0f)
         val denominator = (1.0 / snap.toDouble()).roundToInt()
-        val numerator = (decimalPart * denominator).roundToInt()
+        val improperNumerator = (beats * denominator).roundToInt()
+        val numerator = improperNumerator % denominator
+        val whole = improperNumerator / denominator
 
         return if (numerator > 0) {
             if (whole > 0) {
