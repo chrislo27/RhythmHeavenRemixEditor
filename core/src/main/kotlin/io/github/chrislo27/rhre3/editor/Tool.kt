@@ -8,7 +8,9 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import kotlin.reflect.KClass
 
 
-enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<out Tracker<*>>? = null, val keybinds: List<String> = listOf()) {
+enum class Tool(val texId: String, val nameId: String,
+                val trackerClass: KClass<out Tracker<*>>? = null, val keybinds: List<String> = listOf(),
+                val showSubbeatLines: Boolean = trackerClass != null) {
 
     SELECTION("tool_selection", "tool.normal.name"),
     MULTIPART_SPLIT("tool_multipart_split", "tool.multipartSplit.name"),
@@ -16,7 +18,7 @@ enum class Tool(val texId: String, val nameId: String, val trackerClass: KClass<
     MUSIC_VOLUME("tool_music_volume", "tool.musicVolume.name", trackerClass = MusicVolumeChange::class),
     TIME_SIGNATURE("tool_time_signature", "tool.timeSignature.name"),
     SWING("tool_swing", "tool.swing.name"),
-    RULER("tool_ruler", "tool.ruler.name", keybinds = listOf("R"));
+    RULER("tool_ruler", "tool.ruler.name", keybinds = listOf("R"), showSubbeatLines = true);
 
     companion object {
         val VALUES: List<Tool> by lazy { Tool.values().toList() }

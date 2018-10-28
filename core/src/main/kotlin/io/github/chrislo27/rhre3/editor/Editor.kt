@@ -67,10 +67,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.util.JsonHandler
-import io.github.chrislo27.rhre3.util.Semitones
-import io.github.chrislo27.rhre3.util.Swing
-import io.github.chrislo27.rhre3.util.TickflowUtils
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -129,6 +126,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
         private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
+        val TWO_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -950,7 +948,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             borderedFont.unscaleFont()
         }
 
-        // render selection box, delete zone, sfx vol
+        // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
             val clickOccupation = clickOccupation
             when (clickOccupation) {
@@ -1050,8 +1048,56 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                     batch.setColor(oldColor)
                 }
-                else -> {
+                is ClickOccupation.RulerMeasuring -> {
+                    val oldColor = batch.packedColor
+                    val oldFontColor = font.color
+                    val currentSnap = if (!Gdx.input.isShiftDown()) snap else 0f
+                    val mouseX = MathHelper.snapToNearest(camera.getInputX(), currentSnap)
+                    val width = (clickOccupation.startPoint.x - mouseX).absoluteValue
+                    val leftPoint = Math.min(clickOccupation.startPoint.x, mouseX)
+                    val rightPoint = Math.max(clickOccupation.startPoint.x, mouseX)
+                    val height = 1.5f
+                    val borderThickness = TRACK_LINE_THICKNESS * 1.5f
+                    val markThickness = TRACK_LINE_THICKNESS
+                    val y = 0f
+
+                    batch.color = theme.background
+                    batch.fillRect(leftPoint, y, width, -height)
+                    batch.color = theme.trackLine
+                    batch.drawRect(leftPoint, y - height, width, height, toScaleX(borderThickness), toScaleY(borderThickness))
+
+                    if (width > 0){
+                        val leftTextPoint = Math.max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
+                        val rightTextPoint = Math.min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
+                        val textWidth = rightTextPoint - leftTextPoint
+                        font.color = theme.trackLine
+                        font.scaleMul(0.75f)
+                        // Mixed number notation, decimal if no snapping
+                        font.drawCompressed(batch, (if (currentSnap == 0f) TWO_DECIMAL_PLACE_FORMATTER.format(width) else (RulerUtils.widthToMixedNumber(width, currentSnap))) + " ♩", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight, textWidth, Align.center)
+                        if (main.advancedOptions) {
+                            // 0x48 notation
+                            font.drawCompressed(batch, TickflowUtils.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.3f, textWidth, Align.center)
+                        }
+                        font.scaleMul(1 / 0.75f)
+                    }
+
+                    val divisions = (1f / snap * 2).coerceAtMost(64f).roundToInt()
+                    val reverseRange = mouseX < clickOccupation.startPoint.x
+                    for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
+                        var markElongation = 0f
+                        if (i % (divisions / 2) == 0)
+                            markElongation += 0.75f
+                        if (divisions >= 8 && i % (divisions / 4) == 0)
+                            markElongation += 0.5f
+                        if (divisions >= 16 && i % (divisions / 8) == 0)
+                            markElongation += 0.35f
+                        batch.fillRect((if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
+                    }
+
+                    batch.setColor(oldColor)
+                    font.color = oldFontColor
                 }
+                else -> {}
             }
         }
 
@@ -1413,7 +1459,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (currentTool.isTrackerRelated && currentTool != Tool.TIME_SIGNATURE) {
+        if (currentTool.showSubbeatLines) {
             subbeatSection.enabled = true
             subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
             subbeatSection.end = subbeatSection.start + 0.5f
@@ -1864,6 +1910,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         remix.mutate(action)
                     }
                 }
+            } else if (tool == Tool.RULER) {
+                val clickOccupation = clickOccupation
+                if (clickOccupation == ClickOccupation.None) {
+                    // Begin ruler
+                    val newClick = ClickOccupation.RulerMeasuring(this, Vector2(MathHelper.snapToNearest(mouseVector.x, if (shift) 0f else snap), mouseVector.y))
+                    this.clickOccupation = newClick
+                }
             }
         } else if (stage.patternAreaStage.isMouseOver() && stage.patternAreaStage.visible
                 && currentTool == Tool.SELECTION && isDraggingButtonDown) {
@@ -2089,23 +2142,28 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             this.clickOccupation = ClickOccupation.None
+        } else if (clickOccupation is ClickOccupation.RulerMeasuring) {
+            this.clickOccupation = ClickOccupation.None
         }
 
         return false
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        when (keycode) {
-            in Input.Keys.NUM_0..Input.Keys.NUM_9 -> {
-                if (stage.isTyping || clickOccupation != ClickOccupation.None || stage.tapalongStage.visible)
-                    return false
-                val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
-                if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown()) {
-                    if (number in 0 until Tool.VALUES.size) {
-                        currentTool = Tool.VALUES[number]
-                        stage.updateSelected()
-                        return true
-                    }
+        if (keycode in Input.Keys.NUM_0..Input.Keys.NUM_9 || keycode == Input.Keys.R) {
+            if (stage.isTyping || clickOccupation != ClickOccupation.None || stage.tapalongStage.visible)
+                return false
+            val number = (if (keycode == Input.Keys.NUM_0) 10 else keycode - Input.Keys.NUM_0) - 1
+            if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown()) {
+                if (keycode == Input.Keys.R) {
+                    currentTool = Tool.RULER
+                    stage.updateSelected()
+                    return true
+                }
+                if (number in 0 until Tool.VALUES.size) {
+                    currentTool = Tool.VALUES[number]
+                    stage.updateSelected()
+                    return true
                 }
             }
         }

@@ -74,8 +74,8 @@ sealed class ClickOccupation {
         }
     }
 
-    class CreatingSelection(val editor: Editor,
-                            val startPoint: Vector2) : ClickOccupation() {
+    class CreatingSelection(val editor: Editor, val startPoint: Vector2)
+        : ClickOccupation() {
         val oldSelection = editor.selection.toList()
         val rectangle = Rectangle()
 
@@ -266,6 +266,11 @@ sealed class ClickOccupation {
 
             normalizeWidth()
         }
+
+    }
+
+    class RulerMeasuring(val editor: Editor, val startPoint: Vector2) :
+            ClickOccupation() {
 
     }
 
