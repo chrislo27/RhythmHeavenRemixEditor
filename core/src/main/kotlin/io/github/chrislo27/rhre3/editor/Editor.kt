@@ -1051,7 +1051,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 is ClickOccupation.RulerMeasuring -> {
                     val oldColor = batch.packedColor
                     val oldFontColor = font.color
-                    val currentSnap = if (!Gdx.input.isShiftDown()) snap else 0f
+                    val currentSnap = if (Gdx.input.isShiftDown() && !Gdx.input.isControlDown() && !Gdx.input.isAltDown()) 0f else snap
                     val mouseX = MathHelper.snapToNearest(camera.getInputX(), currentSnap)
                     val width = (clickOccupation.startPoint.x - mouseX).absoluteValue
                     val leftPoint = Math.min(clickOccupation.startPoint.x, mouseX)
