@@ -1035,7 +1035,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
                                 defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
                             }
-                            if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr)) {
+                            if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr) && rect.height - toScaleY * 2 >= font.getTextHeight(widthStr)) {
                                 font.drawCompressed(batch, widthStr,
                                                     defaultX,
                                                     rect.y + rect.height - toScaleY,
