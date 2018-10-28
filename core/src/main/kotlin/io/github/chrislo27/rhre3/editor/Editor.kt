@@ -1084,6 +1084,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     val divisions = (1f / snap * 2).coerceAtMost(64f).roundToInt()
                     val reverseRange = mouseX < clickOccupation.startPoint.x
                     for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
+                        val x = if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())
+                        // culling for rendering
+                        if (x < beatRange.first)
+                            continue
+                        if (x > beatRange.last)
+                            break
+
                         var markElongation = 0f
                         if (i % (divisions / 2) == 0)
                             markElongation += 0.75f
@@ -1091,7 +1098,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             markElongation += 0.5f
                         if (divisions >= 16 && i % (divisions / 8) == 0)
                             markElongation += 0.35f
-                        batch.fillRect((if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
+                        batch.fillRect(x, y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
                     }
 
                     batch.setColor(oldColor)
