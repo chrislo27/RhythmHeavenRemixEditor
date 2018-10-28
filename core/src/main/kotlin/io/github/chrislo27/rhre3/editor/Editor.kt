@@ -70,6 +70,7 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.rhre3.util.Swing
+import io.github.chrislo27.rhre3.util.TickflowUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -1017,12 +1018,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         // dimension strings
                         if (rect.height - toScaleY * 2 >= font.capHeight) {
                             font.color = theme.trackLine
-                            val widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
-                            val heightStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.height.toDouble())
+
+                            val advOpts = main.advancedOptions
+                            var widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
+
+                            if (advOpts) {
+                                // X * 0x48 [+ 0xY]
+                                widthStr += "\n${TickflowUtils.beatsToTickflowString(rect.width)}"
+                            }
 
                             var defaultX = rect.x + toScaleX
                             var defaultWidth = rect.width - toScaleX * 2
-                            val shouldBeLeftAlign = remix.camera.getInputX() < clickOccupation.startPoint.x
                             if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom) {
                                 defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
                                 defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
@@ -1034,13 +1040,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                                     defaultX,
                                                     rect.y + rect.height - toScaleY,
                                                     defaultWidth, Align.center)
-                            }
-                            if (rect.width - toScaleX * 2 >= font.getTextWidth(heightStr)) {
-                                font.drawCompressed(batch, heightStr,
-                                                    defaultX,
-                                                    rect.y + rect.height / 2 + font.capHeight / 2,
-                                                    defaultWidth,
-                                                    if (shouldBeLeftAlign) Align.left else Align.right)
                             }
                         }
 
