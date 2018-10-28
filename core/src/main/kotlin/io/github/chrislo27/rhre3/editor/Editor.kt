@@ -1064,7 +1064,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     batch.color = theme.background
                     batch.fillRect(leftPoint, y, width, -height)
                     batch.color = theme.trackLine
-                    batch.drawRect(leftPoint, y - height, width, height, toScaleX(borderThickness), toScaleY(borderThickness))
+                    batch.drawRect(leftPoint - toScaleX(TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(TRACK_LINE_THICKNESS), height, toScaleX(borderThickness), toScaleY(borderThickness))
 
                     if (width > 0){
                         val leftTextPoint = Math.max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
@@ -1098,7 +1098,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             markElongation += 0.5f
                         if (divisions >= 16 && i % (divisions / 8) == 0)
                             markElongation += 0.35f
-                        batch.fillRect(x, y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
+                        batch.fillRect(x - toScaleX(markThickness) / (if (reverseRange) -2 else 2), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
                     }
 
                     batch.setColor(oldColor)
@@ -1919,7 +1919,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool == Tool.RULER) {
                 val clickOccupation = clickOccupation
-                if (clickOccupation == ClickOccupation.None) {
+                if (clickOccupation == ClickOccupation.None && button == Input.Buttons.LEFT) {
                     // Begin ruler
                     val newClick = ClickOccupation.RulerMeasuring(this, Vector2(MathHelper.snapToNearest(mouseVector.x, if (shift) 0f else snap), mouseVector.y))
                     this.clickOccupation = newClick
@@ -2149,7 +2149,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             this.clickOccupation = ClickOccupation.None
-        } else if (clickOccupation is ClickOccupation.RulerMeasuring) {
+        } else if (clickOccupation is ClickOccupation.RulerMeasuring && button == Input.Buttons.LEFT) {
             this.clickOccupation = ClickOccupation.None
         }
 
