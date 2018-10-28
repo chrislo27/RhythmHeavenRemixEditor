@@ -1546,6 +1546,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 Tool.SWING -> {
                     ctrlBuilder.append(Localization["editor.msg.swing"])
                 }
+                Tool.RULER -> {
+                    ctrlBuilder.append(Localization["editor.msg.rulerTool"])
+                }
             }
         }
 

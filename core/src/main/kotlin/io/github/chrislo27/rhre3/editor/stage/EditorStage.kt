@@ -1556,7 +1556,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 10 -> " [LIGHT_GRAY][[0][]"
                 in 1..9 -> " [LIGHT_GRAY][[$moddedIndex][]"
                 else -> ""
-            }
+            } + (if (tool.keybinds.isNotEmpty()) " [LIGHT_GRAY]${tool.keybinds.joinToString(" ") {"[[$it]"}}[]" else "")
         }
 
         override fun getHoverText(): String {
