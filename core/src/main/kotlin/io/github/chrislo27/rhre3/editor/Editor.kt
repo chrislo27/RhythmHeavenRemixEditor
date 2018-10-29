@@ -1081,7 +1081,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         font.scaleMul(1 / 0.75f)
                     }
 
-                    val divisions = (1f / snap * 2).coerceAtMost(64f).roundToInt()
+                    val divisions = (1f / snap ).coerceAtMost(64f).roundToInt()
                     val reverseRange = mouseX < clickOccupation.startPoint.x
                     for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
                         val x = if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())
