@@ -26,6 +26,7 @@ open class LoadingIcon<S : ToolboksScreen<*, *>>(private val palette: UIPalette,
     private var inited = false
     private val mainImage: ImageLabel<S> = ImageLabel(palette, this, this)
     private val penImage: ImageLabel<S> = ImageLabel(palette, this, this)
+//    private val paddlerImage: ImageLabel
 
     var renderType: ImageLabel.ImageRendering
         get() = mainImage.renderType

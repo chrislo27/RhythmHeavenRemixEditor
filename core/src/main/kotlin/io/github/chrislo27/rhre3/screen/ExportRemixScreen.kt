@@ -45,7 +45,9 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import kotlinx.coroutines.experimental.launch
+import javafx.application.Application.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.beadsproject.beads.core.Bead
 import net.beadsproject.beads.core.UGen
 import net.beadsproject.beads.ugens.Clock
@@ -200,7 +202,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 readyButton.visible = false
                 selectionStage.visible = false
 
-                launch {
+                GlobalScope.launch {
                     val exportFile = File.createTempFile("rhre3-quickupload-", ".mp3").apply {
                         deleteOnExit()
                     }
@@ -474,6 +476,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 override fun calculateBuffer() {
                     // NO-OP
                 }
+
                 override fun setValue(value: Float) {
                     // NO-OP, always computed
                 }
@@ -491,9 +494,11 @@ class ExportRemixScreen(main: RHRE3Application)
                 override fun getValue(i: Int, j: Int): Float {
                     return getValueDouble(i, j).toFloat()
                 }
+
                 override fun getValue(): Float {
                     return valueDouble.toFloat()
                 }
+
                 override fun getValueDouble(i: Int, j: Int): Double {
                     return valueDouble
                 }
@@ -538,7 +543,7 @@ class ExportRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen && !isExporting && isCapableOfExporting) {
-            launch {
+            GlobalScope.launch {
                 isChooserOpen = true
                 Gdx.app.postRunnable {
                     mainLabel.text = Localization["screen.export.uploadHint"]
@@ -552,7 +557,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     if (file != null) {
                         val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
                         persistDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT, newInitialDirectory)
-                        launch {
+                        GlobalScope.launch {
                             DiscordHelper.updatePresence(PresenceState.Exporting)
                             try {
                                 val correctFile = if (file.extension.toLowerCase(Locale.ROOT) !in ExportFileType.EXTENSIONS)

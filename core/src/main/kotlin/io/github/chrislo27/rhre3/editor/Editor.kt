@@ -74,8 +74,8 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.nio.charset.Charset
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -1066,7 +1066,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     batch.color = theme.trackLine
                     batch.drawRect(leftPoint - toScaleX(TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(TRACK_LINE_THICKNESS), height, toScaleX(borderThickness), toScaleY(borderThickness))
 
-                    if (width > 0){
+                    if (width > 0) {
                         val leftTextPoint = Math.max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
                         val rightTextPoint = Math.min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
                         val textWidth = rightTextPoint - leftTextPoint
@@ -1081,7 +1081,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         font.scaleMul(1 / 0.75f)
                     }
 
-                    val divisions = (1f / snap ).coerceAtMost(64f).roundToInt()
+                    val divisions = (1f / snap).coerceAtMost(64f).roundToInt()
                     val reverseRange = mouseX < clickOccupation.startPoint.x
                     for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
                         val x = if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())
@@ -1104,7 +1104,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     batch.setColor(oldColor)
                     font.color = oldFontColor
                 }
-                else -> {}
+                else -> {
+                }
             }
         }
 
@@ -1319,7 +1320,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             timeUntilAutosave -= Gdx.graphics.deltaTime
             if (timeUntilAutosave <= 0) {
                 autosaveFrequency = 0
-                launch(CommonPool) {
+                GlobalScope.launch {
                     try {
                         autosaveState = AutosaveState(AutosaveResult.DOING, 0f)
                         Remix.saveTo(remix, autosaveFile.file(), true)

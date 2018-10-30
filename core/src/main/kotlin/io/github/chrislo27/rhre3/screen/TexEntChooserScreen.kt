@@ -17,7 +17,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.TextLabel
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.math.BigInteger
 import java.security.MessageDigest
 
@@ -85,7 +86,7 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            launch {
+            GlobalScope.launch {
                 isChooserOpen = true
                 val filters = listOf(FileChooserExtensionFilter(Localization["screen.texent.fileFilter"], "*.png", "*.jpg", "*.bmp"))
                 FileChooser.openFileChooser(Localization["screen.texent.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->

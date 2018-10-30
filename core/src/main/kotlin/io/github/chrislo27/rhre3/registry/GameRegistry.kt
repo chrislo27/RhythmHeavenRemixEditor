@@ -24,7 +24,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.version.Version
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
 import java.io.File
 import java.util.*
 
@@ -231,7 +231,7 @@ object GameRegistry : Disposable {
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
                     objectList.filterIsInstance<Cue>().map {
-                        launch(CommonPool) {
+                        launch {
                             try {
                                 it.sound.load()
                             } catch (e: Exception) {
@@ -255,11 +255,11 @@ object GameRegistry : Disposable {
             if (RHRE3.verifyRegistry) {
                 Toolboks.LOGGER.info("Checking registry for errors")
                 val nanoStart = System.nanoTime()
-                launch(CommonPool) {
+                GlobalScope.launch {
                     val coroutines = LinkedList<Deferred<VerificationResult>>()
 
                     gameList.forEach { game ->
-                        coroutines += async(CommonPool) {
+                        coroutines += GlobalScope.async {
                             verify(game)
                         }
                     }

@@ -7,7 +7,8 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.asynchttpclient.AsyncHttpClient
 import java.util.concurrent.CopyOnWriteArrayList
 
@@ -43,7 +44,7 @@ object Articles {
             return
 
         isFetching = FetchState.FETCHING
-        launch {
+        GlobalScope.launch {
             try {
                 articles.clear()
                 val list = mutableListOf<Article>()

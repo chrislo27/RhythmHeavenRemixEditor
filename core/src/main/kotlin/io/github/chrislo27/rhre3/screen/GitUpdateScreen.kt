@@ -23,7 +23,7 @@ import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
-import kotlinx.coroutines.experimental.*
+import kotlinx.coroutines.*
 import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.lib.ProgressMonitor
 
@@ -92,7 +92,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
             return
         val nano = System.nanoTime()
         repoStatus = RepoStatus.UNKNOWN
-        coroutine = launch(CommonPool) {
+        coroutine = GlobalScope.launch {
             repoStatus = RepoStatus.DOING
             val lastVersion = main.preferences.getInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1)
             main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
@@ -113,7 +113,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                         Toolboks.LOGGER.info(
                                 "Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
 
-                        val githubVersion: Version? = async(CommonPool) {
+                        val githubVersion: Version? = async {
                             val nano = System.nanoTime()
                             while (main.githubVersion == Version.RETRIEVING) {
                                 delay(100L)

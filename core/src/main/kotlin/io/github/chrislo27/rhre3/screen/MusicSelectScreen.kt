@@ -19,7 +19,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class MusicSelectScreen(main: RHRE3Application)
@@ -109,7 +110,7 @@ class MusicSelectScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            launch {
+            GlobalScope.launch {
                 isChooserOpen = true
                 val filters = listOf(FileChooserExtensionFilter(Localization["screen.music.fileFilter"], "*.ogg", "*.mp3", "*.wav"))
                 FileChooser.openFileChooser(Localization["screen.music.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_MUSIC) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->

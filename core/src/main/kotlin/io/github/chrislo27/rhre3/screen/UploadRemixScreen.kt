@@ -25,8 +25,8 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.netty.handler.codec.http.cookie.Cookie
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.asynchttpclient.AsyncCompletionHandlerBase
 import org.asynchttpclient.AsyncHandler
 import org.asynchttpclient.AsyncHttpClient
@@ -309,7 +309,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
                         mainLabel.text = Localization["screen.upload.edit.finishing"]
                         isUploading = true
-                        launch(CommonPool) {
+                        GlobalScope.launch {
                             val (csrfmiddlewaretoken, cookies) = getCsrfTokenAndGetCookies()
 
                             val req = http.preparePost("$PICOSONG_NEXT_URL$picosongEditID/")
@@ -351,7 +351,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                     }
 
                     // Analytics
-                    launch(CommonPool) {
+                    GlobalScope.launch {
                         val regex = "<h2 class=\"short-link text-center\"><a href=\"https?://picosong\\.com/([a-zA-Z0-9]+)\">".toRegex()
                         val body = http.prepareGet("$PICOSONG_SKIP_FIELDS_URL$picosongEditID/")
                                 .addHeader("Accept", "application/json, text/javascript, */*")
@@ -402,7 +402,7 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
 
             mainLabel.text = Localization["screen.upload.preparing"]
 
-            launch(CommonPool) {
+            GlobalScope.launch {
                 fun playEndSound(success: Boolean) {
                     BeadsSoundSystem.resume()
                     if (success) {

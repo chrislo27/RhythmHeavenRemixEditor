@@ -27,10 +27,10 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import java.io.File
 import java.util.zip.ZipFile
 import javax.sound.midi.MidiSystem
@@ -147,7 +147,7 @@ class OpenRemixScreen(main: RHRE3Application)
         if (isLoading)
             return
         isLoading = true
-        launch(CommonPool) {
+        GlobalScope.launch {
             try {
                 remix = null
                 System.gc()
@@ -178,7 +178,7 @@ class OpenRemixScreen(main: RHRE3Application)
 
                 val isAutosave = overrideAutosave ?: result.isAutosave
 
-                val coroutine: Job = launch(CommonPool) {
+                val coroutine: Job = launch {
                     isLoadingSounds = true
                     toUnload.forEach { entity ->
                         if (entity is ILoadsSounds) {
@@ -265,7 +265,7 @@ class OpenRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            launch {
+            GlobalScope.launch {
                 isChooserOpen = true
                 val initialDirectory: File? = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
                 val fileFilters = listOf(FileChooserExtensionFilter(Localization["screen.open.fileFilterSupported"], "*.${RHRE3.REMIX_FILE_EXTENSION}", "*.brhre2", "*.mid"))

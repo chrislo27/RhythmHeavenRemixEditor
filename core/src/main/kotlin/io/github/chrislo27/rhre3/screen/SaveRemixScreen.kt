@@ -20,7 +20,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.TextLabel
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class SaveRemixScreen(main: RHRE3Application)
@@ -86,7 +87,7 @@ class SaveRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun openPicker() {
         if (!isChooserOpen) {
-            launch {
+            GlobalScope.launch {
                 isChooserOpen = true
                 val lastSaveFile = editor.lastSaveFile
                 val filters = listOf(FileChooserExtensionFilter(Localization["screen.save.fileFilter"], "*.${RHRE3.REMIX_FILE_EXTENSION}"))
@@ -95,7 +96,7 @@ class SaveRemixScreen(main: RHRE3Application)
                     if (file != null) {
                         val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
                         persistDirectory(main, PreferenceKeys.FILE_CHOOSER_SAVE, newInitialDirectory)
-                        launch {
+                        GlobalScope.launch {
                             try {
                                 val correctFile = if (file.extension != RHRE3.REMIX_FILE_EXTENSION)
                                     file.parentFile.resolve("${file.name}.${RHRE3.REMIX_FILE_EXTENSION}")

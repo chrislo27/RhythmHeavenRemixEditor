@@ -42,8 +42,8 @@ import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.asynchttpclient.AsyncHttpClient
 import org.asynchttpclient.DefaultAsyncHttpClientConfig
 import org.asynchttpclient.Dsl.asyncHttpClient
@@ -263,7 +263,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 }
             }
         }
-        launch(CommonPool) {
+        GlobalScope.launch {
             try {
                 val nano = System.nanoTime()
                 val obj = JsonHandler.fromJson<ReleaseObject>(
