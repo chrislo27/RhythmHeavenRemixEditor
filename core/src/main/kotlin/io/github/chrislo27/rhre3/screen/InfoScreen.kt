@@ -24,6 +24,7 @@ import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.util.FadeIn
@@ -58,13 +59,14 @@ class InfoScreen(main: RHRE3Application)
         get() = main.preferences
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
-    private lateinit var clearRecentsButton: Button<InfoScreen>
-    private lateinit var dbVersionLabel: TextLabel<InfoScreen>
-    private lateinit var versionLabel: TextLabel<InfoScreen>
+    private val clearRecentsButton: Button<InfoScreen>
+    private val dbVersionLabel: TextLabel<InfoScreen>
+    private val versionLabel: TextLabel<InfoScreen>
     private var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
     private val onlineLabel: TextLabel<InfoScreen>
+    private val loadingIcon: LoadingIcon<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -204,6 +206,17 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = true
                 this.text = "screen.info.info"
             }
+            // Loading icon for paddler
+            loadingIcon = LoadingIcon(palette, centre).apply {
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
+                                  screenWidth = buttonWidth * 0.09f,
+                                  screenHeight = buttonHeight * 0.8f)
+                this.visible = true
+                this.alpha = 0f
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            }
+            centre.elements += loadingIcon
             // current program version
             versionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
                 private var clicks = 0
@@ -267,20 +280,11 @@ class InfoScreen(main: RHRE3Application)
                 this.text = RHRE3.VERSION.toString()
             }
             centre.elements += versionLabel
-            centre.elements += ImageLabel(palette, centre, centre).apply {
-                this.image = TextureRegion(AssetRegistry.get<Texture>("logo_ex_32"))
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
-                                  screenWidth = buttonWidth * 0.09f,
-                                  screenHeight = buttonHeight * 0.8f)
-                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-
-                this.visible = RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor
-            }
             dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
                 private var clicks = 0
                 private var timeSinceLastClick = System.currentTimeMillis()
                 private val color = Color(1f, 1f, 1f, 1f)
+                private var resetTime = 0L
 
                 init {
                     this.textColor = color
@@ -294,11 +298,17 @@ class InfoScreen(main: RHRE3Application)
                     timeSinceLastClick = System.currentTimeMillis()
 
                     AssetRegistry.get<Sound>("weird_sfx_honk").play(0.5f)
+                    LoadingIcon.usePaddlerAnimation = !LoadingIcon.usePaddlerAnimation
+                    main.preferences.putBoolean(PreferenceKeys.PADDLER_LOADING_ICON, LoadingIcon.usePaddlerAnimation).flush()
+                    resetTime = System.currentTimeMillis() + 6000L
                 }
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                     val alpha = ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f)
                     color.set(1f, 1f, 1f, 1f).lerp(1f, 0f, 0f, 1f, alpha)
+
+                    loadingIcon.alpha = ((resetTime - System.currentTimeMillis()) / 1000f * 2).coerceIn(0f, 1f)
+
                     super.render(screen, batch, shapeRenderer)
                 }
             }.apply {

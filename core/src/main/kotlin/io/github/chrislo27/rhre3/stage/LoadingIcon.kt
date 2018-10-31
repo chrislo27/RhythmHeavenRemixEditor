@@ -42,7 +42,13 @@ open class LoadingIcon<S : ToolboksScreen<*, *>>(private val palette: UIPalette,
             penImage.renderType = value
             paddlerImage.renderType = value
         }
-
+    var alpha: Float = 1f
+        set(value) {
+            field = value
+            mainImage.tint.a = value
+            penImage.tint.a = value
+            paddlerImage.tint.a = value
+        }
     init {
         elements += mainImage
         elements += penImage

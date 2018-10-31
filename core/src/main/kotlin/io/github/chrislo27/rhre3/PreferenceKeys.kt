@@ -42,6 +42,7 @@ object PreferenceKeys {
     val BACKGROUND = "background"
     val LAST_NEWS = "lastNewsArticles"
     val READ_NEWS = "readNewsArticles"
+    val PADDLER_LOADING_ICON = "paddlerLoadingIcon"
 
     val EVENT_PREFIX = "event_"
     val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"
