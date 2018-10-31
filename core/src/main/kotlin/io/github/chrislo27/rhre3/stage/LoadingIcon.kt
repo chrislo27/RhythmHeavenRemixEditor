@@ -26,7 +26,7 @@ open class LoadingIcon<S : ToolboksScreen<*, *>>(private val palette: UIPalette,
         private const val PADDLER_FRAMERATE = 25.0f
         private const val PADDLER_REGION_SIZE = 64
 
-        @Volatile var usePaddlerAnimation: Boolean = false
+        @Volatile var usePaddlerAnimation: Boolean = true
     }
 
     var speed = 1f
