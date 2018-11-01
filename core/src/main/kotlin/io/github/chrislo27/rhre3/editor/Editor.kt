@@ -1017,12 +1017,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (rect.height - toScaleY * 2 >= font.capHeight) {
                             font.color = theme.trackLine
 
-                            val advOpts = main.advancedOptions
+                            val moddingEnabled = ModdingUtils.moddingToolsEnabled
                             var widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
 
-                            if (advOpts) {
+                            if (moddingEnabled) {
                                 // X * 0x48 [+ 0xY]
-                                widthStr += "\n${TickflowUtils.beatsToTickflowString(rect.width)}"
+                                widthStr += "\n${ModdingUtils.currentGame.beatsToTickflowString(rect.width)}"
                             }
 
                             var defaultX = rect.x + toScaleX
@@ -1074,9 +1074,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         font.scaleMul(0.75f)
                         // Mixed number notation, add decimal if no snapping
                         font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
-                        if (main.advancedOptions) {
-                            // 0x48 notation
-                            font.drawCompressed(batch, TickflowUtils.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.4f, textWidth, Align.center)
+                        if (ModdingUtils.moddingToolsEnabled) {
+                            // tickflow notation
+                            font.drawCompressed(batch, ModdingUtils.currentGame.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.4f, textWidth, Align.center)
                         }
                         font.scaleMul(1 / 0.75f)
                     }
