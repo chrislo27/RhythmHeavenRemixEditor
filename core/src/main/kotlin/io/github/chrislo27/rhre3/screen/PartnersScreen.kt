@@ -43,10 +43,9 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
         stage.titleLabel.text = "screen.partners.title"
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry.getNonNull("editor")
+            main.screen = ScreenRegistry.getNonNull("info")
         }
 
-        // Article button populating
         val padding = 0.025f
         articleButtons = (0 until Articles.ARTICLE_COUNT).map { index ->
             val cellX = index % 3
