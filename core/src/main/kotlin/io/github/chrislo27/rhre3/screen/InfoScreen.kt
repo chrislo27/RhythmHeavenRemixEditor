@@ -338,6 +338,34 @@ class InfoScreen(main: RHRE3Application)
                 })
             }
 
+            // Partners button
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+
+                    main.screen = ScreenRegistry.get("partners")
+                }
+            }.apply {
+                addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_credits"))
+                })
+
+                this.location.set(screenX = 0.5f - (0.1f / 2),
+                                  screenY = padding,
+                                  screenWidth = 0.1f,
+                                  screenHeight = buttonHeight * 2 + padding)
+            }
+            centre.elements += TextLabel(palette, centre, centre).apply {
+                this.location.set(screenX = 0.5f - (0.1f / 2),
+                                  screenY = buttonHeight * 2 + padding * 2.5f,
+                                  screenWidth = 0.1f,
+                                  screenHeight = buttonHeight)
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.partners.title"
+            }
+
             // Donate button
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
