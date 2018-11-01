@@ -11,7 +11,7 @@ object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor"
     const val TITLE_3 = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 15, 0, "DEV_SNAP_20181031a")
+    val VERSION: Version = Version(3, 15, 0, "DEV_SNAPSHOT_20181031b")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     const val WIDTH = 1280
     const val HEIGHT = 720
@@ -33,7 +33,7 @@ object RHRE3 {
     const val DONATION_URL: String = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958"
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
-    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEVELOPMENT")/* || VERSION.suffix.startsWith("RC")*/) {
+    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEV")/* || VERSION.suffix.startsWith("RC")*/) {
         DEV_DATABASE_BRANCH
     } else {
         MASTER_DATABASE_BRANCH
