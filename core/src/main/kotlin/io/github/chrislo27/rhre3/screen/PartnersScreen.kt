@@ -63,11 +63,12 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
         articleListStage.elements.addAll(articleButtons)
 
         descLabel = TextLabel(palette, stage.bottomStage, stage.bottomStage).apply {
-            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+            val backButtonWidth = this@PartnersScreen.stage.backButton.location.screenWidth
+            this.location.set(screenX = backButtonWidth * 1.05f, screenWidth = 1f - (backButtonWidth * (2f + 0.05f * 2)))
             this.isLocalizationKey = true
             this.text = "screen.partners.desc"
-            this.textWrapping = true
-            this.fontScaleMultiplier = 0.9f
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.85f
         }
 
         stage.centreStage.elements += articleListStage
