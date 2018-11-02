@@ -27,7 +27,8 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_AngryTapper", "AngryTapper", "", "https://i.imgur.com/b0LyjcW.jpg", 0L, "https://www.youtube.com/channel/UC4ZPmmnRHUwmA0_q1GavPEA", null, false),
                 Article("partner_meuol", "The Meuol", "", "https://i.imgur.com/usMnMO0.jpg", 0L, "https://www.youtube.com/channel/UCNAUWWq3RKyGDHzBuKgEcPg", null, false),
                 Article("partner_glitchy", "GlitchyPSI", "", "https://i.imgur.com/9wvylSh.png", 0L, "https://www.youtube.com/channel/UCnUer0eafhVWqjX-T4TMNiw", null, false),
-                Article("partner_Killble", "Killble", "", "https://yt3.ggpht.com/a-/AN66SAwb9-nCv9i2xgjiVF6vO9veFN3oWxXXvV0FeQ=s288-mo-c-c0xffffffff-rj-k-no", 0L, "https://www.youtube.com/user/sdllv", null, false)
+                Article("partner_Killble", "Killble", "", "https://i.imgur.com/AZ5hCOs.png", 0L, "https://www.youtube.com/user/sdllv", null, false),
+                Article("partner_spoopster", "spoopster", "", "https://i.imgur.com/fttfacd.png", 0L, "https://www.youtube.com/channel/UCXIUIzLliw5c6BRIR2CRJkQ", null, false)
                                                     ).shuffled()
     }
 
