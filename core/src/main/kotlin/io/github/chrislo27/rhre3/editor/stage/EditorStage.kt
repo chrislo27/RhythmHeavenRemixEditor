@@ -1299,7 +1299,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
             }
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size * 5, screenX = size * 11 + padding * 11)
+                this.location.set(screenWidth = size * 6 - padding * 2, screenX = size * 11 + padding * 11)
             }
 
             // right aligned
