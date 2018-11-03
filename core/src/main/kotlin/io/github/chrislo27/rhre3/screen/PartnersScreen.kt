@@ -28,7 +28,8 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_glitchy", "GlitchyPSI", "", "https://i.imgur.com/9wvylSh.png", 0L, "https://www.youtube.com/channel/UCnUer0eafhVWqjX-T4TMNiw", null, false),
                 Article("partner_Killble", "Killble", "", "https://i.imgur.com/AZ5hCOs.png", 0L, "https://www.youtube.com/user/sdllv", null, false),
                 Article("partner_spoopster", "spoopster", "", "https://i.imgur.com/fttfacd.png", 0L, "https://www.youtube.com/channel/UCXIUIzLliw5c6BRIR2CRJkQ", null, false),
-                Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.png", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false)
+                Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.png", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false),
+                Article("partner_SportaDerp9000", "SportaDerp9000", "", "https://i.imgur.com/tsSWlRa.png", 0L, "https://www.youtube.com/channel/UCUbBQ2x33-KhEbP3FTesY8A", null, false)
                                                     )
     }
 
@@ -49,8 +50,8 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
 
         val paddingX = 0.01f
         val paddingY = 0.025f
-        val columns = 4
-        val rows = 3
+        val columns = 4 // 4 up to 6
+        val rows = 3 // 3 up to 4, but at 4 the text size has to be reduced slightly
         articleButtons = (0 until columns * rows).map { index ->
             val cellX = index % columns
             val cellY = index / columns
