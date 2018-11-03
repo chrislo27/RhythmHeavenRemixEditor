@@ -23,7 +23,7 @@ object ModdingUtils {
             val wholes = tickflow / tickflowUnits
             val leftover = tickflow % tickflowUnits
 
-            return "${if (wholes > 0) if (wholes > 1) "$wholes * $tickflowUnitsStr" else tickflowUnitsStr else ""}${if (wholes > 0 && leftover > 0) " + " else ""}${if (leftover > 0) "0x${leftover.toString(16).toUpperCase(Locale.ROOT)}" else ""} $tickflowUnitName".trim()
+            return "${if (wholes > 0) if (wholes > 1) "$wholes × $tickflowUnitsStr" else tickflowUnitsStr else ""}${if (wholes > 0 && leftover > 0) " + " else ""}${if (leftover > 0) "0x${leftover.toString(16).toUpperCase(Locale.ROOT)}" else ""} $tickflowUnitName".trim()
         }
     }
 
