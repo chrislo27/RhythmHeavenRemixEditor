@@ -29,7 +29,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_Killble", "Killble", "", "https://i.imgur.com/AZ5hCOs.png", 0L, "https://www.youtube.com/user/sdllv", null, false),
                 Article("partner_spoopster", "spoopster", "", "https://i.imgur.com/fttfacd.png", 0L, "https://www.youtube.com/channel/UCXIUIzLliw5c6BRIR2CRJkQ", null, false),
                 Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.png", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false)
-                                                    ).shuffled()
+                                                    )
     }
 
     override val stage: GenericStage<PartnersScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -78,8 +78,13 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
 
         stage.bottomStage.elements += descLabel
 
+        randomizePartners()
+    }
+
+    private fun randomizePartners() {
+        val shuffled = PARTNERS.shuffled()
         articleButtons.forEachIndexed { index, it ->
-            it.article = PARTNERS.elementAtOrNull(index)
+            it.article = shuffled.elementAtOrNull(index)
             it.visible = it.article != null
         }
     }
@@ -93,6 +98,11 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 stage.backButton.onLeftClick(0f, 0f)
             }
         }
+    }
+
+    override fun show() {
+        super.show()
+        randomizePartners()
     }
 
     override fun tickUpdate() {
