@@ -41,12 +41,12 @@ object AnalyticsHandler : Disposable {
         this.userID = prefs.getString(PREFS_USER_ID, "")
         analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
 
+        identify()
+        analytics.flush()
+
         if (RHRE3.noAnalytics) {
             analytics.shutdown()
         }
-
-        identify()
-        analytics.flush()
     }
 
     fun getUUID(): String {
@@ -58,7 +58,10 @@ object AnalyticsHandler : Disposable {
                                   .userId(userID)
                                   .context(getContext())
                                   .traits(mapOf(
-                                          "createdAt" to prefs.getString(PREFS_USER_CREATED, (System.currentTimeMillis() / 1000L).toString()))
+                                          "createdAt" to prefs.getString(PREFS_USER_CREATED, (System.currentTimeMillis() / 1000L).toString()),
+                                          "analyticsDisabled" to RHRE3.noAnalytics,
+                                          "onlineCounterDisabled" to RHRE3.noOnlineCounter
+                                               )
                                          )
                          )
     }
