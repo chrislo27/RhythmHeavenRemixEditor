@@ -3,8 +3,11 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -16,6 +19,9 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
+import io.github.chrislo27.rhre3.stage.bg.Background
+import io.github.chrislo27.rhre3.stage.bg.Particle
+import io.github.chrislo27.rhre3.stage.bg.ParticleBasedBackground
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
@@ -26,6 +32,7 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
+import io.github.chrislo27.toolboks.util.gdxutils.drawQuad
 import java.time.LocalDate
 import kotlin.math.roundToInt
 
@@ -33,8 +40,10 @@ import kotlin.math.roundToInt
 class EventScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, EventScreen>(main), HidesVersionText {
 
-    enum class EventType {
-        NONE, ANNIVERSARY
+    enum class EventType(val canImmediatelyContinue: Boolean, val backgroundFactory: () -> Background? = { null }) {
+        NONE(true),
+        ANNIVERSARY(false),
+        XMAS(true, { WinterBackground("winterBackground") })
     }
 
     companion object {
@@ -42,21 +51,31 @@ class EventScreen(main: RHRE3Application)
 
         fun getPossibleEvent(main: RHRE3Application, nextScreen: ToolboksScreen<*, *>?): EventScreen? {
             val anniversaryButNow: LocalDate = RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
+            val xmasButNow: LocalDate = LocalDate.of(NOW.year, 12, 20).withYear(NOW.year)
 
             // Event check
             val today: LocalDate = when {
-                RHRE3.immediateAnniversary > 0 -> anniversaryButNow
+                RHRE3.immediateEvent in 1..2 -> anniversaryButNow
+                RHRE3.immediateEvent == 3 -> xmasButNow
                 else -> LocalDate.now()
             }
 
             return when {
-            // RHRE anniversary:
-            // Occurs from day of to 3 days after (exclusive)
+                // RHRE anniversary:
+                // Occurs from day of to 3 days after (exclusive)
                 today == anniversaryButNow || (today.isAfter(anniversaryButNow)
                         && today.isBefore(anniversaryButNow.plusDays(3))) -> {
                     EventScreen(main).takeIf {
                         it.loadEventJson(EventType.ANNIVERSARY,
                                          Gdx.files.internal("event/anniversary.json"), nextScreen)
+                    }
+                }
+                // Xmas
+                // Dec 20-25
+                // https://musescore.com/grossmusik/scores/4797212
+                today == xmasButNow || (today.isAfter(xmasButNow) && today.isBefore(xmasButNow.plusDays(6))) -> {
+                    EventScreen(main).takeIf {
+                        it.loadEventJson(EventType.XMAS, Gdx.files.internal("event/xmas.json"), nextScreen)
                     }
                 }
                 else -> null
@@ -79,6 +98,7 @@ class EventScreen(main: RHRE3Application)
         position.y = viewportHeight / 2f
         update()
     }
+    private var background: Background? = null
 
     fun loadEventJson(eventType: EventType, file: FileHandle, nextScreen: ToolboksScreen<*, *>?): Boolean {
         return try {
@@ -90,9 +110,10 @@ class EventScreen(main: RHRE3Application)
 
             this.nextScreen = nextScreen
             this.eventType = eventType
-            this.canContinue = if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateAnniversary != 2) 0f else -1f
+            this.canContinue = if (eventType.canImmediatelyContinue) 0f else if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateEvent % 2 != 0) 0f else -1f
             main.preferences.putInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, NOW.year).flush()
             this.canUpdate = 0
+            this.background = eventType.backgroundFactory()
             true
         } catch (e: Exception) {
             e.printStackTrace()
@@ -108,6 +129,8 @@ class EventScreen(main: RHRE3Application)
         batch.projectionMatrix = camera.combined
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
+
+        background?.render(camera, batch, main.shapeRenderer, Gdx.graphics.deltaTime)
 
         val font = main.defaultBorderedFont
         font.setColor(1f, 1f, 1f, 1f)
@@ -190,6 +213,26 @@ class EventScreen(main: RHRE3Application)
                                         baseY - font.lineHeight * 2, camera.viewportWidth, Align.center)
                     font.drawCompressed(batch, "Here's to more RHRE!", 0f,
                                         baseY - font.lineHeight * 3, camera.viewportWidth, Align.center)
+                }
+                EventType.XMAS -> {
+                    val baseY = camera.viewportHeight * 0.8f
+                    val rhre = "RHRE"
+                    val layout = font.drawCompressed(batch,
+                                                     "Happy Holidays from us at the [X]$rhre[] team!",
+                                                     0f, baseY, camera.viewportWidth, Align.center)
+                    val logo = AssetRegistry.get<Texture>("logo_32")
+
+                    val indexOfR = layout.runs.indexOfFirst { it.color.a == 0.0f }
+                    if (indexOfR != -1) {
+                        val run = layout.runs[indexOfR]
+                        batch.setColor(1f, 1f, 1f, fontAlpha)
+                        batch.draw(logo, run.x, run.y + baseY - font.capHeight / 2 - run.width / 2, run.width,
+                                   run.width)
+                        batch.setColor(1f, 1f, 1f, 1f)
+                    }
+
+                    font.drawCompressed(batch, "We hope you have a wonderful holiday season.", 0f,
+                                        baseY - font.lineHeight * 2, camera.viewportWidth, Align.center)
                 }
                 else -> {
                 }
@@ -274,5 +317,57 @@ class EventScreen(main: RHRE3Application)
             number % 10 == 3 -> "rd"
             else -> "th"
         }
+    }
+
+    class WinterBackground(id: String, maxParticles: Int = 128,
+                           val orangeTop: Color = Color.valueOf("CD3907"),
+                           val orangeBottom: Color = Color.valueOf("FF9333"),
+                           val blueTop: Color = Color.valueOf("27649A"),
+                           val blueBottom: Color = Color.valueOf("72AED5"),
+                           var cycleSpeed: Float = 1f / 10f)
+        : ParticleBasedBackground(id, maxParticles) {
+
+        class Snowflake(x: Float, y: Float,
+                        size: Float = 32f,
+                        speedX: Float = MathUtils.random(0.075f, 0.25f),
+                        speedY: Float = -MathUtils.random(0.05f, 0.1f))
+            : Particle(x, y, size, size, speedX, speedY, 0f, 0f, "menu_snowflake")
+
+
+        private val top = Color()
+        private val bottom = Color()
+
+        override fun renderBackground(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
+            val width = camera.viewportWidth
+            val height = camera.viewportHeight
+            val ratioX = width / RHRE3.WIDTH
+            val ratioY = height / RHRE3.HEIGHT
+
+            if (cycleSpeed > 0f) {
+                val percentage = MathHelper.getBaseCosineWave(1f / cycleSpeed)
+                top.set(blueTop)
+                bottom.set(blueBottom)
+
+                top.lerp(orangeTop, percentage)
+                bottom.lerp(orangeBottom, percentage)
+            }
+
+            batch.drawQuad(0f, 0f, bottom, width, 0f, bottom,
+                           width, height, top, 0f, height, top)
+
+            // Remove OoB particles
+            particles.removeIf {
+                it.x > 1f + (ratioX * it.sizeX) / width || it.y < -(ratioY * it.sizeY) / height
+            }
+        }
+
+        override fun createParticle(initial: Boolean): Particle? {
+            return if (!initial) {
+                Snowflake(-0.25f, 0.25f + MathUtils.random(1f))
+            } else {
+                Snowflake(MathUtils.random(1f), MathUtils.random(1f))
+            }
+        }
+
     }
 }
