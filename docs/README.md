@@ -207,7 +207,9 @@ The Ruler tool helps you measure beat distances. This is mostly intended for
 modding Rhythm Heaven Megamix. Hold `LEFT CLICK` to draw the ruler.
 Holding `SHIFT` disables the snapping.
 
-![Screenshot](readme/rulerTickflow.png)
+![Screenshot](https://user-images.githubusercontent.com/6299069/47955296-3d635600-df53-11e8-8738-d0b4f1dad38f.png)
+
+>Note: The 0x30 notation will only be visible if Advanced Options are enabled.
 
 # Stored Patterns
 By clicking on the Stored Patterns tab (the chest icon), you can
