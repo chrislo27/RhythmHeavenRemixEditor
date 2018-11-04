@@ -1847,7 +1847,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                         if (isCopying) {
                             this.selection = newSel
-                            remix.entities.addAll(newSel)
+                            val notIn = newSel.filter { it !in remix.entities }
+                            if (notIn.isNotEmpty()) remix.entities.addAll(notIn)
                         }
 
                         newSel.forEach {
