@@ -280,7 +280,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
                                                         InfoScreen.DEFAULT_AUTOSAVE_TIME)
-                .coerceIn(InfoScreen.timers.first(), InfoScreen.timers.last())
+                .coerceIn(InfoScreen.autosaveTimers.first(), InfoScreen.autosaveTimers.last())
 
         timeUntilAutosave = 60f * autosaveFrequency
     }

@@ -4,8 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.news.Article
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -32,6 +35,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_SportaDerp9000", "SportaDerp9000", "", "https://i.imgur.com/tsSWlRa.png", 0L, "https://www.youtube.com/channel/UCUbBQ2x33-KhEbP3FTesY8A", null, false),
                 Article("partner_Suwa-ko", "Suwa-ko", "", "https://i.imgur.com/ArJ3Gqe.jpg", 0L, "https://www.youtube.com/channel/UCj-veAzBbeVqac7ISPsGvLw", null, false)
                                                     )
+        const val LAST_VERSION = 1
     }
 
     override val stage: GenericStage<PartnersScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -105,6 +109,8 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
     override fun show() {
         super.show()
         randomizePartners()
+        DiscordHelper.updatePresence(PresenceState.ViewingPartners)
+        main.preferences.putInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, LAST_VERSION).flush()
     }
 
     override fun tickUpdate() {

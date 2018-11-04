@@ -41,6 +41,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
+import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -48,10 +49,10 @@ class InfoScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, InfoScreen>(main), HidesVersionText {
 
     companion object {
-
         const val DEFAULT_AUTOSAVE_TIME = 5
-        val timers = listOf(0, 1, 2, 3, 4, 5, 10, 15)
-
+        val autosaveTimers = listOf(0, 1, 2, 3, 4, 5, 10, 15)
+        var shouldSeePartners: Boolean = true
+            private set
     }
 
     override val stage: Stage<InfoScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -59,14 +60,14 @@ class InfoScreen(main: RHRE3Application)
         get() = main.preferences
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
-    private val clearRecentsButton: Button<InfoScreen>
-    private val dbVersionLabel: TextLabel<InfoScreen>
-    private val versionLabel: TextLabel<InfoScreen>
+    private lateinit var clearRecentsButton: Button<InfoScreen>
+    private lateinit var dbVersionLabel: TextLabel<InfoScreen>
+    private lateinit var versionLabel: TextLabel<InfoScreen>
     private var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
     private val onlineLabel: TextLabel<InfoScreen>
-    private val loadingIcon: LoadingIcon<InfoScreen>
+    private lateinit var loadingIcon: LoadingIcon<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -343,7 +344,20 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
-                    main.screen = ScreenRegistry.get("partners")
+                    main.screen = ScreenRegistry.getNonNull("partners")
+                }
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    if (labels.isNotEmpty()) {
+                        val first = labels.first()
+                        if (first is ImageLabel) {
+                            if (InfoScreen.shouldSeePartners) {
+                                first.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                            } else {
+                                first.tint.set(1f, 1f, 1f, 1f)
+                            }
+                        }
+                    }
+                    super.render(screen, batch, shapeRenderer)
                 }
             }.apply {
                 addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -562,20 +576,20 @@ class InfoScreen(main: RHRE3Application)
             centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
                 private fun updateText() {
                     textLabel.text = Localization["screen.info.autosaveTimer",
-                            if (timers[index] == 0) Localization["screen.info.autosaveTimerOff"]
-                            else Localization["screen.info.autosaveTimerMin", timers[index]]]
+                            if (autosaveTimers[index] == 0) Localization["screen.info.autosaveTimerOff"]
+                            else Localization["screen.info.autosaveTimerMin", autosaveTimers[index]]]
                     editor.resetAutosaveTimer()
                 }
 
                 private fun persist() {
-                    preferences.putInteger(PreferenceKeys.SETTINGS_AUTOSAVE, timers[index]).flush()
+                    preferences.putInteger(PreferenceKeys.SETTINGS_AUTOSAVE, autosaveTimers[index]).flush()
                     didChangeSettings = true
                 }
 
                 private var index: Int = run {
                     val default = DEFAULT_AUTOSAVE_TIME
                     val pref = preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE, default)
-                    timers.indexOf(timers.find { it == pref } ?: default).coerceIn(0, timers.size - 1)
+                    autosaveTimers.indexOf(autosaveTimers.find { it == pref } ?: default).coerceIn(0, autosaveTimers.size - 1)
                 }
 
                 private val textLabel: TextLabel<InfoScreen>
@@ -591,7 +605,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     index++
-                    if (index >= timers.size)
+                    if (index >= autosaveTimers.size)
                         index = 0
 
                     persist()
@@ -602,7 +616,7 @@ class InfoScreen(main: RHRE3Application)
                     super.onRightClick(xPercent, yPercent)
                     index--
                     if (index < 0)
-                        index = timers.size - 1
+                        index = autosaveTimers.size - 1
 
                     persist()
                     updateText()
@@ -814,6 +828,12 @@ class InfoScreen(main: RHRE3Application)
         }
 
         stage.updatePositions()
+
+        updateSeePartners()
+    }
+
+    private fun updateSeePartners() {
+        shouldSeePartners = main.preferences.getInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, 0) < PartnersScreen.LAST_VERSION
     }
 
     override fun renderUpdate() {
@@ -830,6 +850,7 @@ class InfoScreen(main: RHRE3Application)
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
         versionLabel.text = RHRE3.VERSION.toString()
         DiscordHelper.updatePresence(PresenceState.InSettings)
+        updateSeePartners()
     }
 
     override fun hide() {
