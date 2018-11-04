@@ -8,6 +8,9 @@ import com.segment.analytics.messages.IdentifyMessage
 import com.segment.analytics.messages.TrackMessage
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.toolboks.i18n.Localization
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
@@ -45,7 +48,10 @@ object AnalyticsHandler : Disposable {
         analytics.flush()
 
         if (RHRE3.noAnalytics) {
-            analytics.shutdown()
+            GlobalScope.launch {
+                delay(2000L)
+                analytics.shutdown()
+            }
         }
     }
 
