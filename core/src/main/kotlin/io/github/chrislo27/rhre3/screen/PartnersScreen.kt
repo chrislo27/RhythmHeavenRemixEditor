@@ -33,9 +33,10 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_spoopster", "spoopster", "", "https://i.imgur.com/fttfacd.png", 0L, "https://www.youtube.com/channel/UCXIUIzLliw5c6BRIR2CRJkQ", null, false),
                 Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.png", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false),
                 Article("partner_SportaDerp9000", "SportaDerp9000", "", "https://i.imgur.com/tsSWlRa.png", 0L, "https://www.youtube.com/channel/UCUbBQ2x33-KhEbP3FTesY8A", null, false),
-                Article("partner_Suwa-ko", "Suwa-ko", "", "https://i.imgur.com/ArJ3Gqe.jpg", 0L, "https://www.youtube.com/channel/UCj-veAzBbeVqac7ISPsGvLw", null, false)
+                Article("partner_Suwa-ko", "Suwa-ko", "", "https://i.imgur.com/ArJ3Gqe.jpg", 0L, "https://www.youtube.com/channel/UCj-veAzBbeVqac7ISPsGvLw", null, false),
+                Article("partner_Draster", "Draster", "", "https://i.imgur.com/SwZ60Wb.png", 0L, "https://www.youtube.com/channel/UCtlLcwZ_UXdyfvPGI5Meu0w", null, false)
                                                     )
-        const val LAST_VERSION = 1
+        const val PARTNERS_VERSION = 2
     }
 
     override val stage: GenericStage<PartnersScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -110,7 +111,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
         super.show()
         randomizePartners()
         DiscordHelper.updatePresence(PresenceState.ViewingPartners)
-        main.preferences.putInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, LAST_VERSION).flush()
+        main.preferences.putInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, PARTNERS_VERSION).flush()
     }
 
     override fun tickUpdate() {

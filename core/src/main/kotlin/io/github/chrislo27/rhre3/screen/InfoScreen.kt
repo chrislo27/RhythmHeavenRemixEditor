@@ -833,7 +833,7 @@ class InfoScreen(main: RHRE3Application)
     }
 
     private fun updateSeePartners() {
-        shouldSeePartners = main.preferences.getInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, 0) < PartnersScreen.LAST_VERSION
+        shouldSeePartners = main.preferences.getInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, 0) < PartnersScreen.PARTNERS_VERSION
     }
 
     override fun renderUpdate() {
