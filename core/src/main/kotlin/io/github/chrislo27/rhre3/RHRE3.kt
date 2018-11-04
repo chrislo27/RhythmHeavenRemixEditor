@@ -11,7 +11,7 @@ object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor"
     const val TITLE_3 = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 15, 0, "")
+    val VERSION: Version = Version(3, 15, 1, "DEVELOPMENT")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     const val WIDTH = 1280
     const val HEIGHT = 720
@@ -51,7 +51,7 @@ object RHRE3 {
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
     var verifyRegistry: Boolean = false
-    var immediateAnniversary: Int = 0
+    var immediateEvent: Int = 0
     var noAnalytics: Boolean = false
     var forceExpansionSplash: Boolean = false
     var noOnlineCounter: Boolean = false
