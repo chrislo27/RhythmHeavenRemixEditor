@@ -42,8 +42,8 @@ project(":desktop") {
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
     }
 }
 
@@ -52,27 +52,27 @@ project(":core") {
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "commons-io:commons-io:2.6"
-        compile "com.github.oshi:oshi-core:3.4.4"
-        compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-        compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-        compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
-        compile "org.asynchttpclient:async-http-client:2.4.4"
-        compile "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
-        compile "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.4"
-        compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4"
-        compile "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
-        compile "org.slf4j:slf4j-nop:1.7.25"
-        compile "de.sciss:jump3r:1.0.4"
-        compile "com.github.chrislo27:musique-barebones:3807b60"
-        compile "com.segment.analytics.java:analytics:+"
-        compile "com.github.MinnDevelopment:java-discord-rpc:v2.0.1"
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "commons-io:commons-io:2.6"
+        implementation "com.github.oshi:oshi-core:3.4.4"
+        implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+        implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
+        implementation "org.asynchttpclient:async-http-client:2.4.4"
+        implementation "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
+        implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.4"
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4"
+        implementation "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
+        implementation "org.slf4j:slf4j-nop:1.7.25"
+        implementation "de.sciss:jump3r:1.0.4"
+        implementation "com.github.chrislo27:musique-barebones:3807b60"
+        implementation "com.segment.analytics.java:analytics:+"
+        implementation "com.github.MinnDevelopment:java-discord-rpc:v2.0.1"
 
-        compile fileTree(dir: 'libs', include: ['*.jar'])
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
     }
 }
 
@@ -83,7 +83,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 sourceSets {
     main.java.srcDirs += 'src/main/kotlin'
