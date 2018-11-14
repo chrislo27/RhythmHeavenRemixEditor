@@ -14,10 +14,10 @@ Examples:<br>
 
 ### Shortened IDs (*-substitution)
 Writing out the game ID prefix over and over for your cues is quite annoying.
-That's why there's a shorthand syntax to substitute the current game's name in, called
+That's why there's a shorthand syntax to substitute the current game's ID in, called
 *-substitution (star-substitution). Every instance of an asterisk `*` will be replaced with the parent game's ID.
 
-The only IDs that are star-substituable are cue/pattern IDs, response IDs, and IDs used in `CuePointerObjects`.
+The only IDs that are star-substitutable are cue/pattern IDs, response IDs, and IDs used in `CuePointerObjects`.
 
 Examples (`coolGame` is the game ID):<br>
 `coolGame/buzzer` can be shortened to `*/buzzer`<br>
