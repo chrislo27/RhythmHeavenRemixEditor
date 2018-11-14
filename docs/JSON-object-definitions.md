@@ -23,8 +23,8 @@ Examples (`coolGame` is the game ID):<br>
 `coolGame/buzzer` can be shortened to `*/buzzer`<br>
 `coolGame_pattern` can be shortered to `*_pattern`<br>
 
-Note that this only works in the same `DataObject` the star-ID is in. If you're referring to
-other cues or patterns NOT from this same DataObject, you must put its full ID.
+Note that this only works in the same `GameObject` the star-ID is in. If you're referring to
+other cues or patterns NOT from this same GameObject, you must put its full ID.
 
 ### Language suffixes
 Some games may be language-specific. You should use the correct icon overlay in
@@ -62,8 +62,8 @@ at the end of the name. Ex: (`string?`, `number?`) This means that the field is 
 | array | `[]` | `["first", "second", "third"]` | A "list" of other types |
 | id | same as string | "spaceDanceEn" | A unique identifer for this object, see ID rules above |
 
-## `DataObject` structure
-All `data.json` files for each game are a `DataObject`.
+## `GameObject` structure
+All `data.json` files for each game are a `GameObject`.
 
 ```json
 {
