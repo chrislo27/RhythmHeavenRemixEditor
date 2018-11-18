@@ -69,6 +69,7 @@ project(":core") {
         implementation "org.slf4j:slf4j-nop:1.7.25"
         implementation "de.sciss:jump3r:1.0.4"
         implementation "com.github.chrislo27:musique-barebones:3807b60"
+        implementation "com.github.chrislo27.RSDE:main:master"
         implementation "com.segment.analytics.java:analytics:+"
         implementation "com.github.MinnDevelopment:java-discord-rpc:v2.0.1"
 
