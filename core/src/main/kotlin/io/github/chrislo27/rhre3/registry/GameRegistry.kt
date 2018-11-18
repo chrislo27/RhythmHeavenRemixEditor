@@ -365,13 +365,6 @@ object GameRegistry : Disposable {
                             TextureModel(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
-
-                DatamodelGenerator.generators[game.id]?.let {
-                    it.process(folder, dataObject, game)
-                    if (RHRE3.outputGeneratedDatamodels) {
-                        Toolboks.LOGGER.info("JSON output for ${game.id}:\n${JsonHandler.toJson(game.toJsonObject(true))}\n")
-                    }
-                }
             } else {
                 val nameWithoutExt = folder.nameWithoutExtension()
                 val id = CUSTOM_PREFIX + nameWithoutExt
