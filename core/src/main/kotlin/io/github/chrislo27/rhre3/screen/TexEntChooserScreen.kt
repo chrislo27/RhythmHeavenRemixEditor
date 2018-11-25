@@ -91,7 +91,7 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
                 val filters = listOf(FileChooserExtensionFilter(Localization["screen.texent.fileFilter"], "*.png", "*.jpg", "*.bmp"))
                 FileChooser.openFileChooser(Localization["screen.texent.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
                     isChooserOpen = false
-                    if (file != null && main.screen == this) {
+                    if (file != null && main.screen == this@TexEntChooserScreen) {
                         val initialDirectory = if (!file.isDirectory) file.parentFile else file
                         persistDirectory(main, PreferenceKeys.FILE_CHOOSER_TEXENT, initialDirectory)
                         Gdx.app.postRunnable {
