@@ -63,8 +63,8 @@ project(":core") {
         implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
         implementation "org.asynchttpclient:async-http-client:2.4.4"
         implementation "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
-        implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.4"
-        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4"
+        implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.7"
+        implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7"
         implementation "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
         implementation "org.slf4j:slf4j-nop:1.7.25"
         implementation "de.sciss:jump3r:1.0.4"
