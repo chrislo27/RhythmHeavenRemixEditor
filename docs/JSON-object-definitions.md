@@ -89,7 +89,7 @@ All `data.json` files for each game are a `GameObject`.
 | groupDefault | boolean? | Whether this game is the first to show in its group |
 | priority | integer? | Priority for sorting games in the picker. Higher numbers are earlier, lower numbers are later (can be negative). |
 | searchHints | (array of strings)? | Other tags to search this game by in the picker. Optional, defaults to empty array. |
-| noDisplay | boolean? | Whether to hide this game (default false) |
+| noDisplay | boolean? | Whether to ignore this game in game sections/presentation mode (default false) |
 
 The `name` field is a properly Title Case capitalized name. This is in English.
 If this game appears in multiple series, for example both in RHDS and Megamix,
