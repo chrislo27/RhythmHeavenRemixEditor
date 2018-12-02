@@ -153,7 +153,7 @@ You will find them in multipart objects such as patterns.
 | duration | number? | If present, overrides the duration of the cue with this value |
 | track | integer? | Indicates how many tracks up/down (up is positive) to put this cue |
 | semitone | integer? | Number of semitones to pitch up/down |
-| group | integer? | 0-300 value of a percentage volume. Default 100. Cannot be negative. |
+| volume | integer? | 0-300 value of a percentage volume. Default 100. Cannot be negative. |
 | metadata | map? | Extra key/value data (see below) |
 
 **Note that** the only fields shown here ARE the ones it has, but
