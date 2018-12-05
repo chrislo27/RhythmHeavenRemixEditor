@@ -1,5 +1,11 @@
 # JSON Object Definitions for Databasing
 
+## RSDE
+[![RSDE Logo](rsde128.png)](https://github.com/chrislo27/RSDE)
+<br>
+Please use the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE) to edit the SFX Database.
+It comes with error checking and is significantly more useful than editing a JSON file by hand.
+
 ## ID rules
 IDs must only consist of ASCII alphanumerics, hyphens `-`, forward slashes `/` (not game IDs), and underscores `_`.
 
