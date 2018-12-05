@@ -514,7 +514,7 @@ object GameRegistry : Disposable {
             game.objects.forEach { model ->
                 val separator = if (model is Cue) "/" else "_"
                 if (!model.id.startsWith(game.id + separator)) {
-                    builder.append("Model ID (${model.id}) should start with \"*$separator\" (or the fully-qualified \"${game.id}$separator\")\n")
+                    builder.append("Model ID (${model.id}) should start with \"*$separator\"\n")
                 }
 
                 /*
