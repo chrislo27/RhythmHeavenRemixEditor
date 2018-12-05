@@ -12,6 +12,7 @@ downloading the program!**
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
 Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR) -- a tool to set remixing challenges<br>
+Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE) -- a GUI for editing the RHRE SFX Database<br>
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/LICENSE.txt)
