@@ -108,7 +108,7 @@ object GameRegistry : Disposable {
         lateinit var specialGame: Game
             private set
 
-        private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(true)
+        private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(false)
 
         class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
             val textureFh: FileHandle = folder.child(ICON_FILENAME)
