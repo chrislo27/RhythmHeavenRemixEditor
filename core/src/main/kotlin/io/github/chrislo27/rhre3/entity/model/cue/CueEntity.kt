@@ -12,6 +12,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
     : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable, ILoadsSounds, IVolumetric {
 
     companion object {
+        val FILLBOTS_ID_REGEX: Regex = "fillbots(.+)?/water".toRegex()
+
         /**
          * https://www.desmos.com/calculator/kqyb422xh7
          */
@@ -39,7 +41,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     private val cue: Cue = datamodel
-    private val isFillbotsFill: Boolean = cue.id == "fillbots/water" || cue.id == "fillbotsMegamix/water"
+    private val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
