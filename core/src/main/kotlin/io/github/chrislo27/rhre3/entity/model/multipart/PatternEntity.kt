@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
@@ -39,6 +40,18 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
 
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds, changeWidths = true, scaleBeats = true)
+    }
+
+    override fun readData(objectNode: ObjectNode) {
+        super.readData(objectNode)
+        if (!datamodel.stretchable) {
+            if (bounds.width != datamodel.duration) {
+                // The new duration overrides the persisted one if the pattern is not stretchable
+                updateBounds {
+                    bounds.width = datamodel.duration
+                }
+            }
+        }
     }
 
     override fun copy(remix: Remix): PatternEntity {
