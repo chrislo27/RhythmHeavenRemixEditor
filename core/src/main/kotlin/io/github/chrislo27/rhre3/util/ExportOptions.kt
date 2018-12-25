@@ -13,7 +13,7 @@ data class ExportOptions(val bitrateKbps: Int, val sampleRate: Int, val madeWith
          */
         val QUICKUPLOAD = ExportOptions(128, 44100, true)
         /**
-         * Same as default but with no comments.
+         * Same as [DEFAULT] but with no comments.
          */
         val BLEND = DEFAULT.copy(madeWithComment = false)
     }
