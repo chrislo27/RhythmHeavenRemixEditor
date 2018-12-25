@@ -45,7 +45,6 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import javafx.application.Application.launch
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.beadsproject.beads.core.Bead
@@ -206,7 +205,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     val exportFile = File.createTempFile("rhre3-quickupload-", ".mp3").apply {
                         deleteOnExit()
                     }
-                    export(exportFile, MP3, false)
+                    export(exportFile, MP3, false, exportOptions = ExportOptions.QUICKUPLOAD)
 
                     val fileSize = exportFile.length()
 
@@ -278,7 +277,8 @@ class ExportRemixScreen(main: RHRE3Application)
     @Synchronized
     private fun export(file: File, fileType: ExportFileType, playSuccessDing: Boolean,
                        startSeconds: Float = selectionStage.percentToSeconds(selectionStage.startPercent),
-                       endSeconds: Float = selectionStage.percentToSeconds(selectionStage.endPercent)) {
+                       endSeconds: Float = selectionStage.percentToSeconds(selectionStage.endPercent),
+                       exportOptions: ExportOptions = RHRE3.exportOptions) {
         if (isExporting || !isCapableOfExporting)
             return
         isExporting = true
@@ -349,9 +349,8 @@ class ExportRemixScreen(main: RHRE3Application)
                         // nothing
                     }
                     MP3 -> {
-                        val args = arrayOf("--ignore-tag-errors",
-                                           "--tc", commentTag,
-                                           recorderFile.path, file.path)
+                        val preArgs = listOf("--ignore-tag-errors", "-b", exportOptions.bitrateKbps.toString(), "--resample", (exportOptions.sampleRate / 1000f).toString())
+                        val args = (preArgs + (if (exportOptions.madeWithComment) listOf("--tc", commentTag) else listOf()) + listOf(recorderFile.path, file.path)).toTypedArray()
                         val main = Main()
                         main.support.addPropertyChangeListener("progress") { event ->
                             val percent: Int = (event.newValue as? Int) ?: 0
@@ -366,13 +365,16 @@ class ExportRemixScreen(main: RHRE3Application)
                             else -> error("Unsupported encoder for file type $fileType")
                         }
                         val encoder: Encoder = pair.first
+                        val audioFormat = AudioFormat(context.sampleRate, 16, 2, true, false)
                         if (encoder is VorbisEncoder) {
-                            if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false), VorbisEncoder.DEFAULT_BITRATE, vorbis_comment().apply {
-                                        vorbis_comment_add_tag("Comments", commentTag)
+                            if (!encoder.open(file, audioFormat, VorbisEncoder.DEFAULT_BITRATE, vorbis_comment().apply {
+                                        if (exportOptions.madeWithComment) {
+                                            vorbis_comment_add_tag("Comments", commentTag)
+                                        }
                                     }))
                                 error("Failed to open $fileType encoder")
                         } else {
-                            if (!encoder.open(file, AudioFormat(44100f, 16, 2, true, false)))
+                            if (!encoder.open(file, audioFormat))
                                 error("Failed to open $fileType encoder")
                         }
 

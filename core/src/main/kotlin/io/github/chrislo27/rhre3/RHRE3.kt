@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.util.ExportOptions
 import io.github.chrislo27.toolboks.version.Version
 import java.time.LocalDate
 import java.time.Month
@@ -57,6 +58,7 @@ object RHRE3 {
     var noOnlineCounter: Boolean = false
     var outputGeneratedDatamodels: Boolean = false
     var outputCustomSfx: Boolean = false
+    var exportOptions: ExportOptions = ExportOptions.DEFAULT
 
     lateinit var launchArguments: List<String>
 
