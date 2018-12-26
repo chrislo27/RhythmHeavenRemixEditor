@@ -35,13 +35,18 @@ object AnalyticsHandler : Disposable {
                                 .withZone(ZoneOffset.UTC)
                                 .format(Instant.now()))
                         .flush()
+                java.util.prefs.Preferences.userRoot().node("io/rhre").put("analyticsID", field)
             }
             return field
         }
 
     fun initAndIdentify(prefs: Preferences) {
         this.prefs = prefs
-        this.userID = prefs.getString(PREFS_USER_ID, "")
+        val n = java.util.prefs.Preferences.userRoot().node("io/rhre")
+        val reg = n.get("analyticsID", "")
+        val fromP = prefs.getString(PREFS_USER_ID, "")
+        this.userID = if (reg == fromP) reg else (reg.takeUnless(String::isEmpty) ?: fromP)
+        n.put("analyticsID", getUUID())
         analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
 
         identify()
