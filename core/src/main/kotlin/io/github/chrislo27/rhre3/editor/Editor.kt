@@ -127,6 +127,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
+        val THREE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {

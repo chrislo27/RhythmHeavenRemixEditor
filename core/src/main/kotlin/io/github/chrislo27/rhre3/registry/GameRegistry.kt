@@ -14,10 +14,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.ShakeScreen
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TextureModel
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 import io.github.chrislo27.rhre3.registry.json.*
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
@@ -366,6 +363,8 @@ object GameRegistry : Disposable {
                             ShakeScreen(game, objID, obj.deprecatedIDs, obj.name)
                         is TextureEntityObject ->
                             TextureModel(game, objID, obj.deprecatedIDs, obj.name)
+                        is TapeMeasureObject ->
+                            TapeMeasure(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
             } else {
