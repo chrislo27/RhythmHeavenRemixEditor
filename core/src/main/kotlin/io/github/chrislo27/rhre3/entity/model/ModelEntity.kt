@@ -29,6 +29,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     final override val jsonType: String = "model"
     open val renderText: String
         get() = datamodel.newlinedName
+    open val attemptTextOnScreen: Boolean
+        get() = true
     val isSpecialEntity: Boolean = datamodel.game === GameRegistry.data.specialGame
     var needsNameTooltip: Boolean = false
         private set
@@ -147,7 +149,14 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
         }
         needsNameTooltip = textHeight > allottedHeight
-        font.draw(batch, text, textX, textY + font.getTextHeight(text, allottedWidth, true) / 2, allottedWidth, Align.right, true)
+        var newTextWidth = allottedWidth
+        if (attemptTextOnScreen) {
+            if (textX + newTextWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
+                newTextWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - textX
+            }
+            newTextWidth = newTextWidth.coerceAtLeast(font.getTextWidth(text)).coerceAtMost(allottedWidth)
+        }
+        font.draw(batch, text, textX, textY + font.getTextHeight(text, newTextWidth, true) / 2, newTextWidth, Align.right, true)
 
         when (remix.editor.scrollMode) {
             Editor.ScrollMode.PITCH -> {
