@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
+import io.github.chrislo27.rhre3.lc.LC
 import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
@@ -289,6 +290,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 e.printStackTrace()
             }
         }
+
+        LC(this)
     }
 
     override fun preRender() {
