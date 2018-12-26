@@ -169,6 +169,9 @@ object GameRegistry : Disposable {
             } ?: listOf()
 
             editorVersion = Version.fromString(currentObj.requiresVersion)
+
+            if (editorVersion > RHRE3.VERSION)
+                error("Registry version ($editorVersion) is higher than this RHRE version (${RHRE3.VERSION})")
         }
 
         private fun whenDone() {
