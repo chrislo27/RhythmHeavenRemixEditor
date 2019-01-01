@@ -96,8 +96,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 
         if (this is IStretchable && this.isStretchable) {
             val oldColor = batch.packedColor
-            val arrowWidth: Float = Math.min(bounds.width / 2f, Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH)
-            val y = bounds.y + bounds.height / 2 - 0.5f
+            val arrowWidth: Float = Math.min(width / 2f, Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH)
+            val y = y + height / 2 - 0.5f
             val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
 
             batch.setColorWithTintIfNecessary(selectionTint, (color.r - 0.25f).coerceIn(0f, 1f),
@@ -110,7 +110,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
                        arrowTex.height, false, false)
             batch.draw(arrowTex, x, y, arrowWidth, 1f,
                        0, 0, arrowTex.width / 2, arrowTex.height, false, false)
-            batch.draw(arrowTex, x + bounds.width, y, -arrowWidth, 1f,
+            batch.draw(arrowTex, x + width, y, -arrowWidth, 1f,
                        0, 0, arrowTex.width / 2, arrowTex.height, false, false)
 
             batch.setColor(oldColor)
