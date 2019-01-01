@@ -1289,7 +1289,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         run stretchCursor@{
             val clickOccupation = clickOccupation
-            val shouldStretch = remix.playState == STOPPED && (clickOccupation is ClickOccupation.SelectionDrag && clickOccupation.isStretching || (clickOccupation == ClickOccupation.None && this.selection.size == 1 && remix.entities.any {
+            val shouldStretch = remix.playState == STOPPED && ((clickOccupation is ClickOccupation.SelectionDrag && clickOccupation.isStretching) || (clickOccupation == ClickOccupation.None && this.selection.size == 1 && remix.entities.any {
                 canStretchEntity(mouseVector, it)
             }))
 
@@ -1407,6 +1407,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                     is ClickOccupation.SelectionDrag -> {
                         if (clickOccupation.isStretching) {
+                            // FIXME multiple stretching
                             val entity = clickOccupation.clickedOn
                             val oldBound = clickOccupation.oldBounds.getValue(entity)
                             entity.updateBounds {
