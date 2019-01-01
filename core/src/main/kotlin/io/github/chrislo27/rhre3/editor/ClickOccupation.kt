@@ -117,12 +117,12 @@ sealed class ClickOccupation {
         : ClickOccupation() {
 
         companion object {
-            fun copyBounds(selection: List<Entity>): List<Rectangle> =
-                    selection.map { Rectangle(it.bounds) }
+            fun copyBounds(selection: List<Entity>): Map<Entity, Rectangle> =
+                    selection.associateWith { Rectangle(it.bounds) }
         }
 
         val isNewOrCopy: Boolean = isNew || isCopy
-        val oldBounds: List<Rectangle> = copyBounds(editor.selection)
+        val oldBounds: Map<Entity, Rectangle> = copyBounds(editor.selection)
         val isStretching: Boolean by lazy { !isNewOrCopy && stretchType != StretchRegion.NONE }
         private val selection: List<Entity>
             get() = editor.selection

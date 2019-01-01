@@ -1407,14 +1407,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                     is ClickOccupation.SelectionDrag -> {
                         if (clickOccupation.isStretching) {
-                            val entity = this.selection.first()
-                            val oldBound = clickOccupation.oldBounds.first()
+                            val entity = clickOccupation.clickedOn
+                            val oldBound = clickOccupation.oldBounds.getValue(entity)
                             entity.updateBounds {
                                 if (clickOccupation.stretchType == StretchRegion.LEFT) {
-                                    val rightSide = oldBound.x + oldBound.width
+                                    val oldRightSide = oldBound.x + oldBound.width
 
-                                    entity.bounds.x = (nearestSnap).coerceAtMost(rightSide - IStretchable.MIN_STRETCH)
-                                    entity.bounds.width = rightSide - entity.bounds.x
+                                    entity.bounds.x = (nearestSnap).coerceAtMost(oldRightSide - IStretchable.MIN_STRETCH)
+                                    entity.bounds.width = oldRightSide - entity.bounds.x
                                 } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
                                     entity.bounds.width = (nearestSnap - oldBound.x).coerceAtLeast(
                                             IStretchable.MIN_STRETCH)
@@ -2079,12 +2079,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             } else {
                 if (validPlacement) {
                     // move action
-                    remix.addActionWithoutMutating(EntityMoveAction(this, this.selection, clickOccupation.oldBounds))
+                    val sel = this.selection.toList()
+                    remix.addActionWithoutMutating(EntityMoveAction(this, sel, sel.map { clickOccupation.oldBounds.getValue(it) }))
                 } else if (deleting && !storing) {
                     // remove+selection action
                     remix.entities.removeAll(this.selection)
+                    val sel = this.selection.toList()
                     remix.addActionWithoutMutating(ActionGroup(listOf(
-                            EntityRemoveAction(this, this.selection, clickOccupation.oldBounds),
+                            EntityRemoveAction(this, this.selection, sel.map { clickOccupation.oldBounds.getValue(it) }),
                             EntitySelectionAction(this, clickOccupation.previousSelection, listOf())
                                                                      )))
                     this.selection = listOf()
@@ -2094,8 +2096,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
 
                     // revert positions silently
-                    clickOccupation.oldBounds.forEachIndexed { index, rect ->
-                        val entity = selection[index]
+                    clickOccupation.oldBounds.forEach { entity, rect ->
                         entity.updateBounds {
                             entity.bounds.set(rect)
                         }
