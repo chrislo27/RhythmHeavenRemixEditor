@@ -108,6 +108,7 @@ sealed class ClickOccupation {
 
     class SelectionDrag(val editor: Editor,
                         private val first: Entity,
+                        val clickedOn: Entity,
                         val mouseOffset: Vector2,
                         val isNew: Boolean,
                         val isCopy: Boolean,
