@@ -1410,7 +1410,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             val rootEntity = clickOccupation.clickedOn
                             val rootBound = clickOccupation.oldBounds.getValue(rootEntity)
 
-                            this.selection.forEach { entity ->
+                            fun stretch(entity: Entity) {
                                 val oldBound = clickOccupation.oldBounds.getValue(entity)
                                 entity.updateBounds {
                                     if (clickOccupation.stretchType == StretchRegion.LEFT) {
@@ -1419,10 +1419,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                         entity.bounds.x = (nearestSnap - (rootBound.x - oldBound.x)).coerceAtMost(oldRightSide - IStretchable.MIN_STRETCH)
                                         entity.bounds.width = oldRightSide - entity.bounds.x
                                     } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                        entity.bounds.width = (nearestSnap - oldBound.x - (rootBound.x - oldBound.x)).coerceAtLeast(
+                                        entity.bounds.width = (nearestSnap - oldBound.x - (rootBound.maxX - oldBound.maxX)).coerceAtLeast(
                                                 IStretchable.MIN_STRETCH)
                                     }
                                 }
+                            }
+
+                            stretch(rootEntity)
+                            this.selection.forEach { entity ->
+                                if (entity === rootEntity) return@forEach
+                                stretch(entity)
                             }
                         } else {
                             clickOccupation.setPositionRelativeToMouse()
