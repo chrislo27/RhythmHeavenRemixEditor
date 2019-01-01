@@ -1289,7 +1289,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         run stretchCursor@{
             val clickOccupation = clickOccupation
-            val shouldStretch = remix.playState == STOPPED && ((clickOccupation is ClickOccupation.SelectionDrag && clickOccupation.isStretching) || (clickOccupation == ClickOccupation.None && this.selection.size == 1 && remix.entities.any {
+            val shouldStretch = remix.playState == STOPPED && ((clickOccupation is ClickOccupation.SelectionDrag && clickOccupation.isStretching) || (clickOccupation == ClickOccupation.None && this.selection.isNotEmpty() && this.selection.all { it is IStretchable && it.isStretchable } && remix.entities.any {
                 canStretchEntity(mouseVector, it)
             }))
 
@@ -1407,18 +1407,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                     is ClickOccupation.SelectionDrag -> {
                         if (clickOccupation.isStretching) {
-                            // FIXME multiple stretching
-                            val entity = clickOccupation.clickedOn
-                            val oldBound = clickOccupation.oldBounds.getValue(entity)
-                            entity.updateBounds {
-                                if (clickOccupation.stretchType == StretchRegion.LEFT) {
-                                    val oldRightSide = oldBound.x + oldBound.width
+                            val rootEntity = clickOccupation.clickedOn
+                            val rootBound = clickOccupation.oldBounds.getValue(rootEntity)
 
-                                    entity.bounds.x = (nearestSnap).coerceAtMost(oldRightSide - IStretchable.MIN_STRETCH)
-                                    entity.bounds.width = oldRightSide - entity.bounds.x
-                                } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
-                                    entity.bounds.width = (nearestSnap - oldBound.x).coerceAtLeast(
-                                            IStretchable.MIN_STRETCH)
+                            this.selection.forEach { entity ->
+                                val oldBound = clickOccupation.oldBounds.getValue(entity)
+                                entity.updateBounds {
+                                    if (clickOccupation.stretchType == StretchRegion.LEFT) {
+                                        val oldRightSide = oldBound.x + oldBound.width
+
+                                        entity.bounds.x = (nearestSnap - (rootBound.x - oldBound.x)).coerceAtMost(oldRightSide - IStretchable.MIN_STRETCH)
+                                        entity.bounds.width = oldRightSide - entity.bounds.x
+                                    } else if (clickOccupation.stretchType == StretchRegion.RIGHT) {
+                                        entity.bounds.width = (nearestSnap - oldBound.x - (rootBound.x - oldBound.x)).coerceAtLeast(
+                                                IStretchable.MIN_STRETCH)
+                                    }
                                 }
                             }
                         } else {
@@ -1553,16 +1556,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (selection.size == 1) {
                             val first = selection.first()
 
-                            if (first is IStretchable && first.isStretchable) {
-                                ctrlBuilder.separator().append(
-                                        Localization[if (first is EquidistantEntity) "editor.msg.stretchable.equidistant" else if (first is KeepTheBeatEntity) "editor.msg.stretchable.keepTheBeat" else "editor.msg.stretchable"])
-                            }
-
                             if (first is IEditableText) {
                                 ctrlBuilder.separator().append(
                                         Localization[if (stage.entityTextField.visible) "editor.msg.editabletext.finish" else "editor.msg.editabletext.edit"])
                             } else if (first is TextureEntity) {
                                 ctrlBuilder.separator().append(Localization["editor.msg.textureentity"])
+                            }
+                        }
+                        if (selection.isNotEmpty()) {
+                            if (selection.all { it is IStretchable && it.isStretchable }) {
+                                val allEquidistant = selection.all { it is EquidistantEntity }
+                                val allKtB = selection.all { it is KeepTheBeatEntity }
+                                ctrlBuilder.separator().append(Localization[if (allEquidistant) "editor.msg.stretchable.equidistant" else if (allKtB) "editor.msg.stretchable.keepTheBeat" else "editor.msg.stretchable"])
                             }
                         }
                     } else {
@@ -1842,8 +1847,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         val clickedOn = getEntityOnMouse().takeIf { it in oldSel } ?: first
                         val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
                                                   remix.camera.getInputY() - first.bounds.y)
-                        val stretchRegion = if (newSel.size == 1 && first is IStretchable && !isCopying)
-                            getStretchRegionForStretchable(remix.camera.getInputX(), first) else StretchRegion.NONE
+                        val stretchRegion = if (newSel.isNotEmpty() && newSel.all { it is IStretchable && it.isStretchable } && !isCopying)
+                            getStretchRegionForStretchable(remix.camera.getInputX(), clickedOn) else StretchRegion.NONE
 
                         val newClick = ClickOccupation.SelectionDrag(this, first, clickedOn, mouseOffset,
                                                                      false, isCopying, oldSel, stretchRegion)
