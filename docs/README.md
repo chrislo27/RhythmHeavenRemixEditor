@@ -52,23 +52,31 @@ however, read up on the controls first below!
 
 ## Controls
 ### In-Editor Shortcuts
-**`SPACEBAR`** - Play/stop remix<br/>
-**`SHIFT+SPACEBAR`** - Pause/resume remix<br/>
-**`BACKSPACE`** or **`DEL`** - Delete selection<br/>
-**`INSERT`** - Store selection as a stored pattern (as of v3.12.0)<br/>
-**`CTRL+N`** - New remix<br/>
-**`CTRL+O`** - Open remix<br/>
-**`CTRL+S`** - Save remix<br/>
-**`CTRL+E`** - Export/upload remix<br/>
-**`CTRL+Z`** - Undo<br/>
-**`CTRL+SHIFT+Z`** or **`CTRL+Y`** - Redo<br/>
-**`F`** - Quick switch to last game (doesn't work in search results)<br>
-**`HOME`** - Jump to beat 0<br/>
-**`END`** - Jump to last entity/End Remix entity<br>
-**`UP`** or **`W`** - Scroll up (only in editor)<br>
-**`DOWN`** or **`S`** - Scroll down (only in editor)<br>
-**`SHIFT+SCROLL`** - Pan camera (hold **`CTRL`** to increase speed)<br>
-**`TAB`** - Cycle through scroll modes<br>
+
+| Control | Action |
+|---|---|
+| **`SPACEBAR`** | Play/stop remix |
+| **`SHIFT+SPACEBAR`** | Pause/resume remix |
+| **`BACKSPACE`** or **`DEL`** | Delete selection |
+| **`INSERT`** | Store selection as a stored pattern (as of v3.12.0) |
+| **`CTRL+N`** | New remix |
+| **`CTRL+O`** | Open remix |
+| **`CTRL+S`** | Save remix |
+| **`CTRL+E`** | Export/upload remix |
+| **`CTRL+Z`** | Undo |
+| **`CTRL+SHIFT+Z`** or **`CTRL+Y`** | Redo |
+| **`F`** | Quick switch to last game (doesn't work in search results) |
+| **`HOME`** | Jump to beat 0 |
+| **`END`** | Jump to last entity/End Remix entity |
+| **`UP`** or **`W`** | Scroll up (only in editor) |
+| **`DOWN`** or **`S`** | Scroll down (only in editor) |
+| **`SHIFT+SCROLL`** | Pan camera (hold **`CTRL`** to increase speed) |
+| **`TAB`** | Cycle through scroll modes |
+| __Selection Tool only__ |
+| **`RIGHT CLICK`** | Set playback start |
+| **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *empty space* | Set music start |
+| **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *an entity* | Jump to that entity in the picker |
+
 
 On the top bar, you will see various buttons. Hover over them to view
 what they're used for.
@@ -181,13 +189,13 @@ All tracker-like tools share these controls:<br>
 Hold **`CONTROL`** - Change value by 5x
 
 ![Tempo changes](https://i.imgur.com/87NoA3o.png)<br>
-The **tempo change** tool has changed slightly from RHRE2. You can change the tempo
+The **tempo change** tool can change the tempo
 mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
-0.5 BPM. You can also click and drag the ends to make it a linear gradient of change, but this isn't very useful in practice.
+0.5 BPM. You can also click and drag the ends to make it a linear gradient of change, but this is tricky to do correctly.
 
 ![Music volume changes](https://i.imgur.com/HQSTPeT.png)<br>
-The **music volume** tool is new in RHRE3. You can change the music volume
+The **music volume** tool lets you change the music volume
 mid-remix as a percentage from 0-200%. Starting in v3.6.0, clicking and
 dragging the ends will allow you to make smooth transitions
 for a perfect fade-out.
