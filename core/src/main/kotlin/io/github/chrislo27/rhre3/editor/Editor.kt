@@ -527,7 +527,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                remix.trackCount + toScaleY(TRACK_LINE_THICKNESS))
 
                 val flashAnimation = subbeatSection.flashAnimation > 0
-                val actuallyInRange = (subbeatSection.enabled && i in subbeatSection.start..subbeatSection.end)
+                val actuallyInRange = (subbeatSection.enabled && i.toFloat() in subbeatSection.start..subbeatSection.end)
                 if (flashAnimation || actuallyInRange) {
                     batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
                                    theme.trackLine.a * 0.3f *
@@ -711,7 +711,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val tapalong = stage.tapalongStage
                 tapalong.seconds.forEach {
                     val beat = remix.tempos.secondsToBeats((it.remixSec ?: return@forEach) + remix.musicStartSec)
-                    if (beat in beatRange) {
+                    if (beat.roundToInt() in beatRange) {
                         renderAboveTracker(null, null, 1, beat, theme.trackLine)
                     }
                 }
@@ -901,7 +901,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             remix.trackersReverseView.forEach { container ->
                 container.map.values.forEach {
-                    if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat in beatRange || it.endBeat in beatRange)) {
+                    if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange)) {
                         it.render()
                     }
                 }
@@ -922,7 +922,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val tempos = remix.tempos
                 var lastSwing: Swing = tempos.defaultSwing
                 tempos.map.values.forEach {
-                    if ((it.beat in beatRange || it.endBeat in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
+                    if ((it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
                         val noteSymbol: String = it.swing.getNoteSymbol()
                         val swingName: String = it.swing.getSwingName()
 
