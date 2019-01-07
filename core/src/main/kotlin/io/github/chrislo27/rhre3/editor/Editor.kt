@@ -24,6 +24,7 @@ import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
+import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.editor.stage.EditorStage.DirtyType
 import io.github.chrislo27.rhre3.editor.view.ViewType
@@ -1834,7 +1835,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             updateMessageLabel()
                         }
                     }
-                } else if (isAnyTrackerButtonDown) {
+                } else if (isMusicTrackerButtonDown && firstEntityInMouse != null && firstEntityInMouse is ModelEntity<*>) {
+                    // Jump to that game in the picker
+                    val game = firstEntityInMouse.datamodel.game
+                    val series = game.series
+                    val filterButton = stage.filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
+                    if (filterButton != null) {
+                        val filter = filterButton.filter
+                        val datamodelList = filter.datamodelsPerGame[game]
+                        if (datamodelList != null) {
+                            filterButton.onLeftClick(0f, 0f)
+
+                            val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
+                            filter.currentGroupIndex = newGroupIndex
+                            filter.groupScroll = ((newGroupIndex + 1 - (ICON_COUNT_X * (ICON_COUNT_Y - 1))) / ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
+                            val gameList = filter.currentGameList
+                            if (gameList != null) {
+                                val newGameIndex = gameList.list.indexOf(game).coerceAtLeast(0)
+                                gameList.currentIndex = newGameIndex
+                                gameList.scroll = (newGameIndex + 1 - ICON_COUNT_Y).coerceIn(0, gameList.maxScroll)
+                            }
+                            datamodelList.currentIndex = datamodelList.list.indexOf(firstEntityInMouse.datamodel).coerceAtLeast(0)
+
+                            stage.updateSelected()
+                        }
+                    }
+                } else if (isAnyTrackerButtonDown && firstEntityInMouse == null) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
                         ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
                     } else {
