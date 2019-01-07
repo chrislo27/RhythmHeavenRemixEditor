@@ -73,7 +73,7 @@ however, read up on the controls first below!
 | **`SHIFT+SCROLL`** | Pan camera (hold **`CTRL`** to increase speed) |
 | **`TAB`** | Cycle through scroll modes |
 | __Selection Tool only__ |
-| **`RIGHT CLICK`** | Set playback start |
+| **`RIGHT CLICK`** on *empty space* | Set playback start |
 | **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *empty space* | Set music start |
 | **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *an entity* | Jump to that entity in the picker |
 
