@@ -74,7 +74,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
                         batch.color = entity.getRenderColor()
                         batch.fillRect(x + entity.bounds.x * unitWidth, y + entity.bounds.y * unitHeight,
-                                       entity.bounds.width * unitWidth, unitHeight)
+                                       entity.bounds.width * unitWidth, entity.bounds.height * unitHeight)
                     }
 
                     // horizontal lines
