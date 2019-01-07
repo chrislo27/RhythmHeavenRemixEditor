@@ -139,19 +139,16 @@ sealed class ClickOccupation {
 
         val left: Float
             get() = selection.minBy { it.bounds.x }?.bounds?.x ?: error("Nothing in selection")
-
         val right: Float
             get() {
                 val right = selection.maxBy { it.bounds.x + it.bounds.width } ?: error("Nothing in selection")
                 return right.bounds.x + right.bounds.width
             }
-
         val top: Float
             get() {
-                val highest = selection.maxBy { it.bounds.y } ?: error("Nothing in selection")
+                val highest = selection.maxBy { it.bounds.y + it.bounds.height } ?: error("Nothing in selection")
                 return highest.bounds.y + highest.bounds.height
             }
-
         val bottom: Float
             get() = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
 
@@ -161,6 +158,22 @@ sealed class ClickOccupation {
         val height: Int by lazy {
             Math.round(top - bottom)
         }
+
+        val lerpLeft: Float
+            get() = selection.minBy { it.bounds.x + it.lerpDifference.x }?.let { it.bounds.x + it.lerpDifference.x } ?: error("Nothing in selection")
+        val lerpRight: Float
+            get() {
+                val right = selection.maxBy { it.bounds.x + it.bounds.width + it.lerpDifference.x + it.lerpDifference.width } ?: error("Nothing in selection")
+                return right.bounds.x + right.bounds.width + right.lerpDifference.x + right.lerpDifference.width
+            }
+        val lerpTop: Float
+            get() {
+                val highest = selection.maxBy { it.bounds.y + it.bounds.height + it.lerpDifference.y + it.lerpDifference.height } ?: error("Nothing in selection")
+                return highest.bounds.y + highest.bounds.height + highest.lerpDifference.y + highest.lerpDifference.height
+            }
+        val lerpBottom: Float
+            get() = selection.minBy { it.bounds.y + it.lerpDifference.y }?.let { it.bounds.y + it.lerpDifference.y } ?: error("Nothing in selection")
+
         private var firstSetPosition = true
 
         fun setFirstPosition(x: Float, y: Float) {

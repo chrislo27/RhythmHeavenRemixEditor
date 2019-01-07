@@ -504,10 +504,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             batch.setColor(1f, 1f, 1f, 1f)
         }
 
+        // entities
         val smoothDragging = main.preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 it.updateInterpolation(!smoothDragging)
+            }
+        }
+        if (selection.isNotEmpty()) {
+            val clickOccupation = clickOccupation
+            if (clickOccupation is ClickOccupation.SelectionDrag) {
+                val oldColor = batch.packedColor
+                val rect = RectanglePool.obtain()
+                rect.set(clickOccupation.lerpLeft, clickOccupation.lerpBottom, clickOccupation.lerpRight - clickOccupation.lerpLeft, clickOccupation.lerpTop - clickOccupation.lerpBottom)
+
+                batch.color = theme.selection.selectionFill
+                batch.fillRect(rect)
+
+                batch.color = theme.selection.selectionBorder
+                batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
+
+                batch.setColor(oldColor)
+                RectanglePool.free(rect)
+            }
+        }
+        remix.entities.forEach {
+            if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
                     it.render(batch)
                 }
