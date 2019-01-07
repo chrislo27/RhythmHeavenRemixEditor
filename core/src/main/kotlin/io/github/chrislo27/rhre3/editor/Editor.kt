@@ -401,8 +401,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, if (updateDelta) Gdx.graphics.deltaTime else 0f)
         }
 
-        run {
-            val themeTex: Texture = theme.textureObj ?: return@run
+        theme.textureObj?.let { themeTex ->
             batch.draw(themeTex, 0f, 0f, main.defaultCamera.viewportWidth, main.defaultCamera.viewportHeight)
         }
 
