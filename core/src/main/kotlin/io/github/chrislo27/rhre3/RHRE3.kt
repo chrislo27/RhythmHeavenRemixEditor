@@ -58,6 +58,7 @@ object RHRE3 {
     var noOnlineCounter: Boolean = false
     var outputGeneratedDatamodels: Boolean = false
     var outputCustomSfx: Boolean = false
+    var showTapalongMarkers: Boolean = false
     var exportOptions: ExportOptions = ExportOptions.DEFAULT
 
     lateinit var launchArguments: List<String>

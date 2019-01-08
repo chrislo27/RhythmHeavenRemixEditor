@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -23,7 +24,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
         const val MAX_INPUTS = 1024
     }
 
-    var markersEnabled = true
+    var markersEnabled: Boolean = RHRE3.showTapalongMarkers
     val seconds = mutableListOf<TapRecord>()
     var tempo: Float = 0f
         private set
@@ -169,7 +170,6 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             this.location.set(screenX = 0.675f, screenY = 0.05f)
 
             this.visible = false
-            markersEnabled = false
         }
         this.elements += object : Button<EditorScreen>(palette, this, this) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
