@@ -3,7 +3,7 @@
 <img align="right" src="core/assets/images/icon/256.png" height="256" width="256">
 
 # Rhythm Heaven Remix Editor 3
-An audio remix editor for the Rhythm Heaven series
+A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhythm_Heaven_Megamix) series
 
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
 downloading the program!**
@@ -11,8 +11,8 @@ downloading the program!**
 [![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
-Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR) -- a tool to set remixing challenges<br>
-Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE) -- a GUI for editing the RHRE SFX Database<br>
+Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)—a tool to set remixing challenges<br>
+Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a GUI for editing the RHRE SFX Database<br>
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/LICENSE.txt)
@@ -26,9 +26,9 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE) -- a 
 ## Features
 ![Palettes screenshot](.github/rhre3palettes.png)
 
-* Drag-and-drop common RH game patterns into your remix
-* Change tempo and music volumes easily
-* Automatic SFX database updating as community fixes/additions get pulled
+* Drag-and-drop common Rhythm Heaven minigame patterns into your remix
+* Change tempo and music volumes easily mid-way through the remix
+* Automatic SFX database updating as community fixes/additions get pulled in
 * Every Rhythm Heaven minigame is here!
 
 ## Installation
@@ -41,8 +41,8 @@ Installation is straightforward.
 
 
 ## Other information
-Rhythm Heaven is not my property -- it is the property of Nintendo.<br>
-This program is **NOT** endorsed or sponsored in any way by Nintendo.<br>
+Rhythm Heaven is not my property—it is the intellectual property of Nintendo.<br>
+This program is **NOT** endorsed nor sponsored in any way by Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to maliciously infringe trademark rights.<br>
 This is a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license), for free.
