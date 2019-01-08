@@ -16,3 +16,4 @@ They are put after `java -jar RHRE3.jar`.
 | `--no-online-counter` | `v3.12.0` | Prevents the program from sending and retrieving online user counts. |
 | `--output-generated-datamodels` | `v3.12.0` | Writes out games that are generated internally in JSON format to console on start-up. |
 | `--output-custom-sfx` | `v3.12.0` | Writes out games that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
+| `--show-tapalong-markers` | `v3.16.1` | Shows tapalong tap markers, a hidden feature. |
