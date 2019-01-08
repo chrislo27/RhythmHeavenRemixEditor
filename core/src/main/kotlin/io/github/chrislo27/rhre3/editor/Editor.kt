@@ -2334,7 +2334,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             return true
         } else if (tool == Tool.TIME_SIGNATURE && !shift) {
             val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
-            if (timeSig != null) {
+            val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
+            if (timeSig != null && inputBeat == timeSig.beat) {
                 val change = -amount * (if (control) 5 else 1)
                 val newDivisions = (timeSig.divisions + change)
                         .coerceIn(TimeSignature.LOWER_LIMIT, TimeSignature.UPPER_LIMIT)
