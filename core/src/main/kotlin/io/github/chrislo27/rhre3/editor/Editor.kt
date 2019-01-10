@@ -69,6 +69,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.rhre3.util.modding.ModdingUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry

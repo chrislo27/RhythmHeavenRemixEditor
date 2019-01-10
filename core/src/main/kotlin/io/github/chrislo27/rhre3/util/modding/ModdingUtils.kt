@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.util
+package io.github.chrislo27.rhre3.util.modding
 
 import io.github.chrislo27.rhre3.RHRE3Application
 import java.util.*
