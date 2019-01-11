@@ -7,13 +7,18 @@ import kotlin.math.roundToInt
 
 object ModdingUtils {
 
-    enum class Game(val localization: String, val tickflowUnits: Int, val tickflowUnitName: String = "") {
-        TENGOKU("series.tengoku.name", 1),
-        DS("series.ds.name", 1),
-        FEVER("series.fever.name", 1),
-        MEGAMIX("series.megamix.name", 0x30); // τ
+    enum class Game(val id: String, val localization: String, val tickflowUnits: Int, val tickflowUnitName: String = "") {
+        TENGOKU("gba", "series.tengoku.name", 1),
+        DS("ds", "series.ds.name", 1),
+        FEVER("fever", "series.fever.name", 1),
+        MEGAMIX("megamix", "series.megamix.name", 0x30); // τ
+
+        companion object {
+            val DEFAULT_GAME = MEGAMIX
+            val VALUES = values().toList()
+        }
         
-        private val tickflowUnitsStr: String ="0x${tickflowUnits.toString(16).toUpperCase(Locale.ROOT)}"
+        private val tickflowUnitsStr: String = "0x${tickflowUnits.toString(16).toUpperCase(Locale.ROOT)}"
 
         fun beatsToTickflow(beats: Float): Int = (beats * tickflowUnits).roundToInt()
         fun tickflowToBeats(tickflow: Int): Float = tickflow.toFloat() / tickflowUnits
@@ -27,8 +32,7 @@ object ModdingUtils {
         }
     }
 
-    var moddingToolsEnabled: Boolean = false
-        get() = RHRE3Application.instance.advancedOptions // FIXME temporary fix
+    val moddingToolsEnabled: Boolean get() = RHRE3Application.instance.advancedOptions
     var currentGame: Game = Game.MEGAMIX
 
 }

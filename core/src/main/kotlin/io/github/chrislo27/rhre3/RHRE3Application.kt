@@ -29,7 +29,6 @@ import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
-import io.github.chrislo27.rhre3.util.modding.ModdingUtils
 import io.github.chrislo27.rhre3.util.ReleaseObject
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
@@ -170,7 +169,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
         advancedOptions = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
-        ModdingUtils.moddingToolsEnabled = preferences.getBoolean(PreferenceKeys.MODDING_TOOLS, false)
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
@@ -206,6 +204,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 ScreenRegistry += "editorVersion" to EditorVersionScreen(this)
                 ScreenRegistry += "news" to NewsScreen(this)
                 ScreenRegistry += "partners" to PartnersScreen(this)
+                ScreenRegistry += "advancedOptions" to AdvancedOptionsScreen(this)
             }
 
             val nextScreenLambda: (() -> ToolboksScreen<*, *>?) = nextScreenLambda@{

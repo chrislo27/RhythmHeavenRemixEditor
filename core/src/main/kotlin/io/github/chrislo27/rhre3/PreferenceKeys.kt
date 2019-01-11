@@ -23,11 +23,15 @@ object PreferenceKeys {
     val SETTINGS_DISCORD_RPC_ENABLED = "settings_discordRPCEnabled"
     val SETTINGS_ADVANCED_OPTIONS = "settings_advancedOptions"
 
-    val allSettingsKeys: List<String> by lazy {
+    val allSettingsKeys: List<String> =
         listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CHASE_CAMERA,
                SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
                SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS)
-    }
+
+    val ADVOPT_REF_RH_GAME = "advOpt_referenceRHGame"
+
+    val allAdvOptsKeys: List<String> =
+            listOf(ADVOPT_REF_RH_GAME)
 
     val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     val FILE_CHOOSER_SAVE = "fileChooser_save"
@@ -43,7 +47,6 @@ object PreferenceKeys {
     val LAST_NEWS = "lastNewsArticles"
     val READ_NEWS = "readNewsArticles"
     val PADDLER_LOADING_ICON = "paddlerLoadingIcon"
-    val MODDING_TOOLS = "moddingTools"
     val VIEWED_PARTNERS_VERSION = "viewedPartnersVersion"
 
     val EVENT_PREFIX = "event_"

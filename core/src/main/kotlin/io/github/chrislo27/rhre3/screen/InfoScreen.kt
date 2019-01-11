@@ -223,7 +223,6 @@ class InfoScreen(main: RHRE3Application)
                 private var clicks = 0
                 private var timeSinceLastClick = System.currentTimeMillis()
                 private val CLICKS_RESET = 3000L
-                private var resetTextIn: Float = 0f
                 private val color = Color(1f, 1f, 1f, 1f)
                 private val notes = listOf(0, 2, 4, 5, 7)
 
@@ -238,35 +237,18 @@ class InfoScreen(main: RHRE3Application)
                     if (System.currentTimeMillis() - timeSinceLastClick >= CLICKS_RESET) {
                         clicks = 0
                     }
-//                    resetTextIn = 0f
-                    AssetRegistry.get<Sound>("weird_sfx_bts_c").play(0.5f, Semitones.getALPitch((if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS)) notes.asReversed() else notes).getOrElse(clicks) { 0 }), 0f)
+                    AssetRegistry.get<Sound>("weird_sfx_bts_c").play(0.5f, Semitones.getALPitch(notes.getOrElse(clicks) { 0 }), 0f)
                     clicks++
                     timeSinceLastClick = System.currentTimeMillis()
 
                     if (clicks >= 5) {
                         clicks = 0
-                        val old = main.advancedOptions
-                        main.advancedOptions = !old
-                        main.preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, main.advancedOptions).flush()
-
-                        this.text = "Adv. Options ${if (main.advancedOptions) "enabled" else "disabled"}"
-                        resetTextIn = 3f
-
+                        main.screen = ScreenRegistry.getNonNull("advancedOptions")
                         AssetRegistry.get<Sound>("weird_sfx_bts_pew").play(0.5f)
-                        if (!old) {
-                            AssetRegistry.get<Sound>("weird_sfx_bts_c").play(0.5f, Semitones.getALPitch(12), 0f)
-                        }
                     }
                 }
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                    if (resetTextIn > 0f) {
-                        resetTextIn -= Gdx.graphics.deltaTime
-                        if (resetTextIn <= 0f)
-                            this.text = RHRE3.VERSION.toString()
-                        else if (this.text == RHRE3.VERSION.toString())
-                            resetTextIn = 0f
-                    }
                     val alpha = ((1f - (System.currentTimeMillis() - timeSinceLastClick) / 1000f * 4f)).coerceIn(0f, 1f)
                     color.set(1f, 1f, 1f, 1f).lerp(0f, 1f, 1f, 1f, alpha)
                     super.render(screen, batch, shapeRenderer)
@@ -769,7 +751,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
 
-            // End remix at end
+            // Remix stops at last cue
             centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
                 override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
