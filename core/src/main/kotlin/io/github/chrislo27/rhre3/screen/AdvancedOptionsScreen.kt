@@ -81,7 +81,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             this.isLocalizationKey = false
             this.text = ""
             this.textWrapping = false
-            this.fontScaleMultiplier = 0.9f
+            this.fontScaleMultiplier = 0.85f
             this.textAlign = Align.top or Align.center
             this.location.set(screenX = padding,
                               screenY = padding,
@@ -92,7 +92,9 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         // Modding game reference
         centre.elements += object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
             private fun updateText() {
-                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${Localization[ModdingUtils.currentGame.localization]}"
+                val game = ModdingUtils.currentGame
+                val incomplete = game.incomplete
+                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (incomplete) "[ORANGE]" else ""}${game.localizedName}${if (incomplete) "[]" else ""}"
                 updateModdingLabel()
             }
 
@@ -163,7 +165,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     private fun updateModdingLabel() {
         val game = ModdingUtils.currentGame
-        moddingGameLabel.text = "1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)} rest units"
+        moddingGameLabel.text = "${if (game.incomplete) "[LIGHT_GRAY][ORANGE]Warning[]: game modding info is\nincomplete and is subject to change.[]\n" else ""}1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)} rest units"
     }
 
     override fun tickUpdate() {
