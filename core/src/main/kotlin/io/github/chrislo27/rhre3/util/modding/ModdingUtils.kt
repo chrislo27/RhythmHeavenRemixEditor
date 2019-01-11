@@ -38,6 +38,6 @@ object ModdingUtils {
     }
 
     val moddingToolsEnabled: Boolean get() = RHRE3Application.instance.advancedOptions
-    var currentGame: Game = Game.MEGAMIX
+    var currentGame: Game = Game.DEFAULT_GAME
 
 }
