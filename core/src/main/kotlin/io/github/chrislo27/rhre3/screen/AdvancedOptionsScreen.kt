@@ -165,7 +165,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     private fun updateModdingLabel() {
         val game = ModdingUtils.currentGame
-        moddingGameLabel.text = "${if (game.incomplete) "[LIGHT_GRAY][ORANGE]Warning[]: game modding info is\nincomplete and is subject to change.[]\n" else ""}1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)} rest units"
+        moddingGameLabel.text = "${if (game.incomplete) "[LIGHT_GRAY][ORANGE]Warning[]: game modding info is\nincomplete and is subject to change.[]\n" else ""}1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
     }
 
     override fun tickUpdate() {
