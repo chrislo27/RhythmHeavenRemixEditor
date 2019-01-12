@@ -14,8 +14,8 @@ object ModdingUtils {
                     val underdeveloped: Boolean = true) {
         TENGOKU("gba", "series.tengoku.name", "GBA", 1),
         DS("ds", "series.ds.name", "NDS", 1),
-        FEVER("fever", "series.fever.name", "Wii", 1),
-        MEGAMIX("megamix", "series.megamix.name", "3DS", 0x30, underdeveloped = false); // τ
+        FEVER("rhFever", "series.fever.name", "Wii", 1),
+        MEGAMIX("rhMegamix", "series.megamix.name", "3DS", 0x30, underdeveloped = false); // τ
 
         companion object {
             val DEFAULT_GAME = MEGAMIX
