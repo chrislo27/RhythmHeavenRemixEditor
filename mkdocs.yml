@@ -2,3 +2,9 @@ site_name: Rhythm Heaven Remix Editor Documentation
 theme: readthedocs
 
 repo_url: https://github.com/chrislo27/RhythmHeavenRemixEditor
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+markdown_extensions:
+  - mdx_math
