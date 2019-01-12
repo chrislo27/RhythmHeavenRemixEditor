@@ -19,10 +19,7 @@ modding game IDs to *functions*. The provided function for a game will be used w
 the user has set that as their modding game (in Advanced Options).
 Various function types are listed below this section.
 
-## Function types
-Below is a list of function types.
-
-### Static function
+## Static function
 
 The static function always returns the same string. Its syntax is
 simply just a string as the value.
@@ -34,7 +31,7 @@ simply just a string as the value.
 }
 ```
 
-### Width Range function
+## Width Range function
 
 The width range function returns a string based on the current **width** of the entity.
 As such, this function can only be applied on entity-types, i.e.: not GameObject.
@@ -45,7 +42,7 @@ All other fields are either `ranges` or have the key `"else"`.<br>
 `"else"` is used when none of the conditions match.
 If it is not present, its value defaults to an empty string.
 
-#### Range syntax
+### Range syntax
 Ranges can either be a single value or a span of values.<br>
 A single value means that the width should be exactly that value, +/- 0.0001.<br>
 A range is defined as `"lower .. upper"`, where `lower` is the lower bound (inclusive)
