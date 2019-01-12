@@ -11,11 +11,11 @@ object ModdingUtils {
     enum class Game(val id: String, val localization: String, val console: String,
                     val tickflowUnits: Int,
                     val tickflowUnitName: String = "",
-                    val incomplete: Boolean = true) {
+                    val underdeveloped: Boolean = true) {
         TENGOKU("gba", "series.tengoku.name", "GBA", 1),
         DS("ds", "series.ds.name", "NDS", 1),
         FEVER("fever", "series.fever.name", "Wii", 1),
-        MEGAMIX("megamix", "series.megamix.name", "3DS", 0x30, incomplete = false); // τ
+        MEGAMIX("megamix", "series.megamix.name", "3DS", 0x30, underdeveloped = false); // τ
 
         companion object {
             val DEFAULT_GAME = MEGAMIX

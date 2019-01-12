@@ -92,8 +92,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         centre.elements += object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
             private fun updateText() {
                 val game = ModdingUtils.currentGame
-                val incomplete = game.incomplete
-                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (incomplete) "[ORANGE]" else ""}${game.localizedName}${if (incomplete) "[]" else ""}"
+                val underdeveloped = game.underdeveloped
+                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (underdeveloped) "[ORANGE]" else ""}${game.localizedName}${if (underdeveloped) "[]" else ""}"
                 updateModdingLabel()
             }
 
@@ -150,7 +150,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 this.isLocalizationKey = false
                 this.text = ""
                 this.textWrapping = false
-                this.fontScaleMultiplier = fontScale
+                this.fontScaleMultiplier = 0.8f
             })
 
             this.location.set(screenX = padding,
@@ -164,7 +164,11 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     private fun updateModdingLabel() {
         val game = ModdingUtils.currentGame
-        moddingGameLabel.text = "${if (game.incomplete) "[LIGHT_GRAY][ORANGE]Warning[]: game modding info is\nincomplete and is subject to change.[]\n" else ""}1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
+        moddingGameLabel.text = ("[LIGHT_GRAY]${if (game.underdeveloped)
+            "[ORANGE]Warning:[] modding info for this game\nis very underdeveloped and may be\nextremely lacking in info or incorrect."
+        else
+            "[YELLOW]Caution:[] modding info for this game\nmay only be partially complete and\nsubject to change."}[]\n") +
+                "1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
     }
 
     override fun tickUpdate() {
@@ -175,9 +179,12 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     override fun renderUpdate() {
         super.renderUpdate()
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
         }
+
+
     }
 
     override fun hide() {
