@@ -186,8 +186,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             stage.onBackButtonClick()
         }
 
-        seconds += Gdx.graphics.deltaTime * 2
-        stage.titleIcon.rotation = (MathUtils.sin(seconds * 2) + seconds) * -90f
+        seconds += Gdx.graphics.deltaTime * 2.5f
+        stage.titleIcon.rotation = (MathUtils.sin(MathUtils.sin(seconds * 2)) + seconds * 0.4f) * -90f
     }
 
     override fun hide() {
