@@ -23,6 +23,7 @@
 
 ### Advanced Editing and Documentation
 * [JSON Object Definitions for databasing](JSON-object-definitions.md)
+  * [Modding metadata](Modding-metadata.md)
 * [Localization files](Localization.md)
 * [Remix file format](Remix-file-format.md)
 
