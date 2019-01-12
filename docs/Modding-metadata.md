@@ -49,7 +49,7 @@ If it is not present, its value defaults to an empty string.
 Ranges can either be a single value or a span of values.<br>
 A single value means that the width should be exactly that value, +/- 0.0001.<br>
 A range is defined as `"lower .. upper"`, where `lower` is the lower bound (inclusive)
-and `upper` is the upper bound (inclusive).
+and `upper` is the upper bound (inclusive). The whitespace and decimal places are optional.
 
 #### Example
 ```json
