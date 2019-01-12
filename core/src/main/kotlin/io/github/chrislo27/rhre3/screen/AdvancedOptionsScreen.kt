@@ -11,9 +11,9 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
-import io.github.chrislo27.rhre3.util.modding.ModdingUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -43,15 +43,10 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             main.screen = ScreenRegistry.getNonNull("info")
         }
 
-        val centre = stage.centreStage
-        val padding = 0.025f
-        val buttonWidth = 0.4f
-        val buttonHeight = 0.1f
-        val fontScale = 0.75f
-
+        val bottom = stage.bottomStage
         // Advanced Options setting
-        centre.elements += object : TrueCheckbox<AdvancedOptionsScreen>(palette, centre, centre) {
-            override val checkLabelPortion: Float = 0.1f
+        bottom.elements += object : TrueCheckbox<AdvancedOptionsScreen>(palette, bottom, bottom) {
+            override val checkLabelPortion: Float = 0.225f
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, checked).flush()
@@ -65,18 +60,22 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
             this.textLabel.apply {
-                this.fontScaleMultiplier = fontScale
+//                this.fontScaleMultiplier = fontScale
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.left
-                this.text = "Advanced Options"
+                this.text = "Advanced Options Enabled"
             }
 
-            this.location.set(screenX = padding,
-                              screenY = padding * 7 + buttonHeight * 6,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
+            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
+
+        val centre = stage.centreStage
+        val padding = 0.025f
+        val buttonWidth = 0.4f
+        val buttonHeight = 0.1f
+        val fontScale = 0.75f
+
         moddingGameLabel = TextLabel(palette, centre, centre).apply {
             this.isLocalizationKey = false
             this.text = ""
@@ -86,7 +85,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             this.location.set(screenX = padding,
                               screenY = padding,
                               screenWidth = buttonWidth,
-                              screenHeight = buttonHeight * 4 + padding * 5)
+                              screenHeight = buttonHeight * 5 + padding * 5)
         }
         centre.elements += moddingGameLabel
         // Modding game reference
@@ -155,9 +154,9 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             })
 
             this.location.set(screenX = padding,
-                              screenY = padding * 6 + buttonHeight * 4,
+                              screenY = padding * 6 + buttonHeight * 5,
                               screenWidth = buttonWidth,
-                              screenHeight = buttonHeight * 2)
+                              screenHeight = buttonHeight * 2 + padding)
         }
 
         updateModdingLabel()

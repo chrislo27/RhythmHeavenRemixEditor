@@ -6,7 +6,7 @@ import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TapeMeasure
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.util.modding.ModdingUtils
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 
 
 class TapeMeasureEntity(remix: Remix, datamodel: TapeMeasure)

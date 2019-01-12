@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.util.modding
+package io.github.chrislo27.rhre3.modding
 
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.i18n.Localization
