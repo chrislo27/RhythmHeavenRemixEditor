@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -30,6 +31,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
     private var didChangeSettings: Boolean = false
 
     private val moddingGameLabel: TextLabel<AdvancedOptionsScreen>
+    private var seconds = 0f
 
     init {
         val palette = main.uiPalette
@@ -184,7 +186,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             stage.onBackButtonClick()
         }
 
-
+        seconds += Gdx.graphics.deltaTime * 2
+        stage.titleIcon.rotation = (MathUtils.sin(seconds * 2) + seconds) * -90f
     }
 
     override fun hide() {
@@ -204,4 +207,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         didChangeSettings = false
     }
 
+    override fun show() {
+        super.show()
+        seconds = 0f
+    }
 }
