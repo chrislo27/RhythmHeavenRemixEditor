@@ -95,7 +95,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             private fun updateText() {
                 val game = ModdingUtils.currentGame
                 val underdeveloped = game.underdeveloped
-                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (underdeveloped) "[ORANGE]" else ""}${game.localizedName}${if (underdeveloped) "[]" else ""}"
+                textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (underdeveloped) "[ORANGE]" else ""}${game.fullName}${if (underdeveloped) "[]" else ""}"
                 updateModdingLabel()
             }
 

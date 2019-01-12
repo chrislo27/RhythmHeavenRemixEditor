@@ -1,29 +1,28 @@
 package io.github.chrislo27.rhre3.modding
 
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.toolboks.i18n.Localization
 import java.util.*
 import kotlin.math.roundToInt
 
 
 object ModdingUtils {
 
-    enum class Game(val id: String, val localization: String, val console: String,
+    enum class Game(val id: String, val gameName: String, val console: String,
                     val tickflowUnits: Int,
                     val tickflowUnitName: String = "",
                     val underdeveloped: Boolean = true) {
-        TENGOKU("gba", "series.tengoku.name", "GBA", 1),
-        DS("ds", "series.ds.name", "NDS", 1),
-        FEVER("rhFever", "series.fever.name", "Wii", 1),
-        MEGAMIX("rhMegamix", "series.megamix.name", "3DS", 0x30, underdeveloped = false); // τ
+        TENGOKU("gba", "Rhythm Tengoku (リズム天国)", "GBA", 1),
+        DS_NA("rhds", "Rhythm Heaven", "NDS", 1),
+        FEVER("rhFever", "Rhythm Heaven Fever", "Wii", 1),
+        MEGAMIX_NA("rhMegamix", "Rhythm Heaven Megamix", "3DS", 0x30, underdeveloped = false); // τ
 
         companion object {
-            val DEFAULT_GAME = MEGAMIX
+            val DEFAULT_GAME = MEGAMIX_NA
             val VALUES = values().toList()
         }
 
         private val tickflowUnitsStr: String = "0x${tickflowUnits.toString(16).toUpperCase(Locale.ROOT)}"
-        val localizedName: String = Localization[localization] + " ($console)"
+        val fullName: String = "$gameName ($console)"
 
         fun beatsToTickflow(beats: Float): Int = (beats * tickflowUnits).roundToInt()
         fun tickflowToBeats(tickflow: Int): Float = tickflow.toFloat() / tickflowUnits
