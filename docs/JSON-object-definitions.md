@@ -26,8 +26,8 @@ That's why there's a shorthand syntax to substitute the current game's ID in, ca
 The only IDs that are star-substitutable are cue/pattern IDs, response IDs, and IDs used in `CuePointerObjects`.
 
 Examples (`coolGame` is the game ID):<br>
-`coolGame/buzzer` can be shortened to `*/buzzer`<br>
-`coolGame_pattern` can be shortered to `*_pattern`<br>
+`coolGame/buzzer` should be shortened to `*/buzzer`<br>
+`coolGame_pattern` should be shortered to `*_pattern`<br>
 
 Note that this only works in the same `GameObject` the star-ID is in. If you're referring to
 other cues or patterns NOT from this same GameObject, you must put its full ID.
@@ -170,7 +170,7 @@ Below is a list of potential properties:
 
 | Entity Type | Field Name | Field Type | Field Values |
 |-------------|------------|------------|--------------|
-| `subtitleEntity` | `subtitleText` | `string` | \<user-defined\> |
+| `subtitleEntity` | `subtitleText` | `string` | &lt;user-defined&gt; |
 
 Example:<br>
 ```json
