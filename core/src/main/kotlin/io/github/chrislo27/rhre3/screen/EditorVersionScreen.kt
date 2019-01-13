@@ -133,7 +133,8 @@ class EditorVersionScreen(main: RHRE3Application)
         if (isBeginning.first) {
             stage.backButton.enabled = false
             val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
-            timeToStayOnScreen = (-3f / (timesSkipped + 1).coerceAtLeast(1)) + 3f
+            val asymptoteWaitTime = 3f
+            timeToStayOnScreen = (-asymptoteWaitTime / (timesSkipped + 1).coerceAtLeast(1)) + asymptoteWaitTime
 
             // Analytics
             AnalyticsHandler.track("Update Notification",
