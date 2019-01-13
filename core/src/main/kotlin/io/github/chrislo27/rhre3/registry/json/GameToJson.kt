@@ -5,8 +5,8 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 
 
-fun Game.toJsonObject(starSubstitution: Boolean): DataObject {
-    val obj = DataObject()
+fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
+    val obj = GameObject()
 
     obj.id = id
     obj.group = group

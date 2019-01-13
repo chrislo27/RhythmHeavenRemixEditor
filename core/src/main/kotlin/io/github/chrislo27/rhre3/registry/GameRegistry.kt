@@ -305,27 +305,27 @@ object GameRegistry : Disposable {
             val game: Game
 
             if (datajsonFile.exists()) {
-                val dataObject: DataObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), DataObject::class.java)
-                val gameID = dataObject.id
+                val gameObject: GameObject = objectMapper.readValue(datajsonFile.readString("UTF-8"), GameObject::class.java)
+                val gameID = gameObject.id
                 if (!gameID.matches(ID_REGEX))
                     error("Game ID ($gameID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
                 if (folder.name() != gameID)
                     error("Game ID ($gameID) does not match folder name ${folder.name()}")
 
-                game = Game(dataObject.id,
-                            dataObject.name,
-                            Series.valueOf(dataObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
+                game = Game(gameObject.id,
+                            gameObject.name,
+                            Series.valueOf(gameObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture("images/missing_game_icon.png"),
-                            dataObject.group ?: dataObject.name,
-                            dataObject.groupDefault,
-                            dataObject.priority, directive.isCustom, dataObject.noDisplay, dataObject.searchHints ?: listOf(), jsonless = false)
+                            gameObject.group ?: gameObject.name,
+                            gameObject.groupDefault,
+                            gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(), jsonless = false)
                 val baseFileHandle = directive.folder.parent()
 
                 fun String.starSubstitution(): String = replace("*", gameID)
                 fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
 
-                dataObject.objects.mapTo(game.objects as MutableList) { obj ->
+                gameObject.objects.mapTo(game.objects as MutableList) { obj ->
                     val objID = obj.id.starSubstitution()
                     if (!objID.matches(ID_REGEX))
                         error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")

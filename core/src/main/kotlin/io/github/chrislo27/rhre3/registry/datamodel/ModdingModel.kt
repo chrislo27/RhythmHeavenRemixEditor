@@ -4,7 +4,7 @@ import io.github.chrislo27.rhre3.modding.ModdingMetadata
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 
 
-interface ModdingModel<D : Datamodel> {
+interface ModdingModel {
 
     val moddingMetadata: Map<ModdingUtils.Game, ModdingMetadata>
 

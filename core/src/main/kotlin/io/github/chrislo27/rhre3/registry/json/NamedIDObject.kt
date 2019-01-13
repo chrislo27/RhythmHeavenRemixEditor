@@ -46,7 +46,7 @@ class CuePointerObject {
 
 }
 
-class DataObject {
+class GameObject {
 
     lateinit var id: String
     lateinit var name: String
