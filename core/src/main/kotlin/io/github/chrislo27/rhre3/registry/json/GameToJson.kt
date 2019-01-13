@@ -2,10 +2,7 @@ package io.github.chrislo27.rhre3.registry.json
 
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.ShakeScreen
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TextureModel
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 
 
 fun Game.toJsonObject(starSubstitution: Boolean): DataObject {
@@ -112,6 +109,13 @@ fun Game.toJsonObject(starSubstitution: Boolean): DataObject {
             }
             is TextureModel -> {
                 TextureEntityObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                }
+            }
+            is TapeMeasure -> {
+                TapeMeasureObject().also {
                     it.id = datamodel.id
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
