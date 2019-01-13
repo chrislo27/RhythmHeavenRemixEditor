@@ -31,6 +31,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
     private var didChangeSettings: Boolean = false
 
     private val moddingGameLabel: TextLabel<AdvancedOptionsScreen>
+    private val moddingGameWarningLabel: TextLabel<AdvancedOptionsScreen>
     private var seconds = 0f
 
     init {
@@ -87,9 +88,21 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             this.location.set(screenX = padding,
                               screenY = padding,
                               screenWidth = buttonWidth,
-                              screenHeight = buttonHeight * 5 + padding * 5)
+                              screenHeight = buttonHeight * 3 + padding * 2)
         }
         centre.elements += moddingGameLabel
+        moddingGameWarningLabel = TextLabel(palette, centre, centre).apply {
+            this.isLocalizationKey = false
+            this.text = ""
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.85f
+            this.textAlign = Align.top or Align.center
+            this.location.set(screenX = padding,
+                              screenY = padding * 4 + buttonHeight * 3,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight * 2 + padding)
+        }
+        centre.elements += moddingGameWarningLabel
         // Modding game reference
         centre.elements += object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
             private fun updateText() {
@@ -166,11 +179,11 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     private fun updateModdingLabel() {
         val game = ModdingUtils.currentGame
-        moddingGameLabel.text = ("[LIGHT_GRAY]${if (game.underdeveloped)
+        moddingGameWarningLabel.text = "[LIGHT_GRAY]${if (game.underdeveloped)
             "[ORANGE]Warning:[] modding info for this game\nis very underdeveloped and may be\nextremely lacking in info or incorrect."
         else
-            "[YELLOW]Caution:[] modding info for this game\nmay only be partially complete and\nsubject to change."}[]\n") +
-                "1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
+            "[YELLOW]Caution:[] modding info for this game\nmay only be partially complete and\nsubject to change."}[]\n"
+        moddingGameLabel.text = "1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
     }
 
     override fun tickUpdate() {
