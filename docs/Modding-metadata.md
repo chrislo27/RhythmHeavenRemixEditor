@@ -18,7 +18,7 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 | Rhythm Heaven Megamix (3DS) | North America | `rhMegamix` |
 
 <details><summary>Reserved IDs</summary>
-
+<br>
 <p>These IDs are reserved for future use, but are <strong>not</strong> currently usable.</p>
 <table class="table table-striped table-bordered">
 <thead>
@@ -53,7 +53,6 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 </table>
 
 </details>
-<br>
 
 ## `moddingMetadata`
 The `moddingMetadata` field (where supported) is a key/value map of
