@@ -1,5 +1,8 @@
 # JSON Object Definitions for Databasing
 
+All the sounds and patterns in RHRE are defined in a `data.json` file in each game's folder.<br>
+If you're looking for the specifics of modding metadata, [see this article](Modding-metadata.md) instead.
+
 ## RSDE
 [![RSDE Logo](rsde128.png)](https://github.com/chrislo27/RSDE)
 <br>
