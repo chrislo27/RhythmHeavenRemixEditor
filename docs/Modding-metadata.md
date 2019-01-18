@@ -30,24 +30,54 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 </thead>
 <tbody>
 <tr>
-<td>Rhythm Tengoku (リズム天国) (GBA)</td>
+<td>Rhythm Tengoku Arcade (ARCADE)</td>
 <td>Japan</td>
-<td><code>gba</code></td>
+<td><code>gbaArcade</code></td>
 </tr>
 <tr>
-<td>Rhythm Heaven (NDS)</td>
-<td>North America</td>
-<td><code>rhds</code></td>
+<td>Rhythm Tengoku Gold (リズム天国ゴールド) (NDS)</td>
+<td>Japan</td>
+<td><code>rhdsJa</code></td>
 </tr>
 <tr>
-<td>Rhythm Heaven Fever (Wii)</td>
-<td>North America</td>
-<td><code>rhFever</code></td>
+<td>Rhythm Paradise (NDS)</td>
+<td>Europe</td>
+<td><code>rhdsEu</code></td>
 </tr>
 <tr>
-<td>Rhythm Heaven Megamix (3DS)</td>
-<td>North America</td>
-<td><code>rhMegamix</code></td>
+<td>Rhythm World (리듬세상) (NDS)</td>
+<td>Korea</td>
+<td><code>rhdsKo</code></td>
+</tr>
+<tr>
+<td>Minna no Rhythm Tengoku (みんなのリズム天国) (Wii)</td>
+<td>Japan</td>
+<td><code>rhFeverJa</code></td>
+</tr>
+<tr>
+<td>Beat the Beat: Rhythm Paradise (Wii)</td>
+<td>Europe</td>
+<td><code>rhFeverEu</code></td>
+</tr>
+<tr>
+<td>Rhythm World Wii (리듬 세상 Wii) (Wii)</td>
+<td>Korea</td>
+<td><code>rhFeverKo</code></td>
+</tr>
+<tr>
+<td>Rhythm Tengoku The Best+ (リズム天国ザ・ベスト+) (3DS)</td>
+<td>Japan</td>
+<td><code>rhMegamixJa</code></td>
+</tr>
+<tr>
+<td>Rhythm Paradise Megamix (3DS)</td>
+<td>Europe</td>
+<td><code>rhMegamixEu</code></td>
+</tr>
+<tr>
+<td>Rhythm World The Best+ (리듬세상・더베스트+) (3DS)</td>
+<td>Korea</td>
+<td><code>rhMegamixKo</code></td>
 </tr>
 </tbody>
 </table>
