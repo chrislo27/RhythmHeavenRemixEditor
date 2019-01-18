@@ -19,14 +19,38 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 
 <details><summary>Reserved IDs</summary>
 
-These IDs are reserved for future use, but are **not** currently usable.
-
-| Name | Region | ID |
-|---|---|---|
-| Rhythm Tengoku (リズム天国) (GBA) | Japan | `gba` |
-| Rhythm Heaven (NDS) | North America | `rhds` |
-| Rhythm Heaven Fever (Wii) | North America | `rhFever` |
-| Rhythm Heaven Megamix (3DS) | North America | `rhMegamix` |
+<p>These IDs are reserved for future use, but are <strong>not</strong> currently usable.</p>
+<table class="table table-striped table-bordered">
+<thead>
+<tr>
+<th>Name</th>
+<th>Region</th>
+<th>ID</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rhythm Tengoku (リズム天国) (GBA)</td>
+<td>Japan</td>
+<td><code>gba</code></td>
+</tr>
+<tr>
+<td>Rhythm Heaven (NDS)</td>
+<td>North America</td>
+<td><code>rhds</code></td>
+</tr>
+<tr>
+<td>Rhythm Heaven Fever (Wii)</td>
+<td>North America</td>
+<td><code>rhFever</code></td>
+</tr>
+<tr>
+<td>Rhythm Heaven Megamix (3DS)</td>
+<td>North America</td>
+<td><code>rhMegamix</code></td>
+</tr>
+</tbody>
+</table>
 
 </details>
 <br>
