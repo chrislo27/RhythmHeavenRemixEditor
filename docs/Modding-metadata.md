@@ -17,7 +17,7 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 | Rhythm Heaven Fever (Wii) | North America | `rhFever` |
 | Rhythm Heaven Megamix (3DS) | North America | `rhMegamix` |
 
-<details><summary>Reserved IDs</summary><p>
+<details><summary>Reserved IDs</summary>
 
 These IDs are reserved for future use, but are **not** currently usable.
 
@@ -28,8 +28,8 @@ These IDs are reserved for future use, but are **not** currently usable.
 | Rhythm Heaven Fever (Wii) | North America | `rhFever` |
 | Rhythm Heaven Megamix (3DS) | North America | `rhMegamix` |
 
-</p>
 </details>
+<br>
 
 ## `moddingMetadata`
 The `moddingMetadata` field (where supported) is a key/value map of
