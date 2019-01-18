@@ -51,8 +51,8 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 </tr>
 </tbody>
 </table>
-
 </details>
+<br>
 
 ## `moddingMetadata`
 The `moddingMetadata` field (where supported) is a key/value map of
