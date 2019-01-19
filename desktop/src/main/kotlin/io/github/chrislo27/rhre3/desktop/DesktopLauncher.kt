@@ -48,6 +48,7 @@ object DesktopLauncher {
                     RHRE3.outputGeneratedDatamodels = "--output-generated-datamodels" in args
                     RHRE3.outputCustomSfx = "--output-custom-sfx" in args
                     RHRE3.showTapalongMarkers = "--show-tapalong-markers" in args
+                    RHRE3.midiRecording = "--midi-recording" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
                     if (RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor) {

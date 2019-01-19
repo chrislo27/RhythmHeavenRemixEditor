@@ -60,6 +60,7 @@ object RHRE3 {
     var outputCustomSfx: Boolean = false
     var showTapalongMarkers: Boolean = false
     var exportOptions: ExportOptions = ExportOptions.DEFAULT
+    var midiRecording: Boolean = false
 
     lateinit var launchArguments: List<String>
 

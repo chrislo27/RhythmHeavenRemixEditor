@@ -38,6 +38,7 @@ import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.midi.MidiHandler
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
@@ -69,7 +70,6 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.*
-import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -280,6 +280,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private set
     val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
+    private data class BuildingNote(val note: MidiHandler.MidiReceiver.Note, val entity: Entity)
+
+    private val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
+
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
                                                         InfoScreen.DEFAULT_AUTOSAVE_TIME)
@@ -309,18 +313,59 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         if (attachMidiListeners) {
             MidiHandler.noteListeners += object : MidiHandler.MidiNoteListener {
+                var numberOfNotes = 0
+
                 override fun noteOn(note: MidiHandler.MidiReceiver.Note) {
                     Gdx.app.postRunnable {
                         val selection = this@Editor.selection
-                        if (remix.playState != STOPPED || clickOccupation != ClickOccupation.None || selection.isEmpty()) return@postRunnable
-                        changePitchOfSelection(note.semitone, false, true, selection)
+                        if (remix.playState == STOPPED) {
+                            if (clickOccupation == ClickOccupation.None && selection.isNotEmpty()) {
+                                changePitchOfSelection(note.semitone, false, true, selection)
+                            }
+                        } else if (RHRE3.midiRecording && remix.playState == PLAYING) {
+                            val defaultCue = GameRegistry.data.objectMap[Remix.DEFAULT_MIDI_NOTE]!! as Cue
+                            val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(PreferenceKeys.MIDI_NOTE)] ?: defaultCue
+                            val ent = noteCue.createEntity(remix, null).apply {
+                                updateBounds {
+                                    bounds.set(remix.beat, (numberOfNotes % remix.trackCount).toFloat(), 0f, 1f)
+                                }
+
+                                if (this is IRepitchable) {
+                                    semitone = note.semitone
+                                    (this as? CueEntity)?.stopAtEnd = true
+                                }
+                            }
+                            ent.updateInterpolation(true)
+
+                            ent.playbackCompletion = PlaybackCompletion.FINISHED
+                            remix.entities += ent
+
+                            val bn = BuildingNote(note, ent)
+
+                            buildingNotes[bn.note] = bn
+                            numberOfNotes++
+                        }
                     }
                 }
 
                 override fun noteOff(note: MidiHandler.MidiReceiver.Note) {
-//                    Gdx.app.postRunnable {
-//                        if (remix.playState != STOPPED) return@postRunnable
-//                    }
+                    if (RHRE3.midiRecording && buildingNotes.containsKey(note)) buildingNotes.remove(note)
+                }
+
+                var pedalDown = false
+
+                override fun controlChange(ccNumber: Int, data: Int) {
+                    if (ccNumber == 64) {
+                        if (RHRE3.midiRecording && data < 64 && pedalDown) {
+                            val state = remix.playState
+                            if (state == STOPPED || state == PAUSED) {
+                                remix.playState = PLAYING
+                            } else if (state == PLAYING) {
+                                remix.playState = PAUSED
+                            }
+                        }
+                        pedalDown = data >= 64
+                    }
                 }
             }
         }
@@ -1258,6 +1303,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         remix.timeUpdate(Gdx.graphics.deltaTime)
         if (remix.playState == PLAYING) {
             songSubtitles.values.forEach { it.time += Gdx.graphics.deltaTime }
+            if (RHRE3.midiRecording) {
+                buildingNotes.values.forEach { bn ->
+                    val ent = bn.entity
+                    ent.updateBounds {
+                        ent.bounds.width = remix.beat - ent.bounds.x
+                    }
+                }
+            }
+        } else if (remix.playState == STOPPED) {
+            if (RHRE3.midiRecording && buildingNotes.isNotEmpty()) {
+                buildingNotes.clear()
+            }
         }
 
         val shift = Gdx.input.isShiftDown()
