@@ -1,7 +1,7 @@
 # Remix file format
 
 The `.rhre3` file format is a standard compressed ZIP file. You can open
-it in programs such as [7zip](https://www.7-zip.org/).
+it with programs such as [7zip](https://www.7-zip.org/).
 
 All JSON fields are **non-null** unless otherwise specified. Not all RHRE3
 `remix.json` files are directly backwards compatible.
