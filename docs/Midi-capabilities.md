@@ -16,7 +16,8 @@ More likely than not, it will not be real-time.
 
 ## What can I do with it?
 
-With a MIDI device connected, you can do the following things:<br>
+With a MIDI device connected, you can do the following things:
+
 * Edit pitches of selected entities
   * This even allows you to go beyond the usual +/- two octaves!
 * If the [launch argument](Launch-arguments.md) `--midi-recording` is enabled:
