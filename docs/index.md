@@ -14,7 +14,7 @@
 * [Crediting RHRE3](Crediting.md)
 * [Themes](Themes.md)
 * [Custom Sounds](Custom-sounds.md)
-* [MIDI capabilities](MIDI-capabilities.md)
+* [MIDI capabilities](Midi-capabilities.md)
 
 ### Troubleshooting
 * [Invalid keystore format or No System TLS error](Invalid-keystore.md)
