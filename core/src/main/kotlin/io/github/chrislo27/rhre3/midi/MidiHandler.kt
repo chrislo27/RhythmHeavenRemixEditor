@@ -53,6 +53,8 @@ object MidiHandler : Disposable {
 
         fun noteOff(note: MidiReceiver.Note)
 
+        fun controlChange(ccNumber: Int, data: Int) {}
+
     }
 
     class MidiReceiver(val device: MidiDevice) : Receiver {
@@ -106,11 +108,16 @@ object MidiHandler : Disposable {
                     MidiHandler.noteListeners.forEach { it.noteOff(note) }
             }
 
+            fun controlChange() {
+                MidiHandler.noteListeners.forEach { it.controlChange(message.data1, message.data2) }
+            }
+
             when (command) {
                 ShortMessage.NOTE_ON -> {
                     if (volume <= 0f) off() else on()
                 }
                 ShortMessage.NOTE_OFF -> off()
+                ShortMessage.CONTROL_CHANGE -> controlChange()
             }
         }
 
