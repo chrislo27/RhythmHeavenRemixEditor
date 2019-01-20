@@ -30,9 +30,14 @@ class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix
         val oldColor = batch.packedColor
         val selectionTint = remix.editor.theme.entities.selectionTint
 
+        val x = bounds.x + lerpDifference.x
+        val y = bounds.y + lerpDifference.y
+        val height = bounds.height + lerpDifference.height
+        val width = bounds.width + lerpDifference.width
+
         batch.setColorWithTintIfNecessary(selectionTint, remix.editor.theme.trackLine)
-        batch.fillRect(bounds.x, bounds.y, bounds.width * 0.125f, bounds.height)
-        batch.fillRect(bounds.x + bounds.width, bounds.y, bounds.width * -0.5f, bounds.height)
+        batch.fillRect(x, y, width * 0.125f, height)
+        batch.fillRect(x + width, y, width * -0.5f, height)
 
         batch.setColor(oldColor)
     }
