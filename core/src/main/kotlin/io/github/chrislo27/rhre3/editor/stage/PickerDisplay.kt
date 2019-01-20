@@ -33,7 +33,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
         selection.smoothScroll = MathUtils.lerp(oldScroll, selection.currentIndex.toFloat(),
                                                 Gdx.graphics.deltaTime / 0.075f)
         val scrollValue = selection.smoothScroll
-        var renders = 0
+
         shapeRenderer.prepareStencilMask(batch) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
             shapeRenderer.rect(location.realX, location.realY, location.realWidth, location.realHeight)
@@ -54,12 +54,10 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
                                             location.realY + location.realHeight / 2 + font.capHeight / 2
                                                     + sectionY * (scrollValue - index),
                                             location.realWidth, Align.left)
-                        renders++
                     }
 
                     font.setColor(1f, 1f, 1f, 1f)
                 }
-//        println(renders)
     }
 
     data class Label(var string: String, var color: Color)
