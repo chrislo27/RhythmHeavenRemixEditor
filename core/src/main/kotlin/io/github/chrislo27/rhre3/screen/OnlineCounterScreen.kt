@@ -56,55 +56,57 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                 .execute().toCompletableFuture()
                 .thenAccept { response ->
                     if (response.statusCode == 200) {
-                        try {
-                            val history = JsonHandler.fromJson<DailyOnlineHistoryObj>(response.responseBody)
-                            val list = history.hours.map { (it.key.toIntOrNull() ?: -1) to it.value}.sortedByDescending(Pair<Int, HourlyHistoryObject>::first)
-                            val max = list.maxBy { it.second.max }?.second?.max ?: 1
-                            val minColor = Color.valueOf("#FF8C8C")
-                            val maxColor = Color.valueOf("#95FF8C")
-                            list.forEachIndexed { i, (hoursAgo, data) ->
-                                val x = (i + 0.5f) / list.size
-                                val width = 1f / list.size * 0.9f
-                                if (!(data.max == 0 && data.min == 0)) {
-                                    barsStage.elements += ColourPane(barsStage, barsStage).apply {
-                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.max.toFloat() / max), screenHeight = 0.0125f)
-                                        this.colour.set(maxColor)
+                        Gdx.app.postRunnable {
+                            try {
+                                val history = JsonHandler.fromJson<DailyOnlineHistoryObj>(response.responseBody)
+                                val list = history.hours.map { (it.key.toIntOrNull() ?: -1) to it.value }.sortedByDescending(Pair<Int, HourlyHistoryObject>::first)
+                                val max = list.maxBy { it.second.max }?.second?.max ?: 1
+                                val minColor = Color.valueOf("#FF8C8C")
+                                val maxColor = Color.valueOf("#95FF8C")
+                                list.forEachIndexed { i, (hoursAgo, data) ->
+                                    val x = (i + 0.5f) / list.size
+                                    val width = 1f / list.size * 0.9f
+                                    if (!(data.max == 0 && data.min == 0)) {
+                                        barsStage.elements += ColourPane(barsStage, barsStage).apply {
+                                            this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.max.toFloat() / max), screenHeight = 0.0125f)
+                                            this.colour.set(maxColor)
+                                        }
+                                        barsStage.elements += ColourPane(barsStage, barsStage).apply {
+                                            this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f, screenHeight = 0.6f * (data.mean.toFloat() / max))
+                                        }
+                                        barsStage.elements += ColourPane(barsStage, barsStage).apply {
+                                            this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.min.toFloat() / max), screenHeight = 0.0125f)
+                                            this.colour.set(minColor)
+                                        }
                                     }
-                                    barsStage.elements += ColourPane(barsStage, barsStage).apply {
-                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f, screenHeight = 0.6f * (data.mean.toFloat() / max))
+                                    barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
+                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.15f, screenHeight = 0.1f)
+                                        this.isLocalizationKey = false
+                                        this.textWrapping = false
+                                        this.text = "$hoursAgo${if (weeklyGraph) "d" else "h"}"
+                                        this.fontScaleMultiplier = 0.75f
                                     }
-                                    barsStage.elements += ColourPane(barsStage, barsStage).apply {
-                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.min.toFloat() / max), screenHeight = 0.0125f)
-                                        this.colour.set(minColor)
+                                    barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
+                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.075f, screenHeight = 0.075f)
+                                        this.isLocalizationKey = false
+                                        this.textWrapping = false
+                                        this.text = "${data.mean}"
+                                        this.fontScaleMultiplier = 0.75f
+                                    }
+                                    barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
+                                        this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0f, screenHeight = 0.075f)
+                                        this.isLocalizationKey = false
+                                        this.textWrapping = false
+                                        this.text = "[#$minColor]${data.min}[]/[#$maxColor]${data.max}[]"
+                                        this.fontScaleMultiplier = 0.5f
                                     }
                                 }
-                                barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
-                                    this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.15f, screenHeight = 0.1f)
-                                    this.isLocalizationKey = false
-                                    this.textWrapping = false
-                                    this.text = "$hoursAgo${if (weeklyGraph) "d" else "h"}"
-                                    this.fontScaleMultiplier = 0.75f
-                                }
-                                barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
-                                    this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.075f, screenHeight = 0.075f)
-                                    this.isLocalizationKey = false
-                                    this.textWrapping = false
-                                    this.text = "${data.mean}"
-                                    this.fontScaleMultiplier = 0.75f
-                                }
-                                barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
-                                    this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0f, screenHeight = 0.075f)
-                                    this.isLocalizationKey = false
-                                    this.textWrapping = false
-                                    this.text = "[#$minColor]${data.min}[]/[#$maxColor]${data.max}[]"
-                                    this.fontScaleMultiplier = 0.5f
-                                }
+                                barsStage.updatePositions()
+                                barsStage.visible = true
+                                centreLoadingIcon.visible = false
+                            } catch (e: Exception) {
+                                e.printStackTrace()
                             }
-                            barsStage.updatePositions()
-                            barsStage.visible = true
-                            centreLoadingIcon.visible = false
-                        } catch (e: Exception) {
-                            e.printStackTrace()
                         }
                     }
                 }
@@ -131,6 +133,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
     class DailyOnlineHistoryObj {
         val hours: MutableMap<String, HourlyHistoryObject> = mutableMapOf()
     }
+
     class HourlyHistoryObject {
 
         lateinit var hour: ZonedDateTime
