@@ -171,14 +171,22 @@ class InfoScreen(main: RHRE3Application)
                 }
                 super.render(screen, batch, shapeRenderer)
             }
+
+            override fun canBeClickedOn(): Boolean = true
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (RHRE3.noOnlineCounter || this.text.isEmpty()) return
+                main.screen = OnlineCounterScreen(main, this.text)
+            }
         }.apply {
             this.alignment = Align.bottomRight
             this.isLocalizationKey = false
             this.textAlign = Align.right
             this.fontScaleMultiplier = 0.5f
-            this.location.set(screenHeight = 1f,
+            this.location.set(screenHeight = 1f / 3,
                               screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
-            this.location.set(screenX = this.location.screenWidth, screenY = -0.75f)
+            this.location.set(screenX = this.location.screenWidth, screenY = -0.75f + 1f / 3)
         }
         stage.bottomStage.elements += onlineLabel
 
