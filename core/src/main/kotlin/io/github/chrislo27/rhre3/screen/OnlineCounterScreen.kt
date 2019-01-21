@@ -73,12 +73,12 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                             this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f, screenHeight = 0.6f * (data.mean.toFloat() / max))
                                         }
                                         barsStage.elements += ColourPane(barsStage, barsStage).apply {
-                                            this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.min.toFloat() / max), screenHeight = 0.0125f)
-                                            this.colour.set(minColor)
-                                        }
-                                        barsStage.elements += ColourPane(barsStage, barsStage).apply {
                                             this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.max.toFloat() / max), screenHeight = 0.0125f)
                                             this.colour.set(maxColor)
+                                        }
+                                        barsStage.elements += ColourPane(barsStage, barsStage).apply {
+                                            this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.min.toFloat() / max), screenHeight = 0.0125f / (if (data.max == data.min) 2f else 1f))
+                                            this.colour.set(minColor)
                                         }
                                     }
                                     barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
