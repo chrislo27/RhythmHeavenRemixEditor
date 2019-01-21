@@ -17,8 +17,8 @@ Example: `java -jar RHRE3.jar --verify-registry`
 | `--no-online-counter` | `v3.12.0` | Prevents the program from sending and retrieving online user counts. |
 | `--output-generated-datamodels` | `v3.12.0` | Writes out games that are generated internally in JSON format to console on start-up. |
 | `--output-custom-sfx` | `v3.12.0` | Writes out games that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
-| `--show-tapalong-markers` | `v3.16.1` | Shows tapalong tap markers, a hidden feature. |
-| `--midi-recording` | `v3.16.1` | Enables [midi recording](Midi-capabilities.md), a hidden feature. Using a midi device while the remix is playing will write notes to the remix. |
+| `--show-tapalong-markers` | `v3.17.0` | Shows tapalong tap markers, a hidden feature. |
+| `--midi-recording` | `v3.17.0` | Enables [midi recording](Midi-capabilities.md), a hidden feature. Using a midi device while the remix is playing will write notes to the remix. |
 
 ## Historical
 

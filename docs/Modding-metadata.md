@@ -1,6 +1,6 @@
 # Modding Metadata
 
-Modding metadata is new to v3.16.1. It contains game- and pattern-specific
+Modding metadata is new to v3.17.0. It contains game- and pattern-specific
 metadata to assist with game modding.<br>
 If you're looking for the specifics of game SFX data and patterns, [see this article](JSON-object-definitions.md) instead.
 

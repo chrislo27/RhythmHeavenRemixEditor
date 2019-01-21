@@ -1,6 +1,6 @@
 # Readme
 
-This readme is up to date with version `v3.16.1`.
+This readme is accurate as of version `v3.17.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
