@@ -1711,7 +1711,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
                 output += entity.renderText
             }
-            if (Toolboks.debugMode && entity is SubtitleEntity && entity.subtitle.isNotBlank()) {
+            if (main.advancedOptions && entity is SubtitleEntity && entity.subtitle.isNotBlank()) {
                 val charCount = entity.subtitle.count { it != ' ' && it != '-' && it != '(' && it != ')' && it != '\n' }
                 val duration = remix.tempos.linearBeatsToSeconds(entity.bounds.x + entity.bounds.width) - remix.tempos.linearBeatsToSeconds(entity.bounds.x)
                 output += "${(charCount / duration).roundToInt()} CPS"
