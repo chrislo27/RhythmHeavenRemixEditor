@@ -29,8 +29,11 @@ If you are familiar with music theory, this also is used in sheet music
 to end the music piece.
 You can only have **one** of these in the track at any given time.<br/>
 
-Cues and patterns are examples of *entities*. RHRE3 adds three new types of entities:
-random cue, equidistant, and keep the beat.
+Entities are objects on the track that have a width. There are five types of entities.
+
+**Cues** play a single sound effect. They may also loop.
+
+**Patterns** are groups of entities, usually other cues put together.
 
 **Random cues** will randomly play a cue or pattern each time you play the remix.
 This is useful for games like First Contact, or Ringside.
