@@ -16,6 +16,7 @@ import io.github.chrislo27.toolboks.ui.ColourPane
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import java.time.LocalTime
 import java.time.ZonedDateTime
 import java.util.concurrent.CompletableFuture
 
@@ -56,6 +57,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                 .execute().toCompletableFuture()
                 .thenAccept { response ->
                     if (response.statusCode == 200) {
+                        val currentHour = LocalTime.now().hour
                         Gdx.app.postRunnable {
                             try {
                                 val history = JsonHandler.fromJson<DailyOnlineHistoryObj>(response.responseBody)
@@ -83,7 +85,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                         this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.15f, screenHeight = 0.1f)
                                         this.isLocalizationKey = false
                                         this.textWrapping = false
-                                        this.text = "$hoursAgo${if (weeklyGraph) "d" else "h"}"
+                                        this.text = "${if (!weeklyGraph) ((currentHour - hoursAgo + 24) % 24) else hoursAgo}${if (weeklyGraph) "d" else "h"}"
                                         this.fontScaleMultiplier = 0.75f
                                     }
                                     barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
