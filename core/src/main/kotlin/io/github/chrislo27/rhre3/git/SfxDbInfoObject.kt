@@ -12,4 +12,7 @@ class SfxDbInfoObject {
     @JsonProperty("editor")
     var requiresVersion: String = RHRE3.VERSION.toString()
 
+    @JsonProperty("rsde")
+    var rsdeVersion: String = ""
+
 }
