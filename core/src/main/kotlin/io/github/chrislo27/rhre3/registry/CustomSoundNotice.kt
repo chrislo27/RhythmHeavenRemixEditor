@@ -27,7 +27,8 @@ However, you will be a lot more limited in your abilities.
 
 The sounds must be placed in a folder inside this directory.
 Each folder is a "game", and you can have multiple folders.
-You cannot have folder names identical to IDs already used.
+If your folder name already is an existing stock ID, the folder contents
+will overwrite the stock game.
 
 
 Each sound will have these properties:
