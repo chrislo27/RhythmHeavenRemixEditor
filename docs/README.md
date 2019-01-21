@@ -215,12 +215,12 @@ The Swing tool is covered [in its own article here.](Swing-tool.md)
 
 ## Ruler tool
 The Ruler tool helps you measure beat distances. This is mostly intended for
-modding Rhythm Heaven Megamix. Hold `LEFT CLICK` to draw the ruler.
+modding Rhythm Heaven games. Hold `LEFT CLICK` to draw the ruler.
 Holding `SHIFT` disables the snapping.
 
 ![Screenshot](https://user-images.githubusercontent.com/6299069/47955296-3d635600-df53-11e8-8738-d0b4f1dad38f.png)
 
->Note: The 0x30 notation will only be visible if Advanced Options are enabled.
+>Note: The hex (0x30) rest notation will only be visible if Advanced Options are enabled.
 
 # Stored Patterns
 By clicking on the Stored Patterns tab (the chest icon), you can
