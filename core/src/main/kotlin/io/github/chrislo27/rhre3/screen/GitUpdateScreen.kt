@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.git.SfxDbInfoObject
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -105,7 +105,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 if ((!RHRE3.forceGitFetch && RHRE3.DATABASE_BRANCH != RHRE3.DEV_DATABASE_BRANCH) || RHRE3.forceGitCheck) {
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
-                        val current = JsonHandler.fromJson<CurrentObject>(
+                        val current = JsonHandler.fromJson<SfxDbInfoObject>(
                                 RHRE3Application.httpClient.prepareGet(
                                         RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
                         val ver: Version = Version.fromString(current.requiresVersion)
@@ -149,7 +149,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 repoStatus = RepoStatus.DONE
                 run {
                     val str = GitHelper.SOUNDS_DIR.child("current.json").readString("UTF-8")
-                    val obj = JsonHandler.fromJson<CurrentObject>(str)
+                    val obj = JsonHandler.fromJson<SfxDbInfoObject>(str)
 
                     if (obj.version < 0)
                         error("Current database version json object has a negative version of ${obj.version}")

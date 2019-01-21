@@ -7,8 +7,8 @@ import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.git.CurrentObject
 import io.github.chrislo27.rhre3.git.GitHelper
+import io.github.chrislo27.rhre3.git.SfxDbInfoObject
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
@@ -97,10 +97,10 @@ object GameRegistry : Disposable {
         }
         val seriesCount: Map<Series, Int> = mutableMapOf()
         //        val changelog: ChangelogObject
-        private val currentObj: CurrentObject
+        private val dbInfoObj: SfxDbInfoObject
         val sfxCredits: List<String>
         val version: Int
-            get() = currentObj.version
+            get() = dbInfoObj.version
         val editorVersion: Version
         lateinit var specialGame: Game
             private set
@@ -155,7 +155,7 @@ object GameRegistry : Disposable {
         var lastLoadedID: String? = null
 
         init {
-            currentObj = JsonHandler.fromJson(currentObjFh.readString("UTF-8"))
+            dbInfoObj = JsonHandler.fromJson(currentObjFh.readString("UTF-8"))
             sfxCredits = sfxCreditsFh.takeIf(FileHandle::exists)?.readString("UTF-8")?.let {
                 try {
                     JsonHandler.fromJson(it, Array<String>::class.java).toList()
@@ -165,7 +165,7 @@ object GameRegistry : Disposable {
                 }
             } ?: listOf()
 
-            editorVersion = Version.fromString(currentObj.requiresVersion)
+            editorVersion = Version.fromString(dbInfoObj.requiresVersion)
 
             if (editorVersion > RHRE3.VERSION)
                 error("Registry version ($editorVersion) is higher than this RHRE version (${RHRE3.VERSION})")

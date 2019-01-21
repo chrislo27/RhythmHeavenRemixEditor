@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.chrislo27.rhre3.RHRE3
 
 
-class CurrentObject {
+class SfxDbInfoObject {
 
     @JsonProperty("v")
     var version: Int = -1
