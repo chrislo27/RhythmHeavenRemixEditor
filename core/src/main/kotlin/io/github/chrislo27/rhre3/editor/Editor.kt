@@ -928,10 +928,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (slope == 0 || width == 0f) {
                     batch.fillRect(beat, y, width, height)
                 } else {
-                    batch.drawQuad(beat, y + height, batchColor,
-                                   beat + width, y + height, fadedColor,
-                                   beat + width, y, fadedColor,
-                                   beat, y, batchColor)
+                    if (slope == 1) {
+                        batch.drawQuad(beat, y + height, batchColor,
+                                       beat + width, y + height, fadedColor,
+                                       beat + width, y, fadedColor,
+                                       beat, y, batchColor)
+                    } else if (slope == -1) {
+                        batch.drawQuad(beat, y + height, fadedColor,
+                                       beat + width, y + height, batchColor,
+                                       beat + width, y, batchColor,
+                                       beat, y, fadedColor)
+                    }
                 }
 
                 batch.drawRect(beat, y, width, height, toScaleX(2f), toScaleY(2f))
