@@ -25,6 +25,8 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
         fun getBeatDuration(secondsWidth: Float, startBpm: Float, endBpm: Float): Float {
             return (secondsWidth / 60f) * (startBpm + endBpm) / 2f
         }
+
+        fun getFormattedText(bpm: Float): String = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
     }
 
     override val allowsResize: Boolean = true
@@ -38,7 +40,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
         get() = (container.map as NavigableMap).lowerEntry(beat)?.value?.bpm ?: (container as TempoChanges).defaultTempo
 
     init {
-        text = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
+        text = getFormattedText(bpm)
     }
 
     override fun scroll(amount: Int, control: Boolean, shift: Boolean): TempoChange? {

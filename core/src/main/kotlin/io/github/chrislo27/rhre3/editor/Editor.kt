@@ -1363,7 +1363,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (currentTool == Tool.MULTIPART_SPLIT) {
+        if (currentTool == Tool.MULTIPART_SPLIT || currentTool.isTrackerRelated) {
             updateMessageLabel()
         }
 
@@ -1686,9 +1686,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
                 Tool.TEMPO_CHANGE -> {
                     ctrlBuilder.append(Localization["editor.msg.tempoChange"])
+                    val tracker = getTrackerOnMouse(TempoChange::class.java, true) as? TempoChange
+                    if (tracker != null) {
+                        var totalWidth = ((tracker.container.map as NavigableMap).higherEntry(tracker.endBeat)?.value?.beat ?: remix.lastPoint) - tracker.beat
+                        if (totalWidth < 0f) {
+                            totalWidth = Float.POSITIVE_INFINITY
+                        }
+                        if (tracker.isZeroWidth) {
+                            msgBuilder.append(Localization["editor.msg.tracker.info", tracker.text, totalWidth])
+                        } else {
+                            msgBuilder.append(Localization["editor.msg.tracker.info.stretch", TempoChange.getFormattedText(tracker.previousBpm), tracker.text, tracker.width, totalWidth])
+                        }
+                    }
                 }
                 Tool.MUSIC_VOLUME -> {
                     ctrlBuilder.append(Localization["editor.msg.musicVolume"])
+                    val tracker = getTrackerOnMouse(MusicVolumeChange::class.java, true) as? MusicVolumeChange
+                    if (tracker != null) {
+                        var totalWidth = ((tracker.container.map as NavigableMap).higherEntry(tracker.endBeat)?.value?.beat ?: remix.lastPoint) - tracker.beat
+                        if (totalWidth < 0f) {
+                            totalWidth = Float.POSITIVE_INFINITY
+                        }
+                        if (tracker.isZeroWidth) {
+                            msgBuilder.append(Localization["editor.msg.tracker.info", tracker.text, totalWidth])
+                        } else {
+                            msgBuilder.append(Localization["editor.msg.tracker.info.stretch", MusicVolumeChange.getFormattedText(tracker.previousVolume), tracker.text, tracker.width, totalWidth])
+                        }
+                    }
                 }
                 Tool.SWING -> {
                     ctrlBuilder.append(Localization["editor.msg.swing"])

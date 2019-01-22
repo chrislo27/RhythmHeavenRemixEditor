@@ -13,6 +13,8 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
 
     companion object {
         val MAX_VOLUME: Int = 200
+
+        fun getFormattedText(volume: Int): String = "♬\ue13c➡$volume%"
     }
 
     val volume: Int = volume.coerceIn(0, MAX_VOLUME)
@@ -20,7 +22,7 @@ class MusicVolumeChange(container: TrackerContainer<MusicVolumeChange>, beat: Fl
         get() = (container.map as NavigableMap).lowerEntry(beat)?.value?.volume ?: 100
 
     init {
-        text = "♬\ue13c➡$volume%"
+        text = getFormattedText(volume)
     }
 
     override fun getSlope(): Int {
