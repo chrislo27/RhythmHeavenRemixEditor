@@ -11,9 +11,9 @@ object ModdingUtils {
                     val tickflowUnits: Int,
                     val tickflowUnitName: String = "",
                     val underdeveloped: Boolean = true) {
-        TENGOKU("gba", "Rhythm Tengoku (リズム天国)", "GBA", 1),
-        DS_NA("rhds", "Rhythm Heaven", "NDS", 1),
-        FEVER("rhFever", "Rhythm Heaven Fever", "Wii", 1),
+        TENGOKU("gba", "Rhythm Tengoku (リズム天国)", "GBA", 0x18),
+        DS_NA("rhds", "Rhythm Heaven", "NDS", 0x30),
+        FEVER("rhFever", "Rhythm Heaven Fever", "Wii", 0x30),
         MEGAMIX_NA("rhMegamix", "Rhythm Heaven Megamix", "3DS", 0x30, underdeveloped = false); // τ
 
         companion object {
