@@ -1,19 +1,14 @@
 package io.github.chrislo27.rhre3.modding
 
+import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.registry.GameRegistry
 
-abstract class ModdingMetadata {
 
-    abstract fun computeString(): String
+class ModdingMetadata(private val data: GameRegistry.RegistryData,
+                      private val sourceFolder: FileHandle, private val customFolder: FileHandle) {
+
+    init {
+
+    }
 
 }
-
-class StaticFunction(val result: String) : ModdingMetadata() {
-    override fun computeString(): String = result
-}
-
-//class WidthRangeFunction(val results: Map<ClosedRange<Float>, String>, val elseCase: String = "") : ModdingMetadata() {
-//
-//    override fun computeString(): String {
-//    }
-//
-//}

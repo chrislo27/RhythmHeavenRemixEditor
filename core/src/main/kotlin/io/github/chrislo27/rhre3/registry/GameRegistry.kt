@@ -9,6 +9,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.git.SfxDbInfoObject
+import io.github.chrislo27.rhre3.modding.ModdingMetadata
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
@@ -37,8 +38,14 @@ object GameRegistry : Disposable {
     val SFX_FOLDER: FileHandle by lazy {
         GitHelper.SOUNDS_DIR.child("games/")
     }
-    val CUSTOM_FOLDER: FileHandle by lazy {
+    val MODDING_METADATA_FOLDER: FileHandle by lazy {
+        GitHelper.SOUNDS_DIR.child("moddingMetadata/")
+    }
+    val CUSTOM_SFX_FOLDER: FileHandle by lazy {
         RHRE3.RHRE3_FOLDER.child("customSounds/")
+    }
+    val CUSTOM_MODDING_METADATA_FOLDER: FileHandle by lazy {
+        RHRE3.RHRE3_FOLDER.child("customModdingMetadata/")
     }
 
     private val backingData: RegistryData = RegistryData()
@@ -50,6 +57,7 @@ object GameRegistry : Disposable {
 
             return backingData
         }
+    val moddingMetadata: ModdingMetadata get() = data.moddingMetadata
 
     fun isDataLoading(): Boolean =
             !backingData.ready
@@ -65,6 +73,7 @@ object GameRegistry : Disposable {
         @Volatile
         var ready: Boolean = false
             private set
+
         var hasCustom: Boolean = false
             get() {
                 if (!ready)
@@ -96,7 +105,10 @@ object GameRegistry : Disposable {
             gameGroupsMap.values.toList().sortedBy(GameGroup::name)
         }
         val seriesCount: Map<Series, Int> = mutableMapOf()
-        //        val changelog: ChangelogObject
+
+        lateinit var moddingMetadata: ModdingMetadata
+            private set
+
         private val dbInfoObj: SfxDbInfoObject
         val sfxCredits: List<String>
         val version: Int
@@ -121,10 +133,10 @@ object GameRegistry : Disposable {
                 error("No valid sfx folders with $DATA_JSON_FILENAME inside found")
             }
 
-            CUSTOM_FOLDER.mkdirs()
-            CUSTOM_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false,
-                                                              "UTF-8")
-            val custom = CUSTOM_FOLDER.list { fh ->
+            CUSTOM_SFX_FOLDER.mkdirs()
+            CUSTOM_SFX_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false,
+                                                                  "UTF-8")
+            val custom = CUSTOM_SFX_FOLDER.list { fh ->
                 fh.isDirectory
             }.mapNotNull {
                 if (it.child("data.json").exists()) {
@@ -228,6 +240,10 @@ object GameRegistry : Disposable {
 
             specialGame = gameMap["special"] ?: error("Missing special game")
 
+            // Load modding metadata
+            CUSTOM_MODDING_METADATA_FOLDER.mkdirs()
+            moddingMetadata = ModdingMetadata(this, MODDING_METADATA_FOLDER, CUSTOM_MODDING_METADATA_FOLDER)
+
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
                     objectList.filterIsInstance<Cue>().map {
@@ -250,6 +266,7 @@ object GameRegistry : Disposable {
                 }
             }
 
+            // Load favourites, recents, etc
             GameMetadata.initialize()
 
             if (RHRE3.verifyRegistry) {
