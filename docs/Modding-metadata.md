@@ -99,9 +99,9 @@ Each object has these fields:
 | Field | Type | Description |
 |---|---|---|
 | applyTo | array of strings | Array of strings to apply this data to |
-| data | object | Key/value pairs of data |
+| ... | strings/functions | Key/value pairs of data |
 
-The `data` object is a set of key/value pairs.<br>
+The `...` is one or more key/value pairs. (See example.)<br>
 The **key** must be from a list of known keys described below.<br>
 The **value** should be a string or a function.
 
@@ -112,48 +112,36 @@ Example (actual information may not be correct!):<br>
 [
   {
     "applyTo": ["screwbotFactoryEn", "screwbotFactoryJa"],
-    "data": {
-      "engine": "0x2D",
-      "name": "rvlRobot",
-      "tempoFile": "0234D2",
-      "index": "0x12345"
-    }
+    "engine": "0x2D",
+    "name": "rvlRobot",
+    "tempoFile": "0234D2",
+    "index": "0x12345"
   },
   {
     "applyTo": ["screwbotFactoryEn_blackRobot", "screwbotFactoryJa_blackRobot"],
-    "data": {
-      "sub": "0x58"
-    }
+    "sub": "0x58"
   },
   {
     "applyTo": ["screwbotFactoryEn_whiteRobot", "screwbotFactoryJa_whiteRobot"],
-    "data": {
-      "sub": "0x56"
-    }
+    "sub": "0x56"
   },
   {
     "applyTo": ["screwbotFactoryEn_blackRobotFaster", "screwbotFactoryJa_blackRobotFaster"],
-    "data": {
-      "sub": "0x59"
-    }
+    "sub": "0x59"
   },
   {
     "applyTo": ["screwbotFactoryEn_whiteRobotFast", "screwbotFactoryJa_whiteRobotFast"],
-    "data": {
-      "sub": "0x57"
-    }
+    "sub": "0x57"
   },
   {
     "applyTo": ["bouncyRoad_15bounces", "bouncyRoadMegamix_15bounces"],
-    "data": {
-      "sub": {
-        "function": "widthRange",
-        "2.0": "0x59",
-        "1.0": "0x58",
-        "0.6667": "0x57",
-        "0.5": "0x56",
-        "else": "undefined"
-      }
+    "sub": {
+      "function": "widthRange",
+      "2.0": "0x59",
+      "1.0": "0x58",
+      "0.6667": "0x57",
+      "0.5": "0x56",
+      "else": "undefined"
     }
   }
 ]
