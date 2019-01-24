@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
@@ -113,15 +114,15 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             }
 
             private fun persist() {
-                ModdingUtils.currentGame = ModdingUtils.Game.VALUES[index]
+                ModdingUtils.currentGame = ModdingGame.VALUES[index]
                 preferences.putString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingUtils.currentGame.id).flush()
                 didChangeSettings = true
             }
 
             private var index: Int = run {
-                val default = ModdingUtils.Game.DEFAULT_GAME
+                val default = ModdingGame.DEFAULT_GAME
                 val pref = preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, default.id)
-                val values = ModdingUtils.Game.VALUES
+                val values = ModdingGame.VALUES
                 values.indexOf(values.find { it.id == pref } ?: default).coerceIn(0, values.size - 1)
             }
 
@@ -138,7 +139,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 index++
-                if (index >= ModdingUtils.Game.VALUES.size)
+                if (index >= ModdingGame.VALUES.size)
                     index = 0
 
                 persist()
@@ -149,7 +150,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 super.onRightClick(xPercent, yPercent)
                 index--
                 if (index < 0)
-                    index = ModdingUtils.Game.VALUES.size - 1
+                    index = ModdingGame.VALUES.size - 1
 
                 persist()
                 updateText()
