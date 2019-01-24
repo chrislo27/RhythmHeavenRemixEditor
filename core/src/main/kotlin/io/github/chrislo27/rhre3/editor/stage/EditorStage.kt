@@ -22,6 +22,7 @@ import io.github.chrislo27.rhre3.editor.stage.advopt.CopyGamesUsedButton
 import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -183,28 +184,31 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 setHoverText(it.getHoverText())
                 true
             } else false
-        } ?: elements.firstOrNull { stage ->
-            if (stage !is Stage || !stage.visible) {
-                false
-            } else {
-                stage.elements.any {
-                    if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                        setHoverText(it.getHoverText())
-                        true
-                    } else false
+        }
+                ?: elements.firstOrNull { stage ->
+                    if (stage !is Stage || !stage.visible) {
+                        false
+                    } else {
+                        stage.elements.any {
+                            if (it is HasHoverText && it.isMouseOver() && it.visible) {
+                                setHoverText(it.getHoverText())
+                                true
+                            } else false
+                        }
+                    }
                 }
-            }
-        } ?: searchBar.elements.firstOrNull {
-            // hack
-            if (searchBar.visible) {
-                if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                    setHoverText(it.getHoverText())
-                    true
-                } else false
-            } else {
-                false
-            }
-        } ?: editor.getHoverText().takeIf(String::isNotEmpty)?.also(this::setHoverText)
+                ?: searchBar.elements.firstOrNull {
+                    // hack
+                    if (searchBar.visible) {
+                        if (it is HasHoverText && it.isMouseOver() && it.visible) {
+                            setHoverText(it.getHoverText())
+                            true
+                        } else false
+                    } else {
+                        false
+                    }
+                }
+                ?: editor.getHoverText().takeIf(String::isNotEmpty)?.also(this::setHoverText)
 
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
@@ -272,7 +276,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         if (y in 0 until Editor.ICON_COUNT_Y) {
                             val buttonIndex = y * Editor.ICON_COUNT_X + x
                             gameButtons[buttonIndex].apply {
-                                val gameList = filter.gamesPerGroup[group] ?: return@apply
+                                val gameList = filter.gamesPerGroup[group]
+                                        ?: return@apply
                                 this.game = if (gameList.isEmpty) return@apply else gameList.current
                                 if (filter.currentGroupIndex == index) {
                                     this.selected = true
@@ -298,7 +303,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 it.game = null
             }
             filter.currentGroup?.also { group ->
-                val currentGameList = filter.currentGameList ?: return@also
+                val currentGameList = filter.currentGameList
+                        ?: return@also
                 filter.gamesPerGroup[group]?.list?.forEachIndexed { index, game ->
                     val y = index - (currentGameList.scroll)
                     if (y in 0 until Editor.ICON_COUNT_Y) {
@@ -332,9 +338,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val currentDatamodelList = filter.currentDatamodelList
             if (!filter.areDatamodelsEmpty && currentDatamodelList != null) {
                 fun <T> MutableList<T>.getOrAdd(index: Int, function: (Int) -> T): T {
-                    return getOrNull(index) ?: function(index).also {
-                        add(it)
-                    }
+                    return getOrNull(index)
+                            ?: function(index).also {
+                                add(it)
+                            }
                 }
 
                 val objects = currentDatamodelList.list
@@ -421,7 +428,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     fun createQuickSwitch(): SwitchToGame? {
-        val fb = filterButtons.firstOrNull(FilterButton::selected) ?: return null
+        val fb = filterButtons.firstOrNull(FilterButton::selected)
+                ?: return null
         return SwitchToGame(fb)
     }
 
@@ -795,7 +803,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     } else {
                                         if (isVariant) {
                                             val gameList = filter.currentGameList
-                                            val scroll = gameList?.scroll ?: 0
+                                            val scroll = gameList?.scroll
+                                                    ?: 0
                                             if (isUp) {
                                                 label.text = Editor.ARROWS[if (scroll > 0) 0 else 2]
                                             } else {
@@ -814,7 +823,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                                     super.onLeftClick(xPercent, yPercent)
                                     val filter = editor.pickerSelection.filter
-                                    val gameList = filter.currentGameList ?: return
+                                    val gameList = filter.currentGameList
+                                            ?: return
                                     if (isVariant) {
                                         if (isUp) {
                                             if (gameList.scroll > 0) {
@@ -1087,7 +1097,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             val buttonHeight: Float = 1f
 
             Series.VALUES.forEachIndexed { index, series ->
-                val filter: Filter = SeriesFilter.allSeriesFilters[series] ?: error("Series filter not found: $series")
+                val filter: Filter = SeriesFilter.allSeriesFilters[series]
+                        ?: error("Series filter not found: $series")
                 val tmp: FilterButton = FilterButton(filter, series.localization,
                                                      palette, minimapBarStage, minimapBarStage).apply {
                     this.location.set(
@@ -1438,19 +1449,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             if (game != null) {
                 return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") +
                         (if (game.isCustom) "[CYAN]★[]" else "") +
-                        (if (isVariant) game.name else game.gameGroup.name) + "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]"
+                        (if (isVariant) game.name else game.gameGroup.name) + "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]" +
+                        if (ModdingUtils.moddingToolsEnabled && (isVariant || isSingleInGameGroup())) {
+                            GameRegistry.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" }
+                        } else ("")
             }
             return ""
         }
 
         fun isSingleInGameGroup(): Boolean {
             val filter = editor.pickerSelection.filter
-            val game = game ?: return false
+            val game = game
+                    ?: return false
             return isVariant && !filter.areGroupsEmpty && game.gameGroup.games.size == 1
         }
 
         fun isFavourited(): Boolean {
-            val game = game ?: return false
+            val game = game
+                    ?: return false
             return if (isVariant)
                 (if (isSingleInGameGroup())
                     game.gameGroup.isFavourited
@@ -1556,7 +1572,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 10 -> " [LIGHT_GRAY][[0][]"
                 in 1..9 -> " [LIGHT_GRAY][[$moddedIndex][]"
                 else -> ""
-            } + (if (tool.keybinds.isNotEmpty()) " [LIGHT_GRAY]${tool.keybinds.joinToString(" ") {"[[$it]"}}[]" else "")
+            } + (if (tool.keybinds.isNotEmpty()) " [LIGHT_GRAY]${tool.keybinds.joinToString(" ") { "[[$it]" }}[]" else "")
         }
 
         override fun getHoverText(): String {

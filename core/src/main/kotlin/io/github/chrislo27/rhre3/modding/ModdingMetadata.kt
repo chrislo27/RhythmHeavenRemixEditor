@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.modding
 import com.badlogic.gdx.files.FileHandle
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
+import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
@@ -17,6 +18,16 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
 
     inner class Data(val game: ModdingGame) {
         val mappedData: Map<Any, Map<MetadataField, MetadataValue>> = mutableMapOf()
+
+        fun joinToString(map: Map<MetadataField, MetadataValue>, entity: Entity?, keyColor: String = "LIGHT_GRAY", unknownColor: String = "ORANGE"): String {
+            return map.entries.joinToString(separator = "\n") { (key, value) ->
+                "[${if (key.unknown) unknownColor else keyColor}]${key.name}:[] ${value.getValue(entity)}"
+            }
+        }
+
+        fun joinToStringFromData(any: Any, entity: Entity?, keyColor: String = "LIGHT_GRAY", unknownColor: String = "ORANGE"): String {
+            return mappedData[any]?.let { joinToString(it, entity, keyColor, unknownColor) } ?: ""
+        }
     }
 
     private val dataMap: MutableMap<ModdingGame, Data> = mutableMapOf()

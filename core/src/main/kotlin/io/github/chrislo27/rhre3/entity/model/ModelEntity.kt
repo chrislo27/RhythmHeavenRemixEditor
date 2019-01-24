@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.track.Remix
@@ -70,7 +72,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 
     override fun render(batch: SpriteBatch) {
         val game = datamodel.game
-        val text = renderText
+        val textColor = remix.editor.theme.entities.nameColor
+        val text = renderText + (if (ModdingUtils.moddingToolsEnabled && remix.editor.currentTool == Tool.RULER) {
+            GameRegistry.moddingMetadata.currentData.joinToStringFromData(datamodel, this, keyColor = "#$textColor").takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
+        } else "")
         val font = remix.main.defaultFont
         val color = getRenderColor()
         val oldColor = batch.packedColor
@@ -135,7 +140,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         batch.setColor(oldColor)
         val oldFontColor = font.color
         val fontScale = 0.6f
-        font.color = remix.editor.theme.entities.nameColor
+        font.color = textColor
         font.data.setScale(oldFontSizeX * fontScale, oldFontSizeY * fontScale)
         // width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
         val allottedWidth = width - 2 * (remix.editor.toScaleX(BORDER))
