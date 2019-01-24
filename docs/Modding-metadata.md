@@ -84,22 +84,79 @@ with any modding documentation are North American releases (excluding Rhythm Ten
 </details>
 <br>
 
-## `moddingMetadata`
-The `moddingMetadata` field (where supported) is a key/value map of
-modding game IDs to *functions*. The provided function for a game will be used when
-the user has set that as their modding game (in Advanced Options).
+## File and folder structure
+Various `json` files will be in the SFX database under the `moddingMetadata/` folder.
+They are grouped into folders of the modding game ID.
+
+Custom modding metadata can be put in `.rhre3/customModdingMetadata/` with the same structure
+as above. Files that are identically named in the custom folder will overwrite something with
+the same file name in the stock SFX database.
+
+## JSON structure
+Each json file is **an array of objects**.<br>
+Each object has these fields:
+
+| Field | Type | Description |
+|---|---|---|
+| applyTo | array of strings | Array of strings to apply this data to |
+| data | object | Key/value pairs of data |
+
+The `data` object is a set of key/value pairs.<br>
+The **key** must be from a list of known keys described below.<br>
+The **value** should be a string or a function.
+
 Various function types are listed below this section.
 
-## Static function
-
-The static function always returns the same string. Its syntax is
-simply just a string as the value.
-
-#### Example
+Example (actual information may not be correct!):<br>
 ```json
-"moddingMetadata": {
-  "rhMegamix": "0x111"
-}
+[
+  {
+    "applyTo": ["screwbotFactoryEn", "screwbotFactoryJa"],
+    "data": {
+      "engine": "0x2D",
+      "name": "rvlRobot",
+      "tempoFile": "0234D2",
+      "index": "0x12345"
+    }
+  },
+  {
+    "applyTo": ["screwbotFactoryEn_blackRobot", "screwbotFactoryJa_blackRobot"],
+    "data": {
+      "sub": "0x58"
+    }
+  },
+  {
+    "applyTo": ["screwbotFactoryEn_whiteRobot", "screwbotFactoryJa_whiteRobot"],
+    "data": {
+      "sub": "0x56"
+    }
+  },
+  {
+    "applyTo": ["screwbotFactoryEn_blackRobotFaster", "screwbotFactoryJa_blackRobotFaster"],
+    "data": {
+      "sub": "0x59"
+    }
+  },
+  {
+    "applyTo": ["screwbotFactoryEn_whiteRobotFast", "screwbotFactoryJa_whiteRobotFast"],
+    "data": {
+      "sub": "0x57"
+    }
+  },
+  {
+    "applyTo": ["bouncyRoad_15bounces", "bouncyRoadMegamix_15bounces"],
+    "data": {
+      "sub": {
+        "function": "widthRange",
+        "2.0": "0x59",
+        "1.0": "0x58",
+        "0.6667": "0x57",
+        "0.5": "0x56",
+        "else": "undefined"
+      }
+    }
+  }
+]
 ```
 
 ## Width Range function
@@ -121,12 +178,10 @@ and `upper` is the upper bound (inclusive). The whitespace and decimal places ar
 
 #### Example
 ```json
-"moddingMetadata": {
-  "rhMegamix": {
-    "function": "widthRange",
-    "0.0 .. 1.0": "between 0.0 and 1.0",
-    "3.0": "exactly 3.0",
-    "else": "none of the provided"
-  }
+"sub": {
+  "function": "widthRange",
+  "0.0 .. 1.0": "between 0.0 and 1.0",
+  "3.0": "exactly 3.0",
+  "else": "none of the provided"
 }
 ```
