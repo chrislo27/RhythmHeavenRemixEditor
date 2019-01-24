@@ -16,7 +16,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
         : RuntimeException("Error in parsing modding metadata ${data.game.id}/${fh.name()}: $message")
 
     inner class Data(val game: ModdingGame) {
-
+        val mappedData: Map<Any, Map<MetadataField, MetadataValue>> = mutableMapOf()
     }
 
     private val dataMap: MutableMap<ModdingGame, Data> = mutableMapOf()
@@ -42,6 +42,8 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                     }
                     fileMap[name] = fh
                 }
+            } else {
+                customFdr.mkdirs()
             }
 
             val data: Data = get(moddingGame)
@@ -49,8 +51,9 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                 try {
                     load(data, fh)
                     totalLoaded++
-                } catch (be: BadModdingMetadataException){
-                    Toolboks.LOGGER.error(be.message ?: "Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
+                } catch (be: BadModdingMetadataException) {
+                    Toolboks.LOGGER.error(be.message
+                                                  ?: "Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
                 } catch (e: Exception) {
                     Toolboks.LOGGER.error("Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
                     e.printStackTrace()
@@ -64,6 +67,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
 
     private fun load(data: Data, fileHandle: FileHandle) {
         fun badMetadata(msg: String): Nothing = throw BadModdingMetadataException(data, fileHandle, msg)
+        data.mappedData as MutableMap
 
         val dataName = "${data.game.id}/${fileHandle.name()}"
         val root: JsonNode = JsonHandler.OBJECT_MAPPER.readTree(fileHandle.file())
@@ -72,23 +76,84 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
             badMetadata("The root of the json file should be an array.${if (root.isObject) " It seems it is an object, so please surround it with []." else ""}")
         }
 
-        root.forEach { tree ->
+        root.forEachIndexed { arrayIndex, tree ->
             if (!tree.has("applyTo"))
-                badMetadata("applyTo string array required.")
-            val applyToNode: ArrayNode = (tree["applyTo"]?.takeUnless { !it.isArray } as? ArrayNode) ?: badMetadata("applyTo must be a string array.")
-            val applyTo: List<String> = applyToNode.map { subnode ->
-                if (!subnode.isTextual) badMetadata("applyTo string array should be only strings, found ${subnode.nodeType}=${subnode.asText()}.")
-                if (subnode.asText().isBlank()) badMetadata("applyTo string array cannot have blank entries.")
+                badMetadata("[$arrayIndex].applyTo string array required.")
+            val applyToNode: ArrayNode = (tree["applyTo"]?.takeUnless { !it.isArray } as? ArrayNode)
+                    ?: badMetadata("[$arrayIndex].applyTo must be a string array.")
+            val applyToIDs: List<String> = applyToNode.map { subnode ->
+                if (!subnode.isTextual) badMetadata("[$arrayIndex].applyTo string array should be only strings, found ${subnode.nodeType}=${subnode.asText()}.")
+                if (subnode.asText().isBlank()) badMetadata("[$arrayIndex].applyTo string array cannot have blank entries.")
                 subnode.asText()
             }.distinct()
+            if (applyToIDs.size < applyToNode.size()) {
+                badMetadata("[$arrayIndex].applyTo string array cannot have duplicates ().")
+            }
+            val mappedApplyTo: Map<Any, IDType> = applyToIDs.associate {
+                // Attempt to find game, then no deprecations, then deprecations (with warning), then error
+                registryData.gameMap[it]?.to(IDType.GAME)
+                        ?: registryData.noDeprecationsObjectMap[it]?.to(IDType.DATAMODEL)
+                        ?: registryData.objectMap[it]?.also { dm ->
+                            Toolboks.LOGGER.warn("Warning in $dataName[$arrayIndex].applyTo: $it refers to a deprecated ID, use ${dm.id} instead")
+                        }?.to(IDType.DATAMODEL)
+                        ?: badMetadata("Error in [$arrayIndex].applyTo: $it does not exist as a game or datamodel.")
+            }
 
-            tree.fieldNames().forEach { nodeName ->
-                val node = tree[nodeName]!!
-                val metadataField: MetadataField? = MetadataField.GLOBAL_FIELDS[nodeName] ?: MetadataField.GAME_FIELDS[data.game]?.get(nodeName)
-                if (metadataField == null) {
-                    Toolboks.LOGGER.warn("Unrecognized metadata field name \"$nodeName\" in $dataName")
+            tree.fieldNames().asSequence().filter { it != "applyTo" }.forEach { fieldName ->
+                val node = tree[fieldName]!!
+                val metadataField: MetadataField = MetadataField.GLOBAL_FIELDS[fieldName]
+                        ?: MetadataField.GAME_FIELDS[data.game]?.get(fieldName)
+                        ?: run {
+                            Toolboks.LOGGER.warn("Unrecognized metadata field name $dataName[$arrayIndex].\"$fieldName\"")
+                            MetadataField(fieldName, fieldName, EnumSet.allOf(IDType::class.java), true)
+                        }
+
+                val metadataValue: MetadataValue = when {
+                    node.isTextual -> StaticValue(node.asText())
+                    node.isObject && node["function"]?.takeIf { it.isTextual }?.asText() == "widthRange" ->
+                        WidthRangeValue().also { widthRange ->
+                            node.fieldNames().forEach { name ->
+                                val subnode = node[name]!!
+                                if (subnode.isTextual) {
+                                    val textValue = subnode.asText()
+                                    if (name == "else") {
+                                        widthRange.elseValue = textValue
+                                    } else if (name.toFloatOrNull() != null) {
+                                        val v = name.toFloat()
+                                        widthRange.exactValues[v..v] = textValue
+                                    } else {
+                                        val matchResult = WidthRangeValue.REGEX.matchEntire(name)
+                                        if (matchResult != null) {
+                                            val range: ClosedRange<Float> = matchResult.groupValues[1].toFloat()..matchResult.groupValues[2].toFloat()
+                                            if (range.isEmpty()) {
+                                                Toolboks.LOGGER.warn("$dataName[$arrayIndex].\"$fieldName\".\"name\" is an empty range")
+                                            }
+                                            widthRange.exactValues[range] = textValue
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    else -> badMetadata("Unable to parse value as string or function object for [$arrayIndex].$metadataField.")
                 }
-                // TODO do something with the node
+                if (metadataValue !is StaticValue && IDType.GAME in mappedApplyTo.values) {
+                    Toolboks.LOGGER.warn("Warning for $dataName[$arrayIndex].$metadataField: Function declared but there are game IDs in applyTo")
+                }
+
+                // Map this data to each datamodel/game in mappedApplyTo
+                mappedApplyTo.forEach { any, type ->
+                    val newMap = data.mappedData.getOrPut(any) { linkedMapOf() } as MutableMap
+                    if (newMap[metadataField] != null) {
+                        Toolboks.LOGGER.warn("Duplicate metadata field $dataName[$arrayIndex].$metadataField")
+                    } else {
+                        // Provide warnings if the metadataField is incompatible with the IDType of items in mappedApplyTo
+                        if (type !in metadataField.idTypes) {
+                            Toolboks.LOGGER.warn("Warning for $dataName[$arrayIndex].$metadataField: Field supports ${metadataField.idTypes} but applyTo has a $type")
+                        }
+                    }
+
+                    newMap[metadataField] = metadataValue
+                }
             }
         }
 
@@ -99,19 +164,21 @@ enum class IDType {
     GAME, DATAMODEL
 }
 
-data class MetadataField(val jsonField: String, val name: String, val idTypes: EnumSet<IDType>) {
+data class MetadataField(val jsonField: String, val name: String, val idTypes: EnumSet<IDType>, val unknown: Boolean = false) {
     companion object {
         val GLOBAL_FIELDS: Map<String, MetadataField> =
                 linkedMapOf(MetadataField("note", "Note", EnumSet.allOf(IDType::class.java)).toPair())
         val GAME_FIELDS: Map<ModdingGame, Map<String, MetadataField>> =
                 mapOf(ModdingGame.MEGAMIX_NA to linkedMapOf(
-                    MetadataField("sub", "Sub", EnumSet.of(IDType.DATAMODEL)).toPair(),
-                    MetadataField("name", "Name", EnumSet.of(IDType.GAME)).toPair(),
-                    MetadataField("engine", "Engine", EnumSet.of(IDType.GAME)).toPair(),
-                    MetadataField("tempoFile", "Tempo File", EnumSet.of(IDType.GAME)).toPair(),
-                    MetadataField("index", "Index", EnumSet.of(IDType.GAME)).toPair()
-                                                     ))
+                        MetadataField("sub", "Sub", EnumSet.of(IDType.DATAMODEL)).toPair(),
+                        MetadataField("name", "Name", EnumSet.of(IDType.GAME)).toPair(),
+                        MetadataField("engine", "Engine", EnumSet.of(IDType.GAME)).toPair(),
+                        MetadataField("tempoFile", "Tempo File", EnumSet.of(IDType.GAME)).toPair(),
+                        MetadataField("index", "Index", EnumSet.of(IDType.GAME)).toPair()
+                                                           ))
     }
 
-    private fun toPair(): Pair<String, MetadataField> = name to this
+    private fun toPair(): Pair<String, MetadataField> = jsonField to this
 }
+
+//data class Metadata<T>(val model: T, fields: List<MetadataField>)
