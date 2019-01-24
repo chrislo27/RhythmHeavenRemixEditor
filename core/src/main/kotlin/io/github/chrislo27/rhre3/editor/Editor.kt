@@ -1763,12 +1763,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 }
             }
-        }
 
-        if (ModdingUtils.moddingToolsEnabled && entity != null && entity is ModelEntity<*>) {
-            val str = GameRegistry.moddingMetadata.currentData.joinToStringFromData(entity.datamodel, entity)
-            if (str.isNotEmpty()) {
-                output += str
+            if (ModdingUtils.moddingToolsEnabled && entity is ModelEntity<*>) {
+                val str = GameRegistry.moddingMetadata.currentData.joinToStringFromData(entity.datamodel, entity)
+                if (str.isNotEmpty()) {
+                    output += str
+                }
             }
         }
 
