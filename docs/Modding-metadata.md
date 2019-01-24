@@ -105,7 +105,7 @@ The `...` is one or more key/value pairs. (See example.)<br>
 The **key** must be from a list of known keys described below.<br>
 The **value** should be a string or a function.
 
-Various function types are listed below this section.
+The various function types and valid keys are listed below this section.
 
 Example (actual information may not be correct!):<br>
 ```json
@@ -114,7 +114,7 @@ Example (actual information may not be correct!):<br>
     "applyTo": ["screwbotFactoryEn", "screwbotFactoryJa"],
     "engine": "0x2D",
     "name": "rvlRobot",
-    "tempoFile": "0234D2",
+    "tempoFile": "00234D2",
     "index": "0x12345"
   },
   {
@@ -146,6 +146,24 @@ Example (actual information may not be correct!):<br>
   }
 ]
 ```
+
+## Valid keys
+
+For **all games**:
+
+| Field | Intended for | Description |
+|---|---|---|
+| note | datamodels or games | An extra note or comment to be displayed. |
+
+For `rhMegamix` only:
+
+| Field | Intended for | Description |
+|---|---|---|
+| sub | datamodels | The sub number, as a hex number starting with 0x. |
+| engine | games | The engine ID, as a hex number starting with 0x. |
+| name | games | The engine's internal name. |
+| tempoFile | games | The engine's tempo file ID. |
+| index | games | The engine's index, as a hex number starting with 0x. |
 
 ## Width Range function
 
