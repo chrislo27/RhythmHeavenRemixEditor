@@ -4,15 +4,15 @@ import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.entity.Entity
 
 
-sealed class MetadataValue {
+sealed class MetadataValue(val needsEntity: Boolean) {
     abstract fun getValue(entity: Entity?): String
 }
 
-class StaticValue(private val value: String) : MetadataValue() {
+class StaticValue(private val value: String) : MetadataValue(false) {
     override fun getValue(entity: Entity?): String = value
 }
 
-class WidthRangeValue : MetadataValue() {
+class WidthRangeValue : MetadataValue(true) {
     companion object {
         val EPSILON: Float = 0.0001f
         val REGEX: Regex = "(\\d+(?:\\.\\d+)?)\\.\\.(\\d+(?:\\.\\d+)?)".toRegex()

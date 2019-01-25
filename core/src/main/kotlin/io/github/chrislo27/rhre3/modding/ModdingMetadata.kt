@@ -154,7 +154,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                         }
                     else -> badMetadata("Unable to parse value as string or function object for [$arrayIndex].$metadataField.")
                 }
-                if (metadataValue !is StaticValue && IDType.GAME in mappedApplyTo.values) {
+                if (metadataValue.needsEntity && IDType.GAME in mappedApplyTo.values) {
                     Toolboks.LOGGER.warn("Warning for $dataName[$arrayIndex].$metadataField: Function declared but there are game IDs in applyTo")
                 }
 
