@@ -16,6 +16,7 @@ import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.lc.LC
 import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.modding.ModdingGame
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -31,7 +32,6 @@ import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.ReleaseObject
-import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.toolboks.ResizeAction
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksGame
@@ -218,7 +218,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 addOtherScreens()
                 loadWindowSettings()
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
-
+                if (preferences.getString(PreferenceKeys.LAST_VERSION, null) == null) {
+                    Gdx.net.openURI("https://rhre.readthedocs.io/en/latest/")
+                }
                 return@nextScreenLambda nextScreen
             }
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
