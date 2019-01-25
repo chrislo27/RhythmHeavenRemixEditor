@@ -147,6 +147,8 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                                                 Toolboks.LOGGER.warn("$dataName[$arrayIndex].\"$fieldName\".\"name\" is an empty range")
                                             }
                                             widthRange.exactValues[range] = textValue
+                                        } else {
+                                            badMetadata("Unrecognized field format for width range function $dataName[$arrayIndex].\"$fieldName\" \"$name\"")
                                         }
                                     }
                                 }
