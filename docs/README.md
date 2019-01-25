@@ -220,7 +220,7 @@ Holding `SHIFT` disables the snapping.
 
 ![Screenshot](https://user-images.githubusercontent.com/6299069/47955296-3d635600-df53-11e8-8738-d0b4f1dad38f.png)
 
->Note: The hex (0x30) rest notation will only be visible if Advanced Options are enabled.
+>Note: The hex (0x30) rest notation will only be visible if [Advanced Options](Advanced-options.md) are enabled.
 
 # Stored Patterns
 By clicking on the Stored Patterns tab (the chest icon), you can

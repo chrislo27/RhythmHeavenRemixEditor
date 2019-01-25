@@ -1,4 +1,4 @@
-# Welcome to the Rhythm Heaven Remix Editor 3 wiki!
+# Welcome to the Rhythm Heaven Remix Editor wiki!
 
 ![RHRE3 Logo](256.png)
 
@@ -15,6 +15,7 @@
 * [Themes](Themes.md)
 * [Custom Sounds](Custom-sounds.md)
 * [MIDI capabilities](Midi-capabilities.md)
+* [Advanced Options](Advanced-options.md)
 
 ### Troubleshooting
 * [Invalid keystore format or No System TLS error](Invalid-keystore.md)
