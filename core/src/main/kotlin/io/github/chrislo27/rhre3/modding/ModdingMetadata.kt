@@ -4,7 +4,9 @@ import com.badlogic.gdx.files.FileHandle
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
@@ -74,6 +76,12 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
     }
 
     operator fun get(game: ModdingGame): Data = dataMap.getOrPut(game) { Data(game) }
+
+    private fun getID(any: Any): String = when (any) {
+        is Datamodel -> any.id
+        is Game -> any.id
+        else -> "???"
+    }
 
     private fun load(data: Data, fileHandle: FileHandle) {
         fun badMetadata(msg: String): Nothing = throw BadModdingMetadataException(data, fileHandle, msg)
@@ -154,7 +162,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                 mappedApplyTo.forEach { any, type ->
                     val newMap = data.mappedData.getOrPut(any) { linkedMapOf() } as MutableMap
                     if (newMap[metadataField] != null) {
-                        Toolboks.LOGGER.warn("Duplicate metadata field $dataName[$arrayIndex].$metadataField")
+                        Toolboks.LOGGER.warn("Duplicate metadata field $dataName[$arrayIndex].$metadataField for ${getID(any)}")
                     } else {
                         // Provide warnings if the metadataField is incompatible with the IDType of items in mappedApplyTo
                         if (type !in metadataField.idTypes) {
