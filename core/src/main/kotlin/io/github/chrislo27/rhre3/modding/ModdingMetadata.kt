@@ -190,5 +190,3 @@ data class MetadataField(val jsonField: String, val name: String, val idTypes: E
 
     private fun toPair(): Pair<String, MetadataField> = jsonField to this
 }
-
-//data class Metadata<T>(val model: T, fields: List<MetadataField>)
