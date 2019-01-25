@@ -799,10 +799,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             if (stage.tapalongMarkersEnabled) {
                 val tapalong = stage.tapalongStage
-                tapalong.seconds.forEach {
-                    val beat = remix.tempos.secondsToBeats((it.remixSec ?: return@forEach) + remix.musicStartSec)
-                    if (beat.roundToInt() in beatRange) {
-                        renderAboveTracker(null, null, 1, beat, theme.trackLine)
+                tapalong.tapRecords.forEach {
+                    if (!it.remixSec.isNaN()) {
+                        val beat = remix.tempos.secondsToBeats(it.remixSec + remix.musicStartSec)
+                        if (beat.roundToInt() in beatRange) {
+                            renderAboveTracker(null, null, 1, beat, theme.trackLine)
+                        }
                     }
                 }
             }

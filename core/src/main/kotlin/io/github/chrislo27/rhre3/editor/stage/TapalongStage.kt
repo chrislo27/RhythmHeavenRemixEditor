@@ -25,7 +25,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     }
 
     var markersEnabled: Boolean = RHRE3.showTapalongMarkers
-    val seconds = mutableListOf<TapRecord>()
+    val tapRecords = mutableListOf<TapRecord>()
     var tempo: Float = 0f
         private set
     val roundedTempo: Int
@@ -110,7 +110,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
         this.elements += quarterNoteLabel
         inputsLabel = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getRealText(): String {
-                return Localization[text, seconds.size]
+                return Localization[text, tapRecords.size]
             }
         }.apply {
             this.location.set(screenWidth = 0.25f, screenHeight = tempoLabel.location.screenHeight)
@@ -208,22 +208,24 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     }
 
     private fun tap() {
-        if (seconds.isNotEmpty() && (System.currentTimeMillis() - timeSinceLastTap) >= 1000 * AUTO_RESET_SECONDS) {
+        if (tapRecords.isNotEmpty() && (System.currentTimeMillis() - timeSinceLastTap) >= 1000 * AUTO_RESET_SECONDS) {
             reset()
         }
 
-        while (seconds.size >= MAX_INPUTS) {
-            seconds.removeAt(0)
+        while (tapRecords.size >= MAX_INPUTS) {
+            tapRecords.removeAt(0)
         }
 
-        seconds.add(TapRecord(internalTimekeeper,
-                              if (remix.playState == PlayState.PLAYING) (remix.seconds - remix.musicStartSec) else null))
+        if (!tapRecords.any { it.sec == internalTimekeeper }) {
+            // Prevents instantaneous duplicates
+            tapRecords.add(TapRecord(internalTimekeeper, if (remix.playState == PlayState.PLAYING) (remix.seconds - remix.musicStartSec) else Float.NaN))
+        }
         timeSinceLastTap = System.currentTimeMillis()
 
         // compute new tempo
-        if (seconds.size >= 2) {
-            seconds.sortBy { it.sec }
-            val avgDelta = seconds.drop(1).mapIndexed { index, rec -> rec.sec - seconds[index].sec }.average().toFloat()
+        if (tapRecords.size >= 2) {
+            tapRecords.sortBy { it.sec }
+            val avgDelta = tapRecords.drop(1).mapIndexed { index, rec -> rec.sec - tapRecords[index].sec }.average().toFloat()
 
             // 120 BPM is 2 beats per second b/c 120 / 60
             // 120 BPM is 0.5 seconds per beat b/c 60 / 120
@@ -237,10 +239,10 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
 
     private fun updateLabels() {
         when {
-            seconds.isEmpty() -> {
+            tapRecords.isEmpty() -> {
                 tempoLabel.text = "0"
             }
-            seconds.size == 1 -> {
+            tapRecords.size == 1 -> {
                 tempoLabel.text = Localization["editor.tapalong.first"]
             }
             else -> {
@@ -250,7 +252,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     }
 
     fun reset() {
-        seconds.clear()
+        tapRecords.clear()
         tempo = 0f
         updateLabels()
     }
@@ -276,5 +278,5 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
         return false
     }
 
-    data class TapRecord(val sec: Float, val remixSec: Float?)
+    data class TapRecord(val sec: Float, val remixSec: Float)
 }
