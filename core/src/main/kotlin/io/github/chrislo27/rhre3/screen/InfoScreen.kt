@@ -40,6 +40,8 @@ import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
+import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
@@ -831,6 +833,8 @@ class InfoScreen(main: RHRE3Application)
         stage as GenericStage
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
+        } else if (Gdx.input.isControlDown() && !Gdx.input.isShiftDown() && !Gdx.input.isAltDown() && Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+            main.screen = ScreenRegistry.getNonNull("advancedOptions")
         }
     }
 

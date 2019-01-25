@@ -1,9 +1,9 @@
 # Advanced Options
 
 Advanced Options can be set by clicking the version text
-five times in the Info and Settings screen.
+five times or pressing `CTRL+A` in the Info and Settings screen.
 
-You can enable/disable Advanced Options.
+You can enable/disable all of Advanced Options.
 
 If enabled, these features become available:
 
