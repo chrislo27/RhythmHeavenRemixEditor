@@ -4,6 +4,11 @@ Modding metadata is new to v3.17.0. It contains game- and pattern-specific
 metadata to assist with game modding.<br>
 If you're looking for the specifics of game SFX data and patterns, [see this article](JSON-object-definitions.md) instead.
 
+Modding metadata is visible when Advanced Options are turned on (click the
+version text in Info and Settings five times). They are visible on tooltips.
+If the Ruler tool is selected, they will also be visible on the entities
+themselves.
+
 ## Supported Modding Game IDs
 
 These game IDs refer to Rhythm Heaven installments and not minigames.
