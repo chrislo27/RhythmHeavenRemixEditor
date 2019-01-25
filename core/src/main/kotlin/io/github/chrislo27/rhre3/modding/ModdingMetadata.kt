@@ -63,8 +63,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                     load(data, fh)
                     totalLoaded++
                 } catch (be: BadModdingMetadataException) {
-                    Toolboks.LOGGER.error(be.message
-                                                  ?: "Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
+                    Toolboks.LOGGER.error(be.message ?: "Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
                 } catch (e: Exception) {
                     Toolboks.LOGGER.error("Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
                     e.printStackTrace()
