@@ -851,6 +851,38 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                         }
                                     }
                                 }
+
+                                override fun onRightClick(xPercent: Float, yPercent: Float) {
+                                    super.onRightClick(xPercent, yPercent)
+                                    val filter = editor.pickerSelection.filter
+                                    val gameList = filter.currentGameList
+                                            ?: return
+                                    if (isVariant) {
+                                        if (isUp) {
+                                            if (gameList.scroll > 0) {
+                                                gameList.scroll -= Math.min(Editor.ICON_COUNT_Y, gameList.scroll)
+                                                updateSelected()
+                                            }
+                                        } else {
+                                            if (gameList.scroll < gameList.maxIndex) {
+                                                gameList.scroll += Math.min(Editor.ICON_COUNT_Y, gameList.maxIndex - gameList.scroll)
+                                                updateSelected()
+                                            }
+                                        }
+                                    } else {
+                                        if (isUp) {
+                                            if (filter.groupScroll > 0) {
+                                                filter.groupScroll -= Math.min(Editor.ICON_COUNT_Y, filter.groupScroll)
+                                                updateSelected()
+                                            }
+                                        } else {
+                                            if (filter.groupScroll < filter.maxGroupScroll) {
+                                                filter.groupScroll += Math.min(Editor.ICON_COUNT_Y, filter.maxGroupScroll - filter.groupScroll)
+                                                updateSelected()
+                                            }
+                                        }
+                                    }
+                                }
                             }.apply {
                                 this.setLocation(x, y)
                                 this.background = false
@@ -942,6 +974,16 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             updateSelected()
                         }
                     }
+
+                    override fun onRightClick(xPercent: Float, yPercent: Float) {
+                        super.onRightClick(xPercent, yPercent)
+                        val filter = editor.pickerSelection.filter
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex > 0) {
+                            currentDatamodelList.currentIndex -= Math.min(currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
+                            updateSelected()
+                        }
+                    }
                 }.apply {
                     this.location.set(screenX = padding2,
                                       screenWidth = patternAreaStage.percentageOfWidth(
@@ -984,6 +1026,16 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val currentDatamodelList = filter.currentDatamodelList
                         if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
                             currentDatamodelList.currentIndex++
+                            updateSelected()
+                        }
+                    }
+
+                    override fun onRightClick(xPercent: Float, yPercent: Float) {
+                        super.onRightClick(xPercent, yPercent)
+                        val filter = editor.pickerSelection.filter
+                        val currentDatamodelList = filter.currentDatamodelList
+                        if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
+                            currentDatamodelList.currentIndex += Math.min(currentDatamodelList.maxIndex - currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
                             updateSelected()
                         }
                     }
