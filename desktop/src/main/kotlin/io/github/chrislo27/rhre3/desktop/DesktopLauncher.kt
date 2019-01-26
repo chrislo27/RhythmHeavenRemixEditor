@@ -13,6 +13,9 @@ import java.io.File
 object DesktopLauncher {
 
     @JvmStatic fun main(args: Array<String>) {
+        // https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/273
+        System.setProperty("jna.nosys", "true")
+
         RHRE3.launchArguments = args.toList()
 
         val logger = Logger()
