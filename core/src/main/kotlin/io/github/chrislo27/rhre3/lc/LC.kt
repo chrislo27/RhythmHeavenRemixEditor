@@ -32,7 +32,6 @@ object LC {
 
     fun all(main: RHRE3Application) {
         lc(main)
-        rc(main)
     }
 
     fun lc(main: RHRE3Application) {
@@ -55,37 +54,6 @@ object LC {
             }
 
             fun persist() = persist("l", source, main)
-            Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
-
-            if (source.isNotEmpty()) {
-                val reason = source
-                Gdx.app.postRunnable {
-                    main.screen = LCScreen(main, reason)
-                }
-            }
-        }
-    }
-
-    fun rc(main: RHRE3Application) {
-        GlobalScope.launch {
-            var source = determineSource("r", main)
-
-            try {
-                val req = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/rc")
-                        .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
-                        .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
-                        .execute().get()
-
-                if (req.statusCode == 200) {
-                    source = req.responseBody
-                } else if (req.statusCode == 204) {
-                    source = ""
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            fun persist() = persist("r", source, main)
             Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
 
             if (source.isNotEmpty()) {
