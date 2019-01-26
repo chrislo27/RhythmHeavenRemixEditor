@@ -10,15 +10,33 @@ import java.util.prefs.Preferences
 import kotlin.concurrent.thread
 
 
-class LC(val main: RHRE3Application) {
+object LC {
 
-    init {
+    private val userRoot: Preferences = Preferences.userRoot().node("io/rhre")
+
+    private fun determineSource(key: String, main: RHRE3Application): String {
+        val source1 = main.preferences.getString(key, "") ?: ""
+        val source2 = userRoot.get(key, "") ?: ""
+
+        return if (source1 == source2) source1 else (if (source1.isEmpty() && source2.isNotEmpty()) source2 else if (source1.isNotEmpty() && source2.isEmpty()) source1 else "")
+    }
+
+    private fun persist(key: String, value: String, main: RHRE3Application) {
+        try {
+            main.preferences.putString(key, value).flush()
+            userRoot.put(key, value)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun all(main: RHRE3Application) {
+        lc(main)
+    }
+
+    fun lc(main: RHRE3Application) {
         GlobalScope.launch {
-            val source1 = main.preferences.getString("l", "") ?: ""
-            val prefs = Preferences.userRoot().node("io/rhre")
-            val source2 = prefs.get("l", "") ?: ""
-
-            var source = if (source1 == source2) source1 else (if (source1.isEmpty() && source2.isNotEmpty()) source2 else if (source1.isNotEmpty() && source2.isEmpty()) source1 else "")
+            var source = determineSource("l", main)
 
             try {
                 val req = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/lc")
@@ -35,15 +53,7 @@ class LC(val main: RHRE3Application) {
                 e.printStackTrace()
             }
 
-            fun persist() {
-                try {
-                    main.preferences.putString("l", source).flush()
-                    prefs.put("l", source)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-            persist()
+            fun persist() = persist("l", source, main)
             Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
 
             if (source.isNotEmpty()) {

@@ -295,7 +295,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
         }
 
-        LC(this)
+        LC.all(this)
     }
 
     override fun preRender() {
