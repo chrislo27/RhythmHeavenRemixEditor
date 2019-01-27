@@ -140,7 +140,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                                         val v = name.toFloat()
                                         widthRange.exactValues[v..v] = textValue
                                     } else {
-                                        val matchResult = WidthRangeValue.REGEX.matchEntire(name)
+                                        val matchResult = RangeValue.REGEX.matchEntire(name)
                                         if (matchResult != null) {
                                             val range: ClosedRange<Float> = matchResult.groupValues[1].toFloat()..matchResult.groupValues[2].toFloat()
                                             if (range.isEmpty()) {

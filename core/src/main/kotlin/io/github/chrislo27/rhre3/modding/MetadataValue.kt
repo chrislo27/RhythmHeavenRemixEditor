@@ -12,18 +12,20 @@ class StaticValue(private val value: String) : MetadataValue(false) {
     override fun getValue(entity: Entity?): String = value
 }
 
-class WidthRangeValue : MetadataValue(true) {
+abstract class RangeValue : MetadataValue(true) {
     companion object {
         val EPSILON: Float = 0.0001f
         val REGEX: Regex = "(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?(?:\\.){2}(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?".toRegex()
     }
+
+    protected abstract fun getEntityField(entity: Entity): Float
 
     var elseValue: String = ""
     val exactValues: LinkedHashMap<ClosedRange<Float>, String> = linkedMapOf()
 
     override fun getValue(entity: Entity?): String {
         if (entity == null) return elseValue
-        val width = entity.bounds.width
+        val width = getEntityField(entity)
 
         for ((range, value) in exactValues) {
             val start = range.start
@@ -38,4 +40,8 @@ class WidthRangeValue : MetadataValue(true) {
 
         return elseValue
     }
+}
+
+class WidthRangeValue : RangeValue() {
+    override fun getEntityField(entity: Entity): Float = entity.bounds.width
 }
