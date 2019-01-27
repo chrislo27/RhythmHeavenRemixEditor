@@ -15,7 +15,7 @@ class StaticValue(private val value: String) : MetadataValue(false) {
 class WidthRangeValue : MetadataValue(true) {
     companion object {
         val EPSILON: Float = 0.0001f
-        val REGEX: Regex = "(\\d+(?:\\.\\d+)?)\\.\\.(\\d+(?:\\.\\d+)?)".toRegex()
+        val REGEX: Regex = "(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?(?:\\.){2}(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?".toRegex()
     }
 
     var elseValue: String = ""
