@@ -15,7 +15,7 @@ class StaticValue(private val value: String) : MetadataValue(false) {
 abstract class RangeValue : MetadataValue(true) {
     companion object {
         val EPSILON: Float = 0.0001f
-        val REGEX: Regex = "(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?(?:\\.){2}(?:\\s+)?(\\d+(?:\\.\\d+)?)(?:\\s+)?".toRegex()
+        val REGEX: Regex = """\s*(\d+(?:\.\d+)?)\s*\.\.\s*(\d+(?:\.\d+)?)\s*""".toRegex()
     }
 
     protected abstract fun getEntityField(entity: Entity): Float
