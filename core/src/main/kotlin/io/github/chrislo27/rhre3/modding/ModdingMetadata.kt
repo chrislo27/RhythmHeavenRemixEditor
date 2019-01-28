@@ -80,7 +80,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
     private fun getID(any: Any): String = when (any) {
         is Datamodel -> any.id
         is Game -> any.id
-        else -> "???"
+        else -> error("getID failed for $any (${any::class.java.canonicalName})")
     }
 
     private fun load(data: Data, fileHandle: FileHandle) {
