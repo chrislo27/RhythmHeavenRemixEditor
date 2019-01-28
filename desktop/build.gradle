@@ -1,5 +1,7 @@
+
 apply plugin: "java"
 apply plugin: 'kotlin'
+apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/main/kotlin/" ]
@@ -48,3 +50,21 @@ task afterEclipseImport(description: "Post processing after project generation",
 repositories {
     mavenCentral()
 }
+
+shadowJar {
+    baseName = "RHRE3"
+    classifier = null
+    version = null
+}
+jar {
+    manifest {
+        attributes "Main-Class": "io.github.chrislo27.rhre3.desktop.DesktopLauncher"
+    }
+
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
