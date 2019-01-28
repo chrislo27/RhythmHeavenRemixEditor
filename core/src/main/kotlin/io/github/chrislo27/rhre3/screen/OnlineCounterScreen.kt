@@ -85,7 +85,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                         this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.15f, screenHeight = 0.1f)
                                         this.isLocalizationKey = false
                                         this.textWrapping = false
-                                        this.text = "${if (!weeklyGraph) ((currentHour - hoursAgo + 24) % 24) else hoursAgo}${if (weeklyGraph) "d" else "h"}"
+                                        this.text = "${if (!weeklyGraph) Math.floorMod(currentHour - hoursAgo, 24) else hoursAgo}${if (weeklyGraph) "d" else "h"}"
                                         this.fontScaleMultiplier = 0.75f
                                     }
                                     barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
