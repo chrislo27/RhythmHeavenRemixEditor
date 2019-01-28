@@ -1415,18 +1415,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.G) && shift && !alt) {
-                val games = getGamesUsedInRemix()
-                if (games.isNotEmpty()) {
-                    Gdx.app.clipboard.contents = games
-                    Toolboks.LOGGER.info("Copied list of games to clipboard:\n$games\n")
-                } else {
-                    Toolboks.LOGGER.info("No games in remix, cannot copy list to keyboard")
-                }
-            }
-        }
-
         if (remix.playState != STOPPED)
             return
 
@@ -2574,8 +2562,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("$debugKey+SHIFT+G - Copy game list to clipboard\n")
-
             append("e: ")
             append(remix.entities.count {
                 it.inRenderRange(rangeStartF, rangeEndF)
