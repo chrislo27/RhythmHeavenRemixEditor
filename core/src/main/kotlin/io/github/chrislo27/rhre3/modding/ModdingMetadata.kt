@@ -136,6 +136,8 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                                     val textValue = subnode.asText()
                                     if (name == "else") {
                                         widthRange.elseValue = textValue
+                                    } else if (name == "function") {
+                                        // nothing
                                     } else if (name.toFloatOrNull() != null) {
                                         val v = name.toFloat()
                                         widthRange.exactValues[v..v] = textValue
@@ -148,7 +150,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                                             }
                                             widthRange.exactValues[range] = textValue
                                         } else {
-                                            badMetadata("Unrecognized field format for width range function $dataName[$arrayIndex].\"$fieldName\" \"$name\"")
+                                            badMetadata("Unrecognized field format for width range function $dataName[$arrayIndex].\"$fieldName\": \"$name\"")
                                         }
                                     }
                                 }
