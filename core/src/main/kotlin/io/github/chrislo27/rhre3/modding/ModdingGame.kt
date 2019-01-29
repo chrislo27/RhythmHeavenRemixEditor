@@ -8,7 +8,7 @@ enum class ModdingGame(val id: String, val gameName: String, val console: String
                        val tickflowUnitName: String = "",
                        val underdeveloped: Boolean = true) {
     TENGOKU("gba", "Rhythm Tengoku (リズム天国)", "GBA", 0x18),
-    DS_NA("rhds", "Rhythm Heaven", "NDS", 0x30),
+    DS_NA("rhds", "Rhythm Heaven", "NDS", 0x0C),
     FEVER("rhFever", "Rhythm Heaven Fever", "Wii", 0x30),
     MEGAMIX_NA("rhMegamix", "Rhythm Heaven Megamix", "3DS", 0x30, underdeveloped = false); // τ
 
