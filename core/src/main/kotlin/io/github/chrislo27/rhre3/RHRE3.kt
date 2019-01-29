@@ -18,7 +18,7 @@ object RHRE3 {
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
     val MINIMUM_SIZE: Pair<Int, Int> = 640 to 360
-    val RHRE3_FOLDER: FileHandle by lazy { Gdx.files.external(".rhre3/").apply(FileHandle::mkdirs) }
+    val RHRE3_FOLDER: FileHandle by lazy { (if (portableMode) Gdx.files.local(".rhre3/") else Gdx.files.external(".rhre3/")).apply(FileHandle::mkdirs) }
 
     val SUPPORTED_DECODING_SOUND_TYPES = listOf("ogg", "mp3", "wav")
     val tmpMusic: FileHandle by lazy {
@@ -48,6 +48,7 @@ object RHRE3 {
     private val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)
     private val RHRE2_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.DECEMBER, 6)
 
+    var portableMode: Boolean = false
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false

@@ -19,6 +19,7 @@ Example: `java -jar RHRE3.jar --verify-registry`
 | `--output-custom-sfx` | `v3.12.0` | Writes out games that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
 | `--show-tapalong-markers` | `v3.17.0` | Shows tapalong tap markers, a hidden feature. |
 | `--midi-recording` | `v3.17.0` | Enables [midi recording](Midi-capabilities.md), a hidden feature. Using a midi device while the remix is playing will write notes to the remix. |
+| `--portable-mode` | `v3.17.0` | Puts the `.rhre3/` folder and preferences locally next to the RHRE.jar file. Useful for flash drives. |
 
 ## Historical
 

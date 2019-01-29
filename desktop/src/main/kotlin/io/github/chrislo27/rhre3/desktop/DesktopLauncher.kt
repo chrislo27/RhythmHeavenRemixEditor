@@ -19,7 +19,8 @@ object DesktopLauncher {
         RHRE3.launchArguments = args.toList()
 
         val logger = Logger()
-        val app = RHRE3Application(logger, File(System.getProperty("user.home") + "/.rhre3/logs"))
+        val portable = "--portable-mode" in args
+        val app = RHRE3Application(logger, File(if (portable) ".rhre3/logs/" else System.getProperty("user.home") + "/.rhre3/logs/"))
         ToolboksDesktopLauncher(app)
                 .editConfig {
                     this.width = app.emulatedSize.first
@@ -34,7 +35,12 @@ object DesktopLauncher {
                     this.allowSoftwareMode = true
                     this.audioDeviceSimultaneousSources = 250
                     this.useHDPI = true
+                    if (portable) {
+                        this.preferencesFileType = Files.FileType.Local
+                        this.preferencesDirectory = ".rhre3/.prefs/"
+                    }
 
+                    RHRE3.portableMode = portable
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args
                     RHRE3.forceGitCheck = "--force-git-check" in args
