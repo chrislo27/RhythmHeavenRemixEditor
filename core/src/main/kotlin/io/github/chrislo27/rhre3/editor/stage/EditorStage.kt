@@ -1361,8 +1361,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += TrackChangeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
             }
+            // FIXME proper game mode button
+            buttonBarStage.elements += Button(palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
+                this.addLabel(TextLabel(palette, this@apply, this@apply.stage).apply {
+                    this.isLocalizationKey = false
+                    this.text = "遊ぶ"
+                    this.textWrapping = false
+                })
+            }
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size * 5 - padding * 2, screenX = size * 12 + padding * 11)
+                this.location.set(screenWidth = size * 5 - padding * 3, screenX = size * 12 + padding * 12)
             }
 
             // right aligned
