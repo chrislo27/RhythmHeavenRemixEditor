@@ -35,8 +35,9 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
     private val dataMap: MutableMap<ModdingGame, Data> = mutableMapOf()
     val currentData: Data get() = get(ModdingUtils.currentGame)
 
-    init {
+    fun loadAll(): Boolean {
         var totalLoaded = 0
+        var success = true
         ModdingGame.VALUES.forEach { moddingGame ->
             val fileMap: MutableMap<String, FileHandle> = mutableMapOf()
             // Search folders
@@ -66,13 +67,16 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                     totalLoaded++
                 } catch (be: BadModdingMetadataException) {
                     Toolboks.LOGGER.error(be.message ?: "Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
+                    success = false
                 } catch (e: Exception) {
                     Toolboks.LOGGER.error("Failed to load modding metadata ${moddingGame.id}/${fh.name()}")
                     e.printStackTrace()
+                    success = false
                 }
             }
         }
         Toolboks.LOGGER.info("Loaded modding metadata; $totalLoaded total files loaded")
+        return success
     }
 
     operator fun get(game: ModdingGame): Data = dataMap.getOrPut(game) { Data(game) }

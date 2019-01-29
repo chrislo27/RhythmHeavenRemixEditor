@@ -241,8 +241,7 @@ object GameRegistry : Disposable {
             specialGame = gameMap["special"] ?: error("Missing special game")
 
             // Load modding metadata
-            CUSTOM_MODDING_METADATA_FOLDER.mkdirs()
-            moddingMetadata = ModdingMetadata(this, MODDING_METADATA_FOLDER, CUSTOM_MODDING_METADATA_FOLDER)
+            loadModdingMetadata(false)
 
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
@@ -500,6 +499,16 @@ object GameRegistry : Disposable {
             while (!ready) {
                 loadOne()
             }
+        }
+
+        fun loadModdingMetadata(ignoreIfFailure: Boolean): Boolean {
+            CUSTOM_MODDING_METADATA_FOLDER.mkdirs()
+            val newData = ModdingMetadata(this, MODDING_METADATA_FOLDER, CUSTOM_MODDING_METADATA_FOLDER)
+            val success = newData.loadAll()
+            if (!ignoreIfFailure || success) {
+                moddingMetadata = newData
+            }
+            return success
         }
 
         override fun dispose() {

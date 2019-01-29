@@ -14,14 +14,18 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
+import kotlin.system.measureNanoTime
 
 
 class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, AdvancedOptionsScreen>(main) {
@@ -34,6 +38,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
     private val moddingGameLabel: TextLabel<AdvancedOptionsScreen>
     private val moddingGameWarningLabel: TextLabel<AdvancedOptionsScreen>
     private var seconds = 0f
+
+    private val reloadMetadataButton: Button<AdvancedOptionsScreen>
 
     init {
         val palette = main.uiPalette
@@ -175,6 +181,67 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                               screenHeight = buttonHeight * 2 + padding)
         }
 
+
+        // Reload modding metadata
+        reloadMetadataButton = object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
+            private val textLabel: TextLabel<AdvancedOptionsScreen>
+                get() = labels.first() as TextLabel
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                var success: Boolean = false
+                val nano = measureNanoTime {
+                    success = try {
+                        GameRegistry.data.loadModdingMetadata(true)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        false
+                    }
+                    if (success) {
+                        resetReloadMetadataButton()
+                        textLabel.text = "[GREEN]Reloaded metadata successfully![]"
+                    } else {
+                        resetReloadMetadataButton()
+                        textLabel.text = "[RED]Failed to reload modding metadata[]\n[LIGHT_GRAY]Check console for details[]"
+                        textLabel.fontScaleMultiplier = 0.6f
+                    }
+                }
+                Toolboks.LOGGER.info("Reloaded modding metadata ${if (!success) "un" else ""}successfully in ${nano / 1_000_000.0} ms")
+            }
+
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "Reload modding metadata"
+                this.textWrapping = false
+                this.fontScaleMultiplier = 0.8f
+            })
+
+            this.location.set(screenX = padding,
+                              screenY = padding * 8 + buttonHeight * 7,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        centre.elements += reloadMetadataButton
+        // Open containing folder for modding metadata
+        centre.elements += object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+
+                Gdx.net.openURI("file:///${GameRegistry.CUSTOM_MODDING_METADATA_FOLDER.file().absolutePath}")
+            }
+        }.apply {
+            val width = buttonWidth * 0.09f
+            this.location.set(screenX = padding * 0.5f - width,
+                              screenY = padding * 8 + buttonHeight * 7,
+                              screenWidth = width,
+                              screenHeight = buttonHeight)
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+            })
+        }
+
         updateModdingLabel()
     }
 
@@ -224,5 +291,13 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
     override fun show() {
         super.show()
         seconds = 0f
+        resetReloadMetadataButton()
+    }
+
+    private fun resetReloadMetadataButton() {
+        (reloadMetadataButton.labels.first() as TextLabel).let {
+            it.text = "Reload modding metadata"
+            it.fontScaleMultiplier = 0.8f
+        }
     }
 }
