@@ -129,7 +129,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
     override fun create() {
         super.create()
-        Toolboks.LOGGER.info("RHRE3 $versionString is starting...")
+        Toolboks.LOGGER.info("${RHRE3.TITLE} $versionString is starting...")
         // 1.8.0_144
         // 9.X.Y(extra)
         val javaVersion = System.getProperty("java.version").trim()
