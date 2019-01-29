@@ -25,6 +25,7 @@ import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
+import io.github.chrislo27.rhre3.editor.rendering.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.editor.stage.EditorStage.DirtyType
 import io.github.chrislo27.rhre3.editor.view.ViewType
@@ -51,7 +52,6 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
-import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
@@ -69,7 +69,9 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.rhre3.util.RectanglePool
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -82,7 +84,6 @@ import java.nio.charset.Charset
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
-import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
@@ -111,11 +112,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         const val SELECTION_BORDER: Float = 2f
 
-        private const val MSG_SEPARATOR = " - "
-        private const val NEGATIVE_SYMBOL = "-"
-        private const val ZERO_BEAT_SYMBOL = "♩"
-        private const val SELECTION_RECT_ADD = "+"
-        private const val SELECTION_RECT_INVERT = "±"
+        internal const val MSG_SEPARATOR = " - "
+        internal const val NEGATIVE_SYMBOL = "-"
+        internal const val ZERO_BEAT_SYMBOL = "♩"
+        internal const val SELECTION_RECT_ADD = "+"
+        internal const val SELECTION_RECT_INVERT = "±"
         private const val SONG_SUBTITLE_TRANSITION = 0.5f
         const val VOLUME_CHAR = "\uE13C" // Only works with built-in font
 
@@ -124,9 +125,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val SELECTED_TINT: Color = Color(0.65f, 1f, 1f, 1f)
         val CUE_PATTERN_COLOR: Color = Color(0.65f, 0.65f, 0.65f, 1f)
 
-        private val THREE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
-        private val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
-        private val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
+        internal val THREE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
+        internal val TRACKER_TIME_FORMATTER = DecimalFormat("00.000", DecimalFormatSymbols())
+        internal val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
         val THREE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
@@ -270,8 +271,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private set
     @Volatile
     private var autosaveState: AutosaveState = AutosaveState(AutosaveResult.NONE, 0f)
-    private var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
-    private var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
+    var cachedPlaybackStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
+    var cachedMusicStart: Pair<Float, String> = Float.POSITIVE_INFINITY to ""
     private val songSubtitles = mutableMapOf("songArtist" to TimedString("", SONG_SUBTITLE_TRANSITION, false),
                                              "songTitle" to TimedString("", SONG_SUBTITLE_TRANSITION, false))
     var songArtist: TimedString by songSubtitles
@@ -531,45 +532,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         font.scaleFont(camera)
 
         // horizontal track lines
-        run trackLines@{
-            batch.color = theme.trackLine
-            val startX = beatRangeStartFloat
-            val width = beatRangeEndFloat - startX
-            for (i in 0..remix.trackCount) {
-                batch.fillRect(startX, trackYOffset + i.toFloat(), width,
-                               toScaleY(TRACK_LINE_THICKNESS))
-            }
-            batch.setColor(1f, 1f, 1f, 1f)
-        }
+        this.renderHorizontalTrackLines(batch, beatRangeStartFloat, beatRangeEndFloat - beatRangeStartFloat, trackYOffset)
 
         // game boundaries view (background)
         if (isGameBoundariesInViews) {
-            val squareHeight = remix.trackCount.toFloat()
-            val squareWidth = squareHeight / (ENTITY_WIDTH / ENTITY_HEIGHT)
-
-            remix.gameSections.values.forEach { section ->
-                if (section.startBeat > beatRange.last || section.endBeat < beatRange.first)
-                    return@forEach
-                val tex = section.game.icon
-
-                val sectionWidth = section.endBeat - section.startBeat
-                val sections = (sectionWidth / squareWidth)
-                val wholes = sections.toInt()
-                val remainder = sectionWidth % squareWidth
-
-                // track background icons
-                batch.setColor(1f, 1f, 1f, 0.25f)
-                for (i in 0 until wholes) {
-                    batch.draw(tex, section.startBeat + squareWidth * i, 0f,
-                               squareWidth, squareHeight)
-                }
-                batch.draw(tex, section.startBeat + squareWidth * wholes, 0f,
-                           remainder, squareHeight,
-                           0, 0, (tex.width * (sections - wholes)).toInt(), tex.height,
-                           false, false)
-            }
-
-            batch.setColor(1f, 1f, 1f, 1f)
+            this.renderGameBoundaryBg(batch, beatRange)
         }
 
         // entities
@@ -605,37 +572,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         // beat lines
-        run beatLines@{
-            for (i in beatRange) {
-                batch.color = theme.trackLine
-                if (remix.timeSignatures.getMeasurePart(i.toFloat()) > 0) {
-                    batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.25f)
-                }
-
-                val xOffset = toScaleX(TRACK_LINE_THICKNESS) / -2
-                batch.fillRect(i.toFloat() + xOffset, trackYOffset, toScaleX(TRACK_LINE_THICKNESS),
-                               remix.trackCount + toScaleY(TRACK_LINE_THICKNESS))
-
-                val flashAnimation = subbeatSection.flashAnimation > 0
-                val actuallyInRange = (subbeatSection.enabled && i.toFloat() in subbeatSection.start..subbeatSection.end)
-                if (flashAnimation || actuallyInRange) {
-                    batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
-                                   theme.trackLine.a * 0.3f *
-                                           if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
-                    for (j in 1 until Math.round(1f / snap)) {
-                        batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(TRACK_LINE_THICKNESS),
-                                       remix.trackCount + toScaleY(TRACK_LINE_THICKNESS))
-                    }
-                }
-            }
-            batch.setColor(1f, 1f, 1f, 1f)
-
-            if (subbeatSection.flashAnimation > 0 && updateDelta) {
-                subbeatSection.flashAnimation -= Gdx.graphics.deltaTime / subbeatSection.flashAnimationSpeed
-                if (subbeatSection.flashAnimation < 0)
-                    subbeatSection.flashAnimation = 0f
-            }
-        }
+        this.renderBeatLines(batch, beatRange, trackYOffset, updateDelta)
 
         // Texture entities get rendered here
         remix.entities.forEach {
@@ -649,564 +586,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // waveform
         if (SoundSystem.system == BeadsSoundSystem && remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
-            batch.setColor(theme.waveform.r, theme.waveform.g, theme.waveform.b, theme.waveform.a * 0.65f)
-
-            val samplesPerSecond = BeadsSoundSystem.audioContext.sampleRate.toInt()
-            val samplesPerFrame = samplesPerSecond / 60
-            val fineness: Int = (samplesPerFrame / 1).coerceAtMost(samplesPerFrame)
-
-            val isPresentationMode = stage.presentationModeStage.visible
-            val viewportWidth = if (isPresentationMode) camera.viewportWidth * 0.5f else camera.viewportWidth
-            val height = if (!isPresentationMode) remix.trackCount / 2f else 1f
-            val centre = remix.trackCount / 2f
-
-            BeadsSoundSystem.audioContext.getValues(BeadsSoundSystem.sampleArray)
-
-            val data = BeadsSoundSystem.sampleArray
-            for (x in 0 until fineness) {
-                val dataPoint = data[(x.toFloat() / fineness * data.size).toInt()]
-                val h = height * (if (isPresentationMode) Math.abs(dataPoint) else dataPoint.coerceIn(-1f, 1f))
-                val width = viewportWidth / fineness.toFloat() * camera.zoom
-                if (!isPresentationMode) {
-                    batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width,
-                                   centre - h / 2, width, h)
-                } else {
-                    val cameraAdjX = (oldCameraX - adjustedCameraX)
-                    val cameraAdjY = (oldCameraY - adjustedCameraY)
-                    batch.fillRect((camera.position.x - cameraAdjX - viewportWidth / 2 * camera.zoom) + x * width,
-                                   -3f - cameraAdjY, width, h / 2)
-                }
-            }
-
-            batch.setColor(1f, 1f, 1f, 1f)
+            this.renderWaveform(batch, oldCameraX, oldCameraY, adjustedCameraX, adjustedCameraY)
         }
 
         // game boundaries view (dividers)
         if (isGameBoundariesInViews) {
-            remix.gameSections.values.forEach { section ->
-                if (section.startBeat > beatRange.last || section.endBeat < beatRange.first)
-                    return@forEach
-                val icon = section.game.icon
-                val sectionWidth = section.endBeat - section.startBeat
-
-                // dividing lines
-                val triangle = AssetRegistry.get<Texture>("tracker_right_tri")
-                run left@{
-                    batch.color = theme.trackLine
-                    font.color = theme.trackLine
-                    val x = section.startBeat
-                    val height = Editor.MIN_TRACK_COUNT * 2f + 0.5f + (remix.trackCount - Editor.MIN_TRACK_COUNT)
-                    val maxTextWidth = 5f
-                    batch.fillRect(x, 0f, toScaleX(TRACK_LINE_THICKNESS) * 2, height)
-                    batch.draw(triangle, x, height - 1f, 0.25f, 1f)
-
-                    for (i in 0 until (sectionWidth / 6f).toInt().coerceAtLeast(1)) {
-                        batch.setColor(1f, 1f, 1f, 1f)
-
-                        val left = x + (6f * i).coerceAtLeast(0.125f)
-
-                        batch.draw(icon, left, height - 2f, 0.25f, 1f)
-                        font.drawCompressed(batch,
-                                            if (stage.presentationModeStage.visible) section.game.group else section.game.name,
-                                            left, height - 2.25f,
-                                            (sectionWidth - 0.25f).coerceIn(0f, maxTextWidth), Align.left)
-                    }
-                }
-                batch.setColor(1f, 1f, 1f, 1f)
-                font.setColor(1f, 1f, 1f, 1f)
-            }
-
-            batch.setColor(1f, 1f, 1f, 1f)
+            this.renderGameBoundaryDividers(batch, beatRange, font)
         }
 
-        // trackers (playback start, music)
-        run trackers@{
-            val borderedFont = main.defaultBorderedFont
-            val oldFontColor = borderedFont.color
-
-            fun getTrackerTime(time: Float, noBeat: Boolean = false): String {
-                val signedSec = if (noBeat) time else remix.tempos.beatsToSeconds(time)
-                val sec = Math.abs(signedSec)
-                val seconds = (if (signedSec < 0) "-" else "") +
-                        TRACKER_MINUTES_FORMATTER.format(
-                                (sec / 60).toLong()) + ":" + TRACKER_TIME_FORMATTER.format(
-                        sec % 60.0)
-                if (noBeat) {
-                    return seconds
-                }
-                return Localization["tracker.any.time",
-                        THREE_DECIMAL_PLACES_FORMATTER.format(time.toDouble()), seconds]
-            }
-
-            fun renderAboveTracker(text: String?, controlText: String?, units: Int, beat: Float, color: Color,
-                                   trackerTime: String = getTrackerTime(beat),
-                                   triangleHeight: Float = 0.4f, bpmText: String? = null, showMusicUnsnap: Boolean = false) {
-                val triangleWidth = toScaleX(triangleHeight * ENTITY_HEIGHT)
-                val x = beat - toScaleX(TRACK_LINE_THICKNESS * 1.5f) / 2
-                val y = trackYOffset
-                val height = (remix.trackCount + 1.25f + 1.2f * units) + toScaleY(TRACK_LINE_THICKNESS)
-                batch.setColor(color.toFloatBits())
-                batch.fillRect(x, y, toScaleX(TRACK_LINE_THICKNESS * 1.5f),
-                               height - triangleHeight / 2)
-                batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),
-                           x, y + height - triangleHeight, triangleWidth, triangleHeight)
-
-                borderedFont.scaleFont(camera)
-                borderedFont.scaleMul(0.75f)
-                borderedFont.color = batch.color
-                if (text != null) {
-                    borderedFont.drawCompressed(batch, text, x - 1.05f, y + height, 1f, Align.right)
-                }
-                borderedFont.drawCompressed(batch, trackerTime, x + triangleWidth + 0.025f, y + height, 1f, Align.left)
-                if (bpmText != null) {
-                    borderedFont.drawCompressed(batch, bpmText,
-                                                x + triangleWidth + 0.025f,
-                                                y + height + borderedFont.capHeight * 1.25f,
-                                                1f, Align.left)
-                }
-
-                val line = borderedFont.lineHeight
-
-                if (controlText != null) {
-                    borderedFont.scaleMul(0.75f)
-                    borderedFont.drawCompressed(batch, controlText, x - 1.05f, y + height - line, 1f,
-                                                Align.right)
-                }
-
-                if (showMusicUnsnap) {
-//                    borderedFont.scaleMul(0.75f)
-                    borderedFont.drawCompressed(batch, Localization["tracker.music.unsnap"], x + 0.05f, y + height - line, 1f,
-                                                Align.left)
-                }
-
-                borderedFont.scaleFont(camera)
-                batch.setColor(1f, 1f, 1f, 1f)
-            }
-
-            if (cachedPlaybackStart.first != remix.tempos.beatsToSeconds(remix.playbackStart)) {
-                cachedPlaybackStart = remix.tempos.beatsToSeconds(remix.playbackStart) to getTrackerTime(
-                        remix.playbackStart)
-            }
-            if (cachedMusicStart.first != remix.musicStartSec) {
-                cachedMusicStart = remix.musicStartSec to getTrackerTime(remix.musicStartSec, noBeat = true)
-            }
-
-            renderAboveTracker(Localization["tracker.music"], Localization["tracker.music.controls"],
-                               1, remix.musicStartSec, theme.trackers.musicStart,
-                               cachedMusicStart.second, showMusicUnsnap = clickOccupation is ClickOccupation.Music)
-            renderAboveTracker(Localization["tracker.playback"], Localization["tracker.playback.controls"],
-                               0, remix.playbackStart, theme.trackers.playback, cachedPlaybackStart.second)
-
-            if (stage.tapalongMarkersEnabled) {
-                val tapalong = stage.tapalongStage
-                tapalong.tapRecords.forEach {
-                    if (!it.remixSec.isNaN()) {
-                        val beat = remix.tempos.secondsToBeats(it.remixSec + remix.musicStartSec)
-                        if (beat.roundToInt() in beatRange) {
-                            renderAboveTracker(null, null, 1, beat, theme.trackLine)
-                        }
-                    }
-                }
-            }
-
-            if (remix.playState != STOPPED) {
-                renderAboveTracker(null, null, 0, remix.beat,
-                                   theme.trackers.playback, triangleHeight = 0f,
-                                   bpmText = "♩=${ONE_DECIMAL_PLACE_FORMATTER.format(
-                                           remix.tempos.tempoAt(remix.beat))}")
-            }
-
-            borderedFont.color = oldFontColor
-            borderedFont.unscaleFont()
-        }
+        this.renderTopTrackers(batch, beatRange, trackYOffset)
 
         // beat numbers
-        run beatNumbers@{
-            for (i in beatRange) {
-                val width = ENTITY_WIDTH * 0.4f
-                val x = i - width / 2f
-                val y = remix.trackCount + toScaleY(TRACK_LINE_THICKNESS + TRACK_LINE_THICKNESS) + font.capHeight
-                val text = if (i == 0) ZERO_BEAT_SYMBOL else "${Math.abs(i)}"
-                if (stage.jumpToField.hasFocus && i == stage.jumpToField.text.toIntOrNull() ?: Int.MAX_VALUE) {
-                    val glow = MathHelper.getTriangleWave(1f)
-                    val sel = theme.selection.selectionBorder
-                    font.setColor(MathUtils.lerp(sel.r, 1f, glow), MathUtils.lerp(sel.g, 1f, glow),
-                                  MathUtils.lerp(sel.b, 1f, glow), sel.a)
-                } else {
-                    font.color = theme.trackLine
-                }
-                font.drawCompressed(batch, text,
-                                    x, y, width, Align.center)
-                if (i < 0) {
-                    val textWidth = font.getTextWidth(text, width, false)
-                    font.drawCompressed(batch, NEGATIVE_SYMBOL, x - textWidth / 2f, y, ENTITY_WIDTH * 0.2f, Align.right)
-                }
-
-                val measureNum = remix.timeSignatures.getMeasure(i.toFloat())
-                if (measureNum >= 1 && remix.timeSignatures.getMeasurePart(i.toFloat()) == 0 && i < remix.duration) {
-                    font.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.5f)
-                    font.drawCompressed(batch, "$measureNum",
-                                        x, y + font.lineHeight, width, Align.center)
-                }
-            }
-            font.setColor(1f, 1f, 1f, 1f)
-        }
+        this.renderBeatNumbers(batch, beatRange, font)
 
         // Play-Yan
         if (remix.metronome) {
-            val beat = if (remix.playState != STOPPED) remix.beat else remix.playbackStart
-            fun drawWalking() {
-                val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
-                batch.draw(AssetRegistry.get<Texture>("playyan_walking"), beat,
-                           remix.trackCount * 1f,
-                           toScaleX(26f), toScaleY(35f),
-                           step * 26, 0, 26, 35, false, false)
-            }
-            if (remix.playState != STOPPED) {
-                val beatPercent = beat % 1f
-                val playbackStartPercent = remix.playbackStart % 1f
-                val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
-                val currentSwing = remix.tempos.swingAt(beat)
-                val jumpHeight: Float = MathUtils.sin(MathUtils.PI * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - remix.playbackStart % 1f) else beatPercent)).absoluteValue
-
-                batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
-                           remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
-                           0, 0, 26, 35, false, false)
-            } else {
-                drawWalking()
-            }
+            this.renderPlayYan(batch)
         }
 
         // time signatures
-        run timeSignatures@{
-            val timeSignatures = remix.timeSignatures
-            val bigFont = main.timeSignatureFont
-            val heightOfTrack = remix.trackCount.toFloat() - toScaleY(TRACK_LINE_THICKNESS) * 2f
-            val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
-            bigFont.scaleFont(camera)
-            bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
-
-            fun renderTimeSignature(beat: Int, lowerText: String, upperText: String) {
-                val x = beat
-                val startY = 0f + toScaleY(TRACK_LINE_THICKNESS)
-                val maxWidth = 1f
-
-                val lowerWidth = bigFont.getTextWidth(lowerText, 1f, false).coerceAtMost(maxWidth)
-                val upperWidth = bigFont.getTextWidth(upperText, 1f, false).coerceAtMost(maxWidth)
-                val biggerWidth = Math.max(lowerWidth, upperWidth)
-
-                bigFont.drawCompressed(batch, lowerText,
-                                       x + biggerWidth * 0.5f - lowerWidth * 0.5f,
-                                       startY + bigFont.capHeight,
-                                       maxWidth, Align.left)
-                bigFont.drawCompressed(batch, upperText,
-                                       x + biggerWidth * 0.5f - upperWidth * 0.5f,
-                                       startY + heightOfTrack,
-                                       maxWidth, Align.left)
-            }
-
-            timeSignatures.map.values.forEach { timeSig ->
-                if (currentTool == Tool.TIME_SIGNATURE && timeSig.beat == inputBeat) {
-                    bigFont.color = theme.selection.selectionBorder
-                } else {
-                    bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
-                }
-
-                renderTimeSignature(timeSig.beat, timeSig.lowerText, timeSig.upperText)
-            }
-
-            if (currentTool == Tool.TIME_SIGNATURE && remix.timeSignatures.map[inputBeat] == null && remix.playState == STOPPED) {
-                bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * MathUtils.lerp(0.2f, 0.35f, MathHelper.getTriangleWave(2f)))
-                val last = remix.timeSignatures.getTimeSignature(inputBeat.toFloat())
-                renderTimeSignature(inputBeat, last?.lowerText ?: "4", last?.upperText ?: "4")
-            }
-
-            bigFont.setColor(1f, 1f, 1f, 1f)
-            bigFont.unscaleFont()
-        }
+        this.renderTimeSignatures(batch)
 
         // bottom trackers
-        run trackers@{
-            val borderedFont = main.defaultBorderedFont
-            borderedFont.scaleFont(camera)
-
-            val triHeight = 0.5f
-            val triWidth = toScaleX(triHeight * ENTITY_HEIGHT)
-            val triangle = AssetRegistry.get<Texture>("tracker_tri")
-            val rightTriangle = AssetRegistry.get<Texture>("tracker_right_tri_bordered")
-            val tool = currentTool
-            val clickOccupation = clickOccupation
-            val toolIsTrackerBased = tool.isTrackerRelated
-            val clickIsTrackerResize = clickOccupation is TrackerResize
-            val currentTracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass?.java ?: (if (tool == Tool.SWING) TempoChange::class.java else null), true)
-
-            fun renderTracker(layer: Int, color: Color, text: String, beat: Float, width: Float, slope: Int) {
-                val heightPerLayer = 0.75f
-                val y = 0f - (layer + 1) * heightPerLayer
-                val height = 0f - y
-
-                // background
-                batch.setColor(color.r, color.g, color.b, color.a * 0.35f)
-                val batchColor = batch.packedColor
-                val fadedColor = Color.toFloatBits(color.r, color.g, color.b, color.a * 0.025f)
-                if (slope == 0 || width == 0f) {
-                    batch.fillRect(beat, y, width, height)
-                } else {
-                    if (slope == 1) {
-                        batch.drawQuad(beat, y + height, batchColor,
-                                       beat + width, y + height, fadedColor,
-                                       beat + width, y, fadedColor,
-                                       beat, y, batchColor)
-                    } else if (slope == -1) {
-                        batch.drawQuad(beat, y + height, fadedColor,
-                                       beat + width, y + height, batchColor,
-                                       beat + width, y, batchColor,
-                                       beat, y, fadedColor)
-                    }
-                }
-
-                batch.drawRect(beat, y, width, height, toScaleX(2f), toScaleY(2f))
-
-                // lines
-                batch.color = color
-                val lineWidth = toScaleX(TRACK_LINE_THICKNESS)
-                batch.fillRect(beat, y, lineWidth, height)
-                batch.fillRect(beat + width, y, -lineWidth, height)
-
-                // triangle
-                if (width == 0f) {
-                    batch.draw(triangle, beat - triWidth * 0.5f, y, triWidth, triHeight)
-                } else {
-                    batch.draw(rightTriangle, beat + width, y, -triWidth * 0.75f, triHeight)
-                    batch.draw(rightTriangle, beat, y, triWidth * 0.75f, triHeight)
-                }
-
-                // text
-                borderedFont.color = color
-                borderedFont.drawCompressed(batch, text, beat + triWidth * 0.5f,
-                                            y + heightPerLayer * 0.5f + borderedFont.capHeight * 0.5f,
-                                            2f, Align.left)
-
-                batch.setColor(1f, 1f, 1f, 1f)
-            }
-
-            fun getColorForTracker(tracker: Tracker<*>): Color {
-                return if (currentTracker === tracker && remix.playState == STOPPED && !clickIsTrackerResize && (toolIsTrackerBased || (tool == Tool.SWING && currentTracker is TempoChange))) Color.WHITE else tracker.getColour(theme)
-            }
-
-            fun Tracker<*>.render() {
-                renderTracker(container.renderLayer, getColorForTracker(this), text, beat, width, getSlope())
-            }
-
-            remix.trackersReverseView.forEach { container ->
-                container.map.values.forEach {
-                    if ((clickOccupation !is TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange)) {
-                        it.render()
-                    }
-                }
-            }
-
-            if (clickOccupation is TrackerResize) {
-                renderTracker(clickOccupation.renderLayer,
-                              if (clickOccupation.isPlacementValid()) Color.WHITE else Color.RED,
-                              clickOccupation.text,
-                              clickOccupation.beat, clickOccupation.width, clickOccupation.tracker.getSlope())
-            } else {
-                currentTracker?.render()
-            }
-
-            // Swing indicators
-            borderedFont.setColor(1f, 1f, 1f, 1f)
-            run {
-                val tempos = remix.tempos
-                var lastSwing: Swing = tempos.defaultSwing
-                tempos.map.values.forEach {
-                    if ((it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
-                        val noteSymbol: String = it.swing.getNoteSymbol()
-                        val swingName: String = it.swing.getSwingName()
-
-                        if (tool == Tool.SWING) {
-                            borderedFont.color = getColorForTracker(it)
-                        } else {
-                            borderedFont.setColor(1f, 1f, 1f, 1f)
-                        }
-                        val y = remix.trackCount + 1f
-                        borderedFont.drawCompressed(batch, swingName, it.beat, y, 2f, Align.left)
-
-                        val lh = borderedFont.capHeight * 1.1f
-
-                        borderedFont.scaleMul(0.75f)
-                        borderedFont.drawCompressed(batch, "${it.swing.ratio}%, $noteSymbol", it.beat, y + lh, 2f, Align.left)
-                        borderedFont.scaleMul(1 / 0.75f)
-                    }
-
-                    lastSwing = it.swing
-                }
-            }
-
-            borderedFont.setColor(1f, 1f, 1f, 1f)
-            borderedFont.unscaleFont()
-        }
+        this.renderBottomTrackers(batch, beatRange)
 
         // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
-            val clickOccupation = clickOccupation
-            when (clickOccupation) {
-                is ClickOccupation.SelectionDrag -> {
-                    val oldColor = batch.packedColor
-                    val y = if (clickOccupation.isBottomSpecial) -1f else 0f
-                    val mouseY = remix.camera.getInputY()
-                    val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
-                    val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
-                    val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
-
-                    if (!overStoreArea) {
-                        batch.setColor(1f, 0f, 0f, 0.25f * alpha)
-                        batch.fillRect(left, y,
-                                       remix.camera.viewportWidth * remix.camera.zoom,
-                                       -remix.camera.viewportHeight * remix.camera.zoom)
-                        batch.setColor(oldColor)
-
-                        val deleteFont = main.defaultFontLarge
-                        deleteFont.scaleFont(camera)
-                        deleteFont.scaleMul(0.5f)
-
-                        deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
-
-                        deleteFont.drawCompressed(batch, Localization["editor.delete"], left, y + -1f + font.capHeight / 2,
-                                                  remix.camera.viewportWidth * remix.camera.zoom, Align.center)
-
-                        deleteFont.setColor(1f, 1f, 1f, 1f)
-                        deleteFont.unscaleFont()
-                    }
-                }
-                is ClickOccupation.CreatingSelection -> {
-                    val oldColor = batch.packedColor
-                    val rect = clickOccupation.rectangle
-
-                    batch.color = theme.selection.selectionFill
-                    batch.fillRect(rect)
-
-                    batch.color = theme.selection.selectionBorder
-                    batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
-
-                    run text@{
-                        val oldFontColor = font.color
-                        font.color = theme.selection.selectionBorder
-
-                        val toScaleX = toScaleX(SELECTION_BORDER * 1.5f)
-                        val toScaleY = toScaleY(SELECTION_BORDER * 1.5f)
-                        val shift = Gdx.input.isShiftDown()
-                        val control = Gdx.input.isControlDown()
-
-                        val bigFont = main.defaultFontLarge
-                        val oldBigFontColor = bigFont.color
-                        bigFont.scaleFont(camera)
-
-                        // AND or XOR strings
-                        if (rect.height - toScaleY * 2 >= bigFont.capHeight
-                                && !(shift && control) && (shift || control)) {
-                            bigFont.color = theme.selection.selectionBorder
-                            bigFont.color.a *= 0.25f * MathHelper.getTriangleWave(2f) + 0.35f
-                            bigFont.drawCompressed(batch, if (shift) SELECTION_RECT_ADD else SELECTION_RECT_INVERT,
-                                                   rect.x + toScaleX, rect.y + rect.height / 2 + bigFont.capHeight / 2,
-                                                   rect.width - toScaleX * 2, Align.center)
-                        }
-
-                        // dimension strings
-                        if (rect.height - toScaleY * 2 >= font.capHeight) {
-                            font.color = theme.trackLine
-
-                            val moddingEnabled = ModdingUtils.moddingToolsEnabled
-                            var widthStr = ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
-
-                            if (moddingEnabled) {
-                                // X * 0x48 [+ 0xY]
-                                widthStr += "\n${ModdingUtils.currentGame.beatsToTickflowString(rect.width)}"
-                            }
-
-                            var defaultX = rect.x + toScaleX
-                            var defaultWidth = rect.width - toScaleX * 2
-                            if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom) {
-                                defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
-                                defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
-                            } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
-                                defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
-                            }
-                            if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr) && rect.height - toScaleY * 2 >= font.getTextHeight(widthStr)) {
-                                font.drawCompressed(batch, widthStr,
-                                                    defaultX,
-                                                    rect.y + rect.height - toScaleY,
-                                                    defaultWidth, Align.center)
-                            }
-                        }
-
-                        bigFont.unscaleFont()
-                        bigFont.color = oldBigFontColor
-                        font.color = oldFontColor
-                    }
-
-                    batch.setColor(oldColor)
-                }
-                is ClickOccupation.RulerMeasuring -> {
-                    val oldColor = batch.packedColor
-                    val oldFontColor = font.color
-                    val currentSnap = if (Gdx.input.isShiftDown() && !Gdx.input.isControlDown() && !Gdx.input.isAltDown()) 0f else snap
-                    val mouseX = MathHelper.snapToNearest(camera.getInputX(), currentSnap)
-                    val width = (clickOccupation.startPoint.x - mouseX).absoluteValue
-                    val leftPoint = Math.min(clickOccupation.startPoint.x, mouseX)
-                    val rightPoint = Math.max(clickOccupation.startPoint.x, mouseX)
-                    val height = 1.5f
-                    val borderThickness = TRACK_LINE_THICKNESS * 1.5f
-                    val markThickness = TRACK_LINE_THICKNESS
-                    val y = 0f
-
-                    batch.color = theme.background
-                    batch.fillRect(leftPoint, y, width, -height)
-                    batch.color = theme.trackLine
-                    batch.drawRect(leftPoint - toScaleX(TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(TRACK_LINE_THICKNESS), height, toScaleX(borderThickness), toScaleY(borderThickness))
-
-                    if (width > 0) {
-                        val leftTextPoint = Math.max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
-                        val rightTextPoint = Math.min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
-                        val textWidth = rightTextPoint - leftTextPoint
-                        font.color = theme.trackLine
-                        font.scaleMul(0.75f)
-                        // Mixed number notation, add decimal if no snapping
-                        font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
-                        if (ModdingUtils.moddingToolsEnabled) {
-                            // tickflow notation
-                            font.drawCompressed(batch, ModdingUtils.currentGame.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.4f, textWidth, Align.center)
-                        }
-                        font.scaleMul(1 / 0.75f)
-                    }
-
-                    val divisions = (1f / snap).coerceAtMost(64f).roundToInt()
-                    val reverseRange = mouseX < clickOccupation.startPoint.x
-                    for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
-                        val x = if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())
-                        // culling for rendering
-                        if (x < beatRange.first)
-                            continue
-                        if (x > beatRange.last)
-                            break
-
-                        var markElongation = 0f
-                        if (i % (divisions / 2) == 0)
-                            markElongation += 0.75f
-                        if (divisions >= 8 && i % (divisions / 4) == 0)
-                            markElongation += 0.5f
-                        if (divisions >= 16 && i % (divisions / 8) == 0)
-                            markElongation += 0.35f
-                        batch.fillRect(x - toScaleX(markThickness) / (if (reverseRange) -2 else 2), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
-                    }
-
-                    batch.setColor(oldColor)
-                    font.color = oldFontColor
-                }
-                else -> {
-                }
-            }
+            this.renderOtherUI(batch, beatRange, font)
         }
 
         font.unscaleFont()
@@ -1403,8 +809,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             val shouldStretch = remix.playState == STOPPED && currentTool == Tool.SELECTION &&
                     ((clickOccupation is ClickOccupation.SelectionDrag && clickOccupation.isStretching) ||
                             (clickOccupation == ClickOccupation.None && this.selection.isNotEmpty() && this.selection.all { it is IStretchable && it.isStretchable } && remix.entities.any {
-                canStretchEntity(mouseVector, it)
-            }))
+                                canStretchEntity(mouseVector, it)
+                            }))
 
             if (wasStretchCursor && !shouldStretch) {
                 Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
