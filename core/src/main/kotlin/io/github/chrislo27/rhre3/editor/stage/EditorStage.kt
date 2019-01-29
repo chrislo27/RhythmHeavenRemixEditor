@@ -1503,7 +1503,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         (if (game.isCustom) "[CYAN]★[]" else "") +
                         (if (isVariant) game.name else game.gameGroup.name) + "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]" +
                         if (ModdingUtils.moddingToolsEnabled && (isVariant || isSingleInGameGroup())) {
-                            GameRegistry.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" }
+                            GameRegistry.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
                         } else ("")
             }
             return ""
