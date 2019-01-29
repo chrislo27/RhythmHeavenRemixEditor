@@ -547,10 +547,10 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             for (i in 0 until saxophoneBeats.size) {
                 val range = saxophoneBeats[i]
                 val next = saxophoneBeats.getOrNull(i + 1)?.first ?: LAST_SHAKE
-                if (beat in range) {
+                if (beat.roundToInt() in range) {
                     index = i * 2
                     break
-                } else if (beat in range.last..next) {
+                } else if (beat.roundToInt() in range.last..next) {
                     index = i * 2 + 1
                     break
                 }
