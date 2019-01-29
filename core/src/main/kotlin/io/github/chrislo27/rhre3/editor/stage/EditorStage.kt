@@ -29,6 +29,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.screen.TestDSScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.util.OSUtils
 import io.github.chrislo27.toolboks.Toolboks
@@ -1362,7 +1363,12 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
             }
             // FIXME proper game mode button
-            buttonBarStage.elements += Button(palette, buttonBarStage, buttonBarStage).apply {
+            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage){
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = TestDSScreen(main)
+                }
+            }.apply {
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
                 this.addLabel(TextLabel(palette, this@apply, this@apply.stage).apply {
                     this.isLocalizationKey = false
