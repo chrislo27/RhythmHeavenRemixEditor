@@ -14,8 +14,3 @@ eclipse.project {
 repositories {
     mavenCentral()
 }
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
