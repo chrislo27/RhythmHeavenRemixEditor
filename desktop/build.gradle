@@ -52,7 +52,7 @@ repositories {
 }
 
 shadowJar {
-    baseName = "RHRE3"
+    baseName = "RHRE"
     classifier = null
     version = null
 }
