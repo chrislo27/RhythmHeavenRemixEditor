@@ -1372,7 +1372,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
                 this.addLabel(TextLabel(palette, this@apply, this@apply.stage).apply {
                     this.isLocalizationKey = false
-                    this.text = "遊ぶ"
+                    this.text = "\uE0E0"
                     this.textWrapping = false
                 })
             }
