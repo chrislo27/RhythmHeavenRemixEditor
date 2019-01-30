@@ -240,6 +240,8 @@ object GameRegistry : Disposable {
 
             specialGame = gameMap["special"] ?: error("Missing special game")
 
+            Toolboks.LOGGER.info("Finished loading game registry: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count{ it !is Cue }} patterns")
+
             // Load modding metadata
             loadModdingMetadata(false)
 
