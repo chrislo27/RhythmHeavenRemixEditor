@@ -130,7 +130,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         internal val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
-        val THREE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.000", DecimalFormatSymbols())
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -281,9 +280,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private set
     val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
-    private data class BuildingNote(val note: MidiHandler.MidiReceiver.Note, val entity: Entity)
-
-    private val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
+    internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -312,63 +309,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             cachedMusicStart = Float.POSITIVE_INFINITY to ""
         }
 
+        camera.position.y = calculateNormalCameraY()
+        camera.update()
+
         if (attachMidiListeners) {
-            MidiHandler.noteListeners += object : MidiHandler.MidiNoteListener {
-                var numberOfNotes = 0
-
-                override fun noteOn(note: MidiHandler.MidiReceiver.Note) {
-                    Gdx.app.postRunnable {
-                        val selection = this@Editor.selection
-                        if (remix.playState == STOPPED) {
-                            if (clickOccupation == ClickOccupation.None && selection.isNotEmpty()) {
-                                changePitchOfSelection(note.semitone, false, true, selection)
-                            }
-                        } else if (RHRE3.midiRecording && remix.playState == PLAYING) {
-                            val defaultCue = GameRegistry.data.objectMap[Remix.DEFAULT_MIDI_NOTE]!! as Cue
-                            val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(PreferenceKeys.MIDI_NOTE)] ?: defaultCue
-                            val ent = noteCue.createEntity(remix, null).apply {
-                                updateBounds {
-                                    bounds.set(remix.beat, (numberOfNotes % remix.trackCount).toFloat(), 0f, 1f)
-                                }
-
-                                if (this is IRepitchable) {
-                                    semitone = note.semitone
-                                    (this as? CueEntity)?.stopAtEnd = true
-                                }
-                            }
-                            ent.updateInterpolation(true)
-
-                            ent.playbackCompletion = PlaybackCompletion.FINISHED
-                            remix.entities += ent
-
-                            val bn = BuildingNote(note, ent)
-
-                            buildingNotes[bn.note] = bn
-                            numberOfNotes++
-                        }
-                    }
-                }
-
-                override fun noteOff(note: MidiHandler.MidiReceiver.Note) {
-                    if (RHRE3.midiRecording && buildingNotes.containsKey(note)) buildingNotes.remove(note)
-                }
-
-                var pedalDown = false
-
-                override fun controlChange(ccNumber: Int, data: Int) {
-                    if (ccNumber == 64) {
-                        if (RHRE3.midiRecording && data < 64 && pedalDown) {
-                            val state = remix.playState
-                            if (state == STOPPED || state == PAUSED) {
-                                remix.playState = PLAYING
-                            } else if (state == PLAYING) {
-                                remix.playState = PAUSED
-                            }
-                        }
-                        pedalDown = data >= 64
-                    }
-                }
-            }
+            MidiHandler.noteListeners += EditorMidiListener(this)
         }
     }
 
@@ -427,6 +372,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
     }
 
+    private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
+
     fun render() = render(updateDelta = true, otherUI = true)
 
     /**
@@ -453,25 +400,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
 //        if (Toolboks.debugMode && remix.tempos.map.isEmpty()) {
-//            val text = "The tempo is implicitly set to ${remix.tempos.defaultTempo} BPM. Please set the tempo explicitly using the Tempo Change tool.     "
-//            val f = main.defaultBorderedFontLarge
-////            f.scaleFont(camera)
-//            f.setColor(1f, 1f, 1f, 1f)
-//            f.scaleMul(0.5f)
-//
-//            for (i in 0 until 12) {
-//                val width = f.getTextWidth(text)
-//                val sign = if (i % 2 == 0) -1 else 1
-//                val scroll = MathHelper.getSawtoothWave(System.currentTimeMillis() + i * 1234L, 12.5f + sign * i * 0.75f)
-//                f.color = Color().setHSB(scroll, 1f, 1f)
-//                f.draw(batch, text, 0f + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
-//                f.draw(batch, text, -sign * width + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
-////                f.draw(batch, text, width + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
-//            }
-//            f.setColor(1f, 1f, 1f, 1f)
-//
-//            f.scaleMul(1 / 0.5f)
-////            f.unscaleFont()
+//            this.renderImplicitTempo(batch)
 //        }
 
         batch.end()
@@ -481,11 +410,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val adjustedCameraX: Float
         val adjustedCameraY: Float
         if (updateDelta) {
-            val transitionTime = Gdx.graphics.deltaTime * 6.5f
-//            camera.position.y = MathUtils.lerp(camera.position.y, 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f, transitionTime)
-            camera.position.y = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
-            camera.zoom = MathUtils.lerp(camera.zoom, (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 1f,
-                                         transitionTime)
+            val transitionTime = Gdx.graphics.deltaTime / 0.15f
+            val cameraYNormal = calculateNormalCameraY()
+            val cameraZoomNormal = (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f
+            val cameraYGame = -(camera.viewportHeight / 2f) * 1.5f
+            val cameraZoomGame = 1f
+            val isNormal = currentTool != Tool.SWING
+            val cameraY = if (isNormal) cameraYNormal else cameraYGame
+            val cameraZoom = if (isNormal) cameraZoomNormal else cameraZoomGame
+            camera.position.y = MathUtils.lerp(camera.position.y, cameraY, transitionTime)
+            camera.zoom = MathUtils.lerp(camera.zoom, cameraZoom, transitionTime)
+
             val cameraPan = cameraPan
             if (cameraPan != null) {
                 if (remix.playState == STOPPED) {
@@ -1758,7 +1693,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         return false
     }
 
-    private fun changePitchOfSelection(change: Int, delta: Boolean, canExceedLimits: Boolean, selection: List<Entity>) {
+    fun changePitchOfSelection(change: Int, delta: Boolean, canExceedLimits: Boolean, selection: List<Entity>) {
         val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
         val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
@@ -1968,7 +1903,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("e: ")
+            append("cam: [")
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.x))
+            append(", ")
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.y))
+            append(", ")
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.zoom))
+            append(" zoom]")
+
+            append("\ne: ")
             append(remix.entities.count {
                 it.inRenderRange(rangeStartF, rangeEndF)
             })

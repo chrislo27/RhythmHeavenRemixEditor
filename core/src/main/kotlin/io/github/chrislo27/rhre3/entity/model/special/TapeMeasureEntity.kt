@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TapeMeasure
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.rhre3.modding.ModdingUtils
 
 
 class TapeMeasureEntity(remix: Remix, datamodel: TapeMeasure)
@@ -14,7 +14,7 @@ class TapeMeasureEntity(remix: Remix, datamodel: TapeMeasure)
 
     override val isStretchable: Boolean = true
     override val renderText: String
-        get() = "${Editor.THREE_DECIMAL_PLACE_FORMATTER.format(bounds.width)} ♩${if (ModdingUtils.moddingToolsEnabled) "\n" + ModdingUtils.currentGame.beatsToTickflowString(bounds.width) else ""}"
+        get() = "${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(bounds.width)} ♩${if (ModdingUtils.moddingToolsEnabled) "\n" + ModdingUtils.currentGame.beatsToTickflowString(bounds.width) else ""}"
 
     init {
         bounds.width = 1f
