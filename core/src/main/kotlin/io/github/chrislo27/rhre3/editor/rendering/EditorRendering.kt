@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.editor.rendering
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -156,4 +157,22 @@ fun Editor.renderHorizontalTrackLines(batch: SpriteBatch, startX: Float, width: 
                        toScaleY(Editor.TRACK_LINE_THICKNESS))
     }
     batch.setColor(1f, 1f, 1f, 1f)
+}
+
+fun Editor.renderImplicitTempo(batch: SpriteBatch) {
+    val text = "The tempo is implicitly set to ${remix.tempos.defaultTempo} BPM. Please set the tempo explicitly using the Tempo Change tool.   "
+    val f = main.defaultBorderedFontLarge
+    f.setColor(1f, 1f, 1f, 1f)
+    f.scaleMul(0.5f)
+
+    for (i in 0 until 12) {
+        val width = f.getTextWidth(text)
+        val sign = if (i % 2 == 0) -1 else 1
+        val scroll = MathHelper.getSawtoothWave(System.currentTimeMillis() + i * 1234L, 12.5f + sign * i * 0.75f)
+        f.color = Color().setHSB(scroll, 1f, 1f)
+        f.draw(batch, text, 0f + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
+        f.draw(batch, text, -sign * width + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
+    }
+    f.setColor(1f, 1f, 1f, 1f)
+    f.scaleMul(1 / 0.5f)
 }
