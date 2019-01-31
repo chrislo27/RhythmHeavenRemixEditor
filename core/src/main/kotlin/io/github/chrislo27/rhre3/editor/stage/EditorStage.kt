@@ -222,7 +222,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         super.render(screen, batch, shapeRenderer)
 
-        if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown()) {
+        if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown() && !Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
             val quickSwitch = gameSwitchBack
             if (Gdx.input.isKeyJustPressed(Input.Keys.F) && quickSwitch != null && !isTyping) { // Quick switch
                 val qsCopy = quickSwitch
