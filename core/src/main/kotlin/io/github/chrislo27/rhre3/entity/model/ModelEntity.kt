@@ -156,8 +156,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         needsNameTooltip = textHeight > allottedHeight
         var newTextWidth = allottedWidth
         if (attemptTextOnScreen) {
-            if (textX + newTextWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
-                newTextWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - textX
+            val camera = remix.camera
+            val outerBound = camera.position.x + camera.viewportWidth / 2 * camera.zoom
+            if (textX + newTextWidth > outerBound) {
+                newTextWidth = (outerBound) - textX
             }
             newTextWidth = newTextWidth.coerceAtLeast(font.getTextWidth(text)).coerceAtMost(allottedWidth)
         }
