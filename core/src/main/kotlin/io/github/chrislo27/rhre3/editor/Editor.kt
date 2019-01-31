@@ -374,7 +374,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
 
-    private fun calculatePlayalongCameraY(): Float = -(camera.viewportHeight / 2f) * 1.5f
+    private fun calculatePlayalongCameraY(): Float = calculateNormalCameraY() // FIXME? 4f + remix.trackCount
 
     fun render() = render(updateDelta = true, otherUI = true)
 
