@@ -32,6 +32,7 @@ object GameRegistry : Disposable {
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
     const val SPECIAL_GAME_ID: String = "special"
+    const val END_REMIX_ENTITY_ID: String = "special_endEntity"
     const val CUSTOM_PREFIX: String = "custom_"
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
 

@@ -637,7 +637,7 @@ class ExportRemixScreen(main: RHRE3Application)
             if (!isBeads) {
                 label.text = Localization["screen.export.cannot", Localization["screen.export.needsBeadsSound"]]
             } else if (!hasEndRemix) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ Special Entities ➡ End Remix[]"]
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
             }
         } else {
             if (throwable == null) {
