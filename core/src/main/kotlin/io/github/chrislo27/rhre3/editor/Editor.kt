@@ -1707,22 +1707,26 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val current = it.semitone
                 val new = if (delta) (current + change) else change
                 if (!canExceedLimits) {
-                    if (new in it.semitoneRange) {
-                        it.semitone = new
-                        return@fold true
-                    } else if (it.semitoneRange.last in (current + 1)..(new - 1)) {
-                        it.semitone = it.semitoneRange.last
-                        return@fold true
-                    } else if (it.semitoneRange.first in (new + 1)..(current - 1)) {
-                        it.semitone = it.semitoneRange.first
-                        return@fold true
+                    when {
+                        new in it.semitoneRange -> {
+                            it.semitone = new
+                            true
+                        }
+                        it.semitoneRange.last in (current + 1)..(new - 1) -> {
+                            it.semitone = it.semitoneRange.last
+                            true
+                        }
+                        it.semitoneRange.first in (new + 1)..(current - 1) -> {
+                            it.semitone = it.semitoneRange.first
+                            true
+                        }
+                        else -> acc
                     }
                 } else {
                     it.semitone = new
-                    return@fold true
+                    true
                 }
-            }
-            acc
+            } else acc
         }
 
         if (anyChanged) {
@@ -1759,19 +1763,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (it is IVolumetric && it.isVolumetric) {
                             val current = it.volumePercent
                             val new = current + changeAmount
-                            if (new in it.volumeRange) {
-                                it.volumePercent = new
-                                return@fold true
-                            } else if (it.volumeRange.last in (current + 1)..(new - 1)) {
-                                it.volumePercent = it.volumeRange.last
-                                return@fold true
-                            } else if (it.volumeRange.first in (new + 1)..(current - 1)) {
-                                it.volumePercent = it.volumeRange.first
-                                return@fold true
+                            when {
+                                new in it.volumeRange -> {
+                                    it.volumePercent = new
+                                    true
+                                }
+                                it.volumeRange.last in (current + 1)..(new - 1) -> {
+                                    it.volumePercent = it.volumeRange.last
+                                    true
+                                }
+                                it.volumeRange.first in (new + 1)..(current - 1) -> {
+                                    it.volumePercent = it.volumeRange.first
+                                    true
+                                }
+                                else -> acc
                             }
-                        }
-
-                        acc
+                        } else acc
                     }
 
                     if (anyChanged) {
