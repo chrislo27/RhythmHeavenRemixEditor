@@ -50,6 +50,7 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
             it.visible = !visible
         }
         stage.playalongStage.visible = visible
+        stage.subtitleStage.visible = true // Exception made for subtitles
         stage.tapalongStage.visible = false
         stage.presentationModeStage.visible = false
         stage.paneLikeStages.forEach { it.visible = false }
