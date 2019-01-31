@@ -418,8 +418,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             val cameraYPlayalong = calculatePlayalongCameraY()
             val cameraZoomPlayalong = 1f
             val isPlayalong = currentTool == Tool.SWING // FIXME put in playalong mode
-            val cameraY = if (isPlayalong) cameraYNormal else cameraYPlayalong
-            val cameraZoom = if (isPlayalong) cameraZoomNormal else cameraZoomPlayalong
+            val cameraY = if (!isPlayalong) cameraYNormal else cameraYPlayalong
+            val cameraZoom = if (!isPlayalong) cameraZoomNormal else cameraZoomPlayalong
             camera.position.y = MathUtils.lerp(camera.position.y, cameraY, transitionTime)
             camera.zoom = MathUtils.lerp(camera.zoom, cameraZoom, transitionTime)
 

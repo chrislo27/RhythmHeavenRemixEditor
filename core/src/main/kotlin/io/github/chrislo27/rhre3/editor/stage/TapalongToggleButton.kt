@@ -53,6 +53,7 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
             it.visible = !visible
         }
         stage.tapalongStage.visible = visible
+        stage.playalongStage.visible = false
         stage.presentationModeStage.visible = false
         stage.paneLikeStages.forEach { it.visible = false }
         stage.buttonBarStage.visible = true

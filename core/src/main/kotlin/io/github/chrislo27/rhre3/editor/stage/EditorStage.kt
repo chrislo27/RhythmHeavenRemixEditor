@@ -20,6 +20,8 @@ import io.github.chrislo27.rhre3.editor.picker.*
 import io.github.chrislo27.rhre3.editor.quickswitch.SwitchToGame
 import io.github.chrislo27.rhre3.editor.stage.advopt.CopyGamesUsedButton
 import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
+import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
+import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongToggleButton
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
@@ -29,7 +31,6 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
-import io.github.chrislo27.rhre3.screen.TestDSScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.util.OSUtils
 import io.github.chrislo27.toolboks.Toolboks
@@ -63,6 +64,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val themeEditorStage: ThemeEditorStage
     val themeChooserStage: ThemeChooserStage
     val viewChooserStage: ViewChooserStage
+    val playalongStage: PlayalongStage
 
     val gameButtons: List<GameButton>
     val variantButtons: List<GameButton>
@@ -98,10 +100,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var jumpToField: JumpToField
         private set
-    lateinit var subtitleLabel: TextLabel<EditorScreen>
-        private set
-    lateinit var entityTextField: TextField<EditorScreen>
-        private set
+    val subtitleLabel: TextLabel<EditorScreen>
+    val entityTextField: TextField<EditorScreen>
     lateinit var gameStageText: TextLabel<EditorScreen>
         private set
     lateinit var patternAreaArrowLabel: TextLabel<EditorScreen>
@@ -115,6 +115,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     lateinit var bottomBaseBpmLabel: TextLabel<EditorScreen>
         private set
     lateinit var customSoundsFolderButton: Button<EditorScreen>
+        private set
+    lateinit var playalongToggleButton: PlayalongToggleButton
         private set
 
     val topOfMinimapBar: Float
@@ -708,6 +710,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                       Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
+        playalongStage = PlayalongStage(editor, this@EditorStage, palette, this, camera).apply {
+            this.location.set(0f,
+                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
+                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
+
+            this.visible = false
+        }
         elements += presentationModeStage
         elements += tapalongStage
         elements += buttonBarStage
@@ -716,6 +725,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += minimapBarStage
         elements += centreAreaStage
         elements += subtitleStage
+        elements += playalongStage
 //        elements += themeEditorStage
         elements += themeChooserStage
         elements += viewChooserStage
@@ -1362,22 +1372,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += TrackChangeButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
             }
-            // FIXME proper game mode button
-            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage), HasHoverText {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.screen = TestDSScreen(main)
-                }
-
-                override fun getHoverText(): String = Localization["editor.playalong"]
-            }.apply {
+            playalongToggleButton = PlayalongToggleButton(this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
-                this.addLabel(TextLabel(palette, this@apply, this@apply.stage).apply {
-                    this.isLocalizationKey = false
-                    this.text = "\uE0E0"
-                    this.textWrapping = false
-                })
             }
+            buttonBarStage.elements += playalongToggleButton
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 5 - padding * 3, screenX = size * 12 + padding * 12)
             }

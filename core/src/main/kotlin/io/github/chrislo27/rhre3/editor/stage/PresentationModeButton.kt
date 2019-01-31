@@ -34,6 +34,7 @@ class PresentationModeButton(val editor: Editor, val editorStage: EditorStage, p
         }
         stage.presentationModeStage.visible = visible
         stage.tapalongStage.visible = false
+        stage.playalongStage.visible = false
         stage.paneLikeStages.forEach { it.visible = false }
         stage.buttonBarStage.visible = true
         stage.messageBarStage.visible = !visible
