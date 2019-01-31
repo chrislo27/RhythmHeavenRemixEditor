@@ -225,6 +225,11 @@ object GameRegistry : Disposable {
 
                 if (!it.soundHandle.exists()) {
                     errors += "Handle does not exist for ${it.id}: ${it.soundHandle}"
+                } else if (it.game.isCustom) {
+                    val parent = it.soundHandle.file().resolve("../")
+                    if (parent.isDirectory && it.id.substringAfterLast('/') !in parent.list().map { it.substringAfterLast('/').substringBeforeLast(".ogg") }) {
+                        errors += "Handle has wrong casing for ${it.id}: ${it.soundHandle}"
+                    }
                 }
             }
             gameList.forEach {
@@ -240,7 +245,7 @@ object GameRegistry : Disposable {
 
             specialGame = gameMap["special"] ?: error("Missing special game")
 
-            Toolboks.LOGGER.info("Finished loading game registry: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count{ it !is Cue }} patterns")
+            Toolboks.LOGGER.info("Finished loading game registry: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count { it !is Cue }} patterns")
 
             // Load modding metadata
             loadModdingMetadata(false)
