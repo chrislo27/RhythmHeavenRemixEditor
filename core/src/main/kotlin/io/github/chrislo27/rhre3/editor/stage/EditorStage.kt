@@ -241,6 +241,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                 updateSelected()
             }
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G) && !isTyping) {
+                playalongToggleButton.onLeftClick(0f, 0f)
+            }
         }
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
