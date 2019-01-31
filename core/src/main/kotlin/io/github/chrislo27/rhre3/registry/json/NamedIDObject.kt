@@ -17,7 +17,8 @@ import io.github.chrislo27.rhre3.entity.model.IVolumetric
         JsonSubTypes.Type(SubtitleEntityObject::class),
         JsonSubTypes.Type(ShakeEntityObject::class),
         JsonSubTypes.Type(TextureEntityObject::class),
-        JsonSubTypes.Type(TapeMeasureObject::class)
+        JsonSubTypes.Type(TapeMeasureObject::class),
+        JsonSubTypes.Type(PlayalongEntityObject::class)
              )
 sealed class NamedIDObject {
 
@@ -158,3 +159,6 @@ class TextureEntityObject : NamedIDObject()
 
 @JsonTypeName("tapeMeasure")
 class TapeMeasureObject : NamedIDObject()
+
+@JsonTypeName("playalongEntity")
+class PlayalongEntityObject : NamedIDObject()

@@ -388,6 +388,8 @@ object GameRegistry : Disposable {
                             TextureModel(game, objID, obj.deprecatedIDs, obj.name)
                         is TapeMeasureObject ->
                             TapeMeasure(game, objID, obj.deprecatedIDs, obj.name)
+                        is PlayalongEntityObject ->
+                            PlayalongModel(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
             } else {
