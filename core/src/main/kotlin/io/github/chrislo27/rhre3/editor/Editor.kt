@@ -417,7 +417,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             val cameraZoomNormal = (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f
             val cameraYPlayalong = calculatePlayalongCameraY()
             val cameraZoomPlayalong = 1f
-            val isPlayalong = currentTool == Tool.SWING // FIXME put in playalong mode
+            val isPlayalong = stage.playalongStage.visible
             val cameraY = if (!isPlayalong) cameraYNormal else cameraYPlayalong
             val cameraZoom = if (!isPlayalong) cameraZoomNormal else cameraZoomPlayalong
             camera.position.y = MathUtils.lerp(camera.position.y, cameraY, transitionTime)
@@ -956,8 +956,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             return this
         }
 
+        @Suppress("CascadeIf")
         if (stage.tapalongStage.visible) {
             msgBuilder.append(Localization["editor.tapalong.info"])
+        } else if (stage.playalongStage.visible) {
+            msgBuilder.append(Localization["editor.playalong.info"])
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {
