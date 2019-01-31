@@ -25,5 +25,7 @@ interface IRepitchable {
     val canBeRepitched: Boolean
     val semitoneRange: IntRange
         get() = DEFAULT_RANGE
+    val rangeWrapsAround: Boolean
+        get() = false
 
 }

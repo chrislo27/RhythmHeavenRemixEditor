@@ -1707,20 +1707,26 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val current = it.semitone
                 val new = if (delta) (current + change) else change
                 if (!canExceedLimits) {
-                    when {
-                        new in it.semitoneRange -> {
-                            it.semitone = new
-                            true
+                    val semitoneRange = it.semitoneRange
+                    if (it.rangeWrapsAround) {
+                        it.semitone = semitoneRange.first + Math.floorMod(new - semitoneRange.first, semitoneRange.last - semitoneRange.first)
+                        if (it.semitone == current) acc else true
+                    } else {
+                        when {
+                            new in semitoneRange -> {
+                                it.semitone = new
+                                true
+                            }
+                            semitoneRange.last in (current + 1)..(new - 1) -> {
+                                it.semitone = semitoneRange.last
+                                true
+                            }
+                            semitoneRange.first in (new + 1)..(current - 1) -> {
+                                it.semitone = semitoneRange.first
+                                true
+                            }
+                            else -> acc
                         }
-                        it.semitoneRange.last in (current + 1)..(new - 1) -> {
-                            it.semitone = it.semitoneRange.last
-                            true
-                        }
-                        it.semitoneRange.first in (new + 1)..(current - 1) -> {
-                            it.semitone = it.semitoneRange.first
-                            true
-                        }
-                        else -> acc
                     }
                 } else {
                     it.semitone = new
