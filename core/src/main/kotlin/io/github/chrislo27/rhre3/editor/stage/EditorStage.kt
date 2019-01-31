@@ -1363,11 +1363,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 10 + padding * 10)
             }
             // FIXME proper game mode button
-            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage){
+            buttonBarStage.elements += object : Button<EditorScreen>(palette, buttonBarStage, buttonBarStage), HasHoverText {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     main.screen = TestDSScreen(main)
                 }
+
+                override fun getHoverText(): String = Localization["editor.playalong"]
             }.apply {
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
                 this.addLabel(TextLabel(palette, this@apply, this@apply.stage).apply {

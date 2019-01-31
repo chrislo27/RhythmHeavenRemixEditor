@@ -374,6 +374,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
 
+    private fun calculatePlayalongCameraY(): Float = -(camera.viewportHeight / 2f) * 1.5f
+
     fun render() = render(updateDelta = true, otherUI = true)
 
     /**
@@ -413,11 +415,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             val transitionTime = Gdx.graphics.deltaTime / 0.15f
             val cameraYNormal = calculateNormalCameraY()
             val cameraZoomNormal = (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f
-            val cameraYGame = -(camera.viewportHeight / 2f) * 1.5f
-            val cameraZoomGame = 1f
-            val isNormal = currentTool != Tool.SWING
-            val cameraY = if (isNormal) cameraYNormal else cameraYGame
-            val cameraZoom = if (isNormal) cameraZoomNormal else cameraZoomGame
+            val cameraYPlayalong = calculatePlayalongCameraY()
+            val cameraZoomPlayalong = 1f
+            val isPlayalong = currentTool == Tool.SWING // FIXME put in playalong mode
+            val cameraY = if (isPlayalong) cameraYNormal else cameraYPlayalong
+            val cameraZoom = if (isPlayalong) cameraZoomNormal else cameraZoomPlayalong
             camera.position.y = MathUtils.lerp(camera.position.y, cameraY, transitionTime)
             camera.zoom = MathUtils.lerp(camera.zoom, cameraZoom, transitionTime)
 
