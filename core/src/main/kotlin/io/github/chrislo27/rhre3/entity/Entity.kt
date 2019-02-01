@@ -105,10 +105,10 @@ abstract class Entity(val remix: Remix) {
                 .put("width", bounds.width)
                 .put("height", bounds.height.toInt())
 
-        if (this is IRepitchable) {
+        if (this is IRepitchable && this.persistSemitoneData) {
             objectNode.put("semitone", this.semitone)
         }
-        if (this is IVolumetric) {
+        if (this is IVolumetric && this.persistVolumeData) {
             objectNode.put("volume", this.volumePercent)
         }
     }
@@ -123,10 +123,10 @@ abstract class Entity(val remix: Remix) {
                       )
         }
 
-        if (this is IRepitchable && this.persistSemitoneData) {
+        if (this is IRepitchable) {
             semitone = objectNode["semitone"]?.asInt(0) ?: 0
         }
-        if (this is IVolumetric && this.persistVolumeData) {
+        if (this is IVolumetric) {
             volumePercent = objectNode["volume"]?.asInt(IVolumetric.DEFAULT_VOLUME) ?: IVolumetric.DEFAULT_VOLUME
         }
     }
