@@ -497,13 +497,13 @@ object GameRegistry : Disposable {
                                      playalongObjs, specialGame.icon, "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
 
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Playalong - Press").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press").also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Playalong - Press and Hold").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Press and Hold").also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Playalong - Press and Release").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Press and Release").also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Playalong - Release and Press").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Release and Press").also {
             }
 
             addGameAndObjects(playalongGame)

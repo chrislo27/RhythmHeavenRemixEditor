@@ -8,7 +8,9 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 class PlayalongModel(game: Game, id: String, deprecatedIDs: List<String>, name: String)
-    : SpecialDatamodel(game, id, deprecatedIDs, name) {
+    : SpecialDatamodel(game, id, deprecatedIDs, "Playalong - $name") {
+
+    override val pickerName: String = name
 
     override fun createEntity(remix: Remix, cuePointer: CuePointer?): PlayalongEntity {
         return PlayalongEntity(remix, this).also {

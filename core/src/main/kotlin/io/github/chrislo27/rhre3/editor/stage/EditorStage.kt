@@ -353,7 +353,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val objects = currentDatamodelList.list
 
                 objects.forEachIndexed { index, datamodel ->
-                    var text = datamodel.name
+                    var text = datamodel.pickerName
                     var color = Color.WHITE
                     val label: PickerDisplay.Label = pickerDisplay.labels.getOrAdd(index) {
                         PickerDisplay.Label("", Color.WHITE)

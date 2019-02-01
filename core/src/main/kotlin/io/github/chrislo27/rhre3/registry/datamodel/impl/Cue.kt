@@ -26,9 +26,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         LazySound(soundHandle)
     }
 
-    override val pickerName: String by lazy {
-        "cue: $name"
-    }
     val introSoundCue: Cue?
         get() =
             GameRegistry.data.objectMap[introSound] as Cue?
