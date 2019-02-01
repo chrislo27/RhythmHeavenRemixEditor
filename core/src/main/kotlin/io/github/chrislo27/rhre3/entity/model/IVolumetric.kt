@@ -42,4 +42,7 @@ interface IVolumetric {
     val volume: Float
         get() = if (isMuted) 0f else (volumePercent / 100f * volumeCoefficient)
 
+    val persistVolumeData: Boolean
+        get() = true
+
 }

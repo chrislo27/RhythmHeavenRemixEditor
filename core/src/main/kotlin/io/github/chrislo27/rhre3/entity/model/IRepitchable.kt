@@ -27,5 +27,7 @@ interface IRepitchable {
         get() = DEFAULT_RANGE
     val rangeWrapsAround: Boolean
         get() = false
+    val persistSemitoneData: Boolean
+        get() = true
 
 }
