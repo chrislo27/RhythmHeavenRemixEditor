@@ -75,6 +75,7 @@ however, read up on the controls first below!
 | **`DOWN`** or **`S`** | Scroll down (only in editor) |
 | **`SHIFT+SCROLL`** | Pan camera (hold **`CTRL`** to increase speed) |
 | **`TAB`** | Cycle through scroll modes |
+| **`CTRL+K`** | Focus search bar |
 | __Selection Tool only__ |
 | **`RIGHT CLICK`** on *empty space* | Set playback start |
 | **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *empty space* | Set music start |
