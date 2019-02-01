@@ -35,6 +35,7 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
+import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
@@ -1114,7 +1115,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
                         val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
-                        output += if (entity is ShakeEntity) {
+                        output += if (entity is ShakeEntity || entity is PlayalongEntity) {
                             semitoneText
                         } else {
                             Localization["editor.msg.pitch", semitoneText]
