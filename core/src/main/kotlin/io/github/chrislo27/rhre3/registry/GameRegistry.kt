@@ -34,6 +34,7 @@ object GameRegistry : Disposable {
     const val SPECIAL_ENTITIES_GAME_ID: String = "special"
     const val END_REMIX_ENTITY_ID: String = "special_endEntity"
     const val CUSTOM_PREFIX: String = "custom_"
+    private const val MISSING_GAME_ICON_PATH = "images/gameicon/missing.png"
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
 
     val SFX_FOLDER: FileHandle by lazy {
@@ -341,7 +342,7 @@ object GameRegistry : Disposable {
                             gameObject.name,
                             Series.valueOf(gameObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
-                            if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture("images/missing_game_icon.png"),
+                            if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture(MISSING_GAME_ICON_PATH),
                             gameObject.group ?: gameObject.name,
                             gameObject.groupDefault,
                             gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(),
@@ -407,7 +408,7 @@ object GameRegistry : Disposable {
                             Series.OTHER,
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
-                            else Texture("images/missing_game_icon.png"),
+                            else Texture(MISSING_GAME_ICON_PATH),
                             nameWithoutExt,
                             true,
                             0, true, false, listOf(), jsonless = true, isSpecial = id == SPECIAL_ENTITIES_GAME_ID)
