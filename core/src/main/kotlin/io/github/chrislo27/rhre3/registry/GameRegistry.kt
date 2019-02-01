@@ -31,7 +31,7 @@ object GameRegistry : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
-    const val SPECIAL_GAME_ID: String = "special"
+    const val SPECIAL_ENTITIES_GAME_ID: String = "special"
     const val END_REMIX_ENTITY_ID: String = "special_endEntity"
     const val CUSTOM_PREFIX: String = "custom_"
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
@@ -185,6 +185,9 @@ object GameRegistry : Disposable {
         }
 
         private fun whenDone() {
+            specialGame = gameMap[SPECIAL_ENTITIES_GAME_ID] ?: error("Missing special game")
+            addSpecialGeneratedGames()
+
             ready = true
 
             // create
@@ -243,8 +246,6 @@ object GameRegistry : Disposable {
             if (errors.isNotEmpty()) {
                 error("Check above for database errors")
             }
-
-            specialGame = gameMap["special"] ?: error("Missing special game")
 
             Toolboks.LOGGER.info("Finished loading game registry: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count { it !is Cue }} patterns")
 
@@ -343,7 +344,8 @@ object GameRegistry : Disposable {
                             if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture("images/missing_game_icon.png"),
                             gameObject.group ?: gameObject.name,
                             gameObject.groupDefault,
-                            gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(), jsonless = false)
+                            gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(),
+                            jsonless = false, isSpecial = gameObject.id == SPECIAL_ENTITIES_GAME_ID)
                 val baseFileHandle = directive.folder.parent()
 
                 fun String.starSubstitution(): String = replace("*", gameID)
@@ -408,7 +410,7 @@ object GameRegistry : Disposable {
                             else Texture("images/missing_game_icon.png"),
                             nameWithoutExt,
                             true,
-                            0, true, false, listOf(), jsonless = true)
+                            0, true, false, listOf(), jsonless = true, isSpecial = id == SPECIAL_ENTITIES_GAME_ID)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
@@ -428,13 +430,29 @@ object GameRegistry : Disposable {
                 }
             }
 
+            addGameAndObjects(game)
+
+            lastLoadedID = game.id
+            index++
+            val progress = getProgress()
+
+            if (progress >= 1f) {
+                whenDone()
+            }
+
+            return progress
+        }
+
+        private fun addGameAndObjects(game: Game) {
+            objectMap as MutableMap
+            noDeprecationsObjectMap as MutableMap
             val existingGame: Game? = gameMap[game.id]
             val isOverwriting: Boolean = game.isCustom && gameMap[game.id]?.isCustom == false
             if (existingGame != null) {
                 if (isOverwriting) {
                     Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
-                    if (game.id == SPECIAL_GAME_ID && !RHRE3.EXPERIMENTAL)
-                        error("You cannot overwrite the $SPECIAL_GAME_ID game")
+                    if (game.isSpecial && !RHRE3.EXPERIMENTAL)
+                        error("You cannot overwrite the ${game.id} game because it is special")
                     // Deprecation check
                     val missingDeps = existingGame.objects.filter { exObj -> !game.objectsMap.containsKey(exObj.id) }
                     if (missingDeps.isNotEmpty()) {
@@ -447,6 +465,7 @@ object GameRegistry : Disposable {
                     error("Duplicate game: ${game.id}")
                 }
             }
+
             (gameMap as MutableMap)[game.id] = game
 
             if (isOverwriting && existingGame != null) {
@@ -470,16 +489,24 @@ object GameRegistry : Disposable {
             if (duplicateObjs.isNotEmpty()) {
                 error("Duplicate objects in game ${game.id}: $duplicateObjs")
             }
+        }
 
-            lastLoadedID = game.id
-            index++
-            val progress = getProgress()
+        private fun addSpecialGeneratedGames() {
+            val playalongObjs = mutableListOf<Datamodel>()
+            val playalongGame = Game("specialPlayable", "Playalong Input Entities", specialGame.series,
+                                     playalongObjs, specialGame.icon, "Special Entities", false, specialGame.priority,
+                                     false, specialGame.noDisplay, listOf("playable"), false, true)
 
-            if (progress >= 1f) {
-                whenDone()
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Playalong - Press").also {
+            }
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Playalong - Press and Hold").also {
+            }
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Playalong - Press and Release").also {
+            }
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Playalong - Release and Press").also {
             }
 
-            return progress
+            addGameAndObjects(playalongGame)
         }
 
         fun getProgress(): Float {

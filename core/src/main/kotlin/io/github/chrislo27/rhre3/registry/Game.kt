@@ -11,7 +11,7 @@ data class Game(val id: String, val name: String, val series: Series,
                 val objects: List<Datamodel>,
                 val icon: Texture, val group: String, val groupDefault: Boolean,
                 val priority: Int, val isCustom: Boolean, val noDisplay: Boolean, val searchHints: List<String>,
-                val jsonless: Boolean)
+                val jsonless: Boolean, val isSpecial: Boolean)
     : Disposable, Comparable<Game> {
 
     val placeableObjects: List<Datamodel> by lazy {

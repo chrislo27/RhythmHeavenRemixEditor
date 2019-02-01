@@ -14,7 +14,7 @@ data class StoredPattern(val uuid: UUID, val name: String, val data: String) {
 
     @delegate:Transient
     val datamodel: Datamodel by lazy {
-        object : Datamodel(GameRegistry.data.gameMap[GameRegistry.SPECIAL_GAME_ID]!!, uuid.toString(), listOf(), name) {
+        object : Datamodel(GameRegistry.data.gameMap[GameRegistry.SPECIAL_ENTITIES_GAME_ID]!!, uuid.toString(), listOf(), name) {
             override fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*> {
                 error("NO-OP")
             }

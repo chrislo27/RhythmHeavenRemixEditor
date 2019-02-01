@@ -62,7 +62,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
 
     fun update(currentDatamodel: Datamodel?) {
         datamodel = currentDatamodel
-        visible = visible && currentDatamodel != null && (currentDatamodel.game.id != GameRegistry.SPECIAL_GAME_ID)
+        visible = visible && currentDatamodel != null && (currentDatamodel.game.id != GameRegistry.SPECIAL_ENTITIES_GAME_ID)
         stop()
     }
 

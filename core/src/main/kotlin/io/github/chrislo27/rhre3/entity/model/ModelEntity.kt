@@ -33,7 +33,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         get() = datamodel.newlinedName
     open val attemptTextOnScreen: Boolean
         get() = true
-    val isSpecialEntity: Boolean = datamodel.game === GameRegistry.data.specialGame
+    val isSpecialEntity: Boolean = datamodel.game.isSpecial
     var needsNameTooltip: Boolean = false
         private set
 
