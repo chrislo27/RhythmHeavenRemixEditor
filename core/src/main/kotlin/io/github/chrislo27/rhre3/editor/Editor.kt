@@ -1709,7 +1709,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (!canExceedLimits) {
                     val semitoneRange = it.semitoneRange
                     if (it.rangeWrapsAround) {
-                        it.semitone = semitoneRange.first + Math.floorMod(new - semitoneRange.first, semitoneRange.last - semitoneRange.first)
+                        it.semitone = semitoneRange.first + Math.floorMod(new - semitoneRange.first, semitoneRange.last - semitoneRange.first + 1)
                         if (it.semitone == current) acc else true
                     } else {
                         when {
