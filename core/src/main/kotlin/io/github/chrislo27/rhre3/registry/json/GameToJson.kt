@@ -121,6 +121,13 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.name = datamodel.name
                 }
             }
+            is PlayalongModel -> {
+                PlayalongEntityObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                }
+            }
             else -> error("Datamodel not defined for JSON mapping")
         }
     }
