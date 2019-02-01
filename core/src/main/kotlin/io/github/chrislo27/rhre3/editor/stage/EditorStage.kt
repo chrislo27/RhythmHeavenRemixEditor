@@ -245,6 +245,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 playalongToggleButton.onLeftClick(0f, 0f)
             }
         }
+        if (Gdx.input.isControlDown() && !Gdx.input.isAltDown() && !Gdx.input.isShiftDown() && !Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
+            if (pickerStage.visible && !isTyping && Gdx.input.isKeyJustPressed(Input.Keys.K)) {
+                searchBar.textField.hasFocus = true
+            }
+        }
 
         if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
             val pickerSelection = editor.pickerSelection
