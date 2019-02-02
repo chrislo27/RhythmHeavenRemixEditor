@@ -23,6 +23,7 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
     override val isStretchable: Boolean = true
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = true
+    override val showPitchOnTooltip: Boolean = false
 
     init {
         bounds.width = 1f

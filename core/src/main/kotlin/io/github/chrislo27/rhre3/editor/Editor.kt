@@ -1115,7 +1115,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 } else if (scrollMode == ScrollMode.PITCH) {
                     if (entity is IRepitchable && (entity.canBeRepitched || entity.semitone != 0)) {
                         val semitoneText = (entity as? ModelEntity<*>)?.getTextForSemitone(entity.semitone) ?: Semitones.getSemitoneName(entity.semitone)
-                        output += if (entity is ShakeEntity || entity is PlayalongEntity) {
+                        output += if (!entity.showPitchOnTooltip) {
                             semitoneText
                         } else {
                             Localization["editor.msg.pitch", semitoneText]

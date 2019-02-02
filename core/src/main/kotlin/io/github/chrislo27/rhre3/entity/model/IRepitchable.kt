@@ -29,5 +29,7 @@ interface IRepitchable {
         get() = false
     val persistSemitoneData: Boolean
         get() = true
+    val showPitchOnTooltip: Boolean
+        get() = true
 
 }

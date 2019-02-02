@@ -21,6 +21,7 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
     override val canBeRepitched: Boolean = true
     override val rangeWrapsAround: Boolean = true
     override val persistSemitoneData: Boolean = false
+    override val showPitchOnTooltip: Boolean = false
     override val semitoneRange: IntRange get() = PlayalongInput.NUMBER_RANGE
     override val isStretchable: Boolean = datamodel.stretchable
 
