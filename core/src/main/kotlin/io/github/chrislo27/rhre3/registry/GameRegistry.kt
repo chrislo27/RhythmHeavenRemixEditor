@@ -495,7 +495,7 @@ object GameRegistry : Disposable {
         private fun addSpecialGeneratedGames() {
             val playalongObjs = mutableListOf<Datamodel>()
             val playalongGame = Game("specialPlayable", "Playalong Input Entities", specialGame.series,
-                                     playalongObjs, specialGame.icon, "Special Entities", false, specialGame.priority,
+                                     playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
 
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press").also {
