@@ -22,7 +22,7 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
     override val rangeWrapsAround: Boolean = true
     override val persistSemitoneData: Boolean = false
     override val semitoneRange: IntRange get() = PlayalongInput.NUMBER_RANGE
-    override val isStretchable: Boolean = true
+    override val isStretchable: Boolean = datamodel.stretchable
 
     var playalongInput: PlayalongInput? = PlayalongInput.BUTTON_A
 

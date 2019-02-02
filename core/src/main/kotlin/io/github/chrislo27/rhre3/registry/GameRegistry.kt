@@ -393,7 +393,7 @@ object GameRegistry : Disposable {
                         is TapeMeasureObject ->
                             TapeMeasure(game, objID, obj.deprecatedIDs, obj.name)
                         is PlayalongEntityObject ->
-                            PlayalongModel(game, objID, obj.deprecatedIDs, obj.name)
+                            PlayalongModel(game, objID, obj.deprecatedIDs, obj.name, obj.stretchable)
                     }
                 }
             } else {
@@ -498,13 +498,13 @@ object GameRegistry : Disposable {
                                      playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
 
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press", false).also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Press and Hold").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Press and Hold", true).also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Press and Release").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Press and Release", true).also {
             }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Release and Press").also {
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Release and Press", true).also {
             }
 
             addGameAndObjects(playalongGame)

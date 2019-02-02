@@ -7,7 +7,8 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.Remix
 
 
-class PlayalongModel(game: Game, id: String, deprecatedIDs: List<String>, name: String)
+class PlayalongModel(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+                     val stretchable: Boolean)
     : SpecialDatamodel(game, id, deprecatedIDs, "Playalong - $name") {
 
     override val pickerName: String = name

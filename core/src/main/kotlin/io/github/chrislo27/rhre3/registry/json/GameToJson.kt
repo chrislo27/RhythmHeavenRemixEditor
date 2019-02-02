@@ -126,6 +126,8 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.id = datamodel.id
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
+
+                    it.stretchable = datamodel.stretchable
                 }
             }
             else -> error("Datamodel not defined for JSON mapping")

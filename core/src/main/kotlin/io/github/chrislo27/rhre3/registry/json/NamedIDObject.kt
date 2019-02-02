@@ -161,4 +161,6 @@ class TextureEntityObject : NamedIDObject()
 class TapeMeasureObject : NamedIDObject()
 
 @JsonTypeName("playalongEntity")
-class PlayalongEntityObject : NamedIDObject()
+class PlayalongEntityObject : NamedIDObject() {
+    var stretchable: Boolean = false
+}
