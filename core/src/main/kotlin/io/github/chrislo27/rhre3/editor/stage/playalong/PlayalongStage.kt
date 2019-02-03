@@ -18,7 +18,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     init {
         this.elements += ColourPane(this, this).apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
-            this.location.set(screenHeight = 0.2f)
+            this.location.set(screenHeight = 0.25f)
             this.location.set(0f, 0f, 1f)
         }
 
