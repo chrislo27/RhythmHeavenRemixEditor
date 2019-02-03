@@ -497,7 +497,7 @@ object GameRegistry : Disposable {
             val playalongGame = Game("specialPlayable", "Playalong Input Entities", specialGame.series,
                                      playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
-
+            // TODO finalize the input types
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press", false).also {
             }
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Press and Hold", true).also {
