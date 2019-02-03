@@ -100,7 +100,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val old = super.touchDown(screenX, screenY, pointer, button)
 
-        if (isMouseOver() && pointer == 0 && button == Input.Buttons.LEFT) {
+        if (isMouseOver() && pointer == 0 && button == Input.Buttons.LEFT && visible) {
             val mouseX = stage.camera.getInputX()
             val mouseY = stage.camera.getInputY()
             val point: TapPoint = currentTapPoint ?: TapPoint(mouseX, mouseY, 0f, 0f, 1f, 0.25f).also {
@@ -117,7 +117,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val old = super.touchUp(screenX, screenY, pointer, button)
 
-        if (currentTapPoint != null && pointer == 0 && button == Input.Buttons.LEFT) {
+        if (currentTapPoint != null && pointer == 0 && button == Input.Buttons.LEFT && visible) {
             val mouseX = stage.camera.getInputX()
             val mouseY = stage.camera.getInputY()
             currentTapPoint?.let { point ->

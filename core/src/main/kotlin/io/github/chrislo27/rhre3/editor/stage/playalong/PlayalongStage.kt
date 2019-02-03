@@ -26,6 +26,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
             this.colour.set(Color.valueOf("00BC67"))
             this.location.set(screenX = 0.6f)
             this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
+            this.visible = false
         }
     }
 
