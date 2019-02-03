@@ -14,9 +14,9 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
     : ModelEntity<PlayalongModel>(remix, datamodel), IRepitchable, IStretchable {
 
     override var semitone: Int
-        get() = PlayalongInput.indexOf(playalongInput)
+        get() = PlayalongInput.reverseIndexOf(playalongInput)
         set(value) {
-            playalongInput = PlayalongInput.VALUES.getOrNull(value)
+            playalongInput = PlayalongInput.VALUES.reversed().getOrNull(value)
         }
     override val canBeRepitched: Boolean = true
     override val rangeWrapsAround: Boolean = true
