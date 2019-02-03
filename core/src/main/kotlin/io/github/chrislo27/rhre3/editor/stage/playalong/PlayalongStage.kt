@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.stage.playalong
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
@@ -15,10 +16,15 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     : Stage<EditorScreen>(parent, camera) {
 
     init {
-
         this.elements += ColourPane(this, this).apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.location.set(0f, 0f, 1f, 1f)
+        }
+
+        this.elements += FlickingStage(this, this).apply {
+            this.colour.set(Color.valueOf("00BC67"))
+            this.location.set(screenX = 0.6f)
+            this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
         }
     }
 

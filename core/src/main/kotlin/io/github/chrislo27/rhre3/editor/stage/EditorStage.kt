@@ -720,9 +720,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.visible = false
         }
         playalongStage = PlayalongStage(editor, this@EditorStage, palette, this, camera).apply {
-            this.location.set(0f,
-                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
-                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
+//            this.location.set(0f,
+//                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
+//                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
+            this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight)
+            this.location.set(screenX = 0f, screenWidth = 1f,
+                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
+                                      Editor.BUTTON_PADDING)) - this.location.screenY)
 
             this.visible = false
         }

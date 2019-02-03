@@ -153,7 +153,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("credits_bg", "credits/frog_bg.png")
 
         // Game mode
-        AssetRegistry.loadAsset<Texture>("gamemode_tappoint", "images/gamemode/tappoint.png")
+        AssetRegistry.loadAsset<Texture>("playalong_tappoint", "images/playalong/tappoint.png")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {

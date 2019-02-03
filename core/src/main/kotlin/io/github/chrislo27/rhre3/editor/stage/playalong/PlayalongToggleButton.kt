@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.screen.EditorScreen
-import io.github.chrislo27.rhre3.screen.PlayalongSettingsScreen
+import io.github.chrislo27.rhre3.screen.TestDSScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -65,7 +65,8 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
 
     override fun onRightClick(xPercent: Float, yPercent: Float) {
         super.onRightClick(xPercent, yPercent)
-        main.screen = PlayalongSettingsScreen(main)
+//        main.screen = PlayalongSettingsScreen(main)
+        main.screen = TestDSScreen(main)
     }
 
 }
