@@ -23,7 +23,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     : ColourPane<S>(parent, parameterStage) {
 
     data class TapPoint(var x: Float, var y: Float, var veloX: Float, var veloY: Float,
-                        var lifetime: Float, var maxLifetime: Float, var lockLifetime: Boolean = false)
+                        var lifetime: Float, var maxLifetime: Float, var isHeldDown: Boolean = false,
+                        var holdDuration: Float = 0f)
 
     private val tapPoints: MutableList<TapPoint> = mutableListOf()
     private var currentTapPoint: TapPoint? = null
@@ -85,8 +86,10 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
                 tp.x += tp.veloX * deltaTime
                 tp.y += tp.veloY * deltaTime
 
-                if (!tp.lockLifetime) {
+                if (!tp.isHeldDown) {
                     tp.lifetime -= deltaTime
+                } else {
+                    tp.holdDuration += Gdx.graphics.deltaTime
                 }
             }
         }
@@ -120,13 +123,16 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
             currentTapPoint?.let { point ->
                 point.veloX = (mouseX - point.x) * 25f
                 point.veloY = (mouseY - point.y) * 25f
-                point.lockLifetime = false
+                point.isHeldDown = false
 
                 val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
                 if (veloScalar > 700f) {
-                    println("FLICK   with power $veloScalar")
+                    println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
                 } else {
-                    println("RELEASE with power $veloScalar")
+                    println("RELEASE with power $veloScalar\n    Duration: ${point.holdDuration}")
+                    if (point.holdDuration <= 0.1f) {
+                        println("    Short tap")
+                    }
                 }
             }
             currentTapPoint = null
@@ -140,11 +146,11 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         val mouseX = stage.camera.getInputX().coerceIn(this.location.realX, this.location.realX + this.location.realWidth)
         val mouseY = stage.camera.getInputY().coerceIn(this.location.realY, this.location.realY + this.location.realHeight)
         point.maxLifetime = 0.125f
-        if (!point.lockLifetime) {
+        if (!point.isHeldDown) {
             point.lifetime += Gdx.graphics.deltaTime
             if (point.lifetime > point.maxLifetime) {
                 point.lifetime = point.maxLifetime
-                point.lockLifetime = true
+                point.isHeldDown = true
             }
         }
         point.veloX = mouseX - point.x
