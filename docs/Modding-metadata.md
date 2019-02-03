@@ -170,6 +170,15 @@ For `rhMegamix` only:
 | tempoFile | games | The engine's tempo file ID. |
 | index | games | The engine's index, as a hex number starting with 0x. |
 
+For `rhds` only:
+
+| Field | Intended for | Description |
+|---|---|---|
+| sub | datamodels | The sub data. |
+| cue | datamodels | The cue data. |
+| ftc | games | The minigame's internal name. |
+| id | games | The minigame's ID. |
+
 ## Width Range function
 
 The width range function returns a string based on the current **width** of the entity.
