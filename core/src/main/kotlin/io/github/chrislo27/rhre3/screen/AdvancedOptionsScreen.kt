@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -25,6 +26,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
+import java.util.*
 import kotlin.system.measureNanoTime
 
 
@@ -40,6 +42,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
     private var seconds = 0f
 
     private val reloadMetadataButton: Button<AdvancedOptionsScreen>
+    private val pitchStyleButton: Button<AdvancedOptionsScreen>
 
     init {
         val palette = main.uiPalette
@@ -116,7 +119,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 val game = ModdingUtils.currentGame
                 val underdeveloped = game.underdeveloped
                 textLabel.text = "[LIGHT_GRAY]Modding utilities with reference to:[]\n${if (underdeveloped) "[ORANGE]" else ""}${game.fullName}${if (underdeveloped) "[]" else ""}"
-                updateModdingLabel()
+                updateLabels()
             }
 
             private fun persist() {
@@ -242,16 +245,58 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             })
         }
 
-        updateModdingLabel()
+        // Semitone major/minor
+        pitchStyleButton = object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
+            private val textLabel: TextLabel<AdvancedOptionsScreen>
+                get() = labels.first() as TextLabel
+
+            private fun cycle(dir: Int) {
+                val values = Semitones.PitchStyle.VALUES
+                val index = values.indexOf(Semitones.pitchStyle).coerceAtLeast(0)
+                val absNextIndex = index + Math.signum(dir.toFloat()).toInt()
+                val nextIndex = if (absNextIndex < 0) values.size - 1 else if (absNextIndex >= values.size) 0 else absNextIndex
+                val next = values[nextIndex]
+                Semitones.pitchStyle = next
+                main.preferences.putString(PreferenceKeys.ADVOPT_PITCH_STYLE, next.name)
+                updateLabels()
+            }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "Pitch note style: "
+                this.textWrapping = false
+                this.fontScaleMultiplier = 0.8f
+            })
+
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 8 + buttonHeight * 7,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        centre.elements += pitchStyleButton
+
+        updateLabels()
     }
 
-    private fun updateModdingLabel() {
+    private fun updateLabels() {
         val game = ModdingUtils.currentGame
         moddingGameWarningLabel.text = "[LIGHT_GRAY]${if (game.underdeveloped)
             "[ORANGE]Warning:[] modding info for this game\nis very underdeveloped and may be\nextremely lacking in info or incorrect."
         else
             "[YELLOW]Caution:[] modding info for this game\nmay only be partially complete and\nsubject to change."}[]\n"
         moddingGameLabel.text = "1 ♩ (quarter note) = ${game.beatsToTickflowString(1f)}${if (game.tickflowUnitName.isEmpty()) " rest units" else ""}"
+
+        (pitchStyleButton.labels.first() as TextLabel).text = "Pitch note style: [LIGHT_GRAY]${Semitones.pitchStyle.name.toLowerCase(Locale.ROOT).capitalize()} (ex: ${Semitones.pitchStyle.example})[]"
     }
 
     override fun tickUpdate() {

@@ -29,9 +29,10 @@ object PreferenceKeys {
                SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS)
 
     val ADVOPT_REF_RH_GAME = "advOpt_referenceRHGame"
+    val ADVOPT_PITCH_STYLE = "advOpt_pitchStyle"
 
     val allAdvOptsKeys: List<String> =
-            listOf(ADVOPT_REF_RH_GAME)
+            listOf(ADVOPT_REF_RH_GAME, ADVOPT_PITCH_STYLE)
 
     val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     val FILE_CHOOSER_SAVE = "fileChooser_save"
