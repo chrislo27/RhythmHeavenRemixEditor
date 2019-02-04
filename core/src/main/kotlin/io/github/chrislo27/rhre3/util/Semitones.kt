@@ -5,6 +5,7 @@ object Semitones {
     const val SEMITONES_IN_OCTAVE = 12
     const val SEMITONE_VALUE = 1f / SEMITONES_IN_OCTAVE
     const val SHARP = "♯"
+    const val FLAT = "♭"
 
     private val cachedPitches = mutableMapOf<Int, Float>()
     private val keyNames = mutableMapOf(
@@ -20,6 +21,18 @@ object Semitones {
             9 to "A",
             10 to "A$SHARP",
             11 to "B"
+//            0 to "C",
+//            1 to "D$FLAT",
+//            2 to "D",
+//            3 to "E$FLAT",
+//            4 to "E",
+//            5 to "F",
+//            6 to "G$FLAT",
+//            7 to "G",
+//            8 to "A$FLAT",
+//            9 to "A",
+//            10 to "B$FLAT",
+//            11 to "B"
                                        )
     private val usedKeyNames = mutableMapOf<Int, String>().apply {
         putAll(keyNames)
