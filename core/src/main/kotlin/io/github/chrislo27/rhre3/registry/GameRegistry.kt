@@ -232,7 +232,7 @@ object GameRegistry : Disposable {
                     errors += "Handle does not exist for ${it.id}: ${it.soundHandle}"
                 } else if (it.game.isCustom) {
                     val parent = it.soundHandle.file().resolve("../")
-                    if (parent.isDirectory && it.id.substringAfterLast('/') !in parent.list().map { it.substringAfterLast('/').substringBeforeLast(".ogg") }) {
+                    if (parent.isDirectory && it.id.substringAfterLast('/') !in parent.list().map { n -> n.substringAfterLast('/').substringBeforeLast(".ogg") }) {
                         errors += "Handle has wrong casing for ${it.id}: ${it.soundHandle}"
                     }
                 }
@@ -299,13 +299,13 @@ object GameRegistry : Disposable {
                         Toolboks.LOGGER.warn("Verification message for ${it.game.id}:\n${it.message}")
                     }
 
-                    Thread.sleep(250L)
+                    delay(250L)
 
                     Toolboks.LOGGER.info(
                             "Registry checked in ${(System.nanoTime() - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
-                        Thread.sleep(500L)
+                        delay(500L)
 
                         class RegistryVerificationError : RuntimeException()
 
@@ -531,12 +531,6 @@ object GameRegistry : Disposable {
             }
 
             return getProgress()
-        }
-
-        fun loadBlocking() {
-            while (!ready) {
-                loadOne()
-            }
         }
 
         fun loadModdingMetadata(ignoreIfFailure: Boolean): Boolean {
