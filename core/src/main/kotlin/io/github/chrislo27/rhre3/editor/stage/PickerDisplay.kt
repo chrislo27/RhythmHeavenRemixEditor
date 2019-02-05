@@ -12,9 +12,7 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
 import io.github.chrislo27.toolboks.ui.UIPalette
-import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
-import io.github.chrislo27.toolboks.util.gdxutils.prepareStencilMask
-import io.github.chrislo27.toolboks.util.gdxutils.useStencilMask
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlin.math.absoluteValue
 
 
@@ -39,27 +37,44 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
             shapeRenderer.rect(location.realX, location.realY, location.realWidth, location.realHeight)
             shapeRenderer.end()
         }.useStencilMask {
-                    val font = editor.main.defaultBorderedFont
-                    val sectionY = location.realHeight / number
-                    labels.forEachIndexed { index, label ->
-                        val half = number / 2
-                        if ((scrollValue - index).absoluteValue > half + 1){
-                            return@forEachIndexed
-                        }
-
-                        val selected = index == selection.currentIndex
-                        font.color = if (selected && editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else label.color
-                        font.drawCompressed(batch, label.string,
-                                            location.realX,
-                                            location.realY + location.realHeight / 2 + font.capHeight / 2
-                                                    + sectionY * (scrollValue - index),
-                                            location.realWidth, Align.left)
-                    }
-
-                    font.setColor(1f, 1f, 1f, 1f)
+            val font = editor.main.defaultBorderedFont
+            val sectionY = location.realHeight / number
+            labels.forEachIndexed { index, label ->
+                val half = number / 2
+                if ((scrollValue - index).absoluteValue > half + 1) {
+                    return@forEachIndexed
                 }
+
+                val selected = index == selection.currentIndex
+                font.color = if (selected && editor.currentTool == Tool.SELECTION) Editor.SELECTED_TINT else label.color
+                val mainWidth = font.getTextWidth(label.main)
+                val availableWidth = location.realWidth
+                val drawX = location.realX
+                val drawY = location.realY + location.realHeight / 2 + sectionY * (scrollValue - index)
+                if (label.sub.isEmpty()) {
+                    font.drawCompressed(batch, label.main, drawX, drawY + font.capHeight / 2, availableWidth, Align.left)
+                } else {
+                    val subScale = 0.75f
+                    font.scaleMul(subScale)
+                    val subWidth = font.getTextWidth(label.sub)
+                    val totalWidth = mainWidth + subWidth + font.getTextWidth(" ")
+                    font.scaleMul(1f / subScale)
+                    val oldScaleX = font.scaleX
+                    val oldScaleY = font.scaleY
+                    val scaleFactor = if (totalWidth > availableWidth) availableWidth / totalWidth else 1f
+                    val oldCapHeight = font.capHeight
+                    font.data.scaleX = scaleFactor * oldScaleX
+                    font.draw(batch, label.main, drawX, drawY + oldCapHeight / 2, availableWidth, Align.left, false)
+                    font.scaleMul(subScale)
+                    font.draw(batch, " " + label.sub, drawX + mainWidth * scaleFactor, drawY - oldCapHeight / 2 + font.capHeight, availableWidth, Align.left, false)
+                    font.data.setScale(oldScaleX, oldScaleY)
+                }
+            }
+
+            font.setColor(1f, 1f, 1f, 1f)
+        }
     }
 
-    data class Label(var string: String, var color: Color)
+    data class Label(var main: String, var sub: String, var color: Color)
 
 }

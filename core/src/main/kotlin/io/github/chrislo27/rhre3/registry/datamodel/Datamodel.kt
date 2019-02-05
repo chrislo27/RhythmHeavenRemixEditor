@@ -15,7 +15,7 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     abstract fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*>
 
     var hidden: Boolean = false
-    open val pickerName: String = name
+    open val pickerName: PickerName = name.toPickerName()
     val newlinedName: String by lazy { name.replace(" - ", "\n") }
     @Suppress("LeakingThis")
     val possibleBaseBpm: ClosedRange<Float>? by lazy(this::checkBaseBpm)
@@ -43,3 +43,7 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     }
 
 }
+
+data class PickerName(val main: String, val sub: String = "")
+
+fun String.toPickerName() = PickerName(this, "")

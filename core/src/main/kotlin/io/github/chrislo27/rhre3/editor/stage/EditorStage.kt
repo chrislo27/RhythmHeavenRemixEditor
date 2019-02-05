@@ -359,18 +359,23 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 val objects = currentDatamodelList.list
 
                 objects.forEachIndexed { index, datamodel ->
-                    var text = datamodel.pickerName
+                    val pickerName = datamodel.pickerName
                     var color = Color.WHITE
                     val label: PickerDisplay.Label = pickerDisplay.labels.getOrAdd(index) {
-                        PickerDisplay.Label("", Color.WHITE)
-                    }
-                    if (Toolboks.debugMode) {
-                        text += " [GRAY](${datamodel.id})[]"
+                        PickerDisplay.Label("", "", Color.WHITE)
                     }
                     if (index != currentDatamodelList.currentIndex && datamodel is Cue) {
                         color = Editor.CUE_PATTERN_COLOR
                     }
-                    label.string = text
+                    label.main = pickerName.main
+                    label.sub = pickerName.sub
+                    if (Toolboks.debugMode) {
+                        if (label.sub.isEmpty()) { // faster than trim()
+                            label.sub += "[GRAY](${datamodel.id})[]"
+                        } else {
+                            label.sub += " [GRAY](${datamodel.id})[]"
+                        }
+                    }
                     label.color = color
                 }
                 while (pickerDisplay.labels.size > objects.size) {

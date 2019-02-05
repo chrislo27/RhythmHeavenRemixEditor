@@ -10,10 +10,8 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.git.SfxDbInfoObject
 import io.github.chrislo27.rhre3.modding.ModdingMetadata
-import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
-import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
+import io.github.chrislo27.rhre3.playalong.PlayalongChars
+import io.github.chrislo27.rhre3.registry.datamodel.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 import io.github.chrislo27.rhre3.registry.json.*
@@ -33,6 +31,7 @@ object GameRegistry : Disposable {
     const val ICON_FILENAME: String = "icon.png"
     const val SPECIAL_ENTITIES_GAME_ID: String = "special"
     const val END_REMIX_ENTITY_ID: String = "special_endEntity"
+    const val PLAYALONG_GAME_ID: String = "specialPlayalong"
     const val CUSTOM_PREFIX: String = "custom_"
     private const val MISSING_GAME_ICON_PATH = "images/gameicon/missing.png"
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
@@ -494,18 +493,23 @@ object GameRegistry : Disposable {
 
         private fun addSpecialGeneratedGames() {
             val playalongObjs = mutableListOf<Datamodel>()
-            val playalongGame = Game("specialPlayable", "Playalong Input Entities", specialGame.series,
+            val playalongGame = Game(PLAYALONG_GAME_ID, "Playalong Input Entities", specialGame.series,
                                      playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
             // TODO finalize the input types
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press", listOf(), "Press", false).also {
-            }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressHold", listOf(), "Press and Hold", true).also {
-            }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_pressRelease", listOf(), "Press and Release", true).also {
-            }
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releasePress", listOf(), "Release and Press", true).also {
-            }
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A", listOf(),
+                                            "Press ${PlayalongChars.FILLED_A}", false)
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_B", listOf(),
+                                            "Press ${PlayalongChars.FILLED_B}", false)
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A_or_Dpad", listOf(),
+                                            "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false)
+
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_R}", false,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_R}", "[LIGHT_GRAY](Space Dance \"and pose\")[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_down", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_D}", false,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](Space Dance \"let's sit down\")[]"))
 
             addGameAndObjects(playalongGame)
         }
