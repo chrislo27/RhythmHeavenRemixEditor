@@ -497,19 +497,38 @@ object GameRegistry : Disposable {
                                      playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
             // TODO finalize the input types
+            // Press
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A", listOf(),
                                             "Press ${PlayalongChars.FILLED_A}", false)
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_B", listOf(),
                                             "Press ${PlayalongChars.FILLED_B}", false)
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A_or_Dpad", listOf(),
-                                            "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false)
-
+                                            "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Shoot-'em-Up, First Contact)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD_R}", false,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_R}", "[LIGHT_GRAY](Space Dance \"and pose\")[]"))
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_R}", "[LIGHT_GRAY](ex: Space Dance \"and pose\")[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_down", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD_D}", false,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](Space Dance \"let's sit down\")[]"))
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](ex: Space Dance \"let's sit down\")[]"))
+
+            // Hold
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_hold_A", listOf(),
+                                            "Hold ${PlayalongChars.FILLED_A}", false,
+                                            pickerName = PickerName("Hold ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Fillbots, Screwbot Factory)[]"))
+
+            // Release then hold
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releaseAndHold_A", listOf(),
+                                            "Release and Hold ${PlayalongChars.FILLED_A}", false,
+                                            pickerName = PickerName("Release and Hold ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Glee Club)[]"))
+
+            // Long press
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_A_or_Dpad", listOf(),
+                                            "Long Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false,
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Rhythm Tweezers long pull)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_B", listOf(),
+                                            "Long Press ${PlayalongChars.FILLED_B}", false,
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Samurai Slice (Fever) demon horde)[]"))
 
             addGameAndObjects(playalongGame)
         }
