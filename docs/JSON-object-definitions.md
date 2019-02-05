@@ -138,6 +138,14 @@ have the group value be `Glee Club (Megamix)` to be grouped with other
 data objects that also have the same group value. Games with `groupDefault`
 set to true will appear earlier in the variant list.
 
+#### Reserved Game IDs
+The IDs below are reserved and cannot be overwritten.
+
+| ID | Name | Since |
+|----|------|-------|
+| `special` | Special Entities | v3.0.0 |
+| `specialPlayalong` | Playalong Input Entities | v3.17.0 |
+
 ## `CuePointerObject` structure
 ```json
 {
@@ -174,7 +182,7 @@ Below is a list of potential properties:
 | Entity Type | Field Name | Field Type | Field Values |
 |-------------|------------|------------|--------------|
 | `subtitleEntity` | `subtitleText` | `string` | &lt;user-defined&gt; |
-| `playalongEntity | `playalongInput` | `string` | See `PlayalongInput.kt` |
+| `playalongEntity` | `playalongInput` | `string` | See `PlayalongInput.kt` |
 
 Example:<br>
 ```json
