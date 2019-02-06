@@ -8,6 +8,11 @@ enum class PlayalongMethod {
     LONG_PRESS,
     RELEASE_AND_HOLD;
 
+//    TAP,
+//    QUICK_TAP,
+//    FLICK,
+//    SLIDE;
+
     companion object {
         val VALUES = values().toList()
         private val ID_MAP: Map<String, PlayalongMethod> = VALUES.associateBy { it.name }

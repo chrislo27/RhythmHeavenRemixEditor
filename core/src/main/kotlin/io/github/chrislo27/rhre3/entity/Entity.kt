@@ -99,6 +99,8 @@ abstract class Entity(val remix: Remix) {
         }
     }
 
+    open fun getHoverText(inSelection: Boolean): String? = null
+
     open fun saveData(objectNode: ObjectNode) {
         objectNode.put("beat", bounds.x)
                 .put("track", bounds.y.toInt())

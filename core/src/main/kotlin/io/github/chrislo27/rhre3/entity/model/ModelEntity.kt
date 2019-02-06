@@ -34,8 +34,8 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     open val attemptTextOnScreen: Boolean
         get() = true
     val isSpecialEntity: Boolean = datamodel.game.isSpecial
-    var needsNameTooltip: Boolean = false
-        private set
+    open var needsNameTooltip: Boolean = false
+        protected set
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)

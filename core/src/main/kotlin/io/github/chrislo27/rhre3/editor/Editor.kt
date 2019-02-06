@@ -35,7 +35,6 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
-import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
@@ -1107,7 +1106,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val duration = remix.tempos.linearBeatsToSeconds(entity.bounds.x + entity.bounds.width) - remix.tempos.linearBeatsToSeconds(entity.bounds.x)
                 output += "${(charCount / duration).roundToInt()} CPS"
             }
-            if (entity in selection) {
+            val inSelection = entity in selection
+            if (inSelection) {
                 if (scrollMode == ScrollMode.VOLUME) {
                     if (entity is IVolumetric && (entity.isVolumetric || entity.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
                         output += Localization["editor.msg.volume", entity.volumePercent]
@@ -1122,6 +1122,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
                     }
                 }
+            }
+            val hoverText = entity.getHoverText(inSelection)
+            if (hoverText != null && hoverText.isNotEmpty()) {
+                output += hoverText
             }
 
             if (ModdingUtils.moddingToolsEnabled && entity is ModelEntity<*>) {

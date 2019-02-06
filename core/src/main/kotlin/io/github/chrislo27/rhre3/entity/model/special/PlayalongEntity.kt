@@ -16,10 +16,17 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
 
     val playalongInput: PlayalongInput get() = datamodel.playalongInput
     val playalongMethod: PlayalongMethod get() = datamodel.playalongMethod
+    override var needsNameTooltip: Boolean
+        get() = false
+        set(_) {}
 
     init {
         this.bounds.width = if (playalongMethod == PlayalongMethod.PRESS) 0.5f else 1f
         this.bounds.height = 1f
+    }
+
+    override fun getHoverText(inSelection: Boolean): String? {
+        return datamodel.pickerName.main
     }
 
     override fun getRenderColor(): Color {
