@@ -163,4 +163,6 @@ class TapeMeasureObject : NamedIDObject()
 @JsonTypeName("playalongEntity")
 class PlayalongEntityObject : NamedIDObject() {
     var stretchable: Boolean = false
+    var method: String? = null
+    var input: String? = null
 }

@@ -128,6 +128,8 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.name = datamodel.name
 
                     it.stretchable = datamodel.stretchable
+                    it.input = datamodel.playalongInput.id
+                    it.method = datamodel.playalongMethod.name
                 }
             }
             else -> error("Datamodel not defined for JSON mapping")

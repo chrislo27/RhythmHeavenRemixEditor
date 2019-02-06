@@ -182,7 +182,6 @@ Below is a list of potential properties:
 | Entity Type | Field Name | Field Type | Field Values |
 |-------------|------------|------------|--------------|
 | `subtitleEntity` | `subtitleText` | `string` | &lt;user-defined&gt; |
-| `playalongEntity` | `playalongInput` | `string` | See `PlayalongInput.kt` |
 
 Example:<br>
 ```json
