@@ -501,29 +501,17 @@ object GameRegistry : Disposable {
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
             // Press
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A", listOf(),
-                                            "Press ${PlayalongChars.FILLED_A}", false, PlayalongInput.BUTTON_A, PlayalongMethod.PRESS)
+                                            "Press ${PlayalongChars.FILLED_A}", false,
+                                            PlayalongInput.BUTTON_A, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Fruit Basket)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_B", listOf(),
-                                            "Press ${PlayalongChars.FILLED_B}", false, PlayalongInput.BUTTON_B, PlayalongMethod.PRESS)
+                                            "Press ${PlayalongChars.FILLED_B}", false,
+                                            PlayalongInput.BUTTON_B, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Ringside \"pose for the fans\")[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A_or_Dpad", listOf(),
                                             "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false,
                                             PlayalongInput.BUTTON_A_OR_DPAD, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Shoot-'em-Up, First Contact)[]"))
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
-                                            "Press ${PlayalongChars.FILLED_DPAD_R}", false,
-                                            PlayalongInput.BUTTON_DPAD_RIGHT, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_R}", "[LIGHT_GRAY](ex: Space Dance \"and pose\")[]"))
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_down", listOf(),
-                                            "Press ${PlayalongChars.FILLED_DPAD_D}", false,
-                                            PlayalongInput.BUTTON_DPAD_DOWN, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](ex: Space Dance \"let's sit down\")[]"))
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_left", listOf(),
-                                            "Press ${PlayalongChars.FILLED_DPAD_L}", false,
-                                            PlayalongInput.BUTTON_DPAD_LEFT, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_L}", "[LIGHT_GRAY](ex: Sick Beats)[]"))
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_up", listOf(),
-                                            "Press ${PlayalongChars.FILLED_DPAD_U}", false,
-                                            PlayalongInput.BUTTON_DPAD_UP, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](ex: Sick Beats)[]"))
 
             // Hold
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_hold_A", listOf(),
@@ -546,6 +534,26 @@ object GameRegistry : Disposable {
                                             "Long Press ${PlayalongChars.FILLED_B}", true,
                                             PlayalongInput.BUTTON_B, PlayalongMethod.LONG_PRESS,
                                             pickerName = PickerName("Long Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Samurai Slice (Fever) demon horde)[]"))
+
+            // Less commonly used
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_R}", false,
+                                            PlayalongInput.BUTTON_DPAD_RIGHT, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_R}", "[LIGHT_GRAY](ex: Space Dance \"and pose\")[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_down", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_D}", false,
+                                            PlayalongInput.BUTTON_DPAD_DOWN, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](ex: Space Dance \"let's sit down\")[]"))
+
+            // Not recommended to use
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_left", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_L}", false,
+                                            PlayalongInput.BUTTON_DPAD_LEFT, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_L}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_up", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD_U}", false,
+                                            PlayalongInput.BUTTON_DPAD_UP, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
 
             addGameAndObjects(playalongGame)
         }
