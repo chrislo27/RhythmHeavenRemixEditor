@@ -736,7 +736,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 remix.camera.position.x = remix.beat + halfWidth
             }
 
-            if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
+            if (stage.playalongStage.visible || main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
                 remix.camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds) + remix.camera.viewportWidth * 0.25f
             }
