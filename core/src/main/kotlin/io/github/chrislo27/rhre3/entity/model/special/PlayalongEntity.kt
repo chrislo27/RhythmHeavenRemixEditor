@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.special
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.playalong.InputAction
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.PlayalongModel
@@ -52,6 +53,10 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
     }
 
     override fun onEnd() {
+    }
+
+    fun getInputAction(): InputAction {
+        return InputAction(bounds.x, bounds.width, playalongInput, playalongMethod)
     }
 
 }

@@ -521,6 +521,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
+        // Playalong
+        if (stage.playalongStage.visible) {
+            this.renderPlayalong(batch, beatRange)
+        }
+
         // waveform
         if (SoundSystem.system == BeadsSoundSystem && remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
             this.renderWaveform(batch, oldCameraX, oldCameraY, adjustedCameraX, adjustedCameraY)
