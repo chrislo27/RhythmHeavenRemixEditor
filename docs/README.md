@@ -217,7 +217,8 @@ The Swing tool is covered [in its own article here.](Swing-tool.md)
 ## Ruler tool
 The Ruler tool helps you measure beat distances. This is mostly intended for
 modding Rhythm Heaven games. Hold `LEFT CLICK` to draw the ruler.
-Holding `SHIFT` disables the snapping.
+Holding `SHIFT` disables the snapping. Pressing `RIGHT CLICK` on an entity will
+copy its ID to the clipboard.
 
 ![Screenshot](https://user-images.githubusercontent.com/6299069/47955296-3d635600-df53-11e8-8738-d0b4f1dad38f.png)
 

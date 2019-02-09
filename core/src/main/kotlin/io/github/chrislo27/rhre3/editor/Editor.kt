@@ -1447,10 +1447,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool == Tool.RULER) {
                 val clickOccupation = clickOccupation
-                if (clickOccupation == ClickOccupation.None && button == Input.Buttons.LEFT) {
-                    // Begin ruler
-                    val newClick = ClickOccupation.RulerMeasuring(this, Vector2(MathHelper.snapToNearest(mouseVector.x, if (shift) 0f else snap), mouseVector.y))
-                    this.clickOccupation = newClick
+                if (clickOccupation == ClickOccupation.None) {
+                    if (button == Input.Buttons.LEFT) {
+                        // Begin ruler
+                        val newClick = ClickOccupation.RulerMeasuring(this, Vector2(MathHelper.snapToNearest(mouseVector.x, if (shift) 0f else snap), mouseVector.y))
+                        this.clickOccupation = newClick
+                    } else if (button == Input.Buttons.RIGHT) {
+                        val firstEntityInMouse: ModelEntity<*>? = remix.entities.firstOrNull { mouseVector in it.bounds && it is ModelEntity<*> } as ModelEntity<*>?
+                        firstEntityInMouse?.let {
+                            val id = it.datamodel.id
+                            Gdx.app.clipboard.contents = id
+                            Toolboks.LOGGER.info("Copied [$id] to clipboard")
+                        }
+                    }
                 }
             }
         } else if (stage.patternAreaStage.isMouseOver() && stage.patternAreaStage.visible
