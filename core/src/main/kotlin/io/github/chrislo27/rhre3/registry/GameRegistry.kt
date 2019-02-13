@@ -117,7 +117,10 @@ object GameRegistry : Disposable {
         val version: Int
             get() = dbInfoObj.version
         val editorVersion: Version
+
         lateinit var specialGame: Game
+            private set
+        lateinit var playalongGame: Game
             private set
 
         private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(false)
@@ -556,6 +559,7 @@ object GameRegistry : Disposable {
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
 
             addGameAndObjects(playalongGame)
+            this.playalongGame = playalongGame
         }
 
         fun getProgress(): Float {
