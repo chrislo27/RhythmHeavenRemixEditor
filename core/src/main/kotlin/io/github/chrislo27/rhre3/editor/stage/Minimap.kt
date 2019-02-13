@@ -52,7 +52,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         val furthest: Entity? = remix.entities.maxBy { it.bounds.x + it.bounds.width }
         val maxX: Float = if (furthest == null) remix.camera.viewportWidth else Math.min(
-                furthest.bounds.x + furthest.bounds.width, remix.duration)
+                (furthest.bounds.x + furthest.bounds.width).coerceAtLeast(0f), remix.duration)
 
         shapeRenderer.prepareStencilMask(batch) {
             Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT)
