@@ -62,4 +62,11 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
 
     }
 
+    override fun keyUp(keycode: Int): Boolean {
+        return super.keyUp(keycode)
+    }
+
+    override fun keyDown(keycode: Int): Boolean {
+        return super.keyDown(keycode)
+    }
 }
