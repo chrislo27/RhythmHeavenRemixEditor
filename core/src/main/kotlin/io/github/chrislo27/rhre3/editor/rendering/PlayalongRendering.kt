@@ -11,7 +11,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     largeFont.scaleFont(camera)
     largeFont.setColor(1f, 1f, 1f, 1f) // TODO
 
-    for (inputAction in remix.inputActions) {
+    for (inputAction in remix.playalong.inputActions) {
         if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) continue
 
         // For non-instantaneous inputs, draw a long line

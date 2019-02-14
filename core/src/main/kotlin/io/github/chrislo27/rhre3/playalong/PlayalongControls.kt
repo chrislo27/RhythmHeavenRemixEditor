@@ -15,4 +15,18 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
 
     }
 
+    fun toInputMap(): Map<PlayalongInput, Int> {
+        return linkedMapOf(PlayalongInput.BUTTON_A to buttonA,
+                     PlayalongInput.BUTTON_B to buttonB,
+                     PlayalongInput.BUTTON_DPAD_UP to buttonUp,
+                     PlayalongInput.BUTTON_DPAD_DOWN to buttonDown,
+                     PlayalongInput.BUTTON_DPAD_LEFT to buttonLeft,
+                     PlayalongInput.BUTTON_DPAD_RIGHT to buttonRight)
+    }
+
+    fun toInputString(): String {
+        val inputMap = toInputMap()
+        return inputMap.entries.joinToString(separator = "  [GRAY]|[]  ") { (k, v) -> "${k.longDisplayText} - ${Input.Keys.toString(v)}"}
+    }
+
 }

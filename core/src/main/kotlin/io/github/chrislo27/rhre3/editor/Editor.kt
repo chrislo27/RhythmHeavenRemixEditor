@@ -966,6 +966,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             msgBuilder.append(Localization["editor.tapalong.info"])
         } else if (stage.playalongStage.visible) {
             msgBuilder.append(Localization["editor.playalong.info"])
+            ctrlBuilder.append(main.playalongControls.toInputString())
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {

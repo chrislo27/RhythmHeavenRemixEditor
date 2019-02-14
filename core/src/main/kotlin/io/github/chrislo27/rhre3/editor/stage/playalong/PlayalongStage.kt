@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
@@ -19,6 +20,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     : Stage<EditorScreen>(parent, camera) {
 
     private val remix: Remix get() = editor.remix
+    private val playalong: Playalong get() = remix.playalong
     private val main: RHRE3Application get() = editor.main
 
     val lowerStage: Stage<EditorScreen>
@@ -36,7 +38,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
         lowerStage.elements += ColourPane(lowerStage, lowerStage).apply {
             this.colour.set(0f, 0f, 0f, 0.65f)
         }
-        noEntitiesLabel = object :  TextLabel<EditorScreen>(palette, lowerStage, lowerStage){
+        noEntitiesLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun getRealText(): String {
                 return if (!isLocalizationKey) super.getRealText() else Localization[text, "[#DDDDDD]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.playalongGame.group} ➡ ${GameRegistry.data.playalongGame.name}[]"]
             }
@@ -55,7 +57,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     }
 
     fun onShow() {
-        noEntitiesLabel.visible = remix.toInputActionList().isEmpty()
+        noEntitiesLabel.visible = playalong.toInputActionList().isEmpty()
     }
 
     fun onHide() {
@@ -63,10 +65,14 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     }
 
     override fun keyUp(keycode: Int): Boolean {
-        return super.keyUp(keycode)
+        val ret = super.keyUp(keycode)
+        if (ret) return ret
+        return playalong.onKeyUp(keycode)
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        return super.keyDown(keycode)
+        val ret = super.keyDown(keycode)
+        if (ret) return ret
+        return playalong.onKeyDown(keycode)
     }
 }

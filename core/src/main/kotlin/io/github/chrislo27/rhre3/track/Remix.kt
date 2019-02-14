@@ -19,9 +19,12 @@ import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
-import io.github.chrislo27.rhre3.entity.model.special.*
+import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
+import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
+import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
-import io.github.chrislo27.rhre3.playalong.InputAction
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -621,7 +624,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val currentShakeEntities: MutableList<ShakeEntity> = mutableListOf()
 
     val gameSections: NavigableMap<Float, GameSection> = TreeMap()
-    var inputActions: List<InputAction> = listOf() // FIXME
+    var playalong: Playalong = Playalong(this)
+        private set
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -771,8 +775,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        // FIXME
-        inputActions = toInputActionList()
+        playalong = Playalong(this)
     }
 
     fun getLastEntityPoint(): Float {
@@ -884,13 +887,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         music?.dispose()
         textureCache.values.forEach(Texture::dispose)
         textureCache.clear()
-    }
-
-    /**
-     * Returns a *sorted* list of [InputAction]s. May be empty.
-     */
-    fun toInputActionList(): List<InputAction> {
-        return entities.filterIsInstance<PlayalongEntity>().map(PlayalongEntity::getInputAction).sorted()
     }
 
 }
