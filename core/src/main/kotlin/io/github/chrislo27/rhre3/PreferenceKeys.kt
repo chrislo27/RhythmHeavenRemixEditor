@@ -49,6 +49,7 @@ object PreferenceKeys {
     val READ_NEWS = "readNewsArticles"
     val PADDLER_LOADING_ICON = "paddlerLoadingIcon"
     val VIEWED_PARTNERS_VERSION = "viewedPartnersVersion"
+    val PLAYALONG_CONTROLS = "playalongControls"
 
     val EVENT_PREFIX = "event_"
     val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"

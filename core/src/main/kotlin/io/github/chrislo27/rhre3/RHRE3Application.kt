@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
+import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
@@ -119,6 +120,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         private set
 
     var advancedOptions: Boolean = false
+    var playalongControls: PlayalongControls = PlayalongControls()
 
     private val rainbowColor: Color = Color()
 
@@ -177,6 +179,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         ModdingUtils.currentGame = ModdingGame.VALUES.find { it.id == preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingGame.DEFAULT_GAME.id) } ?: ModdingGame.DEFAULT_GAME
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
+        playalongControls = try {
+            JsonHandler.fromJson(preferences.getString(PreferenceKeys.PLAYALONG_CONTROLS, "{}"))
+        } catch (ignored: Exception) {
+            PlayalongControls()
+        }
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
@@ -342,8 +349,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     override fun dispose() {
         super.dispose()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
-        preferences.putString(PreferenceKeys.MIDI_NOTE,
-                              preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
+        preferences.putString(PreferenceKeys.MIDI_NOTE, preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(playalongControls))
         preferences.flush()
         try {
             GameRegistry.dispose()
