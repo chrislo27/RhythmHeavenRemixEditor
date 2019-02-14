@@ -34,6 +34,8 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
         DiscordHelper.updatePresence(PresenceState.InEditor)
         refreshPresence = presenceCycle
+
+        editor.updateMessageLabel()
     }
 
     override fun hide() {
