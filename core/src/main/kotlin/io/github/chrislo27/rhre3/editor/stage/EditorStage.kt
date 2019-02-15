@@ -724,7 +724,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                       Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
-        playalongStage = PlayalongStage(editor, this@EditorStage, palette, this, camera).apply {
+        playalongStage = PlayalongStage(editor, palette, this, camera).apply {
 //            this.location.set(0f,
 //                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
 //                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)

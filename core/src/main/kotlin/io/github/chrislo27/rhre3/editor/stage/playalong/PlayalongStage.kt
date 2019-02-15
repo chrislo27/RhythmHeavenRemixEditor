@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -15,7 +14,7 @@ import io.github.chrislo27.toolboks.ui.*
 import kotlin.properties.Delegates
 
 
-class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
+class PlayalongStage(val editor: Editor,
                      val palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
