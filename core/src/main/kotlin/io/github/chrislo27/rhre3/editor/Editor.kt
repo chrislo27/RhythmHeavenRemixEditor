@@ -411,13 +411,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val oldCameraY = camera.position.y
         val adjustedCameraX: Float
         val adjustedCameraY: Float
-        val playalongMonsterZoom = (remix.seconds / remix.tempos.beatsToSeconds(remix.duration)).coerceIn(0f, 1f)
         if (updateDelta) {
             val transitionTime = Gdx.graphics.deltaTime / 0.15f
             val cameraYNormal = calculateNormalCameraY()
             val cameraZoomNormal = (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f
             val cameraYPlayalong = calculatePlayalongCameraY()
-            val cameraZoomPlayalong = if (remix.playState != STOPPED) MathUtils.lerp(1f, 10f, playalongMonsterZoom) else 1f
+            val cameraZoomPlayalong = 1f
             val isPlayalong = stage.playalongStage.visible
             val cameraY = if (!isPlayalong) cameraYNormal else cameraYPlayalong
             val cameraZoom = if (!isPlayalong) cameraZoomNormal else cameraZoomPlayalong
@@ -556,25 +555,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
             this.renderOtherUI(batch, beatRange, font)
-        }
-
-        if (otherUI) {
-            // playalong monster zoom
-            if (remix.playState != STOPPED) {
-                batch.setColor(0f, 0f, 0f, 1f)
-
-                val left = camera.position.x - camera.viewportWidth / 2 * camera.zoom
-                val right = camera.position.x + camera.viewportWidth / 2 * camera.zoom
-                val bottom = camera.position.y - camera.viewportHeight / 2 * camera.zoom
-                val top = camera.position.y + camera.viewportHeight / 2 * camera.zoom
-
-                batch.fillRect(left, bottom, camera.position.x - camera.viewportWidth / 2 - left, top - bottom)
-                batch.fillRect(right, bottom, -(camera.position.x - camera.viewportWidth / 2 - left), top - bottom)
-                batch.fillRect(left, bottom, right - left, camera.position.y - camera.viewportHeight / 2 - bottom)
-                batch.fillRect(left, top, right - left, -(camera.position.y - camera.viewportHeight / 2 - bottom))
-
-                batch.setColor(1f, 1f, 1f, 1f)
-            }
         }
 
         font.unscaleFont()
