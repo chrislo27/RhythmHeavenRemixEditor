@@ -34,6 +34,7 @@ object GameRegistry : Disposable {
     const val SPECIAL_ENTITIES_GAME_ID: String = "special"
     const val END_REMIX_ENTITY_ID: String = "special_endEntity"
     const val PLAYALONG_GAME_ID: String = "specialPlayalong"
+    const val SKILL_STAR_ID: String = "extraSFX/skillStar"
     const val CUSTOM_PREFIX: String = "custom_"
     private const val MISSING_GAME_ICON_PATH = "images/gameicon/missing.png"
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()

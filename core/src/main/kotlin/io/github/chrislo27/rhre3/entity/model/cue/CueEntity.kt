@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.cue
 import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.*
+import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -42,6 +43,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     private val cue: Cue = datamodel
     private val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
+    private val isSkillStar: Boolean = cue.id == GameRegistry.SKILL_STAR_ID
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
@@ -87,6 +89,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override val isVolumetric: Boolean = true
 
     override fun onStart() {
+        if (isSkillStar && remix.editor.stage.playalongStage.visible) return // Do not play if in playalong mode
+
         soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch(), rate = cue.getBaseBpmRate(),
                                        volume = volume)
 
