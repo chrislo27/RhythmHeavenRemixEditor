@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.rendering
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
@@ -62,6 +63,12 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
         largeFont.drawCompressed(batch, inputAction.input.tallDisplayText, inputAction.beat, largeFont.capHeight, 1.5f, Align.left)
         largeFont.setColor(1f, 1f, 1f, 1f)
         largeFont.scaleMul(1f / scale)
+    }
+
+    if (playalong.skillStarEntity != null) {
+        largeFont.color = Color.YELLOW
+        largeFont.drawCompressed(batch, "★", playalong.skillStarEntity.bounds.x, 2.5f + largeFont.capHeight, 1.5f, Align.left)
+        largeFont.setColor(1f, 1f, 1f, 1f)
     }
 
     batch.setColor(1f, 1f, 1f, 1f)
