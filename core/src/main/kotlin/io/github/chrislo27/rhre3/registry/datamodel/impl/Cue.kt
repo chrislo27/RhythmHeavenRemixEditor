@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
+import io.github.chrislo27.rhre3.registry.datamodel.PickerName
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.track.Remix
@@ -32,6 +33,9 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     val endingSoundCue: Cue?
         get() =
             GameRegistry.data.objectMap[endingSound] as Cue?
+
+    override val pickerName: PickerName
+        get() = if (id != GameRegistry.SKILL_STAR_ID) super.pickerName else super.pickerName.copy(sub = "[LIGHT_GRAY](usable in Playalong)[]")
 
     init {
         if (!soundHandle.exists()) {
