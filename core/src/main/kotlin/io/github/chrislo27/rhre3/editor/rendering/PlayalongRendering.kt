@@ -9,18 +9,48 @@ import kotlin.math.roundToInt
 fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     val largeFont = this.main.defaultBorderedFontLarge
     largeFont.scaleFont(camera)
-    largeFont.setColor(1f, 1f, 1f, 1f) // TODO
+    val playalong = remix.playalong
 
-    for (inputAction in remix.playalong.inputActions) {
+    for (inputAction in playalong.inputActions) {
         if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) continue
+        largeFont.setColor(1f, 1f, 1f, 1f)
 
-        // For non-instantaneous inputs, draw a long line
+        // Backing line
         if (!inputAction.isInstantaneous) {
             batch.setColor(0f, 0f, 0f, 1f)
             batch.fillRect(inputAction.beat + 0.25f, 0.5f, inputAction.duration - 0.25f, 1f)
         }
 
+        val results = playalong.inputted[inputAction]
+        if (results != null && results.results.isNotEmpty()) {
+            if (!results.results.first().missed) {
+                largeFont.setColor(0f, 1f, 0f, 1f)
+            } else {
+                largeFont.setColor(1f, 0f, 0f, 1f)
+            }
+
+            if (results.missed) {
+                batch.setColor(1f, 0f, 0f, 1f)
+            } else {
+                batch.setColor(0f, 1f, 0f, 1f)
+            }
+        }
+
+        // For non-instantaneous inputs, draw a long line (progress)
+        if (!inputAction.isInstantaneous) {
+            val inProgress = playalong.inputsInProgress[inputAction]
+            val defWidth = inputAction.duration
+            val width = if (inProgress != null) {
+                batch.setColor(0f, 0f, 1f, 1f)
+                (remix.beat - inputAction.beat)
+            } else if (results != null) {
+                (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
+            } else 0f
+            batch.fillRect(inputAction.beat + 0.25f, 0.5f, width - 0.25f, 1f)
+        }
+
         largeFont.draw(batch, inputAction.input.displayText, inputAction.beat, largeFont.capHeight)
+        largeFont.setColor(1f, 1f, 1f, 1f)
     }
 
     batch.setColor(1f, 1f, 1f, 1f)

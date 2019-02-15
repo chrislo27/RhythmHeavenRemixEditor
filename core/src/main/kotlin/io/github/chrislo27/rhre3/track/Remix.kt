@@ -866,6 +866,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
+        playalong.frameUpdate()
+
         if (Math.floor(beat.toDouble()) > lastTickBeat) {
             lastTickBeat = Math.floor(beat.toDouble()).toInt()
             if (metronome) {

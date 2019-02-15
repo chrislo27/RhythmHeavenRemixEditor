@@ -57,7 +57,7 @@ class PlayalongStage(val editor: Editor, val editorStage: EditorStage,
     }
 
     fun onShow() {
-        noEntitiesLabel.visible = playalong.toInputActionList().isEmpty()
+        noEntitiesLabel.visible = playalong.inputActions.isEmpty()
     }
 
     fun onHide() {
