@@ -521,6 +521,10 @@ object GameRegistry : Disposable {
                                             "Hold ${PlayalongChars.FILLED_A}", true,
                                             PlayalongInput.BUTTON_A, PlayalongMethod.PRESS_AND_HOLD,
                                             pickerName = PickerName("Hold ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Fillbots, Screwbot Factory)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_hold_B", listOf(),
+                                            "Hold ${PlayalongChars.FILLED_B}", true,
+                                            PlayalongInput.BUTTON_B, PlayalongMethod.PRESS_AND_HOLD,
+                                            pickerName = PickerName("Hold ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Flock Step, Super Samurai Slice)[]"))
 
             // Release then hold
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releaseAndHold_A", listOf(),
