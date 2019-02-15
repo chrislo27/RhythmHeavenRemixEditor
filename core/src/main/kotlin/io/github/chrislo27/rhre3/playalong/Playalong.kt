@@ -53,14 +53,31 @@ class Playalong(val remix: Remix) {
         // or if two-stage inputs have expired at their ends
         val seconds = remix.seconds
 
-        // Check in progress inputs
+        // Check in progress inputs' trailing inputs
         inputsInProgress.entries.forEach { (input, firstResult) ->
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
-                val result = createInputResult(input, end = true)
+                val result = createInputResult(input, end = true, atSeconds = seconds)
                 inputted[input] = InputResults(input, listOf(firstResult.second, result))
                 onInput(input, result, false)
+            }
+        }
+        // Check entirely missed inputs' starting inputs
+        inputActions.forEach { input ->
+            if (input !in inputsInProgress.keys && input !in inputted.keys && seconds > remix.tempos.beatsToSeconds(input.beat) + MAX_OFFSET_SEC) {
+                val result = createInputResult(input, end = false, atSeconds = seconds)
+                val list = mutableListOf(result)
+                if (!input.isInstantaneous) {
+                    list += createInputResult(input, true, seconds)
+                }
+                inputted[input] = InputResults(input, list)
+                println("FAILED input - beat ${input.beat}, remix.seconds ${seconds}, ${remix.tempos.beatsToSeconds(input.beat) + MAX_OFFSET_SEC}")
+                println("  calculated offset: ${seconds - remix.tempos.beatsToSeconds(input.beat)} - result offset: ${result.offset}")
+                onInput(input, result, true)
+                if (list.size > 1) {
+                    onInput(input, list[1], false)
+                }
             }
         }
     }
