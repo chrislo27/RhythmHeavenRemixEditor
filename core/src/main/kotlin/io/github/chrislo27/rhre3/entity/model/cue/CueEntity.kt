@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 
@@ -88,9 +89,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
 
-    override fun onStart() {
-        if (isSkillStar && remix.editor.stage.playalongStage.visible) return // Do not play if in playalong mode
-
+    fun play() {
         soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch(), rate = cue.getBaseBpmRate(),
                                        volume = volume)
 
@@ -98,6 +97,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
                                                              pitch = getSemitonePitch(),
                                                              rate = cue.introSoundCue!!.getBaseBpmRate(),
                                                              volume = volume) ?: -1L
+    }
+
+    override fun onStart() {
+        if (isSkillStar && remix.editor.stage.playalongStage.visible && remix.main.screen is EditorScreen) {
+            return // Do not play if in playalong mode
+        }
+        play()
     }
 
     override fun whilePlaying() {
