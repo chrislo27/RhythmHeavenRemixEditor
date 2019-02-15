@@ -29,7 +29,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
         val inProgress = playalong.inputsInProgress[inputAction]
         if (inProgress != null) largeFont.setColor(0f, 0f, 1f, 1f)
         if (results != null && results.results.isNotEmpty()) {
-            if (!results.results.first().missed) {
+            if (!results.missed) {
                 largeFont.setColor(0f, 1f, 0f, 1f)
             } else {
                 largeFont.setColor(1f, 0f, 0f, 1f)
