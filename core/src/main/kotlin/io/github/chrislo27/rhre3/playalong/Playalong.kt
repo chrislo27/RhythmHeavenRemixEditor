@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
@@ -10,7 +11,7 @@ class Playalong(val remix: Remix) {
 
     companion object {
         val MAX_OFFSET_SEC: Float = 0.15f // Around 9 frames
-        val ACE_OFFSET: Float = 0.0417f // Around 2.5 frames
+        val ACE_OFFSET: Float = 0.0333333f // Around 2 frames
         val GOOD_OFFSET: Float = 0.085f // Around 5 frames
         val BARELY_OFFSET: Float = 0.125f // Around 7.5 frames
     }
@@ -27,6 +28,8 @@ class Playalong(val remix: Remix) {
      * For two-stage inputs. Value represents the result of the first part
      */
     val inputsInProgress: MutableMap<InputAction, Pair<Int, InputResult>> = mutableMapOf()
+
+    val skillStarEntity: CueEntity? = remix.entities.firstOrNull { it is CueEntity && it.isSkillStar } as CueEntity?
 
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
@@ -55,7 +58,9 @@ class Playalong(val remix: Remix) {
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
-                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true)))
+                val result = createInputResult(input, end = true)
+                inputted[input] = InputResults(input, listOf(firstResult.second, result))
+                onInput(input, result, false)
             }
         }
     }
@@ -83,12 +88,12 @@ class Playalong(val remix: Remix) {
                     PlayalongMethod.PRESS -> {
                         val result = createInputResult(searched, false)
                         inputted[searched] = InputResults(searched, listOf(result))
-                        onInput(searched, result)
+                        onInput(searched, result, true)
                     }
                     PlayalongMethod.LONG_PRESS, PlayalongMethod.PRESS_AND_HOLD -> {
                         val result = createInputResult(searched, false)
                         inputsInProgress[searched] = keycode to result
-                        onInput(searched, result)
+                        onInput(searched, result, true)
                     }
                     else -> {
                     }
@@ -97,7 +102,7 @@ class Playalong(val remix: Remix) {
                 if (searched.method == PlayalongMethod.RELEASE_AND_HOLD) {
                     val result = createInputResult(searched, false)
                     inputsInProgress[searched] = keycode to result
-                    onInput(searched, result)
+                    onInput(searched, result, true)
                 }
             }
         }
@@ -109,15 +114,22 @@ class Playalong(val remix: Remix) {
                 inputsInProgress.remove(input)
                 val result = createInputResult(input, end = true)
                 inputted[input] = InputResults(input, listOf(firstResult.second, result))
-                onInput(input, result)
+                onInput(input, result, false)
             }
         }
 
         return false
     }
 
-    fun onInput(inputAction: InputAction, inputResult: InputResult) {
+    fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
         println("Action at beat ${inputAction.beat} ${inputAction.method} ${inputAction.input.id} hit with offset ${inputResult.offset} - ${inputResult.timing}")
+        if (skillStarEntity != null && remix.seconds <= remix.tempos.beatsToSeconds(skillStarEntity.bounds.x) + MAX_OFFSET_SEC) {
+            if (inputResult.timing == InputTiming.ACE
+                    && ((start && MathUtils.isEqual(inputAction.beat, skillStarEntity.bounds.x))
+                            || (!start && !inputAction.isInstantaneous && MathUtils.isEqual(inputAction.beat + inputAction.duration, skillStarEntity.bounds.x)))) {
+                skillStarEntity.play()
+            }
+        }
     }
 
     fun onKeyDown(keycode: Int): Boolean {

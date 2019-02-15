@@ -43,8 +43,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     private val cue: Cue = datamodel
-    private val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
-    private val isSkillStar: Boolean = cue.id == GameRegistry.SKILL_STAR_ID
+    val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
+    val isSkillStar: Boolean = cue.id == GameRegistry.SKILL_STAR_ID
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
