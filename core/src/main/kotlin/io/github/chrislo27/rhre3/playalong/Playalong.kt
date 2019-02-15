@@ -4,13 +4,15 @@ import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
-import kotlin.math.absoluteValue
 
 
 class Playalong(val remix: Remix) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 0.15f
+        val MAX_OFFSET_SEC: Float = 0.15f // Around 9 frames
+        val ACE_OFFSET: Float = 0.0417f // Around 2.5 frames
+        val GOOD_OFFSET: Float = 0.085f // Around 5 frames
+        val BARELY_OFFSET: Float = 0.125f // Around 7.5 frames
     }
 
     /**
@@ -62,7 +64,7 @@ class Playalong(val remix: Remix) {
         var offset = atSeconds - remix.tempos.beatsToSeconds(target.beat + if (end) target.duration else 0f)
         if (target.method == PlayalongMethod.LONG_PRESS && offset > 0f)
             offset = 0f
-        return InputResult(offset, offset.absoluteValue > MAX_OFFSET_SEC)
+        return InputResult(offset)
     }
 
     private fun handleInput(down: Boolean, keycode: Int): Boolean {
@@ -78,16 +80,24 @@ class Playalong(val remix: Remix) {
         if (searched != null) {
             if (down) {
                 when (searched.method) {
-                    PlayalongMethod.PRESS ->
-                        inputted[searched] = InputResults(searched, listOf(createInputResult(searched, false)))
-                    PlayalongMethod.LONG_PRESS, PlayalongMethod.PRESS_AND_HOLD ->
-                        inputsInProgress[searched] = keycode to createInputResult(searched, false)
+                    PlayalongMethod.PRESS -> {
+                        val result = createInputResult(searched, false)
+                        inputted[searched] = InputResults(searched, listOf(result))
+                        onInput(searched, result)
+                    }
+                    PlayalongMethod.LONG_PRESS, PlayalongMethod.PRESS_AND_HOLD -> {
+                        val result = createInputResult(searched, false)
+                        inputsInProgress[searched] = keycode to result
+                        onInput(searched, result)
+                    }
                     else -> {
                     }
                 }
             } else {
                 if (searched.method == PlayalongMethod.RELEASE_AND_HOLD) {
-                    inputsInProgress[searched] = keycode to createInputResult(searched, false)
+                    val result = createInputResult(searched, false)
+                    inputsInProgress[searched] = keycode to result
+                    onInput(searched, result)
                 }
             }
         }
@@ -97,11 +107,17 @@ class Playalong(val remix: Remix) {
             if ((!down && keycode == firstResult.first && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
                     (down && keycode == firstResult.first && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
                 inputsInProgress.remove(input)
-                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true)))
+                val result = createInputResult(input, end = true)
+                inputted[input] = InputResults(input, listOf(firstResult.second, result))
+                onInput(input, result)
             }
         }
 
         return false
+    }
+
+    fun onInput(inputAction: InputAction, inputResult: InputResult) {
+        println("Action at beat ${inputAction.beat} ${inputAction.method} ${inputAction.input.id} hit with offset ${inputResult.offset} - ${inputResult.timing}")
     }
 
     fun onKeyDown(keycode: Int): Boolean {
