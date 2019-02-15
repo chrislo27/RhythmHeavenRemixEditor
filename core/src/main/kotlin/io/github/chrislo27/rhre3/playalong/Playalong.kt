@@ -4,13 +4,13 @@ import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
-import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 
 class Playalong(val remix: Remix) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 0.175f
+        val MAX_OFFSET_SEC: Float = 0.15f
     }
 
     /**
@@ -40,16 +40,7 @@ class Playalong(val remix: Remix) {
         if (inputActions.isEmpty()) return null
 
         return inputActions.filter { predicate == null || predicate(it) }
-                .minBy { abs(aroundSec - remix.tempos.beatsToSeconds(it.beat)) }
-                ?.takeIf { MathUtils.isEqual(aroundSec, remix.tempos.beatsToSeconds(it.beat), threshold) }
-    }
-
-    fun searchForInputActionAtEnds(aroundSec: Float, threshold: Float, predicate: ((InputAction) -> Boolean)?): InputAction? {
-        if (inputActions.isEmpty()) return null
-
-        return inputActions.filter { predicate == null || predicate(it) }
-                .minBy { abs(remix.tempos.beatsToSeconds(it.beat + it.duration) - threshold) }
-                ?.takeIf { MathUtils.isEqual(aroundSec, remix.tempos.beatsToSeconds(it.beat + it.duration), threshold) }
+                .firstOrNull { MathUtils.isEqual(aroundSec, remix.tempos.beatsToSeconds(it.beat), threshold) }
     }
 
     fun frameUpdate() {
@@ -62,16 +53,16 @@ class Playalong(val remix: Remix) {
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
-                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true, missed = input.method != PlayalongMethod.LONG_PRESS)))
+                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true)))
             }
         }
     }
 
-    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float = remix.seconds, missed: Boolean = false): InputResult {
+    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float = remix.seconds): InputResult {
         var offset = atSeconds - remix.tempos.beatsToSeconds(target.beat + if (end) target.duration else 0f)
         if (target.method == PlayalongMethod.LONG_PRESS && offset > 0f)
             offset = 0f
-        return InputResult(offset, missed)
+        return InputResult(offset, offset.absoluteValue > MAX_OFFSET_SEC)
     }
 
     private fun handleInput(down: Boolean, keycode: Int): Boolean {
@@ -106,7 +97,7 @@ class Playalong(val remix: Remix) {
             if ((!down && keycode == firstResult.first && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
                     (down && keycode == firstResult.first && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
                 inputsInProgress.remove(input)
-                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true, missed = input.method != PlayalongMethod.LONG_PRESS && seconds > input.beat + input.duration + MAX_OFFSET_SEC)))
+                inputted[input] = InputResults(input, listOf(firstResult.second, createInputResult(input, end = true)))
             }
         }
 
