@@ -1281,7 +1281,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         if (clickOccupation != ClickOccupation.None || remix.playState != STOPPED)
             return false
 
-        if (stage.centreAreaStage.isMouseOver() && stage.centreAreaStage.visible) {
+        if (stage.centreAreaStage.isMouseOver() && stage.playalongStage.visible) {
+            val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
+            if (isPlaybackTrackerButtonDown && firstEntityInMouse == null) {
+                clickOccupation = ClickOccupation.Playback(this)
+            }
+        } else if (stage.centreAreaStage.isMouseOver() && stage.centreAreaStage.visible) {
             val tool = currentTool
             if (tool == Tool.SELECTION) {
                 val firstEntityInMouse: Entity? = remix.entities.firstOrNull { mouseVector in it.bounds }
