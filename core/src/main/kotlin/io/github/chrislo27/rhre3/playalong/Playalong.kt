@@ -10,7 +10,7 @@ import kotlin.math.abs
 class Playalong(val remix: Remix) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 0.125f
+        val MAX_OFFSET_SEC: Float = 0.175f
     }
 
     /**
