@@ -1,10 +1,13 @@
 package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import kotlin.math.absoluteValue
+import kotlin.properties.Delegates
 
 
 class Playalong(val remix: Remix) {
@@ -16,10 +19,16 @@ class Playalong(val remix: Remix) {
         val BARELY_OFFSET: Float = 0.125f // Around 7.5 frames
     }
 
+    private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
+
     /**
      * A guaranteed-sorted list of [InputActions](InputAction).
      */
     val inputActions: List<InputAction> = toInputActionList()
+    /**
+     * The number of input results expected. Instantaneous actions have one, two otherwise.
+     */
+    val numResultsExpected: Int = inputActions.sumBy { if (it.isInstantaneous) 1 else 2 }
     /**
      * Inputs that are fully done.
      */
@@ -33,6 +42,18 @@ class Playalong(val remix: Remix) {
 
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
+
+    /**
+     * The computed score from 0.0 to 100.0.
+     */
+    var score: Float = 0f
+        private set
+    var gotSkillStar: Boolean = false
+        private set
+    /**
+     * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
+     */
+    var countScoreByTiming: Boolean by Delegates.observable(true) { _, _, _ -> updateScore() }
 
     /**
      * Returns a *sorted* list of [InputActions](InputAction). May be empty.
@@ -58,7 +79,7 @@ class Playalong(val remix: Remix) {
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
-                val result = createInputResult(input, end = true, atSeconds = seconds)
+                val result = createInputResult(input, end = true, atSeconds = seconds, timing = InputTiming.MISS)
                 inputted[input] = InputResults(input, listOf(firstResult.second, result))
                 onInput(input, result, false)
             }
@@ -66,14 +87,12 @@ class Playalong(val remix: Remix) {
         // Check entirely missed inputs' starting inputs
         inputActions.forEach { input ->
             if (input !in inputsInProgress.keys && input !in inputted.keys && seconds > remix.tempos.beatsToSeconds(input.beat) + MAX_OFFSET_SEC) {
-                val result = createInputResult(input, end = false, atSeconds = seconds)
+                val result = createInputResult(input, end = false, atSeconds = remix.tempos.beatsToSeconds(input.beat), timing = InputTiming.MISS)
                 val list = mutableListOf(result)
                 if (!input.isInstantaneous) {
-                    list += createInputResult(input, true, seconds)
+                    list += createInputResult(input, true, remix.tempos.beatsToSeconds(input.beat + input.duration), InputTiming.MISS)
                 }
                 inputted[input] = InputResults(input, list)
-                println("FAILED input - beat ${input.beat}, remix.seconds ${seconds}, ${remix.tempos.beatsToSeconds(input.beat) + MAX_OFFSET_SEC}")
-                println("  calculated offset: ${seconds - remix.tempos.beatsToSeconds(input.beat)} - result offset: ${result.offset}")
                 onInput(input, result, true)
                 if (list.size > 1) {
                     onInput(input, list[1], false)
@@ -82,11 +101,11 @@ class Playalong(val remix: Remix) {
         }
     }
 
-    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float = remix.seconds): InputResult {
+    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float = remix.seconds, timing: InputTiming? = null): InputResult {
         var offset = atSeconds - remix.tempos.beatsToSeconds(target.beat + if (end) target.duration else 0f)
         if (target.method == PlayalongMethod.LONG_PRESS && offset > 0f)
             offset = 0f
-        return InputResult(offset)
+        return if (timing == null) InputResult(offset) else InputResult(offset, timing)
     }
 
     private fun handleInput(down: Boolean, keycode: Int): Boolean {
@@ -140,13 +159,36 @@ class Playalong(val remix: Remix) {
 
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
         println("Action at beat ${inputAction.beat} ${inputAction.method} ${inputAction.input.id} hit with offset ${inputResult.offset} - ${inputResult.timing}")
-        if (skillStarEntity != null && remix.seconds <= remix.tempos.beatsToSeconds(skillStarEntity.bounds.x) + MAX_OFFSET_SEC) {
+        if (!gotSkillStar && skillStarEntity != null && remix.seconds <= remix.tempos.beatsToSeconds(skillStarEntity.bounds.x) + MAX_OFFSET_SEC) {
             if (inputResult.timing == InputTiming.ACE
                     && ((start && MathUtils.isEqual(inputAction.beat, skillStarEntity.bounds.x))
                             || (!start && !inputAction.isInstantaneous && MathUtils.isEqual(inputAction.beat + inputAction.duration, skillStarEntity.bounds.x)))) {
                 skillStarEntity.play()
+                gotSkillStar = true
+                stage.onSkillStarGet()
             }
         }
+
+        updateScore()
+    }
+
+    fun updateScore(): Float {
+        if (numResultsExpected <= 0) {
+            score = 0f
+            return score
+        }
+
+        score = inputted.values.flatMap { it.results }
+                .sumByDouble {
+                    (if (countScoreByTiming)
+                        it.timing.scoreWeight
+                    else (1f - (it.offset.absoluteValue / MAX_OFFSET_SEC).coerceIn(0f, 1f))) * 100.0
+                }.toFloat() / numResultsExpected
+        score = score.coerceIn(0f, 100f)
+
+        stage.updateScoreLabel()
+
+        return score
     }
 
     fun onKeyDown(keycode: Int): Boolean {

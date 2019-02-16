@@ -237,6 +237,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             resetAllSongSubtitles()
             stage.updateSelected(DirtyType.SEARCH_DIRTY)
+            val wasPlayalongVisible = stage.playalongStage.visible
+            stage.playalongStage.visible = false // Update playalong stage
+            stage.playalongStage.visible = wasPlayalongVisible
         }
     var theme: Theme = LoadedThemes.currentTheme
     var scrollMode: ScrollMode = ScrollMode.PITCH

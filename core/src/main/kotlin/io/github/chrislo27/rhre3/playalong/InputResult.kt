@@ -9,8 +9,8 @@ class InputResults(val inputAction: InputAction, val results: List<InputResult>)
     val missed: Boolean = results.any { it.timing == InputTiming.MISS }
 }
 
-enum class InputTiming {
-    ACE, GOOD, BARELY, MISS;
+enum class InputTiming(val scoreWeight: Float) {
+    ACE(1.0f), GOOD(0.85f), BARELY(0.6f), MISS(0f);
 
     companion object {
         fun getFromOffset(offset: Float): InputTiming {
