@@ -18,7 +18,9 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     val playalong = remix.playalong
 
     val recommendedHeight = largeFont.getTextHeight(PlayalongChars.FILLED_A)
-    val blockHeight = largeFont.getTextHeight(PlayalongChars.FILLED_A) * 1.5f
+    val recommendedWidth = largeFont.getTextWidth(PlayalongChars.FILLED_A)
+    val blockHeight = recommendedHeight * 1.5f
+    val blockWidth = recommendedWidth * 1.1f
     val baseY = camera.position.y + 1.5f
     val skillStarEntity = playalong.skillStarEntity
     for ((beatAt, list) in playalong.inputActionsByBeat) {
@@ -74,15 +76,20 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             }
 
             val estHeight = largeFont.getTextHeight(inputAction.input.trackDisplayText)
-            val scale = if (estHeight > recommendedHeight) {
+            val scaleY = if (estHeight > recommendedHeight) {
                 recommendedHeight / estHeight
             } else 1f
-            largeFont.scaleMul(scale)
+            largeFont.scaleMul(scaleY)
+            val estWidth = largeFont.getTextWidth(inputAction.input.trackDisplayText)
+            val scaleX = if (estWidth > recommendedWidth) {
+                recommendedWidth / estWidth
+            } else 1f
+            largeFont.scaleMul(scaleX)
             val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
             val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
             val x = inputAction.beat
             val y = bottomY
-            val boxWidth = width * 1.1f
+            val boxWidth = blockWidth
             val boxHeight = blockHeight
             // Backing box
             batch.setColor(0f, 0f, 0f, 0.4f)
@@ -90,7 +97,8 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             // width * 0.02 is for correcting a glyph error in the font
             largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
             largeFont.setColor(1f, 1f, 1f, 1f)
-            largeFont.scaleMul(1f / scale)
+            largeFont.scaleMul(1f / scaleX)
+            largeFont.scaleMul(1f / scaleY)
         }
     }
 
