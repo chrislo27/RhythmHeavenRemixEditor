@@ -214,8 +214,8 @@ class PlayalongStage(val editor: Editor,
             val beatsInTimeSig = remix.timeSignatures.getTimeSignature(skillStarEntity.bounds.x)?.divisions ?: 4
             val threshold = 0.1f
             for (i in 0 until beatsInTimeSig) {
-                val beatPoint = skillStarEntity.bounds.x - i
-                if (remix.beat in beatPoint..beatPoint + threshold) {
+                val beatPoint = remix.tempos.beatsToSeconds(skillStarEntity.bounds.x - i)
+                if (remix.seconds in beatPoint..beatPoint + threshold) {
                     skillStarPulse()
                     break
                 }
