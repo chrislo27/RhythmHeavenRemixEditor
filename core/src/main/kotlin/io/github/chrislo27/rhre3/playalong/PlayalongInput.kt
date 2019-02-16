@@ -15,13 +15,13 @@ import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_JOY_U
 
 enum class PlayalongInput(val id: String, val displayText: String,
                           val longDisplayText: String = displayText,
-                          val tallDisplayText: String = displayText,
+                          val trackDisplayText: String = displayText,
                           val deprecatedIDs: List<String> = listOf()) {
 
     BUTTON_A("A", FILLED_A),
     BUTTON_B("B", FILLED_B),
     BUTTON_DPAD("+", FILLED_DPAD),
-    BUTTON_A_OR_DPAD("A_+", "$FILLED_A/$FILLED_DPAD", tallDisplayText = "$FILLED_A\n$FILLED_DPAD"),
+    BUTTON_A_OR_DPAD("A_+", "$FILLED_A/$FILLED_DPAD", trackDisplayText = "$FILLED_A\nor $FILLED_DPAD"),
     BUTTON_DPAD_UP("+_up", FILLED_DPAD_U, "$FILLED_DPAD $FILLED_JOY_U"),
     BUTTON_DPAD_DOWN("+_down", FILLED_DPAD_D, "$FILLED_DPAD $FILLED_JOY_D"),
     BUTTON_DPAD_LEFT("+_left", FILLED_DPAD_L, "$FILLED_DPAD $FILLED_JOY_L"),

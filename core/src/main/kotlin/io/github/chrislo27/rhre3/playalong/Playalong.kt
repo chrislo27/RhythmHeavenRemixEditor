@@ -37,8 +37,9 @@ class Playalong(val remix: Remix) {
      * For two-stage inputs. Value represents the result of the first part
      */
     val inputsInProgress: MutableMap<InputAction, Pair<Int, InputResult>> = mutableMapOf()
+    val inputActionsByBeat: Map<Float, List<InputAction>> = inputActions.groupBy { it.beat }
 
-    val skillStarEntity: CueEntity? = remix.entities.firstOrNull { it is CueEntity && it.isSkillStar } as CueEntity?
+    val skillStarEntity: CueEntity? = remix.entities.firstOrNull { it is CueEntity && it.isSkillStar && it.bounds.x in inputActionsByBeat.keys } as CueEntity?
 
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
