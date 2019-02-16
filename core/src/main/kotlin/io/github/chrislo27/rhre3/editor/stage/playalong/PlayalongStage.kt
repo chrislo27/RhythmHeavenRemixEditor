@@ -21,7 +21,9 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
+import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
+import kotlin.math.sign
 import kotlin.properties.Delegates
 
 
@@ -172,6 +174,10 @@ class PlayalongStage(val editor: Editor,
         skillStarZoom = 1f
     }
 
+    private fun skillStarPulse() {
+        skillStarZoom = -0.35f
+    }
+
     fun onPerfectFail() {
         perfectAnimation = 1f
         perfectIcon.image = perfectFailTexReg
@@ -201,11 +207,27 @@ class PlayalongStage(val editor: Editor,
 
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
-        if (skillStarZoom > 0f) {
-            skillStarZoom -= Gdx.graphics.deltaTime / 0.5f
+
+        // Skill Star pulses <time signature> - 1 beats before hitting it
+        val skillStarEntity = playalong.skillStarEntity
+        if (skillStarZoom == 0f && skillStarEntity != null) {
+            val beatsInTimeSig = remix.timeSignatures.getTimeSignature(remix.beat)?.divisions ?: 4
+            val threshold = 0.1f
+            for (i in 0 until beatsInTimeSig) {
+                val beatPoint = skillStarEntity.bounds.x - i
+                if (remix.beat in beatPoint..beatPoint + threshold) {
+                    skillStarPulse()
+                    break
+                }
+            }
         }
-        if (skillStarZoom < 0f) skillStarZoom = 0f
-        skillStarLabel.fontScaleMultiplier = Interpolation.pow4In.apply(4f, 1f, 1f - skillStarZoom) / 4f // / 4 b/c of big font
+        if (skillStarZoom.absoluteValue > 0f) {
+            val sign = skillStarZoom.sign
+            skillStarZoom -= Gdx.graphics.deltaTime / 0.5f * sign
+            if (skillStarZoom * sign < 0f)
+                skillStarZoom = 0f
+        }
+        skillStarLabel.fontScaleMultiplier = (if (skillStarZoom > 0f) Interpolation.pow4In else Interpolation.linear).apply(4f, 1f, 1f - skillStarZoom.absoluteValue) / 4f // / 4 b/c of big font
 
         val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
         perfectLabel.textColor?.a = if (remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f) 1f else 0f
