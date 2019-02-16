@@ -16,6 +16,8 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     largeFont.scaleFont(camera)
     val playalong = remix.playalong
 
+    val baseY = camera.position.y
+
     for (inputAction in playalong.inputActions) {
         if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) continue
         largeFont.setColor(1f, 1f, 1f, 1f)
@@ -23,7 +25,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
         // Backing line
         if (!inputAction.isInstantaneous) {
             batch.setColor(0f, 0f, 0f, 1f)
-            batch.fillRect(inputAction.beat + 0.25f, 0.5f, inputAction.duration - 0.25f, 1f)
+            batch.fillRect(inputAction.beat + 0.25f, baseY + 0.5f, inputAction.duration - 0.25f, 1f)
         }
 
         val results = playalong.inputted[inputAction]
@@ -52,7 +54,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             } else if (results != null) {
                 (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
             } else 0f
-            batch.fillRect(inputAction.beat + 0.25f, 0.5f, width - 0.25f, 1f)
+            batch.fillRect(inputAction.beat + 0.25f, baseY + 0.5f, width - 0.25f, 1f)
         }
 
         val height = largeFont.getTextHeight(inputAction.input.tallDisplayText)
@@ -60,14 +62,14 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             2.5f / height
         } else 1f
         largeFont.scaleMul(scale)
-        largeFont.drawCompressed(batch, inputAction.input.tallDisplayText, inputAction.beat, largeFont.capHeight, 1.5f, Align.left)
+        largeFont.drawCompressed(batch, inputAction.input.tallDisplayText, inputAction.beat, baseY + largeFont.capHeight, 1.5f, Align.left)
         largeFont.setColor(1f, 1f, 1f, 1f)
         largeFont.scaleMul(1f / scale)
     }
 
     if (playalong.skillStarEntity != null) {
         largeFont.color = Color.YELLOW
-        largeFont.drawCompressed(batch, "★", playalong.skillStarEntity.bounds.x, 2.5f + largeFont.capHeight, 1.5f, Align.left)
+        largeFont.drawCompressed(batch, "★", playalong.skillStarEntity.bounds.x, baseY + largeFont.capHeight + 2.5f, 1.5f, Align.left)
         largeFont.setColor(1f, 1f, 1f, 1f)
     }
 
