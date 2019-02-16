@@ -236,18 +236,12 @@ class PlayalongStage(val editor: Editor,
 
     override fun keyUp(keycode: Int): Boolean {
         val ret = super.keyUp(keycode)
-        if (keycode == main.playalongControls.buttonA) {
-            flickingStage.tapUp(flickingStage.location.realX + flickingStage.location.realWidth / 2, flickingStage.location.realY + flickingStage.location.realHeight / 2)
-        }
         if (ret) return ret
         return playalong.onKeyUp(keycode)
     }
 
     override fun keyDown(keycode: Int): Boolean {
         val ret = super.keyDown(keycode)
-        if (keycode == main.playalongControls.buttonA) {
-            flickingStage.tapDown(flickingStage.location.realX + flickingStage.location.realWidth / 2, flickingStage.location.realY + flickingStage.location.realHeight / 2)
-        }
         if (ret) return ret
         return playalong.onKeyDown(keycode)
     }
