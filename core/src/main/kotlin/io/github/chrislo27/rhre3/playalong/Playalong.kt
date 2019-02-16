@@ -14,7 +14,7 @@ class Playalong(val remix: Remix) {
 
     companion object {
         val MAX_OFFSET_SEC: Float = 0.15f // Around 9 frames
-        val ACE_OFFSET: Float = 0.0333333f // Around 2 frames
+        val ACE_OFFSET: Float = 0.025f // Around 1.5 frames
         val GOOD_OFFSET: Float = 0.085f // Around 5 frames
         val BARELY_OFFSET: Float = 0.125f // Around 7.5 frames
     }
