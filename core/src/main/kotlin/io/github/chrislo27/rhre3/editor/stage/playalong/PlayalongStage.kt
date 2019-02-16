@@ -159,7 +159,7 @@ class PlayalongStage(val editor: Editor,
         perfectIcon.image = perfectTexReg
     }
 
-    fun onShow() {
+    fun reset() {
         remix.recomputeCachedData()
         val noPlayalong = playalong.inputActions.isEmpty()
         noEntitiesLabel.visible = noPlayalong
@@ -167,6 +167,10 @@ class PlayalongStage(val editor: Editor,
         updateScoreLabel()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
+    }
+
+    fun onShow() {
+        reset()
     }
 
     fun onHide() {

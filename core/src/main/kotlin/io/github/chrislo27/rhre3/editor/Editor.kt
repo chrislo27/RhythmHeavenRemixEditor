@@ -183,6 +183,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 if (stage.tapalongStage.visible) {
                                     stage.tapalongStage.reset()
                                 }
+                                if (stage.playalongStage.visible) {
+                                    stage.playalongStage.reset()
+                                }
                             }
 
                             val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
