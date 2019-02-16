@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
+import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import kotlin.math.roundToInt
 
@@ -16,7 +16,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     largeFont.scaleFont(camera)
     val playalong = remix.playalong
 
-    val baseY = camera.position.y
+    val baseY = camera.position.y + 1.5f
 
     for (inputAction in playalong.inputActions) {
         if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) continue
@@ -25,7 +25,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
         // Backing line
         if (!inputAction.isInstantaneous) {
             batch.setColor(0f, 0f, 0f, 1f)
-            batch.fillRect(inputAction.beat + 0.25f, baseY + 0.5f, inputAction.duration - 0.25f, 1f)
+            batch.fillRect(inputAction.beat, baseY - 0.5f, inputAction.duration, 1f)
         }
 
         val results = playalong.inputted[inputAction]
@@ -54,22 +54,32 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             } else if (results != null) {
                 (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
             } else 0f
-            batch.fillRect(inputAction.beat + 0.25f, baseY + 0.5f, width - 0.25f, 1f)
+            batch.fillRect(inputAction.beat, baseY - 0.5f, width, 1f)
         }
 
-        val height = largeFont.getTextHeight(inputAction.input.tallDisplayText)
-        val scale = if (height > 2.5f) {
-            2.5f / height
+        val estHeight = largeFont.getTextHeight(inputAction.input.tallDisplayText)
+        val scale = if (estHeight > 2.5f) {
+            2.5f / estHeight
         } else 1f
         largeFont.scaleMul(scale)
-        largeFont.drawCompressed(batch, inputAction.input.tallDisplayText, inputAction.beat, baseY + largeFont.capHeight, 1.5f, Align.left)
+        val width = largeFont.getTextWidth(inputAction.input.tallDisplayText)
+        val height = largeFont.getTextHeight(inputAction.input.tallDisplayText)
+        val x = inputAction.beat
+        val y = baseY
+        val boxWidth = width * 1.1f
+        val boxHeight = height * 1.5f
+        batch.setColor(0f, 0f, 0f, 0.4f)
+        batch.fillRect(x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
+        // width * 0.02 is for correcting a glyph error in the font
+        largeFont.draw(batch, inputAction.input.tallDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
         largeFont.setColor(1f, 1f, 1f, 1f)
         largeFont.scaleMul(1f / scale)
     }
 
     if (playalong.skillStarEntity != null) {
         largeFont.color = Color.YELLOW
-        largeFont.drawCompressed(batch, "★", playalong.skillStarEntity.bounds.x, baseY + largeFont.capHeight + 2.5f, 1.5f, Align.left)
+        val star = "★"
+        largeFont.draw(batch, star, playalong.skillStarEntity.bounds.x, baseY + largeFont.capHeight - 2.5f, 0f, Align.center, false)
         largeFont.setColor(1f, 1f, 1f, 1f)
     }
 
