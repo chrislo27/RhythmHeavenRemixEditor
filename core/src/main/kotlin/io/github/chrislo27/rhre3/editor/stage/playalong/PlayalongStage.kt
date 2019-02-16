@@ -210,7 +210,7 @@ class PlayalongStage(val editor: Editor,
 
         // Skill Star pulses 4 beats before hitting it
         val skillStarEntity = playalong.skillStarEntity
-        if (skillStarZoom == 0f && skillStarEntity != null) {
+        if (skillStarZoom == 0f && skillStarEntity != null && remix.playState == PlayState.PLAYING) {
             val threshold = 0.1f
             for (i in 0 until 4) {
                 val beatPoint = remix.tempos.beatsToSeconds(skillStarEntity.bounds.x - i)
