@@ -29,6 +29,11 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     private val tapPoints: MutableList<TapPoint> = mutableListOf()
     private var currentTapPoint: TapPoint? = null
 
+    var onTapDown: (tapPoint: TapPoint) -> Unit = {}
+    var onTapRelease: (tapPoint: TapPoint, short: Boolean) -> Unit = { _, _ -> }
+    var onFlick: (tapPoint: TapPoint) -> Unit = {}
+    var onSlide: (tapPoint: TapPoint) -> Unit = { TODO() }
+
     override fun render(screen: S, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
 
@@ -97,17 +102,41 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         tapPoints.removeIf { it.lifetime <= 0f }
     }
 
+    fun tapDown(mouseX: Float = stage.camera.getInputX(), mouseY: Float = stage.camera.getInputY()) {
+        val point: TapPoint = currentTapPoint ?: TapPoint(mouseX, mouseY, 0f, 0f, 1f, 0.25f).also {
+            currentTapPoint = it
+            tapPoints += it
+            onTapDown(it)
+        }
+        updateTapPoint(point)
+    }
+
+    fun tapUp(mouseX: Float = stage.camera.getInputX(), mouseY: Float = stage.camera.getInputY()) {
+        currentTapPoint?.let { point ->
+            point.veloX = (mouseX - point.x) * 25f
+            point.veloY = (mouseY - point.y) * 25f
+            point.isHeldDown = false
+
+            val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
+            if (veloScalar > 700f) {
+                println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
+                onFlick(point)
+            } else {
+                println("RELEASE with power $veloScalar\n    Duration: ${point.holdDuration}")
+                if (point.holdDuration <= 0.1f) {
+                    println("    Short tap")
+                }
+                onTapRelease(point, point.holdDuration <= 0.1f)
+            }
+        }
+        currentTapPoint = null
+    }
+
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         val old = super.touchDown(screenX, screenY, pointer, button)
 
         if (isMouseOver() && pointer == 0 && button == Input.Buttons.LEFT && visible) {
-            val mouseX = stage.camera.getInputX()
-            val mouseY = stage.camera.getInputY()
-            val point: TapPoint = currentTapPoint ?: TapPoint(mouseX, mouseY, 0f, 0f, 1f, 0.25f).also {
-                currentTapPoint = it
-                tapPoints += it
-            }
-            updateTapPoint(point)
+            tapDown()
             return true
         }
 
@@ -118,24 +147,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         val old = super.touchUp(screenX, screenY, pointer, button)
 
         if (currentTapPoint != null && pointer == 0 && button == Input.Buttons.LEFT && visible) {
-            val mouseX = stage.camera.getInputX()
-            val mouseY = stage.camera.getInputY()
-            currentTapPoint?.let { point ->
-                point.veloX = (mouseX - point.x) * 25f
-                point.veloY = (mouseY - point.y) * 25f
-                point.isHeldDown = false
-
-                val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
-                if (veloScalar > 700f) {
-                    println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
-                } else {
-                    println("RELEASE with power $veloScalar\n    Duration: ${point.holdDuration}")
-                    if (point.holdDuration <= 0.1f) {
-                        println("    Short tap")
-                    }
-                }
-            }
-            currentTapPoint = null
+            tapUp()
             return true
         }
 

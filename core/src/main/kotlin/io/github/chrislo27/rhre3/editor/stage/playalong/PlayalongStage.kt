@@ -46,6 +46,7 @@ class PlayalongStage(val editor: Editor,
     val skillStarLabel: TextLabel<EditorScreen>
     val perfectIcon: ImageLabel<EditorScreen>
     val perfectHitIcon: ImageLabel<EditorScreen>
+    val flickingStage: FlickingStage<EditorScreen>
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
@@ -98,6 +99,7 @@ class PlayalongStage(val editor: Editor,
             this.isLocalizationKey = true
             this.text = "playalong.goForPerfect"
             this.textWrapping = false
+            this.textColor = Color(1f, 1f, 1f, 1f)
             this.textAlign = Align.left
             this.location.set(screenX = perfectIcon.location.screenX + perfectHitIcon.location.screenWidth,
                               screenY = 1f - 0.2f - paddingY, screenWidth = 0.25f, screenHeight = 0.2f)
@@ -122,13 +124,34 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += skillStarLabel
 
-//        this.elements += FlickingStage(this, this).apply {
-//            this.colour.set(Color.valueOf("00BC67"))
-//            this.location.set(screenX = 0.6f)
-//            this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
-//            this.visible = false
-//        }
+        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                setPerfectVisibility(!perfectIcon.visible)
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = perfectTexReg
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            })
+            this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = 0.035f, screenHeight = 0.25f)
+        }
+
+        flickingStage = FlickingStage(this, this).apply {
+            this.colour.set(Color.valueOf("00BC67"))
+            this.location.set(screenX = 0.65f)
+            this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
+            this.visible = false
+        }
+        this.elements += flickingStage
         updateScoreLabel()
+        setPerfectVisibility(false)
+    }
+
+    fun setPerfectVisibility(visible: Boolean) {
+        perfectIcon.visible = visible
+        perfectHitIcon.visible = visible
+        perfectLabel.visible = visible
     }
 
     fun updateScoreLabel() {
@@ -185,7 +208,7 @@ class PlayalongStage(val editor: Editor,
         skillStarLabel.fontScaleMultiplier = Interpolation.pow4In.apply(4f, 1f, 1f - skillStarZoom) / 4f // / 4 b/c of big font
 
         val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
-        perfectLabel.visible = remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f
+        perfectLabel.textColor?.a = if (remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f) 1f else 0f
 
         perfectHitIcon.tint.a = if (playalong.perfectSoFar) perfectAnimation else 0f
         if (playalong.perfectSoFar && perfectIcon.image != perfectTexReg) {
@@ -213,12 +236,18 @@ class PlayalongStage(val editor: Editor,
 
     override fun keyUp(keycode: Int): Boolean {
         val ret = super.keyUp(keycode)
+        if (keycode == main.playalongControls.buttonA) {
+            flickingStage.tapUp(flickingStage.location.realX + flickingStage.location.realWidth / 2, flickingStage.location.realY + flickingStage.location.realHeight / 2)
+        }
         if (ret) return ret
         return playalong.onKeyUp(keycode)
     }
 
     override fun keyDown(keycode: Int): Boolean {
         val ret = super.keyDown(keycode)
+        if (keycode == main.playalongControls.buttonA) {
+            flickingStage.tapDown(flickingStage.location.realX + flickingStage.location.realWidth / 2, flickingStage.location.realY + flickingStage.location.realHeight / 2)
+        }
         if (ret) return ret
         return playalong.onKeyDown(keycode)
     }
