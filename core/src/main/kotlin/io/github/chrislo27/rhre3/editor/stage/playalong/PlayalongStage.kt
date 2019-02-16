@@ -206,7 +206,7 @@ class PlayalongStage(val editor: Editor,
         }
 
         if (perfectAnimation > 0f) {
-            perfectAnimation -= Gdx.graphics.deltaTime / (if (playalong.perfectSoFar) 0.15f else 0.5f)
+            perfectAnimation -= Gdx.graphics.deltaTime / (if (playalong.perfectSoFar) 0.125f else 0.5f)
         }
         if (perfectAnimation < 0f) perfectAnimation = 0f
     }
