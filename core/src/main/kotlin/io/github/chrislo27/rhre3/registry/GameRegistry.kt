@@ -516,6 +516,10 @@ object GameRegistry : Disposable {
                                             "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false,
                                             PlayalongInput.BUTTON_A_OR_DPAD, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Shoot-'em-Up, First Contact)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad", listOf(),
+                                            "Press ${PlayalongChars.FILLED_DPAD}", false,
+                                            PlayalongInput.BUTTON_DPAD, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Blue Bear, Catchy Tune, Sick Beats)[]"))
 
             // Hold
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_hold_A", listOf(),
