@@ -13,10 +13,10 @@ import kotlin.properties.Delegates
 class Playalong(val remix: Remix) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 0.133333f // Around 8 frames
-        val ACE_OFFSET: Float = 0.025f // Around 1.5 frames
-        val GOOD_OFFSET: Float = 0.06666667f // Around 4 frames
-        val BARELY_OFFSET: Float = 0.116667f // Around 7 frames
+        val MAX_OFFSET_SEC: Float = 9f / 60
+        val ACE_OFFSET: Float = 1.5f / 60
+        val GOOD_OFFSET: Float = 5.5f / 60
+        val BARELY_OFFSET: Float = 7f / 60
     }
 
     private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
