@@ -172,9 +172,13 @@ class Playalong(val remix: Remix) {
         }
 
         updateScore()
-        if (perfectSoFar && inputResult.timing == InputTiming.MISS) {
-            perfectSoFar = false
-            stage.onPerfectFail()
+        if (perfectSoFar) {
+            if (inputResult.timing == InputTiming.MISS) {
+                perfectSoFar = false
+                stage.onPerfectFail()
+            } else {
+                stage.onPerfectHit()
+            }
         }
     }
 

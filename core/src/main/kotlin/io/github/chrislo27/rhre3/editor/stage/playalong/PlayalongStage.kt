@@ -4,7 +4,10 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
@@ -15,6 +18,7 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
 import kotlin.math.roundToInt
@@ -40,10 +44,16 @@ class PlayalongStage(val editor: Editor,
     val perfectLabel: TextLabel<EditorScreen>
     val scoreLabel: TextLabel<EditorScreen>
     val skillStarLabel: TextLabel<EditorScreen>
+    val perfectIcon: ImageLabel<EditorScreen>
+    val perfectHitIcon: ImageLabel<EditorScreen>
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
+    private val perfectTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect"))
+    private val perfectHitTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_hit"))
+    private val perfectFailTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_failed"))
     private var skillStarZoom: Float = 1f
+    private var perfectAnimation: Float = 0f
 
     init {
         val palette = main.uiPalette
@@ -71,12 +81,26 @@ class PlayalongStage(val editor: Editor,
         val paddingX = 0.0125f
         val paddingY = 0.05f
 
+        perfectIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
+            this.image = perfectTexReg
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenX = paddingX, screenY = 1f - 0.2f - paddingY, screenWidth = 0.035f, screenHeight = 0.2f)
+        }
+        lowerStage.elements += perfectIcon
+        perfectHitIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
+            this.image = perfectHitTexReg
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(perfectIcon.location)
+            this.tint.set(1f, 1f, 1f, 0f)
+        }
+        lowerStage.elements += perfectHitIcon
         perfectLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage).apply {
             this.isLocalizationKey = true
             this.text = "playalong.goForPerfect"
             this.textWrapping = false
             this.textAlign = Align.left
-            this.location.set(screenX = paddingX, screenY = 1f - 0.2f - paddingY, screenWidth = 0.25f, screenHeight = 0.2f)
+            this.location.set(screenX = perfectIcon.location.screenX + perfectHitIcon.location.screenWidth,
+                              screenY = 1f - 0.2f - paddingY, screenWidth = 0.25f, screenHeight = 0.2f)
         }
         lowerStage.elements += perfectLabel
 
@@ -126,7 +150,13 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onPerfectFail() {
+        perfectAnimation = 1f
+        perfectIcon.image = perfectFailTexReg
+    }
 
+    fun onPerfectHit() {
+        perfectAnimation = 1f
+        perfectIcon.image = perfectTexReg
     }
 
     fun onShow() {
@@ -135,6 +165,8 @@ class PlayalongStage(val editor: Editor,
         noEntitiesLabel.visible = noPlayalong
         lowerStage.visible = !noPlayalong
         updateScoreLabel()
+        perfectIcon.image = perfectTexReg
+        perfectAnimation = 0f
     }
 
     fun onHide() {
@@ -150,6 +182,29 @@ class PlayalongStage(val editor: Editor,
 
         val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
         perfectLabel.visible = remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f
+
+        perfectHitIcon.tint.a = if (playalong.perfectSoFar) perfectAnimation else 0f
+        if (playalong.perfectSoFar && perfectIcon.image != perfectTexReg) {
+            perfectIcon.image = perfectTexReg
+        }
+        if (!playalong.perfectSoFar) {
+            if (perfectAnimation <= 0f) {
+                if (perfectIcon.location.pixelX != 0f || perfectIcon.location.pixelY != 0f) {
+                    perfectIcon.location.set(pixelX = 0f, pixelY = 0f)
+                    perfectIcon.stage.updatePositions()
+                }
+            } else {
+                // Shake icon
+                val maxShake = 3
+                perfectIcon.location.set(pixelX = 1f * MathUtils.randomSign() * MathUtils.random(0, maxShake), pixelY = 1f * MathUtils.randomSign() * MathUtils.random(0, maxShake))
+                perfectIcon.stage.updatePositions()
+            }
+        }
+
+        if (perfectAnimation > 0f) {
+            perfectAnimation -= Gdx.graphics.deltaTime / (if (playalong.perfectSoFar) 0.15f else 0.5f)
+        }
+        if (perfectAnimation < 0f) perfectAnimation = 0f
     }
 
     override fun keyUp(keycode: Int): Boolean {
