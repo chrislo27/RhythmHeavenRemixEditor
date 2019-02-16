@@ -12,9 +12,11 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.MathHelper
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
@@ -123,6 +125,10 @@ class PlayalongStage(val editor: Editor,
         skillStarZoom = 1f
     }
 
+    fun onPerfectFail() {
+
+    }
+
     fun onShow() {
         remix.recomputeCachedData()
         val noPlayalong = playalong.inputActions.isEmpty()
@@ -132,7 +138,6 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onHide() {
-
     }
 
     override fun frameUpdate(screen: EditorScreen) {
@@ -142,6 +147,9 @@ class PlayalongStage(val editor: Editor,
         }
         if (skillStarZoom < 0f) skillStarZoom = 0f
         skillStarLabel.fontScaleMultiplier = Interpolation.pow4In.apply(4f, 1f, 1f - skillStarZoom) / 4f // / 4 b/c of big font
+
+        val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
+        perfectLabel.visible = remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f
     }
 
     override fun keyUp(keycode: Int): Boolean {
