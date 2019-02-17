@@ -46,6 +46,7 @@ class PlayalongStage(val editor: Editor,
     val perfectLabel: TextLabel<EditorScreen>
     val scoreLabel: TextLabel<EditorScreen>
     val skillStarLabel: TextLabel<EditorScreen>
+    val acesLabel: TextLabel<EditorScreen>
     val perfectIcon: ImageLabel<EditorScreen>
     val perfectHitIcon: ImageLabel<EditorScreen>
     val flickingStage: FlickingStage<EditorScreen>
@@ -108,12 +109,13 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += perfectLabel
 
-        scoreLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage).apply {
+        scoreLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontLargeKey]), lowerStage, lowerStage).apply {
             this.isLocalizationKey = false
             this.text = ""
             this.textWrapping = false
             this.textAlign = Align.center
-            this.location.set(screenX = 0.5f - 0.125f / 2, screenY = 1f - 0.2f - paddingY, screenWidth = 0.125f, screenHeight = 0.2f)
+            this.fontScaleMultiplier = 0.4f
+            this.location.set(screenX = 0.5f - 0.125f / 2, screenY = 1f - 0.25f - paddingY, screenWidth = 0.125f, screenHeight = 0.25f)
         }
         lowerStage.elements += scoreLabel
         skillStarLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontLargeKey]), lowerStage, lowerStage).apply {
@@ -121,10 +123,24 @@ class PlayalongStage(val editor: Editor,
             this.text = "★"
             this.textWrapping = true
             this.textAlign = Align.center
-            this.location.set(screenY = 1f - 0.2f - paddingY, screenWidth = 0.025f, screenHeight = 0.2f)
+            this.location.set(screenY = 1f - 0.25f - paddingY, screenWidth = 0.035f, screenHeight = 0.25f)
             this.location.set(screenX = scoreLabel.location.screenX - this.location.screenWidth)
         }
         lowerStage.elements += skillStarLabel
+        acesLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage) {
+            override fun getRealText(): String {
+                return Localization[text, playalong.aces]
+            }
+        }.apply {
+            this.isLocalizationKey = true
+            this.text = "playalong.numAces"
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.85f
+            this.textAlign = Align.center
+            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - 0.2f, screenWidth = 0.125f, screenHeight = 0.2f)
+            this.location.set(screenX = 0.5f - this.location.screenWidth / 2)
+        }
+        lowerStage.elements += acesLabel
 
         lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -208,11 +224,11 @@ class PlayalongStage(val editor: Editor,
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
 
-        // Skill Star pulses 4 beats before hitting it
+        // Skill Star pulses 3 beats before hitting it
         val skillStarEntity = playalong.skillStarEntity
         if (skillStarZoom == 0f && skillStarEntity != null && remix.playState == PlayState.PLAYING) {
             val threshold = 0.1f
-            for (i in 0 until 4) {
+            for (i in 1 until 4) {
                 val beatPoint = remix.tempos.beatsToSeconds(skillStarEntity.bounds.x - i)
                 if (remix.seconds in beatPoint..beatPoint + threshold) {
                     skillStarPulse()

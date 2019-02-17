@@ -53,6 +53,8 @@ class Playalong(val remix: Remix) {
         private set
     var perfectSoFar: Boolean = true
         private set
+    var aces: Int = 0
+        private set
     /**
      * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
      */
@@ -170,6 +172,10 @@ class Playalong(val remix: Remix) {
                 gotSkillStar = true
                 stage.onSkillStarGet()
             }
+        }
+
+        if (inputResult.timing == InputTiming.ACE) {
+            aces++
         }
 
         updateScore()
