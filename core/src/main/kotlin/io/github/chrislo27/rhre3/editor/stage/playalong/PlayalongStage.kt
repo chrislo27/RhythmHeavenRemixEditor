@@ -52,6 +52,7 @@ class PlayalongStage(val editor: Editor,
     val perfectIcon: ImageLabel<EditorScreen>
     val perfectHitIcon: ImageLabel<EditorScreen>
     val flickingStage: FlickingStage<EditorScreen>
+    val timingDisplayStage: TimingDisplayStage
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
@@ -157,6 +158,12 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = 0.035f, screenHeight = 0.25f)
         }
 
+        timingDisplayStage = TimingDisplayStage(this, lowerStage, lowerStage.camera).apply {
+            this.location.set(screenWidth = 0.5f, screenY = paddingY)
+            this.location.set(screenX = 0.5f - this.location.screenWidth / 2, screenHeight = acesLabel.location.screenY - this.location.screenY - paddingY)
+        }
+        lowerStage.elements += timingDisplayStage
+
         flickingStage = FlickingStage(this, this).apply {
             this.colour.set(Color.valueOf("00BC67"))
             this.location.set(screenX = 0.65f)
@@ -189,7 +196,7 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
-
+        timingDisplayStage.flash(inputResult)
     }
 
     fun onSkillStarGet() {

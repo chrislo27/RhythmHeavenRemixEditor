@@ -94,8 +94,8 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             // Backing box
             batch.setColor(0f, 0f, 0f, 0.4f)
             batch.fillRect(x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
-            batch.setColor(1f, 1f, 1f, 0.8f)
-            val thinWidth = boxWidth * 0.1f
+            batch.setColor(1f, 1f, 1f, 0.75f)
+            val thinWidth = boxWidth * 0.05f
             batch.fillRect(x - thinWidth / 2, y - boxHeight / 2, thinWidth, boxHeight)
             // width * 0.02 is for correcting a glyph error in the font
             largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)

@@ -27,7 +27,8 @@ object Credits {
                 "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_, " +
                         "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
                         "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
-                        "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, Draster, Malalaika, Rabbidking RHModding Discord server",
+                        "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, Draster, Malalaika, " +
+                        "Rabbidking, Fringession, RHModding Discord server",
                 "resources" crediting
                         "Rhythm Heaven assets by Nintendo\n" +
                         "[#FF8900]Kotlin[]\n" +
