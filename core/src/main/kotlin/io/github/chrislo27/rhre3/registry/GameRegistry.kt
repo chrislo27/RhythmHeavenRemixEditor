@@ -577,11 +577,11 @@ object GameRegistry : Disposable {
                                             PlayalongInput.TOUCH_FLICK, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Flick", "[LIGHT_GRAY](ex: Rhythm Rally)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_tap_and_hold", listOf(),
-                                            "Tap and Hold", false,
+                                            "Tap and Hold", true,
                                             PlayalongInput.TOUCH_TAP, PlayalongMethod.PRESS_AND_HOLD,
                                             pickerName = PickerName("Tap and Hold", "[LIGHT_GRAY](ex: Fillbots)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_release_and_tap", listOf(),
-                                            "Release and Tap", false,
+                                            "Release and Tap", true,
                                             PlayalongInput.TOUCH_RELEASE, PlayalongMethod.RELEASE_AND_HOLD,
                                             pickerName = PickerName("Release and Tap", "[LIGHT_GRAY](ex: Glee Club)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_quick_tap", listOf(),

@@ -120,12 +120,12 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
             val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
             val isFlick = veloScalar > 700f
             if (isFlick) {
-                println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
+//                println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
                 onFlick(point)
             } else {
-                println("RELEASE with power $veloScalar\n    Duration: ${point.holdDuration}")
+//                println("RELEASE with power $veloScalar\n    Duration: ${point.holdDuration}")
                 if (point.holdDuration <= 0.1f) {
-                    println("    Short tap")
+//                    println("    Short tap")
                 }
             }
             onTapRelease(point, !isFlick && point.holdDuration <= 0.1f)

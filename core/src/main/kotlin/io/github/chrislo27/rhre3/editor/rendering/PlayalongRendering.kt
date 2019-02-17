@@ -1,10 +1,12 @@
 package io.github.chrislo27.rhre3.editor.rendering
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
 import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
@@ -53,14 +55,10 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             if (results != null && results.results.isNotEmpty()) {
                 if (!results.missed) {
                     largeFont.setColor(0f, 1f, 0f, 1f)
+                    batch.setColor(0f, 1f, 0f, 1f)
                 } else {
                     largeFont.setColor(1f, 0f, 0f, 1f)
-                }
-
-                if (results.missed) {
                     batch.setColor(1f, 0f, 0f, 1f)
-                } else {
-                    batch.setColor(0f, 1f, 0f, 1f)
                 }
             }
 
@@ -76,33 +74,43 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
                 batch.fillRect(inputAction.beat, bottomY - 0.5f, width, 1f)
             }
 
-            val estHeight = largeFont.getTextHeight(inputAction.input.trackDisplayText)
-            val scaleY = if (estHeight > recommendedHeight) {
-                recommendedHeight / estHeight
-            } else 1f
-            largeFont.scaleMul(scaleY)
-            val estWidth = largeFont.getTextWidth(inputAction.input.trackDisplayText)
-            val scaleX = if (estWidth > recommendedWidth) {
-                recommendedWidth / estWidth
-            } else 1f
-            largeFont.scaleMul(scaleX)
-            val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
-            val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
             val x = inputAction.beat
             val y = bottomY
             val boxWidth = blockWidth
             val boxHeight = blockHeight
+            val lastBatchColor = batch.packedColor
             // Backing box
             batch.setColor(0f, 0f, 0f, 0.4f)
             batch.fillRect(x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
             batch.setColor(1f, 1f, 1f, 0.75f)
             val thinWidth = boxWidth * 0.05f
             batch.fillRect(x - thinWidth / 2, y - boxHeight / 2, thinWidth, boxHeight)
-            // width * 0.02 is for correcting a glyph error in the font
-            largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
-            largeFont.setColor(1f, 1f, 1f, 1f)
-            largeFont.scaleMul(1f / scaleX)
-            largeFont.scaleMul(1f / scaleY)
+            batch.setColor(1f, 1f, 1f, 1f)
+
+            // Render text or texture
+            if (inputAction.input.trackDisplayIsTexID) {
+                batch.setColor(lastBatchColor)
+                batch.draw(AssetRegistry.get<Texture>(inputAction.input.trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
+                batch.setColor(1f, 1f, 1f, 1f)
+            } else {
+                val estHeight = largeFont.getTextHeight(inputAction.input.trackDisplayText)
+                val scaleY = if (estHeight > recommendedHeight) {
+                    recommendedHeight / estHeight
+                } else 1f
+                largeFont.scaleMul(scaleY)
+                val estWidth = largeFont.getTextWidth(inputAction.input.trackDisplayText)
+                val scaleX = if (estWidth > recommendedWidth) {
+                    recommendedWidth / estWidth
+                } else 1f
+                largeFont.scaleMul(scaleX)
+                val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
+                val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
+                // width * 0.02 is for correcting a glyph error in the font
+                largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
+                largeFont.setColor(1f, 1f, 1f, 1f)
+                largeFont.scaleMul(1f / scaleX)
+                largeFont.scaleMul(1f / scaleY)
+            }
         }
     }
 

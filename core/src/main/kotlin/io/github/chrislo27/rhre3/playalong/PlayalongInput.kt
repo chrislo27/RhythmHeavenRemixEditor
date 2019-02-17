@@ -16,6 +16,7 @@ import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_JOY_U
 enum class PlayalongInput(val id: String, val displayText: String,
                           val longDisplayText: String = displayText,
                           val trackDisplayText: String = displayText,
+                          val trackDisplayIsTexID: Boolean = false,
                           val deprecatedIDs: List<String> = listOf(),
                           val isTouchScreen: Boolean = false) {
 
@@ -29,7 +30,7 @@ enum class PlayalongInput(val id: String, val displayText: String,
     BUTTON_DPAD_RIGHT("+_right", FILLED_DPAD_R, "$FILLED_DPAD $FILLED_JOY_R"),
 
     TOUCH_TAP("touch_tap", "Tap", isTouchScreen = true),
-    TOUCH_FLICK("touch_flick", "Flick", isTouchScreen = true),
+    TOUCH_FLICK("touch_flick", "Flick", trackDisplayText = "playalong_flick", trackDisplayIsTexID = true, isTouchScreen = true),
     TOUCH_RELEASE("touch_release", "Release", isTouchScreen = true),
     TOUCH_QUICK_TAP("touch_quick_tap", "Quick Tap", trackDisplayText = "Quick\nTap", isTouchScreen = true),
     TOUCH_SLIDE("touch_slide", "Slide", isTouchScreen = true);
