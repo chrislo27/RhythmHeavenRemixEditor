@@ -187,6 +187,7 @@ class Playalong(val remix: Remix) {
                 stage.onPerfectHit()
             }
         }
+        stage.onInput(inputAction, inputResult, start)
     }
 
     fun updateScore(): Float {

@@ -11,6 +11,8 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.playalong.InputAction
+import io.github.chrislo27.rhre3.playalong.InputResult
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -184,6 +186,10 @@ class PlayalongStage(val editor: Editor,
             !playalong.gotSkillStar -> Color.GRAY
             else -> Color.YELLOW
         }
+    }
+
+    fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
+
     }
 
     fun onSkillStarGet() {
