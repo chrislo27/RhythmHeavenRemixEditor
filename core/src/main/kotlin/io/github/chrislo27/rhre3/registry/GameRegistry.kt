@@ -591,7 +591,7 @@ object GameRegistry : Disposable {
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_slide", listOf(),
                                             "Slide", false,
                                             PlayalongInput.TOUCH_SLIDE, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Slide", "[LIGHT_GRAY](ex: Love Lizards)[]"))
+                                            pickerName = PickerName("Slide", "[LIGHT_GRAY](ex: Love Lizards, Love Lab)[]"))
 
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
