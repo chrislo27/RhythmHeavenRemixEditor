@@ -584,14 +584,14 @@ object GameRegistry : Disposable {
                                             "Release and Tap", true,
                                             PlayalongInput.TOUCH_RELEASE, PlayalongMethod.RELEASE_AND_HOLD,
                                             pickerName = PickerName("Release and Tap", "[LIGHT_GRAY](ex: Glee Club)[]"))
-            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_quick_tap", listOf(),
-                                            "Quick Tap", false,
-                                            PlayalongInput.TOUCH_QUICK_TAP, PlayalongMethod.RELEASE,
-                                            pickerName = PickerName("Quick Tap", "[LIGHT_GRAY](ex: Moai Doo-Wop \"pah\")[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_slide", listOf(),
                                             "Slide", false,
                                             PlayalongInput.TOUCH_SLIDE, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Slide", "[LIGHT_GRAY](ex: Love Lizards, Love Lab)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_quick_tap", listOf(),
+                                            "Quick Tap", false,
+                                            PlayalongInput.TOUCH_QUICK_TAP, PlayalongMethod.RELEASE,
+                                            pickerName = PickerName("Quick Tap", "[LIGHT_GRAY](ex: Moai Doo-Wop \"pah\")[]"))
 
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
