@@ -5,7 +5,7 @@ open class InputAction(val beat: Float, val duration: Float,
                        val input: PlayalongInput, val method: PlayalongMethod)
     : Comparable<InputAction> {
 
-    val isInstantaneous: Boolean get() = method == PlayalongMethod.PRESS
+    val isInstantaneous: Boolean get() = method.instantaneous
 
     override fun compareTo(other: InputAction): Int {
         return when {

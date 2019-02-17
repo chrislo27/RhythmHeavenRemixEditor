@@ -24,7 +24,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
 
     data class TapPoint(var x: Float, var y: Float, var veloX: Float, var veloY: Float,
                         var lifetime: Float, var maxLifetime: Float, var isHeldDown: Boolean = false,
-                        var holdDuration: Float = 0f)
+                        var holdDuration: Float = 0f, var didFireSlideEvent: Boolean = false)
 
     private val tapPoints: MutableList<TapPoint> = mutableListOf()
     private var currentTapPoint: TapPoint? = null
@@ -32,7 +32,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     var onTapDown: (tapPoint: TapPoint) -> Unit = {}
     var onTapRelease: (tapPoint: TapPoint, short: Boolean) -> Unit = { _, _ -> }
     var onFlick: (tapPoint: TapPoint) -> Unit = {}
-    var onSlide: (tapPoint: TapPoint) -> Unit = { TODO() }
+    var onSlide: (tapPoint: TapPoint) -> Unit = {}
 
     override fun render(screen: S, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
@@ -40,7 +40,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         batch.setColor(1f, 1f, 1f, 1f)
 
         currentTapPoint?.also { point ->
-            updateTapPoint(point)
+            updateTapPoint(point, true)
         }
 
         shapeRenderer.prepareStencilMask(batch) {
@@ -108,7 +108,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
             tapPoints += it
             onTapDown(it)
         }
-        updateTapPoint(point)
+        updateTapPoint(point, false)
     }
 
     fun tapUp(mouseX: Float = stage.camera.getInputX(), mouseY: Float = stage.camera.getInputY()) {
@@ -118,7 +118,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
             point.isHeldDown = false
 
             val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
-            if (veloScalar > 700f) {
+            val isFlick = veloScalar > 700f
+            if (isFlick) {
                 println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
                 onFlick(point)
             } else {
@@ -126,8 +127,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
                 if (point.holdDuration <= 0.1f) {
                     println("    Short tap")
                 }
-                onTapRelease(point, point.holdDuration <= 0.1f)
             }
+            onTapRelease(point, !isFlick && point.holdDuration <= 0.1f)
         }
         currentTapPoint = null
     }
@@ -154,7 +155,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         return old
     }
 
-    fun updateTapPoint(point: TapPoint) {
+    fun updateTapPoint(point: TapPoint, fireSlideEvents: Boolean) {
         val mouseX = stage.camera.getInputX().coerceIn(this.location.realX, this.location.realX + this.location.realWidth)
         val mouseY = stage.camera.getInputY().coerceIn(this.location.realY, this.location.realY + this.location.realHeight)
         point.maxLifetime = 0.125f
@@ -169,5 +170,17 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         point.veloY = mouseY - point.y
         point.x = mouseX
         point.y = mouseY
+
+        if (fireSlideEvents) {
+            val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
+            if (veloScalar > 65f) {
+                if (!point.didFireSlideEvent) {
+                    onSlide(point)
+                    point.didFireSlideEvent = true
+                }
+            } else {
+                point.didFireSlideEvent = false
+            }
+        }
     }
 }

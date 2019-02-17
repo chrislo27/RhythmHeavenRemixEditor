@@ -22,7 +22,7 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
         set(_) {}
 
     init {
-        this.bounds.width = if (playalongMethod == PlayalongMethod.PRESS) 0.5f else 1f
+        this.bounds.width = if (playalongMethod.instantaneous) 0.5f else 1f
         this.bounds.height = 1f
     }
 

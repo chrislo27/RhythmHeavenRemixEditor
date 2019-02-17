@@ -16,7 +16,8 @@ import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_JOY_U
 enum class PlayalongInput(val id: String, val displayText: String,
                           val longDisplayText: String = displayText,
                           val trackDisplayText: String = displayText,
-                          val deprecatedIDs: List<String> = listOf()) {
+                          val deprecatedIDs: List<String> = listOf(),
+                          val isTouchScreen: Boolean = false) {
 
     BUTTON_A("A", FILLED_A),
     BUTTON_B("B", FILLED_B),
@@ -25,7 +26,13 @@ enum class PlayalongInput(val id: String, val displayText: String,
     BUTTON_DPAD_UP("+_up", FILLED_DPAD_U, "$FILLED_DPAD $FILLED_JOY_U"),
     BUTTON_DPAD_DOWN("+_down", FILLED_DPAD_D, "$FILLED_DPAD $FILLED_JOY_D"),
     BUTTON_DPAD_LEFT("+_left", FILLED_DPAD_L, "$FILLED_DPAD $FILLED_JOY_L"),
-    BUTTON_DPAD_RIGHT("+_right", FILLED_DPAD_R, "$FILLED_DPAD $FILLED_JOY_R");
+    BUTTON_DPAD_RIGHT("+_right", FILLED_DPAD_R, "$FILLED_DPAD $FILLED_JOY_R"),
+
+    TOUCH_TAP("touch_tap", "Tap", isTouchScreen = true),
+    TOUCH_FLICK("touch_flick", "Flick", isTouchScreen = true),
+    TOUCH_RELEASE("touch_release", "Release", isTouchScreen = true),
+    TOUCH_QUICK_TAP("touch_quick_tap", "Quick Tap", trackDisplayText = "Quick\nTap", isTouchScreen = true),
+    TOUCH_SLIDE("touch_slide", "Slide", isTouchScreen = true);
 
     companion object {
         val VALUES: List<PlayalongInput> = values().toList()

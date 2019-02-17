@@ -22,16 +22,17 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
     val blockHeight = recommendedHeight * 1.5f
     val blockWidth = recommendedWidth * 1.1f
     val baseY = camera.position.y + 1.5f
-    val skillStarEntity = playalong.skillStarEntity
+    val skillStarInputPair = playalong.skillStarInput
+    val skillStarInput = skillStarInputPair?.first
     for ((beatAt, list) in playalong.inputActionsByBeat) {
         val listSize = list.size
-        if (skillStarEntity != null && skillStarEntity.bounds.x == beatAt) {
+        if (skillStarInput != null && skillStarInput.beat == beatAt) {
             val bottomY = baseY + (blockHeight * listSize) / 2 - (-1 + 0.5f) * blockHeight
             largeFont.color = Color.YELLOW
             val star = "★"
             val width = largeFont.getTextWidth(star)
             val height = largeFont.getTextHeight(star)
-            largeFont.draw(batch, star, skillStarEntity.bounds.x + width * 0.02f, bottomY + height / 2, 0f, Align.center, false)
+            largeFont.draw(batch, star, skillStarInput.beat + (if (!skillStarInputPair.second) skillStarInput.duration else 0f) + width * 0.02f, bottomY + height / 2, 0f, Align.center, false)
             largeFont.setColor(1f, 1f, 1f, 1f)
         }
         list.forEachIndexed { index, inputAction ->

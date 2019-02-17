@@ -567,6 +567,32 @@ object GameRegistry : Disposable {
                                             PlayalongInput.BUTTON_DPAD_UP, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
 
+            // RHDS
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_tap", listOf(),
+                                            "Tap", false,
+                                            PlayalongInput.TOUCH_TAP, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Tap", "[LIGHT_GRAY](ex: Karate Man)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_flick", listOf(),
+                                            "Flick", false,
+                                            PlayalongInput.TOUCH_FLICK, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Flick", "[LIGHT_GRAY](ex: Rhythm Rally)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_tap_and_hold", listOf(),
+                                            "Tap and Hold", false,
+                                            PlayalongInput.TOUCH_TAP, PlayalongMethod.PRESS_AND_HOLD,
+                                            pickerName = PickerName("Tap and Hold", "[LIGHT_GRAY](ex: Fillbots)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_release_and_tap", listOf(),
+                                            "Release and Tap", false,
+                                            PlayalongInput.TOUCH_RELEASE, PlayalongMethod.RELEASE_AND_HOLD,
+                                            pickerName = PickerName("Release and Tap", "[LIGHT_GRAY](ex: Glee Club)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_quick_tap", listOf(),
+                                            "Quick Tap", false,
+                                            PlayalongInput.TOUCH_QUICK_TAP, PlayalongMethod.RELEASE,
+                                            pickerName = PickerName("Quick Tap", "[LIGHT_GRAY](ex: Moai Doo-Wop \"pah\")[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_slide", listOf(),
+                                            "Slide", false,
+                                            PlayalongInput.TOUCH_SLIDE, PlayalongMethod.PRESS,
+                                            pickerName = PickerName("Slide", "[LIGHT_GRAY](ex: Love Lizards)[]"))
+
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
         }

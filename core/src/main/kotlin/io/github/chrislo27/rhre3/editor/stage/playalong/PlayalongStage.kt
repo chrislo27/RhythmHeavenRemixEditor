@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.playalong.InputAction
 import io.github.chrislo27.rhre3.playalong.InputResult
 import io.github.chrislo27.rhre3.playalong.Playalong
+import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
@@ -169,6 +170,11 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = 0.65f)
             this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
             this.visible = false
+
+            this.onTapDown = this@PlayalongStage::onTapDown
+            this.onTapRelease = this@PlayalongStage::onTapRelease
+            this.onFlick = this@PlayalongStage::onFlick
+            this.onSlide = this@PlayalongStage::onTapSlide
         }
         this.elements += flickingStage
         updateScoreLabel()
@@ -189,7 +195,7 @@ class PlayalongStage(val editor: Editor,
             else -> SUPERB_COLOUR
         }}]$score[]"
         skillStarLabel.textColor = when {
-            playalong.skillStarEntity == null -> Colors.get("X")
+            playalong.skillStarInput == null -> Colors.get("X")
             !playalong.gotSkillStar -> Color.GRAY
             else -> Color.YELLOW
         }
@@ -225,6 +231,24 @@ class PlayalongStage(val editor: Editor,
         updateScoreLabel()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
+        flickingStage.visible = playalong.needsTouchScreen
+    }
+
+    fun onTapDown(tapPoint: FlickingStage.TapPoint) {
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP), 0)
+    }
+
+    fun onTapRelease(tapPoint: FlickingStage.TapPoint, short: Boolean) {
+        playalong.handleInput(false, if (short) setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP) else setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE), 0)
+    }
+
+    fun onFlick(tapPoint: FlickingStage.TapPoint) {
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_FLICK), 0)
+    }
+
+    fun onTapSlide(tapPoint: FlickingStage.TapPoint) {
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0)
+        println("SLIDE")
     }
 
     fun onShow() {
@@ -239,7 +263,7 @@ class PlayalongStage(val editor: Editor,
 
         // Skill Star pulses 3 beats before hitting it
         val skillStarEntity = playalong.skillStarEntity
-        if (skillStarZoom == 0f && skillStarEntity != null && remix.playState == PlayState.PLAYING) {
+        if (skillStarZoom == 0f && skillStarEntity != null && playalong.skillStarInput != null && remix.playState == PlayState.PLAYING) {
             val threshold = 0.1f
             for (i in 1 until 4) {
                 val beatPoint = remix.tempos.beatsToSeconds(skillStarEntity.bounds.x - i)
