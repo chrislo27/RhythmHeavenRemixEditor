@@ -77,7 +77,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     private fun Cue.getBaseBpmRate(): Float {
-        return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width)
+        return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width) * (if (cue.baseBpm <= 0f) 1f else remix.speedMultiplier)
     }
 
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME

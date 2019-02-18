@@ -612,6 +612,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         allowed
     }
 
+    var speedMultiplier: Float = 1f
+
     var duration: Float = Float.POSITIVE_INFINITY
         private set
     var lastPoint: Float = 0f
@@ -833,16 +835,16 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     fun timeUpdate(delta: Float) {
         val music: MusicData? = music
 
-        music?.music?.update(if (playState == PlayState.PLAYING) (delta * 0.75f) else delta)
+        music?.music?.update(speedMultiplier * if (playState == PlayState.PLAYING) (delta * 0.75f) else delta)
 
         if (playState != PlayState.PLAYING)
             return
 
-        seconds += delta
+        seconds += delta * speedMultiplier
         if (music != null) {
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
                 music.music.play()
-//                music.music.setPitch(1f)
+                music.music.setPitch(speedMultiplier)
                 scheduleMusicPlaying = false
 //                if (ended) {
 //                    music.music.pause()
@@ -858,6 +860,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
                 }
 
                 setMusicVolume()
+                music.music.setPitch(speedMultiplier)
             }
         }
 
