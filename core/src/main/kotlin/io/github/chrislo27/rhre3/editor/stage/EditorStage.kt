@@ -241,7 +241,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
                 updateSelected()
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.G) && !isTyping) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.G) && !isTyping && playalongToggleButton.enabled && playalongToggleButton.visible) {
                 playalongToggleButton.onLeftClick(0f, 0f)
             }
         }
