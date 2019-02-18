@@ -100,7 +100,7 @@ class Playalong(val remix: Remix) {
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
-                val result = createInputResult(input, end = true, atSeconds = seconds, timing = InputTiming.MISS)
+                val result = createInputResult(input, end = true, atSeconds = seconds, timing = if (input.method == PlayalongMethod.LONG_PRESS) InputTiming.ACE else InputTiming.MISS)
                 inputted[input] = InputResults(input, listOf(firstResult.second, result))
                 onInput(input, result, false)
             }
