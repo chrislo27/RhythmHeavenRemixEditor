@@ -39,6 +39,9 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
     object ViewingPartners
         : PresenceState("Viewing our partners", "credits")
 
+    object PlayingAlong
+        : PresenceState("Using Playalong", "playalong")
+
     sealed class Elapsable(state: String, val duration: Float, smallIcon: String = "", smallIconText: String = state)
         : PresenceState(state, smallIcon, smallIconText) {
         override fun modifyRichPresence(richPresence: DefaultRichPresence) {

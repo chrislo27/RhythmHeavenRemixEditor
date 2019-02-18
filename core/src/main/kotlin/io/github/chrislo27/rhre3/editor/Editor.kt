@@ -195,7 +195,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 } else if (midiInstruments > 0) {
                                     DiscordHelper.updatePresence(PresenceState.Elapsable.PlayingMidi(durationSeconds))
                                 } else if (stage.playalongStage.visible) {
-                                    // TODO add discord playing status
+                                    DiscordHelper.updatePresence(PresenceState.PlayingAlong)
                                 }
                             }
 
