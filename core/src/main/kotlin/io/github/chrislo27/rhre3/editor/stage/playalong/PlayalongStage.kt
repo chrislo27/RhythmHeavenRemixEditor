@@ -269,19 +269,21 @@ class PlayalongStage(val editor: Editor,
         when (new) {
             STOPPED -> {
                 remix.speedMultiplier = 1f
-                tempoUpButton.enabled = true
-                tempoDownButton.enabled = true
+                disableButtonsWhilePlaying(false)
             }
             PAUSED -> {
-                tempoUpButton.enabled = false
-                tempoDownButton.enabled = false
+                disableButtonsWhilePlaying(true)
             }
             PLAYING -> {
                 remix.speedMultiplier = tempoChange / 100f
-                tempoUpButton.enabled = false
-                tempoDownButton.enabled = false
+                disableButtonsWhilePlaying(true)
             }
         }
+    }
+
+    private fun disableButtonsWhilePlaying(playing: Boolean) {
+        tempoUpButton.enabled = !playing
+        tempoDownButton.enabled = !playing
     }
 
     fun setPerfectVisibility(visible: Boolean) {
@@ -356,6 +358,7 @@ class PlayalongStage(val editor: Editor,
     fun onShow() {
         reset()
         remix.speedMultiplier = tempoChange / 100f
+        disableButtonsWhilePlaying(remix.playState != STOPPED)
     }
 
     fun onHide() {
