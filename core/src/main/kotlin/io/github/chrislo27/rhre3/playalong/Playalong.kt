@@ -96,7 +96,7 @@ class Playalong(val remix: Remix) {
         val seconds = remix.seconds
 
         // Check in progress inputs' trailing inputs
-        inputsInProgress.entries.forEach { (input, firstResult) ->
+        inputsInProgress.entries.toList().forEach { (input, firstResult) ->
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
@@ -174,7 +174,7 @@ class Playalong(val remix: Remix) {
         }
 
         // Check in progress inputs
-        inputsInProgress.entries.forEach { (input, firstResult) ->
+        inputsInProgress.entries.toList().forEach { (input, firstResult) ->
             if ((!down && keycodeUsed == firstResult.first && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
                     (down && keycodeUsed == firstResult.first && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
                 inputsInProgress.remove(input)
