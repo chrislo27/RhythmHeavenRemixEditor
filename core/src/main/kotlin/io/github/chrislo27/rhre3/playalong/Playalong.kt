@@ -227,7 +227,7 @@ class Playalong(val remix: Remix) {
                 }.toFloat() / numResultsExpected
         score = score.coerceIn(0f, 100f)
 
-        stage.updateScoreLabel()
+        stage.updateLabels()
 
         return score
     }
