@@ -225,8 +225,13 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 2, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoDownButton
-        tempoLabel = TextLabel(palette, lowerStage, lowerStage).apply {
-            this.isLocalizationKey = false
+        tempoLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage){
+            override fun getRealText(): String {
+                val value = tempoChange
+                return "[#${if (value == 100) "FFFFFF" else if (value > 100) TEMPO_UP_COLOUR.toString() else TEMPO_DOWN_COLOUR.toString()}]" + Localization[if (value >= 100) "playalong.tempoUp" else "playalong.tempoDown"] + "[]\n$value%"
+            }
+        }.apply {
+            this.isLocalizationKey = true
             this.text = ""
             this.fontScaleMultiplier = 0.5f
             this.background = true
@@ -259,7 +264,7 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += timingDisplayStage
 
-        updateScoreLabel()
+        updateLabels()
         setPerfectVisibility(false)
         tempoChange = 100 // Force text label update
     }
@@ -292,7 +297,7 @@ class PlayalongStage(val editor: Editor,
         perfectLabel.visible = visible
     }
 
-    fun updateScoreLabel() {
+    fun updateLabels() {
         val score = playalong.score.roundToInt()
         scoreLabel.text = "[#${when (score) {
             in 0 until 60 -> TRY_AGAIN_COLOUR
@@ -333,7 +338,7 @@ class PlayalongStage(val editor: Editor,
         val noPlayalong = playalong.inputActions.isEmpty()
         noEntitiesLabel.visible = noPlayalong
         lowerStage.visible = !noPlayalong
-        updateScoreLabel()
+        updateLabels()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
         flickingStage.visible = playalong.needsTouchScreen
