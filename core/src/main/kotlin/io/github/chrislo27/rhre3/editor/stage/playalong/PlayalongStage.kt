@@ -19,11 +19,16 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.track.PlayState.PAUSED
+import io.github.chrislo27.rhre3.track.PlayState.PLAYING
+import io.github.chrislo27.rhre3.track.PlayState.STOPPED
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
+import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.sign
@@ -38,6 +43,14 @@ class PlayalongStage(val editor: Editor,
         val TRY_AGAIN_COLOUR = "01BDFD"
         val OK_COLOUR = "00CD00"
         val SUPERB_COLOUR = "FD0304"
+
+        val TEMPO_DOWN_COLOUR: Color = Color.valueOf("3199E2")
+        val TEMPO_UP_COLOUR: Color = Color.valueOf("E03131")
+        val TEMPO_UP_SYMBOL = "▲"
+        val TEMPO_DOWN_SYMBOL = "▼"
+
+        val TEMPO_UP_RANGE = 5..300
+        val TEMPO_CHANGE_INCREMENT = 5
     }
 
     private val remix: Remix get() = editor.remix
@@ -54,6 +67,9 @@ class PlayalongStage(val editor: Editor,
     val perfectHitIcon: ImageLabel<EditorScreen>
     val flickingStage: FlickingStage<EditorScreen>
     val timingDisplayStage: TimingDisplayStage
+    val tempoUpButton: Button<EditorScreen>
+    val tempoDownButton: Button<EditorScreen>
+    val tempoLabel: TextLabel<EditorScreen>
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
@@ -62,6 +78,12 @@ class PlayalongStage(val editor: Editor,
     private val perfectFailTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_failed"))
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
+
+    var tempoChange: Int = 100
+        private set(value) {
+            field = value
+            tempoLabel.text = "[#${if (value == 100) "FFFFFF" else if (value > 100) TEMPO_UP_COLOUR.toString() else TEMPO_DOWN_COLOUR.toString()}]Tempo ${if (value >= 100) "Up" else "Down"}![]\n$value%"
+        }
 
     init {
         val palette = main.uiPalette
@@ -101,10 +123,11 @@ class PlayalongStage(val editor: Editor,
         val paddingX = 0.0125f
         val paddingY = 0.05f
 
+        val buttonWidth = 0.035f
         perfectIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
             this.image = perfectTexReg
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-            this.location.set(screenX = paddingX, screenY = 1f - 0.2f - paddingY, screenWidth = 0.035f, screenHeight = 0.2f)
+            this.location.set(screenX = paddingX, screenY = 1f - 0.2f - paddingY, screenWidth = buttonWidth, screenHeight = 0.2f)
         }
         lowerStage.elements += perfectIcon
         perfectHitIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
@@ -139,7 +162,7 @@ class PlayalongStage(val editor: Editor,
             this.text = "★"
             this.textWrapping = true
             this.textAlign = Align.center
-            this.location.set(screenY = 1f - 0.25f - paddingY, screenWidth = 0.035f, screenHeight = 0.25f)
+            this.location.set(screenY = 1f - 0.25f - paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
             this.location.set(screenX = scoreLabel.location.screenX - this.location.screenWidth)
         }
         lowerStage.elements += skillStarLabel
@@ -168,17 +191,97 @@ class PlayalongStage(val editor: Editor,
                 this.image = perfectTexReg
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
-            this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = 0.035f, screenHeight = 0.25f)
+            this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
+        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                // TODO
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "Monster\nMaw"
+                this.fontScaleMultiplier = 0.5f
+                this.textWrapping = false
+            })
+            this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+        }
+        tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                tempoChange -= TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
+                if (tempoChange < TEMPO_UP_RANGE.first) {
+                    tempoChange = TEMPO_UP_RANGE.first
+                }
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = TEMPO_DOWN_SYMBOL
+                this.textColor = TEMPO_DOWN_COLOUR
+                this.textWrapping = false
+            })
+            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 2, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+        }
+        lowerStage.elements += tempoDownButton
+        tempoLabel = TextLabel(palette, lowerStage, lowerStage).apply {
+            this.isLocalizationKey = false
+            this.text = ""
+            this.fontScaleMultiplier = 0.5f
+            this.background = true
+            this.textWrapping = false
+            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 3, screenY = paddingY, screenWidth = buttonWidth * 2, screenHeight = 0.25f)
+        }
+        lowerStage.elements += tempoLabel
+        tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                tempoChange += TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
+                if (tempoChange > TEMPO_UP_RANGE.last) {
+                    tempoChange = TEMPO_UP_RANGE.last
+                }
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = TEMPO_UP_SYMBOL
+                this.textColor = TEMPO_UP_COLOUR
+                this.textWrapping = false
+            })
+            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 5, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+        }
+        lowerStage.elements += tempoUpButton
 
         timingDisplayStage = TimingDisplayStage(this, lowerStage, lowerStage.camera).apply {
-            this.location.set(screenWidth = 0.5f, screenY = paddingY)
+            this.location.set(screenWidth = 0.4f, screenY = paddingY)
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2, screenHeight = acesLabel.location.screenY - this.location.screenY - paddingY)
         }
         lowerStage.elements += timingDisplayStage
 
         updateScoreLabel()
         setPerfectVisibility(false)
+        tempoChange = 100 // Force text label update
+    }
+
+    fun playStateListener(old: PlayState, new: PlayState) {
+        if (!this.visible) return
+        when (new) {
+            STOPPED -> {
+                remix.speedMultiplier = 1f
+                tempoUpButton.enabled = true
+                tempoDownButton.enabled = true
+            }
+            PAUSED -> {
+                tempoUpButton.enabled = false
+                tempoDownButton.enabled = false
+            }
+            PLAYING -> {
+                remix.speedMultiplier = tempoChange / 100f
+                tempoUpButton.enabled = false
+                tempoDownButton.enabled = false
+            }
+        }
     }
 
     fun setPerfectVisibility(visible: Boolean) {
@@ -262,7 +365,7 @@ class PlayalongStage(val editor: Editor,
 
         // Skill Star pulses 3 beats before hitting it
         val skillStarEntity = playalong.skillStarEntity
-        if (skillStarZoom == 0f && skillStarEntity != null && playalong.skillStarInput != null && remix.playState == PlayState.PLAYING) {
+        if (skillStarZoom == 0f && skillStarEntity != null && playalong.skillStarInput != null && remix.playState == PLAYING) {
             val threshold = 0.1f
             for (i in 1 until 4) {
                 val beatPoint = remix.tempos.beatsToSeconds(skillStarEntity.bounds.x - i)
@@ -281,7 +384,7 @@ class PlayalongStage(val editor: Editor,
         skillStarLabel.fontScaleMultiplier = (if (skillStarZoom > 0f) Interpolation.pow4In else Interpolation.linear).apply(4f, 1f, 1f - skillStarZoom.absoluteValue) / 4f // / 4 b/c of big font
 
         val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
-        perfectLabel.textColor?.a = if (remix.playState != PlayState.PLAYING || perfectLabelFlash > 0.35f) 1f else 0f
+        perfectLabel.textColor?.a = if (remix.playState != PLAYING || perfectLabelFlash > 0.35f) 1f else 0f
 
         perfectHitIcon.tint.a = if (playalong.perfectSoFar) perfectAnimation else 0f
         if (playalong.perfectSoFar && perfectIcon.image != perfectTexReg) {
