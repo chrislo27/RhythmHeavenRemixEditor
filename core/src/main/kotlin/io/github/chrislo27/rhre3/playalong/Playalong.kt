@@ -188,7 +188,7 @@ class Playalong(val remix: Remix) {
     }
 
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
-        println("Action at beat ${inputAction.beat} ${inputAction.method} ${inputAction.input.id} hit with offset ${inputResult.offset} - ${inputResult.timing}")
+//        println("Action at beat ${inputAction.beat} ${inputAction.method} ${inputAction.input.id} hit with offset ${inputResult.offset} - ${inputResult.timing}")
         if (!gotSkillStar && skillStarInput != null && remix.seconds <= remix.tempos.beatsToSeconds(skillStarInput.first.beat + if (!skillStarInput.second) skillStarInput.first.duration else 0f) + MAX_OFFSET_SEC) {
             if (inputResult.timing == InputTiming.ACE && inputAction == skillStarInput.first && start == skillStarInput.second) {
                 skillStarEntity?.play()
