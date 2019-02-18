@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.util.TempoUtils
@@ -19,8 +20,8 @@ import kotlin.math.sign
 class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, PlayalongSettingsScreen>(main) {
 
     companion object {
-        private val FILLED_A_BUTTON = "\uE0E0"
-        private val BORDERED_A_BUTTON = "\uE0A0"
+        private val FILLED_A_BUTTON = PlayalongChars.FILLED_A
+        private val BORDERED_A_BUTTON = PlayalongChars.BORDERED_A
     }
 
     override val stage: GenericStage<PlayalongSettingsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
