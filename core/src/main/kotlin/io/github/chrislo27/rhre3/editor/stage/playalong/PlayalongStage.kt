@@ -355,9 +355,11 @@ class PlayalongStage(val editor: Editor,
 
     fun onShow() {
         reset()
+        remix.speedMultiplier = tempoChange / 100f
     }
 
     fun onHide() {
+        remix.speedMultiplier = 1f
     }
 
     override fun frameUpdate(screen: EditorScreen) {
