@@ -73,6 +73,18 @@ class PlayalongStage(val editor: Editor,
             this.colour.set(0f, 0f, 0f, 0.65f)
             this.location.set(lowerStage.location)
         }
+        flickingStage = FlickingStage(this, this).apply {
+            this.colour.set(Color.valueOf("00BC67"))
+            this.location.set(screenX = 0.65f)
+            this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
+            this.visible = false
+
+            this.onTapDown = this@PlayalongStage::onTapDown
+            this.onTapRelease = this@PlayalongStage::onTapRelease
+            this.onFlick = this@PlayalongStage::onFlick
+            this.onSlide = this@PlayalongStage::onTapSlide
+        }
+        this.elements += flickingStage
         this.elements += lowerStage
 
         noEntitiesLabel = object : TextLabel<EditorScreen>(palette, this, this) {
@@ -165,18 +177,6 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += timingDisplayStage
 
-        flickingStage = FlickingStage(this, this).apply {
-            this.colour.set(Color.valueOf("00BC67"))
-            this.location.set(screenX = 0.65f)
-            this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
-            this.visible = false
-
-            this.onTapDown = this@PlayalongStage::onTapDown
-            this.onTapRelease = this@PlayalongStage::onTapRelease
-            this.onFlick = this@PlayalongStage::onFlick
-            this.onSlide = this@PlayalongStage::onTapSlide
-        }
-        this.elements += flickingStage
         updateScoreLabel()
         setPerfectVisibility(false)
     }
@@ -248,7 +248,6 @@ class PlayalongStage(val editor: Editor,
 
     fun onTapSlide(tapPoint: FlickingStage.TapPoint) {
         playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0)
-        println("SLIDE")
     }
 
     fun onShow() {
