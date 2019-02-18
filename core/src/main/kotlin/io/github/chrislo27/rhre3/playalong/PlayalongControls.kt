@@ -11,8 +11,18 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
                              var buttonDown: Int = Input.Keys.S) {
 
     companion object {
-        val QWERTY_D_PAD_LEFT: PlayalongControls = PlayalongControls()
+        val QWERTY_D_PAD_LEFT = PlayalongControls()
+        val AZERTY_D_PAD_LEFT = PlayalongControls(buttonLeft = Input.Keys.Q, buttonRight = Input.Keys.D, buttonUp = Input.Keys.Z, buttonDown = Input.Keys.S)
+        val ARROW_KEYS_ZX = PlayalongControls(Input.Keys.Z, Input.Keys.X, Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
+        val IJKL = PlayalongControls(Input.Keys.Z, Input.Keys.X, Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)
 
+        val strCustom = "Custom"
+        val standardControls: Map<String, PlayalongControls> = mapOf(
+                "QWERTY (D-Pad - WASD)" to QWERTY_D_PAD_LEFT,
+                "AZERTY (D-Pad - ZSQD)" to AZERTY_D_PAD_LEFT,
+                "Arrow Keys (D-Pad - Arrow Keys)" to ARROW_KEYS_ZX,
+                "IJKL (D-Pad - IJKL)" to ARROW_KEYS_ZX
+                                                                    )
     }
 
     fun toInputMap(): Map<PlayalongInput, Set<Int>> {

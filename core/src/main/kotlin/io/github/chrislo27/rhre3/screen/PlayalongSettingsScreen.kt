@@ -4,12 +4,16 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
+import kotlin.math.sign
 
 
 class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, PlayalongSettingsScreen>(main) {
@@ -20,7 +24,9 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     }
 
     override val stage: GenericStage<PlayalongSettingsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
-    private val label: TextLabel<PlayalongSettingsScreen>
+    private val titleLabelIcon: TextLabel<PlayalongSettingsScreen>
+
+    private val controlsLabel: TextLabel<PlayalongSettingsScreen>
 
     init {
         val palette = main.uiPalette
@@ -30,14 +36,68 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         stage.titleLabel.text = "screen.playalongSettings.title"
         stage.titleIcon.visible = false
-        label = TextLabel(palette.copy(ftfont = main.fonts[main.defaultFontLargeKey]), stage, stage).apply {
+        titleLabelIcon = TextLabel(palette.copy(ftfont = main.fonts[main.defaultFontLargeKey]), stage, stage).apply {
             this.alignment = Align.topLeft
             this.location.set(this@PlayalongSettingsScreen.stage.titleIcon.location)
             this.text = FILLED_A_BUTTON
             this.isLocalizationKey = false
             this.textWrapping = false
         }
-        stage.elements += label
+        stage.elements += titleLabelIcon
+
+        controlsLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.textWrapping = false
+            this.isLocalizationKey = false
+            this.location.set(screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += controlsLabel
+
+        val currentControls = main.playalongControls.copy()
+        val isCustom = currentControls !in PlayalongControls.standardControls.values
+        val controlsList = (if (isCustom) listOf(PlayalongControls.strCustom to currentControls) else listOf()) + PlayalongControls.standardControls.entries.map { it.toPair() }
+        stage.bottomStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.bottomStage, stage.bottomStage) {
+
+            var index: Int = controlsList.indexOfFirst { currentControls == it.second }.coerceAtLeast(0)
+
+            fun cycle(dir: Int) {
+                var newIndex = index + dir.sign
+                if (newIndex < 0) {
+                    newIndex = controlsList.size - 1
+                } else if (newIndex >= controlsList.size) {
+                    newIndex = 0
+                }
+                index = newIndex
+                main.playalongControls = controlsList[index].second
+                updateLabel()
+            }
+
+            fun updateLabel() {
+                val label = labels.first() as TextLabel
+                label.text = Localization["screen.playalongSettings.controls", controlsList[index].first]
+                controlsLabel.text = controlsList[index].second.toInputString()
+            }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
+            }
+
+            init {
+                this.addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.isLocalizationKey = false
+                    this.text = ""
+                    this.textWrapping = false
+                })
+                updateLabel()
+            }
+        }.apply {
+            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+        }
     }
 
     override fun renderUpdate() {
@@ -50,11 +110,11 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         val interval = TempoUtils.beatsToSeconds(2f, 125f)
         val pressDuration = 0.15f
         if (MathHelper.getSawtoothWave(interval) < pressDuration / interval) {
-            label.text = BORDERED_A_BUTTON
-            label.fontScaleMultiplier = 0.7f
+            titleLabelIcon.text = BORDERED_A_BUTTON
+            titleLabelIcon.fontScaleMultiplier = 0.7f
         } else {
-            label.text = FILLED_A_BUTTON
-            label.fontScaleMultiplier = 0.8f
+            titleLabelIcon.text = FILLED_A_BUTTON
+            titleLabelIcon.fontScaleMultiplier = 0.8f
         }
     }
 
