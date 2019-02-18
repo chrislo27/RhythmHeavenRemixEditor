@@ -168,7 +168,7 @@ class PlayalongStage(val editor: Editor,
         lowerStage.elements += skillStarLabel
         acesLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun getRealText(): String {
-                return Localization[text, playalong.aces]
+                return Localization[text, playalong.aces, playalong.numResultsExpected]
             }
         }.apply {
             this.isLocalizationKey = true
@@ -176,7 +176,7 @@ class PlayalongStage(val editor: Editor,
             this.textWrapping = false
             this.fontScaleMultiplier = 0.85f
             this.textAlign = Align.center
-            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - 0.2f, screenWidth = 0.125f, screenHeight = 0.2f)
+            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - 0.2f, screenWidth = 0.25f, screenHeight = 0.2f)
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2)
         }
         lowerStage.elements += acesLabel
