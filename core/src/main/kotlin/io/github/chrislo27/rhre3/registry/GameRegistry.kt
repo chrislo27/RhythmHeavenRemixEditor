@@ -235,9 +235,11 @@ object GameRegistry : Disposable {
 
                 if (!it.soundHandle.exists()) {
                     errors += "Handle does not exist for ${it.id}: ${it.soundHandle}"
-                } else if (it.game.isCustom) {
+                } else if (it.game.isCustom && !it.game.jsonless) {
                     val parent = it.soundHandle.file().resolve("../")
-                    if (parent.isDirectory && it.id.substringAfterLast('/') !in parent.list().map { n -> n.substringAfterLast('/').substringBeforeLast(".ogg") }) {
+                    val ext = it.soundHandle.extension()
+                    val list = parent.list().map { n -> n.substringAfterLast('/').substringBeforeLast(".$ext") }
+                    if (parent.isDirectory && it.id.substringAfterLast('/') !in list) {
                         errors += "Handle has wrong casing for ${it.id}: ${it.soundHandle}"
                     }
                 }
