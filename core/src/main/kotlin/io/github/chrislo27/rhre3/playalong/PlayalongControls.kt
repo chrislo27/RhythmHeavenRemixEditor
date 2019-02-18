@@ -21,7 +21,7 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
                 "QWERTY (D-Pad - WASD)" to QWERTY_D_PAD_LEFT,
                 "AZERTY (D-Pad - ZSQD)" to AZERTY_D_PAD_LEFT,
                 "Arrow Keys (D-Pad - Arrow Keys)" to ARROW_KEYS_ZX,
-                "IJKL (D-Pad - IJKL)" to ARROW_KEYS_ZX
+                "IJKL (D-Pad - IJKL)" to IJKL
                                                                     )
     }
 
