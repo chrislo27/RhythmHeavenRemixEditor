@@ -842,6 +842,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         if (music != null) {
             if (scheduleMusicPlaying && seconds >= musicStartSec) {
                 music.music.play()
+//                music.music.setPitch(1f)
                 scheduleMusicPlaying = false
 //                if (ended) {
 //                    music.music.pause()

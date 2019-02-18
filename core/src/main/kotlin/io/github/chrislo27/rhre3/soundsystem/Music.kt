@@ -19,6 +19,10 @@ interface Music : Disposable {
 
     fun setVolume(vol: Float)
 
+    fun getPitch(): Float
+
+    fun setPitch(pitch: Float)
+
     fun update(delta: Float)
 
     fun isPlaying(): Boolean

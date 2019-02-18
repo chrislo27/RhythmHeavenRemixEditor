@@ -102,6 +102,14 @@ class GdxMusicWrapper(handle: FileHandle) : Music {
         music.stop()
     }
 
+    override fun getPitch(): Float {
+        return 1f
+    }
+
+    override fun setPitch(pitch: Float) {
+        // no op
+    }
+
     override fun getPosition(): Float {
         return music.position
     }
