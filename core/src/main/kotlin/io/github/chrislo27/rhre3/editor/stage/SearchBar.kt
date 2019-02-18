@@ -67,6 +67,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
             hasFocus = true
             text = ""
             editorStage.updateSelected(EditorStage.DirtyType.SEARCH_DIRTY)
+            editor.pickerSelection.filter = searchFilter
         }
     }
     val clearButton: ClearButton = ClearButton()
