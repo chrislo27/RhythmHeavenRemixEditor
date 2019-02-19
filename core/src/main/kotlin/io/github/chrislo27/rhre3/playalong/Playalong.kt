@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
@@ -60,6 +61,8 @@ class Playalong(val remix: Remix) {
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
 
+    private val calibratedOffset: Float get() = remix.main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
+
     /**
      * The computed score from 0.0 to 100.0.
      */
@@ -93,7 +96,7 @@ class Playalong(val remix: Remix) {
     fun frameUpdate() {
         // Figure out if long press actions are over
         // or if two-stage inputs have expired at their ends
-        val seconds = remix.seconds
+        val seconds = remix.seconds - calibratedOffset
 
         // Check in progress inputs' trailing inputs
         inputsInProgress.entries.toList().forEach { (input, firstResult) ->
@@ -122,7 +125,7 @@ class Playalong(val remix: Remix) {
         }
     }
 
-    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float = remix.seconds, timing: InputTiming? = null): InputResult {
+    private fun createInputResult(target: InputAction, end: Boolean, atSeconds: Float, timing: InputTiming? = null): InputResult {
         var offset = atSeconds - remix.tempos.beatsToSeconds(target.beat + if (end) target.duration else 0f)
         if (target.method == PlayalongMethod.LONG_PRESS && offset > 0f)
             offset = 0f
@@ -137,7 +140,7 @@ class Playalong(val remix: Remix) {
 
     fun handleInput(down: Boolean, playalongInput: Set<PlayalongInput>, keycodeUsed: Int): Boolean {
         if (remix.playState != PlayState.PLAYING) return false
-        val seconds = remix.seconds
+        val seconds = remix.seconds - calibratedOffset
         val searched = searchForInputAction(seconds, MAX_OFFSET_SEC) {
             it !in inputted.keys && it.input in playalongInput
                     && (if (it.method == PlayalongMethod.RELEASE_AND_HOLD || it.method == PlayalongMethod.RELEASE) !down else down)
@@ -148,12 +151,12 @@ class Playalong(val remix: Remix) {
             if (down) {
                 when (searched.method) {
                     PlayalongMethod.PRESS -> {
-                        val result = createInputResult(searched, false)
+                        val result = createInputResult(searched, false, seconds)
                         inputted[searched] = InputResults(searched, listOf(result))
                         onInput(searched, result, true)
                     }
                     PlayalongMethod.LONG_PRESS, PlayalongMethod.PRESS_AND_HOLD -> {
-                        val result = createInputResult(searched, false)
+                        val result = createInputResult(searched, false, seconds)
                         inputsInProgress[searched] = keycodeUsed to result
                         onInput(searched, result, true)
                     }
@@ -162,11 +165,11 @@ class Playalong(val remix: Remix) {
                 }
             } else {
                 if (searched.method == PlayalongMethod.RELEASE_AND_HOLD) {
-                    val result = createInputResult(searched, false)
+                    val result = createInputResult(searched, false, seconds)
                     inputsInProgress[searched] = keycodeUsed to result
                     onInput(searched, result, true)
                 } else if (searched.method == PlayalongMethod.RELEASE) {
-                    val result = createInputResult(searched, false)
+                    val result = createInputResult(searched, false, seconds)
                     inputted[searched] = InputResults(searched, listOf(result))
                     onInput(searched, result, true)
                 }
@@ -178,7 +181,7 @@ class Playalong(val remix: Remix) {
             if ((!down && keycodeUsed == firstResult.first && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
                     (down && keycodeUsed == firstResult.first && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
                 inputsInProgress.remove(input)
-                val result = createInputResult(input, end = true)
+                val result = createInputResult(input, end = true, atSeconds = seconds)
                 inputted[input] = InputResults(input, listOf(firstResult.second, result))
                 onInput(input, result, false)
             }
