@@ -328,7 +328,7 @@ class PlayalongStage(val editor: Editor,
             }
             PLAYING -> {
                 remix.speedMultiplier = tempoChange / 100f
-                heartsCooldown = 0f
+                heartsInvuln = 0f
                 disableButtonsWhilePlaying(true)
             }
         }
