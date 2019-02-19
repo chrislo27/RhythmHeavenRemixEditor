@@ -11,10 +11,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.playalong.InputAction
-import io.github.chrislo27.rhre3.playalong.InputResult
-import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.playalong.PlayalongInput
+import io.github.chrislo27.rhre3.playalong.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
@@ -46,11 +43,20 @@ class PlayalongStage(val editor: Editor,
 
         val TEMPO_DOWN_COLOUR: Color = Color.valueOf("3199E2")
         val TEMPO_UP_COLOUR: Color = Color.valueOf("E03131")
+        val HEART_COLOUR: Color = Color.valueOf("FF7D7D")
         val TEMPO_UP_SYMBOL = "▲"
         val TEMPO_DOWN_SYMBOL = "▼"
+        val HEART_SYMBOL = "♥"
 
         val TEMPO_UP_RANGE = 5..300
         val TEMPO_CHANGE_INCREMENT = 5
+    }
+
+    data class Hearts(val num: Int, val total: Int) {
+        companion object {
+            val EMPTY = Hearts(0, 0)
+        }
+        constructor(total: Int) : this(total, total)
     }
 
     private val remix: Remix get() = editor.remix
@@ -70,6 +76,8 @@ class PlayalongStage(val editor: Editor,
     val tempoUpButton: Button<EditorScreen>
     val tempoDownButton: Button<EditorScreen>
     val tempoLabel: TextLabel<EditorScreen>
+    val monsterMawButton: Button<EditorScreen>
+    val heartsButton: Button<EditorScreen>
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
@@ -81,6 +89,10 @@ class PlayalongStage(val editor: Editor,
 
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
+
+    var hearts: Hearts = Hearts.EMPTY
+    var heartsCooldown: Float = 0f
+    var heartsInvuln: Float = 0f
 
     var tempoChange: Int = 100
         private set(value) {
@@ -196,7 +208,7 @@ class PlayalongStage(val editor: Editor,
             })
             this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
-        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 // TODO
@@ -210,6 +222,7 @@ class PlayalongStage(val editor: Editor,
             })
             this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
+        lowerStage.elements += monsterMawButton
         tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
@@ -260,6 +273,34 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 5, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoUpButton
+        heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
+            fun cycle(dir: Int) {
+                val currentIndex = heartsList.indexOfFirst { it.total == hearts.total }.coerceAtLeast(0)
+                var newIndex = currentIndex + dir.sign
+                if (newIndex < 0)
+                    newIndex = heartsList.size - 1
+                else if (newIndex >= heartsList.size)
+                    newIndex = 0
+                hearts = heartsList[newIndex].copy()
+                updateLabels()
+            }
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                cycle(1)
+            }
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = heartTexReg
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            })
+            this.location.set(screenX = paddingX + (paddingX / 2f) * 3 + buttonWidth * 6, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+        }
+        lowerStage.elements += heartsButton
 
         timingDisplayStage = TimingDisplayStage(this, lowerStage, lowerStage.camera).apply {
             this.location.set(screenWidth = 0.4f, screenY = paddingY)
@@ -278,12 +319,16 @@ class PlayalongStage(val editor: Editor,
             STOPPED -> {
                 remix.speedMultiplier = 1f
                 disableButtonsWhilePlaying(false)
+                if (hearts != Hearts.EMPTY) {
+                    hearts = Hearts(hearts.total)
+                }
             }
             PAUSED -> {
                 disableButtonsWhilePlaying(true)
             }
             PLAYING -> {
                 remix.speedMultiplier = tempoChange / 100f
+                heartsCooldown = 0f
                 disableButtonsWhilePlaying(true)
             }
         }
@@ -292,6 +337,8 @@ class PlayalongStage(val editor: Editor,
     private fun disableButtonsWhilePlaying(playing: Boolean) {
         tempoUpButton.enabled = !playing
         tempoDownButton.enabled = !playing
+        heartsButton.enabled = !playing
+        monsterMawButton.enabled = !playing
     }
 
     fun setPerfectVisibility(visible: Boolean) {
@@ -301,12 +348,19 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun updateLabels() {
-        val score = playalong.score.roundToInt()
-        scoreLabel.text = "[#${when (score) {
-            in 0 until 60 -> TRY_AGAIN_COLOUR
-            in 60 until 80 -> OK_COLOUR
-            else -> SUPERB_COLOUR
-        }}]$score[]"
+        if (hearts == Hearts.EMPTY) {
+            val score = playalong.score.roundToInt()
+            scoreLabel.text = "[#${when (score) {
+                in 0 until 60 -> TRY_AGAIN_COLOUR
+                in 60 until 80 -> OK_COLOUR
+                else -> SUPERB_COLOUR
+            }}]$score[]"
+        } else {
+            scoreLabel.text = ""
+            for (h in 1..hearts.total) {
+                scoreLabel.text += "[${if (h <= hearts.num) "#$HEART_COLOUR" else "DARK_GRAY"}]$HEART_SYMBOL[]"
+            }
+        }
         skillStarLabel.textColor = when {
             playalong.skillStarInput == null -> Colors.get("X")
             !playalong.gotSkillStar -> Color.GRAY
@@ -316,6 +370,15 @@ class PlayalongStage(val editor: Editor,
 
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
         timingDisplayStage.flash(inputResult)
+        if (inputResult.timing == InputTiming.MISS && hearts.total > 0 && heartsInvuln <= 0f && hearts.num > 0) {
+            hearts = hearts.copy(num = hearts.num - 1)
+            heartsCooldown = 1f
+            heartsInvuln = 1.75f
+            updateLabels()
+            if (hearts.num == 0) {
+                remix.playState = PAUSED
+            }
+        }
     }
 
     fun onSkillStarGet() {
@@ -395,6 +458,7 @@ class PlayalongStage(val editor: Editor,
                 skillStarZoom = 0f
         }
         skillStarLabel.fontScaleMultiplier = (if (skillStarZoom > 0f) Interpolation.pow4In else Interpolation.linear).apply(4f, 1f, 1f - skillStarZoom.absoluteValue) / 4f // / 4 b/c of big font
+        scoreLabel.fontScaleMultiplier = (if (hearts.total > 0 && heartsCooldown > 0) Interpolation.pow4In.apply(1.5f, 1f, (1f - heartsCooldown)) else 1f) * 0.4f
 
         val perfectLabelFlash = MathHelper.getSawtoothWave(1.35f)
         perfectLabel.textColor?.a = if (remix.playState != PLAYING || perfectLabelFlash > 0.35f) 1f else 0f
@@ -421,6 +485,18 @@ class PlayalongStage(val editor: Editor,
             perfectAnimation -= Gdx.graphics.deltaTime / (if (playalong.perfectSoFar) 0.125f else 0.5f)
         }
         if (perfectAnimation < 0f) perfectAnimation = 0f
+
+        if (heartsCooldown > 0)
+            heartsCooldown -= Gdx.graphics.deltaTime / 0.5f
+        if (heartsCooldown < 0)
+            heartsCooldown = 0f
+
+        if (remix.playState == PLAYING) {
+            if (heartsInvuln > 0)
+                heartsInvuln -= Gdx.graphics.deltaTime
+            if (heartsInvuln < 0)
+                heartsInvuln = 0f
+        }
     }
 
     override fun keyUp(keycode: Int): Boolean {
