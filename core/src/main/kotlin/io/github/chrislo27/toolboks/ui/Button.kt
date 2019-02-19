@@ -71,7 +71,9 @@ open class Button<S : ToolboksScreen<*, *>>
         }
 
         labels.forEach {
-            it.render(screen, batch, shapeRenderer)
+            if (it.visible) {
+                it.render(screen, batch, shapeRenderer)
+            }
         }
 
         if (!enabled) {
