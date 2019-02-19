@@ -76,6 +76,9 @@ class PlayalongStage(val editor: Editor,
     private val perfectTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect"))
     private val perfectHitTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_hit"))
     private val perfectFailTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_failed"))
+    private val heartTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
+    private val heartBrokenTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
+
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
 
