@@ -45,20 +45,20 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
 
             // Backing line
             if (!inputAction.isInstantaneous) {
-                batch.setColor(0f, 0f, 0f, 1f)
+                batch.color = theme.trackLine
                 batch.fillRect(inputAction.beat, bottomY - 0.5f, inputAction.duration, 1f)
             }
 
             val results = playalong.inputted[inputAction]
             val inProgress = playalong.inputsInProgress[inputAction]
-            if (inProgress != null) largeFont.setColor(0f, 0f, 1f, 1f)
+            if (inProgress != null) largeFont.setColor(0.2f, 0.57f, 1f, 1f)
             if (results != null && results.results.isNotEmpty()) {
                 if (!results.missed) {
-                    largeFont.setColor(0f, 1f, 0f, 1f)
-                    batch.setColor(0f, 1f, 0f, 1f)
+                    largeFont.setColor(0.2f, 1f, 0.2f, 1f)
+                    batch.setColor(0.2f, 1f, 0.2f, 1f)
                 } else {
-                    largeFont.setColor(1f, 0f, 0f, 1f)
-                    batch.setColor(1f, 0f, 0f, 1f)
+                    largeFont.setColor(1f, 0.15f, 0.15f, 1f)
+                    batch.setColor(1f, 0.15f, 0.15f, 1f)
                 }
             }
 
@@ -66,12 +66,12 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
             if (!inputAction.isInstantaneous) {
                 val defWidth = inputAction.duration
                 val width = if (inProgress != null) {
-                    batch.setColor(0f, 0f, 1f, 1f)
+                    batch.setColor(0.2f, 0.57f, 1f, 1f)
                     (remix.beat - inputAction.beat)
                 } else if (results != null) {
                     (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
                 } else 0f
-                batch.fillRect(inputAction.beat, bottomY - 0.5f, width, 1f)
+                batch.fillRect(inputAction.beat, bottomY - 0.5f, width.coerceAtLeast(0f), 1f)
             }
 
             val x = inputAction.beat
