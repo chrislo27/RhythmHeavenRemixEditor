@@ -371,11 +371,12 @@ class PlayalongStage(val editor: Editor,
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
         timingDisplayStage.flash(inputResult)
         if (inputResult.timing == InputTiming.MISS && hearts.total > 0 && heartsInvuln <= 0f && hearts.num > 0) {
+            val oldHeartsCount = hearts.num
             hearts = hearts.copy(num = hearts.num - 1)
             heartsCooldown = 1f
             heartsInvuln = 1.75f
             updateLabels()
-            if (hearts.num == 0) {
+            if (hearts.num == 0 && oldHeartsCount > 0) {
                 remix.playState = PAUSED
             }
         }
