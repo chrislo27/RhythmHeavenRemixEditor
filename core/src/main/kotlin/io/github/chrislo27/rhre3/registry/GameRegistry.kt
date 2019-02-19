@@ -549,7 +549,7 @@ object GameRegistry : Disposable {
                                             PlayalongInput.BUTTON_B, PlayalongMethod.LONG_PRESS,
                                             pickerName = PickerName("Long Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Samurai Slice (Fever) demon horde)[]"))
 
-            // Less commonly used
+            // D-pad
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD_R}", false,
                                             PlayalongInput.BUTTON_DPAD_RIGHT, PlayalongMethod.PRESS,
@@ -558,16 +558,14 @@ object GameRegistry : Disposable {
                                             "Press ${PlayalongChars.FILLED_DPAD_D}", false,
                                             PlayalongInput.BUTTON_DPAD_DOWN, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_D}", "[LIGHT_GRAY](ex: Space Dance \"let's sit down\")[]"))
-
-            // Not recommended to use
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_left", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD_L}", false,
                                             PlayalongInput.BUTTON_DPAD_LEFT, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_L}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_L}", "[LIGHT_GRAY](ex: Marching Orders, Sick Beats)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_up", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD_U}", false,
                                             PlayalongInput.BUTTON_DPAD_UP, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](use not recommended) (ex: Sick Beats)[]"))
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_DPAD_U}", "[LIGHT_GRAY](ex: Sick Beats)[]"))
 
             // RHDS
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_touch_tap", listOf(),
