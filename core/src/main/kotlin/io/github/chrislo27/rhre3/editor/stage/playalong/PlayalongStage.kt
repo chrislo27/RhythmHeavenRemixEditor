@@ -98,6 +98,8 @@ class PlayalongStage(val editor: Editor,
         private set(value) {
             field = value
             tempoLabel.text = "[#${if (value == 100) "FFFFFF" else if (value > 100) TEMPO_UP_COLOUR.toString() else TEMPO_DOWN_COLOUR.toString()}]Tempo ${if (value >= 100) "Up" else "Down"}![]\n$value%"
+            tempoUpButton.enabled = value < TEMPO_UP_RANGE.last
+            tempoDownButton.enabled = value > TEMPO_UP_RANGE.first
         }
 
     init {
@@ -339,6 +341,9 @@ class PlayalongStage(val editor: Editor,
         tempoDownButton.enabled = !playing
         heartsButton.enabled = !playing
         monsterMawButton.enabled = !playing
+        if (!playing) {
+            tempoChange = tempoChange // Updates the enabled state for the tempo buttons
+        }
     }
 
     fun setPerfectVisibility(visible: Boolean) {
