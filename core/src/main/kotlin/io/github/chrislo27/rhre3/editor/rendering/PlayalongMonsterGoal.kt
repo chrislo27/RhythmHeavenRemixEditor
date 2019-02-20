@@ -26,6 +26,7 @@ private val monsterMawCamera: OrthographicCamera = OrthographicCamera().also { c
 }
 
 private val monsterAnimation: Animation = bccad.animations.first { it.name == "mouth_close" }
+private val monsterAnimationDuration: Int = monsterAnimation.steps.sumBy { it.duration.toInt() }
 private var currentFrame: Int = 0
 
 fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -76,9 +77,9 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
         end()
     }.useStencilMask {
 //        batch.draw(AssetRegistry.get<Texture>("credits_frog"), monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
-        monsterAnimation.render(batch, sheet, bccad.sprites, 0,
+        monsterAnimation.render(batch, sheet, bccad.sprites, (currentFrame / 2).coerceIn(0, monsterAnimationDuration - 1),
                                 monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
-                                monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 200)
+                                monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
         batch.setColor(0.25f, 0.9f, 0.25f, 1f)
         val w = (monsterMawCamera.viewportWidth / (camera.zoom / monsterMawCamera.zoom)) * 1.05f
         val h = (monsterMawCamera.viewportHeight / (camera.zoom / monsterMawCamera.zoom)) * 1.075f
@@ -89,7 +90,10 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
     batch.flush()
     batch.projectionMatrix = camera.combined
 
-    if (remix.playState != PlayState.STOPPED) {
+    if (remix.playState != PlayState.STOPPED && playalong.untilMonsterChomps <= 0f) {
         currentFrame++
+    }
+    if (playalong.untilMonsterChomps > 0f) {
+        currentFrame = 0
     }
 }

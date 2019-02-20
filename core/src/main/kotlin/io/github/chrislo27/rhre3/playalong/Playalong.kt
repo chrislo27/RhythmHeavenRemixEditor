@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.playalong
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
@@ -64,6 +66,10 @@ class Playalong(val remix: Remix) {
     val calibratedOffset: Float get() = remix.main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
 
     /**
+     * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
+     */
+    var countScoreByTiming: Boolean by Delegates.observable(true) { _, _, _ -> updateScore() }
+    /**
      * The computed score from 0.0 to 100.0.
      */
     var score: Float = 0f
@@ -74,16 +80,59 @@ class Playalong(val remix: Remix) {
         private set
     var aces: Int = 0
         private set
+
+    // Monster Goal stuff below
     /**
-     * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
+     * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
      */
-    var countScoreByTiming: Boolean by Delegates.observable(true) { _, _, _ -> updateScore() }
+    var monsterGoal: Float = 1f / 2f
+        set(value) {
+            field = value.coerceIn(0f, 1f)
+            // Update monster rate
+            monsterRate = computeMonsterRate(value)
+        }
+    val isMonsterGoalActive: Boolean get() = monsterGoal > 0f
+    /**
+     * Percentage of time left until the monster chomps down.
+     */
+    var untilMonsterChomps: Float = 1f
+        private set(value) {
+            field = value.coerceIn(0f, 1f)
+        }
+    /**
+     * When [untilMonsterChomps] starts ticking down. By default, 2 beats before the first input.
+     */
+    val timingStartForMonster: Float get() = if (inputActions.isEmpty()) 0f else (inputActions.first().beat - 2f)
+    /**
+     * When [untilMonsterChomps] stops ticking down. By default the last input.
+     */
+    val timingEndForMonster: Float get() = if (inputActions.isEmpty()) 0f else inputActions.last().let { if (it.isInstantaneous) it.beat else (it.beat + it.duration) }
+    /**
+     * Rate in SECONDS for the amount [untilMonsterChomps] decrements by per second.
+     */
+    var monsterRate: Float = computeMonsterRate(monsterGoal)
+        private set
+    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else ((MathUtils.log(1.5f, remix.speedMultiplier)).coerceAtLeast(1.15f) / (numResultsExpected * monsterGoal))
 
     /**
      * Returns a *sorted* list of [InputActions](InputAction). May be empty.
      */
     private fun toInputActionList(): List<InputAction> {
         return remix.entities.filterIsInstance<PlayalongEntity>().map(PlayalongEntity::getInputAction).sorted()
+    }
+
+    private fun computeMonsterRate(goal: Float): Float {
+        if (inputActions.isEmpty()) return 0f
+        val end = timingEndForMonster
+        val start = timingStartForMonster
+        if (start == end) return 0f
+        val countedDuration = remix.tempos.beatsToSeconds(end) - remix.tempos.beatsToSeconds(start)
+        val avgTimeBetweenInputs = countedDuration / numResultsExpected
+        return 1f / (avgTimeBetweenInputs * numResultsExpected * goal)
+    }
+
+    fun getMonsterGoalCameraZoom(): Float {
+        return Interpolation.pow2.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
     }
 
     fun searchForInputAction(aroundSec: Float, threshold: Float, predicate: ((InputAction) -> Boolean)?): InputAction? {
@@ -120,6 +169,18 @@ class Playalong(val remix: Remix) {
                 onInput(input, result, true)
                 if (list.size > 1) {
                     onInput(input, list[1], false)
+                }
+            }
+        }
+
+        if (remix.playState == PlayState.PLAYING) {
+            if (isMonsterGoalActive && remix.beat >= timingStartForMonster && remix.beat <= timingEndForMonster) {
+                val prior = untilMonsterChomps
+                untilMonsterChomps -= monsterRate * Gdx.graphics.deltaTime * remix.speedMultiplier
+                if (prior > 0 && untilMonsterChomps <= 0) {
+                    // Trigger end of monster goal
+                    remix.playState = PlayState.PAUSED
+
                 }
             }
         }
@@ -202,6 +263,10 @@ class Playalong(val remix: Remix) {
 
         if (inputResult.timing == InputTiming.ACE) {
             aces++
+            if (isMonsterGoalActive) {
+                untilMonsterChomps += monsterRateIncreaseOnAce * remix.speedMultiplier
+                println(monsterRateIncreaseOnAce)
+            }
         }
 
         updateScore()
