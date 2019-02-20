@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.RHRE3
@@ -15,11 +16,14 @@ import io.github.chrislo27.toolboks.util.gdxutils.prepareStencilMask
 import io.github.chrislo27.toolboks.util.gdxutils.useStencilMask
 import rhmodding.bccadeditor.bccad.Animation
 import rhmodding.bccadeditor.bccad.BCCAD
-import java.util.*
 
 
-private val bccad: BCCAD by lazy { BCCAD(Base64.getDecoder().decode(Gdx.files.internal("images/playalong/monsterGoal.bin").readString("UTF-8"))) }
-private val sheet: Texture by lazy { AssetRegistry.get<Texture>("playalong_monster_goal") }
+private val bccad: BCCAD by lazy { BCCAD(Gdx.files.internal("images/playalong/monsterGoal.bin").readBytes()) }
+private val sheet: Texture by lazy { AssetRegistry.get<Texture>("playalong_monster_goal").apply {
+    this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+} }
+private val frameTexReg: TextureRegion by lazy { TextureRegion(sheet, 233 + 1, 169 + 1, 142 - 2, 98 - 2) }
+private val innerFrameTexReg: TextureRegion by lazy { TextureRegion(sheet, 246, 182, 116, 72) }
 private val monsterMawCamera: OrthographicCamera = OrthographicCamera().also { camera ->
     camera.viewportWidth = RHRE3.WIDTH.toFloat()
     camera.viewportHeight = RHRE3.HEIGHT.toFloat()
@@ -69,6 +73,8 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
     val t = monsterMawCamera.position.y + newHeight / 2
     val lBarWidth = (monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2 / (camera.zoom / monsterMawCamera.zoom)) - l
     val bBarHeight = (monsterMawCamera.position.y - screenCompress * monsterMawCamera.viewportHeight / 2 / (camera.zoom / monsterMawCamera.zoom)) - b
+    val innerWidth = (monsterMawCamera.position.x - l - lBarWidth) * 2
+    val innerHeight = (monsterMawCamera.position.y - b - bBarHeight) * 2
 
     shapeRenderer.prepareStencilMask(batch) {
         begin(ShapeRenderer.ShapeType.Filled)
@@ -79,14 +85,15 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 //        rect(monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2 * camera.zoom, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 * camera.zoom, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
         end()
     }.useStencilMask {
-//        batch.draw(AssetRegistry.get<Texture>("credits_frog"), monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
-        monsterAnimation.render(batch, sheet, bccad.sprites, (currentFrame / 2).coerceIn(0, monsterAnimationDuration - 1),
+        //        batch.draw(AssetRegistry.get<Texture>("credits_frog"), monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
+        monsterAnimation.render(batch, sheet, bccad.sprites, (currentFrame * 2f / 3f).toInt().coerceIn(0, monsterAnimationDuration - 1),
                                 monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
                                 monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
-        batch.setColor(0.25f, 0.9f, 0.25f, 1f)
-        val w = (monsterMawCamera.viewportWidth / (camera.zoom / monsterMawCamera.zoom)) * 1.05f
-        val h = (monsterMawCamera.viewportHeight / (camera.zoom / monsterMawCamera.zoom)) * 1.075f * screenCompress
-        batch.fillRect(monsterMawCamera.position.x - w / 2, monsterMawCamera.position.y - h / 2, w, h)
+        batch.setColor(0f, 200f / 255f, 50f / 255f, 1f)
+        val frameWidth = innerWidth * (frameTexReg.regionWidth.toFloat() / innerFrameTexReg.regionWidth)
+        val frameHeight = innerHeight * (frameTexReg.regionHeight.toFloat() / innerFrameTexReg.regionHeight)
+        batch.draw(frameTexReg, monsterMawCamera.position.x - frameWidth / 2,
+                   monsterMawCamera.position.y - frameHeight / 2, frameWidth, frameHeight)
         batch.setColor(1f, 1f, 1f, 1f)
     }
 
