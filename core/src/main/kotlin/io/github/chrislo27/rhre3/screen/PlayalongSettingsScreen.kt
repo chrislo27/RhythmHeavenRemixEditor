@@ -224,7 +224,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 val beat = TempoUtils.secondsToBeats(musicPos, CALIBRATION_BPM) % CALIBRATION_DURATION_BEATS
                 val beatOffset = beat - beat.roundToInt()
                 val secOffset = TempoUtils.beatsToSeconds(beatOffset, CALIBRATION_BPM)
-                if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC) {
+                if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC * 2) {
                     calibrationInputs++
                     summedCalibration += secOffset
                     calibration = summedCalibration / calibrationInputs.coerceAtLeast(1)
