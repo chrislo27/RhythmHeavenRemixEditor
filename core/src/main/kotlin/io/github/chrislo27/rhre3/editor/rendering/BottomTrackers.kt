@@ -42,12 +42,12 @@ fun Editor.renderBottomTrackers(batch: SpriteBatch, beatRange: IntRange) {
         if (slope == 0 || width == 0f) {
             batch.fillRect(beat, y, width, height)
         } else {
-            if (slope == 1) {
+            if (slope == -1) {
                 batch.drawQuad(beat, y + height, batchColor,
                                beat + width, y + height, fadedColor,
                                beat + width, y, fadedColor,
                                beat, y, batchColor)
-            } else if (slope == -1) {
+            } else if (slope == 1) {
                 batch.drawQuad(beat, y + height, fadedColor,
                                beat + width, y + height, batchColor,
                                beat + width, y, batchColor,
