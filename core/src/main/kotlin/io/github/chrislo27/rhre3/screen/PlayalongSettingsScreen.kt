@@ -234,7 +234,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
         val interval = TempoUtils.beatsToSeconds(2f, 125f)
         val pressDuration = 0.15f
-        if (MathHelper.getSawtoothWave(interval) < pressDuration / interval) {
+        if (MathHelper.getSawtoothWave(interval) < pressDuration / interval && !music.isPlaying) {
             titleLabelIcon.text = BORDERED_A_BUTTON
             titleLabelIcon.fontScaleMultiplier = 0.7f
         } else {
