@@ -216,11 +216,9 @@ class PlayalongStage(val editor: Editor,
                 // TODO
             }
         }.apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = false
-                this.text = "Monster\nGoal"
-                this.fontScaleMultiplier = 0.5f
-                this.textWrapping = false
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("playalong_monster_icon"))
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
             this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
