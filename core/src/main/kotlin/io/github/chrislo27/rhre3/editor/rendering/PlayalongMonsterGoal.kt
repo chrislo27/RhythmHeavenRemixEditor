@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.track.PlayState
@@ -34,6 +35,8 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 
     batch.flush()
 
+    val screenCompress: Float = MathUtils.lerp(1f, 0f, (currentFrame / 10f).coerceIn(0f, 1f))
+
     // Add black bars
     batch.setColor(0f, 0f, 0f, 1f)
     val zoomedWidth = camera.viewportWidth * camera.zoom
@@ -43,7 +46,7 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
     val bottom = camera.position.y - zoomedHeight / 2
     val top = camera.position.y + zoomedHeight / 2
     val leftBarWidth = camera.position.x - camera.viewportWidth / 2 - left
-    val bottomBarHeight = camera.position.y - camera.viewportHeight / 2 - bottom
+    val bottomBarHeight = camera.position.y - camera.viewportHeight / 2 * screenCompress - bottom
     batch.fillRect(left, bottom, leftBarWidth, zoomedHeight)
     batch.fillRect(right, bottom, -leftBarWidth, zoomedHeight)
     batch.fillRect(left, bottom, zoomedWidth, bottomBarHeight)
@@ -65,7 +68,7 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
     val b = monsterMawCamera.position.y - newHeight / 2
     val t = monsterMawCamera.position.y + newHeight / 2
     val lBarWidth = (monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2 / (camera.zoom / monsterMawCamera.zoom)) - l
-    val bBarHeight = (monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 / (camera.zoom / monsterMawCamera.zoom)) - b
+    val bBarHeight = (monsterMawCamera.position.y - screenCompress * monsterMawCamera.viewportHeight / 2 / (camera.zoom / monsterMawCamera.zoom)) - b
 
     shapeRenderer.prepareStencilMask(batch) {
         begin(ShapeRenderer.ShapeType.Filled)
@@ -82,7 +85,7 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
                                 monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
         batch.setColor(0.25f, 0.9f, 0.25f, 1f)
         val w = (monsterMawCamera.viewportWidth / (camera.zoom / monsterMawCamera.zoom)) * 1.05f
-        val h = (monsterMawCamera.viewportHeight / (camera.zoom / monsterMawCamera.zoom)) * 1.075f
+        val h = (monsterMawCamera.viewportHeight / (camera.zoom / monsterMawCamera.zoom)) * 1.075f * screenCompress
         batch.fillRect(monsterMawCamera.position.x - w / 2, monsterMawCamera.position.y - h / 2, w, h)
         batch.setColor(1f, 1f, 1f, 1f)
     }
