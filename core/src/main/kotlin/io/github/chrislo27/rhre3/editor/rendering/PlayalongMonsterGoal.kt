@@ -85,7 +85,6 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 //        rect(monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2 * camera.zoom, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 * camera.zoom, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
         end()
     }.useStencilMask {
-        //        batch.draw(AssetRegistry.get<Texture>("credits_frog"), monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
         monsterAnimation.render(batch, sheet, bccad.sprites, currentFrame.coerceIn(0, monsterAnimationDuration - 1),
                                 monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
                                 monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)

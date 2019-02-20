@@ -52,7 +52,6 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
-import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.GameSection
@@ -403,24 +402,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val beatRangeStartFloat = beatRange.first.toFloat()
         val beatRangeEndFloat = beatRange.last.toFloat()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
-        val bgColour = theme.background
-        Gdx.gl.glClearColor(bgColour.r, bgColour.g, bgColour.b, 1f)
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        if (main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)) {
-            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, if (updateDelta) Gdx.graphics.deltaTime else 0f)
-        }
-
-        theme.textureObj?.let { themeTex ->
-            batch.draw(themeTex, 0f, 0f, main.defaultCamera.viewportWidth, main.defaultCamera.viewportHeight)
-        }
-
-//        if (Toolboks.debugMode && remix.tempos.map.isEmpty()) {
-//            this.renderImplicitTempo(batch)
-//        }
+        this.renderBackground(batch, main.shapeRenderer, main.defaultCamera, true)
 
         batch.end()
 
