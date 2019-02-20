@@ -217,7 +217,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             c.update()
         }
     }
-    private val staticCamera: OrthographicCamera by lazy {
+    val staticCamera: OrthographicCamera by lazy {
         OrthographicCamera().also { c ->
             resizeCameraToPixelScale(c)
             c.position.x = c.viewportWidth / 2f
@@ -391,7 +391,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
 
-    private fun calculatePlayalongCameraY(): Float = calculateNormalCameraY() // FIXME? 4f + remix.trackCount
+    private fun calculatePlayalongCameraY(): Float = calculateNormalCameraY() // 4f + remix.trackCount
 
     fun render() = render(updateDelta = true, otherUI = true)
 
@@ -428,12 +428,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val oldCameraY = camera.position.y
         val adjustedCameraX: Float
         val adjustedCameraY: Float
+        val monsterGoal = true // FIXME
         if (updateDelta) {
             val transitionTime = Gdx.graphics.deltaTime / 0.15f
             val cameraYNormal = calculateNormalCameraY()
             val cameraZoomNormal = (if (isGameBoundariesInViews) 1.5f else 1f) + (remix.trackCount - MIN_TRACK_COUNT) / 10f
             val cameraYPlayalong = calculatePlayalongCameraY()
-            val cameraZoomPlayalong = 1f
+            val cameraZoomPlayalong = if (monsterGoal) Interpolation.pow2In.apply(1f, 5f, (remix.beat / remix.duration).coerceIn(0f, 1f)) else 1f
             val isPlayalong = stage.playalongStage.visible
             val cameraY = if (!isPlayalong) cameraYNormal else cameraYPlayalong
             val cameraZoom = if (!isPlayalong) cameraZoomNormal else cameraZoomPlayalong
@@ -484,6 +485,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val trackYOffset = toScaleY(-TRACK_LINE_THICKNESS / 2f)
 
         font.scaleFont(camera)
+
+        // TODO START OF RENDERING BLOCK --------------------------------------------
 
         // horizontal track lines
         this.renderHorizontalTrackLines(batch, beatRangeStartFloat, beatRangeEndFloat - beatRangeStartFloat, trackYOffset)
@@ -572,6 +575,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
             this.renderOtherUI(batch, beatRange, font)
+        }
+
+        // TODO END OF RENDERING BLOCK --------------------------------------------
+
+        if (monsterGoal) {
+            main.shapeRenderer.projectionMatrix = camera.combined
+            this.renderPlayalongMonsterGoal(batch, main.shapeRenderer)
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
 
         font.unscaleFont()

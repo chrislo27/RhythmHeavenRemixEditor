@@ -218,7 +218,7 @@ class PlayalongStage(val editor: Editor,
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
-                this.text = "Monster\nMaw"
+                this.text = "Monster\nGoal"
                 this.fontScaleMultiplier = 0.5f
                 this.textWrapping = false
             })
