@@ -85,7 +85,7 @@ class Playalong(val remix: Remix) {
     /**
      * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
      */
-    var monsterGoal: Float = 1f / 2f
+    var monsterGoal: Float = 1f / 10f
         set(value) {
             field = value.coerceIn(0f, 1f)
             // Update monster rate
@@ -132,7 +132,7 @@ class Playalong(val remix: Remix) {
     }
 
     fun getMonsterGoalCameraZoom(): Float {
-        return Interpolation.pow2.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
+        return Interpolation.pow3.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
     }
 
     fun searchForInputAction(aroundSec: Float, threshold: Float, predicate: ((InputAction) -> Boolean)?): InputAction? {
