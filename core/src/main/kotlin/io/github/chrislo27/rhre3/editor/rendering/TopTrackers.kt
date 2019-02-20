@@ -106,7 +106,7 @@ fun Editor.renderTopTrackers(batch: SpriteBatch, beatRange: IntRange, trackYOffs
     }
 
     if (remix.playState != PlayState.STOPPED) {
-        val position = if (stage.playalongStage.visible) remix.tempos.secondsToBeats(remix.seconds - remix.playalong.calibratedOffset) else remix.beat
+        val position = getApparentPlaybackTrackerPos()
         renderAboveTracker(null, null, 0, position,
                            theme.trackers.playback, triangleHeight = 0f,
                            bpmText = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(

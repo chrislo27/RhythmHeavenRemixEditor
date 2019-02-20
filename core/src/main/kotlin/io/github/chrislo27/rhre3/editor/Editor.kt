@@ -385,6 +385,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 getStretchRegionForStretchable(mouseVector.x, it) != StretchRegion.NONE
     }
 
+    fun getApparentPlaybackTrackerPos(): Float {
+        return if (stage.playalongStage.visible) remix.tempos.secondsToBeats(remix.seconds - remix.playalong.calibratedOffset) else remix.beat
+    }
+
     private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
 
     private fun calculatePlayalongCameraY(): Float = calculateNormalCameraY() // FIXME? 4f + remix.trackCount
@@ -752,7 +756,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             if (stage.playalongStage.visible || main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
-                remix.camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds) + remix.camera.viewportWidth * 0.25f
+                remix.camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedOffset else 0f)) + remix.camera.viewportWidth * 0.25f
             }
         }
 
