@@ -61,7 +61,7 @@ class Playalong(val remix: Remix) {
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
 
-    private val calibratedOffset: Float get() = remix.main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
+    val calibratedOffset: Float get() = remix.main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
 
     /**
      * The computed score from 0.0 to 100.0.
