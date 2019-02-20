@@ -39,7 +39,7 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 
     batch.flush()
 
-    val screenCompress: Float = MathUtils.lerp(1f, 0f, (currentFrame / 10f).coerceIn(0f, 1f))
+    val screenCompress: Float = MathUtils.lerp(1f, 0f, (currentFrame / 5f).coerceIn(0f, 1f))
 
     // Add black bars
     batch.setColor(0f, 0f, 0f, 1f)
