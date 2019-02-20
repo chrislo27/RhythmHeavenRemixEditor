@@ -36,7 +36,10 @@ class Sprite {
 
     fun render(batch: SpriteBatch, sheet: Texture, offsetX: Float, offsetY: Float) {
         parts.forEach { part ->
+            val prevColour = batch.packedColor
+            batch.setColor(part.multColor.red.toFloat(), part.multColor.green.toFloat(), part.multColor.blue.toFloat(), part.multColor.opacity.toFloat())
             part.render(batch, sheet, offsetX + part.relX, offsetY + (1024 - part.relY))
+            batch.setColor(prevColour)
         }
     }
 
