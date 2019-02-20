@@ -174,7 +174,7 @@ class Playalong(val remix: Remix) {
         }
 
         if (remix.playState == PlayState.PLAYING) {
-            if (isMonsterGoalActive && remix.beat >= timingStartForMonster && remix.beat <= timingEndForMonster) {
+            if (isMonsterGoalActive && remix.beat >= timingStartForMonster && remix.beat <= timingEndForMonster && untilMonsterChomps > 0) {
                 val prior = untilMonsterChomps
                 untilMonsterChomps -= monsterRate * Gdx.graphics.deltaTime * remix.speedMultiplier
                 if (prior > 0 && untilMonsterChomps <= 0) {
