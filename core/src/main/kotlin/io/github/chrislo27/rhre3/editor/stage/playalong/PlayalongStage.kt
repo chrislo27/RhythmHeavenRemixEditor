@@ -67,11 +67,13 @@ class PlayalongStage(val editor: Editor,
     val lowerStage: Stage<EditorScreen>
     val noEntitiesLabel: TextLabel<EditorScreen>
     val perfectLabel: TextLabel<EditorScreen>
+    val monsterGoalLabel: TextLabel<EditorScreen>
     val scoreLabel: TextLabel<EditorScreen>
     val skillStarLabel: TextLabel<EditorScreen>
     val acesLabel: TextLabel<EditorScreen>
     val perfectIcon: ImageLabel<EditorScreen>
     val perfectHitIcon: ImageLabel<EditorScreen>
+    val monsterGoalIcon: ImageLabel<EditorScreen>
     val flickingStage: FlickingStage<EditorScreen>
     val timingDisplayStage: TimingDisplayStage
     val tempoUpButton: Button<EditorScreen>
@@ -87,6 +89,7 @@ class PlayalongStage(val editor: Editor,
     private val perfectFailTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_failed"))
     private val heartTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
     private val heartBrokenTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
+    private val monsterIconTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_monster_icon"))
 
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
@@ -102,13 +105,15 @@ class PlayalongStage(val editor: Editor,
             tempoUpButton.enabled = value < TEMPO_UP_RANGE.last
             tempoDownButton.enabled = value > TEMPO_UP_RANGE.first
         }
-    /**
-     * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
-     */
-    var monsterGoal: Float = 70f / 100f
+    var monsterGoal: Float = 0f
         set(value) {
-            field = value.coerceIn(0f, 1f)
+            field = value
             playalong.monsterGoal = field
+        }
+    var monsterGoalPreset: MonsterPresets? = null
+        set(value) {
+            field = value
+            monsterGoal = value?.speed ?: 0f
         }
 
     init {
@@ -150,10 +155,11 @@ class PlayalongStage(val editor: Editor,
         val paddingY = 0.05f
 
         val buttonWidth = 0.035f
+        val buttonHeight = 0.2f
         perfectIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
             this.image = perfectTexReg
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-            this.location.set(screenX = paddingX, screenY = 1f - 0.2f - paddingY, screenWidth = buttonWidth, screenHeight = 0.2f)
+            this.location.set(screenX = paddingX, screenY = 1f - buttonHeight - paddingY, screenWidth = buttonWidth, screenHeight = buttonHeight)
         }
         lowerStage.elements += perfectIcon
         perfectHitIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
@@ -169,10 +175,31 @@ class PlayalongStage(val editor: Editor,
             this.textWrapping = false
             this.textColor = Color(1f, 1f, 1f, 1f)
             this.textAlign = Align.left
-            this.location.set(screenX = perfectIcon.location.screenX + perfectHitIcon.location.screenWidth,
-                              screenY = 1f - 0.2f - paddingY, screenWidth = 0.25f, screenHeight = 0.2f)
+            this.location.set(screenX = perfectIcon.location.screenX + perfectIcon.location.screenWidth,
+                              screenY = 1f - buttonHeight - paddingY, screenWidth = 0.25f, screenHeight = buttonHeight)
         }
         lowerStage.elements += perfectLabel
+        monsterGoalIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
+            this.image = monsterIconTexReg
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenX = paddingX, screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = buttonWidth, screenHeight = buttonHeight)
+        }
+        lowerStage.elements += monsterGoalIcon
+        monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage){
+            override fun getRealText(): String {
+                val monsterGoalPreset = monsterGoalPreset ?: return ""
+                return Localization["playalong.monsterGoal", Localization[monsterGoalPreset.localizationKey]]
+            }
+        }.apply {
+            this.isLocalizationKey = false
+            this.text = ""
+            this.textWrapping = false
+            this.textColor = Color(1f, 1f, 1f, 1f)
+            this.textAlign = Align.left
+            this.location.set(screenX = monsterGoalIcon.location.screenX + monsterGoalIcon.location.screenWidth,
+                              screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = 0.25f, screenHeight = buttonHeight)
+        }
+        lowerStage.elements += monsterGoalLabel
 
         scoreLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontLargeKey]), lowerStage, lowerStage).apply {
             this.isLocalizationKey = false
@@ -202,7 +229,7 @@ class PlayalongStage(val editor: Editor,
             this.textWrapping = false
             this.fontScaleMultiplier = 0.85f
             this.textAlign = Align.center
-            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - 0.2f, screenWidth = 0.25f, screenHeight = 0.2f)
+            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - buttonHeight, screenWidth = 0.25f, screenHeight = buttonHeight)
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2)
         }
         lowerStage.elements += acesLabel
@@ -220,15 +247,16 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
-            val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
             fun cycle(dir: Int) {
-                val currentIndex = heartsList.indexOfFirst { it.total == hearts.total }.coerceAtLeast(0)
+                val monsterPreset = monsterGoalPreset
+                val values = MonsterPresets.VALUES
+                val currentIndex = if (monsterPreset == null) -1 else values.indexOf(monsterPreset)
                 var newIndex = currentIndex + dir.sign
-                if (newIndex < 0)
-                    newIndex = heartsList.size - 1
-                else if (newIndex >= heartsList.size)
-                    newIndex = 0
-                hearts = heartsList[newIndex].copy()
+                if (newIndex < -1)
+                    newIndex = values.size - 1
+                else if (newIndex >= values.size)
+                    newIndex = -1
+                monsterGoalPreset = values.getOrNull(newIndex)
                 updateLabels()
             }
 
@@ -243,7 +271,7 @@ class PlayalongStage(val editor: Editor,
             }
         }.apply {
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                this.image = TextureRegion(AssetRegistry.get<Texture>("playalong_monster_icon"))
+                this.image = monsterIconTexReg
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
             this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
@@ -397,6 +425,8 @@ class PlayalongStage(val editor: Editor,
             !playalong.gotSkillStar -> Color.GRAY
             else -> Color.YELLOW
         }
+        monsterGoalIcon.visible = monsterGoal > 0f
+        monsterGoalLabel.visible = monsterGoal > 0f
     }
 
     fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {

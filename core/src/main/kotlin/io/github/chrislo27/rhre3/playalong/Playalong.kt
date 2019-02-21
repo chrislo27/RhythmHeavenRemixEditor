@@ -82,12 +82,9 @@ class Playalong(val remix: Remix) {
         private set
 
     // Monster Goal stuff below
-    /**
-     * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
-     */
     var monsterGoal: Float = 0f
         set(value) {
-            field = value.coerceIn(0f, 1f)
+            field = value
             // Update monster rate
             monsterRate = computeMonsterRate(value)
         }
@@ -122,14 +119,16 @@ class Playalong(val remix: Remix) {
         return remix.entities.filterIsInstance<PlayalongEntity>().map(PlayalongEntity::getInputAction).sorted()
     }
 
+    /**
+     * Returns the amount [untilMonsterChomps] decrements by per second.
+     */
     private fun computeMonsterRate(goal: Float): Float {
         if (inputActions.isEmpty()) return 0f
         val end = timingEndForMonster
         val start = timingStartForMonster
         if (start == end) return 0f
         val countedDuration = remix.tempos.beatsToSeconds(end) - remix.tempos.beatsToSeconds(start)
-        val inputsPerSec = numResultsExpected / countedDuration
-        return 1f / (inputsPerSec * numResultsExpected * goal)
+        return 1f / ((3 * countedDuration) / Math.pow(10.0, goal / 100.0).toFloat())
     }
 
     fun getMonsterGoalCameraZoom(): Float {
