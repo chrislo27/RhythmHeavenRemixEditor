@@ -85,7 +85,7 @@ class Playalong(val remix: Remix) {
     /**
      * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
      */
-    var monsterGoal: Float = 1f / 10f
+    var monsterGoal: Float = 0f
         set(value) {
             field = value.coerceIn(0f, 1f)
             // Update monster rate
@@ -105,7 +105,7 @@ class Playalong(val remix: Remix) {
      */
     var monsterRate: Float = computeMonsterRate(monsterGoal)
         private set
-    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else ((MathUtils.log(1.5f, remix.speedMultiplier)).coerceAtLeast(1.15f) / (numResultsExpected * monsterGoal))
+    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else (monsterRate * 1.85f)
 
     /**
      * Percentage of time left until the monster chomps down.
@@ -128,8 +128,8 @@ class Playalong(val remix: Remix) {
         val start = timingStartForMonster
         if (start == end) return 0f
         val countedDuration = remix.tempos.beatsToSeconds(end) - remix.tempos.beatsToSeconds(start)
-        val avgTimeBetweenInputs = countedDuration / numResultsExpected
-        return 1f / (avgTimeBetweenInputs * numResultsExpected * goal)
+        val inputsPerSec = numResultsExpected / countedDuration
+        return 1f / (inputsPerSec * numResultsExpected * goal)
     }
 
     fun getMonsterGoalCameraZoom(): Float {
@@ -181,7 +181,6 @@ class Playalong(val remix: Remix) {
                 if (prior > 0 && untilMonsterChomps <= 0) {
                     // Trigger end of monster goal
                     remix.playState = PlayState.PAUSED
-
                 }
             }
         }

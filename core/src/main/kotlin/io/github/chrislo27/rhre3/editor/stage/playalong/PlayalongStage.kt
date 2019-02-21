@@ -102,6 +102,14 @@ class PlayalongStage(val editor: Editor,
             tempoUpButton.enabled = value < TEMPO_UP_RANGE.last
             tempoDownButton.enabled = value > TEMPO_UP_RANGE.first
         }
+    /**
+     * Percentage of time until the goal is failed without getting any aces. If less than or equal to 0, monster goal is not enabled.
+     */
+    var monsterGoal: Float = 70f / 100f
+        set(value) {
+            field = value.coerceIn(0f, 1f)
+            playalong.monsterGoal = field
+        }
 
     init {
         val palette = main.uiPalette
@@ -212,9 +220,26 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
+            fun cycle(dir: Int) {
+                val currentIndex = heartsList.indexOfFirst { it.total == hearts.total }.coerceAtLeast(0)
+                var newIndex = currentIndex + dir.sign
+                if (newIndex < 0)
+                    newIndex = heartsList.size - 1
+                else if (newIndex >= heartsList.size)
+                    newIndex = 0
+                hearts = heartsList[newIndex].copy()
+                updateLabels()
+            }
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                // TODO
+                cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
             }
         }.apply {
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -333,15 +358,6 @@ class PlayalongStage(val editor: Editor,
                 remix.speedMultiplier = tempoChange / 100f
                 heartsInvuln = 0f
                 disableButtonsWhilePlaying(true)
-
-                if (old == STOPPED) {
-                    // Set monster goal if necessary
-                    val secondsElapsed = remix.tempos.beatsToSeconds(remix.playbackStart) - remix.tempos.beatsToSeconds(playalong.timingStartForMonster)
-                    if (playalong.isMonsterGoalActive && secondsElapsed > 0) {
-                        val newValue = (playalong.monsterRate * secondsElapsed).coerceIn(0f, 1f)
-                        playalong.untilMonsterChomps = newValue
-                    }
-                }
             }
         }
     }
@@ -454,6 +470,10 @@ class PlayalongStage(val editor: Editor,
 
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
+
+        if (playalong.monsterGoal != this.monsterGoal) {
+            playalong.monsterGoal = this.monsterGoal
+        }
 
         // Skill Star pulses 3 beats before hitting it
         val skillStarEntity = playalong.skillStarEntity
