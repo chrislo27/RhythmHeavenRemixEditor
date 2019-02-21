@@ -133,7 +133,7 @@ class Playalong(val remix: Remix) {
     }
 
     fun getMonsterGoalCameraZoom(): Float {
-        return if (remix.playState == PlayState.STOPPED) 1f else Interpolation.pow3.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
+        return if (remix.playState == PlayState.STOPPED) 1f else Interpolation.sineIn.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
     }
 
     fun searchForInputAction(aroundSec: Float, threshold: Float, predicate: ((InputAction) -> Boolean)?): InputAction? {
