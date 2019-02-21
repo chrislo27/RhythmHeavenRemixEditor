@@ -80,6 +80,10 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return getPitchForBaseBpm(remix.tempos.tempoAt(remix.beat), bounds.width) * (if (cue.baseBpm <= 0f) 1f else remix.speedMultiplier)
     }
 
+    private fun getPitchMultiplierFromRemixSpeed(): Float {
+        return if (this.canBeRepitched || this.semitone != 0) remix.speedMultiplier else 1f
+    }
+
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
         set(value) {
             field = value.coerceIn(volumeRange)
@@ -90,13 +94,14 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override val isVolumetric: Boolean = true
 
     fun play() {
-        soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch(), rate = cue.getBaseBpmRate(),
-                                       volume = volume)
+        soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
+                                       rate = cue.getBaseBpmRate(), volume = volume)
 
-        introSoundId = cue.introSoundCue?.sound?.sound?.play(loop = false,
-                                                             pitch = getSemitonePitch(),
-                                                             rate = cue.introSoundCue!!.getBaseBpmRate(),
-                                                             volume = volume) ?: -1L
+        introSoundId = cue.introSoundCue?.let {
+            it.sound.sound.play(loop = false,
+                          pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
+                          rate = cue.introSoundCue!!.getBaseBpmRate(), volume = volume)
+        } ?: -1L
     }
 
     override fun onStart() {
