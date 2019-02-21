@@ -67,6 +67,14 @@ the size. Be careful! You cannot decrease the row count if cues are
 in the way. When this happens, right clicking the button will go to the
 impeding entity, and select it for you.
 
+## Playalong
+![Playalong](readme/toolbar/playalong.png)
+
+[Playalong mode is covered in its own article here.](Playalong.md)
+
+Right clicking this button will open the Playalong Settings, where you can change the control
+scheme and calibrate for input lag.
+
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
 
