@@ -41,23 +41,6 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 
     val screenCompress: Float = MathUtils.lerp(1f, 0f, (currentFrame / 5f).coerceIn(0f, 1f))
 
-    // Add black bars
-    batch.setColor(0f, 0f, 0f, 1f)
-    val zoomedWidth = camera.viewportWidth * camera.zoom
-    val zoomedHeight = camera.viewportHeight * camera.zoom
-    val left = camera.position.x - zoomedWidth / 2
-    val right = camera.position.x + zoomedWidth / 2
-    val bottom = camera.position.y - zoomedHeight / 2
-    val top = camera.position.y + zoomedHeight / 2
-    val leftBarWidth = camera.position.x - camera.viewportWidth / 2 - left
-    val bottomBarHeight = camera.position.y - camera.viewportHeight / 2 * screenCompress - bottom
-    batch.fillRect(left, bottom, leftBarWidth, zoomedHeight)
-    batch.fillRect(right, bottom, -leftBarWidth, zoomedHeight)
-    batch.fillRect(left, bottom, zoomedWidth, bottomBarHeight)
-    batch.fillRect(left, top, zoomedWidth, -bottomBarHeight)
-    batch.setColor(1f, 1f, 1f, 1f)
-
-//    val oldZoom = staticCamera.zoom
     monsterMawCamera.zoom = 0.425f
     monsterMawCamera.position.x = 0f
     monsterMawCamera.position.y = 0f
@@ -85,9 +68,15 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
 //        rect(monsterMawCamera.position.x - monsterMawCamera.viewportWidth / 2 * camera.zoom, monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 * camera.zoom, monsterMawCamera.viewportWidth, monsterMawCamera.viewportHeight)
         end()
     }.useStencilMask {
+        // Add black bars
+        batch.setColor(0f, 0f, 0f, 1f)
+        batch.fillRect(l, b, r - l, t - b)
+        batch.setColor(1f, 1f, 1f, 1f)
+
         monsterAnimation.render(batch, sheet, bccad.sprites, currentFrame.coerceIn(0, monsterAnimationDuration - 1),
                                 monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
                                 monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
+
         if (remix.playState != PlayState.STOPPED && playalong.timingStartForMonster < remix.tempos.beatsToSeconds(remix.playbackStart)) {
             // Border is red if started after first input
             batch.setColor(198f / 255, 0f, 0f, 1f)
