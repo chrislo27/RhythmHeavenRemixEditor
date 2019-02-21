@@ -266,7 +266,6 @@ class Playalong(val remix: Remix) {
             aces++
             if (isMonsterGoalActive) {
                 untilMonsterChomps += monsterRateIncreaseOnAce * remix.speedMultiplier
-                println(monsterRateIncreaseOnAce)
             }
         }
 
