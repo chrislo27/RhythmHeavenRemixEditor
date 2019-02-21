@@ -36,8 +36,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         private val FILLED_A_BUTTON = PlayalongChars.FILLED_A
         private val BORDERED_A_BUTTON = PlayalongChars.BORDERED_A
 
-        private val CALIBRATION_MUSIC_OFFSET = 0.113f
-        private val CALIBRATION_BPM = 120f
+        private val CALIBRATION_MUSIC_OFFSET = 0.126f
+        private val CALIBRATION_BPM = 125f
         private val CALIBRATION_DURATION_BEATS = 32f
         private val FIVE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00000", DecimalFormatSymbols())
     }
