@@ -176,7 +176,7 @@ class PlayalongStage(val editor: Editor,
             this.textColor = Color(1f, 1f, 1f, 1f)
             this.textAlign = Align.left
             this.location.set(screenX = perfectIcon.location.screenX + perfectIcon.location.screenWidth,
-                              screenY = 1f - buttonHeight - paddingY, screenWidth = 0.25f, screenHeight = buttonHeight)
+                              screenY = 1f - buttonHeight - paddingY, screenWidth = 0.3f, screenHeight = buttonHeight)
         }
         lowerStage.elements += perfectLabel
         monsterGoalIcon = ImageLabel(palette, lowerStage, lowerStage).apply {
@@ -197,7 +197,7 @@ class PlayalongStage(val editor: Editor,
             this.textColor = Color(1f, 1f, 1f, 1f)
             this.textAlign = Align.left
             this.location.set(screenX = monsterGoalIcon.location.screenX + monsterGoalIcon.location.screenWidth,
-                              screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = 0.25f, screenHeight = buttonHeight)
+                              screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = 0.3f, screenHeight = buttonHeight)
         }
         lowerStage.elements += monsterGoalLabel
 
