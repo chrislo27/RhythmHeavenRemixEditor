@@ -383,7 +383,7 @@ class PlayalongStage(val editor: Editor,
                 disableButtonsWhilePlaying(true)
             }
             PLAYING -> {
-                remix.speedMultiplier = tempoChange / 100f
+                setRemixSpeed()
                 heartsInvuln = 0f
                 disableButtonsWhilePlaying(true)
             }
@@ -488,9 +488,15 @@ class PlayalongStage(val editor: Editor,
         playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0)
     }
 
+    private fun setRemixSpeed() {
+        if (playalong.inputActions.isNotEmpty()) {
+            remix.speedMultiplier = tempoChange / 100f
+        }
+    }
+
     fun onShow() {
         reset()
-        remix.speedMultiplier = tempoChange / 100f
+        setRemixSpeed()
         disableButtonsWhilePlaying(remix.playState != STOPPED)
     }
 
