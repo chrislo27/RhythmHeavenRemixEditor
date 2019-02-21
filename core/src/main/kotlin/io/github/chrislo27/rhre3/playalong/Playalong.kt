@@ -93,26 +93,27 @@ class Playalong(val remix: Remix) {
         }
     val isMonsterGoalActive: Boolean get() = monsterGoal > 0f
     /**
-     * Percentage of time left until the monster chomps down.
-     */
-    var untilMonsterChomps: Float = 1f
-        private set(value) {
-            field = value.coerceIn(0f, 1f)
-        }
-    /**
      * When [untilMonsterChomps] starts ticking down. By default, 2 beats before the first input.
      */
-    val timingStartForMonster: Float get() = if (inputActions.isEmpty()) 0f else (inputActions.first().beat - 2f)
+    val timingStartForMonster: Float = if (inputActions.isEmpty()) 0f else (inputActions.first().beat - 2f)
     /**
      * When [untilMonsterChomps] stops ticking down. By default the last input.
      */
-    val timingEndForMonster: Float get() = if (inputActions.isEmpty()) 0f else inputActions.last().let { if (it.isInstantaneous) it.beat else (it.beat + it.duration) }
+    val timingEndForMonster: Float = if (inputActions.isEmpty()) 0f else inputActions.last().let { if (it.isInstantaneous) it.beat else (it.beat + it.duration) }
     /**
      * Rate in SECONDS for the amount [untilMonsterChomps] decrements by per second.
      */
     var monsterRate: Float = computeMonsterRate(monsterGoal)
         private set
     val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else ((MathUtils.log(1.5f, remix.speedMultiplier)).coerceAtLeast(1.15f) / (numResultsExpected * monsterGoal))
+
+    /**
+     * Percentage of time left until the monster chomps down.
+     */
+    var untilMonsterChomps: Float = 1f
+        set(value) {
+            field = value.coerceIn(0f, 1f)
+        }
 
     /**
      * Returns a *sorted* list of [InputActions](InputAction). May be empty.
@@ -132,7 +133,7 @@ class Playalong(val remix: Remix) {
     }
 
     fun getMonsterGoalCameraZoom(): Float {
-        return Interpolation.pow3.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
+        return if (remix.playState == PlayState.STOPPED) 1f else Interpolation.pow3.apply(1f, 6f, (1f - untilMonsterChomps).coerceIn(0f, 1f))
     }
 
     fun searchForInputAction(aroundSec: Float, threshold: Float, predicate: ((InputAction) -> Boolean)?): InputAction? {

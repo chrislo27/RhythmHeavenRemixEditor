@@ -56,6 +56,7 @@ class PlayalongStage(val editor: Editor,
         companion object {
             val EMPTY = Hearts(0, 0)
         }
+
         constructor(total: Int) : this(total, total)
     }
 
@@ -241,7 +242,7 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 2, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoDownButton
-        tempoLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage){
+        tempoLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage) {
             override fun getRealText(): String {
                 val value = tempoChange
                 return "[#${if (value == 100) "FFFFFF" else if (value > 100) TEMPO_UP_COLOUR.toString() else TEMPO_DOWN_COLOUR.toString()}]" + Localization[if (value >= 100) "playalong.tempoUp" else "playalong.tempoDown"] + "[]\n$value%"
@@ -285,10 +286,12 @@ class PlayalongStage(val editor: Editor,
                 hearts = heartsList[newIndex].copy()
                 updateLabels()
             }
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 cycle(1)
             }
+
             override fun onRightClick(xPercent: Float, yPercent: Float) {
                 super.onRightClick(xPercent, yPercent)
                 cycle(-1)
@@ -330,6 +333,15 @@ class PlayalongStage(val editor: Editor,
                 remix.speedMultiplier = tempoChange / 100f
                 heartsInvuln = 0f
                 disableButtonsWhilePlaying(true)
+
+                if (old == STOPPED) {
+                    // Set monster goal if necessary
+                    val secondsElapsed = remix.tempos.beatsToSeconds(remix.playbackStart) - remix.tempos.beatsToSeconds(playalong.timingStartForMonster)
+                    if (playalong.isMonsterGoalActive && secondsElapsed > 0) {
+                        val newValue = (playalong.monsterRate * secondsElapsed).coerceIn(0f, 1f)
+                        playalong.untilMonsterChomps = newValue
+                    }
+                }
             }
         }
     }

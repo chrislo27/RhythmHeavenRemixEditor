@@ -88,7 +88,12 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
         monsterAnimation.render(batch, sheet, bccad.sprites, currentFrame.coerceIn(0, monsterAnimationDuration - 1),
                                 monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
                                 monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
-        batch.setColor(0f, 200f / 255f, 50f / 255f, 1f)
+        if (remix.playState != PlayState.STOPPED && playalong.timingStartForMonster < remix.tempos.beatsToSeconds(remix.playbackStart)) {
+            // Border is red if started after first input
+            batch.setColor(198f / 255, 0f, 0f, 1f)
+        } else {
+            batch.setColor(0f, 200f / 255f, 50f / 255f, 1f)
+        }
         val frameWidth = innerWidth * (frameTexReg.regionWidth.toFloat() / innerFrameTexReg.regionWidth)
         val frameHeight = innerHeight * (frameTexReg.regionHeight.toFloat() / innerFrameTexReg.regionHeight)
         batch.draw(frameTexReg, monsterMawCamera.position.x - frameWidth / 2,
