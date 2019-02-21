@@ -97,12 +97,13 @@ class Playalong(val remix: Remix) {
      * When [untilMonsterChomps] stops ticking down. By default the last input.
      */
     val timingEndForMonster: Float = if (inputActions.isEmpty()) 0f else inputActions.last().let { if (it.isInstantaneous) it.beat else (it.beat + it.duration) }
+    val countedDuration = remix.tempos.beatsToSeconds(timingEndForMonster) - remix.tempos.beatsToSeconds(timingStartForMonster)
     /**
      * Rate in SECONDS for the amount [untilMonsterChomps] decrements by per second.
      */
     var monsterRate: Float = computeMonsterRate(monsterGoal)
         private set
-    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else (monsterRate * 1.5f)
+    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else (monsterRate / (countedDuration / numResultsExpected) * 1.5f)
 
     /**
      * Percentage of time left until the monster chomps down.
@@ -127,7 +128,6 @@ class Playalong(val remix: Remix) {
         val end = timingEndForMonster
         val start = timingStartForMonster
         if (start == end) return 0f
-        val countedDuration = remix.tempos.beatsToSeconds(end) - remix.tempos.beatsToSeconds(start)
         return 1f / ((3 * countedDuration) / Math.pow(10.0, goal / 100.0).toFloat())
     }
 
