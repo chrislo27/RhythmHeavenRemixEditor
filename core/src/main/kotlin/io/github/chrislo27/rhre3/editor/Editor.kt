@@ -474,8 +474,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         font.scaleFont(camera)
 
-        // TODO START OF RENDERING BLOCK --------------------------------------------
-
         // horizontal track lines
         this.renderHorizontalTrackLines(batch, beatRangeStartFloat, beatRangeEndFloat - beatRangeStartFloat, trackYOffset)
 
@@ -564,8 +562,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         if (otherUI) {
             this.renderOtherUI(batch, beatRange, font)
         }
-
-        // TODO END OF RENDERING BLOCK --------------------------------------------
 
         if (monsterGoal) {
             main.shapeRenderer.projectionMatrix = camera.combined
