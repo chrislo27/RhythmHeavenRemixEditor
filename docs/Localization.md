@@ -63,7 +63,7 @@ libGDX-specific feature.
 ## Making testing faster and easier
 If you remove the `langs.json` and/or `default.properties` files from the
 jar file, you can make a folder named `localization` in the same
-directory as the `RHRE3.jar` file and it will look there for files if it isn't present
+directory as the `RHRE.jar` file and it will look there for files if it isn't present
 inside the jar.
 
 Pressing **`F8+I`** will reload all the localization without closing and reopening
