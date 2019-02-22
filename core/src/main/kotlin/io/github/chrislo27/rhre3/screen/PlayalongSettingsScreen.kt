@@ -59,10 +59,11 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         fun reset() {
             summed = 0f
             inputs = 0
+            calibration = 0f
         }
 
         fun compute() {
-            calibration = summed / inputs.coerceAtLeast(0)
+            calibration = summed / inputs.coerceAtLeast(1)
         }
 
         fun fireInput() {
