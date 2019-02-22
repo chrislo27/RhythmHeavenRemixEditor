@@ -96,6 +96,7 @@ class PlayalongStage(val editor: Editor,
 
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
+    private var lastMonsterAceSfx: Float = -1f
 
     var hearts: Hearts = Hearts.EMPTY
     var heartsCooldown: Float = 0f
@@ -426,6 +427,7 @@ class PlayalongStage(val editor: Editor,
                 setRemixSpeed()
                 heartsInvuln = 0f
                 disableButtonsWhilePlaying(true)
+                lastMonsterAceSfx = remix.tempos.beatsToSeconds(remix.playbackStart) - 5f
             }
         }
     }
@@ -480,6 +482,13 @@ class PlayalongStage(val editor: Editor,
             if (hearts.num == 0 && oldHeartsCount > 0) {
                 remix.playState = PAUSED
             }
+        }
+
+        if (inputResult.timing == InputTiming.ACE && playalong.isMonsterGoalActive) {
+            val sound = AssetRegistry.get<Sound>("playalong_sfx_monster_ace")
+            val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier).coerceIn(0f, 1f))
+            sound.play(volume)
+            lastMonsterAceSfx = remix.seconds
         }
     }
 
