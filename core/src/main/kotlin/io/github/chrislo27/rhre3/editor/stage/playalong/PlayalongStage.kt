@@ -409,7 +409,7 @@ class PlayalongStage(val editor: Editor,
         lowerStage.elements += timingDisplayStage
 
         updateLabels()
-        setPerfectVisibility(true)
+        setPerfectVisibility(false)
         tempoChange = 100 // Force text label update
     }
 
