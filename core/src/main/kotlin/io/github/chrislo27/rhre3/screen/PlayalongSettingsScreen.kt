@@ -54,9 +54,36 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
     private val preferences: Preferences get() = main.preferences
 
-    private var calibration: Float = main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
-    private var summedCalibration = 0f
-    private var calibrationInputs = 0
+    private inner class Calibration(val key: String, var calibration: Float = main.preferences.getFloat(key, 0f),
+                                    var summed: Float = 0f, var inputs: Int = 0) {
+        fun reset() {
+            summed = 0f
+            inputs = 0
+        }
+
+        fun compute() {
+            calibration = summed / inputs.coerceAtLeast(0)
+        }
+
+        fun fireInput() {
+            val musicPos = music.position - CALIBRATION_MUSIC_OFFSET
+            val beat = TempoUtils.secondsToBeats(musicPos, CALIBRATION_BPM) % CALIBRATION_DURATION_BEATS
+            val beatOffset = beat - beat.roundToInt()
+            val secOffset = TempoUtils.beatsToSeconds(beatOffset, CALIBRATION_BPM)
+            if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC * 2) {
+                inputs++
+                summed += secOffset
+                compute()
+            }
+        }
+
+        fun persist() {
+            main.preferences.putFloat(key, calibration).flush()
+        }
+    }
+
+    private val keyCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_KEY)
+    private val mouseCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_MOUSE)
 
     init {
         val palette = main.uiPalette
@@ -81,11 +108,11 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenY = 0.875f, screenHeight = 0.1f)
         }
         stage.centreStage.elements += inputCalibrationTitle
-        val inputCalibrationControls = object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage){
+        val inputCalibrationControls = object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun canBeClickedOn(): Boolean = true
             override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
                 if (music.isPlaying && isMouseOver() && button == Input.Buttons.LEFT) {
-                    fireCalibrationInput()
+                    mouseCalibration.fireInput()
                     return true
                 }
                 return super.touchDown(screenX, screenY, pointer, button)
@@ -101,12 +128,21 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         stage.centreStage.elements += inputCalibrationControls
         stage.centreStage.elements += object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun getRealText(): String {
-                return Localization["screen.playalongSettings.calibration.offset", FIVE_DECIMAL_PLACES_FORMATTER.format(calibration.toDouble())]
+                return Localization["screen.playalongSettings.calibration.offset.key", FIVE_DECIMAL_PLACES_FORMATTER.format(keyCalibration.calibration.toDouble())]
             }
         }.apply {
             this.textWrapping = false
             this.isLocalizationKey = false
-            this.location.set(screenY = 0.775f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenWidth = 0.475f, screenY = 0.775f, screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun getRealText(): String {
+                return Localization["screen.playalongSettings.calibration.offset.mouse", FIVE_DECIMAL_PLACES_FORMATTER.format(mouseCalibration.calibration.toDouble())]
+            }
+        }.apply {
+            this.textWrapping = false
+            this.isLocalizationKey = false
+            this.location.set(screenX = 0.525f, screenWidth = 0.475f, screenY = 0.775f, screenHeight = 0.1f)
         }
         playStopButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             val playLabel = ImageLabel(palette, this, this.stage).apply {
@@ -152,16 +188,30 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                resetCalibration()
+                keyCalibration.reset()
             }
         }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.text = "screen.playalongSettings.calibration.reset"
+                this.text = "screen.playalongSettings.calibration.reset.key"
                 this.textWrapping = false
             })
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
-            this.location.set(screenWidth = 0.3f)
+            this.location.set(screenWidth = 0.4f)
             this.location.set(screenX = playStopButton.location.screenX - location.screenWidth - 0.025f)
+        }
+        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                mouseCalibration.reset()
+            }
+        }.apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.text = "screen.playalongSettings.calibration.reset.mouse"
+                this.textWrapping = false
+            })
+            this.location.set(screenHeight = 0.1f, screenY = 0.65f)
+            this.location.set(screenWidth = 0.4f)
+            this.location.set(screenX = playStopButton.location.screenX + playStopButton.location.screenWidth + 0.025f)
         }
 
         stage.centreStage.elements += ColourPane(stage.centreStage, stage.centreStage).apply {
@@ -294,12 +344,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
-    private fun resetCalibration() {
-        calibration = 0f
-        summedCalibration = 0f
-        calibrationInputs = 0
-    }
-
     override fun renderUpdate() {
         super.renderUpdate()
 
@@ -309,7 +353,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
         if (music.isPlaying) {
             if (Gdx.input.isKeyJustPressed(main.playalongControls.buttonA)) {
-                fireCalibrationInput()
+                keyCalibration.fireInput()
             }
         }
 
@@ -324,28 +368,17 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
-    private fun fireCalibrationInput() {
-        val musicPos = music.position - CALIBRATION_MUSIC_OFFSET
-        val beat = TempoUtils.secondsToBeats(musicPos, CALIBRATION_BPM) % CALIBRATION_DURATION_BEATS
-        val beatOffset = beat - beat.roundToInt()
-        val secOffset = TempoUtils.beatsToSeconds(beatOffset, CALIBRATION_BPM)
-        if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC * 2) {
-            calibrationInputs++
-            summedCalibration += secOffset
-            calibration = summedCalibration / calibrationInputs.coerceAtLeast(1)
-        }
-    }
-
     override fun hide() {
         super.hide()
         music.stop()
 
-        preferences.putFloat(PreferenceKeys.PLAYALONG_CALIBRATION, calibration).flush()
+        keyCalibration.persist()
+        mouseCalibration.persist()
 
-        fun mapAllSfxKeys(vararg key: String): Map<String, Any> {
+        fun mapSfxSettings(vararg key: String): Map<String, Any> {
             return key.associate { it to preferences.getBoolean(it, true) }
         }
-        AnalyticsHandler.track("Exit Playalong Settings", mapOf("calibration" to calibration) + mapAllSfxKeys(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE))
+        AnalyticsHandler.track("Exit Playalong Settings", mapOf("keyCalibration" to keyCalibration.calibration, "mouseCalibration" to mouseCalibration.calibration) + mapSfxSettings(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE))
     }
 
     override fun tickUpdate() {

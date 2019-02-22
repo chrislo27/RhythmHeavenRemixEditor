@@ -67,7 +67,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange) {
                 val defWidth = inputAction.duration
                 val width = if (inProgress != null) {
                     batch.setColor(0.2f, 0.57f, 1f, 1f)
-                    remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds((remix.beat - inputAction.beat)) - playalong.calibratedOffset)
+                    remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds((remix.beat - inputAction.beat)) - (if (inputAction.input.isTouchScreen) playalong.calibratedMouseOffset else playalong.calibratedKeyOffset))
                 } else if (results != null) {
                     (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
                 } else 0f

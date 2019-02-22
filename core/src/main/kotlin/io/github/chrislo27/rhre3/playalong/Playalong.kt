@@ -23,6 +23,8 @@ class Playalong(val remix: Remix) {
         val BARELY_OFFSET: Float = 7.5f / 60
     }
 
+    data class InProgressInput(val keycode: Int, val isMouse: Boolean, val result: InputResult)
+
     private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
     private val preferences: Preferences get() = remix.main.preferences
 
@@ -41,7 +43,7 @@ class Playalong(val remix: Remix) {
     /**
      * For two-stage inputs. Value represents the result of the first part
      */
-    val inputsInProgress: MutableMap<InputAction, Pair<Int, InputResult>> = mutableMapOf()
+    val inputsInProgress: MutableMap<InputAction, InProgressInput> = mutableMapOf()
     val inputActionsByBeat: Map<Float, List<InputAction>> = inputActions.groupBy { it.beat }
     val needsTouchScreen: Boolean = inputActions.any { it.input.isTouchScreen }
 
@@ -65,7 +67,8 @@ class Playalong(val remix: Remix) {
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
 
-    val calibratedOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
+    val calibratedKeyOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION_KEY, 0f)
+    val calibratedMouseOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION_MOUSE, 0f)
 
     /**
      * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
@@ -147,20 +150,23 @@ class Playalong(val remix: Remix) {
     fun frameUpdate() {
         // Figure out if long press actions are over
         // or if two-stage inputs have expired at their ends
-        val seconds = remix.seconds - calibratedOffset
+        val keySeconds = remix.seconds - calibratedKeyOffset
+        val mouseSeconds = remix.seconds - calibratedMouseOffset
 
         // Check in progress inputs' trailing inputs
         inputsInProgress.entries.toList().forEach { (input, firstResult) ->
+            val seconds = if (firstResult.isMouse) mouseSeconds else keySeconds
             if ((input.method == PlayalongMethod.LONG_PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration)) ||
                     (input.method != PlayalongMethod.PRESS && seconds > remix.tempos.beatsToSeconds(input.beat + input.duration) + MAX_OFFSET_SEC)) {
                 inputsInProgress.remove(input)
                 val result = createInputResult(input, end = true, atSeconds = seconds, timing = if (input.method == PlayalongMethod.LONG_PRESS) InputTiming.ACE else InputTiming.MISS)
-                inputted[input] = InputResults(input, listOf(firstResult.second, result))
+                inputted[input] = InputResults(input, listOf(firstResult.result, result))
                 onInput(input, result, false)
             }
         }
         // Check entirely missed inputs' starting inputs
         inputActions.forEach { input ->
+            val seconds = if (input.input.isTouchScreen) mouseSeconds else keySeconds
             if (input !in inputsInProgress.keys && input !in inputted.keys && seconds > remix.tempos.beatsToSeconds(input.beat) + MAX_OFFSET_SEC) {
                 val result = createInputResult(input, end = false, atSeconds = remix.tempos.beatsToSeconds(input.beat), timing = InputTiming.MISS)
                 val list = mutableListOf(result)
@@ -194,15 +200,15 @@ class Playalong(val remix: Remix) {
         return if (timing == null) InputResult(offset) else InputResult(offset, timing)
     }
 
-    fun handleInput(down: Boolean, keycode: Int): Boolean {
+    fun handleInput(down: Boolean, keycode: Int, isMouse: Boolean): Boolean {
         if (remix.playState != PlayState.PLAYING) return false
         val playalongInputs = keycodeTriggers[keycode] ?: return false
-        return handleInput(down, playalongInputs, keycode)
+        return handleInput(down, playalongInputs, keycode, isMouse)
     }
 
-    fun handleInput(down: Boolean, playalongInput: Set<PlayalongInput>, keycodeUsed: Int): Boolean {
+    fun handleInput(down: Boolean, playalongInput: Set<PlayalongInput>, keycodeUsed: Int, isMouse: Boolean): Boolean {
         if (remix.playState != PlayState.PLAYING) return false
-        val seconds = remix.seconds - calibratedOffset
+        val seconds = remix.seconds - (if (isMouse) calibratedMouseOffset else calibratedKeyOffset)
         val searched = searchForInputAction(seconds, MAX_OFFSET_SEC) {
             it !in inputted.keys && it.input in playalongInput
                     && (if (it.method == PlayalongMethod.RELEASE_AND_HOLD || it.method == PlayalongMethod.RELEASE) !down else down)
@@ -219,7 +225,7 @@ class Playalong(val remix: Remix) {
                     }
                     PlayalongMethod.LONG_PRESS, PlayalongMethod.PRESS_AND_HOLD -> {
                         val result = createInputResult(searched, false, seconds)
-                        inputsInProgress[searched] = keycodeUsed to result
+                        inputsInProgress[searched] = InProgressInput(keycodeUsed, isMouse, result)
                         onInput(searched, result, true)
                     }
                     else -> {
@@ -228,7 +234,7 @@ class Playalong(val remix: Remix) {
             } else {
                 if (searched.method == PlayalongMethod.RELEASE_AND_HOLD) {
                     val result = createInputResult(searched, false, seconds)
-                    inputsInProgress[searched] = keycodeUsed to result
+                    inputsInProgress[searched] = InProgressInput(keycodeUsed, isMouse, result)
                     onInput(searched, result, true)
                 } else if (searched.method == PlayalongMethod.RELEASE) {
                     val result = createInputResult(searched, false, seconds)
@@ -240,11 +246,11 @@ class Playalong(val remix: Remix) {
 
         // Check in progress inputs
         inputsInProgress.entries.toList().forEach { (input, firstResult) ->
-            if ((!down && keycodeUsed == firstResult.first && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
-                    (down && keycodeUsed == firstResult.first && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
+            if ((!down && keycodeUsed == firstResult.keycode && (input.method == PlayalongMethod.LONG_PRESS || input.method == PlayalongMethod.PRESS_AND_HOLD)) ||
+                    (down && keycodeUsed == firstResult.keycode && input.method == PlayalongMethod.RELEASE_AND_HOLD)) {
                 inputsInProgress.remove(input)
                 val result = createInputResult(input, end = true, atSeconds = seconds)
-                inputted[input] = InputResults(input, listOf(firstResult.second, result))
+                inputted[input] = InputResults(input, listOf(firstResult.result, result))
                 onInput(input, result, false)
             }
         }
@@ -301,11 +307,11 @@ class Playalong(val remix: Remix) {
     }
 
     fun onKeyDown(keycode: Int): Boolean {
-        return handleInput(true, keycode)
+        return handleInput(true, keycode, false)
     }
 
     fun onKeyUp(keycode: Int): Boolean {
-        return handleInput(false, keycode)
+        return handleInput(false, keycode, false)
     }
 
 }
