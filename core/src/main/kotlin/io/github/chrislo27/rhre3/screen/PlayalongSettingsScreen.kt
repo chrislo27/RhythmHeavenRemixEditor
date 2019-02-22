@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
@@ -320,6 +321,11 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         music.dispose()
 
         preferences.putFloat(PreferenceKeys.PLAYALONG_CALIBRATION, calibration).flush()
+
+        fun mapAllSfxKeys(vararg key: String): Map<String, Any> {
+            return key.associate { it to preferences.getBoolean(it, true) }
+        }
+        AnalyticsHandler.track("Exit Playalong Settings", mapOf("calibration" to calibration) + mapAllSfxKeys(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE))
     }
 
     override fun tickUpdate() {
