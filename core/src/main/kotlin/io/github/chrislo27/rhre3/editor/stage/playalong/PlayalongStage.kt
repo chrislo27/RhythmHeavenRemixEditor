@@ -224,8 +224,8 @@ class PlayalongStage(val editor: Editor,
         lowerStage.elements += monsterGoalIcon
         monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage) {
             override fun getRealText(): String {
-                val monsterGoalPreset = monsterGoalPreset ?: return ""
-                return Localization["playalong.monsterGoal", Localization[monsterGoalPreset.localizationKey]]
+                val monsterGoalArg = monsterGoalPreset?.localizationKey?.let { Localization[it] } ?: Editor.THREE_DECIMAL_PLACES_FORMATTER.format(monsterGoal)
+                return Localization["playalong.monsterGoal", monsterGoalArg]
             }
         }.apply {
             this.isLocalizationKey = false
