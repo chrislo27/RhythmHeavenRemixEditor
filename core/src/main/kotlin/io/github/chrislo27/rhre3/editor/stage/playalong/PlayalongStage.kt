@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.playalong.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -144,6 +145,36 @@ class PlayalongStage(val editor: Editor,
             override fun getRealText(): String {
                 return if (!isLocalizationKey) super.getRealText() else Localization[text, "[#DDDDDD]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.playalongGame.group} ➡ ${GameRegistry.data.playalongGame.name}[]"]
             }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                editor.stage.playalongToggleButton.onLeftClick(0f, 0f)
+                val game = GameRegistry.data.playalongGame
+                val series = game.series
+                val editorStage = editor.stage
+                val filterButton = editorStage.filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
+                println(filterButton)
+                if (filterButton != null) {
+                    // Copied from Editor.kt middle click jumps to game in picker
+                    val filter = filterButton.filter
+                    val datamodelList = filter.datamodelsPerGame[game]
+                    if (datamodelList != null) {
+                        filterButton.onLeftClick(0f, 0f)
+                        val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
+                        filter.currentGroupIndex = newGroupIndex
+                        filter.groupScroll = ((newGroupIndex + 1 - (Editor.ICON_COUNT_X * (Editor.ICON_COUNT_Y - 1))) / Editor.ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
+                        val gameList = filter.currentGameList
+                        if (gameList != null) {
+                            val newGameIndex = gameList.list.indexOf(game).coerceAtLeast(0)
+                            gameList.currentIndex = newGameIndex
+                            gameList.scroll = (newGameIndex + 1 - Editor.ICON_COUNT_Y).coerceIn(0, gameList.maxScroll)
+                        }
+                        editorStage.updateSelected()
+                    }
+                }
+            }
+
+            override fun canBeClickedOn(): Boolean = true
         }.apply {
             this.isLocalizationKey = true
             this.text = "playalong.noCues"
