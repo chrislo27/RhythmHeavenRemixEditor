@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.editor.stage.playalong
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
@@ -66,6 +68,7 @@ class PlayalongStage(val editor: Editor,
     private val remix: Remix get() = editor.remix
     private val playalong: Playalong get() = remix.playalong
     private val main: RHRE3Application get() = editor.main
+    private val preferences: Preferences get() = main.preferences
 
     val lowerStage: Stage<EditorScreen>
     val noEntitiesLabel: TextLabel<EditorScreen>
@@ -219,7 +222,7 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX, screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = buttonWidth, screenHeight = buttonHeight)
         }
         lowerStage.elements += monsterGoalIcon
-        monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage){
+        monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage) {
             override fun getRealText(): String {
                 val monsterGoalPreset = monsterGoalPreset ?: return ""
                 return Localization["playalong.monsterGoal", Localization[monsterGoalPreset.localizationKey]]
@@ -482,13 +485,18 @@ class PlayalongStage(val editor: Editor,
             if (hearts.num == 0 && oldHeartsCount > 0) {
                 remix.playState = PAUSED
             }
+            if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true) && remix.playbackStart < playalong.inputActions.firstOrNull()?.beat ?: Float.NEGATIVE_INFINITY) {
+                AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play()
+            }
         }
 
         if (inputResult.timing == InputTiming.ACE && playalong.isMonsterGoalActive) {
-            val sound = AssetRegistry.get<Sound>("playalong_sfx_monster_ace")
-            val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier / 0.85f).coerceIn(0f, 1f))
-            sound.play(volume)
-            lastMonsterAceSfx = remix.seconds
+            if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)) {
+                val sound = AssetRegistry.get<Sound>("playalong_sfx_monster_ace")
+                val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier / 0.85f).coerceIn(0f, 1f))
+                sound.play(volume)
+                lastMonsterAceSfx = remix.seconds
+            }
         }
     }
 
@@ -505,7 +513,9 @@ class PlayalongStage(val editor: Editor,
         perfectIcon.image = perfectFailTexReg
         val first = playalong.inputActions.firstOrNull()
         if (first != null && remix.playbackStart < first.beat && perfectIcon.visible) {
-            AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play()
+            if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true) && hearts.total == 0) {
+                AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play()
+            }
         }
     }
 
@@ -516,7 +526,9 @@ class PlayalongStage(val editor: Editor,
 
     fun onMonsterGoalFail() {
         remix.playState = PlayState.PAUSED
-        AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play()
+        if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)) {
+            AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play()
+        }
     }
 
     fun reset() {

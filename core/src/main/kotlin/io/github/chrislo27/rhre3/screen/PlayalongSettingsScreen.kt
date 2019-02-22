@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -13,6 +14,7 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -48,6 +50,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val playStopButton: Button<PlayalongSettingsScreen>
 
     private val music: Music = Gdx.audio.newMusic(Gdx.files.internal("playalong/input_calibration.ogg"))
+    private val preferences: Preferences get() = main.preferences
 
     private var calibration: Float = main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
     private var summedCalibration = 0f
@@ -156,6 +159,75 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         stage.centreStage.elements += controlsLabel
 
+        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.textWrapping = false
+            this.text = "screen.playalongSettings.sfxTitle"
+            this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f, screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override val checkLabelPortion: Float = 0.1f
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, checked).flush()
+            }
+        }.apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true)
+
+            this.checkLabel.location.set(screenWidth = checkLabelPortion)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+
+            this.textLabel.apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.9f
+                this.textWrapping = false
+                this.textAlign = Align.left
+                this.text = "screen.playalongSettings.perfectFailSfx"
+            }
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f, screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override val checkLabelPortion: Float = 0.1f
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, checked).flush()
+            }
+        }.apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)
+
+            this.checkLabel.location.set(screenWidth = checkLabelPortion)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+
+            this.textLabel.apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.9f
+                this.textWrapping = false
+                this.textAlign = Align.left
+                this.text = "screen.playalongSettings.monsterFailSfx"
+            }
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f, screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override val checkLabelPortion: Float = 0.1f
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, checked).flush()
+            }
+        }.apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)
+
+            this.checkLabel.location.set(screenWidth = checkLabelPortion)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+
+            this.textLabel.apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.9f
+                this.textWrapping = false
+                this.textAlign = Align.left
+                this.text = "screen.playalongSettings.monsterAceSfx"
+            }
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 3, screenWidth = 0.5f, screenHeight = 0.1f)
+        }
+
         val currentControls = main.playalongControls.copy()
         val isCustom = currentControls !in PlayalongControls.standardControls.values
         val controlsList = (if (isCustom) listOf(PlayalongControls.strCustom to currentControls) else listOf()) + PlayalongControls.standardControls.entries.map { it.toPair() }
@@ -247,7 +319,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         music.stop()
         music.dispose()
 
-        main.preferences.putFloat(PreferenceKeys.PLAYALONG_CALIBRATION, calibration).flush()
+        preferences.putFloat(PreferenceKeys.PLAYALONG_CALIBRATION, calibration).flush()
     }
 
     override fun tickUpdate() {

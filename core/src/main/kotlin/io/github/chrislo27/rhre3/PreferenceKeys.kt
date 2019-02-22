@@ -51,6 +51,9 @@ object PreferenceKeys {
     val VIEWED_PARTNERS_VERSION = "viewedPartnersVersion"
     val PLAYALONG_CONTROLS = "playalongControls"
     val PLAYALONG_CALIBRATION = "playalongCalibration"
+    val PLAYALONG_SFX_PERFECT_FAIL = "playalongSfxPerfectFail"
+    val PLAYALONG_SFX_MONSTER_FAIL = "playalongSfxMonsterFail"
+    val PLAYALONG_SFX_MONSTER_ACE = "playalongSfxMonsterAce"
 
     val EVENT_PREFIX = "event_"
     val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"

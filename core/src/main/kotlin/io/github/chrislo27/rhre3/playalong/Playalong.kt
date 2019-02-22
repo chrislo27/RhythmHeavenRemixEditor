@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
@@ -23,6 +24,7 @@ class Playalong(val remix: Remix) {
     }
 
     private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
+    private val preferences: Preferences get() = remix.main.preferences
 
     /**
      * A guaranteed-sorted list of [InputActions](InputAction).
@@ -63,7 +65,7 @@ class Playalong(val remix: Remix) {
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
 
-    val calibratedOffset: Float get() = remix.main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
+    val calibratedOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
 
     /**
      * If true, counts score acording to [InputTiming.scoreWeight]. Otherwise, by raw offset values.
