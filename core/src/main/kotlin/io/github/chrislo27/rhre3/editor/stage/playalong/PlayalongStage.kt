@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
+import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.playalong.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
@@ -265,7 +266,9 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += acesLabel
 
-        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = Localization["playalong.goForPerfect.tooltip"]
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 setPerfectVisibility(!perfectIcon.visible)
@@ -277,7 +280,8 @@ class PlayalongStage(val editor: Editor,
             })
             this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
-        monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.monsterGoal.tooltip"]
             fun cycle(dir: Int) {
                 val monsterPreset = monsterGoalPreset
                 val values = MonsterPresets.VALUES
@@ -308,7 +312,8 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += monsterMawButton
-        tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.tempoDown.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 tempoChange -= TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
@@ -340,7 +345,8 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 3, screenY = paddingY, screenWidth = buttonWidth * 2, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoLabel
-        tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.tempoUp.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 tempoChange += TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
@@ -358,7 +364,9 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 5, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoUpButton
-        heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+        heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.lifeGoal.tooltip"]
+
             val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
             fun cycle(dir: Int) {
                 val currentIndex = heartsList.indexOfFirst { it.total == hearts.total }.coerceAtLeast(0)
