@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.init
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
@@ -165,6 +166,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_fail", "playalong/monsterGoalFail.ogg")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfectFail.ogg")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monsterGoalAce.ogg")
+        AssetRegistry.loadAsset<Music>("playalong_settings_input_calibration", "playalong/input_calibration.ogg")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {

@@ -22,6 +22,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
+import io.github.chrislo27.toolboks.ui.ColourPane
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -50,7 +51,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val controlsLabel: TextLabel<PlayalongSettingsScreen>
     private val playStopButton: Button<PlayalongSettingsScreen>
 
-    private val music: Music = Gdx.audio.newMusic(Gdx.files.internal("playalong/input_calibration.ogg"))
+    private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
     private val preferences: Preferences get() = main.preferences
 
     private var calibration: Float = main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
@@ -80,12 +81,22 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenY = 0.875f, screenHeight = 0.1f)
         }
         stage.centreStage.elements += inputCalibrationTitle
-        val inputCalibrationControls = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+        val inputCalibrationControls = object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage){
+            override fun canBeClickedOn(): Boolean = true
+            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+                if (music.isPlaying && isMouseOver() && button == Input.Buttons.LEFT) {
+                    fireCalibrationInput()
+                    return true
+                }
+                return super.touchDown(screenX, screenY, pointer, button)
+            }
+        }.apply {
             this.textWrapping = false
             this.isLocalizationKey = false
             this.text = Localization["screen.playalongSettings.calibration.controls", FILLED_A_BUTTON]
             this.location.set(screenY = 0.875f, screenHeight = 0.1f)
             this.visible = false
+            this.background = true
         }
         stage.centreStage.elements += inputCalibrationControls
         stage.centreStage.elements += object : TextLabel<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
@@ -151,6 +162,12 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
             this.location.set(screenWidth = 0.3f)
             this.location.set(screenX = playStopButton.location.screenX - location.screenWidth - 0.025f)
+        }
+
+        stage.centreStage.elements += ColourPane(stage.centreStage, stage.centreStage).apply {
+            this.colour.set(1f, 1f, 1f, 1f)
+            val barHeight = 0.005f
+            this.location.set(screenY = 0.625f - barHeight / 2, screenHeight = barHeight)
         }
 
         controlsLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
@@ -292,15 +309,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
         if (music.isPlaying) {
             if (Gdx.input.isKeyJustPressed(main.playalongControls.buttonA)) {
-                val musicPos = music.position - CALIBRATION_MUSIC_OFFSET
-                val beat = TempoUtils.secondsToBeats(musicPos, CALIBRATION_BPM) % CALIBRATION_DURATION_BEATS
-                val beatOffset = beat - beat.roundToInt()
-                val secOffset = TempoUtils.beatsToSeconds(beatOffset, CALIBRATION_BPM)
-                if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC * 2) {
-                    calibrationInputs++
-                    summedCalibration += secOffset
-                    calibration = summedCalibration / calibrationInputs.coerceAtLeast(1)
-                }
+                fireCalibrationInput()
             }
         }
 
@@ -315,10 +324,21 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
+    private fun fireCalibrationInput() {
+        val musicPos = music.position - CALIBRATION_MUSIC_OFFSET
+        val beat = TempoUtils.secondsToBeats(musicPos, CALIBRATION_BPM) % CALIBRATION_DURATION_BEATS
+        val beatOffset = beat - beat.roundToInt()
+        val secOffset = TempoUtils.beatsToSeconds(beatOffset, CALIBRATION_BPM)
+        if (secOffset.absoluteValue <= Playalong.MAX_OFFSET_SEC * 2) {
+            calibrationInputs++
+            summedCalibration += secOffset
+            calibration = summedCalibration / calibrationInputs.coerceAtLeast(1)
+        }
+    }
+
     override fun hide() {
         super.hide()
         music.stop()
-        music.dispose()
 
         preferences.putFloat(PreferenceKeys.PLAYALONG_CALIBRATION, calibration).flush()
 
@@ -332,7 +352,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     }
 
     override fun dispose() {
-        music.dispose()
     }
 
 }
