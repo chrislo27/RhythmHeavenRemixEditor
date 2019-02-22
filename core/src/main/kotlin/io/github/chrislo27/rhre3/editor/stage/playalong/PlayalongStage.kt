@@ -486,7 +486,7 @@ class PlayalongStage(val editor: Editor,
 
         if (inputResult.timing == InputTiming.ACE && playalong.isMonsterGoalActive) {
             val sound = AssetRegistry.get<Sound>("playalong_sfx_monster_ace")
-            val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier).coerceIn(0f, 1f))
+            val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier / 0.85f).coerceIn(0f, 1f))
             sound.play(volume)
             lastMonsterAceSfx = remix.seconds
         }
