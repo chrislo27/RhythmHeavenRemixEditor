@@ -17,9 +17,9 @@ class Playalong(val remix: Remix) {
 
     companion object {
         val MAX_OFFSET_SEC: Float = 9f / 60
-        val ACE_OFFSET: Float = 1.5f / 60
-        val GOOD_OFFSET: Float = 5.5f / 60
-        val BARELY_OFFSET: Float = 7f / 60
+        val ACE_OFFSET: Float = 1f / 60
+        val GOOD_OFFSET: Float = 5f / 60
+        val BARELY_OFFSET: Float = 7.5f / 60
     }
 
     private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
