@@ -180,38 +180,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         label.onResize(labelParent.location.realWidth, labelParent.location.realHeight)
     }
 
+    private fun UIElement<*>.searchForHoverTextRec(): String? {
+        if (this is HasHoverText && isMouseOver() && visible) {
+            return getHoverText()
+        } else if (this is Stage<*> && visible) {
+            for (e in elements) {
+                val hov = e.searchForHoverTextRec()
+                if (hov != null) {
+                    return hov
+                }
+            }
+        }
+        return null
+    }
+
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         hoverTextLabel.visible = false
-        elements.firstOrNull {
-            if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                setHoverText(it.getHoverText())
-                true
-            } else false
+        val hoverText = this.searchForHoverTextRec()
+        if (hoverText != null && hoverText.isNotEmpty()) {
+            setHoverText(hoverText)
         }
-                ?: elements.firstOrNull { stage ->
-                    if (stage !is Stage || !stage.visible) {
-                        false
-                    } else {
-                        stage.elements.any {
-                            if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                                setHoverText(it.getHoverText())
-                                true
-                            } else false
-                        }
-                    }
-                }
-                ?: searchBar.elements.firstOrNull {
-                    // hack
-                    if (searchBar.visible) {
-                        if (it is HasHoverText && it.isMouseOver() && it.visible) {
-                            setHoverText(it.getHoverText())
-                            true
-                        } else false
-                    } else {
-                        false
-                    }
-                }
-                ?: editor.getHoverText().takeIf(String::isNotEmpty)?.also(this::setHoverText)
 
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
