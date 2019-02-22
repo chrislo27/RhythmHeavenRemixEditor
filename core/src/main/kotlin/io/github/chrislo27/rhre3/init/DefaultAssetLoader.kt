@@ -161,7 +161,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("playalong_input_timing", "images/playalong/inputTiming.png")
         AssetRegistry.loadAsset<Texture>("playalong_heart", "images/playalong/heart.png")
         AssetRegistry.loadAsset<Texture>("playalong_monster_goal", "images/playalong/monsterGoal.png")
-        AssetRegistry.loadAsset<Texture>("playalong_monster_icon", "images/playalong/monstericon.png")
+        AssetRegistry.loadAsset<Texture>("playalong_monster_icon", "images/playalong/monsterIcon.png")
+        AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_fail", "playalong/monsterGoalFail.ogg")
+        AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfectFail.ogg")
     }
 
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {

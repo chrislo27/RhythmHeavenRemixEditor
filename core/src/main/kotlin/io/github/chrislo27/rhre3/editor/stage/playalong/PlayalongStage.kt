@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.editor.stage.playalong
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -493,11 +494,20 @@ class PlayalongStage(val editor: Editor,
     fun onPerfectFail() {
         perfectAnimation = 1f
         perfectIcon.image = perfectFailTexReg
+        val first = playalong.inputActions.firstOrNull()
+        if (first != null && remix.playbackStart < first.beat && perfectIcon.visible) {
+            AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play()
+        }
     }
 
     fun onPerfectHit() {
         perfectAnimation = 1f
         perfectIcon.image = perfectTexReg
+    }
+
+    fun onMonsterGoalFail() {
+        remix.playState = PlayState.PAUSED
+        AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play()
     }
 
     fun reset() {

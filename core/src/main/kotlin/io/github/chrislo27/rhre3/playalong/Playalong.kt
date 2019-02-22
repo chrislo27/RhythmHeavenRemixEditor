@@ -179,7 +179,7 @@ class Playalong(val remix: Remix) {
                 untilMonsterChomps -= monsterRate * Gdx.graphics.deltaTime * remix.speedMultiplier
                 if (prior > 0 && untilMonsterChomps <= 0) {
                     // Trigger end of monster goal
-                    remix.playState = PlayState.PAUSED
+                    stage.onMonsterGoalFail()
                 }
             }
         }
