@@ -9,5 +9,6 @@ object VersionHistory {
     val ANALYTICS = Version(3, 8, 0)
     val RHRE_EXPANSION = Version(3, 12, 0)
     val RE_ADD_STRETCHABLE_TEMPO = Version(3, 14, 0)
+    val PLAYALONG_UPDATE = Version(3, 17, 0)
 
 }
