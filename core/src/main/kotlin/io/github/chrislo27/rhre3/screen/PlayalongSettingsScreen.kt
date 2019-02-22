@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.git.GitHelper
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
@@ -48,7 +47,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val controlsLabel: TextLabel<PlayalongSettingsScreen>
     private val playStopButton: Button<PlayalongSettingsScreen>
 
-    private val music: Music = Gdx.audio.newMusic(GitHelper.SOUNDS_DIR.child("etc/input_calibration.ogg"))
+    private val music: Music = Gdx.audio.newMusic(Gdx.files.internal("playalong/input_calibration.ogg"))
 
     private var calibration: Float = main.preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION, 0f)
     private var summedCalibration = 0f
