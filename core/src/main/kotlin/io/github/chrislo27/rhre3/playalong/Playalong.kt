@@ -103,7 +103,7 @@ class Playalong(val remix: Remix) {
      */
     var monsterRate: Float = computeMonsterRate(monsterGoal)
         private set
-    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else (monsterRate / (countedDuration / numResultsExpected) * 1.5f)
+    val monsterRateIncreaseOnAce: Float get() = if (inputActions.isEmpty()) 0f else (monsterRate * (countedDuration / numResultsExpected) * 1.5f)
 
     /**
      * Percentage of time left until the monster chomps down.
@@ -263,7 +263,7 @@ class Playalong(val remix: Remix) {
         if (inputResult.timing == InputTiming.ACE) {
             aces++
             if (isMonsterGoalActive) {
-                untilMonsterChomps += monsterRateIncreaseOnAce * remix.speedMultiplier
+                untilMonsterChomps += monsterRateIncreaseOnAce
             }
         }
 
