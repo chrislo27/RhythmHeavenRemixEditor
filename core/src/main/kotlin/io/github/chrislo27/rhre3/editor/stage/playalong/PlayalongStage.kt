@@ -543,19 +543,19 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onTapDown(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP), 0, true)
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP), 0, tapPoint.isMouse)
     }
 
     fun onTapRelease(tapPoint: FlickingStage.TapPoint, short: Boolean) {
-        playalong.handleInput(false, if (short) setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP) else setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE), 0, true)
+        playalong.handleInput(false, if (short) setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP) else setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE), 0, tapPoint.isMouse)
     }
 
     fun onFlick(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_FLICK), 0, true)
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_FLICK), 0, tapPoint.isMouse)
     }
 
     fun onTapSlide(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0, true)
+        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0, tapPoint.isMouse)
     }
 
     private fun setRemixSpeed() {

@@ -23,7 +23,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     : ColourPane<S>(parent, parameterStage) {
 
     data class TapPoint(var x: Float, var y: Float, var veloX: Float, var veloY: Float,
-                        var lifetime: Float, var maxLifetime: Float, var isHeldDown: Boolean = false,
+                        var lifetime: Float, var maxLifetime: Float, var isMouse: Boolean, var isHeldDown: Boolean = false,
                         var holdDuration: Float = 0f, var didFireSlideEvent: Boolean = false)
 
     private val tapPoints: MutableList<TapPoint> = mutableListOf()
@@ -102,8 +102,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         tapPoints.removeIf { it.lifetime <= 0f }
     }
 
-    fun tapDown(mouseX: Float = stage.camera.getInputX(), mouseY: Float = stage.camera.getInputY()) {
-        val point: TapPoint = currentTapPoint ?: TapPoint(mouseX, mouseY, 0f, 0f, 1f, 0.25f).also {
+    fun tapDown(isMouse: Boolean, x: Float = stage.camera.getInputX(), y: Float = stage.camera.getInputY()) {
+        val point: TapPoint = currentTapPoint ?: TapPoint(x, y, 0f, 0f, 1f, 0.25f, isMouse).also {
             currentTapPoint = it
             tapPoints += it
             onTapDown(it)
@@ -137,7 +137,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         val old = super.touchDown(screenX, screenY, pointer, button)
 
         if (isMouseOver() && pointer == 0 && button == Input.Buttons.LEFT && visible) {
-            tapDown()
+            tapDown(true)
             return true
         }
 
@@ -156,8 +156,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     }
 
     fun updateTapPoint(point: TapPoint, fireSlideEvents: Boolean) {
-        val mouseX = stage.camera.getInputX().coerceIn(this.location.realX, this.location.realX + this.location.realWidth)
-        val mouseY = stage.camera.getInputY().coerceIn(this.location.realY, this.location.realY + this.location.realHeight)
+        val mouseX = if (point.isMouse) stage.camera.getInputX().coerceIn(this.location.realX, this.location.realX + this.location.realWidth) else point.x
+        val mouseY = if (point.isMouse) stage.camera.getInputY().coerceIn(this.location.realY, this.location.realY + this.location.realHeight) else point.y
         point.maxLifetime = 0.125f
         if (!point.isHeldDown) {
             point.lifetime += Gdx.graphics.deltaTime
