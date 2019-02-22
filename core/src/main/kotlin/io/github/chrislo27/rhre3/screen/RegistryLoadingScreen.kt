@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.screen.splash.ExpansionSplashScreen
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen

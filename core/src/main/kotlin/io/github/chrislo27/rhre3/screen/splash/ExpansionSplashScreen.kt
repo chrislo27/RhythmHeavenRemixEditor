@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.screen
+package io.github.chrislo27.rhre3.screen.splash
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
@@ -14,6 +14,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.screen.HidesVersionText
+import io.github.chrislo27.rhre3.screen.SupportScreen
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
