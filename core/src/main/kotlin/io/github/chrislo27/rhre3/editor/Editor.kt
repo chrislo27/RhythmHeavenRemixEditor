@@ -517,6 +517,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         // beat lines
         this.renderBeatLines(batch, beatRange, trackYOffset, updateDelta)
 
+        // beat numbers
+        this.renderBeatNumbers(batch, beatRange, font)
+
         // Texture entities get rendered here
         remix.entities.forEach {
             if (it is TextureEntity) {
@@ -543,9 +546,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         this.renderTopTrackers(batch, beatRange, trackYOffset)
-
-        // beat numbers
-        this.renderBeatNumbers(batch, beatRange, font)
 
         // Play-Yan
         if (remix.metronome) {
