@@ -196,8 +196,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         hoverTextLabel.visible = false
-        val hoverText = this.searchForHoverTextRec()
-        if (hoverText != null && hoverText.isNotEmpty()) {
+        val hoverText = this.searchForHoverTextRec() ?: editor.getHoverText()
+        if (hoverText.isNotEmpty()) {
             setHoverText(hoverText)
         }
 
