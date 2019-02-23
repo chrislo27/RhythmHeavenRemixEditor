@@ -3,7 +3,8 @@ package io.github.chrislo27.rhre3.discord
 import kotlin.math.roundToLong
 
 
-sealed class PresenceState(open val state: String = "", open val smallIcon: String = "", open val smallIconText: String = state) {
+sealed class PresenceState(open val state: String = "", open val smallIcon: String = "", open val smallIconText: String = state,
+                           open val largeIcon: String? = null, open val largeIconText: String? = null) {
 
     open fun getPartyCount(): Pair<Int, Int> = DefaultRichPresence.DEFAULT_PARTY
 
@@ -40,7 +41,7 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
         : PresenceState("Viewing our partners", "credits")
 
     object PlayingAlong
-        : PresenceState("Using Playalong", "playalong")
+        : PresenceState("Using Playalong Mode", "playalong", largeIcon = "playalong_logo")
 
     sealed class Elapsable(state: String, val duration: Float, smallIcon: String = "", smallIconText: String = state)
         : PresenceState(state, smallIcon, smallIconText) {
