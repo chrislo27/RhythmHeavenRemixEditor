@@ -16,15 +16,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         listOf(16, 24, 32, 64, 128, 256, 512, 1024).forEach {
             AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
         }
-        listOf(32, 64, 128, 256, 512).forEach {
-            AssetRegistry.loadAsset<Texture>("logo_ex_$it", "images/icon/ex/$it.png")
-        }
-        listOf(128, 256, 512).forEach {
-            AssetRegistry.loadAsset<Texture>("logo_expansion_$it", "images/icon/expansion/$it.png")
-        }
-        AssetRegistry.loadAsset<Texture>("logo_expansion_text", "images/icon/expansion/expansion_text.png")
         AssetRegistry.loadAsset<Texture>("logo_rhre2_128", "images/icon/rhre2/128.png")
-//        AssetRegistry.loadAsset<Texture>("logo_wireframe_1024", "images/icon/wireframe/1024.png")
 
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
@@ -173,10 +165,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 //        listOf(512, 256, 128, 64, 32, 24, 16).forEach {
 //            assets[AssetRegistry.bindAsset("rhre3_icon_$it", "images/icon/$it.png").first] = Texture(
 //                    "images/icon/$it.png")
-//        }
-//        listOf(512, 256, 128, 64, 32).forEach {
-//            assets[AssetRegistry.bindAsset("rhre3_icon_ex_$it", "images/icon/$it.png").first] = Texture(
-//                    "images/icon/expansion/$it.png")
 //        }
 
         assets["playyan_walking"] = Texture("images/playyan/walking.png")

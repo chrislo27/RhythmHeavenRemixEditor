@@ -4,7 +4,6 @@ import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.logging.Logger
@@ -12,7 +11,8 @@ import java.io.File
 
 object DesktopLauncher {
 
-    @JvmStatic fun main(args: Array<String>) {
+    @JvmStatic
+    fun main(args: Array<String>) {
         // https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/273
         System.setProperty("jna.nosys", "true")
 
@@ -52,7 +52,6 @@ object DesktopLauncher {
                         else -> 0
                     }
                     RHRE3.noAnalytics = "--no-analytics" in args
-                    RHRE3.forceExpansionSplash = "--force-expansion-splash" in args
                     RHRE3.noOnlineCounter = "--no-online-counter" in args
                     RHRE3.outputGeneratedDatamodels = "--output-generated-datamodels" in args
                     RHRE3.outputCustomSfx = "--output-custom-sfx" in args
@@ -60,16 +59,9 @@ object DesktopLauncher {
                     RHRE3.midiRecording = "--midi-recording" in args
                     LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
 
-                    if (RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor) {
-                        // RHRExpansion icons
-                        listOf(256, 128, 64, 32).forEach {
-                            this.addIcon("images/icon/ex/$it.png", Files.FileType.Internal)
-                        }
-                    } else {
-                        val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
-                        sizes.forEach {
-                            this.addIcon("images/icon/$it.png", Files.FileType.Internal)
-                        }
+                    val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
+                    sizes.forEach {
+                        this.addIcon("images/icon/$it.png", Files.FileType.Internal)
                     }
 
                     listOf(24, 16).forEach {

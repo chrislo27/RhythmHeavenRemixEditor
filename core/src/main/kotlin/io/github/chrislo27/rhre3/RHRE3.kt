@@ -55,7 +55,6 @@ object RHRE3 {
     var verifyRegistry: Boolean = false
     var immediateEvent: Int = 0
     var noAnalytics: Boolean = false
-    var forceExpansionSplash: Boolean = false
     var noOnlineCounter: Boolean = false
     var outputGeneratedDatamodels: Boolean = false
     var outputCustomSfx: Boolean = false

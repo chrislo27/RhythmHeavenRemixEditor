@@ -3,13 +3,14 @@ package io.github.chrislo27.rhre3.discord
 import club.minnced.discord.rpc.DiscordRichPresence
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.VersionHistory
 
 
 class DefaultRichPresence(state: String = "",
                           party: Pair<Int, Int> = DEFAULT_PARTY,
                           smallIcon: String = "",
-                          smallIconText: String = state)
+                          smallIconText: String = state,
+                          largeIcon: String? = null,
+                          largeIconText: String? = null)
     : DiscordRichPresence() {
 
     companion object {
@@ -17,7 +18,8 @@ class DefaultRichPresence(state: String = "",
     }
 
     constructor(presenceState: PresenceState)
-            : this(presenceState.state, presenceState.getPartyCount(), presenceState.smallIcon, presenceState.smallIconText) {
+            : this(presenceState.state, presenceState.getPartyCount(), presenceState.smallIcon, presenceState.smallIconText,
+                   presenceState.largeIcon, presenceState.largeIconText) {
         presenceState.modifyRichPresence(this)
     }
 
@@ -29,10 +31,9 @@ class DefaultRichPresence(state: String = "",
         } else {
             "Using ${RHRE3.VERSION}"
         }
-        val hasExpansion = RHRE3.VERSION.minor == VersionHistory.RHRE_EXPANSION.minor
         startTimestamp = RHRE3Application.instance.startTimeMillis / 1000L // Epoch seconds
-        largeImageKey = if (hasExpansion) DiscordHelper.EXPANSION_LARGE_IMAGE else DiscordHelper.DEFAULT_LARGE_IMAGE
-        largeImageText = "RHRE is a custom remix editor for the Rhythm Heaven series"
+        largeImageKey = largeIcon ?: DiscordHelper.DEFAULT_LARGE_IMAGE
+        largeImageText = largeIconText ?: "RHRE is a custom remix editor for the Rhythm Heaven series"
         smallImageKey = smallIcon
         smallImageText = smallIconText
         this.state = state
