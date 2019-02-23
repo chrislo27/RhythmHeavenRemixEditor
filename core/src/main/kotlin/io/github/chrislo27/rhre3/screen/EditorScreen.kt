@@ -57,7 +57,9 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
         refreshPresence -= Gdx.graphics.deltaTime
         if (refreshPresence <= 0) {
             refreshPresence = presenceCycle
-            DiscordHelper.updatePresence(PresenceState.InEditor)
+            if (!stage.playalongStage.visible && !stage.presentationModeStage.visible && !(editor.remix.playState != PlayState.STOPPED && editor.remix.midiInstruments > 0)) {
+                DiscordHelper.updatePresence(PresenceState.InEditor)
+            }
         }
     }
 
