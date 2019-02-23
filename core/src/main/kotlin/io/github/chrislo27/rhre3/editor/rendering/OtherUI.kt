@@ -84,7 +84,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                     font.color = theme.trackLine
 
                     val moddingEnabled = ModdingUtils.moddingToolsEnabled
-                    var widthStr = Editor.ONE_DECIMAL_PLACE_FORMATTER.format(rect.width.toDouble())
+                    var widthStr = Editor.TWO_DECIMAL_PLACES_FORMATTER.format(rect.width.toDouble())
 
                     if (moddingEnabled) {
                         // X * 0x30 [+ 0xY]
@@ -139,7 +139,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                 font.color = theme.trackLine
                 font.scaleMul(0.75f)
                 // Mixed number notation, add decimal if no snapping
-                font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${Editor.TWO_DECIMAL_PLACE_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
+                font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${Editor.TWO_DECIMAL_PLACES_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
                 if (ModdingUtils.moddingToolsEnabled) {
                     // tickflow notation
                     font.drawCompressed(batch, ModdingUtils.currentGame.beatsToTickflowString(width), leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 2.4f, textWidth, Align.center)
