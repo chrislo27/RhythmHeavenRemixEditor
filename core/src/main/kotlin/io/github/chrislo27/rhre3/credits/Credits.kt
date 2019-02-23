@@ -18,7 +18,7 @@ object Credits {
                 |Pengu123, minenice55, inkedsplat
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble
+                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
