@@ -416,7 +416,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val oldCameraY = camera.position.y
         val adjustedCameraX: Float
         val adjustedCameraY: Float
-        val monsterGoal = remix.playalong.isMonsterGoalActive
+        val monsterGoal = remix.playalong.isMonsterGoalActive && stage.playalongStage.visible
         if (updateDelta) {
             val transitionTime = Gdx.graphics.deltaTime / 0.15f
             val cameraYNormal = calculateNormalCameraY()
