@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
+import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
@@ -120,10 +122,13 @@ class Playalong(val remix: Remix) {
         }
 
     /**
-     * Returns a *sorted* list of [InputActions](InputAction). May be empty.
+     * Returns a *sorted* list of [InputActions](InputAction) from the remix entities. It does look inside multipart entities recursively. May be empty.
      */
     private fun toInputActionList(): List<InputAction> {
-        return remix.entities.filterIsInstance<PlayalongEntity>().map(PlayalongEntity::getInputAction).sorted()
+        fun List<Entity>.recursiveSearch(): List<PlayalongEntity> {
+            return this.flatMap { if (it is MultipartEntity<*>) it.getInternalEntities().recursiveSearch() else emptyList() } + this.filterIsInstance<PlayalongEntity>()
+        }
+        return remix.entities.recursiveSearch().distinct().map(PlayalongEntity::getInputAction).sorted()
     }
 
     /**
