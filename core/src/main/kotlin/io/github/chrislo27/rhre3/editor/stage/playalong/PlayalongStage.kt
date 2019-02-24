@@ -266,7 +266,7 @@ class PlayalongStage(val editor: Editor,
             this.textWrapping = false
             this.fontScaleMultiplier = 0.85f
             this.textAlign = Align.center
-            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - buttonHeight, screenWidth = 0.25f, screenHeight = buttonHeight)
+            this.location.set(screenY = skillStarLabel.location.screenY - paddingX - buttonHeight, screenWidth = 0.275f, screenHeight = buttonHeight)
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2)
         }
         lowerStage.elements += acesLabel
