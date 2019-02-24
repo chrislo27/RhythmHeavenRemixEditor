@@ -777,7 +777,9 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        playalong = Playalong(this)
+        if (playState == PlayState.STOPPED) {
+            playalong = Playalong(this)
+        }
     }
 
     fun getLastEntityPoint(): Float {
