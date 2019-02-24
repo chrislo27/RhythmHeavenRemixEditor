@@ -490,7 +490,7 @@ class PlayalongStage(val editor: Editor,
             }
         }
 
-        if (inputResult.timing == InputTiming.ACE && playalong.isMonsterGoalActive) {
+        if (inputResult.timing == InputTiming.ACE && playalong.isMonsterGoalActive && this.visible) {
             if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)) {
                 val sound = AssetRegistry.get<Sound>("playalong_sfx_monster_ace")
                 val volume = MathUtils.lerp(0.5f, 1f, ((remix.seconds - lastMonsterAceSfx) / remix.speedMultiplier / 0.85f).coerceIn(0f, 1f))
@@ -512,7 +512,7 @@ class PlayalongStage(val editor: Editor,
         perfectAnimation = 1f
         perfectIcon.image = perfectFailTexReg
         val first = playalong.inputActions.firstOrNull()
-        if (first != null && remix.playbackStart < first.beat && perfectIcon.visible) {
+        if (first != null && remix.playbackStart < first.beat && perfectIcon.visible && this.visible) {
             if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true) && hearts.total == 0) {
                 AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play()
             }
@@ -526,7 +526,7 @@ class PlayalongStage(val editor: Editor,
 
     fun onMonsterGoalFail() {
         remix.playState = PlayState.PAUSED
-        if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)) {
+        if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true) && this.visible) {
             AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play()
         }
     }
