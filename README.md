@@ -25,7 +25,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * An Internet connection initially
 
 ## Features
-![Palettes screenshot](.github/rhre3palettes.png)
+![Screenshot](.github/rhre3palettes.png)
 
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
