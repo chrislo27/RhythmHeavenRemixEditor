@@ -2,7 +2,7 @@
 
 <img align="right" src="core/assets/images/icon/256.png" height="256" width="256">
 
-# Rhythm Heaven Remix Editor 3
+# Rhythm Heaven Remix Editor
 A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhythm_Heaven_Megamix) series
 
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
@@ -21,6 +21,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [Java 8 or newer](https://java.com/en/download/)
 * A graphics driver that supports OpenGL 2.0 or higher
+* Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 14.04 LTS or newer)
 * An Internet connection initially
 
 ## Features
@@ -29,6 +30,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
 * Automatic SFX database updating as community fixes/additions get pulled in
+* Play the remixes you create
 * Every Rhythm Heaven minigame is here!
 
 ## Installation
