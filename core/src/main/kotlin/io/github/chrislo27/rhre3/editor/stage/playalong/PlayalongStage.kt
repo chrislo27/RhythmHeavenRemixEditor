@@ -191,7 +191,7 @@ class PlayalongStage(val editor: Editor,
             this.tint.set(1f, 1f, 1f, 0f)
         }
         lowerStage.elements += perfectHitIcon
-        perfectLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage).apply {
+        perfectLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), lowerStage, lowerStage).apply {
             this.isLocalizationKey = true
             this.text = "playalong.goForPerfect"
             this.textWrapping = false
@@ -207,7 +207,7 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = paddingX, screenY = 1f - buttonHeight * 2 - paddingY * 2, screenWidth = buttonWidth, screenHeight = buttonHeight)
         }
         lowerStage.elements += monsterGoalIcon
-        monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), lowerStage, lowerStage) {
+        monsterGoalLabel = object : TextLabel<EditorScreen>(palette.copy(ftfont = main.defaultBorderedFontFTF), lowerStage, lowerStage) {
             override fun getRealText(): String {
                 val monsterGoalArg = monsterGoalPreset?.localizationKey?.let { Localization[it] } ?: Editor.THREE_DECIMAL_PLACES_FORMATTER.format(monsterGoal)
                 return Localization["playalong.monsterGoal", monsterGoalArg]
@@ -223,7 +223,7 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += monsterGoalLabel
 
-        scoreLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontLargeKey]), lowerStage, lowerStage).apply {
+        scoreLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontLargeFTF), lowerStage, lowerStage).apply {
             this.isLocalizationKey = false
             this.text = ""
             this.textWrapping = false
@@ -232,7 +232,7 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = 0.5f - 0.125f / 2, screenY = 1f - 0.25f - paddingY, screenWidth = 0.125f, screenHeight = 0.25f)
         }
         lowerStage.elements += scoreLabel
-        skillStarLabel = TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontLargeKey]), lowerStage, lowerStage).apply {
+        skillStarLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontLargeFTF), lowerStage, lowerStage).apply {
             this.isLocalizationKey = false
             this.text = "★"
             this.textWrapping = true

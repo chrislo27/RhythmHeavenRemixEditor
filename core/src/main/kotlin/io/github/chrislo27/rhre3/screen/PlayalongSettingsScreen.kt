@@ -94,7 +94,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         stage.titleLabel.text = "screen.playalongSettings.title"
         stage.titleIcon.visible = false
-        titleLabelIcon = TextLabel(palette.copy(ftfont = main.fonts[main.defaultFontLargeKey]), stage, stage).apply {
+        titleLabelIcon = TextLabel(palette.copy(ftfont = main.defaultFontLargeFTF), stage, stage).apply {
             this.alignment = Align.topLeft
             this.location.set(this@PlayalongSettingsScreen.stage.titleIcon.location)
             this.text = FILLED_A_BUTTON

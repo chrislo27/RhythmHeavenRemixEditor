@@ -148,7 +148,7 @@ class InfoScreen(main: RHRE3Application)
                 this.location.set(screenHeight = 0.75f, screenY = 0.25f)
             })
             this.addLabel(
-                    TextLabel(palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey]), this, this.stage).apply {
+                    TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
                         this.textAlign = Align.bottom or Align.center
                         this.isLocalizationKey = false
                         this.location.set(screenY = 0.05f, screenHeight = 0.95f)
