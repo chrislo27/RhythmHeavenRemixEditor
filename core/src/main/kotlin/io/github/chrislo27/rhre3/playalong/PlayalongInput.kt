@@ -13,9 +13,22 @@ import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_JOY_R
 import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_JOY_U
 
 
-enum class PlayalongInput(val id: String, val displayText: String,
+enum class PlayalongInput(val id: String,
+                          /**
+                           * Used as a default for the other display texts and for the hover text.
+                           */
+                          val displayText: String,
+                          /**
+                           * Used in places with less vertical freedom (message bar, etc).
+                           */
                           val longDisplayText: String = displayText,
+                          /**
+                           * Used on the track. May be a texture ID.
+                           */
                           val trackDisplayText: String = displayText,
+                          /**
+                           * True if trackDisplayText is a texture ID.
+                           */
                           val trackDisplayIsTexID: Boolean = false,
                           val deprecatedIDs: List<String> = listOf(),
                           val isTouchScreen: Boolean = false) {

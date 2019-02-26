@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.Input
+import java.util.*
 
 
 data class PlayalongControls(var buttonA: Int = Input.Keys.J,
@@ -41,7 +42,7 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
                           )
     }
 
-    fun toInputString(): String {
+    fun toInputString(selected: EnumSet<PlayalongInput>? = null): String {
         val inputMap = linkedMapOf(PlayalongInput.BUTTON_A to setOf(buttonA),
                                    PlayalongInput.BUTTON_B to setOf(buttonB),
                                    PlayalongInput.BUTTON_DPAD_UP to setOf(buttonUp),
@@ -49,7 +50,10 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
                                    PlayalongInput.BUTTON_DPAD_LEFT to setOf(buttonLeft),
                                    PlayalongInput.BUTTON_DPAD_RIGHT to setOf(buttonRight)
                                   )
-        return inputMap.entries.joinToString(separator = "  [GRAY]|[]  ") { (k, v) -> "${k.longDisplayText} - ${v.joinToString(separator = ", ") { Input.Keys.toString(it)}}" }
+        return inputMap.entries.joinToString(separator = "  [GRAY]|[]  ") { (k, v) ->
+            val isSelected = selected?.contains(k) == true
+            "${if (isSelected) "[CYAN]" else ""}${k.longDisplayText}${if (isSelected) "[]" else ""} - ${v.joinToString(separator = ", ") { Input.Keys.toString(it) }}"
+        }
     }
 
 }

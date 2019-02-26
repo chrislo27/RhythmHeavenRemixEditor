@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
+import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.TempoUtils
@@ -29,6 +30,7 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.sign
@@ -50,6 +52,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val titleLabelIcon: TextLabel<PlayalongSettingsScreen>
 
     private val controlsLabel: TextLabel<PlayalongSettingsScreen>
+    private val pressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
+    private val helperPressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val playStopButton: Button<PlayalongSettingsScreen>
 
     private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
@@ -329,7 +333,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             fun updateLabel() {
                 val label = labels.first() as TextLabel
                 label.text = Localization["screen.playalongSettings.controls", controlsList[index].first]
-                controlsLabel.text = controlsList[index].second.toInputString()
+                updateControlsLabel()
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -355,6 +359,10 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
+    fun updateControlsLabel() {
+        controlsLabel.text = main.playalongControls.toInputString(pressedControls)
+    }
+
     override fun renderUpdate() {
         super.renderUpdate()
 
@@ -376,6 +384,27 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         } else {
             titleLabelIcon.text = FILLED_A_BUTTON
             titleLabelIcon.fontScaleMultiplier = 0.8f
+        }
+
+        val controls = main.playalongControls
+        updatePressedControl(controls.buttonA, PlayalongInput.BUTTON_A)
+        updatePressedControl(controls.buttonB, PlayalongInput.BUTTON_B)
+        updatePressedControl(controls.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
+        updatePressedControl(controls.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
+        updatePressedControl(controls.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
+        updatePressedControl(controls.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+        if (helperPressedControls != pressedControls) {
+            pressedControls.clear()
+            pressedControls.addAll(helperPressedControls)
+            updateControlsLabel()
+        }
+    }
+
+    private fun updatePressedControl(keycode: Int, input: PlayalongInput) {
+        if (Gdx.input.isKeyPressed(keycode)) {
+            helperPressedControls.add(input)
+        } else {
+            helperPressedControls.remove(input)
         }
     }
 
