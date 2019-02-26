@@ -80,12 +80,23 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
     val timeSignatureFontKey = "time_signature"
 
+    val defaultFontFTF: FreeTypeFont
+        get() = fonts[defaultFontKey]
+    val defaultBorderedFontFTF: FreeTypeFont
+        get() = fonts[defaultBorderedFontKey]
+    val defaultFontLargeFTF: FreeTypeFont
+        get() = fonts[defaultFontLargeKey]
+    val defaultBorderedFontLargeFTF: FreeTypeFont
+        get() = fonts[defaultBorderedFontLargeKey]
+    val timeSignatureFontFTF: FreeTypeFont
+        get() = fonts[timeSignatureFontKey]
+
     val defaultFontLarge: BitmapFont
-        get() = fonts[defaultFontLargeKey].font!!
+        get() = defaultFontFTF.font!!
     val defaultBorderedFontLarge: BitmapFont
-        get() = fonts[defaultBorderedFontLargeKey].font!!
+        get() = defaultBorderedFontLargeFTF.font!!
     val timeSignatureFont: BitmapFont
-        get() = fonts[timeSignatureFontKey].font!!
+        get() = timeSignatureFontFTF.font!!
 
     private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
@@ -99,7 +110,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     }
 
     val uiPalette: UIPalette by lazy {
-        UIPalette(fonts[defaultFontKey], fonts[defaultFontLargeKey], 1f,
+        UIPalette(defaultFontFTF, defaultFontLargeFTF, 1f,
                   Color(1f, 1f, 1f, 1f),
                   Color(0f, 0f, 0f, 0.75f),
                   Color(0.25f, 0.25f, 0.25f, 0.75f),

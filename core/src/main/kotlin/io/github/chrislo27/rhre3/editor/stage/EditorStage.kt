@@ -992,7 +992,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             run patternArea@{
-                val borderedPalette = palette.copy(ftfont = main.fonts[main.defaultBorderedFontKey])
+                val borderedPalette = palette.copy(ftfont = main.defaultBorderedFontFTF)
                 val padding2 = pickerStage.percentageOfWidth(
                         Editor.ICON_PADDING * 2)
 
