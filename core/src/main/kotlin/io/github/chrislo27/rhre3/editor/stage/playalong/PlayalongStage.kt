@@ -543,7 +543,9 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onShow() {
-        reset()
+        if (remix.playState == STOPPED) {
+            reset()
+        }
         setRemixSpeed()
         disableButtonsWhilePlaying(remix.playState != STOPPED)
     }
