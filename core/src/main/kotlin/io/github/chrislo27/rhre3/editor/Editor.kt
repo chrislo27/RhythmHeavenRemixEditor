@@ -24,7 +24,6 @@ import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
-import io.github.chrislo27.rhre3.editor.picker.SeriesFilter
 import io.github.chrislo27.rhre3.editor.rendering.*
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.editor.stage.EditorStage.DirtyType
@@ -724,7 +723,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 Gdx.input.inputProcessor.scrolled(-1)
             }
-            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN) || (Gdx.input.isKeyJustPressed(Input.Keys.S) && !control)) {
                 Gdx.input.inputProcessor.scrolled(1)
             }
 
@@ -829,7 +828,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 camera.update()
             }
 
-            if (control && clickOccupation == ClickOccupation.None) {
+            if (control && clickOccupation == ClickOccupation.None && !alt && !shift) {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
                     main.screen = ScreenRegistry.getNonNull("newRemix")
                 } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
