@@ -29,6 +29,7 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -192,6 +193,38 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
         }
         return null
+    }
+
+    fun selectInPicker(datamodel: Datamodel) {
+        selectInPicker(datamodel.game, datamodel)
+    }
+
+    fun selectInPicker(game: Game, datamodel: Datamodel?) {
+        val series = game.series
+        val filterButton = filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
+        if (filterButton != null) {
+            val filter = filterButton.filter
+            filterButton.onLeftClick(0f, 0f)
+            filter.update()
+            filter.sort()
+            val datamodelList = filter.datamodelsPerGame[game]
+            if (datamodelList != null) {
+                val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
+                filter.currentGroupIndex = newGroupIndex
+                filter.groupScroll = ((newGroupIndex + 1 - (Editor.ICON_COUNT_X * (Editor.ICON_COUNT_Y - 1))) / Editor.ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
+                val gameList = filter.currentGameList
+                if (gameList != null) {
+                    val newGameIndex = gameList.list.indexOf(game).coerceAtLeast(0)
+                    gameList.currentIndex = newGameIndex
+                    gameList.scroll = (newGameIndex + 1 - Editor.ICON_COUNT_Y).coerceIn(0, gameList.maxScroll)
+                }
+                if (datamodel != null && !datamodelList.isEmpty) {
+                    datamodelList.currentIndex = datamodelList.list.indexOf(datamodel).coerceAtLeast(0)
+                }
+
+                updateSelected()
+            }
+        }
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {

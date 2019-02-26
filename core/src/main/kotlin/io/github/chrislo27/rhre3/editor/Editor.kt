@@ -1320,28 +1320,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 } else if (isMusicTrackerButtonDown && firstEntityInMouse != null && firstEntityInMouse is ModelEntity<*>) {
                     // Jump to that game in the picker
-                    val game = firstEntityInMouse.datamodel.game
-                    val series = game.series
-                    val filterButton = stage.filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
-                    if (filterButton != null) {
-                        val filter = filterButton.filter
-                        filterButton.onLeftClick(0f, 0f)
-                        val datamodelList = filter.datamodelsPerGame[game]
-                        if (datamodelList != null) {
-                            val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
-                            filter.currentGroupIndex = newGroupIndex
-                            filter.groupScroll = ((newGroupIndex + 1 - (ICON_COUNT_X * (ICON_COUNT_Y - 1))) / ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
-                            val gameList = filter.currentGameList
-                            if (gameList != null) {
-                                val newGameIndex = gameList.list.indexOf(game).coerceAtLeast(0)
-                                gameList.currentIndex = newGameIndex
-                                gameList.scroll = (newGameIndex + 1 - ICON_COUNT_Y).coerceIn(0, gameList.maxScroll)
-                            }
-                            datamodelList.currentIndex = datamodelList.list.indexOf(firstEntityInMouse.datamodel).coerceAtLeast(0)
-
-                            stage.updateSelected()
-                        }
-                    }
+                    stage.selectInPicker(firstEntityInMouse.datamodel)
                 } else if (isAnyTrackerButtonDown && firstEntityInMouse == null) {
                     clickOccupation = if (isMusicTrackerButtonDown) {
                         ClickOccupation.Music(this, button == Input.Buttons.MIDDLE)
