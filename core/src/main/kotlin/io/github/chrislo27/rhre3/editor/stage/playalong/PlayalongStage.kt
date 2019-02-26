@@ -54,6 +54,12 @@ class PlayalongStage(val editor: Editor,
 
         val TEMPO_UP_RANGE = 5..300
         val TEMPO_CHANGE_INCREMENT = 5
+
+        val TAP_DOWN_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
+        val FLICK_INPUTS = setOf(PlayalongInput.TOUCH_FLICK)
+        val SLIDE_INPUTS = setOf(PlayalongInput.TOUCH_SLIDE)
+        val TAP_RELEASE_SHORT_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
+        val TAP_RELEASE_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE)
     }
 
     data class Hearts(val num: Int, val total: Int) {
@@ -521,19 +527,19 @@ class PlayalongStage(val editor: Editor,
     }
 
     fun onTapDown(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP), 0, tapPoint.isMouse)
+        playalong.handleInput(true, TAP_DOWN_INPUTS, 0, tapPoint.isMouse)
     }
 
     fun onTapRelease(tapPoint: FlickingStage.TapPoint, short: Boolean) {
-        playalong.handleInput(false, if (short) setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP) else setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE), 0, tapPoint.isMouse)
+        playalong.handleInput(false, if (short) TAP_RELEASE_SHORT_INPUTS else TAP_RELEASE_INPUTS, 0, tapPoint.isMouse)
     }
 
     fun onFlick(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_FLICK), 0, tapPoint.isMouse)
+        playalong.handleInput(true, FLICK_INPUTS, 0, tapPoint.isMouse)
     }
 
     fun onTapSlide(tapPoint: FlickingStage.TapPoint) {
-        playalong.handleInput(true, setOf(PlayalongInput.TOUCH_SLIDE), 0, tapPoint.isMouse)
+        playalong.handleInput(true, SLIDE_INPUTS, 0, tapPoint.isMouse)
     }
 
     private fun setRemixSpeed() {
