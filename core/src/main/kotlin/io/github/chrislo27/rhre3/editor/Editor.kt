@@ -1325,10 +1325,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     val filterButton = stage.filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
                     if (filterButton != null) {
                         val filter = filterButton.filter
+                        filterButton.onLeftClick(0f, 0f)
                         val datamodelList = filter.datamodelsPerGame[game]
                         if (datamodelList != null) {
-                            filterButton.onLeftClick(0f, 0f)
-
                             val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
                             filter.currentGroupIndex = newGroupIndex
                             filter.groupScroll = ((newGroupIndex + 1 - (ICON_COUNT_X * (ICON_COUNT_Y - 1))) / ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
