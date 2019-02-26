@@ -30,6 +30,7 @@ import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
+import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 import kotlin.math.sign
@@ -55,11 +56,11 @@ class PlayalongStage(val editor: Editor,
         val TEMPO_UP_RANGE = 5..300
         val TEMPO_CHANGE_INCREMENT = 5
 
-        val TAP_DOWN_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
-        val FLICK_INPUTS = setOf(PlayalongInput.TOUCH_FLICK)
-        val SLIDE_INPUTS = setOf(PlayalongInput.TOUCH_SLIDE)
-        val TAP_RELEASE_SHORT_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
-        val TAP_RELEASE_INPUTS = setOf(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE)
+        val TAP_DOWN_INPUTS: EnumSet<PlayalongInput> = EnumSet.of(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
+        val FLICK_INPUTS: EnumSet<PlayalongInput> = EnumSet.of(PlayalongInput.TOUCH_FLICK)
+        val SLIDE_INPUTS: EnumSet<PlayalongInput> = EnumSet.of(PlayalongInput.TOUCH_SLIDE)
+        val TAP_RELEASE_SHORT_INPUTS: EnumSet<PlayalongInput> = EnumSet.of(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE, PlayalongInput.TOUCH_QUICK_TAP)
+        val TAP_RELEASE_INPUTS: EnumSet<PlayalongInput> = EnumSet.of(PlayalongInput.TOUCH_TAP, PlayalongInput.TOUCH_RELEASE)
     }
 
     data class Hearts(val num: Int, val total: Int) {
