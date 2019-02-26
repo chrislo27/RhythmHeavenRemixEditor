@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
 
@@ -65,7 +66,7 @@ class Playalong(val remix: Remix) {
     }
 
     private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
-    private val keycodeTriggers: Map<Int, Set<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { it.value.map { p -> p.second }.toSet() }
+    private val keycodeTriggers: Map<Int, EnumSet<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { EnumSet.copyOf(it.value.map { p -> p.second }) }
 
     val calibratedKeyOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION_KEY, 0f)
     val calibratedMouseOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION_MOUSE, 0f)
@@ -206,7 +207,7 @@ class Playalong(val remix: Remix) {
         return handleInput(down, playalongInputs, keycode, isMouse)
     }
 
-    fun handleInput(down: Boolean, playalongInput: Set<PlayalongInput>, keycodeUsed: Int, isMouse: Boolean): Boolean {
+    fun handleInput(down: Boolean, playalongInput: EnumSet<PlayalongInput>, keycodeUsed: Int, isMouse: Boolean): Boolean {
         if (remix.playState != PlayState.PLAYING) return false
         val seconds = remix.seconds - (if (isMouse) calibratedMouseOffset else calibratedKeyOffset)
         val searched = searchForInputAction(seconds, MAX_OFFSET_SEC) {
