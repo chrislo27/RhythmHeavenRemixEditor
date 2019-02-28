@@ -547,6 +547,10 @@ class PlayalongStage(val editor: Editor,
         updateLabels()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
+        if (perfectIcon.location.pixelX != 0f || perfectIcon.location.pixelY != 0f) {
+            perfectIcon.location.set(pixelX = 0f, pixelY = 0f)
+            perfectIcon.stage.updatePositions()
+        }
         flickingStage.visible = playalong.needsTouchScreen
     }
 
