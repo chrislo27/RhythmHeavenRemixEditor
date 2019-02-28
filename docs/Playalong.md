@@ -4,7 +4,7 @@ The Playalong mode is the biggest added feature in RHRE, starting with
 v3.17.0. It lets you assign controls in your remix and then actually
 play along!
 
-![screenshot](https://user-images.githubusercontent.com/6299069/53601997-50cda900-3b62-11e9-9fcd-3ea8907ca923.png)
+![screenshot](https://user-images.githubusercontent.com/6299069/53603139-7ad49a80-3b65-11e9-82e8-00f42b10df3e.png)
 
 ## Playalong Settings
 Right click the Playalong button in the toolbar to access the Playalong Settings.
