@@ -4,7 +4,7 @@ The Playalong mode is the biggest added feature in RHRE, starting with
 v3.17.0. It lets you assign controls in your remix and then actually
 play along!
 
-![screenshot](https://user-images.githubusercontent.com/6299069/53281123-6cefc700-36d8-11e9-93db-5f80701f70b2.png)
+![screenshot](https://user-images.githubusercontent.com/6299069/53601997-50cda900-3b62-11e9-9fcd-3ea8907ca923.png)
 
 ## Playalong Settings
 Right click the Playalong button in the toolbar to access the Playalong Settings.
@@ -28,5 +28,5 @@ You can set some challenges while you play along. Included are
 the Perfect Challenge, Monster Goal (get aces to survive), Tempo Up, Tempo Down,
 and Life Goal.
 
-![img](https://user-images.githubusercontent.com/6299069/53281049-59902c00-36d7-11e9-9636-2e22e5adaed0.png)
+![img](https://user-images.githubusercontent.com/6299069/53601845-e61c6d80-3b61-11e9-8a41-5ecb8654907f.png)
 
