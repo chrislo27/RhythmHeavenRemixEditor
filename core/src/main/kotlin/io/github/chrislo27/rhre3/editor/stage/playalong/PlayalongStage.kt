@@ -93,6 +93,7 @@ class PlayalongStage(val editor: Editor,
     val tempoLabel: TextLabel<EditorScreen>
     val monsterMawButton: Button<EditorScreen>
     val heartsButton: Button<EditorScreen>
+    val hideIndicatorsButton: Button<EditorScreen>
 
     override var visible: Boolean by Delegates.observable(super.visible) { _, _, new -> if (new) onShow() else onHide() }
 
@@ -102,6 +103,8 @@ class PlayalongStage(val editor: Editor,
     private val heartTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
     private val heartBrokenTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
     private val monsterIconTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_monster_icon"))
+    private val hideInputIndTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_hide_input_indicators"))
+    private val hideInputIndDisableTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_hide_input_indicators_disable"))
 
     private var skillStarZoom: Float = 1f
     private var perfectAnimation: Float = 0f
@@ -110,6 +113,7 @@ class PlayalongStage(val editor: Editor,
     var hearts: Hearts = Hearts.EMPTY
     var heartsCooldown: Float = 0f
     var heartsInvuln: Float = 0f
+    var hideIndicators: Boolean = false
 
     var tempoChange: Int = 100
         private set(value) {
@@ -271,7 +275,7 @@ class PlayalongStage(val editor: Editor,
                 this.image = perfectTexReg
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
-            this.location.set(screenX = paddingX, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+            this.location.set(screenX = paddingX / 2f, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
             override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.monsterGoal.tooltip"]
@@ -302,7 +306,7 @@ class PlayalongStage(val editor: Editor,
                 this.image = monsterIconTexReg
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
-            this.location.set(screenX = paddingX + (paddingX / 2f) + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+            this.location.set(screenX = (paddingX / 2f) * 2 + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += monsterMawButton
         tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
@@ -321,7 +325,7 @@ class PlayalongStage(val editor: Editor,
                 this.textColor = TEMPO_DOWN_COLOUR
                 this.textWrapping = false
             })
-            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 2, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+            this.location.set(screenX = (paddingX / 2f) * 3 + buttonWidth * 2, screenY = paddingY, screenWidth = buttonWidth * 0.75f, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoDownButton
         tempoLabel = object : TextLabel<EditorScreen>(palette, lowerStage, lowerStage) {
@@ -335,7 +339,7 @@ class PlayalongStage(val editor: Editor,
             this.fontScaleMultiplier = 0.5f
             this.background = true
             this.textWrapping = false
-            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 3, screenY = paddingY, screenWidth = buttonWidth * 2, screenHeight = 0.25f)
+            this.location.set(screenX = (paddingX / 2f) * 3 + buttonWidth * 2.75f, screenY = paddingY, screenWidth = buttonWidth * 2, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoLabel
         tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
@@ -354,7 +358,7 @@ class PlayalongStage(val editor: Editor,
                 this.textColor = TEMPO_UP_COLOUR
                 this.textWrapping = false
             })
-            this.location.set(screenX = paddingX + (paddingX / 2f) * 2 + buttonWidth * 5, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+            this.location.set(screenX = (paddingX / 2f) * 3 + buttonWidth * 4.75f, screenY = paddingY, screenWidth = buttonWidth * 0.75f, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoUpButton
         heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
@@ -386,9 +390,25 @@ class PlayalongStage(val editor: Editor,
                 this.image = heartTexReg
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
-            this.location.set(screenX = paddingX + (paddingX / 2f) * 3 + buttonWidth * 6, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+            this.location.set(screenX = (paddingX / 2f) * 4 + buttonWidth * 5.5f, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += heartsButton
+        hideIndicatorsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
+            override fun getHoverText(): String = if (!enabled) "" else Localization[if (hideIndicators) "playalong.hideIndicators.tooltip.show" else "playalong.hideIndicators.tooltip.hide"]
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                hideIndicators = !hideIndicators
+                (labels.first() as ImageLabel).image = if (hideIndicators) hideInputIndDisableTexReg else hideInputIndTexReg
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = if (hideIndicators) hideInputIndDisableTexReg else hideInputIndTexReg
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            })
+            this.location.set(screenX = (paddingX / 2f) * 5 + buttonWidth * 6.5f, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
+        }
+        lowerStage.elements += hideIndicatorsButton
 
         timingDisplayStage = TimingDisplayStage(this, lowerStage, lowerStage.camera).apply {
             this.location.set(screenWidth = 0.4f, screenY = paddingY)
