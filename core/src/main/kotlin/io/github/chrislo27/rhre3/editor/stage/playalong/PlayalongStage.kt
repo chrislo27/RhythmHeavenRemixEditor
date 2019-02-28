@@ -126,7 +126,7 @@ class PlayalongStage(val editor: Editor,
         set(value) {
             field = value
             playalong.monsterGoal = field
-            if (monsterGoalPreset?.speed != value) {
+            if (monsterGoalPreset?.speed != value && value > 0f) {
                 monsterGoalPreset = MonsterPresets.VALUES.find { it.speed == value }
             }
         }
