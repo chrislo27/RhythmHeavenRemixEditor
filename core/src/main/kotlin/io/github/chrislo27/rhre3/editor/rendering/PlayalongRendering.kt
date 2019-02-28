@@ -51,14 +51,14 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange, alpha: Float
 
             val results = playalong.inputted[inputAction]
             val inProgress = playalong.inputsInProgress[inputAction]
-            if (inProgress != null) largeFont.setColor(0.2f, 0.57f, 1f, 1f)
+            if (inProgress != null) largeFont.setColor(0.2f, 0.57f, 1f, 1f * alpha)
             if (results != null && results.results.isNotEmpty()) {
                 if (!results.missed) {
-                    largeFont.setColor(0.2f, 1f, 0.2f, 1f)
-                    batch.setColor(0.2f, 1f, 0.2f, 1f)
+                    largeFont.setColor(0.2f, 1f, 0.2f, 1f * alpha)
+                    batch.setColor(0.2f, 1f, 0.2f, 1f * alpha)
                 } else {
-                    largeFont.setColor(1f, 0.15f, 0.15f, 1f)
-                    batch.setColor(1f, 0.15f, 0.15f, 1f)
+                    largeFont.setColor(1f, 0.15f, 0.15f, 1f * alpha)
+                    batch.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                 }
             }
 
