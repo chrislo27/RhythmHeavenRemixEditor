@@ -147,7 +147,9 @@ class PlayalongStage(val editor: Editor,
             this.location.set(lowerStage.location)
         }
         flickingStage = FlickingStage(this, this).apply {
-            this.colour.set(Color.valueOf("00BC67"))
+            this.colour.set(Color.valueOf("00BC67").apply {
+                this.a = 0.8f
+            })
             this.location.set(screenX = 0.65f)
             this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
             this.visible = false
