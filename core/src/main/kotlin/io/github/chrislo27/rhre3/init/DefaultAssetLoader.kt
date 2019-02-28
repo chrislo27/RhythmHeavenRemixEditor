@@ -155,6 +155,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("playalong_heart", "images/playalong/heart.png")
         AssetRegistry.loadAsset<Texture>("playalong_monster_goal", "images/playalong/monsterGoal.png")
         AssetRegistry.loadAsset<Texture>("playalong_monster_icon", "images/playalong/monsterIcon.png")
+        AssetRegistry.loadAsset<Texture>("playalong_hide_input_indicators", "images/playalong/hide_input_indicators.png")
+        AssetRegistry.loadAsset<Texture>("playalong_hide_input_indicators_disable", "images/playalong/hide_input_indicators_disable.png")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_fail", "playalong/monsterGoalFail.ogg")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfectFail.ogg")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monsterGoalAce.ogg")

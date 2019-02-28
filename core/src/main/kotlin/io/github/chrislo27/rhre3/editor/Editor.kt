@@ -34,6 +34,7 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
+import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
@@ -507,7 +508,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
         remix.entities.forEach {
             if (it !is TextureEntity) {
-                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
+                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     it.render(batch)
                 }
             }
@@ -531,7 +532,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // Playalong
         if (stage.playalongStage.visible) {
-            this.renderPlayalong(batch, beatRange)
+            val alpha = if (stage.playalongStage.hideIndicators) (if (remix.playState == STOPPED) 0.5f else 0f) else 1f
+            this.renderPlayalong(batch, beatRange, alpha)
         }
 
         // waveform
