@@ -49,6 +49,7 @@ class Playalong(val remix: Remix) {
     val inputsInProgress: MutableMap<InputAction, InProgressInput> = mutableMapOf()
     val inputActionsByBeat: Map<Float, List<InputAction>> = inputActions.groupBy { it.beat }
     val needsTouchScreen: Boolean = inputActions.any { it.input.isTouchScreen }
+    val allTouchScreen: Boolean = inputActions.all { it.input.isTouchScreen }
 
     val skillStarEntity: CueEntity? = remix.entities.firstOrNull { it is CueEntity && it.isSkillStar } as CueEntity?
     /**
