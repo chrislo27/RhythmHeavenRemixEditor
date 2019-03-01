@@ -13,12 +13,14 @@ import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.stage.GenericStage
+import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -38,6 +40,8 @@ class SaveRemixScreen(main: RHRE3Application)
             field = value
             stage.backButton.enabled = !isChooserOpen
         }
+    @Volatile
+    private var isSaving: Boolean = false
     private val mainLabel: TextLabel<SaveRemixScreen>
 
     init {
@@ -48,6 +52,14 @@ class SaveRemixScreen(main: RHRE3Application)
             if (!isChooserOpen) {
                 main.screen = ScreenRegistry.getNonNull("editor")
             }
+        }
+
+        stage.centreStage.elements += object : LoadingIcon<SaveRemixScreen>(main.uiPalette, stage.centreStage) {
+            override var visible: Boolean = true
+                get() = super.visible && isSaving
+        }.apply {
+            this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
         }
 
         val palette = main.uiPalette
@@ -104,6 +116,7 @@ class SaveRemixScreen(main: RHRE3Application)
                                     file
 
                                 val remix = editor.remix
+                                isSaving = true
                                 Remix.saveTo(remix, correctFile, false)
                                 val newfh = FileHandle(correctFile)
                                 editor.setFileHandles(newfh)
@@ -115,6 +128,7 @@ class SaveRemixScreen(main: RHRE3Application)
                                 t.printStackTrace()
                                 updateLabels(t)
                             }
+                            isSaving = false
                         }
                     } else {
                         stage.onBackButtonClick()
@@ -137,6 +151,7 @@ class SaveRemixScreen(main: RHRE3Application)
         super.show()
         openPicker()
         updateLabels()
+        isSaving = false
     }
 
     override fun dispose() {
