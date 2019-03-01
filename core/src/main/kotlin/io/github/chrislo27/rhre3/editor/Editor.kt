@@ -385,7 +385,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     }
 
     fun getApparentPlaybackTrackerPos(): Float {
-        return if (stage.playalongStage.visible) remix.tempos.secondsToBeats(remix.seconds - remix.playalong.calibratedKeyOffset) else remix.beat
+        return if (stage.playalongStage.visible) {
+            remix.tempos.secondsToBeats(remix.seconds - (if (remix.playalong.allTouchScreen) {
+                remix.playalong.calibratedMouseOffset
+            } else remix.playalong.calibratedKeyOffset))
+        } else remix.beat
     }
 
     private fun calculateNormalCameraY(): Float = 1f + (remix.trackCount - MIN_TRACK_COUNT) / 10f * 3.25f
