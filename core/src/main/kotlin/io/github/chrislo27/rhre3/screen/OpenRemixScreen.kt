@@ -61,6 +61,7 @@ class OpenRemixScreen(main: RHRE3Application)
 
     private val loadButton: LoadButton
     private val mainLabel: TextLabel<OpenRemixScreen>
+    private val loadingCountLabel: TextLabel<OpenRemixScreen>
     @Volatile
     private var remix: Remix? = null
         set(value) {
@@ -121,6 +122,14 @@ class OpenRemixScreen(main: RHRE3Application)
             this.text = ""
         }
         stage.centreStage.elements += mainLabel
+        loadingCountLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenHeight = 0.125f / 2)
+            this.textAlign = Align.center
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.8f
+            this.text = "test / test"
+        }
+        stage.centreStage.elements += loadingCountLabel
         loadButton = LoadButton(palette, stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.25f, screenWidth = 0.5f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
@@ -180,15 +189,23 @@ class OpenRemixScreen(main: RHRE3Application)
 
                 val coroutine: Job = launch {
                     isLoadingSounds = true
-                    toUnload.forEach { entity ->
+                    val total = toUnload.size + toLoad.size
+                    fun updateLabel(progress: Int) {
+                        Gdx.app.postRunnable {
+                            loadingCountLabel.text = if (progress >= total) "" else "$progress / $total"
+                        }
+                    }
+                    toUnload.forEachIndexed { i, entity ->
                         if (entity is ILoadsSounds) {
                             entity.unloadSounds()
                         }
+                        updateLabel(i + 1)
                     }
-                    toLoad.forEach { entity ->
+                    toLoad.forEachIndexed { i, entity ->
                         if (entity is ILoadsSounds) {
                             entity.loadSounds()
                         }
+                        updateLabel(i + 1 + toUnload.size)
                     }
                     isLoadingSounds = false
                 }
@@ -294,6 +311,7 @@ class OpenRemixScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         stage.titleIcon.image = icon
+        loadingCountLabel.text = ""
     }
 
     override fun hide() {
