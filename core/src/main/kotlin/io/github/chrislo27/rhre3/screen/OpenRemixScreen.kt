@@ -96,7 +96,7 @@ class OpenRemixScreen(main: RHRE3Application)
 
         stage.centreStage.elements += object : LoadingIcon<OpenRemixScreen>(palette, stage.centreStage) {
             override var visible: Boolean = true
-                get() = super.visible && (isLoading || isLoadingSounds)
+                get() = field && (isLoading || isLoadingSounds)
         }.apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)

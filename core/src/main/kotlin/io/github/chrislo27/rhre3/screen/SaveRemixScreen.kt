@@ -56,7 +56,7 @@ class SaveRemixScreen(main: RHRE3Application)
 
         stage.centreStage.elements += object : LoadingIcon<SaveRemixScreen>(main.uiPalette, stage.centreStage) {
             override var visible: Boolean = true
-                get() = super.visible && isSaving
+                get() = field && isSaving
         }.apply {
             this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             this.location.set(screenHeight = 0.125f, screenY = 0.125f / 2f)
