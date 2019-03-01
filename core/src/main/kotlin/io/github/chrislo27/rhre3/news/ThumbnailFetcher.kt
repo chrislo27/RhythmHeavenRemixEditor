@@ -42,6 +42,17 @@ object ThumbnailFetcher : Disposable {
     }
 
     @Synchronized
+    fun disposeOf(texture: Texture) {
+        val found = texture in map.values
+        if (found) {
+            map.entries.filter { it.value == texture }.forEach {
+                map.remove(it.key, it.value)
+            }
+            texture.dispose()
+        }
+    }
+
+    @Synchronized
     fun removeAll() {
         map.forEach { _, t ->
             t.dispose()
