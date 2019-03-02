@@ -51,7 +51,7 @@ open class Stage<S : ToolboksScreen<*, *>>
             val old = batch.packedColor
             batch.color = Color.ORANGE
             super.drawOutline(batch, camera, lineThickness, onlyVisible)
-            batch.setColor(old)
+            batch.packedColor = old
             elements.forEach {
                 it.drawOutline(batch, this.camera, lineThickness, onlyVisible)
             }

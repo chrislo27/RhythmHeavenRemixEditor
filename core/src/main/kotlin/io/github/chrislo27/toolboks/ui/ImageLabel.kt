@@ -50,7 +50,7 @@ open class ImageLabel<S : ToolboksScreen<*, *>>
             val old = batch.packedColor
             batch.color = palette.backColor
             batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
-            batch.setColor(old)
+            batch.packedColor = old
         }
 
         val image = this.image ?: return
@@ -88,7 +88,7 @@ open class ImageLabel<S : ToolboksScreen<*, *>>
             }
         }
 
-        batch.setColor(old)
+        batch.packedColor = old
     }
 
 }

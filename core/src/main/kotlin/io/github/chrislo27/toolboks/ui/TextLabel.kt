@@ -55,7 +55,7 @@ open class TextLabel<S : ToolboksScreen<*, *>>
             val old = batch.packedColor
             batch.color = palette.backColor
             batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
-            batch.setColor(old)
+            batch.packedColor = old
         }
 
         val labelWidth = location.realWidth

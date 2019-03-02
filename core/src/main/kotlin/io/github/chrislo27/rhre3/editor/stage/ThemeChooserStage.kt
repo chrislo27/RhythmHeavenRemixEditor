@@ -191,7 +191,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                                    location.realWidth, 1f)
                 }
 
-                batch.setColor(oldBatchColor)
+                batch.packedColor = oldBatchColor
             }
         }
 

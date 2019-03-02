@@ -83,7 +83,7 @@ open class Button<S : ToolboksScreen<*, *>>
 
             batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
 
-            batch.setColor(oldBatchColor)
+            batch.packedColor = oldBatchColor
         }
     }
 

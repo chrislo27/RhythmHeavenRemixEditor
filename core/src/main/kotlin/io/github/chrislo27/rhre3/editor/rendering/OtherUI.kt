@@ -31,7 +31,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                 batch.fillRect(left, y,
                                remix.camera.viewportWidth * remix.camera.zoom,
                                -remix.camera.viewportHeight * remix.camera.zoom)
-                batch.setColor(oldColor)
+                batch.packedColor = oldColor
 
                 val deleteFont = main.defaultFontLarge
                 deleteFont.scaleFont(camera)
@@ -121,7 +121,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                 font.color = oldFontColor
             }
 
-            batch.setColor(oldColor)
+            batch.packedColor = oldColor
         }
         is ClickOccupation.RulerMeasuring -> {
             val oldColor = batch.packedColor
@@ -176,7 +176,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                 batch.fillRect(x - toScaleX(markThickness) / (if (reverseRange) -2 else 2), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
             }
 
-            batch.setColor(oldColor)
+            batch.packedColor = oldColor
             font.color = oldFontColor
         }
         else -> {

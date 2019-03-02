@@ -26,7 +26,7 @@ public abstract class ToolboksScreen<G : ToolboksGame, SELF : ToolboksScreen<G, 
                 val old = batch.packedColor
                 batch.setColor(0f, 1f, 0f, 1f)
                 stage.drawOutline(batch, stage.camera, 1f, Toolboks.stageOutlines == Toolboks.StageOutlineMode.ONLY_VISIBLE)
-                batch.setColor(old)
+                batch.packedColor = old
             }
             batch.end()
         }

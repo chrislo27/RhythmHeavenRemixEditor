@@ -89,7 +89,7 @@ fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange, alpha: Float
 
             // Render text or texture
             if (inputAction.input.trackDisplayIsTexID) {
-                batch.setColor(lastBatchColor)
+                batch.packedColor = lastBatchColor
                 batch.draw(AssetRegistry.get<Texture>(inputAction.input.trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
                 batch.setColor(1f, 1f, 1f, 1f)
             } else {

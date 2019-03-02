@@ -506,7 +506,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 batch.color = theme.selection.selectionBorder
                 batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
 
-                batch.setColor(oldColor)
+                batch.packedColor = oldColor
                 RectanglePool.free(rect)
             }
         }

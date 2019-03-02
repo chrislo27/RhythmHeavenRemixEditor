@@ -17,10 +17,10 @@ open class ColourPane<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterS
         if (background) {
             val oldColour = batch.packedColor
 
-            batch.setColor(colour.toFloatBits())
+            batch.packedColor = colour.toFloatBits()
             batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
 
-            batch.setColor(oldColour)
+            batch.packedColor = oldColour
         }
     }
 

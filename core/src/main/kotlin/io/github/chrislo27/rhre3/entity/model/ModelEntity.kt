@@ -118,7 +118,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             batch.draw(arrowTex, x + width, y, -arrowWidth, 1f,
                        0, 0, arrowTex.width / 2, arrowTex.height, false, false)
 
-            batch.setColor(oldColor)
+            batch.packedColor = oldColor
         }
 
         batch.drawRect(x, y,
@@ -137,7 +137,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
                            BORDER)) - iconSizeY) / 2,
                    iconSizeX, iconSizeY)
 
-        batch.setColor(oldColor)
+        batch.packedColor = oldColor
         val oldFontColor = font.color
         val fontScale = 0.6f
         font.color = textColor

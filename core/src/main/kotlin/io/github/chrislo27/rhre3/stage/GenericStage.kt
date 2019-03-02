@@ -128,7 +128,7 @@ open class GenericStage<S : ToolboksScreen<*, *>>(override var palette: UIPalett
                        titleLabel.location.realY - PADDING_RATIO.second * camera.viewportHeight / 4f,
                        location.realWidth - height * 2,
                        height)
-        batch.setColor(oldColor)
+        batch.packedColor = oldColor
         super.render(screen, batch, shapeRenderer)
     }
 }

@@ -39,7 +39,7 @@ class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix
         batch.fillRect(x, y, width * 0.125f, height)
         batch.fillRect(x + width, y, width * -0.5f, height)
 
-        batch.setColor(oldColor)
+        batch.packedColor = oldColor
     }
 
     override fun onStart() {

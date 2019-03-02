@@ -97,5 +97,5 @@ inline fun SpriteBatch.batchCall(projection: Matrix4 = this.projectionMatrix, dr
     this.end()
 
     this.projectionMatrix = oldProjection
-    this.setColor(oldColor)
+    this.packedColor = oldColor
 }
