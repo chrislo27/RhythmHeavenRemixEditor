@@ -90,7 +90,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
         }
         font.cache.also { cache ->
             cache.clear()
-            cache.addText(text, drawX, drawY + font.capHeight / 2, availableWidth, align, wrap)
+            cache.addText(text, drawX, drawY, availableWidth, align, wrap)
             if (setAlpha) {
                 cache.setAlphas(alpha)
             }
