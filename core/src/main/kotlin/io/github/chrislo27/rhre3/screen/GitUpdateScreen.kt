@@ -211,7 +211,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         private fun updateLabel() {
             label.text = "${task ?: Localization["screen.database.pending"]}\n" +
                     "$completedTaskWork / $taskTotalWork\n" +
-                    Localization["screen.database.tasksCompleted", currentTask.toString()]
+                    Localization["screen.database.tasksCompleted", currentTask]
 
         }
 
