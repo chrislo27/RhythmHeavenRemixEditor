@@ -515,9 +515,9 @@ object GameRegistry : Disposable {
                                             PlayalongInput.BUTTON_B, PlayalongMethod.PRESS,
                                             pickerName = PickerName("Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Ringside \"pose for the fans\")[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A_or_Dpad", listOf(),
-                                            "Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", false,
+                                            "Press ${PlayalongChars.FILLED_A}/${PlayalongChars.FILLED_DPAD}", false,
                                             PlayalongInput.BUTTON_A_OR_DPAD, PlayalongMethod.PRESS,
-                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Shoot-'em-Up, First Contact)[]"))
+                                            pickerName = PickerName("Press ${PlayalongChars.FILLED_A}/${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Shoot-'em-Up, First Contact)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad", listOf(),
                                             "Press ${PlayalongChars.FILLED_DPAD}", false,
                                             PlayalongInput.BUTTON_DPAD, PlayalongMethod.PRESS,
@@ -541,9 +541,9 @@ object GameRegistry : Disposable {
 
             // Long press
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_A_or_Dpad", listOf(),
-                                            "Long Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", true,
+                                            "Long Press ${PlayalongChars.FILLED_A}/${PlayalongChars.FILLED_DPAD}", true,
                                             PlayalongInput.BUTTON_A_OR_DPAD, PlayalongMethod.LONG_PRESS,
-                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_A} or ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Rhythm Tweezers long pull)[]"))
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_A}/${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](ex: Rhythm Tweezers long pull)[]"))
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_B", listOf(),
                                             "Long Press ${PlayalongChars.FILLED_B}", true,
                                             PlayalongInput.BUTTON_B, PlayalongMethod.LONG_PRESS,
