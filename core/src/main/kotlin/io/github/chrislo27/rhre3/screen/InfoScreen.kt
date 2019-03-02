@@ -62,14 +62,14 @@ class InfoScreen(main: RHRE3Application)
         get() = main.preferences
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
-    private lateinit var clearRecentsButton: Button<InfoScreen>
-    private lateinit var dbVersionLabel: TextLabel<InfoScreen>
-    private lateinit var versionLabel: TextLabel<InfoScreen>
+    private val clearRecentsButton: Button<InfoScreen>
+    private val dbVersionLabel: TextLabel<InfoScreen>
+    private val versionLabel: TextLabel<InfoScreen>
     private var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
     private val onlineLabel: TextLabel<InfoScreen>
-    private lateinit var loadingIcon: LoadingIcon<InfoScreen>
+    private val loadingIcon: LoadingIcon<InfoScreen>
 
     init {
         stage as GenericStage<InfoScreen>
@@ -437,7 +437,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                    val shiftDown = Gdx.input.isShiftDown()
+                    val shiftDown = Gdx.input.isShiftDown() || (main.screen is TransitionScreen<*> && lastShift)
                     if (lastShift != shiftDown) {
                         lastShift = shiftDown
                         textLabel.textColor = if (shiftDown) {
@@ -446,8 +446,8 @@ class InfoScreen(main: RHRE3Application)
                             null
                         }
                         if (shiftDown) {
-                            textLabel.isLocalizationKey = false
-                            textLabel.text = "Tempo Up!"
+                            textLabel.isLocalizationKey = true
+                            textLabel.text = "playalong.tempoUp"
                             spinStart = System.currentTimeMillis()
                         } else {
                             textLabel.isLocalizationKey = true
