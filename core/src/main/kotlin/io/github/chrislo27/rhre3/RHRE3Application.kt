@@ -92,7 +92,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         get() = fonts[timeSignatureFontKey]
 
     val defaultFontLarge: BitmapFont
-        get() = defaultFontFTF.font!!
+        get() = defaultFontLargeFTF.font!!
     val defaultBorderedFontLarge: BitmapFont
         get() = defaultBorderedFontLargeFTF.font!!
     val timeSignatureFont: BitmapFont
