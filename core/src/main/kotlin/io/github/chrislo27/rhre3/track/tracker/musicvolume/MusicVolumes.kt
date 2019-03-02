@@ -20,6 +20,7 @@ class MusicVolumes : TrackerContainer<MusicVolumeChange>(1) {
     }
 
     override fun fromTree(node: ObjectNode) {
+        clear()
         (node["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
             add(MusicVolumeChange(this,
                                   it["beat"].asDouble().toFloat(),

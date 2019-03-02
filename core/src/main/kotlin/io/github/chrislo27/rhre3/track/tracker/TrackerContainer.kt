@@ -21,7 +21,7 @@ abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
         if (map[tracker.beat] === tracker)
             return false
 
-        backingMap.put(tracker.beat, tracker as T)
+        backingMap[tracker.beat] = tracker as T
 
         if (shouldUpdate) {
             update()
@@ -39,6 +39,13 @@ abstract class TrackerContainer<T : Tracker<T>>(val renderLayer: Int) {
         }
 
         return didRemove
+    }
+
+    fun clear() {
+        backingMap.values.toList().forEach {
+            remove(it, false)
+        }
+        update()
     }
 
 }

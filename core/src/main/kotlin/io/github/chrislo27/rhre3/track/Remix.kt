@@ -570,7 +570,10 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val timeSignatures: TimeSignatures = TimeSignatures()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
     val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
-    val tempos: TempoChanges = TempoChanges().apply { trackers.add(this) }
+    val tempos: TempoChanges = TempoChanges().apply {
+        trackers.add(this)
+        add(TempoChange(this, 0f, this.defaultTempo, Swing.STRAIGHT, 0f))
+    }
     val musicVolumes: MusicVolumes = MusicVolumes().apply { trackers.add(this) }
 
     var seconds: Float = 0f

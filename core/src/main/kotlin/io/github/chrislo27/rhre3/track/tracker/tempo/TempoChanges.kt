@@ -31,6 +31,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
     }
 
     override fun fromTree(node: ObjectNode) {
+        clear()
         (node["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
             val swingRatio: Int = it["swingRatio"]?.asInt(0) ?: 0
             val swingDivision: Float = it["swingDivision"]?.asDouble(0.0)?.toFloat() ?: 0f
