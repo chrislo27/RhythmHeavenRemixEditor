@@ -41,7 +41,7 @@ fun Editor.renderTopTrackers(batch: SpriteBatch, beatRange: IntRange, trackYOffs
         val x = beat - toScaleX(Editor.TRACK_LINE_THICKNESS * 1.5f) / 2
         val y = trackYOffset
         val height = (remix.trackCount + 1.25f + 1.2f * units) + toScaleY(Editor.TRACK_LINE_THICKNESS)
-        batch.setColor(color.toFloatBits())
+        batch.packedColor = color.toFloatBits()
         batch.fillRect(x, y, toScaleX(Editor.TRACK_LINE_THICKNESS * 1.5f),
                        height - triangleHeight / 2)
         batch.draw(AssetRegistry.get<Texture>("tracker_right_tri"),

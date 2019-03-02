@@ -140,7 +140,7 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
             val old = batch.packedColor
             batch.color = palette.backColor
             batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
-            batch.setColor(old)
+            batch.packedColor = old
         }
 
         caretTimer += Gdx.graphics.deltaTime
@@ -199,7 +199,7 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
                         y - font.capHeight - CARET_WIDTH, CARET_WIDTH,
                         (font.capHeight + CARET_WIDTH * 2))
 
-                batch.setColor(oldColor)
+                batch.packedColor = oldColor
             }
         }
 

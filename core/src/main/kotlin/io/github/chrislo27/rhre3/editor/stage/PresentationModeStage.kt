@@ -81,7 +81,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
                                (location.realWidth - lineX * 4) * progress.coerceIn(0f, 1f),
                                location.realHeight - lineY * 4)
 
-                batch.setColor(oldColor)
+                batch.packedColor = oldColor
             }
         }.apply {
             this.location.set(screenX = 0.25f, screenY = aboveText + 0.05f, screenWidth = 0.5f, screenHeight = 0.15f)
