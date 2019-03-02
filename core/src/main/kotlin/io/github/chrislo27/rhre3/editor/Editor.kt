@@ -908,6 +908,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                     is ClickOccupation.CreatingSelection -> {
                         clickOccupation.updateRectangle()
+                        updateMessageLabel()
                     }
                     ClickOccupation.None -> {
                         if (selection.isNotEmpty() && !stage.isTyping) {
@@ -1019,6 +1020,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 ctrlBuilder.separator().append(
                                         Localization[if (SharedLibraryLoader.isMac) "editor.msg.callResponseHint.mac" else "editor.msg.callResponseHint"])
                             }
+
+                            if (selection.size == 1) {
+                                val first = selection.first()
+
+                                if (first is IEditableText) {
+                                    ctrlBuilder.separator().append(
+                                            Localization[if (stage.entityTextField.visible) "editor.msg.editabletext.finish" else "editor.msg.editabletext.edit"])
+                                } else if (first is TextureEntity) {
+                                    ctrlBuilder.separator().append(Localization["editor.msg.textureentity"])
+                                }
+                            }
+                            if (selection.isNotEmpty()) {
+                                if (selection.all { it is IStretchable && it.isStretchable }) {
+                                    val allEquidistant = selection.all { it is EquidistantEntity }
+                                    val allKtB = selection.all { it is KeepTheBeatEntity }
+                                    ctrlBuilder.separator().append(Localization[if (allEquidistant) "editor.msg.stretchable.equidistant" else if (allKtB) "editor.msg.stretchable.keepTheBeat" else "editor.msg.stretchable"])
+                                }
+                            }
                         } else if (clickOccupation is ClickOccupation.SelectionDrag) {
                             if (!clickOccupation.isPlacementValid()) {
                                 if (clickOccupation.isInDeleteZone()) {
@@ -1026,24 +1045,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 } else {
                                     msgBuilder.separator().append(Localization["editor.msg.invalidPlacement"])
                                 }
-                            }
-                        }
-
-                        if (selection.size == 1) {
-                            val first = selection.first()
-
-                            if (first is IEditableText) {
-                                ctrlBuilder.separator().append(
-                                        Localization[if (stage.entityTextField.visible) "editor.msg.editabletext.finish" else "editor.msg.editabletext.edit"])
-                            } else if (first is TextureEntity) {
-                                ctrlBuilder.separator().append(Localization["editor.msg.textureentity"])
-                            }
-                        }
-                        if (selection.isNotEmpty()) {
-                            if (selection.all { it is IStretchable && it.isStretchable }) {
-                                val allEquidistant = selection.all { it is EquidistantEntity }
-                                val allKtB = selection.all { it is KeepTheBeatEntity }
-                                ctrlBuilder.separator().append(Localization[if (allEquidistant) "editor.msg.stretchable.equidistant" else if (allKtB) "editor.msg.stretchable.keepTheBeat" else "editor.msg.stretchable"])
                             }
                         }
                     } else {
@@ -1057,6 +1058,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
 
                     if (clickOccupation is ClickOccupation.CreatingSelection) {
+                        val selectionMode = getSelectionMode()
+                        val newSelectionCount = remix.entities.count { selectionMode.wouldEntityBeIncluded(it, clickOccupation.rectangle, remix.entities, this.selection) } - (if (selectionMode == SelectionMode.ADD) (this.selection.size) else 0)
+                        if (newSelectionCount > 0) {
+                            ctrlBuilder.separator().append(Localization[if (selectionMode == SelectionMode.ADD) {
+                                "editor.msg.selectionHint.count.add"
+                            } else "editor.msg.selectionHint.count", newSelectionCount])
+                        }
                         ctrlBuilder.separator().append(Localization["editor.msg.selectionHint"])
                     }
                 }
@@ -1653,24 +1661,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 // finish selection as ACTION
                 clickOccupation.updateRectangle()
                 val selectionRect = clickOccupation.rectangle
-                val newCaptured: List<Entity> = remix.entities.filter { it.bounds.intersects(selectionRect) }
-                val newSelection: List<Entity> =
-                        if (shift && !control && !alt) {
-                            this.selection.toList() + newCaptured
-                        } else if (control && !shift && !alt) {
-                            mutableListOf<Entity>().also { list ->
-                                list.addAll(this.selection)
-                                newCaptured.forEach {
-                                    if (it in list) {
-                                        list -= it
-                                    } else {
-                                        list += it
-                                    }
-                                }
-                            }
-                        } else {
-                            newCaptured
-                        }
+                val newSelection: List<Entity> = getSelectionMode().createNewSelection(remix.entities.toList(), this.selection.toList(), selectionRect)
                 if (!this.selection.containsAll(newSelection) ||
                         (newSelection.size != this.selection.size)) {
                     remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
@@ -1717,6 +1708,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         return false
+    }
+
+    fun getSelectionMode(): SelectionMode {
+        return when {
+            !Gdx.input.isAltDown() && !Gdx.input.isControlDown() && Gdx.input.isShiftDown() -> SelectionMode.ADD
+            !Gdx.input.isAltDown() && Gdx.input.isControlDown() && !Gdx.input.isShiftDown() -> SelectionMode.INVERT
+            else -> SelectionMode.REPLACE
+        }
     }
 
     fun changePitchOfSelection(change: Int, delta: Boolean, canExceedLimits: Boolean, selection: List<Entity>) {
