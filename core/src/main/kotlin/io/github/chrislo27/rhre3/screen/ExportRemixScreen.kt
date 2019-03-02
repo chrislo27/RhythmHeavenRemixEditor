@@ -303,8 +303,8 @@ class ExportRemixScreen(main: RHRE3Application)
             mainLabel.text = Localization["screen.export.progress",
                     Localization["screen.export.progress.$localization"],
                     "$localPercent",
-                    "$stage",
-                    "$maxProgressStages",
+                    stage,
+                    maxProgressStages,
                     "${Math.round((localPercent + (stage - 1) * 100f) / (maxProgressStages * 100f) * 100)}"]
         }
 
