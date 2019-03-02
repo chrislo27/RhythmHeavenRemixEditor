@@ -49,8 +49,16 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
         is ClickOccupation.CreatingSelection -> {
             val oldColor = batch.packedColor
             val rect = clickOccupation.rectangle
+            val selectionFill = theme.selection.selectionFill
 
-            batch.color = theme.selection.selectionFill
+            batch.setColor(selectionFill.r, selectionFill.g, selectionFill.b, selectionFill.a * 0.85f)
+            remix.entities.forEach {
+                if (it.bounds.intersects(rect) || rect.contains(it.bounds)) {
+                    batch.fillRect(it.bounds)
+                }
+            }
+
+            batch.color = selectionFill
             batch.fillRect(rect)
 
             batch.color = theme.selection.selectionBorder
