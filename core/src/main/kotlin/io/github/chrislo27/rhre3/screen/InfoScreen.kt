@@ -108,10 +108,25 @@ class InfoScreen(main: RHRE3Application)
                 Localization.listeners += { updateText() }
             })
 
-            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+            this.location.set(screenX = 0.175f, screenWidth = 0.65f)
         }
 
         stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            val numberLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
+                this.textAlign = Align.center
+                this.isLocalizationKey = false
+                this.fontScaleMultiplier = 1f
+                this.textWrapping = false
+                this.location.set(screenX = 0.5f, screenWidth = 0.5f, screenY = 0.3f, screenHeight = 0.7f)
+            }
+            val nameLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
+                this.textAlign = Align.center
+                this.isLocalizationKey = false
+                this.fontScaleMultiplier = 0.6f
+                this.textWrapping = false
+                this.location.set(screenY = 0.05f, screenHeight = 0.25f)
+            }
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 cycle(1)
@@ -140,7 +155,8 @@ class InfoScreen(main: RHRE3Application)
                     }
                 }
 
-                (labels.last() as TextLabel).text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}\n${Background.backgroundsNames[GenericStage.backgroundImpl]}"
+                numberLabel.text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}"
+                nameLabel.text = "${Background.backgroundsNames[GenericStage.backgroundImpl]}"
 
                 main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.id).flush()
             }
@@ -148,23 +164,14 @@ class InfoScreen(main: RHRE3Application)
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-                this.location.set(screenY = 0.3f, screenHeight = 0.7f)
+                this.location.set(screenY = 0.3f, screenHeight = 0.7f, screenWidth = 0.5f)
             })
-            this.addLabel(
-                    TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
-                        this.textAlign = Align.center
-                        this.isLocalizationKey = false
-                        this.fontScaleMultiplier = 0.5f
-                        this.textWrapping = false
-                        this.location.set(screenY = 0.05f, screenHeight = 0.25f)
-                    })
+            this.addLabel(numberLabel)
+            this.addLabel(nameLabel)
 
             this.cycle(0)
 
-            this.alignment = Align.bottomRight
-            this.location.set(screenHeight = 1f,
-                              screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
-            this.location.set(screenX = this.location.screenWidth)
+            this.location.set(screenX = 0.85f, screenWidth = 1f - 0.85f)
         }
 
         onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
@@ -343,6 +350,7 @@ class InfoScreen(main: RHRE3Application)
 
                     main.screen = ScreenRegistry.getNonNull("partners")
                 }
+
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                     if (labels.isNotEmpty()) {
                         val first = labels.first()
