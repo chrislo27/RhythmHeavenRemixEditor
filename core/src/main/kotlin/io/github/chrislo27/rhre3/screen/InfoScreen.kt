@@ -30,6 +30,7 @@ import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.util.FadeIn
 import io.github.chrislo27.rhre3.util.FadeOut
 import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -70,6 +71,8 @@ class InfoScreen(main: RHRE3Application)
     } ?: false
     private val onlineLabel: TextLabel<InfoScreen>
     private val loadingIcon: LoadingIcon<InfoScreen>
+
+    private var backgroundOnly = false
 
     init {
         stage as GenericStage<InfoScreen>
@@ -828,6 +831,16 @@ class InfoScreen(main: RHRE3Application)
         shouldSeePartners = main.preferences.getInteger(PreferenceKeys.VIEWED_PARTNERS_VERSION, 0) < PartnersScreen.PARTNERS_VERSION
     }
 
+    override fun render(delta: Float) {
+        super.render(delta)
+        if (backgroundOnly) {
+            val batch = main.batch
+            batch.begin()
+            GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, 0f)
+            batch.end()
+        }
+    }
+
     override fun renderUpdate() {
         super.renderUpdate()
         stage as GenericStage
@@ -835,6 +848,8 @@ class InfoScreen(main: RHRE3Application)
             stage.onBackButtonClick()
         } else if (Gdx.input.isControlDown() && !Gdx.input.isShiftDown() && !Gdx.input.isAltDown() && Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             main.screen = ScreenRegistry.getNonNull("advancedOptions")
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && Toolboks.debugMode) {
+            backgroundOnly = !backgroundOnly
         }
     }
 
@@ -862,6 +877,10 @@ class InfoScreen(main: RHRE3Application)
         }
 
         didChangeSettings = false
+    }
+
+    override fun getDebugString(): String? {
+        return "When debug mode is active:\nQ - Render background on top"
     }
 
     override fun tickUpdate() {
