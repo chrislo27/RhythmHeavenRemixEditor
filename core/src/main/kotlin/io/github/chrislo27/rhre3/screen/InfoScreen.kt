@@ -140,7 +140,7 @@ class InfoScreen(main: RHRE3Application)
                     }
                 }
 
-                (labels.last() as TextLabel).text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}"
+                (labels.last() as TextLabel).text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}\n${Background.backgroundsNames[GenericStage.backgroundImpl]}"
 
                 main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.id).flush()
             }
@@ -148,13 +148,15 @@ class InfoScreen(main: RHRE3Application)
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_palette"))
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-                this.location.set(screenHeight = 0.75f, screenY = 0.25f)
+                this.location.set(screenY = 0.3f, screenHeight = 0.7f)
             })
             this.addLabel(
                     TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
-                        this.textAlign = Align.bottom or Align.center
+                        this.textAlign = Align.center
                         this.isLocalizationKey = false
-                        this.location.set(screenY = 0.05f, screenHeight = 0.95f)
+                        this.fontScaleMultiplier = 0.5f
+                        this.textWrapping = false
+                        this.location.set(screenY = 0.05f, screenHeight = 0.25f)
                     })
 
             this.cycle(0)
