@@ -20,7 +20,8 @@ abstract class Background(val id: String) {
                     RetroBackground("retro"),
                     TilingBackground("tapTrial", 5f, speedX = 0f, speedY = 1f) { AssetRegistry["bg_tapTrial"] },
                     TilingBackground("tiled", 5f, speedX = 1f, speedY = 1f) { AssetRegistry["bg_tile"] },
-                    LaunchPartyBackground("launchParty")
+                    LaunchPartyBackground("launchParty"),
+                    KittiesBackground("kitties")
                   )
         }
         val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) }
