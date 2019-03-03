@@ -175,7 +175,6 @@ class InfoScreen(main: RHRE3Application)
         }
 
         onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
-
             var last = Int.MIN_VALUE
             override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 val current = main.liveUsers
@@ -185,24 +184,34 @@ class InfoScreen(main: RHRE3Application)
                 }
                 super.render(screen, batch, shapeRenderer)
             }
-
-            override fun canBeClickedOn(): Boolean = true
-
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                if (RHRE3.noOnlineCounter || this.text.isEmpty()) return
-                main.screen = OnlineCounterScreen(main, this.text)
-            }
         }.apply {
-            this.alignment = Align.bottomRight
             this.isLocalizationKey = false
             this.textAlign = Align.right
             this.fontScaleMultiplier = 0.5f
+            this.alignment = Align.bottomRight
             this.location.set(screenHeight = 1f / 3,
                               screenWidth = this.stage.percentageOfWidth(this.stage.location.realHeight))
-            this.location.set(screenX = this.location.screenWidth, screenY = -0.75f + 1f / 3)
+            this.location.set(screenX = this.location.screenWidth + 0.025f * 1.25f, screenY = -0.75f + 1f / 3)
         }
         stage.bottomStage.elements += onlineLabel
+        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+            override var visible: Boolean = true
+                get() = field && main.liveUsers > 0 && !RHRE3.noOnlineCounter
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (!visible) return
+                main.screen = OnlineCounterScreen(main, onlineLabel.text)
+            }
+        }.apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_history"))
+            })
+            this.alignment = Align.bottomRight
+            this.location.set(screenHeight = onlineLabel.location.screenHeight, screenY = onlineLabel.location.screenY)
+            this.location.set(screenX = 0.025f, screenWidth = 0.025f)
+        }
 
         stage.centreStage.also { centre ->
             val padding = 0.025f
