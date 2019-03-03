@@ -867,7 +867,7 @@ class InfoScreen(main: RHRE3Application)
             stage.onBackButtonClick()
         } else if (Gdx.input.isControlDown() && !Gdx.input.isShiftDown() && !Gdx.input.isAltDown() && Gdx.input.isKeyJustPressed(Input.Keys.A)) {
             main.screen = ScreenRegistry.getNonNull("advancedOptions")
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && Toolboks.debugMode) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
             backgroundOnly = !backgroundOnly
         }
     }
@@ -899,7 +899,7 @@ class InfoScreen(main: RHRE3Application)
     }
 
     override fun getDebugString(): String? {
-        return "When debug mode is active:\nQ - Render background on top"
+        return "${Input.Keys.toString(Toolboks.DEBUG_KEY)}+Q - Render background on top"
     }
 
     override fun tickUpdate() {
