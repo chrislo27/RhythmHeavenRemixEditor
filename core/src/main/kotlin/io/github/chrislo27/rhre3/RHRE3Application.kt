@@ -241,9 +241,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 addOtherScreens()
                 loadWindowSettings()
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
-                if (preferences.getString(PreferenceKeys.LAST_VERSION, null) == null) {
-                    Gdx.net.openURI("https://rhre.readthedocs.io/en/latest/")
-                }
+//                if (preferences.getString(PreferenceKeys.LAST_VERSION, null) == null) {
+//                    Gdx.net.openURI("https://rhre.readthedocs.io/en/latest/")
+//                }
                 return@nextScreenLambda nextScreen
             }
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
