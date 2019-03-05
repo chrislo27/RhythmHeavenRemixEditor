@@ -38,9 +38,6 @@ class LaunchPartyBackground(id: String) : Background(id) {
         val width = camera.viewportWidth
         val height = camera.viewportHeight
 
-        // camera work
-        camera.update()
-
         batch.setColor(0f, 0f, 0f, 1f)
         batch.fillRect(0f, 0f, width, height)
         batch.setColor(1f, 1f, 1f, 1f)
