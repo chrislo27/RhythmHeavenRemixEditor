@@ -49,7 +49,7 @@ class LaunchPartyBackground(id: String) : Background(id) {
         batch.draw(galaxy, width * 0.75f, height * 0.75f, width * 0.125f, (width * 0.125f) * galaxy.regionHeight / galaxy.regionWidth)
         for (x in -1..3) {
             for (y in -1..3) {
-                val seed = (x * 3 + y)
+                val seed = (x * 3 + y) + this.seed
                 val colour = MathUtils.lerp(0.85f, 1f, MathHelper.getBaseCosineWave(System.currentTimeMillis() + seed * 345L, 2.5f))
                 batch.setColor(colour, colour, 1f, 0.5f)
                 batch.draw(starfield, (width * 0.25f) * x + (width * 0.05f * (if (seed % 3 == 0) 1 else -1)), (height * 0.45f) * y + (height * 0.05f * (if (seed % 2 == 0) 1 else -1)), width / 2, height / 2)
