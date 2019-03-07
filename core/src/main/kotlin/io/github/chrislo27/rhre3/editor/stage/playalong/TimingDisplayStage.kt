@@ -11,14 +11,15 @@ import com.badlogic.gdx.math.Interpolation
 import io.github.chrislo27.rhre3.playalong.InputResult
 import io.github.chrislo27.rhre3.playalong.InputTiming
 import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.ColourPane
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
 
 
-class TimingDisplayStage(private val playalongStage: PlayalongStage, parent: UIElement<EditorScreen>, camera: OrthographicCamera) : Stage<EditorScreen>(parent, camera) {
+class TimingDisplayStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, camera: OrthographicCamera)
+    : Stage<S>(parent, camera) {
 
     companion object {
         val ACE_COLOUR: Color = Color.valueOf("FFF800")
@@ -35,8 +36,6 @@ class TimingDisplayStage(private val playalongStage: PlayalongStage, parent: UIE
     private val texRegionBarely: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_input_timing"), 256, 0, 128, 128)
 
     init {
-        val palette = playalongStage.palette
-
         fun addColourPane(color: Color, x: Float, width: Float) {
             this.elements += ColourPane(this, this).apply {
                 this.colour.set(color)
@@ -59,7 +58,7 @@ class TimingDisplayStage(private val playalongStage: PlayalongStage, parent: UIE
         flashes += Flash(offsetNormalized, input.timing, 0.25f)
     }
 
-    override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    override fun render(screen: S, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
 
         flashes.forEach { flash ->
@@ -80,7 +79,7 @@ class TimingDisplayStage(private val playalongStage: PlayalongStage, parent: UIE
         batch.setColor(1f, 1f, 1f, 1f)
     }
 
-    override fun frameUpdate(screen: EditorScreen) {
+    override fun frameUpdate(screen: S) {
         super.frameUpdate(screen)
 
         flashes.forEach {

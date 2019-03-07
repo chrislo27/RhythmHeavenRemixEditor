@@ -72,11 +72,12 @@ class PlayalongStage(val editor: Editor,
     }
 
     private val remix: Remix get() = editor.remix
-    private val playalong: Playalong get() = remix.playalong.apply {
-        if (this.listener != this@PlayalongStage) {
-            this.listener = this@PlayalongStage
+    private val playalong: Playalong
+        get() = remix.playalong.apply {
+            if (this.listener != this@PlayalongStage) {
+                this.listener = this@PlayalongStage
+            }
         }
-    }
     private val main: RHRE3Application get() = editor.main
     private val preferences: Preferences get() = main.preferences
 
@@ -91,7 +92,7 @@ class PlayalongStage(val editor: Editor,
     val perfectHitIcon: ImageLabel<EditorScreen>
     val monsterGoalIcon: ImageLabel<EditorScreen>
     val flickingStage: FlickingStage<EditorScreen>
-    val timingDisplayStage: TimingDisplayStage
+    val timingDisplayStage: TimingDisplayStage<EditorScreen>
     val tempoUpButton: Button<EditorScreen>
     val tempoDownButton: Button<EditorScreen>
     val tempoLabel: TextLabel<EditorScreen>
@@ -416,7 +417,7 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += hideIndicatorsButton
 
-        timingDisplayStage = TimingDisplayStage(this, lowerStage, lowerStage.camera).apply {
+        timingDisplayStage = TimingDisplayStage(lowerStage, lowerStage.camera).apply {
             this.location.set(screenWidth = 0.4f, screenY = paddingY)
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2, screenHeight = acesLabel.location.screenY - this.location.screenY - paddingY)
         }
