@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -50,9 +51,9 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         super.readData(objectNode)
     }
 
-    abstract fun getRenderColor(): Color
+    abstract fun getRenderColor(editor: Editor, theme: Theme): Color
 
-    protected open fun renderBeforeText(batch: SpriteBatch) {
+    protected open fun renderBeforeText(editor: Editor, batch: SpriteBatch) {
 
     }
 
@@ -70,18 +71,18 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         return tmp
     }
 
-    override fun render(batch: SpriteBatch) {
+    override fun render(editor: Editor, batch: SpriteBatch) {
         val game = datamodel.game
-        val textColor = remix.editor.theme.entities.nameColor
-        val text = renderText + (if (ModdingUtils.moddingToolsEnabled && remix.editor.currentTool == Tool.RULER) {
+        val textColor = editor.theme.entities.nameColor
+        val text = renderText + (if (ModdingUtils.moddingToolsEnabled && editor.currentTool == Tool.RULER) {
             GameRegistry.moddingMetadata.currentData.joinToStringFromData(datamodel, this, keyColor = "#$textColor").takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
         } else "")
         val font = remix.main.defaultFont
-        val color = getRenderColor()
+        val color = getRenderColor(editor, editor.theme)
         val oldColor = batch.packedColor
         val oldFontSizeX = font.data.scaleX
         val oldFontSizeY = font.data.scaleY
-        val selectionTint = remix.editor.theme.entities.selectionTint
+        val selectionTint = editor.theme.entities.selectionTint
         val showSelection = isSelected
 
         val x = bounds.x + lerpDifference.x
@@ -123,17 +124,17 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 
         batch.drawRect(x, y,
                        width, height,
-                       remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
+                       editor.toScaleX(BORDER), editor.toScaleY(BORDER))
 
-        renderBeforeText(batch)
+        renderBeforeText(editor, batch)
 
         batch.setColor(1f, 1f, 1f, 0.5f)
-        val iconSizeY = 1f - 4 * (remix.editor.toScaleY(BORDER))
-        val iconSizeX = remix.editor.toScaleX(iconSizeY * Editor.ENTITY_HEIGHT)
+        val iconSizeY = 1f - 4 * (editor.toScaleY(BORDER))
+        val iconSizeX = editor.toScaleX(iconSizeY * Editor.ENTITY_HEIGHT)
 
         batch.draw(game.icon,
-                   x + 2 * (remix.editor.toScaleX(BORDER)),
-                   y + 2 * remix.editor.toScaleY(BORDER) + ((height - 4 * remix.editor.toScaleY(
+                   x + 2 * (editor.toScaleX(BORDER)),
+                   y + 2 * editor.toScaleY(BORDER) + ((height - 4 * editor.toScaleY(
                            BORDER)) - iconSizeY) / 2,
                    iconSizeX, iconSizeY)
 
@@ -142,12 +143,12 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val fontScale = 0.6f
         font.color = textColor
         font.data.setScale(oldFontSizeX * fontScale, oldFontSizeY * fontScale)
-        // width - iconSizeX - 6 * (remix.editor.toScaleX(BORDER))
-        val allottedWidth = width - 2 * (remix.editor.toScaleX(BORDER))
-        val allottedHeight = height - 4 * (remix.editor.toScaleY(BORDER))
+        // width - iconSizeX - 6 * (editor.toScaleX(BORDER))
+        val allottedWidth = width - 2 * (editor.toScaleX(BORDER))
+        val allottedHeight = height - 4 * (editor.toScaleY(BORDER))
 
         val textHeight = font.getTextHeight(text, allottedWidth, true)
-        val textX = x + 1 * (remix.editor.toScaleX(BORDER))
+        val textX = x + 1 * (editor.toScaleX(BORDER))
         val textY = y + height / 2
         if (textHeight > allottedHeight) {
             val ratio = Math.min(allottedWidth / (font.getTextWidth(text, allottedWidth, false)), allottedHeight / textHeight)
@@ -156,7 +157,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         needsNameTooltip = textHeight > allottedHeight
         var newTextWidth = allottedWidth
         if (attemptTextOnScreen) {
-            val camera = remix.camera
+            val camera = editor.camera
             val outerBound = camera.position.x + camera.viewportWidth / 2 * camera.zoom
             if (textX + newTextWidth > outerBound) {
                 newTextWidth = (outerBound) - textX
@@ -165,15 +166,15 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         }
         font.draw(batch, text, textX, textY + font.getTextHeight(text, newTextWidth, true) / 2, newTextWidth, Align.right, true)
 
-        when (remix.editor.scrollMode) {
+        when (editor.scrollMode) {
             Editor.ScrollMode.PITCH -> {
                 if (this is IRepitchable && (this.canBeRepitched || this.semitone != 0)) {
-                    drawCornerText(batch, getTextForSemitone(semitone), !this.canBeRepitched, x, y)
+                    drawCornerText(editor, batch, getTextForSemitone(semitone), !this.canBeRepitched, x, y)
                 }
             }
             Editor.ScrollMode.VOLUME -> {
                 if (this is IVolumetric && (this.isVolumetric || this.volumePercent != IVolumetric.DEFAULT_VOLUME)) {
-                    drawCornerText(batch, IVolumetric.getVolumeText(this.volumePercent), !this.isVolumetric, x, y)
+                    drawCornerText(editor, batch, IVolumetric.getVolumeText(this.volumePercent), !this.isVolumetric, x, y)
                 }
             }
         }
@@ -181,10 +182,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         font.data.setScale(oldFontSizeX, oldFontSizeY)
     }
 
-    private fun drawCornerText(batch: SpriteBatch, text: String, useNegativeColor: Boolean, x: Float, y: Float) {
+    private fun drawCornerText(editor: Editor, batch: SpriteBatch, text: String, useNegativeColor: Boolean, x: Float, y: Float) {
         val borderedFont = remix.main.defaultBorderedFont
-        remix.editor.apply {
-            borderedFont.scaleFont(remix.camera)
+        editor.apply {
+            borderedFont.scaleFont(editor.camera)
         }
         borderedFont.scaleMul(0.75f)
         if (useNegativeColor) {
@@ -193,9 +194,9 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
             borderedFont.setColor(1f, 1f, 1f, 1f)
         }
         borderedFont.draw(batch, text,
-                          x + 2 * remix.editor.toScaleX(BORDER),
-                          y + 2 * remix.editor.toScaleY(BORDER) + borderedFont.capHeight)
-        remix.editor.apply {
+                          x + 2 * editor.toScaleX(BORDER),
+                          y + 2 * editor.toScaleY(BORDER) + borderedFont.capHeight)
+        editor.apply {
             borderedFont.unscaleFont()
         }
     }

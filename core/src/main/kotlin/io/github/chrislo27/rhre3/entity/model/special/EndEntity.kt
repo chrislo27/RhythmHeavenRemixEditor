@@ -2,8 +2,10 @@ package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.EndRemix
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
@@ -22,20 +24,21 @@ class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix
     }
 
     // not used
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.trackLine
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.trackLine
     }
 
-    override fun render(batch: SpriteBatch) {
+    override fun render(editor: Editor, batch: SpriteBatch) {
         val oldColor = batch.packedColor
-        val selectionTint = remix.editor.theme.entities.selectionTint
+        val theme = editor.theme
+        val selectionTint = theme.entities.selectionTint
 
         val x = bounds.x + lerpDifference.x
         val y = bounds.y + lerpDifference.y
         val height = bounds.height + lerpDifference.height
         val width = bounds.width + lerpDifference.width
 
-        batch.setColorWithTintIfNecessary(selectionTint, remix.editor.theme.trackLine)
+        batch.setColorWithTintIfNecessary(selectionTint, theme.trackLine)
         batch.fillRect(x, y, width * 0.125f, height)
         batch.fillRect(x + width, y, width * -0.5f, height)
 

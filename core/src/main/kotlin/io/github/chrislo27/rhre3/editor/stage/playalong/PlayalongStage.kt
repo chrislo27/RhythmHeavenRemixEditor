@@ -39,7 +39,7 @@ import kotlin.properties.Delegates
 
 class PlayalongStage(val editor: Editor,
                      val palette: UIPalette, parent: UIElement<EditorScreen>?, camera: OrthographicCamera)
-    : Stage<EditorScreen>(parent, camera) {
+    : Stage<EditorScreen>(parent, camera), PlayalongListener {
 
     companion object {
         val TRY_AGAIN_COLOUR = "01BDFD"
@@ -72,7 +72,11 @@ class PlayalongStage(val editor: Editor,
     }
 
     private val remix: Remix get() = editor.remix
-    private val playalong: Playalong get() = remix.playalong
+    private val playalong: Playalong get() = remix.playalong.apply {
+        if (this.listener != this@PlayalongStage) {
+            this.listener = this@PlayalongStage
+        }
+    }
     private val main: RHRE3Application get() = editor.main
     private val preferences: Preferences get() = main.preferences
 
@@ -484,7 +488,7 @@ class PlayalongStage(val editor: Editor,
         monsterGoalLabel.visible = monsterGoal > 0f
     }
 
-    fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
+    override fun onInput(inputAction: InputAction, inputResult: InputResult, start: Boolean) {
         timingDisplayStage.flash(inputResult)
         if (inputResult.timing == InputTiming.MISS && hearts.total > 0 && heartsInvuln <= 0f && hearts.num > 0) {
             val oldHeartsCount = hearts.num
@@ -510,7 +514,7 @@ class PlayalongStage(val editor: Editor,
         }
     }
 
-    fun onSkillStarGet() {
+    override fun onSkillStarGet() {
         skillStarZoom = 1f
     }
 
@@ -518,7 +522,7 @@ class PlayalongStage(val editor: Editor,
         skillStarZoom = -0.35f
     }
 
-    fun onPerfectFail() {
+    override fun onPerfectFail() {
         perfectAnimation = 1f
         perfectIcon.image = perfectFailTexReg
         val first = playalong.inputActions.firstOrNull()
@@ -529,16 +533,20 @@ class PlayalongStage(val editor: Editor,
         }
     }
 
-    fun onPerfectHit() {
+    override fun onPerfectHit() {
         perfectAnimation = 1f
         perfectIcon.image = perfectTexReg
     }
 
-    fun onMonsterGoalFail() {
+    override fun onMonsterGoalFail() {
         remix.playState = PlayState.PAUSED
         if (preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true) && this.visible) {
             AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play()
         }
+    }
+
+    override fun onScoreUpdate() {
+        updateLabels()
     }
 
     fun reset() {

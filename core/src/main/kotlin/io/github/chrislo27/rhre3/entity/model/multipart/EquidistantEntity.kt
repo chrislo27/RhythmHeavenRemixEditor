@@ -2,10 +2,12 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Equidistant
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -47,8 +49,8 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
         updateInternalCache(bounds)
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.equidistant
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.equidistant
     }
 
     override fun copy(remix: Remix): EquidistantEntity {

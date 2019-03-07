@@ -21,16 +21,16 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
         is ClickOccupation.SelectionDrag -> {
             val oldColor = batch.packedColor
             val y = if (clickOccupation.isBottomSpecial) -1f else 0f
-            val mouseY = remix.camera.getInputY()
+            val mouseY = camera.getInputY()
             val alpha = (1f + y - mouseY).coerceIn(0.5f + MathHelper.getTriangleWave(2f) * 0.125f, 1f)
-            val left = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
+            val left = camera.position.x - camera.viewportWidth / 2 * camera.zoom
             val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
 
             if (!overStoreArea) {
                 batch.setColor(1f, 0f, 0f, 0.25f * alpha)
                 batch.fillRect(left, y,
-                               remix.camera.viewportWidth * remix.camera.zoom,
-                               -remix.camera.viewportHeight * remix.camera.zoom)
+                               camera.viewportWidth * camera.zoom,
+                               -camera.viewportHeight * camera.zoom)
                 batch.packedColor = oldColor
 
                 val deleteFont = main.defaultFontLarge
@@ -40,7 +40,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
                 deleteFont.setColor(0.75f, 0.5f, 0.5f, alpha)
 
                 deleteFont.drawCompressed(batch, Localization["editor.delete"], left, y + -1f + font.capHeight / 2,
-                                          remix.camera.viewportWidth * remix.camera.zoom, Align.center)
+                                          camera.viewportWidth * camera.zoom, Align.center)
 
                 deleteFont.setColor(1f, 1f, 1f, 1f)
                 deleteFont.unscaleFont()
@@ -102,11 +102,11 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
 
                     var defaultX = rect.x + toScaleX
                     var defaultWidth = rect.width - toScaleX * 2
-                    if (defaultX < remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom) {
-                        defaultX = remix.camera.position.x - remix.camera.viewportWidth / 2 * remix.camera.zoom
+                    if (defaultX < camera.position.x - camera.viewportWidth / 2 * camera.zoom) {
+                        defaultX = camera.position.x - camera.viewportWidth / 2 * camera.zoom
                         defaultWidth = (rect.width + rect.x) - defaultX - toScaleX
-                    } else if (defaultX + defaultWidth > remix.camera.position.x + remix.camera.viewportWidth / 2) {
-                        defaultWidth = (remix.camera.position.x + remix.camera.viewportWidth / 2) - defaultX
+                    } else if (defaultX + defaultWidth > camera.position.x + camera.viewportWidth / 2) {
+                        defaultWidth = (camera.position.x + camera.viewportWidth / 2) - defaultX
                     }
                     if (rect.width - toScaleX * 2 >= font.getTextWidth(widthStr) && rect.height - toScaleY * 2 >= font.getTextHeight(widthStr)) {
                         font.drawCompressed(batch, widthStr,

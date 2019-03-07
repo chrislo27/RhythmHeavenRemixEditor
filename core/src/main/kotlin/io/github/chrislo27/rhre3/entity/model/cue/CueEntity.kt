@@ -2,10 +2,12 @@ package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 
@@ -68,8 +70,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
         this.bounds.height = 1f
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.cue
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.cue
     }
 
     private fun getSemitonePitch(): Float {
@@ -105,7 +107,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun onStart() {
-        if (isSkillStar && remix.editor.stage.playalongStage.visible && remix.main.screen is EditorScreen) {
+        if (isSkillStar && remix.doUpdatePlayalong && remix.main.screen is EditorScreen) {
             return // Do not play if in playalong mode
         }
         play()

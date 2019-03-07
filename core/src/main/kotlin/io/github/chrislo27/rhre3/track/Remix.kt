@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.track
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.PixmapIO
 import com.badlogic.gdx.graphics.Texture
@@ -40,6 +39,7 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.Swing
+import io.github.chrislo27.rhre3.util.settableLazy
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.maxX
@@ -57,7 +57,7 @@ import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
 
-class Remix(val camera: OrthographicCamera, val editor: Editor)
+open class Remix(val main: RHRE3Application)
     : ActionHistory<Remix>(), Disposable {
 
     companion object {
@@ -558,9 +558,6 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         NOT_STARTED, STARTED, UPDATED, ENDED, STARTED_AND_ENDED, ALREADY_UPDATED
     }
 
-    val main: RHRE3Application
-        get() = editor.main
-
     var version: Version = RHRE3.VERSION
         private set
     var databaseVersion: Int = -1
@@ -597,7 +594,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             field = value
             lastTickBeat = beat.toInt()
         }
-    var cuesMuted = false
+    open var cuesMuted = false
     private var lastTickBeat = Int.MIN_VALUE
     private var scheduleMusicPlaying = true
     @Volatile
@@ -629,8 +626,8 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
     val currentShakeEntities: MutableList<ShakeEntity> = mutableListOf()
 
     val gameSections: NavigableMap<Float, GameSection> = TreeMap()
-    var playalong: Playalong = Playalong(this)
-        private set
+    var playalong: Playalong by settableLazy { createPlayalongInstance() }
+    open var doUpdatePlayalong: Boolean = false
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
@@ -781,9 +778,11 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
         }
 
         if (playState == PlayState.STOPPED) {
-            playalong = Playalong(this)
+            playalong = createPlayalongInstance()
         }
     }
+
+    protected open fun createPlayalongInstance(): Playalong = Playalong(this)
 
     fun getLastEntityPoint(): Float {
         if (entities.isEmpty())
@@ -875,7 +874,7 @@ class Remix(val camera: OrthographicCamera, val editor: Editor)
             }
         }
 
-        if (editor.stage.playalongStage.visible) {
+        if (doUpdatePlayalong) {
             playalong.frameUpdate()
         }
 

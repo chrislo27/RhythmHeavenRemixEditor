@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
@@ -155,7 +156,7 @@ abstract class Entity(val remix: Remix) {
         lerpDifference.height = MathUtils.lerp(lerpDifference.height, 0f, alphaY)
     }
 
-    abstract fun render(batch: SpriteBatch)
+    abstract fun render(editor: Editor, batch: SpriteBatch)
 
     abstract fun onStart()
 

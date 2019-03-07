@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TextureModel
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -24,21 +25,20 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
         this.bounds.height = 1f
     }
 
-    // not used
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.cue
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.cue
     }
 
-    override fun render(batch: SpriteBatch) {
+    override fun render(editor: Editor, batch: SpriteBatch) {
         val textureHash = textureHash
         if (textureHash != null) {
-            val tex = remix.textureCache[textureHash] ?: return super.render(batch)
-            val renderBacking = this.isSelected || remix.editor.clickOccupation is ClickOccupation.CreatingSelection
+            val tex = remix.textureCache[textureHash] ?: return super.render(editor, batch)
+            val renderBacking = this.isSelected || editor.clickOccupation is ClickOccupation.CreatingSelection
             if (renderBacking) {
-                super.render(batch)
+                super.render(editor, batch)
             }
             if (this.isSelected) {
-                batch.color = remix.editor.theme.entities.selectionTint
+                batch.color = editor.theme.entities.selectionTint
             }
             if (renderBacking) {
                 batch.color = batch.color.apply { a *= 0.25f }
@@ -47,7 +47,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
             batch.draw(tex, bounds.x, bounds.y, bounds.width, bounds.width * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
             batch.setColor(1f, 1f, 1f, 1f)
         } else {
-            super.render(batch)
+            super.render(editor, batch)
         }
     }
 

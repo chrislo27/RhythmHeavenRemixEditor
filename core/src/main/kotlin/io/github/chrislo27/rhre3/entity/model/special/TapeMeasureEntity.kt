@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TapeMeasure
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -30,8 +31,8 @@ class TapeMeasureEntity(remix: Remix, datamodel: TapeMeasure)
     override fun onEnd() {
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.keepTheBeat
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.keepTheBeat
     }
 
     override fun copy(remix: Remix): TapeMeasureEntity {

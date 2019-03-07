@@ -1,10 +1,12 @@
 package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.ShakeScreen
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 
@@ -30,8 +32,8 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
         bounds.height = 1f
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.special
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.special
     }
 
     override fun getTextForSemitone(semitone: Int): String {

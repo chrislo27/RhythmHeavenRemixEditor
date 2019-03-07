@@ -5,7 +5,6 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
-import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
@@ -28,7 +27,7 @@ class Playalong(val remix: Remix) {
 
     data class InProgressInput(val keycode: Int, val isMouse: Boolean, val result: InputResult)
 
-    private val stage: PlayalongStage get() = remix.editor.stage.playalongStage
+    var listener: PlayalongListener = NoOpPlayalongListener
     private val preferences: Preferences get() = remix.main.preferences
 
     /**
@@ -194,7 +193,7 @@ class Playalong(val remix: Remix) {
                 untilMonsterChomps -= monsterRate * Gdx.graphics.deltaTime * remix.speedMultiplier
                 if (prior > 0 && untilMonsterChomps <= 0) {
                     // Trigger end of monster goal
-                    stage.onMonsterGoalFail()
+                    listener.onMonsterGoalFail()
                 }
             }
         }
@@ -271,7 +270,7 @@ class Playalong(val remix: Remix) {
             if (inputResult.timing == InputTiming.ACE && inputAction == skillStarInput.first && start == skillStarInput.second) {
                 skillStarEntity?.play()
                 gotSkillStar = true
-                stage.onSkillStarGet()
+                listener.onSkillStarGet()
             }
         }
 
@@ -286,12 +285,12 @@ class Playalong(val remix: Remix) {
         if (perfectSoFar) {
             if (inputResult.timing == InputTiming.MISS) {
                 perfectSoFar = false
-                stage.onPerfectFail()
+                listener.onPerfectFail()
             } else {
-                stage.onPerfectHit()
+                listener.onPerfectHit()
             }
         }
-        stage.onInput(inputAction, inputResult, start)
+        listener.onInput(inputAction, inputResult, start)
     }
 
     fun updateScore(): Float {
@@ -308,7 +307,7 @@ class Playalong(val remix: Remix) {
                 }.toFloat() / numResultsExpected
         score = score.coerceIn(0f, 100f)
 
-        stage.updateLabels()
+        listener.onScoreUpdate()
 
         return score
     }

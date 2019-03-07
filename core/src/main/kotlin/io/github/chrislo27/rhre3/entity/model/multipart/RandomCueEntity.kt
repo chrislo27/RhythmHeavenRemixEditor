@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
@@ -9,6 +10,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.registry.datamodel.impl.RandomCue
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.random
 
@@ -54,8 +56,8 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
         volumePercent = thisVolume
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.pattern
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.pattern
     }
 
     override fun loadSounds() {

@@ -14,7 +14,7 @@ interface IVolumetric {
         private val volumeTextCache: MutableMap<Int, String> = mutableMapOf()
 
         fun isRemixMutedExternally(remix: Remix): Boolean {
-            return remix.cuesMuted && remix.editor.stage.tapalongStage.visible && remix.main.screen is EditorScreen
+            return remix.cuesMuted && remix.main.screen is EditorScreen
         }
 
         // Caching

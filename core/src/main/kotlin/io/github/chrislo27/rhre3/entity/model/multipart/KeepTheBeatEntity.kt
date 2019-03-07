@@ -2,12 +2,14 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.registry.datamodel.impl.KeepTheBeat
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -16,8 +18,8 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
 
     override val isStretchable: Boolean = true
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.keepTheBeat
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.keepTheBeat
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {

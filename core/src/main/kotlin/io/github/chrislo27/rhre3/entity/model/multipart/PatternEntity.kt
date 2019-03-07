@@ -3,11 +3,13 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Pattern
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -34,8 +36,8 @@ class PatternEntity(remix: Remix, datamodel: Pattern)
                 .maxBy { it.bounds.y + it.bounds.height }?.run { this.bounds.y + this.bounds.height - this@PatternEntity.bounds.y } ?: error("Nothing in internal cache")
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.pattern
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.pattern
     }
 
     override fun updateInternalCache(oldBounds: Rectangle) {

@@ -29,7 +29,7 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         super.render(screen, batch, shapeRenderer)
         if (!hasFocus) {
             val oldBeat = Math.round(beat)
-            beat = editor.remix.camera.position.x
+            beat = editor.camera.position.x
 
             if (oldBeat != Math.round(beat) || this.text.isEmpty()) {
                 this.text = "${Math.round(beat)}"
@@ -42,7 +42,7 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         if (!hasFocus || editor.remix.playState != PlayState.STOPPED)
             return
         val int = text.toIntOrNull() ?: return
-        editor.remix.camera.position.x = int.toFloat()
+        editor.camera.position.x = int.toFloat()
     }
 
     override fun getHoverText(): String {

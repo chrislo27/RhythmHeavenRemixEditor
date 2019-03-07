@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
@@ -145,15 +146,15 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         }
     }
 
-    override fun renderBeforeText(batch: SpriteBatch) {
-        super.renderBeforeText(batch)
+    override fun renderBeforeText(editor: Editor, batch: SpriteBatch) {
+        super.renderBeforeText(editor, batch)
         if (shouldRenderInternal) {
             val batchColor = batch.color
             batch.setColor(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 0.6f)
             internal.forEach {
                 batch.drawRect(it.bounds.x + lerpDifference.x, it.bounds.y + lerpDifference.y,
                                it.bounds.width, it.bounds.height,
-                               remix.editor.toScaleX(BORDER), remix.editor.toScaleY(BORDER))
+                               editor.toScaleX(BORDER), editor.toScaleY(BORDER))
             }
         }
     }

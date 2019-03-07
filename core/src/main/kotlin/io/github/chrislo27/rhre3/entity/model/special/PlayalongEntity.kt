@@ -1,12 +1,14 @@
 package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.playalong.InputAction
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.PlayalongModel
+import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 
 
@@ -30,8 +32,8 @@ class PlayalongEntity(remix: Remix, datamodel: PlayalongModel)
         return datamodel.pickerName.main
     }
 
-    override fun getRenderColor(): Color {
-        return remix.editor.theme.entities.cue
+    override fun getRenderColor(editor: Editor, theme: Theme): Color {
+        return theme.entities.cue
     }
 
     override fun getTextForSemitone(semitone: Int): String {

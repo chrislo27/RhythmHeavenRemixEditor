@@ -54,6 +54,7 @@ import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.track.EditorRemix
 import io.github.chrislo27.rhre3.track.GameSection
 import io.github.chrislo27.rhre3.track.PlayState.PAUSED
 import io.github.chrislo27.rhre3.track.PlayState.PLAYING
@@ -159,7 +160,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     private data class AutosaveState(val result: AutosaveResult, var time: Float)
 
     fun createRemix(addListeners: Boolean = true): Remix {
-        return Remix(camera, this).apply {
+        return EditorRemix(main, this).apply {
             if (addListeners) {
                 playStateListeners += { old, new ->
                     when (new) {
@@ -270,7 +271,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
     private val mouseVector: Vector2 = Vector2()
         get() {
-            field.set(remix.camera.getInputX(), remix.camera.getInputY())
+            field.set(camera.getInputX(), camera.getInputY())
             return field
         }
     private var wasStretchCursor = false
@@ -348,7 +349,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun setSubbeatSectionToMouse() {
         subbeatSection.enabled = true
-        subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
+        subbeatSection.start = Math.floor(camera.getInputX().toDouble()).toFloat()
         subbeatSection.end = subbeatSection.start
     }
 
@@ -513,7 +514,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
-                    it.render(batch)
+                    it.render(this, batch)
                 }
             }
         }
@@ -529,7 +530,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it is TextureEntity) {
                 it.updateInterpolation(!smoothDragging)
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
-                    it.render(batch)
+                    it.render(this, batch)
                 }
             }
         }
@@ -749,14 +750,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         if (remix.playState == PLAYING) {
-            val halfWidth = remix.camera.viewportWidth / 2 * remix.camera.zoom
-            if (remix.beat !in remix.camera.position.x - halfWidth..remix.camera.position.x + halfWidth) {
-                remix.camera.position.x = remix.beat + halfWidth
+            val halfWidth = camera.viewportWidth / 2 * camera.zoom
+            if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth) {
+                camera.position.x = remix.beat + halfWidth
             }
 
             if (stage.playalongStage.visible || main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
                 // Use linear time to prevent nauseation
-                remix.camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + remix.camera.viewportWidth * 0.25f
+                camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + camera.viewportWidth * 0.25f
             }
         }
 
@@ -947,7 +948,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         if (currentTool.showSubbeatLines) {
             subbeatSection.enabled = true
-            subbeatSection.start = Math.floor(remix.camera.getInputX().toDouble()).toFloat()
+            subbeatSection.start = Math.floor(camera.getInputX().toDouble()).toFloat()
             subbeatSection.end = subbeatSection.start + 0.5f
         }
 
@@ -1266,9 +1267,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     }
 
     fun getTrackerOnMouse(klass: Class<out Tracker<*>>?, obeyY: Boolean): Tracker<*>? {
-        if (klass == null || (obeyY && remix.camera.getInputY() > 0f))
+        if (klass == null || (obeyY && camera.getInputY() > 0f))
             return null
-        val mouseX = remix.camera.getInputX()
+        val mouseX = camera.getInputX()
         remix.trackers.forEach { container ->
             val result = container.map.values.firstOrNull {
                 if (it::class.java != klass)
@@ -1373,10 +1374,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         val first = newSel.first()
                         val oldSel = this.selection.toList()
                         val clickedOn = getEntityOnMouse().takeIf { it in oldSel } ?: first
-                        val mouseOffset = Vector2(remix.camera.getInputX() - first.bounds.x,
-                                                  remix.camera.getInputY() - first.bounds.y)
+                        val mouseOffset = Vector2(camera.getInputX() - first.bounds.x,
+                                                  camera.getInputY() - first.bounds.y)
                         val stretchRegion = if (newSel.isNotEmpty() && newSel.all { it is IStretchable && it.isStretchable } && !isCopying)
-                            getStretchRegionForStretchable(remix.camera.getInputX(), clickedOn) else StretchRegion.NONE
+                            getStretchRegionForStretchable(camera.getInputX(), clickedOn) else StretchRegion.NONE
 
                         val newClick = ClickOccupation.SelectionDrag(this, first, clickedOn, mouseOffset,
                                                                      false, isCopying, oldSel, stretchRegion)
@@ -1411,7 +1412,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
-                val beat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
+                val beat = Math.floor(camera.getInputX().toDouble()).toInt()
                 val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(
                         beat.toFloat())?.takeIf { it.beat == beat }
 
@@ -1426,7 +1427,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java, true)
-                val mouseX = remix.camera.getInputX()
+                val mouseX = camera.getInputX()
                 val beat = MathHelper.snapToNearest(mouseX, snap)
 
                 if (button == Input.Buttons.RIGHT && tracker != null) {
@@ -1821,8 +1822,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             return true
         } else if (tool == Tool.TIME_SIGNATURE && !shift) {
-            val timeSig = remix.timeSignatures.getTimeSignature(remix.camera.getInputX())
-            val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
+            val timeSig = remix.timeSignatures.getTimeSignature(camera.getInputX())
+            val inputBeat = Math.floor(camera.getInputX().toDouble()).toInt()
             if (timeSig != null && inputBeat == timeSig.beat) {
                 val change = -amount * (if (control) 5 else 1)
                 val newDivisions = (timeSig.divisions + change)

@@ -82,8 +82,8 @@ sealed class ClickOccupation {
         fun updateRectangle() {
             val startX = startPoint.x
             val startY = startPoint.y
-            val width = editor.remix.camera.getInputX() - startX
-            val height = editor.remix.camera.getInputY() - startY
+            val width = editor.camera.getInputX() - startX
+            val height = editor.camera.getInputY() - startY
 
             if (width < 0) {
                 val abs = Math.abs(width)
@@ -206,8 +206,8 @@ sealed class ClickOccupation {
                 })
             }
 
-            val y = editor.remix.camera.getInputY() - mouseOffset.y
-            setFirstPosition(MathHelper.snapToNearest(editor.remix.camera.getInputX() - mouseOffset.x, snap),
+            val y = editor.camera.getInputY() - mouseOffset.y
+            setFirstPosition(MathHelper.snapToNearest(editor.camera.getInputX() - mouseOffset.x, snap),
                              if (intY) Math.round(y).toFloat() else y)
         }
 

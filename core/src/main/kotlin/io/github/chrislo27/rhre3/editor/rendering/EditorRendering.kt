@@ -44,7 +44,7 @@ fun Editor.renderTimeSignatures(batch: SpriteBatch) {
     val timeSignatures = remix.timeSignatures
     val bigFont = main.timeSignatureFont
     val heightOfTrack = remix.trackCount.toFloat() - toScaleY(Editor.TRACK_LINE_THICKNESS) * 2f
-    val inputBeat = Math.floor(remix.camera.getInputX().toDouble()).toInt()
+    val inputBeat = Math.floor(camera.getInputX().toDouble()).toInt()
     bigFont.scaleFont(camera)
     bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / Editor.DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
