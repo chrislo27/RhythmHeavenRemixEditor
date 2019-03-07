@@ -28,12 +28,9 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
     companion object {
         private val TEXTS: List<String> = listOf(Editor.VOLUME_CHAR, "■", "♬")
 
-        private val ownEditor: Editor = Editor(RHRE3Application.instance, RHRE3Application.instance.defaultCamera, false)
-        private val ownRemix: Remix
-            get() = ownEditor.remix
+        private val ownRemix: Remix by lazy { Remix(RHRE3Application.instance) }
 
         init {
-            ownEditor.remix = ownEditor.createRemix(false)
             ownRemix.tempos.add(TempoChange(ownRemix.tempos, 0f, ownRemix.tempos.defaultTempo, Swing.STRAIGHT, 0f))
         }
     }
