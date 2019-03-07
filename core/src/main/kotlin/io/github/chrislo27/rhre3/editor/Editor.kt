@@ -69,9 +69,7 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.util.JsonHandler
-import io.github.chrislo27.rhre3.util.RectanglePool
-import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -335,17 +333,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     fun toScaleY(float: Float): Float =
             (float / RHRE3.HEIGHT) * camera.viewportHeight
-
-    fun BitmapFont.scaleFont(camera: OrthographicCamera) {
-        this.setUseIntegerPositions(false)
-        this.data.setScale(camera.viewportWidth / main.defaultCamera.viewportWidth,
-                           camera.viewportHeight / main.defaultCamera.viewportHeight)
-    }
-
-    fun BitmapFont.unscaleFont() {
-        this.setUseIntegerPositions(true)
-        this.data.setScale(1f)
-    }
 
     private fun setSubbeatSectionToMouse() {
         subbeatSection.enabled = true

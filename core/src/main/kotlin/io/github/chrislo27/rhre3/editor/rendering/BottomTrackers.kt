@@ -11,6 +11,8 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.tracker.Tracker
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.Swing
+import io.github.chrislo27.rhre3.util.scaleFont
+import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlin.math.roundToInt

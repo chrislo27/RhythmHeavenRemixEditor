@@ -1,10 +1,16 @@
 package io.github.chrislo27.rhre3.editor.rendering
 
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
+import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.util.scaleFont
+import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
@@ -12,12 +18,16 @@ import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import kotlin.math.roundToInt
 
-
 fun Editor.renderPlayalong(batch: SpriteBatch, beatRange: IntRange, alpha: Float) {
+    remix.playalong.renderPlayalong(main, camera, theme, batch, beatRange, alpha)
+}
+
+fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera, theme: Theme,
+                              batch: SpriteBatch, beatRange: IntRange, alpha: Float) {
     if (alpha <= 0f) return
-    val largeFont = this.main.defaultBorderedFontLarge
+    val largeFont = main.defaultBorderedFontLarge
     largeFont.scaleFont(camera)
-    val playalong = remix.playalong
+    val playalong: Playalong = this
 
     val recommendedHeight = largeFont.getTextHeight(PlayalongChars.FILLED_A)
     val recommendedWidth = largeFont.getTextWidth(PlayalongChars.FILLED_A)
