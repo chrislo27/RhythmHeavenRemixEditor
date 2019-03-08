@@ -47,7 +47,7 @@ object DiscordHelper {
         thread(isDaemon = true, name = "Discord-RPC Callback Handler") {
             while (!Thread.currentThread().isInterrupted) {
                 try {
-                    Thread.sleep(2000L)
+                    Thread.sleep(1000L)
                 } catch (ignored: InterruptedException) {
                 }
                 lib.Discord_RunCallbacks()
