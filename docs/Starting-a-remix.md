@@ -77,8 +77,12 @@ of a 4/4 time signature (1 **2** 3 **4**). Most call-and-response games
 ## 5. Add cues
 Now you've come to the creative part -- adding the patterns and cues.
 One of the few things to keep in mind is to make it realistic and to
-strive to make it playable. Imagine if you were presented with playing
+strive to make it [playable][Playalong.md]. Imagine if you were presented with playing
 your remix -- would it be possible? Would it be followable with the rhythm?
 All these aspects are what make a remix good.
+
+## (Optional) 6. Playalong cues
+Starting with v3.17.0, you can add Playalong cues to actually add inputs
+to your remix. More info [in its separate doc page.](Playalong.md)
 
 Happy remixing!
