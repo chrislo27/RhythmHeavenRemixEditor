@@ -200,6 +200,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.text = "screen.playalongSettings.calibration.reset.key"
                 this.textWrapping = false
+                this.fontScaleMultiplier = 0.85f
             })
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
             this.location.set(screenWidth = 0.4f)
@@ -214,6 +215,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.text = "screen.playalongSettings.calibration.reset.mouse"
                 this.textWrapping = false
+                this.fontScaleMultiplier = 0.85f
             })
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
             this.location.set(screenWidth = 0.4f)
