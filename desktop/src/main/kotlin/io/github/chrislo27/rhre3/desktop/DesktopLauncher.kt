@@ -27,10 +27,21 @@ object DesktopLauncher {
                     this.height = app.emulatedSize.second
                     this.title = app.getTitle()
                     this.fullscreen = false
-                    this.foregroundFPS = 60
-                    this.backgroundFPS = 60
+                    val fpsArg = args.find { it.startsWith("--fps=") }
+                    this.foregroundFPS = (if (fpsArg != null) {
+                        val num = fpsArg.substringAfter('=')
+                        val parsed = num.toIntOrNull()
+                        val adjusted = parsed?.coerceAtLeast(30) ?: 60
+                        if (parsed == null) {
+                            logger.info("Failed to parse manual FPS: $num")
+                        } else {
+                            logger.info("Manually setting FPS to $adjusted (requested: $num)")
+                        }
+                        adjusted
+                    } else 60).coerceAtLeast(30)
+                    this.backgroundFPS = this.foregroundFPS.coerceIn(30, 60)
                     this.resizable = true
-                    this.vSyncEnabled = true
+                    this.vSyncEnabled = this.foregroundFPS <= 60
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = true
                     this.audioDeviceSimultaneousSources = 250
