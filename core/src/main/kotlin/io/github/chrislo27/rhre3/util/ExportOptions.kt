@@ -16,6 +16,10 @@ data class ExportOptions(val bitrateKbps: Int, val sampleRate: Int, val madeWith
          * Same as [DEFAULT] but with no comments.
          */
         val BLEND = DEFAULT.copy(madeWithComment = false)
+        /**
+         * A lower-quality lower-filesize option for the Challenge Train.
+         */
+        val CHALLENGE_TRAIN = ExportOptions(128, 44100, true)
     }
 
 }
