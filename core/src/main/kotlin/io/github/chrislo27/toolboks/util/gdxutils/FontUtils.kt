@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
 
 
@@ -83,3 +84,33 @@ fun BitmapFont.drawConstrained(batch: SpriteBatch, text: String, x: Float, y: Fl
 
     return layout
 }
+
+fun FreeTypeFontGenerator.FreeTypeFontParameter.copy(): FreeTypeFontGenerator.FreeTypeFontParameter =
+        FreeTypeFontGenerator.FreeTypeFontParameter().also {
+            it.size = this.size
+            it.mono = this.mono
+            it.hinting = this.hinting
+            it.color = this.color.cpy()
+            it.gamma = this.gamma
+            it.renderCount = this.renderCount
+            it.borderColor = this.borderColor.cpy()
+            it.borderGamma = this.borderGamma
+            it.borderStraight = this.borderStraight
+            it.borderWidth = this.borderWidth
+            it.characters = this.characters
+            it.shadowColor = this.shadowColor.cpy()
+            it.shadowOffsetX = this.shadowOffsetX
+            it.shadowOffsetY = this.shadowOffsetY
+            it.spaceX = this.spaceX
+            it.spaceY = this.spaceY
+            it.kerning = this.kerning
+            it.flip = this.flip
+            it.genMipMaps = this.genMipMaps
+            it.incremental = this.incremental
+            it.minFilter = this.minFilter
+            it.magFilter = this.magFilter
+            it.padTop = this.padTop
+            it.padBottom = this.padBottom
+            it.padLeft = this.padLeft
+            it.padRight = this.padRight
+        }
