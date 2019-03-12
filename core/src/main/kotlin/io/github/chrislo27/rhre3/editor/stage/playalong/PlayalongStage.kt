@@ -422,6 +422,14 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = 0.5f - this.location.screenWidth / 2, screenHeight = acesLabel.location.screenY - this.location.screenY - paddingY)
         }
         lowerStage.elements += timingDisplayStage
+        lowerStage.elements += TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), lowerStage, lowerStage).apply {
+            this.textWrapping = false
+            this.text = "This is a pre-release version.\n[RED]DO NOT[] publish recorded video of this feature."
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 1f
+            this.location.set(timingDisplayStage.location)
+            this.visible = false
+        }
 
         updateLabels()
         setPerfectVisibility(false)
