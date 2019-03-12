@@ -2,7 +2,7 @@
 
 <img align="right" src="core/assets/images/icon/256.png" height="256" width="256">
 
-# Rhythm Heaven Remix Editor 3
+# Rhythm Heaven Remix Editor
 A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhythm_Heaven_Megamix) series
 
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
@@ -21,19 +21,21 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [Java 8 or newer](https://java.com/en/download/)
 * A graphics driver that supports OpenGL 2.0 or higher
+* Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 14.04 LTS or newer)
 * An Internet connection initially
 
 ## Features
-![Palettes screenshot](.github/rhre3palettes.png)
+![Screenshot](.github/rhre3palettes.png)
 
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
 * Automatic SFX database updating as community fixes/additions get pulled in
+* Play the remixes you create
 * Every Rhythm Heaven minigame is here!
 
 ## Installation
 Installation is straightforward.
-1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases) and download the `RHRE3_X.zip` file.
+1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases) and download the `RHRE_X.zip` file.
 2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
 3. Open the extracted folder, and double click the file labeled `run_windows.bat` or `run_macOS-linux.sh` depending on your operating system.
 4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
