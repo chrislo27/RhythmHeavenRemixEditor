@@ -92,7 +92,7 @@ fun Editor.renderBottomTrackers(batch: SpriteBatch, beatRange: IntRange) {
 
     remix.trackersReverseView.forEach { container ->
         container.map.values.forEach {
-            if ((clickOccupation !is ClickOccupation.TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange)) {
+            if ((clickOccupation !is ClickOccupation.TrackerResize || clickOccupation.tracker !== it) && it !== currentTracker && (it.endBeat.roundToInt() >= beatRange.first && it.beat.roundToInt() <= beatRange.last)) {
                 it.render()
             }
         }
@@ -113,7 +113,7 @@ fun Editor.renderBottomTrackers(batch: SpriteBatch, beatRange: IntRange) {
         val tempos = remix.tempos
         var lastSwing: Swing = tempos.defaultSwing
         tempos.map.values.forEach {
-            if ((it.beat.roundToInt() in beatRange || it.endBeat.roundToInt() in beatRange) && (tool == Tool.SWING || lastSwing != it.swing)) {
+            if ((it.endBeat.roundToInt() >= beatRange.first && it.beat.roundToInt() <= beatRange.last) && (tool == Tool.SWING || lastSwing != it.swing)) {
                 val noteSymbol: String = it.swing.getNoteSymbol()
                 val swingName: String = it.swing.getSwingName()
 
