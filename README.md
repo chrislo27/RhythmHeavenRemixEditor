@@ -19,7 +19,8 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
 
 ## Requirements
-* [Java 8 or newer](https://java.com/en/download/)
+* [Java 8](https://java.com/en/download/)
+  * A Java version of 9 or newer will work but is not recommended
 * A graphics driver that supports OpenGL 2.0 or higher
 * Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 14.04 LTS or newer)
 * An Internet connection initially
