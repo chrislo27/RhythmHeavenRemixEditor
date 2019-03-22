@@ -206,6 +206,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         currentControllerMapping = playalongControllerMappings.firstOrNull { it.inUse } ?: playalongControllerMappings.firstOrNull() ?: ControllerMapping.INVALID
         Controllers.preferredManager = "de.golfgl.gdx.controllers.jamepad.JamepadControllerManager"
+        Controllers.getControllers() // Initialize*
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
