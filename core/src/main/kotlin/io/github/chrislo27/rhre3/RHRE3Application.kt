@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
@@ -19,6 +20,7 @@ import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
+import io.github.chrislo27.rhre3.playalong.ControllerMapping
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -132,6 +134,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
     var advancedOptions: Boolean = false
     var playalongControls: PlayalongControls = PlayalongControls()
+    var playalongControllerMappings: List<ControllerMapping> = listOf()
+    var currentControllerMapping: ControllerMapping = ControllerMapping.INVALID
 
     private val rainbowColor: Color = Color()
 
@@ -195,6 +199,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         } catch (ignored: Exception) {
             PlayalongControls()
         }
+        playalongControllerMappings = try {
+            JsonHandler.fromJson(preferences.getString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, "[]"))
+        } catch (ignored: Exception) {
+            listOf()
+        }
+        currentControllerMapping = playalongControllerMappings.firstOrNull { it.inUse } ?: playalongControllerMappings.firstOrNull() ?: ControllerMapping.INVALID
+        Controllers.preferredManager = "de.golfgl.gdx.controllers.jamepad.JamepadControllerManager"
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
@@ -362,6 +373,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
         preferences.putString(PreferenceKeys.MIDI_NOTE, preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
         preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(playalongControls))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(playalongControllerMappings))
         preferences.flush()
         try {
             GameRegistry.dispose()

@@ -5,6 +5,8 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -55,9 +57,12 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val pressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val helperPressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val playStopButton: Button<PlayalongSettingsScreen>
+    private val controllerTitle: TextLabel<PlayalongSettingsScreen>
 
     private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
     private val preferences: Preferences get() = main.preferences
+
+    private var controllers: List<Controller> = Controllers.getControllers().toList()
 
     private inner class Calibration(val key: String, var calibration: Float = main.preferences.getFloat(key, 0f),
                                     var summed: Float = 0f, var inputs: Int = 0) {
@@ -235,10 +240,12 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         stage.centreStage.elements += controlsLabel
 
+        val settingsPadding = 0.0125f
+        // SFX settings
         stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.textWrapping = false
             this.text = "screen.playalongSettings.sfxTitle"
-            this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -262,7 +269,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.perfectFailSfx"
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -286,7 +293,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.monsterFailSfx"
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -310,8 +317,47 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.monsterAceSfx"
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 3, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 3, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
+
+        // Separator
+        stage.centreStage.elements += ColourPane(stage.centreStage, stage.centreStage).apply {
+            this.colour.set(1f, 1f, 1f, 1f)
+            val barWidth = 0.00275f
+            this.location.set(screenX = 0.5f - barWidth / 2, screenWidth = barWidth, screenY = 0.5f - (0.1f + 0.025f) * 3)
+            this.location.set(screenHeight = 0.6f - this.location.screenY)
+        }
+
+        // Controllers
+        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.textWrapping = false
+            this.text = "screen.playalongSettings.controllersTitle"
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
+        }
+        // rescan
+        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+
+            }
+        }.apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.85f
+                this.textWrapping = false
+                this.text = "screen.playalongSettings.rescanControllers"
+            })
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = (0.5f - settingsPadding) * 0.25f, screenHeight = 0.1f)
+        }
+        controllerTitle = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.75f
+            this.textWrapping = false
+            this.text = Localization["screen.playalongSettings.noControllers"]
+            this.location.set(screenX = 0.5f + settingsPadding + (0.5f - settingsPadding) * 0.265f, screenY = 0.5f - (0.1f + 0.025f),
+                              screenWidth = (0.5f - settingsPadding) * 0.735f, screenHeight = 0.1f)
+        }
+        stage.centreStage.elements += controllerTitle
 
         val currentControls = main.playalongControls.copy()
         val isCustom = currentControls !in PlayalongControls.standardControls.values

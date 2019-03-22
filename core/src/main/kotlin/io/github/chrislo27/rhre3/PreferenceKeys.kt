@@ -50,6 +50,7 @@ object PreferenceKeys {
     val PADDLER_LOADING_ICON = "paddlerLoadingIcon"
     val VIEWED_PARTNERS_VERSION = "viewedPartnersVersion"
     val PLAYALONG_CONTROLS = "playalongControls"
+    val PLAYALONG_CONTROLLER_MAPPINGS = "playalongControllerMappings"
     val PLAYALONG_CALIBRATION_KEY = "playalongCalibrationKey"
     val PLAYALONG_CALIBRATION_MOUSE = "playalongCalibrationMouse"
     val PLAYALONG_SFX_PERFECT_FAIL = "playalongSfxPerfectFail"

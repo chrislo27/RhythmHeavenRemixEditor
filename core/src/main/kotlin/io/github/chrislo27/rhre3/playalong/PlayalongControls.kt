@@ -18,6 +18,7 @@ data class PlayalongControls(var buttonA: Int = Input.Keys.J,
         val ARROW_KEYS_WX = PlayalongControls(Input.Keys.W, Input.Keys.X, Input.Keys.LEFT, Input.Keys.RIGHT, Input.Keys.UP, Input.Keys.DOWN)
         val QWERTY_IJKL = PlayalongControls(Input.Keys.Z, Input.Keys.X, Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)
         val AZERTY_IJKL = PlayalongControls(Input.Keys.W, Input.Keys.X, Input.Keys.J, Input.Keys.L, Input.Keys.I, Input.Keys.K)
+        val INVALID = PlayalongControls(-1, -1, -1, -1, -1, -1)
 
         val strCustom = "Custom"
         val standardControls: Map<String, PlayalongControls> = mapOf(
