@@ -134,27 +134,27 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
         var any = false
         val release = value == PovDirection.center
         if (buttonA is ControllerInput.Pov && buttonA.povCode == povCode && (buttonA.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_A, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_A, PlayalongInput.BUTTON_A_OR_DPAD), buttonA.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         if (buttonB is ControllerInput.Pov && buttonB.povCode == povCode && (buttonB.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_B), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_B), buttonB.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         if (buttonLeft is ControllerInput.Pov && buttonLeft.povCode == povCode && (buttonLeft.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_LEFT, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_LEFT, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonLeft.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         if (buttonRight is ControllerInput.Pov && buttonRight.povCode == povCode && (buttonRight.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_RIGHT, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_RIGHT, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonRight.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         if (buttonUp is ControllerInput.Pov && buttonUp.povCode == povCode && (buttonUp.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_UP, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_UP, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonUp.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         if (buttonDown is ControllerInput.Pov && buttonDown.povCode == povCode && (buttonDown.direction == value || release)) {
-            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
+            playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonDown.direction.ordinal shl (povCode + 16), false)
             any = true
         }
         return any && playalong.remix.playState == PlayState.PLAYING
