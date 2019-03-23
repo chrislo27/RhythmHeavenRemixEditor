@@ -36,21 +36,26 @@ data class ControllerMapping(var inUse: Boolean, val name: String,
 sealed class ControllerInput {
     @JsonTypeName("none")
     object None : ControllerInput() {
+        override fun isNothing(): Boolean = true
         override fun toString(): String {
-            return "ControllerInput.None"
+            return "<none>"
         }
     }
     @JsonTypeName("button")
     class Button(val code: Int) : ControllerInput() {
+        override fun isNothing(): Boolean = code < 0
         override fun toString(): String {
-            return "ControllerInput.Button[code=$code]"
+            return "Button $code"
         }
     }
     @JsonTypeName("pov")
     class Pov(val povCode: Int, val direction: PovDirection) : ControllerInput() {
+        override fun isNothing(): Boolean = povCode < 0 || direction == PovDirection.center
         override fun toString(): String {
-            return "ControllerInput.Pov[povCode=$povCode, dir=$direction]"
+            return "PoV $povCode $direction"
         }
     }
 //    class Axis(val axisCode: Int, val range: ClosedRange<Float>) : ControllerInput() // Not implemented
+
+    abstract fun isNothing(): Boolean
 }
