@@ -46,6 +46,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         private val CALIBRATION_BPM = 125f
         private val CALIBRATION_DURATION_BEATS = 32f
         private val FIVE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00000", DecimalFormatSymbols())
+
+        private var currentController: Controller? = null
     }
 
     override val stage: GenericStage<PlayalongSettingsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -57,7 +59,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val playStopButton: Button<PlayalongSettingsScreen>
     private val controllerTitleButton: Button<PlayalongSettingsScreen>
     private val controllerButtonLabel: TextLabel<PlayalongSettingsScreen>
-    private var currentController: Controller? = null
     private val buttonAMapButton: MapButton
     private val buttonBMapButton: MapButton
     private val buttonLeftMapButton: MapButton
@@ -452,7 +453,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 var newIndex = currentIndex + dir.coerceIn(-1, 1)
                 newIndex = if (newIndex >= controllers.size) 0 else if (newIndex < 0) controllers.size - 1 else newIndex
                 val newController = controllers[newIndex]
-                this@PlayalongSettingsScreen.currentController = newController
+                PlayalongSettingsScreen.currentController = newController
                 updateCurrentController()
             }
 
