@@ -6,6 +6,8 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.ControllerAdapter
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.controllers.PovDirection
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -91,8 +93,27 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
+    inner class ControllerCalibrationListener(val forController: Controller, val input: ControllerInput) : ControllerAdapter() {
+        override fun buttonDown(controller: Controller, buttonIndex: Int): Boolean {
+            if (controller == forController && input is ControllerInput.Button && input.code == buttonIndex) {
+                keyCalibration.fireInput()
+                return true
+            }
+            return false
+        }
+
+        override fun povMoved(controller: Controller, povIndex: Int, value: PovDirection): Boolean {
+            if (controller == forController && input is ControllerInput.Pov && input.povCode == povIndex && input.direction == value) {
+                keyCalibration.fireInput()
+                return true
+            }
+            return false
+        }
+    }
+
     private val keyCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_KEY)
     private val mouseCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_MOUSE)
+    private var calibrationListener: ControllerCalibrationListener? = null
 
     init {
         val palette = main.uiPalette
@@ -180,12 +201,28 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                     playLabel.visible = false
                     inputCalibrationTitle.visible = false
                     inputCalibrationControls.visible = true
+                    if (calibrationListener != null) {
+                        Controllers.removeListener(calibrationListener)
+                        calibrationListener = null
+                    }
+
+                    val mappings = Playalong.activeControllerMappings
+                    val cc = currentController
+                    val controllerMapping = mappings[cc]
+                    if (cc != null && controllerMapping != null) {
+                        calibrationListener = ControllerCalibrationListener(cc, controllerMapping.buttonA)
+                        Controllers.addListener(calibrationListener)
+                    }
                 } else {
                     music.stop()
                     stopLabel.visible = false
                     playLabel.visible = true
                     inputCalibrationTitle.visible = true
                     inputCalibrationControls.visible = false
+                    if (calibrationListener != null) {
+                        Controllers.removeListener(calibrationListener)
+                        calibrationListener = null
+                    }
                 }
             }
         }.apply {
@@ -456,14 +493,13 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             controllerButtonLabel.text = Localization["screen.playalongSettings.noControllers"]
             currentController = null
         } else {
-
-            println("before: " + Playalong.activeControllerMappings.values.joinToString(separator = ", "))
             val target = controllers.firstOrNull { it == currentController } ?: controllers.firstOrNull { mappings[it]?.inUse == true } ?: controllers.first()
             mappings.forEach { _, m -> m.inUse = false }
             mappings[target]?.inUse = true
             controllerButtonLabel.text = "${target.name} (${controllers.indexOf(target) + 1}/${controllers.size})"
             currentController = target
         }
+        // FIXME remove later
         println("Set current controller to ${currentController?.name}")
         println(Playalong.activeControllerMappings.values.joinToString(separator = ", "))
     }
@@ -523,7 +559,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
     private fun updatePressedControl(controller: Controller, controllerInput: ControllerInput, input: PlayalongInput) {
         when (controllerInput) {
-            is ControllerInput.None -> {}
+            is ControllerInput.None -> {
+            }
             is ControllerInput.Button -> {
                 if (controller.getButton(controllerInput.code)) {
                     helperPressedControls.add(input)
@@ -545,6 +582,10 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     override fun hide() {
         super.hide()
         music.stop()
+        if (calibrationListener != null) {
+            Controllers.removeListener(calibrationListener)
+            calibrationListener = null
+        }
 
         keyCalibration.persist()
         mouseCalibration.persist()

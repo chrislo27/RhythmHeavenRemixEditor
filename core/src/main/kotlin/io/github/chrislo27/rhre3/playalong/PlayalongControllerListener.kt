@@ -4,6 +4,7 @@ import com.badlogic.gdx.controllers.Controller
 import com.badlogic.gdx.controllers.ControllerListener
 import com.badlogic.gdx.controllers.PovDirection
 import com.badlogic.gdx.math.Vector3
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
 
@@ -55,7 +56,7 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
             playalong.handleInput(true, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonCode shl 16, false)
             any = true
         }
-        return any
+        return any && playalong.remix.playState == PlayState.PLAYING
     }
 
     override fun buttonUp(controller: Controller, buttonCode: Int): Boolean {
@@ -91,7 +92,7 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
             playalong.handleInput(false, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonCode shl 16, false)
             any = true
         }
-        return any
+        return any && playalong.remix.playState == PlayState.PLAYING
     }
 
     override fun povMoved(controller: Controller, povCode: Int, value: PovDirection): Boolean {
@@ -128,7 +129,7 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
             playalong.handleInput(!release, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), value.ordinal shl (povCode + 16), false)
             any = true
         }
-        return any
+        return any && playalong.remix.playState == PlayState.PLAYING
     }
 
     // Below not implemented
