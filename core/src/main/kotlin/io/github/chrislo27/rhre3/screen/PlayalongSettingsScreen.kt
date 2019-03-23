@@ -6,6 +6,7 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.PovDirection
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -13,10 +14,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
-import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.playalong.PlayalongChars
-import io.github.chrislo27.rhre3.playalong.PlayalongControls
-import io.github.chrislo27.rhre3.playalong.PlayalongInput
+import io.github.chrislo27.rhre3.playalong.*
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -500,6 +498,14 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         updatePressedControl(controls.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
         updatePressedControl(controls.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
         updatePressedControl(controls.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+        Playalong.activeControllerMappings.forEach { controller, mapping ->
+            updatePressedControl(controller, mapping.buttonA, PlayalongInput.BUTTON_A)
+            updatePressedControl(controller, mapping.buttonB, PlayalongInput.BUTTON_B)
+            updatePressedControl(controller, mapping.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
+            updatePressedControl(controller, mapping.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
+            updatePressedControl(controller, mapping.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
+            updatePressedControl(controller, mapping.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+        }
         if (helperPressedControls != pressedControls) {
             pressedControls.clear()
             pressedControls.addAll(helperPressedControls)
@@ -512,6 +518,27 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             helperPressedControls.add(input)
         } else {
             helperPressedControls.remove(input)
+        }
+    }
+
+    private fun updatePressedControl(controller: Controller, controllerInput: ControllerInput, input: PlayalongInput) {
+        when (controllerInput) {
+            is ControllerInput.None -> {}
+            is ControllerInput.Button -> {
+                if (controller.getButton(controllerInput.code)) {
+                    helperPressedControls.add(input)
+                } else {
+                    helperPressedControls.remove(input)
+                }
+            }
+            is ControllerInput.Pov -> {
+                val dir = controller.getPov(controllerInput.povCode)
+                if (dir == controllerInput.direction) {
+                    helperPressedControls.add(input)
+                } else if (dir == PovDirection.center) {
+                    helperPressedControls.remove(input)
+                }
+            }
         }
     }
 

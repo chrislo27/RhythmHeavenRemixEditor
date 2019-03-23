@@ -19,10 +19,10 @@ data class ControllerMapping(var inUse: Boolean, val name: String,
         val INVALID = ControllerMapping(false, "<none>")
         val XBOX = ControllerMapping(false, "XBOX something",
                                      buttonA = ControllerInput.Button(Xbox.B), buttonB = ControllerInput.Button(Xbox.A),
-                                     buttonLeft = if (Xbox.DPAD_LEFT == -1) ControllerInput.Pov(Xbox.DPAD_LEFT, PovDirection.west) else ControllerInput.Button(Xbox.DPAD_LEFT),
-                                     buttonRight = if (Xbox.DPAD_RIGHT == -1) ControllerInput.Pov(Xbox.DPAD_RIGHT, PovDirection.east) else ControllerInput.Button(Xbox.DPAD_RIGHT),
-                                     buttonUp = if (Xbox.DPAD_UP == -1) ControllerInput.Pov(Xbox.DPAD_UP, PovDirection.north) else ControllerInput.Button(Xbox.DPAD_UP),
-                                     buttonDown = if (Xbox.DPAD_DOWN == -1) ControllerInput.Pov(Xbox.DPAD_DOWN, PovDirection.south) else ControllerInput.Button(Xbox.DPAD_DOWN))
+                                     buttonLeft = if (Xbox.DPAD_LEFT == -1) ControllerInput.Pov(0,  PovDirection.west) else ControllerInput.Button(Xbox.DPAD_LEFT),
+                                     buttonRight = if (Xbox.DPAD_RIGHT == -1) ControllerInput.Pov(0, PovDirection.east) else ControllerInput.Button(Xbox.DPAD_RIGHT),
+                                     buttonUp = if (Xbox.DPAD_UP == -1) ControllerInput.Pov(0, PovDirection.north) else ControllerInput.Button(Xbox.DPAD_UP),
+                                     buttonDown = if (Xbox.DPAD_DOWN == -1) ControllerInput.Pov(0, PovDirection.south) else ControllerInput.Button(Xbox.DPAD_DOWN))
     }
 
 }

@@ -562,12 +562,7 @@ class PlayalongStage(val editor: Editor,
 
     fun reset() {
         remix.recomputeCachedData()
-        if (currentPlayalongControllerListener != null) {
-            Controllers.removeListener(currentPlayalongControllerListener)
-        }
         val noPlayalong = playalong.inputActions.isEmpty()
-        currentPlayalongControllerListener = PlayalongControllerListener(playalong)
-        Controllers.addListener(currentPlayalongControllerListener)
         noEntitiesLabel.visible = noPlayalong
         lowerStage.visible = !noPlayalong
         updateLabels()
@@ -578,6 +573,15 @@ class PlayalongStage(val editor: Editor,
             perfectIcon.stage.updatePositions()
         }
         flickingStage.visible = playalong.needsTouchScreen
+        resetPlayalongControllerListener()
+    }
+
+    fun resetPlayalongControllerListener() {
+        if (currentPlayalongControllerListener != null) {
+            Controllers.removeListener(currentPlayalongControllerListener)
+        }
+        currentPlayalongControllerListener = PlayalongControllerListener { playalong }
+        Controllers.addListener(currentPlayalongControllerListener)
     }
 
     fun onTapDown(tapPoint: FlickingStage.TapPoint) {
