@@ -630,6 +630,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         cancelMapping()
         currentMapButton = null
+        mappingLabel.text = ""
         updateMapButtons()
         // FIXME remove later
         println("Set current controller to ${currentController?.name}")
