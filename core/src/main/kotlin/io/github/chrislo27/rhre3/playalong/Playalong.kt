@@ -2,6 +2,9 @@ package io.github.chrislo27.rhre3.playalong
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.Controllers
+import com.badlogic.gdx.controllers.mappings.Xbox
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
@@ -11,6 +14,7 @@ import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.special.PlayalongEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.rhre3.util.JsonHandler
 import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.properties.Delegates
@@ -23,6 +27,45 @@ class Playalong(val remix: Remix) {
         val ACE_OFFSET: Float = 1f / 60
         val GOOD_OFFSET: Float = 5f / 60
         val BARELY_OFFSET: Float = 7.5f / 60
+
+        var playalongControls: PlayalongControls = PlayalongControls()
+        var playalongControllerMappings: List<ControllerMapping> = listOf()
+        var activeControllerMappings: Map<Controller, ControllerMapping> = mapOf()
+            private set
+
+        fun loadFromPrefs(preferences: Preferences) {
+            playalongControls = try {
+                JsonHandler.fromJson(preferences.getString(PreferenceKeys.PLAYALONG_CONTROLS, "{}"), PlayalongControls::class.java)
+            } catch (ignored: Exception) {
+                PlayalongControls()
+            }
+            playalongControllerMappings = try {
+                JsonHandler.fromJson(preferences.getString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, "[]"), Array<ControllerMapping>::class.java).toList()
+            } catch (ignored: Exception) {
+                listOf()
+            }
+            Gdx.app.postRunnable {
+                loadActiveMappings()
+            }
+        }
+
+        fun loadActiveMappings() {
+            val controllers = Controllers.getControllers().toList()
+            val mappings = playalongControllerMappings
+
+            activeControllerMappings = controllers.map { c ->
+                var existingMapping: ControllerMapping? = mappings.find { c.name == it.name }
+                if (existingMapping == null && Xbox.isXboxController(c)) {
+                    existingMapping = ControllerMapping.XBOX.copy(name = c.name)
+                }
+                c to (existingMapping ?: ControllerMapping.INVALID.copy(name = c.name))
+            }.toMap()
+
+            val newMappings = playalongControllerMappings.toMutableList()
+            newMappings.removeIf { t -> activeControllerMappings.values.any { it.name == t.name } }
+            newMappings.addAll(activeControllerMappings.values)
+            playalongControllerMappings = newMappings
+        }
     }
 
     data class InProgressInput(val keycode: Int, val isMouse: Boolean, val result: InputResult)
@@ -67,7 +110,7 @@ class Playalong(val remix: Remix) {
             possibleEntity to !MathUtils.isEqual(possibleEntity.beat + possibleEntity.duration, skillStarEntity.bounds.x)
     }
 
-    private val inputMap: Map<PlayalongInput, Set<Int>> = remix.main.playalongControls.toInputMap()
+    private val inputMap: Map<PlayalongInput, Set<Int>> = playalongControls.toInputMap()
     private val keycodeTriggers: Map<Int, EnumSet<PlayalongInput>> = inputMap.flatMap { (k, v) -> v.map { it to k } }.groupBy { it.first }.mapValues { EnumSet.copyOf(it.value.map { p -> p.second }) }
 
     val calibratedKeyOffset: Float get() = preferences.getFloat(PreferenceKeys.PLAYALONG_CALIBRATION_KEY, 0f)

@@ -42,6 +42,7 @@ import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -973,7 +974,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             msgBuilder.append(Localization["editor.tapalong.info"])
         } else if (stage.playalongStage.visible) {
             msgBuilder.append(Localization["editor.playalong.info"])
-            ctrlBuilder.append(main.playalongControls.toInputString())
+            ctrlBuilder.append(Playalong.playalongControls.toInputString())
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {

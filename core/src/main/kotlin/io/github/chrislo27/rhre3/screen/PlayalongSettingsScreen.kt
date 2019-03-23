@@ -6,7 +6,6 @@ import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.controllers.Controller
-import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -20,6 +19,7 @@ import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -57,12 +57,12 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val pressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val helperPressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val playStopButton: Button<PlayalongSettingsScreen>
-    private val controllerTitle: TextLabel<PlayalongSettingsScreen>
+    private val controllerTitleButton: Button<PlayalongSettingsScreen>
+    private val controllerButtonLabel: TextLabel<PlayalongSettingsScreen>
+    private var currentController: Controller? = null
 
     private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
     private val preferences: Preferences get() = main.preferences
-
-    private var controllers: List<Controller> = Controllers.getControllers().toList()
 
     private inner class Calibration(val key: String, var calibration: Float = main.preferences.getFloat(key, 0f),
                                     var summed: Float = 0f, var inputs: Int = 0) {
@@ -338,28 +338,57 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-
+                updateControllers()
             }
         }.apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.fontScaleMultiplier = 0.85f
-                this.textWrapping = false
-                this.text = "screen.playalongSettings.rescanControllers"
+            addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
-            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = (0.5f - settingsPadding) * 0.25f, screenHeight = 0.1f)
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = (0.5f - settingsPadding) * 0.08333f, screenHeight = 0.1f)
         }
-        controllerTitle = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.isLocalizationKey = false
-            this.fontScaleMultiplier = 0.75f
-            this.textWrapping = false
-            this.text = Localization["screen.playalongSettings.noControllers"]
-            this.location.set(screenX = 0.5f + settingsPadding + (0.5f - settingsPadding) * 0.265f, screenY = 0.5f - (0.1f + 0.025f),
-                              screenWidth = (0.5f - settingsPadding) * 0.735f, screenHeight = 0.1f)
-        }
-        stage.centreStage.elements += controllerTitle
+        controllerTitleButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            fun cycle(dir: Int) {
+                val controllers = Playalong.activeControllerMappings.keys.toList()
+                if (controllers.isEmpty() || dir == 0) {
+                    if (controllers.isEmpty())
+                        currentController = null
+                    updateCurrentController()
+                    return
+                }
+                val currentController = currentController
+                val currentIndex = if (currentController == null) 0 else controllers.indexOf(currentController).coerceAtLeast(0)
+                var newIndex = currentIndex + dir.coerceIn(-1, 1)
+                newIndex = if (newIndex >= controllers.size) 0 else if (newIndex < 0) controllers.size - 1 else newIndex
+                val newController = controllers[newIndex]
+                this@PlayalongSettingsScreen.currentController = newController
+                updateCurrentController()
+            }
 
-        val currentControls = main.playalongControls.copy()
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                cycle(-1)
+            }
+        }.apply {
+            this.enabled = false
+            this.location.set(screenX = 0.5f + settingsPadding + (0.5f - settingsPadding) * 0.1f, screenY = 0.5f - (0.1f + 0.025f),
+                              screenWidth = (0.5f - settingsPadding) * 0.9f, screenHeight = 0.1f)
+            controllerButtonLabel = TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.fontScaleMultiplier = 0.75f
+                this.textWrapping = false
+                this.text = Localization["screen.playalongSettings.noControllers"]
+            }
+            addLabel(controllerButtonLabel)
+        }
+        stage.centreStage.elements += controllerTitleButton
+
+        val currentControls = Playalong.playalongControls.copy()
         val isCustom = currentControls !in PlayalongControls.standardControls.values
         val controlsList = (if (isCustom) listOf(PlayalongControls.strCustom to currentControls) else listOf()) + PlayalongControls.standardControls.entries.map { it.toPair() }
         stage.bottomStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.bottomStage, stage.bottomStage) {
@@ -374,7 +403,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                     newIndex = 0
                 }
                 index = newIndex
-                main.playalongControls = controlsList[index].second
+                Playalong.playalongControls = controlsList[index].second
                 updateLabel()
             }
 
@@ -405,10 +434,40 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }.apply {
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
+
+        Gdx.app.postRunnable {
+            Playalong.loadActiveMappings()
+            updateControllers()
+        }
     }
 
     fun updateControlsLabel() {
-        controlsLabel.text = main.playalongControls.toInputString(pressedControls)
+        controlsLabel.text = Playalong.playalongControls.toInputString(pressedControls)
+    }
+
+    fun updateControllers() {
+        Playalong.loadActiveMappings()
+        updateCurrentController()
+    }
+
+    fun updateCurrentController() {
+        val mappings = Playalong.activeControllerMappings
+        val controllers = mappings.keys
+        controllerTitleButton.enabled = controllers.isNotEmpty()
+        if (controllers.isEmpty()) {
+            controllerButtonLabel.text = Localization["screen.playalongSettings.noControllers"]
+            currentController = null
+        } else {
+
+            println("before: " + Playalong.activeControllerMappings.values.joinToString(separator = ", "))
+            val target = controllers.firstOrNull { it == currentController } ?: controllers.firstOrNull { mappings[it]?.inUse == true } ?: controllers.first()
+            mappings.forEach { _, m -> m.inUse = false }
+            mappings[target]?.inUse = true
+            controllerButtonLabel.text = "${target.name} (${controllers.indexOf(target) + 1}/${controllers.size})"
+            currentController = target
+        }
+        println("Set current controller to ${currentController?.name}")
+        println(Playalong.activeControllerMappings.values.joinToString(separator = ", "))
     }
 
     override fun renderUpdate() {
@@ -419,7 +478,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
 
         if (music.isPlaying) {
-            if (Gdx.input.isKeyJustPressed(main.playalongControls.buttonA)) {
+            if (Gdx.input.isKeyJustPressed(Playalong.playalongControls.buttonA)) {
                 keyCalibration.fireInput()
             }
         }
@@ -434,7 +493,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             titleLabelIcon.fontScaleMultiplier = 0.8f
         }
 
-        val controls = main.playalongControls
+        val controls = Playalong.playalongControls
         updatePressedControl(controls.buttonA, PlayalongInput.BUTTON_A)
         updatePressedControl(controls.buttonB, PlayalongInput.BUTTON_B)
         updatePressedControl(controls.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
@@ -462,6 +521,10 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
         keyCalibration.persist()
         mouseCalibration.persist()
+
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(Playalong.playalongControls))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(Playalong.playalongControllerMappings))
+        preferences.flush()
 
         fun mapSfxSettings(vararg key: String): Map<String, Any> {
             return key.associate { it to preferences.getBoolean(it, true) }

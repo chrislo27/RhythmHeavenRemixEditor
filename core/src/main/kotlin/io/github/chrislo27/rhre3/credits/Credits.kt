@@ -46,8 +46,7 @@ object Credits {
                         "musique (forked)\n" +
                         "Segment\n" +
                         "java-discord-rpc\n" +
-                        "bccad-editor\n" +
-                        "gdx-controllerutils",
+                        "bccad-editor",
                 "donators" crediting "",
                 "you" crediting ""
                      )

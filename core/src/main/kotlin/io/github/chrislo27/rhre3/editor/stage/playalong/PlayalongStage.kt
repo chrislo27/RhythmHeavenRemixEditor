@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor.stage.playalong
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -80,6 +81,7 @@ class PlayalongStage(val editor: Editor,
         }
     private val main: RHRE3Application get() = editor.main
     private val preferences: Preferences get() = main.preferences
+    private var currentPlayalongControllerListener: PlayalongControllerListener? = null
 
     val lowerStage: Stage<EditorScreen>
     val noEntitiesLabel: TextLabel<EditorScreen>
@@ -560,7 +562,12 @@ class PlayalongStage(val editor: Editor,
 
     fun reset() {
         remix.recomputeCachedData()
+        if (currentPlayalongControllerListener != null) {
+            Controllers.removeListener(currentPlayalongControllerListener)
+        }
         val noPlayalong = playalong.inputActions.isEmpty()
+        currentPlayalongControllerListener = PlayalongControllerListener(playalong)
+        Controllers.addListener(currentPlayalongControllerListener)
         noEntitiesLabel.visible = noPlayalong
         lowerStage.visible = !noPlayalong
         updateLabels()
