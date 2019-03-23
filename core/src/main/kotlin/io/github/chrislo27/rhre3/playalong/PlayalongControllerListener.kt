@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.playalong
 import com.badlogic.gdx.controllers.Controller
 import com.badlogic.gdx.controllers.ControllerListener
 import com.badlogic.gdx.controllers.PovDirection
+import com.badlogic.gdx.controllers.mappings.Xbox
 import com.badlogic.gdx.math.Vector3
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.Toolboks
@@ -23,6 +24,21 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
         Toolboks.LOGGER.info("[PlayalongControllerListener] Controller ${controller.name} disconnected")
     }
 
+    private fun ControllerMapping.containsAnyButton(buttonCode: Int): Boolean {
+        val buttonA = buttonA
+        val buttonB = buttonB
+        val buttonLeft = buttonLeft
+        val buttonRight = buttonRight
+        val buttonUp = buttonUp
+        val buttonDown = buttonDown
+        return (buttonA is ControllerInput.Button && buttonA.code == buttonCode) ||
+                (buttonB is ControllerInput.Button && buttonB.code == buttonCode) ||
+                (buttonUp is ControllerInput.Button && buttonUp.code == buttonCode) ||
+                (buttonDown is ControllerInput.Button && buttonDown.code == buttonCode) ||
+                (buttonLeft is ControllerInput.Button && buttonLeft.code == buttonCode) ||
+                (buttonRight is ControllerInput.Button && buttonRight.code == buttonCode)
+    }
+
     override fun buttonDown(controller: Controller, buttonCode: Int): Boolean {
         val mapping = getMapping(controller) ?: return false
         val buttonA = mapping.buttonA
@@ -31,6 +47,8 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
         val buttonRight = mapping.buttonRight
         val buttonUp = mapping.buttonUp
         val buttonDown = mapping.buttonDown
+        val anyStart = mapping.containsAnyButton(Xbox.START)
+        val anyBack = mapping.containsAnyButton(Xbox.BACK)
         var any = false
         if (buttonA is ControllerInput.Button && buttonA.code == buttonCode) {
             playalong.handleInput(true, EnumSet.of(PlayalongInput.BUTTON_A, PlayalongInput.BUTTON_A_OR_DPAD), buttonCode shl 16, false)
@@ -55,6 +73,16 @@ class PlayalongControllerListener(val playalongGetter: () -> Playalong) : Contro
         if (buttonDown is ControllerInput.Button && buttonDown.code == buttonCode) {
             playalong.handleInput(true, EnumSet.of(PlayalongInput.BUTTON_DPAD_DOWN, PlayalongInput.BUTTON_DPAD, PlayalongInput.BUTTON_A_OR_DPAD), buttonCode shl 16, false)
             any = true
+        }
+        if (Xbox.isXboxController(controller) && buttonCode == Xbox.START && !anyStart) {
+            // Pause/Play
+            playalong.remix.playState = if (playalong.remix.playState != PlayState.PLAYING) PlayState.PLAYING else PlayState.PAUSED
+            return true
+        }
+        if (Xbox.isXboxController(controller) && buttonCode == Xbox.BACK && !anyBack) {
+            // Stop
+            playalong.remix.playState = PlayState.STOPPED
+            return true
         }
         return any && playalong.remix.playState == PlayState.PLAYING
     }

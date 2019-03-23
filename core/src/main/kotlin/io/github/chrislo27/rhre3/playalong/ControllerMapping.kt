@@ -18,7 +18,7 @@ data class ControllerMapping(var inUse: Boolean, val name: String,
     companion object {
         val INVALID = ControllerMapping(false, "<none>")
         val XBOX = ControllerMapping(false, "XBOX something",
-                                     buttonA = ControllerInput.Button(Xbox.B), buttonB = ControllerInput.Button(Xbox.A),
+                                     buttonA = ControllerInput.Button(Xbox.A), buttonB = ControllerInput.Button(Xbox.B),
                                      buttonLeft = if (Xbox.DPAD_LEFT == -1) ControllerInput.Pov(0,  PovDirection.west) else ControllerInput.Button(Xbox.DPAD_LEFT),
                                      buttonRight = if (Xbox.DPAD_RIGHT == -1) ControllerInput.Pov(0, PovDirection.east) else ControllerInput.Button(Xbox.DPAD_RIGHT),
                                      buttonUp = if (Xbox.DPAD_UP == -1) ControllerInput.Pov(0, PovDirection.north) else ControllerInput.Button(Xbox.DPAD_UP),

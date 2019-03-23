@@ -435,6 +435,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
+            this.visible = false
             this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = squareWidth, screenHeight = squareHeight)
         }
         controllerTitleButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
@@ -468,7 +469,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             }
         }.apply {
             this.enabled = false
-            this.location.set(screenX = 0.5f + settingsPadding + squareWidth + settingsPadding * 0.25f, screenY = 0.5f - (0.1f + 0.025f),
+            this.location.set(screenX = 0.5f + settingsPadding/* + squareWidth + settingsPadding * 0.25f*/, screenY = 0.5f - (0.1f + 0.025f),
                               screenHeight = 0.1f)
             this.location.set(screenWidth = 1f - this.location.screenX)
             controllerButtonLabel = TextLabel(palette, this, this.stage).apply {
@@ -616,9 +617,11 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         val mappings = Playalong.activeControllerMappings
         val controllers = mappings.keys
         controllerTitleButton.enabled = controllers.isNotEmpty()
+        mappingLabel.text = ""
         if (controllers.isEmpty()) {
             controllerButtonLabel.text = Localization["screen.playalongSettings.noControllers"]
             currentController = null
+            mappingLabel.text = Localization["screen.playalongSettings.noControllers.hint"]
             allMapButtons.forEach { it.enabled = false }
         } else {
             val target = controllers.firstOrNull { it == currentController } ?: controllers.firstOrNull { mappings[it]?.inUse == true } ?: controllers.first()
@@ -630,7 +633,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         cancelMapping()
         currentMapButton = null
-        mappingLabel.text = ""
         updateMapButtons()
         // FIXME remove later
         println("Set current controller to ${currentController?.name}")
