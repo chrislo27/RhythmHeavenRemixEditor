@@ -635,9 +635,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         cancelMapping()
         currentMapButton = null
         updateMapButtons()
-        // FIXME remove later
-        println("Set current controller to ${currentController?.name}")
-        println(Playalong.activeControllerMappings.values.joinToString(separator = ", "))
+//        println("Set current controller to ${currentController?.name}")
+//        println(Playalong.activeControllerMappings.values.joinToString(separator = ", "))
     }
 
     override fun renderUpdate() {
