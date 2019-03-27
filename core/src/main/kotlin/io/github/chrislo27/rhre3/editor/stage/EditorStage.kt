@@ -746,7 +746,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.visible = false
         }
         playalongStage = PlayalongStage(editor, palette, this, camera).apply {
-//            this.location.set(0f,
+            //            this.location.set(0f,
 //                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
 //                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
             this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight)
@@ -1415,8 +1415,11 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
             }
             buttonBarStage.elements += playalongToggleButton
+            buttonBarStage.elements += RemixGeneratorButton(this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 12 + padding * 12)
+            }
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
-                this.location.set(screenWidth = size * 5 - padding * 3, screenX = size * 12 + padding * 12)
+                this.location.set(screenWidth = size * 4 - padding * 4, screenX = size * 13 + padding * 13)
             }
 
             // right aligned

@@ -20,7 +20,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
     : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
 
     companion object {
-        val strings: List<String> = listOf("Copy selection as pattern\nJSON to clipboard", "[CYAN]Copied successfully![]", "No selection...", "An [RED]error[] occurred\nPlease see console")
+        val strings: List<String> = listOf("Copy selection as\nJSON to clipboard", "[CYAN]Copied successfully![]", "No selection...", "An [RED]error[] occurred\nPlease see console")
     }
 
     init {
@@ -33,6 +33,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
         this@SelectionToJSONButton.addLabel(this)
         this.fontScaleMultiplier = 0.4f
         this.text = strings[0]
+        this.textWrapping = false
         this.isLocalizationKey = false
     }
 
