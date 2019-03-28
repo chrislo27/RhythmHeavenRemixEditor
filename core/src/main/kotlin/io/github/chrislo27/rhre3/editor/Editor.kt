@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
@@ -1930,64 +1929,70 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("cam: [")
+            append("Camera: [")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.x))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.y))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.zoom))
-            append(" zoom]")
+            append(" zoom]\n")
 
-            append("\ne: ")
+            append("Rendered objects (visible/total):\n  Entities: ")
             append(remix.entities.count {
                 it.inRenderRange(rangeStartF, rangeEndF)
             })
             append(" / ")
-            append(remix.entities.size)
+            append(remix.entities.size).append("\n")
 
-            append("\ntrackers: ")
+            append("  Trackers: ")
             append(remix.trackers.sumBy { container ->
                 container.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
             })
             append(" / ")
-            append(remix.trackers.sumBy { it.map.values.size })
+            append(remix.trackers.sumBy { it.map.values.size }).append("\n")
 
-            append("\npos: ♩")
+            append("Pos.: ♩")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
             append(" / ")
-            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds))
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)).append("\n")
 
-            append("\nbpm: ♩=")
-            append(remix.tempos.tempoAtSeconds(remix.seconds))
+            append("Tempo: ♩=")
+            append(remix.tempos.tempoAtSeconds(remix.seconds)).append("\n")
 
-            append("\nswing: ")
+            append("  Swing: ")
             val swing = remix.tempos.swingAtSeconds(remix.seconds)
-            append(swing.ratio).append("%, ").append(swing.division)
+            append(swing.ratio).append("%, ").append(swing.division).append("\n")
 
-            append("\nmusvol: ")
-            append(remix.musicVolumes.volumeAt(remix.beat))
+            append("Music Vol.: ")
+            append((remix.musicVolumes.volumeAt(remix.beat) * 100).roundToInt()).append("%\n")
 
-            append("\nmidi: ")
-            append(remix.midiInstruments)
+            append("Track Count: ")
+            append(remix.trackCount).append("\n")
 
-            append("\nautosave: ")
+            // metadata
+            append("MIDI Instrs.: ")
+            append(remix.midiInstruments).append("\n")
+            append("Remix Gen.: ")
+            val remixGenS = remix.remixGeneratorSettings
+            if (remixGenS != null) {
+                append("\n").append(remixGenS.toString())
+            } else append("null")
+            append("\n")
+
+            append("Autosave Timer: ")
             append(timeUntilAutosave)
             append(" sec / ")
             append(autosaveFrequency)
-            append(" min")
+            append(" min\n")
 
-            append("\ntrack: ")
-            append(remix.trackCount)
-
-            append("\nmodkeys: ")
+            append("Modifier Keys: ")
             if (Gdx.input.isControlDown())
                 append("[CTRL]")
             if (Gdx.input.isShiftDown())
                 append("[SHIFT]")
             if (Gdx.input.isAltDown())
                 append("[ALT]")
-
-//            append("\n")
+            append("\n")
         }
 
         return str.toString()
