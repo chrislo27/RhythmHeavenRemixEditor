@@ -1975,7 +1975,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append("Remix Gen.: ")
             val remixGenS = remix.remixGeneratorSettings
             if (remixGenS != null) {
-                append("\n").append(remixGenS.toString())
+                append("\n").append(remixGenS.toDebugString())
             } else append("null")
             append("\n")
 
