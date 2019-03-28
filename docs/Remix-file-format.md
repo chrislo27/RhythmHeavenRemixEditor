@@ -27,6 +27,7 @@ It is a top-level object with the following fields:
 | `playbackStart` | double | Optional, defaults to 0.0. | Where the playback start marker is, in beats. |
 | `musicStartSec` | double | Optional, defaults to 0.0. | Where the music start marker is, in seconds. |
 | `trackCount` | integer | Optional, defaults to 5 if not present. Non-null. | The number of tracks available. Usually ranges from 1 to 10. Can be greater than 10. Values less than zero are coerced to 1. |
+| `remixGeneratorSettings` | remix generator settings object (see below) | Optional, defaults to null. | The settings used for the remix generator. |
 | `isAutosave` | boolean | Optional, defaults to false. | Whether this remix is an autosave. Autosaves are not autosaved. |
 | `midiInstruments` | integer | Optional, defaults to 0. | The number of midi instruments that were in the original midi. This is only used for the Glee Club visualization. Positive values only. |
 | `musicData` | music data object (see below) | N | The music data object. See its table below.
@@ -42,6 +43,12 @@ It is a top-level object with the following fields:
 | `present` | boolean | N | Whether or not music is present. |
 | `filename` | string | Only present if the `present` field is `true`. | The original file name of the music. |
 | `extension` | string | Only present if the `present` field is `true`. | The file extension/type of the music. This is used to determine how to decode the `music.bin` file. |
+
+### `remixGeneratorSettings` object fields
+
+| Field Name | Field Type | Optional? | Description |
+|---|---|---|---|
+| TODO | TODO | ??? | TODO |
 
 ### `trackers` object
 

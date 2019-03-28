@@ -27,6 +27,7 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.remixgen.RemixGeneratorSettings
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.soundsystem.SoundSystem
@@ -79,6 +80,11 @@ open class Remix(val main: RHRE3Application)
                 tree.put("musicStartSec", musicStartSec)
 
                 tree.put("trackCount", trackCount)
+                val remixGeneratorSettings = remixGeneratorSettings
+                if (remixGeneratorSettings != null) {
+                    val remixGenSettingsObj = tree.putObject("remixGeneratorSettings")
+                    remixGeneratorSettings.toJson(remixGenSettingsObj)
+                }
 
                 tree.put("isAutosave", isAutosave)
                 tree.put("midiInstruments", midiInstruments)
@@ -144,6 +150,10 @@ open class Remix(val main: RHRE3Application)
             remix.midiInstruments = tree["midiInstruments"]?.intValue() ?: 0
 
             remix.trackCount = tree["trackCount"]?.intValue()?.coerceAtLeast(1) ?: Editor.DEFAULT_TRACK_COUNT
+            val remixGenSettingsObject = tree["remixGeneratorSettings"] as? ObjectNode?
+            if (remixGenSettingsObject != null) {
+                remix.remixGeneratorSettings = RemixGeneratorSettings.fromJson(remixGenSettingsObject)
+            }
 
             var missing = 0
             var missingCustom = 0
@@ -599,11 +609,15 @@ open class Remix(val main: RHRE3Application)
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
+
+    // Special remix metadata below
     /**
      * Only used for loading midi files
      */
-    var midiInstruments = 0
+    var midiInstruments: Int = 0
         private set
+    var remixGeneratorSettings: RemixGeneratorSettings? = null
+
     var trackCount: Int by Delegates.vetoable(Editor.DEFAULT_TRACK_COUNT) { _, _, new ->
         val allowed = new >= 1
         if (allowed) {
@@ -631,8 +645,7 @@ open class Remix(val main: RHRE3Application)
 
     private val metronomeSFX: List<LazySound> by lazy {
         listOf(
-                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: throw RuntimeException(
-                        "Missing metronome sound")
+                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
               )
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
