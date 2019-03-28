@@ -60,50 +60,14 @@ class RemixGeneratorScreen(main: RHRE3Application, val editor: Editor)
             this.location.set(screenX = 0.25f, screenWidth = 0.5f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 1.5f)
         }
 
-        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.text = "Generate Patterns: ON"
-                this.isLocalizationKey = false
-            })
-            this.location.set(screenX = 0.1f, screenWidth = 0.375f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 3)
-        }
-        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.textAlign = Align.left
-            this.textWrapping = false
-            this.isLocalizationKey = false
-            this.text = """ "pose for the fans", "15 bounces", etc. """.trim()
-            this.textColor = Color.LIGHT_GRAY
-            this.location.set(screenX = 0.11f, screenWidth = 0.75f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 4)
-        }
-        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.text = "Remix Type: Default"
-                this.isLocalizationKey = false
-            })
-            this.location.set(screenX = 0.525f, screenWidth = 0.375f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 3)
-        }
+        stage.bottomStage.elements += object : Button<RemixGeneratorScreen>(palette, stage.bottomStage, stage.bottomStage){
 
-        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
+        }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.text = "Allow Cheats: OFF"
-                this.isLocalizationKey = false
+                this.text = "screen.remixGen.generate"
+                this.textWrapping = false
             })
-            this.location.set(screenX = 0.1f, screenWidth = 0.375f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 5)
-        }
-        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
-            this.textAlign = Align.left
-            this.textWrapping = false
-            this.isLocalizationKey = false
-            this.text = "Entities like Shake, Game Change"
-            this.textColor = Color.LIGHT_GRAY
-            this.location.set(screenX = 0.11f, screenWidth = 0.75f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 6)
-        }
-        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.text = "Bonus Playalong: OFF"
-                this.isLocalizationKey = false
-            })
-            this.location.set(screenX = 0.525f, screenWidth = 0.375f, screenHeight = labelHeight, screenY = 0.8f - labelHeight * 5)
+            this.location.set(screenX = 0.2f, screenWidth = 0.6f)
         }
     }
 

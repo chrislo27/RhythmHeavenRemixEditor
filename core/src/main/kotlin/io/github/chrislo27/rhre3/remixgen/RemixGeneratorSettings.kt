@@ -1,7 +1,6 @@
 package io.github.chrislo27.rhre3.remixgen
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import java.util.*
 
 
 data class RemixGeneratorSettings(val seed: Long) {
@@ -12,8 +11,6 @@ data class RemixGeneratorSettings(val seed: Long) {
             return RemixGeneratorSettings(seed)
         }
     }
-
-    val random: Random = Random(seed)
 
     fun toJson(tree: ObjectNode) {
         tree.put("seed", seed)
