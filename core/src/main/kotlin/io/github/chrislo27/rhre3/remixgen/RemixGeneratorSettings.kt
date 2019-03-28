@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import java.util.*
 
 
-class RemixGeneratorSettings(val seed: Long) {
+data class RemixGeneratorSettings(val seed: Long) {
 
     companion object {
         fun fromJson(tree: ObjectNode): RemixGeneratorSettings? {
@@ -22,9 +22,4 @@ class RemixGeneratorSettings(val seed: Long) {
     fun toDebugString(): String {
         return "  Seed: $seed"
     }
-
-    override fun toString(): String {
-        return "[seed=$seed]"
-    }
-
 }
