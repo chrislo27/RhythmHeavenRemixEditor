@@ -413,6 +413,24 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
                 this.visible = false
             }
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+
+                    Gdx.net.openURI(RHRE3.DOCS_URL)
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.textWrapping = false
+                    this.text = "screen.info.docs"
+                    this.fontScaleMultiplier = 0.8f
+                })
+
+                this.location.set(screenX = 0.5f - (0.1f / 2),
+                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenWidth = 0.1f,
+                                  screenHeight = buttonHeight * 2 + padding)
+            }
 
             // info buttons
             // Credits
