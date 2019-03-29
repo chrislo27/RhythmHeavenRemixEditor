@@ -15,13 +15,13 @@ you have to edit either the **bat**ch file for Windows, or **sh**ell file
 for Linux/macOS. Replace the line `java -jar RHRE3.jar` with the below:
 
 ```
-java -jar -Xmx1024m RHRE3.jar
+java -jar -Xmx1024m RHRE.jar
 ```
 
 >`Xmx1024m` indicates that you want a max of 1024 MB allocated. Change that
 value if you need to.
 
-Now, you must **ALWAYS** run RHRE3 through that file, or else the *settings
+Now, you must **ALWAYS** run RHRE through that file, or else the *settings
 will be ignored*.
 
 There is no way to omit this requirement.
