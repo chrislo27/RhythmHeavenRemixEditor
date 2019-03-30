@@ -665,13 +665,16 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
 
         helperPressedControls.clear()
-        Playalong.activeControllerMappings.forEach { controller, mapping ->
-            updatePressedControl(controller, mapping.buttonA, PlayalongInput.BUTTON_A)
-            updatePressedControl(controller, mapping.buttonB, PlayalongInput.BUTTON_B)
-            updatePressedControl(controller, mapping.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
-            updatePressedControl(controller, mapping.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
-            updatePressedControl(controller, mapping.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
-            updatePressedControl(controller, mapping.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+        val controller = currentController
+        if (controller != null) {
+            Playalong.activeControllerMappings[controller]?.let { mapping ->
+                updatePressedControl(controller, mapping.buttonA, PlayalongInput.BUTTON_A)
+                updatePressedControl(controller, mapping.buttonB, PlayalongInput.BUTTON_B)
+                updatePressedControl(controller, mapping.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
+                updatePressedControl(controller, mapping.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
+                updatePressedControl(controller, mapping.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
+                updatePressedControl(controller, mapping.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+            }
         }
         val controls = Playalong.playalongControls
         updatePressedControl(controls.buttonA, PlayalongInput.BUTTON_A)
