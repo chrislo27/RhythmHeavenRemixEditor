@@ -15,10 +15,10 @@ object Credits {
                 "programming" crediting "chrislo27",
                 "localization" crediting
                         """[LIGHT_GRAY]Français (French)[]
-                |Pengu123, minenice55, inkedsplat
+                |Pengu123, minenice55, inkedsplat, chrislo27
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab
+                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab, Suwa-ko
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
