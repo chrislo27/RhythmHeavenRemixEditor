@@ -616,7 +616,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
     fun updateCurrentController() {
         val mappings = Playalong.activeControllerMappings
-        val controllers = setOf<Controller>() //mappings.keys
+        val controllers = mappings.keys
         controllerTitleButton.enabled = controllers.isNotEmpty()
         mappingLabel.text = ""
         cancelMapping()
