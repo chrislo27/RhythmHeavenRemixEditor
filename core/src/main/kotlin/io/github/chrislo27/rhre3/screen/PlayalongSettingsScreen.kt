@@ -616,9 +616,10 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
 
     fun updateCurrentController() {
         val mappings = Playalong.activeControllerMappings
-        val controllers = mappings.keys
+        val controllers = setOf<Controller>() //mappings.keys
         controllerTitleButton.enabled = controllers.isNotEmpty()
         mappingLabel.text = ""
+        cancelMapping()
         if (controllers.isEmpty()) {
             controllerButtonLabel.text = Localization["screen.playalongSettings.noControllers"]
             currentController = null
@@ -632,7 +633,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             currentController = target
             allMapButtons.forEach { it.enabled = true }
         }
-        cancelMapping()
         currentMapButton = null
         updateMapButtons()
 //        println("Set current controller to ${currentController?.name}")
