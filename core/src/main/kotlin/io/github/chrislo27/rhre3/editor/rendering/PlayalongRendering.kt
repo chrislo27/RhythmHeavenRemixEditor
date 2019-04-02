@@ -122,8 +122,7 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                 largeFont.scaleMul(scaleX)
                 val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
                 val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
-                // width * 0.02 is for correcting a glyph error in the font
-                largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
+                largeFont.draw(batch, inputAction.input.trackDisplayText, x, y + height / 2, 0f, Align.center, false)
                 largeFont.setColor(1f, 1f, 1f, 1f)
                 largeFont.scaleMul(1f / scaleX)
                 largeFont.scaleMul(1f / scaleY)
