@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
+import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
@@ -48,7 +49,7 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
             largeFont.setColor(1f, 1f, 1f, 1f)
         }
         list.forEachIndexed { index, inputAction ->
-            if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) return@forEachIndexed
+            if (inputAction.beat.roundToInt() > beatRange.last || (inputAction.beat + inputAction.duration).roundToInt() < beatRange.first) return@forEachIndexed
             largeFont.setColor(1f, 1f, 1f, 1f * alpha)
 
             val bottomY = baseY + (blockHeight * listSize) / 2 - (index + 0.5f) * blockHeight
@@ -70,6 +71,11 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                     largeFont.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                     batch.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                 }
+            } else {
+                if (inputAction.method == PlayalongMethod.RELEASE_AND_HOLD) {
+                    batch.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+                    largeFont.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+                }
             }
 
             // For non-instantaneous inputs, draw a long line (progress)
@@ -77,6 +83,7 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                 val defWidth = inputAction.duration
                 val width = if (inProgress != null) {
                     batch.setColor(0.2f, 0.57f, 1f, 1f * alpha)
+                    largeFont.setColor(0.2f, 0.57f, 1f, 1f * alpha)
                     remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds((remix.beat - inputAction.beat)) - (if (inputAction.input.isTouchScreen) playalong.calibratedMouseOffset else playalong.calibratedKeyOffset))
                 } else if (results != null) {
                     (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
