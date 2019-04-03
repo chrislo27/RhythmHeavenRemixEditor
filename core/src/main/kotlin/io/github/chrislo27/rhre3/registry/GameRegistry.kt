@@ -552,6 +552,10 @@ object GameRegistry : Disposable {
                                             "Long Press ${PlayalongChars.FILLED_B}", true,
                                             PlayalongInput.BUTTON_B, PlayalongMethod.LONG_PRESS,
                                             pickerName = PickerName("Long Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Samurai Slice (Fever) demon horde)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_A", listOf(),
+                                            "Long Press ${PlayalongChars.FILLED_A}", true,
+                                            PlayalongInput.BUTTON_A, PlayalongMethod.LONG_PRESS,
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Glee Club transitions)[]"))
 
             // D-pad
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
@@ -596,6 +600,10 @@ object GameRegistry : Disposable {
                                             "Quick Tap", false,
                                             PlayalongInput.TOUCH_QUICK_TAP, PlayalongMethod.RELEASE,
                                             pickerName = PickerName("Quick Tap", "[LIGHT_GRAY](ex: Moai Doo-Wop \"pah\")[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longTap", listOf(),
+                                            "Long Tap and Hold", true,
+                                            PlayalongInput.TOUCH_TAP, PlayalongMethod.LONG_PRESS,
+                                            pickerName = PickerName("Long Tap and Hold", "[LIGHT_GRAY](ex: Glee Club transition)[]"))
 
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
