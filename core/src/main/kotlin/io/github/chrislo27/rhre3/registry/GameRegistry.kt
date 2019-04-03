@@ -603,7 +603,7 @@ object GameRegistry : Disposable {
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longTap", listOf(),
                                             "Long Tap and Hold", true,
                                             PlayalongInput.TOUCH_TAP, PlayalongMethod.LONG_PRESS,
-                                            pickerName = PickerName("Long Tap and Hold", "[LIGHT_GRAY](ex: Glee Club transition)[]"))
+                                            pickerName = PickerName("Long Tap and Hold", "[LIGHT_GRAY](ex: Glee Club transitions)[]"))
 
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
