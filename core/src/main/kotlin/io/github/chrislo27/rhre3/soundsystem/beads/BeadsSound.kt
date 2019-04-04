@@ -1,8 +1,10 @@
 package io.github.chrislo27.rhre3.soundsystem.beads
 
+import io.github.chrislo27.rhre3.soundsystem.LoopParams
 import io.github.chrislo27.rhre3.soundsystem.Sound
 import net.beadsproject.beads.ugens.GranularSamplePlayer
 import net.beadsproject.beads.ugens.SamplePlayer
+import net.beadsproject.beads.ugens.Static
 import java.util.concurrent.ConcurrentHashMap
 
 
@@ -12,12 +14,12 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         var useGranular: Boolean = false
     }
 
-    val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
+    private val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
     @Volatile
     private var disposed = false
 
     override val duration: Double
-        get() = audio.sample.length
+        get() = audio.sample.length / 1000
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
@@ -36,20 +38,26 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
     }
 
     override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float, position: Double): Long {
+        return playWithLoop(pitch, rate, volume, position, if (loop) LoopParams.LOOP_FORWARDS_ENTIRE.copy(endPoint = duration) else LoopParams.NO_LOOP_FORWARDS)
+    }
+
+    override fun playWithLoop(pitch: Float, rate: Float, volume: Float, position: Double, loopParams: LoopParams): Long {
         if (disposed)
             return -1L
 
         val (id, player) = obtainPlayer()
 
-        player.player.loopType = if (loop) SamplePlayer.LoopType.LOOP_FORWARDS else SamplePlayer.LoopType.NO_LOOP_FORWARDS
+        player.player.loopType = loopParams.loopType
 
         player.player.rateUGen.value = rate
         player.gain.gain = volume
         player.pitch.value = pitch
         player.rate.value = rate
         val dur = duration
-        val normalizedPosition = (position.coerceIn(-dur, dur) % dur + dur) % dur
-        player.player.position = normalizedPosition * 1000
+        val clampedPosition = (position.coerceIn(-dur, dur))
+        player.player.position = (if (clampedPosition < 0) (dur + clampedPosition) else clampedPosition) * 1000
+        player.player.setLoopStart(Static(player.player.context, loopParams.startPoint.toFloat() * 1000))
+        player.player.setLoopEnd(Static(player.player.context, loopParams.endPoint.toFloat() * 1000))
         player.addToContext()
 
         return id
@@ -86,4 +94,6 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         players.clear()
         BeadsSoundSystem.disposeSound(this)
     }
+
+    fun getPlayer(id: Long): GainedSamplePlayer? = players[id]
 }
