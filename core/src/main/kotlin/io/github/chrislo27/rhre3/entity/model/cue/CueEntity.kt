@@ -7,6 +7,7 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSound
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -95,14 +96,18 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
 
-    fun play() {
-        soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
-                                       rate = cue.getBaseBpmRate(), volume = volume)
+    fun play(position: Float = 0f) {
+        val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
+        val rate = cue.getBaseBpmRate()
+        val apparentRate = if (BeadsSound.useGranular) rate else (pitch * rate)
+        val apparentPosition = position.toDouble() * apparentRate
+        soundId = cue.sound.sound.play(loop = cue.loops, pitch = pitch,
+                                       rate = rate, volume = volume, position = apparentPosition)
 
         introSoundId = cue.introSoundCue?.let {
             it.sound.sound.play(loop = false,
-                          pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
-                          rate = cue.introSoundCue!!.getBaseBpmRate(), volume = volume)
+                                pitch = pitch,
+                                rate = cue.introSoundCue!!.getBaseBpmRate(), volume = volume, position = apparentPosition)
         } ?: -1L
     }
 
@@ -110,15 +115,17 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (isSkillStar && remix.doUpdatePlayalong && remix.main.screen is EditorScreen) {
             return // Do not play if in playalong mode
         }
-        play()
+        val startPos = if (remix.playbackStart > bounds.x) {
+            remix.seconds - remix.tempos.beatsToSeconds(this.bounds.x)
+        } else 0f
+        play(startPos)
     }
 
     override fun whilePlaying() {
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setRate(soundId,
-                                            cue.getBaseBpmRate())
+                    cue.sound.sound.setRate(soundId, cue.getBaseBpmRate())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)

@@ -8,13 +8,19 @@ import java.util.concurrent.ConcurrentHashMap
 
 class BeadsSound(val audio: BeadsAudio) : Sound {
 
+    companion object {
+        var useGranular: Boolean = false
+    }
+
     val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
     @Volatile
     private var disposed = false
 
+    override val duration: Double
+        get() = audio.sample.length
+
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val useGranular = false
         val samplePlayer = if (useGranular)
             GranularSamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
         else SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
@@ -24,27 +30,29 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
             }
         }
 
-        players.put(result.first, result.second)
+        players[result.first] = result.second
 
         return result
     }
 
-    override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float): Long {
+    override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float, position: Double): Long {
         if (disposed)
             return -1L
 
-        val result = obtainPlayer()
-        val player = result.second.player
+        val (id, player) = obtainPlayer()
 
-        player.loopType = if (loop) SamplePlayer.LoopType.LOOP_FORWARDS else SamplePlayer.LoopType.NO_LOOP_FORWARDS
+        player.player.loopType = if (loop) SamplePlayer.LoopType.LOOP_FORWARDS else SamplePlayer.LoopType.NO_LOOP_FORWARDS
 
-        result.second.player.rateUGen.value = rate
-        result.second.gain.gain = volume
-        result.second.pitch.value = pitch
-        result.second.rate.value = rate
-        result.second.addToContext()
+        player.player.rateUGen.value = rate
+        player.gain.gain = volume
+        player.pitch.value = pitch
+        player.rate.value = rate
+        val dur = duration
+        val normalizedPosition = (position.coerceIn(-dur, dur) % dur + dur) % dur
+        player.player.position = normalizedPosition * 1000
+        player.addToContext()
 
-        return result.first
+        return id
     }
 
     override fun setPitch(id: Long, pitch: Float) {
