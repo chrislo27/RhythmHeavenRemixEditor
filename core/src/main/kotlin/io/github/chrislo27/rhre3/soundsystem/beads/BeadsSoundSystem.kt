@@ -114,13 +114,13 @@ object BeadsSoundSystem {
         run {
             val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
-            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}", ".tmp").apply {
+            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}-${System.nanoTime() % 1_000_000}", ".tmp").apply {
                 deleteOnExit()
             }
             val fileOutStream = FileOutputStream(tempFile)
             val sample = beadsAudio.sample
             var currentLength: Long = 0L
-            var overflowed = false
+            val overflowed: Boolean
 
             while (true) {
                 val length = music.read(audioBytes)
