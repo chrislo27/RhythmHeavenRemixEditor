@@ -21,7 +21,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.CameraBehaviour.FOLLOW_PLAYBACK
-import io.github.chrislo27.rhre3.editor.CameraBehaviour.ROLL_OVER_SMOOTH
+import io.github.chrislo27.rhre3.editor.CameraBehaviour.PAN_OVER_SMOOTH
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
@@ -743,7 +743,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 // Use linear time to prevent nauseation
                 camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + camera.viewportWidth * 0.25f
             } else {
-                val smooth = camBehav == ROLL_OVER_SMOOTH
+                val smooth = camBehav == PAN_OVER_SMOOTH
                 val halfWidth = camera.viewportWidth / 2 * camera.zoom
                 if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth && cameraPan == null) {
                     val target = remix.beat + halfWidth

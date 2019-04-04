@@ -196,7 +196,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (oldChaseCamera in preferences) {
             // Retroactively apply settings
             val oldSetting = preferences.getBoolean(oldChaseCamera, true)
-            Editor.cameraBehaviour = if (oldSetting) CameraBehaviour.FOLLOW_PLAYBACK else CameraBehaviour.ROLL_OVER_INSTANT
+            Editor.cameraBehaviour = if (oldSetting) CameraBehaviour.FOLLOW_PLAYBACK else CameraBehaviour.PAN_OVER_INSTANT
             // Delete
             preferences.remove(oldChaseCamera)
             preferences.flush()

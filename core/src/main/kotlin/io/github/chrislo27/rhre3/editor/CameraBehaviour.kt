@@ -4,8 +4,8 @@ package io.github.chrislo27.rhre3.editor
 enum class CameraBehaviour(val localizationKey: String) {
 
     FOLLOW_PLAYBACK("cameraBehaviour.follow"),
-    ROLL_OVER_INSTANT("cameraBehaviour.rollOverInstant"),
-    ROLL_OVER_SMOOTH("cameraBehaviour.rollOverSmooth");
+    PAN_OVER_INSTANT("cameraBehaviour.panOverInstant"),
+    PAN_OVER_SMOOTH("cameraBehaviour.panOverSmooth");
 
     companion object {
         val VALUES = values().toList()
