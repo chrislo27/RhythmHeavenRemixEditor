@@ -31,7 +31,6 @@ import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.MAX_PICOSONG_BYTES
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_AUP_URL
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_TOS_URL
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -624,7 +623,6 @@ class ExportRemixScreen(main: RHRE3Application)
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
-        val isBeads = SoundSystem.system == BeadsSoundSystem
         readyButton.visible = false
         uploadImmediatelyButton.visible = false
         picosongButton.visible = false
@@ -632,11 +630,9 @@ class ExportRemixScreen(main: RHRE3Application)
         folderButton.visible = false
         folderFile = null
         selectionStage.visible = false
-        isCapableOfExporting = isBeads && (hasEndRemix || canOmitEndRemix)
+        isCapableOfExporting = hasEndRemix || canOmitEndRemix
         if (!isCapableOfExporting) {
-            if (!isBeads) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsBeadsSound"]]
-            } else if (!hasEndRemix) {
+            if (!hasEndRemix) {
                 label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
             }
         } else {

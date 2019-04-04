@@ -26,7 +26,6 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
@@ -211,9 +210,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
         PatternStorage.load()
 
-        // set the sound system
-        SoundSystem.setSoundSystem(BeadsSoundSystem)
-
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
 
@@ -383,7 +379,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         ThumbnailFetcher.dispose()
         persistWindowSettings()
         RHRE3.tmpMusic.emptyDirectory()
-        SoundSystem.allSystems.forEach(SoundSystem::dispose)
+        BeadsSoundSystem.dispose()
         httpClient.close()
         AnalyticsHandler.track("Close Program",
                                mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))

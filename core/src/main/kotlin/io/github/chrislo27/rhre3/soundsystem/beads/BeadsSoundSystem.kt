@@ -6,7 +6,6 @@ import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import io.github.chrislo27.rhre3.soundsystem.Sound
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.util.err.MusicTooLargeException
 import io.github.chrislo27.rhre3.util.err.MusicWayTooLargeException
 import io.github.chrislo27.toolboks.Toolboks
@@ -21,12 +20,11 @@ import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.DataLine
 import javax.sound.sampled.SourceDataLine
 
-object BeadsSoundSystem : SoundSystem() {
+object BeadsSoundSystem {
 
     private val realtimeAudioContext: AudioContext = createAudioContext()
     private val nonrealtimeAudioContext: AudioContext = createAudioContext()
 
-    override val id: String = "beads"
     val audioContext: AudioContext
         get() = if (isRealtime) realtimeAudioContext else nonrealtimeAudioContext
     @Volatile
@@ -80,24 +78,28 @@ object BeadsSoundSystem : SoundSystem() {
                 }
             })
 
+    init {
+        audioContext.start()
+    }
+
     fun obtainSoundID(): Long {
         return currentSoundID++
     }
 
-    override fun resume() {
+    fun resume() {
         audioContext.out.pause(false)
     }
 
-    override fun pause() {
+    fun pause() {
         audioContext.out.pause(true)
     }
 
-    override fun stop() {
+    fun stop() {
         audioContext.out.pause(true)
         audioContext.out.clearInputConnections()
     }
 
-    override fun dispose() {
+    fun dispose() {
         stop()
         realtimeAudioContext.stop()
         nonrealtimeAudioContext.stop()
@@ -182,23 +184,17 @@ object BeadsSoundSystem : SoundSystem() {
         return beadsAudio
     }
 
-    override fun newSound(handle: FileHandle): Sound {
+    fun newSound(handle: FileHandle): Sound {
         return BeadsSound(newAudio(handle)).apply {
             sounds += this
         }
     }
 
-    override fun newMusic(handle: FileHandle): Music {
+    fun newMusic(handle: FileHandle): Music {
         return BeadsMusic(newAudio(handle))
     }
 
     fun disposeSound(sound: BeadsSound) {
         sounds -= sound
-    }
-
-    override fun onSet() {
-        super.onSet()
-
-        audioContext.start()
     }
 }

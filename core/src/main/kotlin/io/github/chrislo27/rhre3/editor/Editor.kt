@@ -52,8 +52,6 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.*
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
@@ -530,7 +528,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         // waveform
-        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
+        if (remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
             this.renderWaveform(batch, oldCameraX, oldCameraY, adjustedCameraX, adjustedCameraY)
         }
 

@@ -29,7 +29,7 @@ import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
@@ -649,14 +649,14 @@ open class Remix(val main: RHRE3Application)
             PlayState.STOPPED -> {
                 AssetRegistry.stopAllSounds()
                 music?.music?.pause()
-                SoundSystem.system.stop()
+                BeadsSoundSystem.stop()
                 currentSubtitles.clear()
                 currentShakeEntities.clear()
             }
             PlayState.PAUSED -> {
                 AssetRegistry.pauseAllSounds()
                 music?.music?.pause()
-                SoundSystem.system.pause()
+                BeadsSoundSystem.pause()
             }
             PlayState.PLAYING -> {
                 lastMusicPosition = -1f
@@ -678,7 +678,7 @@ open class Remix(val main: RHRE3Application)
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
                 }
-                SoundSystem.system.resume()
+                BeadsSoundSystem.resume()
                 if (music != null) {
                     if (seconds >= musicStartSec) {
                         music.music.play()
