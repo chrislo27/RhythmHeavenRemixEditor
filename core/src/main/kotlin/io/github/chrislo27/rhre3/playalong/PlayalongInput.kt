@@ -1,5 +1,12 @@
 package io.github.chrislo27.rhre3.playalong
 
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_A
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_B
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_DPAD
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_DPAD_D
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_DPAD_L
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_DPAD_R
+import io.github.chrislo27.rhre3.playalong.PlayalongChars.BORDERED_DPAD_U
 import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_A
 import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_B
 import io.github.chrislo27.rhre3.playalong.PlayalongChars.FILLED_DPAD
@@ -31,16 +38,21 @@ enum class PlayalongInput(val id: String,
                            */
                           val trackDisplayIsTexID: Boolean = false,
                           val deprecatedIDs: List<String> = listOf(),
-                          val isTouchScreen: Boolean = false) {
+                          val isTouchScreen: Boolean = false,
+                          /**
+                           * Used in the special case for release. Usually not the FILLED variant of text.
+                           */
+                          val releaseTrackDisplayText: String = trackDisplayText,
+                          val releaseTrackDisplayIsTexID: Boolean = false) {
 
-    BUTTON_A("A", FILLED_A),
-    BUTTON_B("B", FILLED_B),
-    BUTTON_DPAD("+", FILLED_DPAD),
-    BUTTON_A_OR_DPAD("A_+", "$FILLED_A/$FILLED_DPAD", trackDisplayText = "$FILLED_A/$FILLED_DPAD"),
-    BUTTON_DPAD_UP("+_up", FILLED_DPAD_U, "$FILLED_DPAD $FILLED_JOY_U"),
-    BUTTON_DPAD_DOWN("+_down", FILLED_DPAD_D, "$FILLED_DPAD $FILLED_JOY_D"),
-    BUTTON_DPAD_LEFT("+_left", FILLED_DPAD_L, "$FILLED_DPAD $FILLED_JOY_L"),
-    BUTTON_DPAD_RIGHT("+_right", FILLED_DPAD_R, "$FILLED_DPAD $FILLED_JOY_R"),
+    BUTTON_A("A", FILLED_A, releaseTrackDisplayText = BORDERED_A),
+    BUTTON_B("B", FILLED_B, releaseTrackDisplayText = BORDERED_B),
+    BUTTON_DPAD("+", FILLED_DPAD, releaseTrackDisplayText = BORDERED_DPAD),
+    BUTTON_A_OR_DPAD("A_+", "$FILLED_A/$FILLED_DPAD", trackDisplayText = "$FILLED_A/$FILLED_DPAD", releaseTrackDisplayText = "$BORDERED_A/$BORDERED_DPAD"),
+    BUTTON_DPAD_UP("+_up", FILLED_DPAD_U, "$FILLED_DPAD $FILLED_JOY_U", releaseTrackDisplayText = BORDERED_DPAD_U),
+    BUTTON_DPAD_DOWN("+_down", FILLED_DPAD_D, "$FILLED_DPAD $FILLED_JOY_D", releaseTrackDisplayText = BORDERED_DPAD_D),
+    BUTTON_DPAD_LEFT("+_left", FILLED_DPAD_L, "$FILLED_DPAD $FILLED_JOY_L", releaseTrackDisplayText = BORDERED_DPAD_L),
+    BUTTON_DPAD_RIGHT("+_right", FILLED_DPAD_R, "$FILLED_DPAD $FILLED_JOY_R", releaseTrackDisplayText = BORDERED_DPAD_R),
 
     TOUCH_TAP("touch_tap", "Tap", isTouchScreen = true),
     TOUCH_FLICK("touch_flick", "Flick", trackDisplayText = "playalong_flick", trackDisplayIsTexID = true, isTouchScreen = true),

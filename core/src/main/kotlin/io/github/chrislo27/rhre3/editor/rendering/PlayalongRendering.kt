@@ -8,7 +8,6 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
-import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
@@ -72,10 +71,10 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                     batch.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                 }
             } else {
-                if (inputAction.method == PlayalongMethod.RELEASE_AND_HOLD) {
-                    batch.setColor(0.75f, 0.35f, 1f, 1f * alpha)
-                    largeFont.setColor(0.75f, 0.35f, 1f, 1f * alpha)
-                }
+//                if (inputAction.method == PlayalongMethod.RELEASE_AND_HOLD) {
+//                    batch.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+//                    largeFont.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+//                }
             }
 
             // For non-instantaneous inputs, draw a long line (progress)
@@ -105,24 +104,26 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
             batch.setColor(1f, 1f, 1f, 1f * alpha)
 
             // Render text or texture
-            if (inputAction.input.trackDisplayIsTexID) {
+            val trackDisplayText = if (inputAction.method.isRelease) inputAction.input.releaseTrackDisplayText else inputAction.input.trackDisplayText
+            val isTexID = if (inputAction.method.isRelease) inputAction.input.releaseTrackDisplayIsTexID else inputAction.input.trackDisplayIsTexID
+            if (isTexID) {
                 batch.packedColor = lastBatchColor
-                batch.draw(AssetRegistry.get<Texture>(inputAction.input.trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
+                batch.draw(AssetRegistry.get<Texture>(trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
                 batch.setColor(1f, 1f, 1f, 1f)
             } else {
-                val estHeight = largeFont.getTextHeight(inputAction.input.trackDisplayText)
+                val estHeight = largeFont.getTextHeight(trackDisplayText)
                 val scaleY = if (estHeight > recommendedHeight) {
                     recommendedHeight / estHeight
                 } else 1f
                 largeFont.scaleMul(scaleY)
-                val estWidth = largeFont.getTextWidth(inputAction.input.trackDisplayText)
+                val estWidth = largeFont.getTextWidth(trackDisplayText)
                 val scaleX = if (estWidth > recommendedWidth) {
                     recommendedWidth / estWidth
                 } else 1f
                 largeFont.scaleMul(scaleX)
-                val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
-                val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
-                largeFont.draw(batch, inputAction.input.trackDisplayText, x, y + height / 2, 0f, Align.center, false)
+//                val width = largeFont.getTextWidth(trackDisplayText)
+                val height = largeFont.getTextHeight(trackDisplayText)
+                largeFont.draw(batch, trackDisplayText, x, y + height / 2, 0f, Align.center, false)
                 largeFont.setColor(1f, 1f, 1f, 1f)
                 largeFont.scaleMul(1f / scaleX)
                 largeFont.scaleMul(1f / scaleY)

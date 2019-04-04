@@ -1,13 +1,13 @@
 package io.github.chrislo27.rhre3.playalong
 
 
-enum class PlayalongMethod(val instantaneous: Boolean) {
+enum class PlayalongMethod(val instantaneous: Boolean, val isRelease: Boolean) {
 
-    PRESS(true),
-    PRESS_AND_HOLD(false),
-    LONG_PRESS(false),
-    RELEASE_AND_HOLD(false),
-    RELEASE(true); // RELEASE is for Quick Tap
+    PRESS(true, false),
+    PRESS_AND_HOLD(false, false),
+    LONG_PRESS(false, false),
+    RELEASE_AND_HOLD(false, true),
+    RELEASE(true, true); // RELEASE is for Quick Tap
 
     companion object {
         val VALUES = values().toList()
