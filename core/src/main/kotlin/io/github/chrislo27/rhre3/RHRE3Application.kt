@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
+import io.github.chrislo27.rhre3.editor.CameraBehaviour
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.lc.LC
 import io.github.chrislo27.rhre3.midi.MidiHandler
@@ -190,6 +192,17 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         ModdingUtils.currentGame = ModdingGame.VALUES.find { it.id == preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingGame.DEFAULT_GAME.id) } ?: ModdingGame.DEFAULT_GAME
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
+        val oldChaseCamera = "settings_chaseCamera"
+        if (oldChaseCamera in preferences) {
+            // Retroactively apply settings
+            val oldSetting = preferences.getBoolean(oldChaseCamera, true)
+            Editor.cameraBehaviour = if (oldSetting) CameraBehaviour.FOLLOW_PLAYBACK else CameraBehaviour.ROLL_OVER_INSTANT
+            // Delete
+            preferences.remove(oldChaseCamera)
+            preferences.flush()
+        } else {
+            Editor.cameraBehaviour = CameraBehaviour.MAP.getOrDefault(preferences.getString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR), Editor.DEFAULT_CAMERA_BEHAVIOUR)
+        }
         Playalong.loadFromPrefs(preferences)
         Controllers.getControllers() // Initialize
 

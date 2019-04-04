@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
+import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -674,27 +675,47 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Chase camera
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
-                override val checkLabelPortion: Float = 0.1f
+            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+                private val label: TextLabel<InfoScreen> = TextLabel(palette, this, this.stage).apply {
+                    this.isLocalizationKey = false
+                    this.text = ""
+                    this.textWrapping = false
+                    this.fontScaleMultiplier = fontScale
+                    this.location.set(pixelX = 2f, pixelWidth = -4f)
+                    addLabel(this)
+                }
+
+                private fun updateText() {
+                    label.text = Localization["screen.info.cameraBehaviour", Localization[Editor.cameraBehaviour.localizationKey]]
+                }
+
+                private fun cycle(dir: Int) {
+                    val values = CameraBehaviour.VALUES
+                    val index = values.indexOf(Editor.cameraBehaviour) + dir
+                    val normalized = if (index < 0) values.size else if (index >= values.size) 0 else index
+                    Editor.cameraBehaviour = values[normalized]
+                    if (dir != 0) {
+                        preferences.putString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR, Editor.cameraBehaviour.name).flush()
+                        didChangeSettings = true
+                    }
+                    updateText()
+                }
+
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, checked).flush()
-                    didChangeSettings = true
+                    cycle(1)
+                }
+
+                override fun onRightClick(xPercent: Float, yPercent: Float) {
+                    super.onRightClick(xPercent, yPercent)
+                    cycle(-1)
+                }
+
+                init {
+                    Localization.listeners += { updateText() }
+                    updateText()
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
-
-                this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.textAlign = Align.left
-                    this.text = "screen.info.chaseCamera"
-                }
-
                 this.location.set(screenX = padding,
                                   screenY = padding * 2 + buttonHeight,
                                   screenWidth = buttonWidth,

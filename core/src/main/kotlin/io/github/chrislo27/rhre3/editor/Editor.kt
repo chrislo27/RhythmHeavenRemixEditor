@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
@@ -21,6 +20,8 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
+import io.github.chrislo27.rhre3.editor.CameraBehaviour.FOLLOW_PLAYBACK
+import io.github.chrislo27.rhre3.editor.CameraBehaviour.ROLL_OVER_SMOOTH
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
@@ -129,6 +130,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         internal val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
+
+        val DEFAULT_CAMERA_BEHAVIOUR: CameraBehaviour = FOLLOW_PLAYBACK
+        var cameraBehaviour: CameraBehaviour = DEFAULT_CAMERA_BEHAVIOUR
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -424,12 +428,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             val cameraPan = cameraPan
             if (cameraPan != null) {
-                if (remix.playState == STOPPED) {
-                    cameraPan.update(Gdx.graphics.deltaTime, camera)
-                    if (cameraPan.done) {
-                        this.cameraPan = null
-                    }
-                } else {
+                cameraPan.update(Gdx.graphics.deltaTime, camera)
+                if (cameraPan.done) {
                     this.cameraPan = null
                 }
             }
@@ -738,14 +738,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         if (remix.playState == PLAYING) {
-            val halfWidth = camera.viewportWidth / 2 * camera.zoom
-            if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth) {
-                camera.position.x = remix.beat + halfWidth
-            }
-
-            if (stage.playalongStage.visible || main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
+            val camBehav = cameraBehaviour
+            if (stage.playalongStage.visible || camBehav == FOLLOW_PLAYBACK) {
                 // Use linear time to prevent nauseation
                 camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + camera.viewportWidth * 0.25f
+            } else {
+                val smooth = camBehav == ROLL_OVER_SMOOTH
+                val halfWidth = camera.viewportWidth / 2 * camera.zoom
+                if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth && cameraPan == null) {
+                    val target = remix.beat + halfWidth
+                    if (smooth) {
+                        cameraPan = CameraPan(camera.position.x, target, 0.2f, Interpolation.exp10Out)
+                    } else {
+                        camera.position.x = target
+                    }
+                }
             }
         }
 
@@ -1930,64 +1937,67 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("cam: [")
+            append("Camera: [")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.x))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.y))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.zoom))
-            append(" zoom]")
+            append(" zoom]\n")
+            append("  Pan: ")
+            append(cameraPan)
+            append("\n")
 
-            append("\ne: ")
+            append("Rendered objects (visible/total):\n  Entities: ")
             append(remix.entities.count {
                 it.inRenderRange(rangeStartF, rangeEndF)
             })
             append(" / ")
-            append(remix.entities.size)
+            append(remix.entities.size).append("\n")
 
-            append("\ntrackers: ")
+            append("  Trackers: ")
             append(remix.trackers.sumBy { container ->
                 container.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
             })
             append(" / ")
-            append(remix.trackers.sumBy { it.map.values.size })
+            append(remix.trackers.sumBy { it.map.values.size }).append("\n")
 
-            append("\npos: ♩")
+            append("Pos.: ♩")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
             append(" / ")
-            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds))
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)).append("\n")
 
-            append("\nbpm: ♩=")
-            append(remix.tempos.tempoAtSeconds(remix.seconds))
+            append("Tempo: ♩=")
+            append(remix.tempos.tempoAtSeconds(remix.seconds)).append("\n")
 
-            append("\nswing: ")
+            append("  Swing: ")
             val swing = remix.tempos.swingAtSeconds(remix.seconds)
-            append(swing.ratio).append("%, ").append(swing.division)
+            append(swing.ratio).append("%, ").append(swing.division).append("\n")
 
-            append("\nmusvol: ")
-            append(remix.musicVolumes.volumeAt(remix.beat))
+            append("Music Vol.: ")
+            append((remix.musicVolumes.volumeAt(remix.beat) * 100).roundToInt()).append("%\n")
 
-            append("\nmidi: ")
-            append(remix.midiInstruments)
+            append("Track Count: ")
+            append(remix.trackCount).append("\n")
 
-            append("\nautosave: ")
+            // metadata
+            append("MIDI Instrs.: ")
+            append(remix.midiInstruments).append("\n")
+
+            append("Autosave Timer: ")
             append(timeUntilAutosave)
             append(" sec / ")
             append(autosaveFrequency)
-            append(" min")
+            append(" min\n")
 
-            append("\ntrack: ")
-            append(remix.trackCount)
-
-            append("\nmodkeys: ")
+            append("Modifier Keys: ")
             if (Gdx.input.isControlDown())
                 append("[CTRL]")
             if (Gdx.input.isShiftDown())
                 append("[SHIFT]")
             if (Gdx.input.isAltDown())
                 append("[ALT]")
-
-//            append("\n")
+            append("\n")
         }
 
         return str.toString()

@@ -16,7 +16,7 @@ object PreferenceKeys {
     val SETTINGS_MINIMAP = "settings_minimap"
     val SETTINGS_MINIMAP_PREVIEW = "settings_minimapPreview"
     val SETTINGS_AUTOSAVE = "settings_autosave"
-    val SETTINGS_CHASE_CAMERA = "settings_chaseCamera"
+    val SETTINGS_CAMERA_BEHAVIOUR = "settings_cameraBehaviour"
     val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"
     val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
@@ -24,7 +24,7 @@ object PreferenceKeys {
     val SETTINGS_ADVANCED_OPTIONS = "settings_advancedOptions"
 
     val allSettingsKeys: List<String> =
-        listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CHASE_CAMERA,
+        listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CAMERA_BEHAVIOUR,
                SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
                SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS)
 
