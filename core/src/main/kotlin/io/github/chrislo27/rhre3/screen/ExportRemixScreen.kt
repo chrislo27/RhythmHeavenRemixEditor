@@ -431,7 +431,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
         try {
             // prep triggers
-            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat() * 1000.0
+            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
             val endMs = endSeconds * 1000.0
             val durationMs = endMs - startMs
 
