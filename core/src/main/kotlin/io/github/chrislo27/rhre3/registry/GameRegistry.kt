@@ -377,7 +377,7 @@ object GameRegistry : Disposable {
                                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                                 obj.responseIDs.starSubstitution(),
-                                obj.baseBpm, obj.loops)
+                                obj.baseBpm, obj.loops, obj.earliness)
                         is EquidistantObject ->
                             Equidistant(game, objID, obj.deprecatedIDs,
                                         obj.name, obj.distance,
@@ -435,7 +435,7 @@ object GameRegistry : Disposable {
                     val name = if (!loops) fh.nameWithoutExtension() else (fh.nameWithoutExtension().substringBeforeLast(".loop") + " - loop")
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
                                         true, true, fh, null, null,
-                                        listOf(), 0f, loops)
+                                        listOf(), 0f, loops, 0f)
                 }
 
                 if (RHRE3.outputCustomSfx) {

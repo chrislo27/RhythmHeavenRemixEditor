@@ -17,7 +17,7 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
                val soundHandle: FileHandle,
                val introSound: String?, val endingSound: String?,
                override val responseIDs: List<String>,
-               val baseBpm: Float, val loops: Boolean)
+               val baseBpm: Float, val loops: Boolean, val earliness: Float)
     : Datamodel(game, id, deprecatedIDs, name), ResponseModel, DurationModel {
 
     val usesBaseBpm: Boolean
@@ -26,9 +26,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     val sound: LazySound by lazy {
         LazySound(soundHandle)
     }
-
-    val earliness: Float
-        get() = 0f
 
     val introSoundCue: Cue?
         get() =

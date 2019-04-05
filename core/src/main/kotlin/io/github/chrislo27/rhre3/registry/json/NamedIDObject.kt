@@ -101,6 +101,9 @@ class CueObject : NamedIDObject() {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loops: Boolean = false
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var earliness: Float = 0f
+
 }
 
 @JsonTypeName("equidistant")
