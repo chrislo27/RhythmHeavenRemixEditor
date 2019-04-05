@@ -17,7 +17,7 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
                val soundHandle: FileHandle,
                val introSound: String?, val endingSound: String?,
                override val responseIDs: List<String>,
-               val baseBpm: Float, val loops: Boolean, val earliness: Float)
+               val baseBpm: Float, val loops: Boolean, val earliness: Float, val loopStart: Float, val loopEnd: Float)
     : Datamodel(game, id, deprecatedIDs, name), ResponseModel, DurationModel {
 
     val usesBaseBpm: Boolean

@@ -38,6 +38,8 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.stretchable = datamodel.stretchable
                     it.responseIDs = datamodel.responseIDs.map(String::starSubstitute)
                     it.earliness = datamodel.earliness
+                    it.loopStart = datamodel.loopStart
+                    it.loopEnd = datamodel.loopEnd
                 }
             }
             is Equidistant -> {

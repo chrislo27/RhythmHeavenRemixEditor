@@ -378,7 +378,7 @@ object GameRegistry : Disposable {
                                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                                 obj.responseIDs.starSubstitution(),
-                                obj.baseBpm, obj.loops, obj.earliness)
+                                obj.baseBpm, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
                         is EquidistantObject ->
                             Equidistant(game, objID, obj.deprecatedIDs,
                                         obj.name, obj.distance,
@@ -436,7 +436,7 @@ object GameRegistry : Disposable {
                     val name = if (!loops) fh.nameWithoutExtension() else (fh.nameWithoutExtension().substringBeforeLast(".loop") + " - loop")
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
                                         true, true, fh, null, null,
-                                        listOf(), 0f, loops, 0f)
+                                        listOf(), 0f, loops, 0f, 0f, 0f)
                 }
 
                 if (RHRE3.outputCustomSfx) {
@@ -726,6 +726,11 @@ object GameRegistry : Disposable {
                             builder.append("Cue ${model.id} has an invalid endingSound ID: ${model.endingSound}\n")
                         } else if (objectMap[model.endingSound] != null && noDeprecationsObjectMap[model.endingSound] == null) {
                             builder.append("Cue ${model.id} refers to a deprecated endingSound ID: ${model.endingSound}, replace with ${objectMap[model.endingSound]?.id?.starSubstitute()}\n")
+                        }
+                    }
+                    if (model.loops) {
+                        if (model.loopStart > model.loopEnd || (model.loopStart < 0 || model.loopEnd < 0)) {
+                            builder.append("Cue ${model.id} has invalid loop endpoints: start=${model.loopStart}, end=${model.loopEnd}\n")
                         }
                     }
                 }

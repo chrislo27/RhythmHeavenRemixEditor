@@ -103,6 +103,10 @@ class CueObject : NamedIDObject() {
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var earliness: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var loopStart: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var loopEnd: Float = 0f
 
 }
 
