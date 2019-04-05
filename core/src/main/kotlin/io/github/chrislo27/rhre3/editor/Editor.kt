@@ -552,7 +552,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
-            this.renderOtherUI(batch, beatRange, font)
+            main.shapeRenderer.projectionMatrix = camera.combined
+            this.renderOtherUI(batch, main.shapeRenderer, beatRange, font)
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
 
         if (monsterGoal) {

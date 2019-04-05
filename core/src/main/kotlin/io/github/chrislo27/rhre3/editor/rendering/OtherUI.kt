@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor.rendering
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
@@ -17,7 +18,7 @@ import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
-fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFont) {
+fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatRange: IntRange, font: BitmapFont) {
     val clickOccupation = clickOccupation
     when (clickOccupation) {
         is ClickOccupation.SelectionDrag -> {
@@ -55,10 +56,16 @@ fun Editor.renderOtherUI(batch: SpriteBatch, beatRange: IntRange, font: BitmapFo
             val selectionMode = getSelectionMode()
 
             batch.setColor(selectionFill.r, selectionFill.g, selectionFill.b, selectionFill.a * 0.85f)
-            remix.entities.forEach {
-                if (selectionMode.wouldEntityBeIncluded(it, rect, remix.entities, this.selection)) {
-                    batch.fillRect(it.bounds)
+            shapeRenderer.prepareStencilMask(batch) {
+                this.begin(ShapeRenderer.ShapeType.Filled)
+                remix.entities.forEach {
+                    if (selectionMode.wouldEntityBeIncluded(it, rect, remix.entities, this@renderOtherUI.selection)) {
+                        this.rect(it.bounds.x, it.bounds.y, it.bounds.width, it.bounds.height)
+                    }
                 }
+                this.end()
+            }.useStencilMask {
+                batch.fillRect(camera.position.x - camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight)
             }
 
             batch.color = selectionFill
