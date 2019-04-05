@@ -309,11 +309,12 @@ object GameRegistry : Disposable {
                     results.filter { it.message.isNotBlank() }.forEach {
                         Toolboks.LOGGER.warn("Verification message for ${it.game.id}:\n${it.message}")
                     }
+                    val endTime = System.nanoTime()
 
                     delay(250L)
 
                     Toolboks.LOGGER.info(
-                            "Registry checked in ${(System.nanoTime() - nanoStart) / 1_000_000.0} ms, $failures error(s)")
+                            "Registry checked in ${(endTime - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
                         delay(500L)
