@@ -28,7 +28,7 @@ object BeadsSoundSystem {
     val audioContext: AudioContext
         get() = if (isRealtime) realtimeAudioContext else nonrealtimeAudioContext
     @Volatile
-    var currentSoundID: Long = 0
+    var currentSoundID: Long = 1L
         private set
 
     @Volatile

@@ -27,6 +27,9 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         LazySound(soundHandle)
     }
 
+    val earliness: Float
+        get() = 0f
+
     val introSoundCue: Cue?
         get() =
             GameRegistry.data.objectMap[introSound] as Cue?
