@@ -204,6 +204,7 @@ Example:<br>
   "fileExtension": "ogg",
   "loops": false,
   "baseBpm": 120.0,
+  "earliness": 0.05,
 
   "introSound": "other/ID",
   "endingSound": "other/ID2",
@@ -224,12 +225,13 @@ metadata such as the duration and its editable abilities.
 | duration | number | Duration of this cue in beats |
 | stretchable | boolean? | If true, the cue can be dragged longer or shorter |
 | repitchable | boolean? | If true, the cue can have its pitch changed by the user |
-| fileExtension | string? | File extension of the cue sound file. Always use OGG Vorbis files, so don't use this field. |
+| fileExtension | string? | File extension of the cue sound file. You should generally always use OGG Vorbis files, so you shouldn't have to use this field. |
 | loops | boolean? | If true, this cue loops its sound. |
 | baseBpm | number?| If present, this cue will get repitched automatically based on the tempo. See below for more info. Must be greater than zero if present.|
 | introSound | id?| If present, will play this other sound at the start of the cue. See below for more info. |
 | endingSound | id?| If present, will play this other sound at the end of the cue. See below for more info. |
-| responseIDs| (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
+| responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
+| earliness | number? | If present, indicates the number of seconds **early** to play this cue. Useful for voiced cues where certain syllables start earlier. Negative values should not be used. Defaults to 0.0. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,
