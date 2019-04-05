@@ -25,6 +25,10 @@ I can be reached at gaben@valvesoftware.com, and my favorite class is the Spy. T
 However, you will be a lot more limited in your abilities.
 
 
+If you'd like to use the full flexibility of the JSON databasing format, try using the RHRE SFX Database Editor:
+https://github.com/chrislo27/RSDE
+
+
 The sounds must be placed in a folder inside this directory.
 Each folder is a "game", and you can have multiple folders.
 If your folder name already is an existing stock ID, the folder contents
