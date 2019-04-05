@@ -27,6 +27,7 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
@@ -170,6 +171,12 @@ open class Remix(val main: RHRE3Application)
 
                             Toolboks.LOGGER.warn(
                                     "Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
+                            remix.entities += (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+                                this.subtitle = "[RED]MISSING ENTITY[]\n${node[ModelEntity.JSON_DATAMODEL]!!.textValue()}"
+                                this.updateBounds {
+                                    this.bounds.set(node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue())
+                                }
+                            }
                             return@forEach
                         }
 
@@ -483,6 +490,11 @@ open class Remix(val main: RHRE3Application)
             remixObject.entities?.forEach {
                 val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
                     missing++
+                    remix.entities += (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+                        this.subtitle = "[RED]MISSING ENTITY[]\n${it.id}"
+                        this.updateBounds {
+                            this.bounds.set(it.beat, it.level.toFloat(), it.width, 1f)
+                        }}
                     return@forEach
                 }
 
