@@ -729,7 +729,7 @@ object GameRegistry : Disposable {
                         }
                     }
                     if (model.loops) {
-                        if (model.loopStart > model.loopEnd || (model.loopStart < 0 || model.loopEnd < 0)) {
+                        if (model.loopStart > model.loopEnd && (model.loopStart >= 0 && model.loopEnd > 0)) {
                             builder.append("Cue ${model.id} has invalid loop endpoints: start=${model.loopStart}, end=${model.loopEnd}\n")
                         }
                     }

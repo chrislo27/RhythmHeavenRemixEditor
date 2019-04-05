@@ -204,7 +204,9 @@ Example:<br>
   "fileExtension": "ogg",
   "loops": false,
   "baseBpm": 120.0,
-  "earliness": 0.05,
+  "earliness": 0.0,
+  "loopStart": 0.1,
+  "loopEnd": 1.0,
 
   "introSound": "other/ID",
   "endingSound": "other/ID2",
@@ -233,7 +235,7 @@ metadata such as the duration and its editable abilities.
 | responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
 | earliness | number? | If present, indicates the number of seconds **early** to play this cue. Useful for voiced cues where certain syllables start earlier. Negative values should not be used. Defaults to 0.0. |
 | loopStart | number? | If present, indicates the loop start point in seconds. Only works if `loops` is true. Must be less than `loopEnd`. |
-| loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. |
+| loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than zero, defaults to end of sample. Defaults to -1.0. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,

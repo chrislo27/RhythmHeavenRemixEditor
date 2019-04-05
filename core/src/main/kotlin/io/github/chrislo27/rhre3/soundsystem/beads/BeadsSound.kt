@@ -56,8 +56,12 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         val dur = duration
         val clampedPosition = (position.coerceIn(-dur, dur))
         player.player.position = (if (clampedPosition < 0) (dur + clampedPosition) else clampedPosition) * 1000
-        player.player.setLoopStart(Static(player.player.context, loopParams.startPoint.toFloat() * 1000))
-        player.player.setLoopEnd(Static(player.player.context, loopParams.endPoint.toFloat() * 1000))
+        if (loopParams.startPoint > 0) {
+            player.player.setLoopStart(Static(player.player.context, loopParams.startPoint.toFloat() * 1000))
+        }
+        if (loopParams.endPoint > 0) {
+            player.player.setLoopEnd(Static(player.player.context, loopParams.endPoint.toFloat() * 1000))
+        }
         player.addToContext()
 
         return id
