@@ -56,6 +56,7 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
         stage.paneLikeStages.forEach { it.visible = false }
         stage.buttonBarStage.visible = true
         stage.messageBarStage.visible = true
+        stage.centreAreaStage.visible =true
         if (visible) {
             editor.currentTool = Tool.SELECTION
         }
