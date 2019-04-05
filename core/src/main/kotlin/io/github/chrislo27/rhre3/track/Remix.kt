@@ -477,6 +477,7 @@ open class Remix(val main: RHRE3Application)
             remix.databaseVersion = 0
             remix.version = Version.fromString(remixObject.version ?: "v2.17.0")
 
+            remix.tempos.clear()
             remixObject.bpmChanges?.forEach {
                 remix.tempos.add(TempoChange(remix.tempos, it.beat, it.tempo, Swing.STRAIGHT, 0f))
             }
