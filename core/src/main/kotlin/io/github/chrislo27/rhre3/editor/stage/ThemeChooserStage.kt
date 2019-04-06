@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.editor.stage
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -11,9 +12,12 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.theme.LoadedThemes
+import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.getInputY
+import kotlin.math.roundToInt
 
 
 class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: EditorStage, camera: OrthographicCamera)
@@ -47,6 +51,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             this.textWrapping = false
             this.isLocalizationKey = true
             this.text = "editor.themeChooser.title"
+            this.location.set(screenWidth = 0.95f, screenX = 0.025f)
         }
 
         this.elements += object : Button<EditorScreen>(palette, this, this) {
@@ -67,6 +72,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 this.text = "editor.themeChooser.reset"
                 this.textWrapping = true
                 this.fontScaleMultiplier = 0.75f
+                this.location.set(pixelWidth = -4f, pixelX = 2f)
             })
         }
 
@@ -141,6 +147,74 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
         }
 
         this.elements.addAll(buttons)
+
+        // Scrollbar
+        this.elements += object : UIElement<EditorScreen>(this, this) {
+            private var clickPoint: Pair<Float, Int> = -1f to 1
+
+            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                val oldColour = batch.packedColor
+
+                batch.packedColor = palette.backColor.toFloatBits()
+                batch.fillRect(location.realX, location.realY, location.realWidth, location.realHeight)
+
+                if (canBeClickedOn()) {
+                    // Render window
+                    val themes = LoadedThemes.themes
+                    val total = themes.size
+                    val barHeight = (buttons.size.toFloat() / total.coerceAtLeast(1)) * location.realHeight
+                    val barHeightAlpha = barHeight / location.realHeight
+                    val click = clickPoint
+
+                    batch.color = if (click.first in 0f..1f) palette.clickedBackColor else palette.highlightedBackColor
+                    batch.fillRect(location.realX, location.realY + location.realHeight - buttonScroll.toFloat() / total * location.realHeight, location.realWidth, -barHeight)
+
+                    val numDefaultThemes = Themes.defaultThemes.size
+                    if (total > numDefaultThemes) {
+                        // Has custom, add blue bar
+                        batch.setColor(0f, 1f, 1f, 0.5f)
+                        val smallBarHeight = location.realHeight * (1f / total)
+                        batch.fillRect(location.realX, location.realY + (1f - numDefaultThemes.toFloat() / total) * location.realHeight, location.realWidth, -smallBarHeight)
+                    }
+
+                    if (click.first in 0f..1f) {
+                        val currentAlpha = 1f - (this.stage.camera.getInputY() - location.realY) / location.realHeight
+                        val buttonScrollAlpha = click.second.toFloat() / total
+                        val alpha = ((currentAlpha - (click.first - buttonScrollAlpha)) / (1f - barHeightAlpha)).coerceIn(0f, 1f)
+                        val targetScroll = (alpha * maxButtonScroll).roundToInt().coerceIn(0, maxButtonScroll)
+                        if (buttonScroll != targetScroll) {
+                            buttonScroll = targetScroll
+                            resetButtons()
+                        }
+                    }
+                }
+
+                batch.packedColor = oldColour
+            }
+
+            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+                if (canBeClickedOn() && button == Input.Buttons.LEFT && isMouseOver()) {
+                    val scrollAlpha = 1f - (this.stage.camera.getInputY() - location.realY) / location.realHeight
+                    val total = LoadedThemes.themes.size
+                    val alphaInBar = (scrollAlpha - (buttonScroll.toFloat() / total)) / (buttons.size.toFloat() / total.coerceAtLeast(1))
+                    if (alphaInBar in 0f..1f) {
+                        clickPoint = scrollAlpha to buttonScroll
+                    }
+                }
+                return super.touchDown(screenX, screenY, pointer, button)
+            }
+
+            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+                if (canBeClickedOn() && button == Input.Buttons.LEFT) {
+                    clickPoint = -1f to 1
+                }
+                return super.touchDown(screenX, screenY, pointer, button)
+            }
+
+            override fun canBeClickedOn(): Boolean = maxButtonScroll > 0
+        }.apply {
+            this.location.set(screenX = 0.95f + 0.0075f, screenY = start, screenWidth = 0.035f, screenHeight = end - start - padding)
+        }
     }
 
     fun resetButtons() {
@@ -200,7 +274,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
 
             textLabel.apply {
                 this.location.set(screenX = part)
-                this.location.set(screenWidth = 1f - this.location.screenX)
+                this.location.set(screenWidth = 1f - this.location.screenX - 0.005f)
                 this.textWrapping = false
                 this.textAlign = Align.left
                 this.fontScaleMultiplier = 0.7f
