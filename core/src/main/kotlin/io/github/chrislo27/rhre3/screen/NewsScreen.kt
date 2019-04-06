@@ -265,6 +265,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         persistReadArticles()
     }
 
+    @Suppress("SuspiciousCollectionReassignment")
     private fun setArticleRead(article: Article, read: Boolean) {
         if (read) {
             if (article.id !in readNews)
