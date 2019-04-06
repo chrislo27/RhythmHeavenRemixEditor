@@ -223,6 +223,8 @@ open class Remix(val main: RHRE3Application)
 
             val tracksWithNotes: MutableList<Int> = mutableListOf()
 
+            remix.tempos.clear()
+
             val points: List<NotePoint> = sequence.tracks.flatMap { track ->
                 val list = mutableListOf<NotePoint>()
                 val map = mutableMapOf<Int, NotePoint>()
