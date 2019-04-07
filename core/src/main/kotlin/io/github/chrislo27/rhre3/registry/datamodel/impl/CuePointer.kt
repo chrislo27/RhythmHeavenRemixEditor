@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.registry.datamodel.impl
 
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
 import io.github.chrislo27.rhre3.registry.json.CuePointerObject
 
 fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(this)
@@ -42,7 +41,7 @@ class CuePointer {
     val duration: Float
         get() =
             if (backingDuration <= 0f) {
-                (GameRegistry.data.objectMap[id] as? DurationModel)?.duration ?: error("$id is not a DurationModel")
+                GameRegistry.data.objectMap[id]?.duration ?: error("$id does not exist")
             } else {
                 backingDuration
             }

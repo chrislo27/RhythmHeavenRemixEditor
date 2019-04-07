@@ -28,7 +28,6 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
     override val showPitchOnTooltip: Boolean = false
 
     init {
-        bounds.width = 1f
         bounds.height = 1f
     }
 

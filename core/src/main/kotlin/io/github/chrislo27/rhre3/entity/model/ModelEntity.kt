@@ -40,6 +40,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     open var needsNameTooltip: Boolean = false
         protected set
 
+    init {
+        bounds.width = datamodel.duration
+    }
+
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
 

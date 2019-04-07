@@ -18,10 +18,9 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
     var textureHash: String? = null
     override val isStretchable: Boolean = true
     override val renderText: String
-        get() = if (textureHash != null) "${datamodel.name}" else "${datamodel.name}\n<no texture>"
+        get() = if (textureHash != null) datamodel.name else "${datamodel.name}\n<no texture>"
 
     init {
-        this.bounds.width = 1f
         this.bounds.height = 1f
     }
 

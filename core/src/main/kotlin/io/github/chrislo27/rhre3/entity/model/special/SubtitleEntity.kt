@@ -32,7 +32,6 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
         get() = datamodel.type.canInputNewlines
 
     init {
-        bounds.width = 1f
         bounds.height = 1f
     }
 

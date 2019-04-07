@@ -9,7 +9,8 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.Remix
 
 
-abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List<String>, val name: String)
+abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List<String>, val name: String,
+                         open val duration: Float)
     : Disposable {
 
     abstract fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*>
@@ -19,6 +20,8 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     val newlinedName: String by lazy { name.replace(" - ", "\n") }
     @Suppress("LeakingThis")
     val possibleBaseBpm: ClosedRange<Float>? by lazy(this::checkBaseBpm)
+
+    constructor(game: Game, id: String, deprecatedIDs: List<String>, name: String) : this(game, id, deprecatedIDs, name, 1.0f)
 
     fun checkBaseBpm(): ClosedRange<Float>? {
         if (this is Cue && this.usesBaseBpm)

@@ -18,7 +18,7 @@ import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
-import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.EndRemixEntity
 import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
@@ -622,7 +622,7 @@ open class Remix(val main: RHRE3Application)
     var trackCount: Int by Delegates.vetoable(Editor.DEFAULT_TRACK_COUNT) { _, _, new ->
         val allowed = new >= 1
         if (allowed) {
-            entities.filterIsInstance<EndEntity>().forEach { it.onTrackSizeChange(new) }
+            entities.filterIsInstance<EndRemixEntity>().forEach { it.onTrackSizeChange(new) }
         }
         allowed
     }
@@ -729,7 +729,7 @@ open class Remix(val main: RHRE3Application)
             return false
         }
 
-        return entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } == null
+        return entities.filterNot { it is EndRemixEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } == null
     }
 
     fun canIncreaseTrackCount(): Boolean = trackCount < Editor.MAX_TRACK_COUNT
@@ -744,12 +744,12 @@ open class Remix(val main: RHRE3Application)
      */
     fun recomputeCachedData() {
         entities.sortBy { it.bounds.x }
-        duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
+        duration = entities.firstOrNull { it is EndRemixEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
-        entitiesTouchTrackTop = entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).toInt() >= trackCount } != null
+        entitiesTouchTrackTop = entities.filterNot { it is EndRemixEntity }.firstOrNull { (it.bounds.y + it.bounds.height).toInt() >= trackCount } != null
 
         gameSections.clear()
-        val reversedEntities = entities.takeWhile { it !is EndEntity }
+        val reversedEntities = entities.takeWhile { it !is EndRemixEntity }
                 .filterIsInstance<ModelEntity<*>>()
                 .filter { !it.datamodel.game.noDisplay }
                 .asReversed()
@@ -802,8 +802,8 @@ open class Remix(val main: RHRE3Application)
     fun getLastEntityPoint(): Float {
         if (entities.isEmpty())
             return 0f
-        return if (entities.isNotEmpty() && entities.any { it is EndEntity }) {
-            entities.first { it is EndEntity }.bounds.x
+        return if (entities.isNotEmpty() && entities.any { it is EndRemixEntity }) {
+            entities.first { it is EndRemixEntity }.bounds.x
         } else {
             val last = entities.maxBy { it.bounds.x + it.bounds.width }!!
             last.bounds.x + last.bounds.width

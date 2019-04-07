@@ -13,7 +13,10 @@ import io.github.chrislo27.rhre3.modding.ModdingMetadata
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
-import io.github.chrislo27.rhre3.registry.datamodel.*
+import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.PickerName
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 import io.github.chrislo27.rhre3.registry.json.*
@@ -683,10 +686,8 @@ object GameRegistry : Disposable {
                 Model verification:
                 * Duration > 0
                  */
-                if (model is DurationModel) {
-                    if (model.duration <= 0) {
-                        builder.append("Model ${model.id} has a negative duration: ${model.duration}\n")
-                    }
+                if (model.duration <= 0) {
+                    builder.append("Model ${model.id} has a negative duration: ${model.duration}\n")
                 }
 
                 /*
@@ -697,18 +698,17 @@ object GameRegistry : Disposable {
                 */
                 if (model is ContainerModel) {
                     model.cues.forEach { pointer ->
-                        if (objectMap[pointer.id] == null) {
+                        val datamodel = objectMap[pointer.id]
+                        if (datamodel == null) {
                             builder.append("Model ${model.id} has an invalid cue pointer ID: ${pointer.id}\n")
-                        } else if (objectMap[pointer.id] != null && noDeprecationsObjectMap[pointer.id] == null) {
-                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${objectMap[pointer.id]?.id?.starSubstitute()}\n")
+                        } else if (noDeprecationsObjectMap[pointer.id] == null) {
+                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${datamodel?.id?.starSubstitute()}\n")
                         }
                         if (pointer.track >= Editor.MIN_TRACK_COUNT) {
-                            builder.append(
-                                    "Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
+                            builder.append("Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
                         }
-                        if (pointer.duration <= 0) {
-                            builder.append(
-                                    "Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
+                        if (datamodel != null && pointer.duration <= 0) {
+                            builder.append("Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
                         }
                     }
                 }
