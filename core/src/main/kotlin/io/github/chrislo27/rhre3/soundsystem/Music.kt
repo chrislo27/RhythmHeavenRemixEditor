@@ -27,4 +27,6 @@ interface Music : Disposable {
 
     fun isPlaying(): Boolean
 
+    fun getStartOfSound(): Float
+
 }

@@ -26,9 +26,7 @@ fun Editor.renderTopTrackers(batch: SpriteBatch, beatRange: IntRange, trackYOffs
         val signedSec = if (noBeat) time else remix.tempos.beatsToSeconds(time)
         val sec = Math.abs(signedSec)
         val seconds = (if (signedSec < 0) "-" else "") +
-                Editor.TRACKER_MINUTES_FORMATTER.format(
-                        (sec / 60).toLong()) + ":" + Editor.TRACKER_TIME_FORMATTER.format(
-                sec % 60.0)
+                Editor.TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + Editor.TRACKER_TIME_FORMATTER.format(sec % 60.0)
         if (noBeat) {
             return seconds
         }
