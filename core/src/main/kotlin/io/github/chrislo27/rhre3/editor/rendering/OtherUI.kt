@@ -65,7 +65,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
                 }
                 this.end()
             }.useStencilMask {
-                batch.fillRect(camera.position.x - camera.viewportWidth / 2, camera.position.y - camera.viewportHeight / 2, camera.viewportWidth, camera.viewportHeight)
+                batch.fillRect(camera.position.x - camera.viewportWidth / 2 * camera.zoom, camera.position.y - camera.viewportHeight / 2 * camera.zoom, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
             }
 
             batch.color = selectionFill
