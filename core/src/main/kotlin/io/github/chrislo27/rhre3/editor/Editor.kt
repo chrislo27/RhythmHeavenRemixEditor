@@ -513,7 +513,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
                 if ((!clickOccupation.isPlacementValid() || clickOccupation.isInDeleteZone()) && !overStoreArea) {
-                    batch.setColor(1f, 0f, 0f, 0.125f)
+                    batch.setColor(1f, 0f, 0f, 0.15f)
                     batch.fillRect(rect)
 
                     val shapeRenderer = main.shapeRenderer
