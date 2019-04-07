@@ -524,7 +524,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         shapeRenderer.end()
                     }.useStencilMask {
                         val tex = AssetRegistry.get<Texture>("ui_stripe_board")
-                        val scale = 3f
+                        val scale = 2f
                         val w = tex.width.toFloat() / RHRE3.WIDTH * camera.viewportWidth / scale
                         val h = tex.height.toFloat() / RHRE3.HEIGHT * camera.viewportHeight / scale
                         for (x in 0..(RHRE3.WIDTH / tex.width * scale).roundToInt() + 2) {
