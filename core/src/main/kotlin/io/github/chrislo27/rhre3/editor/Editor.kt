@@ -527,9 +527,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         val scale = 3f
                         val w = tex.width.toFloat() / RHRE3.WIDTH * camera.viewportWidth / scale
                         val h = tex.height.toFloat() / RHRE3.HEIGHT * camera.viewportHeight / scale
-                        for (x in 0..(RHRE3.WIDTH / tex.width * scale).roundToInt()) {
-                            for (y in 0..(RHRE3.HEIGHT / tex.height * scale).roundToInt()) {
-                                batch.draw(tex, x * w - camera.viewportWidth / 2 + camera.position.x, y * h - camera.viewportHeight / 2 + camera.position.y, w, h)
+                        for (x in 0..(RHRE3.WIDTH / tex.width * scale).roundToInt() + 2) {
+                            for (y in 0..(RHRE3.HEIGHT / tex.height * scale).roundToInt() + 2) {
+                                batch.draw(tex, x * w - camera.viewportWidth / 2 * camera.zoom + camera.position.x, y * h - camera.viewportHeight / 2 * camera.zoom + camera.position.y, w, h)
                             }
                         }
                     }
