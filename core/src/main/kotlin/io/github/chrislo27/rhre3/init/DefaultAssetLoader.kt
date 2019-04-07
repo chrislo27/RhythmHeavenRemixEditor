@@ -96,6 +96,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 //        AssetRegistry.loadAsset<Texture>("ui_icon_bug", "images/ui/icons/bug.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_adv_opts", "images/ui/icons/advOpts.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_history", "images/ui/icons/history.png")
+        AssetRegistry.loadAsset<Texture>("ui_stripe_board", "images/ui/stripe_board.png")
 
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")

@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -512,8 +513,26 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
                 if ((!clickOccupation.isPlacementValid() || clickOccupation.isInDeleteZone()) && !overStoreArea) {
-                    batch.setColor(1f, 0f, 0f, 0.25f)
+                    batch.setColor(1f, 0f, 0f, 0.125f)
                     batch.fillRect(rect)
+
+                    val shapeRenderer = main.shapeRenderer
+                    shapeRenderer.projectionMatrix = camera.combined
+                    shapeRenderer.prepareStencilMask(batch) {
+                        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+                        shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height)
+                        shapeRenderer.end()
+                    }.useStencilMask {
+                        val tex = AssetRegistry.get<Texture>("ui_stripe_board")
+                        val scale = 3f
+                        val w = tex.width.toFloat() / RHRE3.WIDTH * camera.viewportWidth / scale
+                        val h = tex.height.toFloat() / RHRE3.HEIGHT * camera.viewportHeight / scale
+                        for (x in 0..(RHRE3.WIDTH / tex.width * scale).roundToInt()) {
+                            for (y in 0..(RHRE3.HEIGHT / tex.height * scale).roundToInt()) {
+                                batch.draw(tex, x * w - camera.viewportWidth / 2 + camera.position.x, y * h - camera.viewportHeight / 2 + camera.position.y, w, h)
+                            }
+                        }
+                    }
                     batch.setColor(1f, 0f, 0f, 0.5f)
                     batch.drawRect(rect, toScaleX(SELECTION_BORDER) * 2, toScaleY(SELECTION_BORDER) * 2)
                 }
