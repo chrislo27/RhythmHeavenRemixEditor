@@ -26,9 +26,11 @@ Most songs will have a slight gap of silence at the start, or the beat
 in the song will not match the beats in the editor. You have to correct
 this by moving the music start tracker *backwards*.
 
-Move the tracker by middle clicking or pressing `CTRL+RCLICK` in the track.
+Starting with v3.18.0, the program will try to guess where the start of
+music is. Use the button in the Music Start screen to set it.
+To do it manually, move the tracker by middle clicking or pressing `CTRL+RCLICK` in the track.
 If it doesn't work, make sure you are using the Selection tool (press **`1`**).
-To get more precision, click the Snap setting (looks like 1/4) to increase
+To get more precision, click the Snap setting (will look like 1/4) to increase
 the fineness of movement.
 
 You can use trial-and-error to correct it, or open up a program that
