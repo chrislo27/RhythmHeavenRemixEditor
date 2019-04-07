@@ -633,7 +633,7 @@ class ExportRemixScreen(main: RHRE3Application)
         isCapableOfExporting = hasEndRemix || canOmitEndRemix
         if (!isCapableOfExporting) {
             if (!hasEndRemix) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix", GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
             }
         } else {
             if (throwable == null) {
