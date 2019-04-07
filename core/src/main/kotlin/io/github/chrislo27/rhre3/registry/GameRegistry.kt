@@ -321,10 +321,7 @@ object GameRegistry : Disposable {
 
                     if (failures > 0) {
                         delay(500L)
-
-                        class RegistryVerificationError : RuntimeException()
-
-                        RegistryVerificationError().printStackTrace()
+                        IllegalStateException("Game registry failed to validate successfully").printStackTrace()
                         Gdx.app.exit()
                     }
                 }
