@@ -489,7 +489,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 batch.color = theme.selection.selectionFill
                 batch.fillRect(rect)
-
                 batch.color = theme.selection.selectionBorder
                 batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
 
@@ -502,6 +501,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     it.render(this, batch)
                 }
+            }
+        }
+        if (selection.isNotEmpty()) {
+            val clickOccupation = clickOccupation
+            if (clickOccupation is ClickOccupation.SelectionDrag) {
+                val oldColor = batch.packedColor
+                val rect = RectanglePool.obtain()
+                rect.set(clickOccupation.lerpLeft, clickOccupation.lerpBottom, clickOccupation.lerpRight - clickOccupation.lerpLeft, clickOccupation.lerpTop - clickOccupation.lerpBottom)
+
+                val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
+                if ((!clickOccupation.isPlacementValid() || clickOccupation.isInDeleteZone()) && !overStoreArea) {
+                    batch.setColor(1f, 0f, 0f, 0.25f)
+                    batch.fillRect(rect)
+                    batch.setColor(1f, 0f, 0f, 0.5f)
+                    batch.drawRect(rect, toScaleX(SELECTION_BORDER) * 2, toScaleY(SELECTION_BORDER) * 2)
+                }
+
+                batch.packedColor = oldColor
+                RectanglePool.free(rect)
             }
         }
 
