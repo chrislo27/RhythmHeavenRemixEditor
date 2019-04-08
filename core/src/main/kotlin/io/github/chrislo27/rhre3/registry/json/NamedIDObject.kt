@@ -173,3 +173,6 @@ class PlayalongEntityObject : NamedIDObject() {
     var method: String? = null
     var input: String? = null
 }
+
+@JsonTypeName("musicDistortEntity")
+class MusicDistortEntityObject : NamedIDObject()

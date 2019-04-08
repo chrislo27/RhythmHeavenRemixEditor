@@ -41,6 +41,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         protected set
 
     init {
+        bounds.height = 1f
         bounds.width = datamodel.duration
     }
 

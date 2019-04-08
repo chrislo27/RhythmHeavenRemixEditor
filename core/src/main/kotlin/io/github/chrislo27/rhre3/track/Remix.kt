@@ -18,10 +18,7 @@ import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
-import io.github.chrislo27.rhre3.entity.model.special.EndRemixEntity
-import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
-import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
+import io.github.chrislo27.rhre3.entity.model.special.*
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
@@ -30,6 +27,7 @@ import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
@@ -880,6 +878,16 @@ open class Remix(val main: RHRE3Application)
 
                 setMusicVolume()
                 music.music.setPitch(speedMultiplier)
+
+                // Music distort
+                val beadsMusic: BeadsMusic? = music.music as? BeadsMusic
+                if (beadsMusic != null) {
+                    val inDistortion = entities.any { it is MusicDistortEntity && beat in it.bounds.x..it.bounds.maxX }
+                    val currentlyDistorted = beadsMusic.player.doDistortion
+                    if (inDistortion != currentlyDistorted) {
+                        beadsMusic.player.doDistortion = inDistortion
+                    }
+                }
             }
         }
 

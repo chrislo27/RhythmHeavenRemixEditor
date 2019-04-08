@@ -135,7 +135,14 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.method = datamodel.playalongMethod.name
                 }
             }
-            else -> error("Datamodel not defined for JSON mapping")
+            is MusicDistortModel -> {
+                MusicDistortEntityObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                }
+            }
+            else -> error("Datamodel not defined for JSON mapping: ${datamodel::class.java.canonicalName}")
         }
     }
 

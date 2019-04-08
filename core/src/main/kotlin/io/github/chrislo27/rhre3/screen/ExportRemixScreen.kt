@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -455,6 +456,12 @@ class ExportRemixScreen(main: RHRE3Application)
                 context.out.addDependent(Clock(context, 10f).apply {
                     addMessageListener(addBead {
                         music.setVolume(remix.musicVolumes.volumeAt(remix.beat))
+                        // Music distort
+                        val inDistortion = remix.entities.any { it is MusicDistortEntity && remix.beat in it.bounds.x..it.bounds.maxX }
+                        val currentlyDistorted = music.player.doDistortion
+                        if (inDistortion != currentlyDistorted) {
+                            music.player.doDistortion = inDistortion
+                        }
                     })
                 })
             }

@@ -407,6 +407,8 @@ object GameRegistry : Disposable {
                         is PlayalongEntityObject ->
                             PlayalongModel(game, objID, obj.deprecatedIDs, obj.name, obj.stretchable,
                                            PlayalongInput[obj.input ?: ""] ?: PlayalongInput.BUTTON_A, PlayalongMethod[obj.method ?: ""] ?: PlayalongMethod.PRESS)
+                        is MusicDistortEntityObject ->
+                            MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
             } else {

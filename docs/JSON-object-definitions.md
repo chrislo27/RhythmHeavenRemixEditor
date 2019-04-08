@@ -484,3 +484,14 @@ all the Playalong Input Entities are generated at start-up.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+
+### `MusicDistortEntityObject`
+
+This object type is used for the DJ School Music Distortion entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "musicDistortEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
