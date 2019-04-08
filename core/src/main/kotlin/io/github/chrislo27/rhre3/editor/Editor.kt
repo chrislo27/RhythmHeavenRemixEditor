@@ -295,6 +295,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private set
     val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
+    data class Particle(val color: Color, var x: Float, var y: Float, var veloX: Float, var veloY: Float, var accelX: Float, var accelY: Float, var width: Float, var height: Float, var expiry: Float)
+    val particles: MutableList<Particle> = mutableListOf()
+
     internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
 
     fun resetAutosaveTimer() {
@@ -599,6 +602,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             this.renderPlayalongMonsterGoal(batch, main.shapeRenderer)
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
+
+particles.forEach { particle ->
+    batch.color = particle.color
+    batch.fillRect(particle.x - particle.width / 2, particle.y - particle.height / 2, particle.width, particle.height)
+    val delta = Gdx.graphics.deltaTime
+    particle.x += particle.veloX * delta
+    particle.y += particle.veloY * delta
+    particle.veloX += particle.accelX * delta
+    particle.veloY += particle.accelY * delta
+    particle.expiry -= delta
+}
+particles.removeIf { it.expiry <= 0f }
+batch.setColor(1f, 1f, 1f, 1f)
 
         font.unscaleFont()
         batch.end()
@@ -947,6 +963,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (selection.isNotEmpty() && !stage.isTyping) {
                             if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
                                 remix.entities.removeAll(this.selection)
+                                selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                                 remix.addActionWithoutMutating(ActionGroup(listOf(
                                         EntityRemoveAction(this, this.selection,
                                                            this.selection.map { Rectangle(it.bounds) }),
@@ -1651,6 +1668,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                     // delete silently
                     remix.entities.removeAll(selection)
+                    selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     // restore original selection
                     selection = clickOccupation.previousSelection
                 }
@@ -1662,6 +1680,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 } else if (deleting && !storing) {
                     // remove+selection action
                     remix.entities.removeAll(this.selection)
+                    selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     val sel = this.selection.toList()
                     remix.addActionWithoutMutating(ActionGroup(listOf(
                             EntityRemoveAction(this, this.selection, sel.map { clickOccupation.oldBounds.getValue(it) }),
@@ -1743,6 +1762,28 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         return false
+    }
+
+    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
+        if (!doExplode) return
+        val color = e.getRenderColor(this, theme).cpy()
+        val borderC = color.cpy().apply {
+            r = (r - 0.25f).coerceAtLeast(0f)
+            g = (g - 0.25f).coerceAtLeast(0f)
+            b = (b - 0.25f).coerceAtLeast(0f)
+        }
+        val expiry = 4f
+        val scale = 0.125f
+        val numX = (e.bounds.width / (scale / 4f)).roundToInt()
+        for (x in 0..numX) {
+            val numY = (e.bounds.height / scale).roundToInt()
+            for (y in 0..numY) {
+                val isBorder = x == 0 || x == numX || y == 0 || y == numY
+                particles += Particle(if (isBorder) borderC else color, e.bounds.x + (x.toFloat() / numX) * e.bounds.width, e.bounds.y + (y.toFloat() / numY) * e.bounds.height,
+                                      MathUtils.random(0.125f, 1f) * MathUtils.randomSign(), MathUtils.random(2.5f, 5f),
+                                      0f, -20f, scale / 4f, scale, expiry)
+            }
+        }
     }
 
     fun getSelectionMode(): SelectionMode {
