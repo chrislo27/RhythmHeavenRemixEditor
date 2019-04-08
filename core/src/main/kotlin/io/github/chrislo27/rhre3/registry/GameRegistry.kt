@@ -320,7 +320,7 @@ object GameRegistry : Disposable {
                             "Registry checked in ${(endTime - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
-                        delay(500L)
+                        delay(250L)
                         IllegalStateException("Game registry failed to validate successfully").printStackTrace()
                         Gdx.app.exit()
                     }
