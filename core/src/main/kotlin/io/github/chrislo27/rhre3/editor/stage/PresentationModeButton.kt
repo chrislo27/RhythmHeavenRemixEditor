@@ -22,7 +22,7 @@ class PresentationModeButton(val editor: Editor, val editorStage: EditorStage, p
     }
 
     override fun getHoverText(): String {
-        return Localization["editor.presentationmode.info"]
+        return Localization["editor.presentationMode.info"]
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {

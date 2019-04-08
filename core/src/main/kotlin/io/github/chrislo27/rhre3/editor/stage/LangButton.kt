@@ -25,7 +25,7 @@ class LangButton<S : ToolboksScreen<*, *>>(val editor: Editor, palette: UIPalett
     }
 
     override fun getHoverText(): String {
-        return "${Localization.currentBundle.locale.name}\n${Localization["editor.translationsmaynotbeaccurate"]}"
+        return "${Localization.currentBundle.locale.name}\n${Localization["editor.translationsMayNotBeAccurate"]}"
     }
 
     private fun persist() {
