@@ -1773,7 +1773,7 @@ batch.setColor(1f, 1f, 1f, 1f)
             b = (b - 0.25f).coerceAtLeast(0f)
         }
         val expiry = 4f
-        val scale = 0.125f
+        val scale = 0.25f
         val numX = (e.bounds.width / (scale / 4f)).roundToInt()
         for (x in 0..numX) {
             val numY = (e.bounds.height / scale).roundToInt()
