@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.SpecialDatamodel
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -36,7 +37,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         get() = datamodel.newlinedName
     open val attemptTextOnScreen: Boolean
         get() = true
-    val isSpecialEntity: Boolean = datamodel.game.isSpecial
+    val isSpecialEntity: Boolean = datamodel.game.isSpecial || datamodel is SpecialDatamodel
     open var needsNameTooltip: Boolean = false
         protected set
 
