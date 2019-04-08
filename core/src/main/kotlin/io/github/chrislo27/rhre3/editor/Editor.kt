@@ -1546,7 +1546,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                     }
                                 }
                             }
-                        }
+                        } ?: Remix.createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null",
+                                                               node["beat"]?.floatValue() ?: 0f, node["track"]?.floatValue() ?: 0f,
+                                                               node["width"]?.floatValue() ?: 1f, node["height"]?.floatValue()?.coerceAtLeast(1f) ?: 1f)
                     }.filterNotNull()
 
                     if (result.isEmpty())
