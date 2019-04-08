@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
@@ -16,6 +17,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlin.math.absoluteValue
+import kotlin.math.roundToInt
 
 
 fun Editor.renderPlayYan(batch: SpriteBatch) {
@@ -177,4 +179,24 @@ fun Editor.renderImplicitTempo(batch: SpriteBatch) {
     }
     f.setColor(1f, 1f, 1f, 1f)
     f.scaleMul(1 / 0.5f)
+}
+
+fun Editor.renderMining(batch: SpriteBatch, entity: ModelEntity<*>) {
+    val mining = miningProgress
+    if (mining != null && mining.entity == entity) {
+        val breaking = AssetRegistry.get<Texture>("ui_breaking")
+        val portion = MathUtils.lerp(0f, 10f, mining.progress).toInt().coerceIn(0, 9)
+        val scale = 1f
+        val height = scale
+        val width = height / 4f
+        for (x in 0..(entity.bounds.width / width).roundToInt()) {
+            for (y in 0..(entity.bounds.height / height).roundToInt()) {
+                val renderX = entity.bounds.x + width * x
+                val renderY = entity.bounds.y + height * y
+                val cutX = ((Math.min(entity.bounds.maxX, renderX + width) - renderX) / width).coerceIn(0f, 1f)
+                val cutY = ((Math.min(entity.bounds.maxY, renderY + height) - renderY) / height).coerceIn(0f, 1f)
+                batch.draw(breaking, renderX, renderY, width * cutX, height * cutY, portion / 10f, 1f, (portion + cutX) / 10f, 0f)
+            }
+        }
+    }
 }

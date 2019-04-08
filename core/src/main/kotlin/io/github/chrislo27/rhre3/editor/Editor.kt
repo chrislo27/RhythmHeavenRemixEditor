@@ -296,7 +296,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
     data class Particle(val color: Color, var x: Float, var y: Float, var veloX: Float, var veloY: Float, var accelX: Float, var accelY: Float, var width: Float, var height: Float, var expiry: Float)
+
     val particles: MutableList<Particle> = mutableListOf()
+
+    data class MiningProgress(val entity: ModelEntity<*>, var progress: Float, var miningTime: Float)
+
+    var miningProgress: MiningProgress? = null
 
     internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
 
@@ -504,9 +509,29 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     it.render(this, batch)
+                    this.renderMining(batch, it)
                 }
             }
         }
+
+        // beat lines
+        this.renderBeatLines(batch, beatRange, trackYOffset, updateDelta)
+
+        // beat numbers
+        this.renderBeatNumbers(batch, beatRange, font)
+
+        // Texture entities get rendered here
+        remix.entities.forEach {
+            if (it is TextureEntity) {
+                it.updateInterpolation(!smoothDragging)
+                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
+                    it.render(this, batch)
+                    this.renderMining(batch, it)
+                }
+            }
+        }
+
+        // Stripe board in invalid positions
         if (selection.isNotEmpty()) {
             val clickOccupation = clickOccupation
             if (clickOccupation is ClickOccupation.SelectionDrag) {
@@ -542,22 +567,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 batch.packedColor = oldColor
                 RectanglePool.free(rect)
-            }
-        }
-
-        // beat lines
-        this.renderBeatLines(batch, beatRange, trackYOffset, updateDelta)
-
-        // beat numbers
-        this.renderBeatNumbers(batch, beatRange, font)
-
-        // Texture entities get rendered here
-        remix.entities.forEach {
-            if (it is TextureEntity) {
-                it.updateInterpolation(!smoothDragging)
-                if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
-                    it.render(this, batch)
-                }
             }
         }
 
@@ -603,18 +612,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
 
-particles.forEach { particle ->
-    batch.color = particle.color
-    batch.fillRect(particle.x - particle.width / 2, particle.y - particle.height / 2, particle.width, particle.height)
-    val delta = Gdx.graphics.deltaTime
-    particle.x += particle.veloX * delta
-    particle.y += particle.veloY * delta
-    particle.veloX += particle.accelX * delta
-    particle.veloY += particle.accelY * delta
-    particle.expiry -= delta
-}
-particles.removeIf { it.expiry <= 0f }
-batch.setColor(1f, 1f, 1f, 1f)
+        particles.forEach { particle ->
+            batch.color = particle.color
+            batch.fillRect(particle.x - particle.width / 2, particle.y - particle.height / 2, particle.width, particle.height)
+            val delta = Gdx.graphics.deltaTime
+            particle.x += particle.veloX * delta
+            particle.y += particle.veloY * delta
+            particle.veloX += particle.accelX * delta
+            particle.veloY += particle.accelY * delta
+            particle.expiry -= delta
+        }
+        particles.removeIf { it.expiry <= 0f }
+        batch.setColor(1f, 1f, 1f, 1f)
 
         font.unscaleFont()
         batch.end()
@@ -999,6 +1008,31 @@ batch.setColor(1f, 1f, 1f, 1f)
             subbeatSection.enabled = true
             subbeatSection.start = Math.floor(camera.getInputX().toDouble()).toFloat()
             subbeatSection.end = subbeatSection.start + 0.5f
+        }
+
+        if (currentTool == Tool.PICKAXE) {
+            val onEntity = getEntityOnMouse() as? ModelEntity<*>?
+            if (onEntity != null && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                val mining = miningProgress
+                if (mining != null && mining.entity != onEntity) {
+                    miningProgress = null
+                }
+                val current = mining ?: MiningProgress(onEntity, 0f, 1f).apply {
+                    miningProgress = this
+                }
+
+                current.progress += Gdx.graphics.deltaTime / current.miningTime
+
+                if (current.progress >= 1f) {
+                    explodeEntity(onEntity, true)
+                    remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
+                    this.selection = this.selection - listOf(onEntity)
+                }
+            } else {
+                miningProgress = null
+            }
+        } else {
+            miningProgress = null
         }
 
         // undo/redo

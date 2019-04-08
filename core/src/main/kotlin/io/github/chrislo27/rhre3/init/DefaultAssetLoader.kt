@@ -38,6 +38,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("tool_music_volume", "images/tool/music_volume.png")
         AssetRegistry.loadAsset<Texture>("tool_swing", "images/tool/swing.png")
         AssetRegistry.loadAsset<Texture>("tool_ruler", "images/tool/ruler.png")
+        AssetRegistry.loadAsset<Texture>("tool_pickaxe", "images/tool/pickaxe.png")
 
 //        AssetRegistry.loadAsset<Texture>("entity_stretchable_line", "images/entity/stretchable/line.png")
         AssetRegistry.loadAsset<Texture>("entity_stretchable_arrow", "images/entity/stretchable/arrow.png")
@@ -97,6 +98,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_adv_opts", "images/ui/icons/advOpts.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_history", "images/ui/icons/history.png")
         AssetRegistry.loadAsset<Texture>("ui_stripe_board", "images/ui/stripe_board.png")
+        AssetRegistry.loadAsset<Texture>("ui_breaking", "images/ui/breaking.png")
 
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")

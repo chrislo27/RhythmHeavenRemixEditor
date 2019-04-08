@@ -18,7 +18,8 @@ enum class Tool(val texId: String, val nameId: String,
     MUSIC_VOLUME("tool_music_volume", "tool.musicVolume.name", trackerClass = MusicVolumeChange::class),
     TIME_SIGNATURE("tool_time_signature", "tool.timeSignature.name"),
     SWING("tool_swing", "tool.swing.name"),
-    RULER("tool_ruler", "tool.ruler.name", keybinds = listOf("R"), showSubbeatLines = true);
+    RULER("tool_ruler", "tool.ruler.name", keybinds = listOf("R"), showSubbeatLines = true),
+    PICKAXE("tool_pickaxe", "tool.pickaxe.name");
 
     companion object {
         val VALUES: List<Tool> by lazy { Tool.values().toList() }
