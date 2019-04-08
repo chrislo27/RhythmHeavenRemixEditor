@@ -699,7 +699,7 @@ object GameRegistry : Disposable {
                         if (datamodel == null) {
                             builder.append("Model ${model.id} has an invalid cue pointer ID: ${pointer.id}\n")
                         } else if (noDeprecationsObjectMap[pointer.id] == null) {
-                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${datamodel?.id?.starSubstitute()}\n")
+                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${datamodel.id.starSubstitute()}\n")
                         }
                         if (pointer.track >= Editor.MIN_TRACK_COUNT) {
                             builder.append("Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
