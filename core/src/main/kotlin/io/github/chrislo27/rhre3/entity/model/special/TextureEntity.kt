@@ -43,7 +43,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
                 batch.color = batch.color.apply { a *= 0.25f }
             }
             val ratio = tex.height.toFloat() / tex.width
-            batch.draw(tex, bounds.x, bounds.y, bounds.width, bounds.width * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
+            batch.draw(tex, bounds.x + lerpDifference.x, bounds.y + lerpDifference.y, bounds.width + lerpDifference.width, (bounds.width + lerpDifference.height) * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
             batch.setColor(1f, 1f, 1f, 1f)
         } else {
             super.render(editor, batch)
