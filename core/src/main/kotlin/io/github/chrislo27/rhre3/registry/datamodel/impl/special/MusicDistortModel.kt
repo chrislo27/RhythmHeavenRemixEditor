@@ -12,10 +12,6 @@ class MusicDistortModel(game: Game, id: String, deprecatedIDs: List<String>, nam
 
     override val pickerName: PickerName = super.pickerName.copy(sub = "[LIGHT_GRAY]Applies high & low pass filter on music[]")
 
-    override fun gameValidityPredicate(game: Game): Boolean {
-        return super.gameValidityPredicate(game) || game.id == "djSchool"
-    }
-
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): MusicDistortEntity {
         return MusicDistortEntity(remix, this)
