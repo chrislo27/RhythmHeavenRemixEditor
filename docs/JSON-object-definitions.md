@@ -412,3 +412,75 @@ You are not limited to just using `CueObjects` in the `cues` array.
 Examples of games with random cue objects: Ringside (has variants), First Contact (speech sounds)
 
 The `CuePointerObject` is unchanged, but the `beat` field is not used.
+
+## Other object types
+Some object types are used internally and should not be edited or created.
+
+### `SubtitleEntityObject`
+
+This object type is for subtitles, and the song artist/song title pop-outs.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "subtitleEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+| subtitleType | string? | The type of subtitle. Only values: "subtitle", "songTitle", and "songArtist". Defaults to "subtitle". |
+
+### `EndRemixEntityObject`
+
+This object type is for the End Remix entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "endEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `ShakeEntityObject`
+
+This object type is for the Shake entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "shakeEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `TextureEntityObject`
+
+This object type is for the Texture entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "textureEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `TapeMeasureObject`
+
+This object type is for the Tape Measure entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "tapeMeasure" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `PlayalongEntityObject`
+
+This object type is used for the Playalong Input entities.
+Note that there is no JSON data for defining the input types, since
+all the Playalong Input Entities are generated at start-up.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "playalongEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
