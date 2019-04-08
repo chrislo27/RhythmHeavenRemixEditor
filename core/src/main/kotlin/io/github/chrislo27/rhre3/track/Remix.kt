@@ -67,6 +67,15 @@ open class Remix(val main: RHRE3Application)
                             val isAutosave: Boolean,
                             val extra: MutableMap<String, Any> = mutableMapOf())
 
+        fun createMissingEntitySubtitle(remix: Remix, id: String, x: Float, y: Float, w: Float, h: Float): SubtitleEntity {
+            return (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+                this.subtitle = "[RED]MISSING ENTITY[]\n$id"
+                this.updateBounds {
+                    this.bounds.set(x, y, w, h)
+                }
+            }
+        }
+
         fun toJson(remix: Remix, isAutosave: Boolean): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
 
@@ -167,14 +176,8 @@ open class Remix(val main: RHRE3Application)
                             if (isCustom)
                                 missingCustom++
 
-                            Toolboks.LOGGER.warn(
-                                    "Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
-                            remix.entities += (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
-                                this.subtitle = "[RED]MISSING ENTITY[]\n${node[ModelEntity.JSON_DATAMODEL]!!.textValue()}"
-                                this.updateBounds {
-                                    this.bounds.set(node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue())
-                                }
-                            }
+                            Toolboks.LOGGER.warn("Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
+                            remix.entities += createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null", node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue())
                             return@forEach
                         }
 
@@ -491,11 +494,7 @@ open class Remix(val main: RHRE3Application)
             remixObject.entities?.forEach {
                 val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
                     missing++
-                    remix.entities += (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
-                        this.subtitle = "[RED]MISSING ENTITY[]\n${it.id}"
-                        this.updateBounds {
-                            this.bounds.set(it.beat, it.level.toFloat(), it.width, 1f)
-                        }}
+                    remix.entities += createMissingEntitySubtitle(remix, it.id ?: "null", it.beat, it.level.toFloat(), it.width, 1f)
                     return@forEach
                 }
 
