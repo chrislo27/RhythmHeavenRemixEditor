@@ -773,7 +773,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val shift = Gdx.input.isShiftDown()
         val control = Gdx.input.isControlDown()
         val alt = Gdx.input.isAltDown()
-        val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
+        val left = !stage.isTyping && (Gdx.input.isKeyPressed(Input.Keys.A) && (!shift || !control)) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
         val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
         val accelerateCamera = shift || control
         val cameraDelta = toScaleX(ENTITY_WIDTH * 5 * Gdx.graphics.deltaTime * if (accelerateCamera) 5 else 1)
@@ -911,6 +911,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         // Export screen
                         main.screen = ExportRemixScreen(main)
                     }
+                }
+            }
+            
+            if (Gdx.input.isKeyJustPressed(Input.Keys.A) && clickOccupation == ClickOccupation.None && control && shift) {
+                val newSelection: List<Entity> = remix.entities.toList()
+                if (!this.selection.containsAll(newSelection) ||
+                        (newSelection.size != this.selection.size)) {
+                    remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                 }
             }
 
