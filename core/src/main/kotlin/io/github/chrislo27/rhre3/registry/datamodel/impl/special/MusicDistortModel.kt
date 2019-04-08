@@ -9,6 +9,10 @@ import io.github.chrislo27.rhre3.track.Remix
 class MusicDistortModel(game: Game, id: String, deprecatedIDs: List<String>, name: String)
     : SpecialDatamodel(game, id, deprecatedIDs, name, 1f) {
 
+    override fun gameValidityPredicate(game: Game): Boolean {
+        return super.gameValidityPredicate(game) || game.id == "djSchool"
+    }
+
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): MusicDistortEntity {
         return MusicDistortEntity(remix, this)
