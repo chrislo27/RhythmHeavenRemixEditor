@@ -1542,7 +1542,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     } else if (getTrackerOnMouse(tool.trackerClass.java, false) == null) {
                         val tr = when (tool) {
                             Tool.TEMPO_CHANGE -> {
-                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat), remix.tempos.swingAt(beat), 0f)
+                                var tempoScale = 1f
+                                if (shift && !alt) {
+                                    tempoScale = 0.5f
+                                } else if (!shift && alt) {
+                                    tempoScale = 2f
+                                }
+                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat) * tempoScale, remix.tempos.swingAt(beat), 0f)
                             }
                             Tool.MUSIC_VOLUME -> {
                                 MusicVolumeChange(remix.musicVolumes, beat,
