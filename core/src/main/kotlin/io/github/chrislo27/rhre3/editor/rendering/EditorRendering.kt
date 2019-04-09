@@ -5,12 +5,16 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.rhre3.editor.ClickOccupation
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.util.RectanglePool
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -161,6 +165,43 @@ fun Editor.renderHorizontalTrackLines(batch: SpriteBatch, startX: Float, width: 
                        toScaleY(Editor.TRACK_LINE_THICKNESS))
     }
     batch.setColor(1f, 1f, 1f, 1f)
+}
+
+fun Editor.renderStripeBoard(batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+    val clickOccupation = clickOccupation
+    if (clickOccupation is ClickOccupation.SelectionDrag) {
+        val oldColor = batch.packedColor
+        val rect = RectanglePool.obtain()
+        rect.set(clickOccupation.lerpLeft, clickOccupation.lerpBottom, clickOccupation.lerpRight - clickOccupation.lerpLeft, clickOccupation.lerpTop - clickOccupation.lerpBottom)
+
+        val overStoreArea = pickerSelection.filter == stage.storedPatternsFilter && stage.pickerStage.isMouseOver() && !stage.patternAreaStage.isMouseOver()
+        if ((!clickOccupation.isPlacementValid() || clickOccupation.isInDeleteZone()) && !overStoreArea) {
+            batch.setColor(1f, 0f, 0f, 0.15f)
+            batch.fillRect(rect)
+
+            shapeRenderer.projectionMatrix = camera.combined
+            shapeRenderer.prepareStencilMask(batch) {
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
+                shapeRenderer.rect(rect.x, rect.y, rect.width, rect.height)
+                shapeRenderer.end()
+            }.useStencilMask {
+                val tex = AssetRegistry.get<Texture>("ui_stripe_board")
+                val scale = 2f
+                val w = tex.width.toFloat() / RHRE3.WIDTH * camera.viewportWidth / scale
+                val h = tex.height.toFloat() / RHRE3.HEIGHT * camera.viewportHeight / scale
+                for (x in 0..(RHRE3.WIDTH / tex.width * scale).roundToInt() + 2) {
+                    for (y in 0..(RHRE3.HEIGHT / tex.height * scale).roundToInt() + 2) {
+                        batch.draw(tex, x * w - camera.viewportWidth / 2 * camera.zoom + camera.position.x, y * h - camera.viewportHeight / 2 * camera.zoom + camera.position.y, w, h)
+                    }
+                }
+            }
+            batch.setColor(1f, 0f, 0f, 0.5f)
+            batch.drawRect(rect, toScaleX(Editor.SELECTION_BORDER) * 2, toScaleY(Editor.SELECTION_BORDER) * 2)
+        }
+
+        batch.packedColor = oldColor
+        RectanglePool.free(rect)
+    }
 }
 
 fun Editor.renderImplicitTempo(batch: SpriteBatch) {
