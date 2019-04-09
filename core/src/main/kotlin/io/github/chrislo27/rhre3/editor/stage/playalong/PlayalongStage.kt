@@ -562,9 +562,6 @@ class PlayalongStage(val editor: Editor,
 
     fun reset() {
         remix.recomputeCachedData()
-        val noPlayalong = playalong.inputActions.isEmpty()
-        noEntitiesLabel.visible = noPlayalong
-        lowerStage.visible = !noPlayalong
         updateLabels()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
@@ -572,8 +569,15 @@ class PlayalongStage(val editor: Editor,
             perfectIcon.location.set(pixelX = 0f, pixelY = 0f)
             perfectIcon.stage.updatePositions()
         }
-        flickingStage.visible = playalong.needsTouchScreen
         resetPlayalongControllerListener()
+        updateVisibility()
+    }
+
+    fun updateVisibility() {
+        val noPlayalong = playalong.inputActions.isEmpty()
+        noEntitiesLabel.visible = noPlayalong
+        lowerStage.visible = !noPlayalong
+        flickingStage.visible = playalong.needsTouchScreen
     }
 
     fun resetPlayalongControllerListener() {
@@ -609,6 +613,8 @@ class PlayalongStage(val editor: Editor,
     fun onShow() {
         if (remix.playState == STOPPED) {
             reset()
+        } else {
+            updateVisibility()
         }
         setRemixSpeed()
         disableButtonsWhilePlaying(remix.playState != STOPPED)
