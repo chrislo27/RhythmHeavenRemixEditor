@@ -509,7 +509,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     it.render(this, batch)
-                    this.renderMining(batch, it)
+                    if (it is ModelEntity<*>) this.renderMining(batch, it)
                 }
             }
         }
@@ -1017,7 +1017,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (mining != null && mining.entity != onEntity) {
                     miningProgress = null
                 }
-                val current = mining ?: MiningProgress(onEntity, 0f, 1f).apply {
+                val current = mining ?: MiningProgress(onEntity, 0f, 0.9f).apply {
                     miningProgress = this
                 }
 
