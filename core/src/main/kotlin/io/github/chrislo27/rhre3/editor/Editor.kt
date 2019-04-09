@@ -3,10 +3,10 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -299,7 +299,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     val particles: MutableList<Particle> = mutableListOf()
 
-    data class MiningProgress(val entity: ModelEntity<*>, var progress: Float, var miningTime: Float)
+    data class MiningProgress(val entity: ModelEntity<*>, var progress: Float, var miningTime: Float, var timeSinceDigSound: Float = 100f)
 
     var miningProgress: MiningProgress? = null
 
@@ -988,9 +988,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
 
                 current.progress += Gdx.graphics.deltaTime / current.miningTime
+                if (current.timeSinceDigSound >= 1f / 6f) {
+                    current.timeSinceDigSound = 0f
+                    AssetRegistry.get<Sound>("pickaxe_dig${MathUtils.random(1, 6)}").play(1f, 0.5f, 0f)
+                } else {
+                    current.timeSinceDigSound += Gdx.graphics.deltaTime
+                }
 
                 if (current.progress >= 1f) {
                     explodeEntity(onEntity, true)
+                    AssetRegistry.get<Sound>("pickaxe_destroy${MathUtils.random(1, 4)}").play()
                     remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
                     this.selection = this.selection - listOf(onEntity)
                 }
@@ -1168,6 +1175,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 Tool.RULER -> {
                     ctrlBuilder.append(Localization["editor.msg.rulerTool"])
                 }
+                Tool.PICKAXE -> {
+                    msgBuilder.append("Mining away...")
+                }
             }
         }
 
@@ -1179,7 +1189,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val output: MutableList<String> = mutableListOf()
         val entity = getEntityOnMouse()
 
-        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None) {
+        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None && !stage.playalongStage.visible && currentTool != Tool.PICKAXE) {
             if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
                 output += entity.renderText
             }

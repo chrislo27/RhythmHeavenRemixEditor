@@ -1268,7 +1268,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
 
             toolButtons as MutableList
-            Tool.VALUES.forEachIndexed { index, tool ->
+            val toolValues = Tool.VALUES
+            val numToolsToShow = toolValues.size - 1 // Tool.PICKAXE
+            toolValues.forEachIndexed { index, tool ->
                 toolButtons += ToolButton(tool, palette, minimapBarStage, minimapBarStage) { x, y ->
                     if (editor.clickOccupation == ClickOccupation.None) {
                         editor.currentTool = tool
@@ -1278,13 +1280,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.location.set(
                             screenWidth = buttonWidth,
                             screenHeight = buttonHeight,
-                            screenX = 1f - Tool.VALUES.size * buttonWidth + index * buttonWidth
+                            screenX = 1f - numToolsToShow * buttonWidth + index * buttonWidth
                                      )
                     this.background = true
                 }
             }
             minimapBarStage.elements.addAll(toolButtons)
-            val idealMinimapWidth = 0.5f - Tool.VALUES.size * buttonWidth
+            val idealMinimapWidth = 0.5f - numToolsToShow * buttonWidth
             minimap = Minimap(editor, palette, minimapBarStage, minimapBarStage).apply {
                 this.location.set(screenX = 0.5f + buttonWidth / 2, screenWidth = idealMinimapWidth - buttonWidth)
             }

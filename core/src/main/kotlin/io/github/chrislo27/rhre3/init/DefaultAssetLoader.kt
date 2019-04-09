@@ -124,6 +124,10 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_c", "sound/c.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
 
+        // pickaxe
+        (1..6).forEach { AssetRegistry.loadAsset<Sound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }
+        (1..4).forEach { AssetRegistry.loadAsset<Sound>("pickaxe_destroy$it", "sound/destroy/stone$it.ogg") }
+
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")
         AssetRegistry.loadAsset<Texture>("bg_polkadot", "images/menu/polkadot.png")
