@@ -1017,7 +1017,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (mining != null && mining.entity != onEntity) {
                     miningProgress = null
                 }
-                val current = mining ?: MiningProgress(onEntity, 0f, 0.9f).apply {
+                val current = miningProgress ?: MiningProgress(onEntity, 0f, 0.9f).apply {
                     miningProgress = this
                 }
 
