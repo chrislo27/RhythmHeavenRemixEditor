@@ -578,18 +578,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
 
-        particles.forEach { particle ->
-            batch.color = particle.color
-            batch.fillRect(particle.x - particle.width / 2, particle.y - particle.height / 2, particle.width, particle.height)
-            val delta = Gdx.graphics.deltaTime
-            particle.x += particle.veloX * delta
-            particle.y += particle.veloY * delta
-            particle.veloX += particle.accelX * delta
-            particle.veloY += particle.accelY * delta
-            particle.expiry -= delta
-        }
-        particles.removeIf { it.expiry <= 0f }
-        batch.setColor(1f, 1f, 1f, 1f)
+        this.renderParticles(batch)
 
         font.unscaleFont()
         batch.end()
@@ -983,7 +972,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 if (mining != null && mining.entity != onEntity) {
                     miningProgress = null
                 }
-                val current = miningProgress ?: MiningProgress(onEntity, 0f, 0.9f).apply {
+                val current = miningProgress ?: MiningProgress(onEntity, 0f, MathUtils.lerp(0.15f, 0.9f, onEntity.bounds.area() / 2f).coerceIn(0.05f, 0.9f)).apply {
                     miningProgress = this
                 }
 
@@ -1788,6 +1777,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         for (x in 0..numX) {
             val numY = (e.bounds.height / scale).roundToInt()
             for (y in 0..numY) {
+                if (((x * numY + y) % 3) > 1) continue
                 val isBorder = x == 0 || x == numX || y == 0 || y == numY
                 particles += Particle(if (isBorder) borderC else color, e.bounds.x + (x.toFloat() / numX) * e.bounds.width, e.bounds.y + (y.toFloat() / numY) * e.bounds.height,
                                       MathUtils.random(0.125f, 1f) * MathUtils.randomSign(), MathUtils.random(2.5f, 5f),

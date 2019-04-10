@@ -241,3 +241,27 @@ fun Editor.renderMining(batch: SpriteBatch, entity: ModelEntity<*>) {
         }
     }
 }
+
+fun Editor.renderParticles(batch: SpriteBatch) {
+    val rect = RectanglePool.obtain().also {
+        it.set(camera.position.x - camera.viewportWidth * camera.zoom / 2f, camera.position.y - camera.viewportHeight * camera.zoom / 2f, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
+    }
+    val pRect = RectanglePool.obtain()
+    particles.forEach { particle ->
+        pRect.set(particle.x - particle.width / 2, particle.y - particle.height / 2, particle.width, particle.height)
+        if (pRect.intersects(rect)) {
+            batch.color = particle.color
+            batch.fillRect(pRect)
+        }
+        val delta = Gdx.graphics.deltaTime
+        particle.x += particle.veloX * delta
+        particle.y += particle.veloY * delta
+        particle.veloX += particle.accelX * delta
+        particle.veloY += particle.accelY * delta
+        particle.expiry -= delta
+    }
+    particles.removeIf { it.expiry <= 0f }
+    batch.setColor(1f, 1f, 1f, 1f)
+    RectanglePool.free(rect)
+    RectanglePool.free(pRect)
+}
