@@ -896,29 +896,46 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 cameraPan = CameraPan(camera.position.x, remix.getLastEntityPoint(), 0.25f, Interpolation.exp10Out)
                 camera.update()
             }
-
-            if (control && clickOccupation == ClickOccupation.None && !alt && !shift) {
-                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-                    main.screen = ScreenRegistry.getNonNull("newRemix")
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-                    val screen = ScreenRegistry.getNonNull("openRemix")
-                    main.screen = screen
-                    (screen as? OpenRemixScreen)?.attemptOpenPicker()
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-                    main.screen = ScreenRegistry.getNonNull("saveRemix")
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                    if (!shift && !alt) {
-                        // Export screen
-                        main.screen = ExportRemixScreen(main)
-                    }
-                }
-            }
             
-            if (Gdx.input.isKeyJustPressed(Input.Keys.A) && clickOccupation == ClickOccupation.None && control && shift) {
-                val newSelection: List<Entity> = remix.entities.toList()
-                if (!this.selection.containsAll(newSelection) ||
-                        (newSelection.size != this.selection.size)) {
-                    remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+            if (clickOccupation == ClickOccupation.None) {
+                if (control && !alt && !shift) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                        main.screen = ScreenRegistry.getNonNull("newRemix")
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                        val screen = ScreenRegistry.getNonNull("openRemix")
+                        main.screen = screen
+                        (screen as? OpenRemixScreen)?.attemptOpenPicker()
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                        main.screen = ScreenRegistry.getNonNull("saveRemix")
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                        if (!shift && !alt) {
+                            // Export screen
+                            main.screen = ExportRemixScreen(main)
+                        }
+                    }
+                } else if (!control && !alt && shift) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.F)) { // Select all following
+                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
+                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) { // Select all preceding
+                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
+                        val newSelection = remix.entities.toList().filter { it.bounds.maxX <= selectionMaxX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) { // Select all between
+                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
+                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
+                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX && it.bounds.maxX <= selectionMaxX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                    }
+                } else if (control && !alt && shift) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.A) && control && shift) {
+                        val newSelection: List<Entity> = remix.entities.toList()
+                        if (!this.selection.containsAll(newSelection) ||
+                                (newSelection.size != this.selection.size)) {
+                            remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                        }
+                    }
                 }
             }
 
