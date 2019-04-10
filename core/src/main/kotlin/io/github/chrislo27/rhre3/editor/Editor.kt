@@ -994,7 +994,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 this.selection = listOf()
 
                                 updateMessageLabel()
-                            } else if (Gdx.input.isKeyJustPressed(Input.Keys.INSERT)) {
+                            } else if (Gdx.input.isKeyJustPressed(Input.Keys.INSERT) || Gdx.input.isKeyJustPressed(Input.Keys.P)) {
                                 main.screen = PatternStoreScreen(main, this, null, selection.toList())
                             }
                         }
