@@ -46,10 +46,12 @@ class MetronomeButton(val editor: Editor, palette: UIPalette, parent: UIElement<
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        if (editor.remix.metronome) {
-            val time = if (editor.remix.playState == PlayState.PLAYING)
-                (screen.editor.remix.beat % 2 / 2)
-            else MathHelper.getSawtoothWave(1.25f)
+        val remix = editor.remix
+        if (remix.metronome) {
+            val beat = remix.beat
+            val time = if (remix.playState == PlayState.PLAYING) {
+                ((beat / (remix.timeSignatures.getTimeSignature(beat)?.noteFraction ?: 1f)) % 2 / 2)
+            } else MathHelper.getSawtoothWave(1.25f)
             label.image = metronomeFrames[(time * metronomeFrames.size).toInt().coerceIn(0, metronomeFrames.size - 1)]
         } else {
             label.image = metronomeFrames[0]
