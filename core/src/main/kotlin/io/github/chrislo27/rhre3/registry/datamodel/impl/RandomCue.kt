@@ -4,12 +4,15 @@ import io.github.chrislo27.rhre3.entity.model.multipart.RandomCueEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.Remix
 
 class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
                 override val cues: List<CuePointer>, override val responseIDs: List<String>)
-    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, ResponseModel {
+    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, ResponseModel, PreviewableModel {
+
+    override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 
     override val duration: Float by lazy {
         cues.maxBy(CuePointer::duration)?.duration ?: error("No cues found")

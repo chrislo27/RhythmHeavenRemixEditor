@@ -4,12 +4,15 @@ import io.github.chrislo27.rhre3.entity.model.multipart.KeepTheBeatEntity
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.track.Remix
 
 
 class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: String,
                   duration: Float, override val cues: List<CuePointer>)
-    : Datamodel(game, id, deprecatedIDs, name, duration), ContainerModel {
+    : Datamodel(game, id, deprecatedIDs, name, duration), ContainerModel, PreviewableModel {
+
+    override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 
     val totalSequenceDuration: Float by lazy {
         val max = cues.maxBy(CuePointer::beat) ?: error("No cues in keep the beat")

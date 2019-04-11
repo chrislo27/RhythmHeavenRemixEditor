@@ -6,6 +6,7 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.PickerName
+import io.github.chrislo27.rhre3.registry.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.track.Remix
@@ -17,7 +18,7 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
                val introSound: String?, val endingSound: String?,
                override val responseIDs: List<String>,
                val baseBpm: Float, val loops: Boolean, val earliness: Float, val loopStart: Float, val loopEnd: Float)
-    : Datamodel(game, id, deprecatedIDs, name, duration), ResponseModel {
+    : Datamodel(game, id, deprecatedIDs, name, duration), ResponseModel, PreviewableModel {
 
     val usesBaseBpm: Boolean
         get() = baseBpm > 0f
