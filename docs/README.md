@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.17.0`.
+This readme is accurate as of version `v3.18.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -16,7 +16,7 @@ system.
 
 Alternatively, open Command Prompt/Terminal inside
 the folder *containing the jar file* and run
-`java -jar RHRE3.jar`.
+`java -jar RHRE.jar`.
 
 ## How does a remix work?
 Remixes will go on forever
