@@ -27,26 +27,24 @@ import kotlin.math.roundToInt
 
 fun Editor.renderPlayYan(batch: SpriteBatch) {
     val beat = if (remix.playState != PlayState.STOPPED) remix.beat else remix.playbackStart
-    fun drawWalking() {
+    if (remix.playState != PlayState.STOPPED) {
+        val timeSig = remix.timeSignatures.getTimeSignature(beat)
+        val interval = timeSig?.noteFraction ?: 1f
+        val beatPercent = (beat - (timeSig?.beat ?: 0f)) % interval
+        val playbackStartPercent = (remix.playbackStart - (timeSig?.beat ?: 0f)) % interval
+        val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
+        val jumpHeight: Float = MathUtils.sin(MathUtils.PI / interval * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - playbackStartPercent) else beatPercent)).absoluteValue
+
+        val currentSwing = remix.tempos.swingAt(beat)
+        batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
+                   remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
+                   0, 0, 26, 35, false, false)
+    } else {
         val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
         batch.draw(AssetRegistry.get<Texture>("playyan_walking"), beat,
                    remix.trackCount * 1f,
                    toScaleX(26f), toScaleY(35f),
                    step * 26, 0, 26, 35, false, false)
-    }
-    if (remix.playState != PlayState.STOPPED) {
-        val interval = remix.timeSignatures.getTimeSignature(beat)?.noteFraction ?: 1f
-        val beatPercent = beat % interval
-        val playbackStartPercent = remix.playbackStart % interval
-        val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
-        val currentSwing = remix.tempos.swingAt(beat)
-        val jumpHeight: Float = MathUtils.sin(MathUtils.PI / interval * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - playbackStartPercent) else beatPercent)).absoluteValue
-
-        batch.draw(AssetRegistry.get<Texture>(if (currentSwing.ratio == 50) "playyan_jumping" else "playyan_pogo"), beat,
-                   remix.trackCount + 1f * jumpHeight, toScaleX(26f), toScaleY(35f),
-                   0, 0, 26, 35, false, false)
-    } else {
-        drawWalking()
     }
 }
 
