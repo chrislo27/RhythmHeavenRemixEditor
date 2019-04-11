@@ -53,8 +53,7 @@ intervals. Likewise, the use of measures in Rhythm Heaven is very important,
 as certain songs only work in certain time signatures, or only fit in
 certain beats of a time signature.
 
->Note: RHRE3 only supports time signatures in quarter notes (X/4). If
-your derived time signature is not X/4, **skip this step**.
+>Note: RHRE3 only supports time signatures with denominators 2, 4, 8, and 16 (half, quarter, eighth, and sixteenth notes respectively).
 
 The most common time signature is 4/4 time. Other songs (like waltzes)
 are in 3/4. Figuring out the time signature of a piece of music is
