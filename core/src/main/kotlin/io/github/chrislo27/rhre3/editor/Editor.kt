@@ -1461,8 +1461,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
                 val inputX = camera.getInputX()
-                val timeSigAtMouse = remix.timeSignatures.getTimeSignature(inputX)
-                val inputBeat = MathHelper.snapToNearest(inputX, timeSigAtMouse?.noteFraction ?: 1f)
+                val inputBeat = MathHelper.snapToNearest(inputX, snap)
                 val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(inputBeat)?.takeIf { MathUtils.isEqual(inputBeat, it.beat) }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
@@ -1897,25 +1896,43 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             return true
-        } else if (tool == Tool.TIME_SIGNATURE && !shift) {
+        } else if (tool == Tool.TIME_SIGNATURE) {
             val inputX = camera.getInputX()
             val timeSig = remix.timeSignatures.getTimeSignature(inputX)
-            val inputBeat = MathHelper.snapToNearest(inputX, timeSig?.noteFraction ?: 1f)
+            val inputBeat = MathHelper.snapToNearest(inputX, snap)
             if (timeSig != null && MathUtils.isEqual(inputBeat, timeSig.beat)) {
-                val change = -amount * (if (control) 5 else 1)
-                val newDivisions = (timeSig.beatsPerMeasure + change)
-                        .coerceIn(TimeSignature.LOWER_BEATS_PER_MEASURE, TimeSignature.UPPER_BEATS_PER_MEASURE)
-                if ((change < 0 && timeSig.beatsPerMeasure > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.beatsPerMeasure < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
-                    val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
-                    val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions, timeSig.beatUnit)
+                if (!shift) {
+                    val change = -amount * (if (control) 5 else 1)
+                    val newDivisions = (timeSig.beatsPerMeasure + change)
+                            .coerceIn(TimeSignature.LOWER_BEATS_PER_MEASURE, TimeSignature.UPPER_BEATS_PER_MEASURE)
+                    if ((change < 0 && timeSig.beatsPerMeasure > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.beatsPerMeasure < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
+                        val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
+                        val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions, timeSig.beatUnit)
 
-                    if (lastAction != null && lastAction.current === timeSig) {
-                        lastAction.current = result
-                        lastAction.redo(remix)
-                    } else {
-                        remix.mutate(TimeSigValueChange(timeSig, result))
+                        if (lastAction != null && lastAction.current === timeSig) {
+                            lastAction.current = result
+                            lastAction.redo(remix)
+                        } else {
+                            remix.mutate(TimeSigValueChange(timeSig, result))
+                        }
+                        return true
                     }
-                    return true
+                } else if (shift && !control){
+                    val change = -amount
+                    val index = TimeSignature.NOTE_UNITS.indexOf(timeSig.beatUnit).takeUnless { it == -1 } ?: TimeSignature.NOTE_UNITS.indexOf(TimeSignature.DEFAULT_NOTE_UNIT)
+                    val newUnits = TimeSignature.NOTE_UNITS[(index + change).coerceIn(0, TimeSignature.NOTE_UNITS.size - 1)]
+                    if (newUnits != timeSig.beatUnit) {
+                        val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
+                        val result = TimeSignature(remix.timeSignatures, timeSig.beat, timeSig.beatsPerMeasure, newUnits)
+
+                        if (lastAction != null && lastAction.current === timeSig) {
+                            lastAction.current = result
+                            lastAction.redo(remix)
+                        } else {
+                            remix.mutate(TimeSigValueChange(timeSig, result))
+                        }
+                        return true
+                    }
                 }
             }
         } else if (tool.isTrackerRelated) {
@@ -1956,7 +1973,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (shift) {
+        if (shift && tool != Tool.TIME_SIGNATURE) {
             // Camera scrolling left/right (CTRL/SHIFT+CTRL)
             val amt = (amount * if (control) 5f else 1f)
             camera.position.x += amt

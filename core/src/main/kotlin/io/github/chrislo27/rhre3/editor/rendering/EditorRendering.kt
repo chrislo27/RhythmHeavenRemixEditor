@@ -74,14 +74,13 @@ fun Editor.renderTimeSignatures(batch: SpriteBatch, beatRange: IntRange) {
     val bigFont = main.timeSignatureFont
     val heightOfTrack = remix.trackCount.toFloat() - toScaleY(Editor.TRACK_LINE_THICKNESS) * 2f
     val inputX = camera.getInputX()
-    val timeSigAtMouse = remix.timeSignatures.getTimeSignature(inputX)
-    val inputBeat = MathHelper.snapToNearest(inputX, timeSigAtMouse?.noteFraction ?: 1f) // FIXME ?
+    val inputBeat = MathHelper.snapToNearest(inputX, snap)
     bigFont.scaleFont(camera)
     bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / Editor.DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
     timeSignatures.map.values.forEach { timeSig ->
         if (timeSig.beat.roundToInt() !in beatRange) return@forEach
-        if (currentTool == Tool.TIME_SIGNATURE && MathUtils.isEqual(timeSig.beat, inputBeat)) {
+        if (currentTool == Tool.TIME_SIGNATURE && MathUtils.isEqual(timeSig.beat, inputBeat) && remix.playState == PlayState.STOPPED) {
             bigFont.color = theme.selection.selectionBorder
         } else {
             bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * 0.75f)
@@ -93,7 +92,7 @@ fun Editor.renderTimeSignatures(batch: SpriteBatch, beatRange: IntRange) {
     if (currentTool == Tool.TIME_SIGNATURE && remix.timeSignatures.map[inputBeat] == null && remix.playState == PlayState.STOPPED) {
         bigFont.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b, theme.trackLine.a * MathUtils.lerp(0.2f, 0.35f, MathHelper.getTriangleWave(2f)))
         val last = remix.timeSignatures.getTimeSignature(inputBeat)
-        renderTimeSignature(batch, inputBeat, last?.lowerText ?: "?", last?.upperText ?: "?", bigFont, heightOfTrack)
+        renderTimeSignature(batch, inputBeat, last?.lowerText ?: TimeSignature.DEFAULT_NOTE_UNIT.toString(), last?.upperText ?: TimeSignature.DEFAULT_NOTE_UNIT.toString(), bigFont, heightOfTrack)
     }
 
     bigFont.setColor(1f, 1f, 1f, 1f)
