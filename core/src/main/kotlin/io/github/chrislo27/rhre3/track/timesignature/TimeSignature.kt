@@ -4,14 +4,14 @@ package io.github.chrislo27.rhre3.track.timesignature
 class TimeSignature(val container: TimeSignatures, val beat: Int, divisions: Int) {
 
     companion object {
-        private val FOUR = "4"
-        val LOWER_LIMIT = 1
-        val UPPER_LIMIT = 64
+        val FOUR = "4"
+        val LOWER_BEATS_PER_MEASURE = 1
+        val UPPER_BEATS_PER_MEASURE = 64
     }
 
     var divisions: Int = 4
         set(value) {
-            field = value.coerceIn(LOWER_LIMIT, UPPER_LIMIT)
+            field = value.coerceIn(LOWER_BEATS_PER_MEASURE, UPPER_BEATS_PER_MEASURE)
         }
 
     init {

@@ -1902,8 +1902,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (timeSig != null && inputBeat == timeSig.beat) {
                 val change = -amount * (if (control) 5 else 1)
                 val newDivisions = (timeSig.divisions + change)
-                        .coerceIn(TimeSignature.LOWER_LIMIT, TimeSignature.UPPER_LIMIT)
-                if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
+                        .coerceIn(TimeSignature.LOWER_BEATS_PER_MEASURE, TimeSignature.UPPER_BEATS_PER_MEASURE)
+                if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
                     val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
                     val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions)
 
