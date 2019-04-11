@@ -133,7 +133,8 @@ open class Remix(val main: RHRE3Application)
                     timeSignatures.map.values.forEach {
                         val node = timeSigs.addObject()
                         node.put("beat", it.beat)
-                        node.put("divisions", it.divisions)
+                        node.put("divisions", it.beatsPerMeasure)
+                        node.put("beatUnit", it.beatUnit)
                         node.put("measure", it.measure)
                     }
                 }
@@ -200,14 +201,14 @@ open class Remix(val main: RHRE3Application)
                     val trackers = tree.get("trackers") as ObjectNode
                     val timeSigs = trackers["timeSignatures"] as ObjectNode
                     (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(),
-                                                               it["upper"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(),
+                                                               it["upper"].asInt(4), 4))
                     }
                 } else {
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
                         remix.timeSignatures.add(
-                                TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
+                                TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(), it["divisions"].asInt(4), it["beatUnit"]?.asInt(TimeSignature.DEFAULT_NOTE_UNIT) ?: TimeSignature.DEFAULT_NOTE_UNIT))
                     }
                 }
             }
@@ -286,11 +287,10 @@ open class Remix(val main: RHRE3Application)
                                 val denominatorPower = data[1].toInt() and 0xFF
                                 val denominator = Math.pow(2.0, denominatorPower.toDouble()).toInt()
 
-                                // only denominators of 4 are supported
-                                if (denominator == 4) {
+                                if (denominator >= 2) {
                                     remix.timeSignatures.add(
                                             TimeSignature(remix.timeSignatures,
-                                                          (event.tick * beatsPerTick).roundToInt(), numerator))
+                                                          (event.tick * beatsPerTick), numerator, denominator))
                                 }
                             }
                         }
@@ -340,7 +340,7 @@ open class Remix(val main: RHRE3Application)
                         furthest + 2f
                     } else {
                         (remix.timeSignatures.getMeasure(
-                                furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
+                                furthest) + 1f - timeSig.measure) * timeSig.beatsPerMeasure + timeSig.beat
                     }
                     bounds.y = 0f
                 }
@@ -364,7 +364,7 @@ open class Remix(val main: RHRE3Application)
                     .sortedBy(TimeSignature::beat)
                     .fold(null as TimeSignature?) { last, ts ->
                         if (last != null) {
-                            if (ts.divisions == last.divisions) {
+                            if (ts.beatsPerMeasure == last.beatsPerMeasure) {
                                 remix.timeSignatures.remove(ts)
                             }
                         }
@@ -604,10 +604,12 @@ open class Remix(val main: RHRE3Application)
     var metronome: Boolean = false
         set(value) {
             field = value
-            lastTickBeat = beat.toInt()
+            lastMetronomeMeasure = -1
+            lastMetronomeMeasurePart = -1
         }
     open var cuesMuted = false
-    private var lastTickBeat = Int.MIN_VALUE
+    private var lastMetronomeMeasure: Int = -1
+    private var lastMetronomeMeasurePart: Int = -1
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
@@ -641,11 +643,8 @@ open class Remix(val main: RHRE3Application)
     var playalong: Playalong by settableLazy { createPlayalongInstance() }
     open var doUpdatePlayalong: Boolean = false
 
-    private val metronomeSFX: List<LazySound> by lazy {
-        listOf(
-                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: throw RuntimeException(
-                        "Missing metronome sound")
-              )
+    private val metronomeSFX: LazySound by lazy {
+                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
@@ -685,7 +684,8 @@ open class Remix(val main: RHRE3Application)
                         }
                     }
 
-                    lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
+                    lastMetronomeMeasure = Math.ceil(playbackStart - 1.0).toInt()
+                    lastMetronomeMeasurePart = -1
 
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
@@ -900,12 +900,14 @@ open class Remix(val main: RHRE3Application)
             playalong.frameUpdate()
         }
 
-        if (Math.floor(beat.toDouble()) > lastTickBeat) {
-            lastTickBeat = Math.floor(beat.toDouble()).toInt()
+        val measure = timeSignatures.getMeasure(beat).takeIf { it >= 0 } ?: Math.floor(beat.toDouble()).toInt()
+        val measurePart = timeSignatures.getMeasurePart(beat)
+        if (lastMetronomeMeasure != measure || lastMetronomeMeasurePart != measurePart) {
+            lastMetronomeMeasure = measure
+            lastMetronomeMeasurePart = measurePart
             if (metronome) {
-                val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
-                metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
-                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
+                val isStartOfMeasure = measurePart == 0
+                metronomeSFX.sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
             }
         }
 

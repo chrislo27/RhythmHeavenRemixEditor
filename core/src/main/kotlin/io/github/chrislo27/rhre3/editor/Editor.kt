@@ -560,7 +560,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         // time signatures
-        this.renderTimeSignatures(batch)
+        this.renderTimeSignatures(batch, beatRange)
 
         // bottom trackers
         this.renderBottomTrackers(batch, beatRange)
@@ -1460,18 +1460,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
-                val beat = Math.floor(camera.getInputX().toDouble()).toInt()
-                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(
-                        beat.toFloat())?.takeIf { it.beat == beat }
+                val inputX = camera.getInputX()
+                val timeSigAtMouse = remix.timeSignatures.getTimeSignature(inputX)
+                val inputBeat = MathHelper.snapToNearest(inputX, timeSigAtMouse?.noteFraction ?: 1f)
+                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(inputBeat)?.takeIf { MathUtils.isEqual(inputBeat, it.beat) }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
                     remix.mutate(TimeSignatureAction(remix, timeSig, true))
                 } else if (button == Input.Buttons.LEFT && timeSig == null) {
-                    remix.mutate(
-                            TimeSignatureAction(remix,
-                                                TimeSignature(remix.timeSignatures, beat,
-                                                              remix.timeSignatures.getTimeSignature(beat.toFloat())
-                                                                      ?.divisions ?: 4), false))
+                    val timeSigAt = remix.timeSignatures.getTimeSignature(inputBeat)
+                    remix.mutate(TimeSignatureAction(remix,
+                                                     TimeSignature(remix.timeSignatures, inputBeat,
+                                                                   timeSigAt?.beatsPerMeasure ?: TimeSignature.DEFAULT_NOTE_UNIT,
+                                                                   timeSigAt?.beatUnit ?: TimeSignature.DEFAULT_NOTE_UNIT), false))
                 }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java, true)
@@ -1897,15 +1898,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             return true
         } else if (tool == Tool.TIME_SIGNATURE && !shift) {
-            val timeSig = remix.timeSignatures.getTimeSignature(camera.getInputX())
-            val inputBeat = Math.floor(camera.getInputX().toDouble()).toInt()
-            if (timeSig != null && inputBeat == timeSig.beat) {
+            val inputX = camera.getInputX()
+            val timeSig = remix.timeSignatures.getTimeSignature(inputX)
+            val inputBeat = MathHelper.snapToNearest(inputX, timeSig?.noteFraction ?: 1f)
+            if (timeSig != null && MathUtils.isEqual(inputBeat, timeSig.beat)) {
                 val change = -amount * (if (control) 5 else 1)
-                val newDivisions = (timeSig.divisions + change)
+                val newDivisions = (timeSig.beatsPerMeasure + change)
                         .coerceIn(TimeSignature.LOWER_BEATS_PER_MEASURE, TimeSignature.UPPER_BEATS_PER_MEASURE)
-                if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
+                if ((change < 0 && timeSig.beatsPerMeasure > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.beatsPerMeasure < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
                     val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
-                    val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions)
+                    val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions, timeSig.beatUnit)
 
                     if (lastAction != null && lastAction.current === timeSig) {
                         lastAction.current = result
@@ -2046,6 +2048,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
             append(" / ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)).append("\n")
+
+            val timeSig = remix.timeSignatures.getTimeSignature(remix.beat)
+            val timeSigStr = if (timeSig != null) ("${timeSig.beatsPerMeasure}/${timeSig.beatUnit} (${remix.timeSignatures.getMeasurePart(remix.beat)}, ${remix.timeSignatures.getMeasure(remix.beat)})") else "none"
+            append("Time Sig.: ")
+            append(timeSigStr)
+            append("\n")
 
             append("Tempo: ♩=")
             append(remix.tempos.tempoAtSeconds(remix.seconds)).append("\n")

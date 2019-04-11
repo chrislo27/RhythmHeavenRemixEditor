@@ -5,14 +5,14 @@ import java.util.*
 
 class TimeSignatures {
 
-    val map: NavigableMap<Int, TimeSignature> = TreeMap()
+    val map: NavigableMap<Float, TimeSignature> = TreeMap()
 
     fun clear() {
         map.clear()
     }
 
     fun add(tracker: TimeSignature) {
-        map.put(tracker.beat, tracker)
+        map[tracker.beat] = tracker
         update()
     }
 
@@ -21,35 +21,30 @@ class TimeSignatures {
         update()
     }
 
-    fun remove(beat: Int) {
+    fun remove(beat: Float) {
         map.remove(beat)
         update()
     }
 
     fun getTimeSignature(beat: Float): TimeSignature? {
-        return map.floorEntry(Math.floor(beat.toDouble()).toInt())?.value
+        return map.floorEntry(beat)?.value
     }
 
     fun getMeasure(beat: Float): Int {
-        val intBeat = beat.toInt()
-        if (intBeat < 0)
-            return -1
+        if (beat < 0) return -1
         val timeSig = getTimeSignature(beat) ?: return -1
-        val beatDiff = intBeat - timeSig.beat
+        val beatDiff = beat - timeSig.beat
 
-        // currently assumes X/4 time only
-        return beatDiff / timeSig.divisions + timeSig.measure
+        return (beatDiff / (timeSig.noteFraction * timeSig.beatsPerMeasure)).toInt() + timeSig.measure
     }
 
     fun getMeasurePart(beat: Float): Int {
-        val intBeat = beat.toInt()
-        if (intBeat < 0)
-            return -1
+        if (beat < 0) return -1
         val timeSig = getTimeSignature(beat) ?: return -1
-        val beatDiff = intBeat - timeSig.beat
+        val beatDiff = beat - timeSig.beat
 
         // currently assumes X/4 time only
-        return beatDiff % timeSig.divisions
+        return ((beatDiff / timeSig.noteFraction) % timeSig.beatsPerMeasure).toInt()
     }
 
     fun update() {
@@ -61,9 +56,9 @@ class TimeSignatures {
             if (map.isEmpty()) {
                 it.measure = 1
             } else {
-                val measure = getMeasure(it.beat.toFloat())
+                val measure = getMeasure(it.beat)
 
-                it.measure = measure + (if (getMeasurePart(it.beat.toFloat()) == 0) 0 else 1)
+                it.measure = measure + (if (getMeasurePart(it.beat) == 0) 0 else 1)
             }
 
             map[it.beat] = it
@@ -71,12 +66,12 @@ class TimeSignatures {
     }
 
     fun get(beat: Float): TimeSignature? =
-            map[Math.floor(beat.toDouble()).toInt()]
+            map[beat]
 
     fun lowerGet(beat: Float): TimeSignature? =
-            map.lowerEntry(Math.floor(beat.toDouble()).toInt())?.value
+            map.lowerEntry(beat)?.value
 
     fun higherGet(beat: Float): TimeSignature? =
-            map.higherEntry(Math.floor(beat.toDouble()).toInt())?.value
+            map.higherEntry(beat)?.value
 
 }
