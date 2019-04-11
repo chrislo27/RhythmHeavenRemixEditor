@@ -2064,6 +2064,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append("MIDI Instrs.: ")
             append(remix.midiInstruments).append("\n")
 
+            append("Textures: ")
+            append(remix.textureCache.size).append("\n")
+
             append("Autosave Timer: ")
             append(timeUntilAutosave)
             append(" sec / ")
