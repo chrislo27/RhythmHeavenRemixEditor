@@ -1461,7 +1461,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
                 val inputX = camera.getInputX()
-                val inputBeat = MathHelper.snapToNearest(inputX, snap)
+                val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
                 val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(inputBeat)?.takeIf { MathUtils.isEqual(inputBeat, it.beat) }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
@@ -1899,7 +1899,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         } else if (tool == Tool.TIME_SIGNATURE) {
             val inputX = camera.getInputX()
             val timeSig = remix.timeSignatures.getTimeSignature(inputX)
-            val inputBeat = MathHelper.snapToNearest(inputX, snap)
+            val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
             if (timeSig != null && MathUtils.isEqual(inputBeat, timeSig.beat)) {
                 if (!shift) {
                     val change = -amount * (if (control) 5 else 1)
