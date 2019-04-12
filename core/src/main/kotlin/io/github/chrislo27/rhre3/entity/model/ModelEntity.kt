@@ -79,7 +79,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         return tmp
     }
 
-    override fun render(editor: Editor, batch: SpriteBatch) {
+    fun render(editor: Editor, batch: SpriteBatch, glass: Boolean) {
         val game = datamodel.game
         val textColor = editor.theme.entities.nameColor
         val text = renderText + (if (ModdingUtils.moddingToolsEnabled && editor.currentTool == Tool.RULER) {
@@ -99,7 +99,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val width = bounds.width + lerpDifference.width
 
         // filled rect + border
-        batch.setColorWithTintIfNecessary(selectionTint, color.r, color.g, color.b, color.a * 0.5f, necessary = showSelection)
+        batch.setColorWithTintIfNecessary(selectionTint, color.r, color.g, color.b, color.a * (if (glass) 0.5f else 1f), necessary = showSelection)
         batch.fillRect(x, y,
                        width, height)
 
@@ -188,6 +188,10 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         }
         font.color = oldFontColor
         font.data.setScale(oldFontSizeX, oldFontSizeY)
+    }
+
+    override fun render(editor: Editor, batch: SpriteBatch) {
+        render(editor, batch, false)
     }
 
     private fun drawCornerText(editor: Editor, batch: SpriteBatch, text: String, useNegativeColor: Boolean, x: Float, y: Float) {

@@ -537,9 +537,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
-                    it.render(this, batch)
                     if (it is ModelEntity<*>) {
+                        it.render(this, batch, themeUsesMenu)
                         this.renderMining(batch, it)
+                    } else {
+                        it.render(this, batch)
                     }
                 }
             }
