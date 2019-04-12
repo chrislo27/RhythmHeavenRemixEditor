@@ -773,6 +773,8 @@ class InfoScreen(main: RHRE3Application)
                     if (bufferSupported) {
                         preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, checked).flush()
                         didChangeSettings = true
+                    } else {
+                        preferences.putString(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, null).flush()
                     }
                 }
             }.apply {
