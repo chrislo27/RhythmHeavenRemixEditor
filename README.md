@@ -5,6 +5,8 @@
 # Rhythm Heaven Remix Editor
 A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhythm_Heaven_Megamix) series
 
+### [Download the latest release here!](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)
+
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
 downloading the program!**
 
