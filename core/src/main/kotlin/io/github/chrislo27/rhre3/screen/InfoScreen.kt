@@ -250,14 +250,15 @@ class InfoScreen(main: RHRE3Application)
         stage.centreStage.elements += settingsStage
 
         val padding = 0.025f
-        val buttonWidth = 0.4f
         val buttonHeight = 0.1f
         val fontScale = 0.75f
         stage.centreStage.also { centre ->
+            val buttonWidth = 0.35f
             headingLabel = TextLabel(palette, centre, centre).apply {
-                this.location.set(screenX = 0.5f - buttonWidth / 2f,
+                val width = 1f - (buttonWidth * 2f)
+                this.location.set(screenX = 0.5f - width / 2f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
-                                  screenWidth = buttonWidth,
+                                  screenWidth = width,
                                   screenHeight = buttonHeight)
                 this.isLocalizationKey = true
                 this.text = "screen.info.settings"
@@ -310,6 +311,7 @@ class InfoScreen(main: RHRE3Application)
         }
 
         infoStage.also { info ->
+            val buttonWidth = 0.4f
             // Loading icon for paddler
             loadingIcon = LoadingIcon(palette, info).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
@@ -507,7 +509,6 @@ class InfoScreen(main: RHRE3Application)
             // info buttons
             // Credits
             info.elements += object : Button<InfoScreen>(palette, info, info) {
-
                 init {
                     addLabel(TextLabel(palette, this, this.stage).apply {
                         this.fontScaleMultiplier = fontScale
@@ -573,7 +574,6 @@ class InfoScreen(main: RHRE3Application)
                     super.render(screen, batch, shapeRenderer)
                 }
             }.apply {
-
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = padding,
                                   screenWidth = buttonWidth,
@@ -639,44 +639,10 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             info.elements += clearRecentsButton
-            info.elements += object : TrueCheckbox<InfoScreen>(palette, info, info) {
-
-                override val checkLabelPortion: Float = 0.1f
-
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
-                    didChangeSettings = true
-                    DiscordHelper.enabled = checked
-                }
-            }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
-
-                this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.textAlign = Align.left
-                    this.text = "screen.info.discordRichPresence"
-                }
-
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 5 + buttonHeight * 4,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 2.25f, screenWidth = 1f - checkLabelPortion * 2.25f)
-
-                addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = checkLabelPortion, screenWidth = checkLabelPortion)
-                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
-                })
-            }
         }
 
         settingsStage.also { settings ->
+            val buttonWidth = 0.45f
             // Settings
             // Autosave timer
             settings.elements += object : Button<InfoScreen>(palette, settings, settings) {
@@ -951,6 +917,41 @@ class InfoScreen(main: RHRE3Application)
                                   screenY = padding * 7 + buttonHeight * 6,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
+            }
+
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
+                override val checkLabelPortion: Float = 0.1f
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
+                    didChangeSettings = true
+                    DiscordHelper.enabled = checked
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.textAlign = Align.left
+                    this.text = "screen.info.discordRichPresence"
+                }
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 7 + buttonHeight * 6,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+
+                this.checkLabel.location.set(screenWidth = checkLabelPortion)
+                this.textLabel.location.set(screenX = checkLabelPortion * 2.25f, screenWidth = 1f - checkLabelPortion * 2.25f)
+
+                addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = checkLabelPortion, screenWidth = checkLabelPortion)
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
+                })
             }
         }
 
