@@ -929,7 +929,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                     }
                 } else if (control && !alt && shift) {
-                    if (Gdx.input.isKeyJustPressed(Input.Keys.A) && control && shift) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
                         val newSelection: List<Entity> = remix.entities.toList()
                         if (!this.selection.containsAll(newSelection) ||
                                 (newSelection.size != this.selection.size)) {
