@@ -50,7 +50,7 @@ import io.github.chrislo27.toolboks.version.Version
 
 
 class InfoScreen(main: RHRE3Application)
-    : ToolboksScreen<RHRE3Application, InfoScreen>(main), HidesVersionText {
+    : ToolboksScreen<RHRE3Application, InfoScreen>(main) {
 
     companion object {
         const val DEFAULT_AUTOSAVE_TIME = 5
@@ -59,24 +59,54 @@ class InfoScreen(main: RHRE3Application)
             private set
     }
 
-    override val stage: Stage<InfoScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    enum class Page {
+        INFO, SETTINGS
+    }
+
     private val preferences: Preferences
         get() = main.preferences
     private val editor: Editor
         get() = ScreenRegistry.getNonNullAsType<EditorScreen>("editor").editor
-    private val clearRecentsButton: Button<InfoScreen>
-    private val dbVersionLabel: TextLabel<InfoScreen>
-    private val versionLabel: TextLabel<InfoScreen>
+
     private var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
+    private var backgroundOnly = false
+    private var currentPage: Page = Page.SETTINGS
+        set(value) {
+            field = value
+            when (value) {
+                Page.INFO -> {
+                    infoStage.visible = true
+                    settingsStage.visible = false
+                    leftPageButton.visible = true
+                    rightPageButton.visible = false
+                    headingLabel.text = "screen.info.info"
+                }
+                Page.SETTINGS -> {
+                    infoStage.visible = false
+                    settingsStage.visible = true
+                    leftPageButton.visible = false
+                    rightPageButton.visible = true
+                    headingLabel.text = "screen.info.settings"
+                }
+            }
+        }
+
+    override val stage: GenericStage<InfoScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+
+    private val settingsStage: Stage<InfoScreen>
+    private val infoStage: Stage<InfoScreen>
+    private val leftPageButton: Button<InfoScreen>
+    private val rightPageButton: Button<InfoScreen>
+    private val headingLabel: TextLabel<InfoScreen>
+    private val clearRecentsButton: Button<InfoScreen>
+    private val dbVersionLabel: TextLabel<InfoScreen>
+    private val versionLabel: TextLabel<InfoScreen>
     private val onlineLabel: TextLabel<InfoScreen>
     private val loadingIcon: LoadingIcon<InfoScreen>
 
-    private var backgroundOnly = false
-
     init {
-        stage as GenericStage<InfoScreen>
         val palette = stage.palette
 
         stage.titleIcon.apply {
@@ -214,33 +244,74 @@ class InfoScreen(main: RHRE3Application)
             this.location.set(screenX = 0.025f, screenWidth = 0.025f)
         }
 
-        stage.centreStage.also { centre ->
-            val padding = 0.025f
-            val buttonWidth = 0.4f
-            val buttonHeight = 0.1f
-            val fontScale = 0.75f
+        infoStage = Stage(stage.centreStage, stage.camera)
+        stage.centreStage.elements += infoStage
+        settingsStage = Stage(stage.centreStage, stage.camera)
+        stage.centreStage.elements += settingsStage
 
-            // left heading
-            centre.elements += TextLabel(palette, centre, centre).apply {
-                this.location.set(screenX = padding,
+        val padding = 0.025f
+        val buttonWidth = 0.4f
+        val buttonHeight = 0.1f
+        val fontScale = 0.75f
+        stage.centreStage.also { centre ->
+            headingLabel = TextLabel(palette, centre, centre).apply {
+                this.location.set(screenX = 0.5f - buttonWidth / 2f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
                                   screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight * 0.8f)
+                                  screenHeight = buttonHeight)
                 this.isLocalizationKey = true
                 this.text = "screen.info.settings"
             }
+            centre.elements += headingLabel
 
-            // right heading
-            centre.elements += TextLabel(palette, centre, centre).apply {
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = 1f - (padding + buttonHeight * 0.8f),
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight * 0.8f)
-                this.isLocalizationKey = true
-                this.text = "screen.info.info"
+            leftPageButton = object : Button<InfoScreen>(palette, centre, centre){
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    currentPage = Page.SETTINGS
+                }
+            }.apply {
+                this.location.set(0f, 1f - (padding + buttonHeight * 0.8f), buttonWidth * 0.75f, buttonHeight)
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0f, screenWidth = 0.15f)
+                    this.isLocalizationKey = false
+                    this.text = "\uE149"
+                })
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0.15f, screenWidth = 0.85f)
+                    this.isLocalizationKey = true
+                    this.textAlign = Align.left
+                    this.fontScaleMultiplier = fontScale
+                    this.text = "screen.info.settings"
+                })
             }
+            centre.elements += leftPageButton
+
+            rightPageButton = object : Button<InfoScreen>(palette, centre, centre){
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    currentPage = Page.INFO
+                }
+            }.apply {
+                this.location.set(1f - (buttonWidth * 0.75f), 1f - (padding + buttonHeight * 0.8f), buttonWidth * 0.75f, buttonHeight)
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0.85f, screenWidth = 0.15f)
+                    this.isLocalizationKey = false
+                    this.text = "\uE14A"
+                })
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0f, screenWidth = 0.85f)
+                    this.isLocalizationKey = true
+                    this.textAlign = Align.right
+                    this.fontScaleMultiplier = fontScale
+                    this.text = "screen.info.info"
+                })
+            }
+            centre.elements += rightPageButton
+        }
+
+        infoStage.also { info ->
             // Loading icon for paddler
-            loadingIcon = LoadingIcon(palette, centre).apply {
+            loadingIcon = LoadingIcon(palette, info).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
                                   screenWidth = buttonWidth * 0.09f,
@@ -249,9 +320,9 @@ class InfoScreen(main: RHRE3Application)
                 this.alpha = 0f
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             }
-            centre.elements += loadingIcon
+            info.elements += loadingIcon
             // current program version
-            versionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
+            versionLabel = object : TextLabel<InfoScreen>(palette, info, info) {
                 private var clicks = 0
                 private var timeSinceLastClick = System.currentTimeMillis()
                 private val CLICKS_RESET = 3000L
@@ -294,8 +365,8 @@ class InfoScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = RHRE3.VERSION.toString()
             }
-            centre.elements += versionLabel
-            dbVersionLabel = object : TextLabel<InfoScreen>(palette, centre, centre) {
+            info.elements += versionLabel
+            dbVersionLabel = object : TextLabel<InfoScreen>(palette, info, info) {
                 private var clicks = 0
                 private var timeSinceLastClick = System.currentTimeMillis()
                 private val color = Color(1f, 1f, 1f, 1f)
@@ -335,8 +406,8 @@ class InfoScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = "DB VERSION"
             }
-            centre.elements += dbVersionLabel
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += dbVersionLabel
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
@@ -354,7 +425,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Partners button
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
@@ -385,7 +456,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = 0.1f,
                                   screenHeight = buttonHeight * 2 + padding)
             }
-            centre.elements += TextLabel(palette, centre, centre).apply {
+            info.elements += TextLabel(palette, info, info).apply {
                 this.location.set(screenX = 0.5f - (0.1f / 2),
                                   screenY = buttonHeight * 2 + padding * 2.5f,
                                   screenWidth = 0.1f,
@@ -396,7 +467,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Donate button
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
@@ -414,7 +485,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
                 this.visible = false
             }
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
@@ -435,7 +506,7 @@ class InfoScreen(main: RHRE3Application)
 
             // info buttons
             // Credits
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
 
                 init {
                     addLabel(TextLabel(palette, this, this.stage).apply {
@@ -509,7 +580,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             // Editor version screen
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     main.screen = ScreenRegistry.getNonNull("editorVersion")
@@ -528,7 +599,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             // Database version changelog
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
@@ -547,7 +618,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             // Clear recent games
-            clearRecentsButton = object : Button<InfoScreen>(palette, centre, centre) {
+            clearRecentsButton = object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     editor.updateRecentsList(null)
@@ -567,8 +638,8 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-            centre.elements += clearRecentsButton
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+            info.elements += clearRecentsButton
+            info.elements += object : TrueCheckbox<InfoScreen>(palette, info, info) {
 
                 override val checkLabelPortion: Float = 0.1f
 
@@ -603,10 +674,12 @@ class InfoScreen(main: RHRE3Application)
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
                 })
             }
+        }
 
+        settingsStage.also { settings ->
             // Settings
             // Autosave timer
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : Button<InfoScreen>(palette, settings, settings) {
                 private fun updateText() {
                     textLabel.text = Localization["screen.info.autosaveTimer",
                             if (autosaveTimers[index] == 0) Localization["screen.info.autosaveTimerOff"]
@@ -675,7 +748,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Chase camera
-            centre.elements += object : Button<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : Button<InfoScreen>(palette, settings, settings) {
                 private val label: TextLabel<InfoScreen> = TextLabel(palette, this, this.stage).apply {
                     this.isLocalizationKey = false
                     this.text = ""
@@ -723,7 +796,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Disable minimap
-            centre.elements += object : FalseCheckbox<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : FalseCheckbox<InfoScreen>(palette, settings, settings) {
                 override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -751,7 +824,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Minimap preview
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
 
                 override val checkLabelPortion: Float = 0.1f
                 private var bufferSupported = true
@@ -797,7 +870,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Subtitle order
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -825,7 +898,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Remix stops at last cue
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -853,7 +926,7 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Smooth dragging
-            centre.elements += object : TrueCheckbox<InfoScreen>(palette, centre, centre) {
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
@@ -879,11 +952,11 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-
         }
 
         stage.updatePositions()
 
+        currentPage = currentPage // force update
         updateSeePartners()
     }
 
@@ -903,7 +976,6 @@ class InfoScreen(main: RHRE3Application)
 
     override fun renderUpdate() {
         super.renderUpdate()
-        stage as GenericStage
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
         } else if (Gdx.input.isControlDown() && !Gdx.input.isShiftDown() && !Gdx.input.isAltDown() && Gdx.input.isKeyJustPressed(Input.Keys.A)) {
