@@ -306,7 +306,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
 
-    // TODO shader tests
     val glassEffect: GlassEffect = GlassEffect(main, this)
 
     fun resetAutosaveTimer() {
@@ -418,7 +417,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // FIXME test shader with background
         val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
-        if (themeUsesMenu) {
+        val glassEffectSupported = glassEffect.fboSupported
+        if (themeUsesMenu && glassEffectSupported) {
             glassEffect.renderBackground()
         }
 
@@ -516,8 +516,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        // FIXME glass effect on entities
-        if (themeUsesMenu) {
+        if (themeUsesMenu && glassEffectSupported) {
             main.shapeRenderer.projectionMatrix = camera.combined
             main.shapeRenderer.prepareStencilMask(batch) {
                 begin(ShapeRenderer.ShapeType.Filled)
@@ -538,7 +537,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     if (it is ModelEntity<*>) {
-                        it.render(this, batch, themeUsesMenu)
+                        it.render(this, batch, themeUsesMenu && glassEffectSupported)
                         this.renderMining(batch, it)
                     } else {
                         it.render(this, batch)

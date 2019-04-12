@@ -69,24 +69,35 @@ void main() {
 	gl_FragColor = vColor * vec4(sum.rgb, 1.0);
 }
 """
+
+        @Suppress("FunctionName")
+        private fun <T> Try(instantiator: () -> T): T? = try {
+            instantiator()
+        } catch (e: Exception) {
+            null
+        }
     }
 
     val shader: ShaderProgram = createShaderProgram()
     val shaderCamera: OrthographicCamera = OrthographicCamera(RHRE3.WIDTH.toFloat(), RHRE3.HEIGHT.toFloat()).apply {
         setToOrtho(false, viewportWidth, viewportHeight)
     }
-    private val bufferA: FrameBuffer = FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
-        main.addDisposeCall(Runnable(this::dispose))
+    private val bufferA: FrameBuffer? = Try {
+        FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
+            main.addDisposeCall(Runnable(this::dispose))
+        }
     }
-    private val bufferB: FrameBuffer = FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
-        main.addDisposeCall(Runnable(this::dispose))
+    private val bufferB: FrameBuffer? = Try {
+        FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
+            main.addDisposeCall(Runnable(this::dispose))
+        }
     }
-    val fboRegion: TextureRegion = TextureRegion(bufferB.colorBufferTexture).apply {
+    val fboSupported: Boolean = bufferA != null && bufferB != null
+    val fboRegion: TextureRegion? = if (fboSupported && bufferB != null) TextureRegion(bufferB.colorBufferTexture).apply {
         flip(false, true)
-    }
+    } else null
 
     private val batch: SpriteBatch get() = editor.batch
-
 
     fun createShaderProgram(): ShaderProgram {
         ShaderProgram.pedantic = false
@@ -98,45 +109,47 @@ void main() {
     }
 
     fun renderBackground() {
-        shaderCamera.update()
+        if (bufferA != null && bufferB != null && fboRegion != null) {
+            shaderCamera.update()
 
-        // Render normal background to buffer A
-        bufferA.begin()
-        batch.projectionMatrix = shaderCamera.combined
-        main.shapeRenderer.projectionMatrix = shaderCamera.combined
+            // Render normal background to buffer A
+            bufferA.begin()
+            batch.projectionMatrix = shaderCamera.combined
+            main.shapeRenderer.projectionMatrix = shaderCamera.combined
 
-        editor.renderBackground(batch, main.shapeRenderer, shaderCamera, false)
+            editor.renderBackground(batch, main.shapeRenderer, shaderCamera, false)
 
-        batch.flush()
-        bufferA.end()
+            batch.flush()
+            bufferA.end()
 
-        batch.shader = shader
-        shader.apply {
-            setUniformf("dir", 1f, 0f)
-            setUniformf("resolution", max(shaderCamera.viewportHeight, shaderCamera.viewportWidth))
-            setUniformf("radius", 3f)
+            batch.shader = shader
+            shader.apply {
+                setUniformf("dir", 1f, 0f)
+                setUniformf("resolution", max(shaderCamera.viewportHeight, shaderCamera.viewportWidth))
+                setUniformf("radius", 3f)
+            }
+
+            // Render buffer A back to buffer A, with first blur pass
+            bufferA.begin()
+            fboRegion.texture = bufferA.colorBufferTexture
+            batch.draw(fboRegion, 0f, 0f)
+            batch.flush()
+            bufferA.end()
+
+            // Render buffer A to buffer B, with second blur pass
+            bufferB.begin()
+            shader.setUniformf("dir", 0f, 1f)
+            fboRegion.texture = bufferA.colorBufferTexture
+            batch.draw(fboRegion, 0f, 0f)
+            batch.flush()
+            bufferB.end()
+
+            batch.shader = null
+            fboRegion.texture = bufferB.colorBufferTexture
+
+            batch.projectionMatrix = main.defaultCamera.combined
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
-
-        // Render buffer A back to buffer A, with first blur pass
-        bufferA.begin()
-        fboRegion.texture = bufferA.colorBufferTexture
-        batch.draw(fboRegion, 0f, 0f)
-        batch.flush()
-        bufferA.end()
-
-        // Render buffer A to buffer B, with second blur pass
-        bufferB.begin()
-        shader.setUniformf("dir", 0f, 1f)
-        fboRegion.texture = bufferA.colorBufferTexture
-        batch.draw(fboRegion, 0f, 0f)
-        batch.flush()
-        bufferB.end()
-
-        batch.shader = null
-        fboRegion.texture = bufferB.colorBufferTexture
-
-        batch.projectionMatrix = main.defaultCamera.combined
-        main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
     }
 
 }
