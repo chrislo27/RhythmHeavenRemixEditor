@@ -43,7 +43,6 @@ class TimeSignatures {
         val timeSig = getTimeSignature(beat) ?: return -1
         val beatDiff = beat - timeSig.beat
 
-        // currently assumes X/4 time only
         return ((beatDiff / timeSig.noteFraction) % timeSig.beatsPerMeasure).toInt()
     }
 
