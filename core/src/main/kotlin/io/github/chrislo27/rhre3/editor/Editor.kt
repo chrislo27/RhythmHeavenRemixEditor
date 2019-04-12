@@ -912,6 +912,74 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             // Export screen
                             main.screen = ExportRemixScreen(main)
                         }
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                        with(PatternStoreScreen(main, this, null, selection.toList())) {
+                            Gdx.app.clipboard.contents = entitiesToJson(remix, selection.toList())
+                        }
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+                        with(PatternStoreScreen(main, this, null, selection.toList())) {
+                            Gdx.app.clipboard.contents = entitiesToJson(remix, selection.toList())
+                        }
+                        remix.entities.removeAll(this.selection)
+                        remix.addActionWithoutMutating(ActionGroup(listOf(
+                                EntityRemoveAction(this, this.selection,
+                                                   this.selection.map { Rectangle(it.bounds) }),
+                                EntitySelectionAction(this, this.selection.toList(), listOf())
+                                                                         )))
+                        this.selection = listOf()
+
+                        updateMessageLabel()
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+                        val entities: List<Entity>
+                        
+                        try {
+                            var pattern: String = Gdx.app.clipboard.contents
+                            val result = (JsonHandler.OBJECT_MAPPER.readTree(pattern) as ArrayNode).map { node ->
+                                Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)?.also {
+                                    it.readData(node)
+
+                                    // Load textures if necessary
+                                    val texHashNode = node["_textureData_hash"]
+                                    val texDataNode = node["_textureData_data"]
+                                    if (texHashNode != null && texDataNode != null) {
+                                        val texHash = texHashNode.asText()
+                                        if (!remix.textureCache.containsKey(texHash)) {
+                                            try {
+                                                val bytes = Base64.getDecoder().decode(texDataNode.asText().toByteArray(Charset.forName("UTF-8")))
+                                                remix.textureCache[texHash] = Texture(Pixmap(bytes, 0, bytes.size))
+                                            } catch (e: Exception) {
+                                                e.printStackTrace()
+                                            }
+                                        }
+                                    }
+                                }
+                            }.filterNotNull()
+                            if (result.isEmpty()) {
+                                return
+                            }
+
+                            entities = result
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            return
+                        }
+                        entities.forEach { entity ->
+                            if (entity is ILoadsSounds) {
+                                entity.loadSounds()
+                            }
+                        }
+                        val oldSelection = this.selection.toList()
+                        this.selection = entities.toList()
+                        val first = this.selection.first()
+                        val selection = ClickOccupation.SelectionDrag(this, first, first, Vector2(0f, 0f),
+                                                                      true, false, oldSelection, StretchRegion.NONE)
+                        selection.setPositionRelativeToMouse()
+                        entities.forEach {
+                            it.updateInterpolation(true)
+                        }
+                        remix.entities.addAll(entities)
+
+                        this.clickOccupation = selection
                     }
                 } else if (!control && !alt && shift) {
                     if (Gdx.input.isKeyJustPressed(Input.Keys.F)) { // Select all following
