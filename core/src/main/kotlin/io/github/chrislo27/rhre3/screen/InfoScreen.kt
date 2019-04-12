@@ -406,7 +406,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight * 0.8f)
                 this.isLocalizationKey = false
                 this.textWrapping = false
-                this.text = "DB VERSION"
+                this.text = "SFXDB VERSION"
             }
             info.elements += dbVersionLabel
             info.elements += object : Button<InfoScreen>(palette, info, info) {
@@ -579,44 +579,6 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-            // Editor version screen
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.screen = ScreenRegistry.getNonNull("editorVersion")
-                }
-            }.apply {
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.text = "screen.info.version"
-                })
-
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 2 + buttonHeight,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-            }
-            // Database version changelog
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
-                }
-            }.apply {
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.fontScaleMultiplier = fontScale
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.text = "screen.info.database"
-                })
-
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 3 + buttonHeight * 2,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-            }
             // Clear recent games
             clearRecentsButton = object : Button<InfoScreen>(palette, info, info) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -634,11 +596,51 @@ class InfoScreen(main: RHRE3Application)
                 })
 
                 this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 4 + buttonHeight * 3,
+                                  screenY = padding * 2 + buttonHeight,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
             info.elements += clearRecentsButton
+
+
+            // Editor version screen
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    main.screen = ScreenRegistry.getNonNull("editorVersion")
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.text = "screen.info.version"
+                })
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 7 + buttonHeight * 6,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+            // Database version changelog
+            info.elements += object : Button<InfoScreen>(palette, info, info) {
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
+                }
+            }.apply {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.text = "screen.info.database"
+                })
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 6 + buttonHeight * 5,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
         }
 
         settingsStage.also { settings ->
