@@ -21,12 +21,13 @@ object PreferenceKeys {
     val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
     val SETTINGS_DISCORD_RPC_ENABLED = "settings_discordRPCEnabled"
+    val SETTINGS_GLASS_ENTITIES = "settings_glassEntities"
     val SETTINGS_ADVANCED_OPTIONS = "settings_advancedOptions"
 
     val allSettingsKeys: List<String> =
         listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CAMERA_BEHAVIOUR,
                SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
-               SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS)
+               SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS, SETTINGS_GLASS_ENTITIES)
 
     val ADVOPT_REF_RH_GAME = "advOpt_referenceRHGame"
     val ADVOPT_PITCH_STYLE = "advOpt_pitchStyle"
@@ -59,6 +60,5 @@ object PreferenceKeys {
     val PLAYALONG_SFX_MONSTER_ACE = "playalongSfxMonsterAce"
 
     val EVENT_PREFIX = "event_"
-    val SEEN_EXPANSION_SPLASH = "seenExpansionSplash"
 
 }

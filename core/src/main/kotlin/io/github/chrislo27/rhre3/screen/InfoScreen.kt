@@ -921,6 +921,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
 
+            // Discord rich presence
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override val checkLabelPortion: Float = 0.1f
 
@@ -954,6 +955,52 @@ class InfoScreen(main: RHRE3Application)
                     this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
                 })
+            }
+
+            // Glass entities
+            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
+                override val checkLabelPortion: Float = 0.1f
+                private var bufferSupported = true
+
+                override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                    if (bufferSupported && !editor.glassEffect.fboSupported) {
+                        bufferSupported = false
+                        textLabel.text = "screen.info.glassEntities.unsupported"
+                        textLabel.fontScaleMultiplier = fontScale * fontScale
+                        checked = false
+                        enabled = false
+                    }
+
+                    super.render(screen, batch, shapeRenderer)
+                }
+
+                override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                    super.onLeftClick(xPercent, yPercent)
+                    if (bufferSupported) {
+                        preferences.putBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, checked).flush()
+                        didChangeSettings = true
+                    } else {
+                        preferences.putString(PreferenceKeys.SETTINGS_GLASS_ENTITIES, null).flush()
+                    }
+                }
+            }.apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+
+                this.checkLabel.location.set(screenWidth = checkLabelPortion)
+                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.textAlign = Align.left
+                    this.text = "screen.info.glassEntities"
+                }
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 6 + buttonHeight * 5,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
             }
         }
 

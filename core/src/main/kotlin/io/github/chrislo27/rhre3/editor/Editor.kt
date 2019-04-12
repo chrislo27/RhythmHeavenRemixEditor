@@ -417,8 +417,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // FIXME test shader with background
         val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
-        val glassEffectSupported = glassEffect.fboSupported
-        if (themeUsesMenu && glassEffectSupported) {
+        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        if (themeUsesMenu && useGlassEffect) {
             glassEffect.renderBackground()
         }
 
@@ -516,7 +516,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (themeUsesMenu && glassEffectSupported) {
+        if (themeUsesMenu && useGlassEffect) {
             main.shapeRenderer.projectionMatrix = camera.combined
             main.shapeRenderer.prepareStencilMask(batch) {
                 begin(ShapeRenderer.ShapeType.Filled)
@@ -537,7 +537,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     if (it is ModelEntity<*>) {
-                        it.render(this, batch, themeUsesMenu && glassEffectSupported)
+                        it.render(this, batch, themeUsesMenu && useGlassEffect)
                         this.renderMining(batch, it)
                     } else {
                         it.render(this, batch)
