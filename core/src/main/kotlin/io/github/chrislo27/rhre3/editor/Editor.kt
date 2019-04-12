@@ -915,11 +915,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 } else if (!control && !alt && shift) {
                     if (Gdx.input.isKeyJustPressed(Input.Keys.F)) { // Select all following
-                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
+                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: remix.playbackStart
                         val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX }
                         remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) { // Select all preceding
-                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
+                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: remix.playbackStart
                         val newSelection = remix.entities.toList().filter { it.bounds.maxX <= selectionMaxX }
                         remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) { // Select all between
