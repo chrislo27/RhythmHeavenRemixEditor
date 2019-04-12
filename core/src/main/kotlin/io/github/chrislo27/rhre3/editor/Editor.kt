@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -305,6 +306,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
 
+    // TODO shader tests
+    val glassEffect: GlassEffect = GlassEffect(main, this)
+
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
                                                         InfoScreen.DEFAULT_AUTOSAVE_TIME)
@@ -412,6 +416,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
+        // FIXME test shader with background
+        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        if (themeUsesMenu) {
+            glassEffect.renderBackground()
+        }
+
         this.renderBackground(batch, main.shapeRenderer, main.defaultCamera, true)
 
         batch.end()
@@ -505,11 +515,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 RectanglePool.free(rect)
             }
         }
+
+        // FIXME glass effect on entities
+        if (themeUsesMenu) {
+            main.shapeRenderer.projectionMatrix = camera.combined
+            main.shapeRenderer.prepareStencilMask(batch) {
+                begin(ShapeRenderer.ShapeType.Filled)
+                remix.entities.forEach {
+                    if (it is ModelEntity<*> && it !is TextureEntity && it.glassEffect) {
+                        if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
+                            rect(it.bounds.x, it.bounds.y, it.bounds.width, it.bounds.height)
+                        }
+                    }
+                }
+                end()
+            }.useStencilMask {
+                batch.draw(glassEffect.fboRegion, camera.position.x - camera.viewportWidth / 2f * camera.zoom, camera.position.y - camera.viewportHeight / 2f * camera.zoom, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
+            }
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
+        }
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     it.render(this, batch)
-                    if (it is ModelEntity<*>) this.renderMining(batch, it)
+                    if (it is ModelEntity<*>) {
+                        this.renderMining(batch, it)
+                    }
                 }
             }
         }
@@ -1917,7 +1948,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
                         return true
                     }
-                } else if (shift && !control){
+                } else if (shift && !control) {
                     val change = -amount
                     val index = TimeSignature.NOTE_UNITS.indexOf(timeSig.beatUnit).takeUnless { it == -1 } ?: TimeSignature.NOTE_UNITS.indexOf(TimeSignature.DEFAULT_NOTE_UNIT)
                     val newUnits = TimeSignature.NOTE_UNITS[(index + change).coerceIn(0, TimeSignature.NOTE_UNITS.size - 1)]

@@ -19,6 +19,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
     override val isStretchable: Boolean = true
     override val renderText: String
         get() = if (textureHash != null) datamodel.name else "${datamodel.name}\n<no texture>"
+    override val glassEffect: Boolean = false
 
     init {
         this.bounds.height = 1f

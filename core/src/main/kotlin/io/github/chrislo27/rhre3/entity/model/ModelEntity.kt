@@ -39,6 +39,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     val isSpecialEntity: Boolean get() = datamodel.isSpecial
     open var needsNameTooltip: Boolean = false
         protected set
+    open val glassEffect: Boolean = true
 
     init {
         bounds.height = 1f
@@ -98,7 +99,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val width = bounds.width + lerpDifference.width
 
         // filled rect + border
-        batch.setColorWithTintIfNecessary(selectionTint, color, necessary = showSelection)
+        batch.setColorWithTintIfNecessary(selectionTint, color.r, color.g, color.b, color.a * 0.5f, necessary = showSelection)
         batch.fillRect(x, y,
                        width, height)
 

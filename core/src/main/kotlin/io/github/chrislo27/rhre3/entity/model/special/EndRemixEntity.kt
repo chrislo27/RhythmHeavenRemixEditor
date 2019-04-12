@@ -13,6 +13,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 class EndRemixEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix, datamodel) {
 
     override val supportsCopying: Boolean = false
+    override val glassEffect: Boolean = false
 
     init {
         this.bounds.height = remix.trackCount.toFloat()
