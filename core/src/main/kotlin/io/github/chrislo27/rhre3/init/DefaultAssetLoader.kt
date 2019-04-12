@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import io.github.chrislo27.rhre3.registry.Series
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 
@@ -125,8 +126,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
 
         // pickaxe
-        (1..6).forEach { AssetRegistry.loadAsset<Sound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }
-        (1..4).forEach { AssetRegistry.loadAsset<Sound>("pickaxe_destroy$it", "sound/destroy/stone$it.ogg") }
+        (1..6).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }
+        (1..4).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_stone$it", "sound/destroy/stone$it.ogg") }
+        (1..3).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_glass$it", "sound/destroy/glass$it.ogg") }
 
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")

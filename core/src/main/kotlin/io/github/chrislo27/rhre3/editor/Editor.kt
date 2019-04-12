@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3.editor
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
-import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -74,6 +73,7 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -415,7 +415,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        // FIXME test shader with background
         val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
         if (themeUsesMenu && useGlassEffect) {
@@ -1009,16 +1008,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
 
                 current.progress += Gdx.graphics.deltaTime / current.miningTime
-                if (current.timeSinceDigSound >= 1f / 6f) {
+                if (current.timeSinceDigSound >= 1f / 5f) {
                     current.timeSinceDigSound = 0f
-                    AssetRegistry.get<Sound>("pickaxe_dig${MathUtils.random(1, 6)}").play(1f, 0.5f, 0f)
+                    AssetRegistry.get<LazySound>("pickaxe_dig${MathUtils.random(1, 6)}").sound.play(0.75f, 0.5f, 0f)
                 } else {
                     current.timeSinceDigSound += Gdx.graphics.deltaTime
                 }
 
                 if (current.progress >= 1f) {
+                    val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+                    val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
                     explodeEntity(onEntity, true)
-                    AssetRegistry.get<Sound>("pickaxe_destroy${MathUtils.random(1, 4)}").play()
+                    AssetRegistry.get<LazySound>("pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}").sound.play()
                     remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
                     this.selection = this.selection - listOf(onEntity)
                 }
@@ -1797,11 +1798,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
         if (!doExplode) return
-        val color = e.getRenderColor(this, theme).cpy()
+        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        val alpha = if (themeUsesMenu && useGlassEffect) 0.5f else 1f
+        val color = e.getRenderColor(this, theme).cpy().apply {
+            a *= alpha
+        }
         val borderC = color.cpy().apply {
             r = (r - 0.25f).coerceAtLeast(0f)
             g = (g - 0.25f).coerceAtLeast(0f)
             b = (b - 0.25f).coerceAtLeast(0f)
+            // not affected by alpha multiplication
         }
         val expiry = 4f
         val scale = 0.25f
