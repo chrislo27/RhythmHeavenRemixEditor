@@ -48,7 +48,7 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
             largeFont.setColor(1f, 1f, 1f, 1f)
         }
         list.forEachIndexed { index, inputAction ->
-            if (inputAction.beat.roundToInt() !in beatRange && (inputAction.beat + inputAction.duration).roundToInt() !in beatRange) return@forEachIndexed
+            if (inputAction.beat.roundToInt() > beatRange.last || (inputAction.beat + inputAction.duration).roundToInt() < beatRange.first) return@forEachIndexed
             largeFont.setColor(1f, 1f, 1f, 1f * alpha)
 
             val bottomY = baseY + (blockHeight * listSize) / 2 - (index + 0.5f) * blockHeight
@@ -70,6 +70,11 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                     largeFont.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                     batch.setColor(1f, 0.15f, 0.15f, 1f * alpha)
                 }
+            } else {
+//                if (inputAction.method == PlayalongMethod.RELEASE_AND_HOLD) {
+//                    batch.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+//                    largeFont.setColor(0.75f, 0.35f, 1f, 1f * alpha)
+//                }
             }
 
             // For non-instantaneous inputs, draw a long line (progress)
@@ -77,6 +82,7 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
                 val defWidth = inputAction.duration
                 val width = if (inProgress != null) {
                     batch.setColor(0.2f, 0.57f, 1f, 1f * alpha)
+                    largeFont.setColor(0.2f, 0.57f, 1f, 1f * alpha)
                     remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds((remix.beat - inputAction.beat)) - (if (inputAction.input.isTouchScreen) playalong.calibratedMouseOffset else playalong.calibratedKeyOffset))
                 } else if (results != null) {
                     (defWidth + (remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(inputAction.beat + inputAction.duration) + results.results.last().offset) - (inputAction.beat + inputAction.duration)))
@@ -98,25 +104,26 @@ fun Playalong.renderPlayalong(main: RHRE3Application, camera: OrthographicCamera
             batch.setColor(1f, 1f, 1f, 1f * alpha)
 
             // Render text or texture
-            if (inputAction.input.trackDisplayIsTexID) {
+            val trackDisplayText = if (inputAction.method.isRelease) inputAction.input.releaseTrackDisplayText else inputAction.input.trackDisplayText
+            val isTexID = if (inputAction.method.isRelease) inputAction.input.releaseTrackDisplayIsTexID else inputAction.input.trackDisplayIsTexID
+            if (isTexID) {
                 batch.packedColor = lastBatchColor
-                batch.draw(AssetRegistry.get<Texture>(inputAction.input.trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
+                batch.draw(AssetRegistry.get<Texture>(trackDisplayText), x - boxWidth / 2, y - boxHeight / 2, boxWidth, boxHeight)
                 batch.setColor(1f, 1f, 1f, 1f)
             } else {
-                val estHeight = largeFont.getTextHeight(inputAction.input.trackDisplayText)
+                val estHeight = largeFont.getTextHeight(trackDisplayText)
                 val scaleY = if (estHeight > recommendedHeight) {
                     recommendedHeight / estHeight
                 } else 1f
                 largeFont.scaleMul(scaleY)
-                val estWidth = largeFont.getTextWidth(inputAction.input.trackDisplayText)
+                val estWidth = largeFont.getTextWidth(trackDisplayText)
                 val scaleX = if (estWidth > recommendedWidth) {
                     recommendedWidth / estWidth
                 } else 1f
                 largeFont.scaleMul(scaleX)
-                val width = largeFont.getTextWidth(inputAction.input.trackDisplayText)
-                val height = largeFont.getTextHeight(inputAction.input.trackDisplayText)
-                // width * 0.02 is for correcting a glyph error in the font
-                largeFont.draw(batch, inputAction.input.trackDisplayText, x + width * 0.02f, y + height / 2, 0f, Align.center, false)
+//                val width = largeFont.getTextWidth(trackDisplayText)
+                val height = largeFont.getTextHeight(trackDisplayText)
+                largeFont.draw(batch, trackDisplayText, x, y + height / 2, 0f, Align.center, false)
                 largeFont.setColor(1f, 1f, 1f, 1f)
                 largeFont.scaleMul(1f / scaleX)
                 largeFont.scaleMul(1f / scaleY)

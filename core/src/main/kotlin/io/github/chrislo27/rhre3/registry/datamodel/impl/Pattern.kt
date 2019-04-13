@@ -5,12 +5,14 @@ import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.DurationModel
+import io.github.chrislo27.rhre3.registry.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.track.Remix
 
 class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
               override val cues: List<CuePointer>, val stretchable: Boolean)
-    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, DurationModel {
+    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, PreviewableModel {
+
+    override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 
     val repitchable: Boolean by lazy {
         cues.any {

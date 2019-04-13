@@ -93,8 +93,12 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         return bounds.x + lerpDifference.x + internalWidth >= start && bounds.x + lerpDifference.x <= end
     }
 
+    override fun getLowerUpdateableBound(): Float {
+        return Math.min(bounds.x, internal.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: bounds.x)
+    }
+
     override fun getUpperUpdateableBound(): Float {
-        return bounds.x + internalWidth
+        return Math.max(bounds.x + internalWidth, internal.maxBy { it.getUpperUpdateableBound() }?.getUpperUpdateableBound() ?: (bounds.x + internalWidth))
     }
 
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false,
@@ -178,8 +182,8 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
         internal.filter {
             it.bounds.x + it.bounds.width < remix.beat
         }.forEach {
-                    it.playbackCompletion = PlaybackCompletion.FINISHED
-                }
+            it.playbackCompletion = PlaybackCompletion.FINISHED
+        }
     }
 
     override fun whilePlaying() {

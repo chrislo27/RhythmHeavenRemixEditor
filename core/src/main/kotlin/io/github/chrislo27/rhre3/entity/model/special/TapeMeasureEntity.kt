@@ -18,7 +18,6 @@ class TapeMeasureEntity(remix: Remix, datamodel: TapeMeasure)
         get() = "${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(bounds.width)} ♩${if (ModdingUtils.moddingToolsEnabled) "\n" + ModdingUtils.currentGame.beatsToTickflowString(bounds.width) else ""}"
 
     init {
-        bounds.width = 1f
         bounds.height = 1f
     }
 

@@ -18,18 +18,17 @@ import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
-import io.github.chrislo27.rhre3.entity.model.special.EndEntity
-import io.github.chrislo27.rhre3.entity.model.special.ShakeEntity
-import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
-import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
+import io.github.chrislo27.rhre3.entity.model.special.*
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.soundsystem.LazySound
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
@@ -67,6 +66,15 @@ open class Remix(val main: RHRE3Application)
         class RemixLoadInfo(val remix: Remix, val missing: Pair<Int, Int>,
                             val isAutosave: Boolean,
                             val extra: MutableMap<String, Any> = mutableMapOf())
+
+        fun createMissingEntitySubtitle(remix: Remix, id: String, x: Float, y: Float, w: Float, h: Float): SubtitleEntity {
+            return (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+                this.subtitle = "[RED]MISSING ENTITY[]\n$id"
+                this.updateBounds {
+                    this.bounds.set(x, y, w, h)
+                }
+            }
+        }
 
         fun toJson(remix: Remix, isAutosave: Boolean): ObjectNode {
             val tree = JsonHandler.OBJECT_MAPPER.createObjectNode()
@@ -125,7 +133,8 @@ open class Remix(val main: RHRE3Application)
                     timeSignatures.map.values.forEach {
                         val node = timeSigs.addObject()
                         node.put("beat", it.beat)
-                        node.put("divisions", it.divisions)
+                        node.put("divisions", it.beatsPerMeasure)
+                        node.put("beatUnit", it.beatUnit)
                         node.put("measure", it.measure)
                     }
                 }
@@ -168,8 +177,8 @@ open class Remix(val main: RHRE3Application)
                             if (isCustom)
                                 missingCustom++
 
-                            Toolboks.LOGGER.warn(
-                                    "Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
+                            Toolboks.LOGGER.warn("Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
+                            remix.entities += createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null", node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue())
                             return@forEach
                         }
 
@@ -192,14 +201,14 @@ open class Remix(val main: RHRE3Application)
                     val trackers = tree.get("trackers") as ObjectNode
                     val timeSigs = trackers["timeSignatures"] as ObjectNode
                     (timeSigs["trackers"] as ArrayNode).filterIsInstance<ObjectNode>().forEach {
-                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toInt(),
-                                                               it["upper"].asInt(4)))
+                        remix.timeSignatures.add(TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(),
+                                                               it["upper"].asInt(4), 4))
                     }
                 } else {
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
                         remix.timeSignatures.add(
-                                TimeSignature(remix.timeSignatures, it["beat"].asInt(), it["divisions"].asInt(4)))
+                                TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(), it["divisions"].asInt(4), it["beatUnit"]?.asInt(TimeSignature.DEFAULT_NOTE_UNIT) ?: TimeSignature.DEFAULT_NOTE_UNIT))
                     }
                 }
             }
@@ -215,6 +224,8 @@ open class Remix(val main: RHRE3Application)
             val beatsPerTick: Float = 1f / sequence.resolution
 
             val tracksWithNotes: MutableList<Int> = mutableListOf()
+
+            remix.tempos.clear()
 
             val points: List<NotePoint> = sequence.tracks.flatMap { track ->
                 val list = mutableListOf<NotePoint>()
@@ -276,11 +287,10 @@ open class Remix(val main: RHRE3Application)
                                 val denominatorPower = data[1].toInt() and 0xFF
                                 val denominator = Math.pow(2.0, denominatorPower.toDouble()).toInt()
 
-                                // only denominators of 4 are supported
-                                if (denominator == 4) {
+                                if (denominator >= 2) {
                                     remix.timeSignatures.add(
                                             TimeSignature(remix.timeSignatures,
-                                                          (event.tick * beatsPerTick).roundToInt(), numerator))
+                                                          (event.tick * beatsPerTick), numerator, denominator))
                                 }
                             }
                         }
@@ -330,7 +340,7 @@ open class Remix(val main: RHRE3Application)
                         furthest + 2f
                     } else {
                         (remix.timeSignatures.getMeasure(
-                                furthest) + 1f - timeSig.measure) * timeSig.divisions + timeSig.beat
+                                furthest) + 1f - timeSig.measure) * timeSig.beatsPerMeasure + timeSig.beat
                     }
                     bounds.y = 0f
                 }
@@ -354,7 +364,7 @@ open class Remix(val main: RHRE3Application)
                     .sortedBy(TimeSignature::beat)
                     .fold(null as TimeSignature?) { last, ts ->
                         if (last != null) {
-                            if (ts.divisions == last.divisions) {
+                            if (ts.beatsPerMeasure == last.beatsPerMeasure) {
                                 remix.timeSignatures.remove(ts)
                             }
                         }
@@ -470,6 +480,7 @@ open class Remix(val main: RHRE3Application)
             remix.databaseVersion = 0
             remix.version = Version.fromString(remixObject.version ?: "v2.17.0")
 
+            remix.tempos.clear()
             remixObject.bpmChanges?.forEach {
                 remix.tempos.add(TempoChange(remix.tempos, it.beat, it.tempo, Swing.STRAIGHT, 0f))
             }
@@ -483,6 +494,7 @@ open class Remix(val main: RHRE3Application)
             remixObject.entities?.forEach {
                 val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
                     missing++
+                    remix.entities += createMissingEntitySubtitle(remix, it.id ?: "null", it.beat, it.level.toFloat(), it.width, 1f)
                     return@forEach
                 }
 
@@ -567,10 +579,7 @@ open class Remix(val main: RHRE3Application)
     val timeSignatures: TimeSignatures = TimeSignatures()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
     val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
-    val tempos: TempoChanges = TempoChanges().apply {
-        trackers.add(this)
-        add(TempoChange(this, 0f, this.defaultTempo, Swing.STRAIGHT, 0f))
-    }
+    val tempos: TempoChanges = TempoChanges().apply { trackers.add(this) }
     val musicVolumes: MusicVolumes = MusicVolumes().apply { trackers.add(this) }
 
     var seconds: Float = 0f
@@ -592,10 +601,12 @@ open class Remix(val main: RHRE3Application)
     var metronome: Boolean = false
         set(value) {
             field = value
-            lastTickBeat = beat.toInt()
+            lastMetronomeMeasure = -1
+            lastMetronomeMeasurePart = -1
         }
     open var cuesMuted = false
-    private var lastTickBeat = Int.MIN_VALUE
+    private var lastMetronomeMeasure: Int = -1
+    private var lastMetronomeMeasurePart: Int = -1
     private var scheduleMusicPlaying = true
     @Volatile
     var musicSeeking = false
@@ -607,7 +618,7 @@ open class Remix(val main: RHRE3Application)
     var trackCount: Int by Delegates.vetoable(Editor.DEFAULT_TRACK_COUNT) { _, _, new ->
         val allowed = new >= 1
         if (allowed) {
-            entities.filterIsInstance<EndEntity>().forEach { it.onTrackSizeChange(new) }
+            entities.filterIsInstance<EndRemixEntity>().forEach { it.onTrackSizeChange(new) }
         }
         allowed
     }
@@ -629,11 +640,8 @@ open class Remix(val main: RHRE3Application)
     var playalong: Playalong by settableLazy { createPlayalongInstance() }
     open var doUpdatePlayalong: Boolean = false
 
-    private val metronomeSFX: List<LazySound> by lazy {
-        listOf(
-                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: throw RuntimeException(
-                        "Missing metronome sound")
-              )
+    private val metronomeSFX: LazySound by lazy {
+                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
@@ -649,14 +657,14 @@ open class Remix(val main: RHRE3Application)
             PlayState.STOPPED -> {
                 AssetRegistry.stopAllSounds()
                 music?.music?.pause()
-                SoundSystem.system.stop()
+                BeadsSoundSystem.stop()
                 currentSubtitles.clear()
                 currentShakeEntities.clear()
             }
             PlayState.PAUSED -> {
                 AssetRegistry.pauseAllSounds()
                 music?.music?.pause()
-                SoundSystem.system.pause()
+                BeadsSoundSystem.pause()
             }
             PlayState.PLAYING -> {
                 lastMusicPosition = -1f
@@ -673,12 +681,13 @@ open class Remix(val main: RHRE3Application)
                         }
                     }
 
-                    lastTickBeat = Math.ceil(playbackStart - 1.0).toInt()
+                    lastMetronomeMeasure = Math.ceil(playbackStart - 1.0).toInt()
+                    lastMetronomeMeasurePart = -1
 
                     currentSubtitles.clear()
                     currentShakeEntities.clear()
                 }
-                SoundSystem.system.resume()
+                BeadsSoundSystem.resume()
                 if (music != null) {
                     if (seconds >= musicStartSec) {
                         music.music.play()
@@ -714,7 +723,7 @@ open class Remix(val main: RHRE3Application)
             return false
         }
 
-        return entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } == null
+        return entities.filterNot { it is EndRemixEntity }.firstOrNull { (it.bounds.y + it.bounds.height).roundToInt() >= trackCount } == null
     }
 
     fun canIncreaseTrackCount(): Boolean = trackCount < Editor.MAX_TRACK_COUNT
@@ -729,12 +738,12 @@ open class Remix(val main: RHRE3Application)
      */
     fun recomputeCachedData() {
         entities.sortBy { it.bounds.x }
-        duration = entities.firstOrNull { it is EndEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
+        duration = entities.firstOrNull { it is EndRemixEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
-        entitiesTouchTrackTop = entities.filterNot { it is EndEntity }.firstOrNull { (it.bounds.y + it.bounds.height).toInt() >= trackCount } != null
+        entitiesTouchTrackTop = entities.filterNot { it is EndRemixEntity }.firstOrNull { (it.bounds.y + it.bounds.height).toInt() >= trackCount } != null
 
         gameSections.clear()
-        val reversedEntities = entities.takeWhile { it !is EndEntity }
+        val reversedEntities = entities.takeWhile { it !is EndRemixEntity }
                 .filterIsInstance<ModelEntity<*>>()
                 .filter { !it.datamodel.game.noDisplay }
                 .asReversed()
@@ -787,8 +796,8 @@ open class Remix(val main: RHRE3Application)
     fun getLastEntityPoint(): Float {
         if (entities.isEmpty())
             return 0f
-        return if (entities.isNotEmpty() && entities.any { it is EndEntity }) {
-            entities.first { it is EndEntity }.bounds.x
+        return if (entities.isNotEmpty() && entities.any { it is EndRemixEntity }) {
+            entities.first { it is EndRemixEntity }.bounds.x
         } else {
             val last = entities.maxBy { it.bounds.x + it.bounds.width }!!
             last.bounds.x + last.bounds.width
@@ -865,6 +874,16 @@ open class Remix(val main: RHRE3Application)
 
                 setMusicVolume()
                 music.music.setPitch(speedMultiplier)
+
+                // Music distort
+                val beadsMusic: BeadsMusic? = music.music as? BeadsMusic
+                if (beadsMusic != null) {
+                    val inDistortion = entities.any { it is MusicDistortEntity && beat in it.bounds.x..it.bounds.maxX }
+                    val currentlyDistorted = beadsMusic.player.doDistortion
+                    if (inDistortion != currentlyDistorted) {
+                        beadsMusic.player.doDistortion = inDistortion
+                    }
+                }
             }
         }
 
@@ -878,12 +897,14 @@ open class Remix(val main: RHRE3Application)
             playalong.frameUpdate()
         }
 
-        if (Math.floor(beat.toDouble()) > lastTickBeat) {
-            lastTickBeat = Math.floor(beat.toDouble()).toInt()
+        val measure = timeSignatures.getMeasure(beat).takeIf { it >= 0 } ?: Math.floor(beat.toDouble()).toInt()
+        val measurePart = timeSignatures.getMeasurePart(beat)
+        if (lastMetronomeMeasure != measure || lastMetronomeMeasurePart != measurePart) {
+            lastMetronomeMeasure = measure
+            lastMetronomeMeasurePart = measurePart
             if (metronome) {
-                val isStartOfMeasure = timeSignatures.getMeasurePart(lastTickBeat.toFloat()) == 0
-                metronomeSFX[Math.round(Math.abs(beat)) % metronomeSFX.size]
-                        .sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
+                val isStartOfMeasure = measurePart == 0
+                metronomeSFX.sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
             }
         }
 

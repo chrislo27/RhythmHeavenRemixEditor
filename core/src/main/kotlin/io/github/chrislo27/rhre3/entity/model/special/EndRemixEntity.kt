@@ -10,13 +10,13 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 
 
-class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix, datamodel) {
+class EndRemixEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix, datamodel) {
 
     override val supportsCopying: Boolean = false
+    override val glassEffect: Boolean = false
 
     init {
         this.bounds.height = remix.trackCount.toFloat()
-        this.bounds.width = 0.125f
     }
 
     fun onTrackSizeChange(newSize: Int) {
@@ -54,7 +54,7 @@ class EndEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(remix
     override fun onEnd() {
     }
 
-    override fun copy(remix: Remix): EndEntity {
+    override fun copy(remix: Remix): EndRemixEntity {
         error("This entity does not support copying")
     }
 }

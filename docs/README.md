@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.17.0`.
+This readme is accurate as of version `v3.18.0`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -16,7 +16,7 @@ system.
 
 Alternatively, open Command Prompt/Terminal inside
 the folder *containing the jar file* and run
-`java -jar RHRE3.jar`.
+`java -jar RHRE.jar`.
 
 ## How does a remix work?
 Remixes will go on forever
@@ -180,7 +180,8 @@ equidistants, and keep-the-beats) will split it into whatever it was made of.
 Use this when you need to fine-tune a pattern's components.
 
 ## Tempo Change, Music Volume, Time Signature tools
-These tools are very similar. They control what are called *trackers*.
+These tools are very similar. The first two control what are called *trackers*, and
+the Time Signature tool controls time signatures.
 
 >Note: wherever you see `SCROLL`, you can substitute this with **`UP`**
 or **`DOWN`**. This is useful if you don't have access to a mouse, like
@@ -205,11 +206,10 @@ dragging the ends will allow you to make smooth transitions
 for a perfect fade-out.
 
 ![4/4 time signature](readme/timeSignature.png)<br>
-The **time signature** tool is new in RHRE3. You can change the time signature
-mid-remix as a value over 4 (that is, everything is in X/4 time). If you
-are fluent with music theory, you will use this tool to your advantage
+The **time signature** tool changes the time signature. It supports beat units
+of 2, 4, 8, and 16. Use this tool to your advantage
 to create measures so your patterns don't sound "off". You can only place this
-on whole, non-negative beats.
+on non-negative beats.
 
 ## Swing tool
 The Swing tool is covered [in its own article here.](Swing-tool.md)

@@ -24,4 +24,8 @@ class CameraPan(val startX: Float, val endX: Float,
         }
     }
 
+    override fun toString(): String {
+        return "[start=${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(startX)}, end=${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(endX)}, duration=${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(duration)}, progress=${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(progress)}]"
+    }
+
 }

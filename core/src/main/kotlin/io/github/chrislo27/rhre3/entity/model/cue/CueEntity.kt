@@ -7,9 +7,13 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.soundsystem.LoopParams
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSound
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.toolboks.util.gdxutils.maxX
+import net.beadsproject.beads.ugens.SamplePlayer
 
 
 class CueEntity(remix: Remix, datamodel: Cue)
@@ -95,36 +99,60 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
 
-    fun play() {
-        soundId = cue.sound.sound.play(loop = cue.loops, pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
-                                       rate = cue.getBaseBpmRate(), volume = volume)
+    fun play(position: Float = 0f, introSoundPos: Float = 0f) {
+        val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
+        val rate = cue.getBaseBpmRate()
+        val apparentRate = if (BeadsSound.useGranular) rate else (pitch * rate)
+        soundId = cue.sound.sound.playWithLoop(pitch = pitch,
+                                               rate = rate, volume = volume, position = (position.toDouble()) * apparentRate,
+                                               loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS)
 
-        introSoundId = cue.introSoundCue?.let {
-            it.sound.sound.play(loop = false,
-                          pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed(),
-                          rate = cue.introSoundCue!!.getBaseBpmRate(), volume = volume)
-        } ?: -1L
+        val introSoundCue = cue.introSoundCue
+        if (introSoundCue != null) {
+            introSoundId = introSoundCue.sound.sound.play(loop = false, pitch = pitch,
+                                                          rate = introSoundCue.getBaseBpmRate(), volume = volume,
+                                                          position = (introSoundPos.toDouble()) * apparentRate)
+        }
+    }
+
+    override fun getLowerUpdateableBound(): Float {
+        return Math.min(bounds.x, remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - Math.min(cue.earliness, cue.introSoundCue?.earliness ?: Float.POSITIVE_INFINITY)))
     }
 
     override fun onStart() {
         if (isSkillStar && remix.doUpdatePlayalong && remix.main.screen is EditorScreen) {
             return // Do not play if in playalong mode
         }
-        play()
+        val startPos = if (remix.playbackStart > remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - cue.earliness)) {
+            remix.seconds - remix.tempos.beatsToSeconds(this.bounds.x) + cue.earliness
+        } else 0f
+        val introSoundCue = cue.introSoundCue
+        val introPos = if (introSoundCue != null && remix.playbackStart > remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - introSoundCue.earliness)) {
+            remix.seconds - remix.tempos.beatsToSeconds(this.bounds.x) + introSoundCue.earliness
+        } else 0f
+        play(startPos, introPos)
+        endingSoundId = -1L
     }
 
     override fun whilePlaying() {
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setRate(soundId,
-                                            cue.getBaseBpmRate())
+                    cue.sound.sound.setRate(soundId, cue.getBaseBpmRate())
                 isFillbotsFill -> {
                     val sound = cue.sound.sound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
 
                     sound.setPitch(soundId, pitch)
                 }
+            }
+        }
+        val endingSoundCue = cue.endingSoundCue
+        if (endingSoundCue != null && endingSoundId == -1L) {
+            if (remix.seconds >= remix.tempos.beatsToSeconds(bounds.maxX) - endingSoundCue.earliness) {
+                endingSoundId = endingSoundCue.sound.sound.play(loop = false, volume = volume,
+                                                                rate = endingSoundCue.getBaseBpmRate(),
+                                                                pitch = getSemitonePitch()).coerceAtLeast(0L)
             }
         }
     }
@@ -136,11 +164,6 @@ class CueEntity(remix: Remix, datamodel: Cue)
                 cue.introSoundCue?.sound?.sound?.stop(introSoundId)
             }
         }
-
-        endingSoundId =
-                cue.endingSoundCue?.sound?.sound?.play(loop = false, volume = volume,
-                                                       rate = cue.endingSoundCue!!.getBaseBpmRate(),
-                                                       pitch = getSemitonePitch()) ?: -1L
     }
 
     override fun copy(remix: Remix): CueEntity {

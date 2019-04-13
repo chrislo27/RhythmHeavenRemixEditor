@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.Series
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
@@ -31,7 +32,6 @@ import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.MAX_PICOSONG_BYTES
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_AUP_URL
 import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_TOS_URL
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -432,7 +432,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
         try {
             // prep triggers
-            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat() * 1000.0
+            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
             val endMs = endSeconds * 1000.0
             val durationMs = endMs - startMs
 
@@ -456,6 +456,12 @@ class ExportRemixScreen(main: RHRE3Application)
                 context.out.addDependent(Clock(context, 10f).apply {
                     addMessageListener(addBead {
                         music.setVolume(remix.musicVolumes.volumeAt(remix.beat))
+                        // Music distort
+                        val inDistortion = remix.entities.any { it is MusicDistortEntity && remix.beat in it.bounds.x..it.bounds.maxX }
+                        val currentlyDistorted = music.player.doDistortion
+                        if (inDistortion != currentlyDistorted) {
+                            music.player.doDistortion = inDistortion
+                        }
                     })
                 })
             }
@@ -624,7 +630,6 @@ class ExportRemixScreen(main: RHRE3Application)
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
-        val isBeads = SoundSystem.system == BeadsSoundSystem
         readyButton.visible = false
         uploadImmediatelyButton.visible = false
         picosongButton.visible = false
@@ -632,12 +637,10 @@ class ExportRemixScreen(main: RHRE3Application)
         folderButton.visible = false
         folderFile = null
         selectionStage.visible = false
-        isCapableOfExporting = isBeads && (hasEndRemix || canOmitEndRemix)
+        isCapableOfExporting = hasEndRemix || canOmitEndRemix
         if (!isCapableOfExporting) {
-            if (!isBeads) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsBeadsSound"]]
-            } else if (!hasEndRemix) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix"] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
+            if (!hasEndRemix) {
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix", GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
             }
         } else {
             if (throwable == null) {

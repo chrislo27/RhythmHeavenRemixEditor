@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.EndRemixEntity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.Tracker
@@ -127,14 +127,14 @@ sealed class ClickOccupation {
         private val selection: List<Entity>
             get() = editor.selection
         val isAllSpecial: Boolean by lazy {
-            selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+            selection.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndRemixEntity }
         }
         val isBottomSpecial: Boolean by lazy {
             if (isAllSpecial) return@lazy true
             val lowPoint = selection.minBy { it.bounds.y }?.bounds?.y ?: error("Nothing in selection")
             val allBottom = selection.filter { MathUtils.isEqual(it.bounds.y, lowPoint) }
 
-            allBottom.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndEntity }
+            allBottom.all { it is ModelEntity<*> && it.isSpecialEntity && it !is EndRemixEntity }
         }
 
         val left: Float
@@ -218,7 +218,7 @@ sealed class ClickOccupation {
                 return false
 
             // EXCEPTIONS for the end entity
-            if (selection.any { it is EndEntity } && editor.remix.entities.filter { it is EndEntity }.size > 1)
+            if (selection.any { it is EndRemixEntity } && editor.remix.entities.filter { it is EndRemixEntity }.size > 1)
                 return false
 
             return editor.remix.entities.all {

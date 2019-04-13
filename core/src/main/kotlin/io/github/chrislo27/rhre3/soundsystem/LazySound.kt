@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 
 
 class LazySound(val handle: FileHandle) {
@@ -23,7 +24,7 @@ class LazySound(val handle: FileHandle) {
 
         unload()
 
-        backingSound = SoundSystem.system.newSound(handle)
+        backingSound = BeadsSoundSystem.newSound(handle)
         isLoaded = true
     }
 

@@ -18,7 +18,8 @@ import io.github.chrislo27.rhre3.entity.model.IVolumetric
         JsonSubTypes.Type(ShakeEntityObject::class),
         JsonSubTypes.Type(TextureEntityObject::class),
         JsonSubTypes.Type(TapeMeasureObject::class),
-        JsonSubTypes.Type(PlayalongEntityObject::class)
+        JsonSubTypes.Type(PlayalongEntityObject::class),
+        JsonSubTypes.Type(MusicDistortEntityObject::class)
              )
 sealed class NamedIDObject {
 
@@ -101,6 +102,13 @@ class CueObject : NamedIDObject() {
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loops: Boolean = false
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var earliness: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var loopStart: Float = 0f
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var loopEnd: Float = -1f
+
 }
 
 @JsonTypeName("equidistant")
@@ -166,3 +174,6 @@ class PlayalongEntityObject : NamedIDObject() {
     var method: String? = null
     var input: String? = null
 }
+
+@JsonTypeName("musicDistortEntity")
+class MusicDistortEntityObject : NamedIDObject()

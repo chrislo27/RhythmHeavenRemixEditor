@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.soundsystem.beads
 
+import com.badlogic.gdx.math.MathUtils
 import io.github.chrislo27.rhre3.soundsystem.Music
 import net.beadsproject.beads.ugens.SamplePlayer
 
@@ -12,6 +13,21 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
                 pause(true)
             }) {}.apply {
         addToContext()
+    }
+    private val startOfSound: Float = run {
+        val sample = audio.sample
+        val array = FloatArray(sample.numChannels) { 0f }
+        for (i in 0 until sample.numFrames) {
+            sample.getFrame(i.toInt(), array)
+            if (array.any { !MathUtils.isEqual(it, 0f, 0.0005f) }) {
+                return@run sample.samplesToMs(i.toDouble()).toFloat() / 1000f
+            }
+        }
+        -1f
+    }
+
+    override fun getStartOfSound(): Float {
+        return startOfSound
     }
 
     override fun play() {

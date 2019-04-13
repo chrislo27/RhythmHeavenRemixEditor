@@ -15,10 +15,10 @@ object Credits {
                 "programming" crediting "chrislo27",
                 "localization" crediting
                         """[LIGHT_GRAY]Français (French)[]
-                |Pengu123, minenice55, inkedsplat
+                |Pengu123, minenice55, inkedsplat, chrislo27
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab
+                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab, Suwa-ko
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
@@ -28,7 +28,7 @@ object Credits {
                         "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
                         "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
                         "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, Draster, Malalaika, " +
-                        "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, RHModding and Custom Remix Tourney Discord servers",
+                        "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, GinoTitan, RHModding and Custom Remix Tourney Discord servers",
                 "resources" crediting
                         "Rhythm Heaven assets by Nintendo\n" +
                         "[#FF8900]Kotlin[]\n" +

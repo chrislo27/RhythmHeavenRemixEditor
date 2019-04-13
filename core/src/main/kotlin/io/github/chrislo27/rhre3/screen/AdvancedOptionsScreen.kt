@@ -43,6 +43,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
     private val reloadMetadataButton: Button<AdvancedOptionsScreen>
     private val pitchStyleButton: Button<AdvancedOptionsScreen>
+    private val explodingEntitiesButton: Button<AdvancedOptionsScreen>
 
     init {
         val palette = main.uiPalette
@@ -257,7 +258,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 val nextIndex = if (absNextIndex < 0) values.size - 1 else if (absNextIndex >= values.size) 0 else absNextIndex
                 val next = values[nextIndex]
                 Semitones.pitchStyle = next
-                main.preferences.putString(PreferenceKeys.ADVOPT_PITCH_STYLE, next.name)
+                main.preferences.putString(PreferenceKeys.ADVOPT_PITCH_STYLE, next.name).flush()
                 updateLabels()
             }
 
@@ -284,6 +285,31 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                               screenHeight = buttonHeight)
         }
         centre.elements += pitchStyleButton
+        // Exploding entities
+        explodingEntitiesButton = object : TrueCheckbox<AdvancedOptionsScreen>(palette, centre, centre) {
+            override val checkLabelPortion: Float = 0.1f
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                main.preferences.putBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, this.checked).flush()
+            }
+        }.apply {
+            this.textLabel.also {
+                it.isLocalizationKey = false
+                it.text = "Entities explode when deleted"
+                it.textWrapping = false
+                it.fontScaleMultiplier = 0.8f
+                it.textAlign = Align.left
+            }
+            this.checkLabel.location.set(screenWidth = checkLabelPortion)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+            this.checked = main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 7 + buttonHeight * 6,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        centre.elements += explodingEntitiesButton
 
         updateLabels()
     }
@@ -321,6 +347,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
         // Analytics
         if (didChangeSettings) {
+            preferences.flush()
             val map: Map<String, *> = preferences.get()
             AnalyticsHandler.track("Exit Advanced Options",
                                    mapOf(

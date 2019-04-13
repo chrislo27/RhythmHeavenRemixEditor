@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
@@ -12,6 +13,8 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
+import io.github.chrislo27.rhre3.editor.CameraBehaviour
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.init.DefaultAssetLoader
 import io.github.chrislo27.rhre3.lc.LC
 import io.github.chrislo27.rhre3.midi.MidiHandler
@@ -19,11 +22,10 @@ import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
-import io.github.chrislo27.rhre3.playalong.PlayalongControls
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
@@ -131,7 +133,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         private set
 
     var advancedOptions: Boolean = false
-    var playalongControls: PlayalongControls = PlayalongControls()
 
     private val rainbowColor: Color = Color()
 
@@ -166,7 +167,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter().apply {
                 size *= 6
-                characters = "0123456789"
+                characters = "0123456789?_+-!&%"
                 incremental = false
             }).setAfterLoad {
                 this.font!!.apply {
@@ -190,19 +191,24 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         ModdingUtils.currentGame = ModdingGame.VALUES.find { it.id == preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingGame.DEFAULT_GAME.id) } ?: ModdingGame.DEFAULT_GAME
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
-        playalongControls = try {
-            JsonHandler.fromJson(preferences.getString(PreferenceKeys.PLAYALONG_CONTROLS, "{}"))
-        } catch (ignored: Exception) {
-            PlayalongControls()
+        val oldChaseCamera = "settings_chaseCamera"
+        if (oldChaseCamera in preferences) {
+            // Retroactively apply settings
+            val oldSetting = preferences.getBoolean(oldChaseCamera, true)
+            Editor.cameraBehaviour = if (oldSetting) CameraBehaviour.FOLLOW_PLAYBACK else CameraBehaviour.PAN_OVER_INSTANT
+            // Delete
+            preferences.remove(oldChaseCamera)
+            preferences.flush()
+        } else {
+            Editor.cameraBehaviour = CameraBehaviour.MAP.getOrDefault(preferences.getString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR), Editor.DEFAULT_CAMERA_BEHAVIOUR)
         }
+        Playalong.loadFromPrefs(preferences)
+        Controllers.getControllers() // Initialize
 
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
 
         PatternStorage.load()
-
-        // set the sound system
-        SoundSystem.setSoundSystem(BeadsSoundSystem)
 
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
@@ -361,7 +367,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         super.dispose()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
         preferences.putString(PreferenceKeys.MIDI_NOTE, preferences.getString(PreferenceKeys.MIDI_NOTE, Remix.DEFAULT_MIDI_NOTE))
-        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(playalongControls))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(Playalong.playalongControls))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(Playalong.playalongControllerMappings))
         preferences.flush()
         try {
             GameRegistry.dispose()
@@ -372,7 +379,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         ThumbnailFetcher.dispose()
         persistWindowSettings()
         RHRE3.tmpMusic.emptyDirectory()
-        SoundSystem.allSystems.forEach(SoundSystem::dispose)
+        BeadsSoundSystem.dispose()
         httpClient.close()
         AnalyticsHandler.track("Close Program",
                                mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))

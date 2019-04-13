@@ -5,8 +5,8 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Rectangle
@@ -21,6 +21,8 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
+import io.github.chrislo27.rhre3.editor.CameraBehaviour.FOLLOW_PLAYBACK
+import io.github.chrislo27.rhre3.editor.CameraBehaviour.PAN_OVER_SMOOTH
 import io.github.chrislo27.rhre3.editor.ClickOccupation.TrackerResize
 import io.github.chrislo27.rhre3.editor.action.*
 import io.github.chrislo27.rhre3.editor.picker.PickerSelection
@@ -42,6 +44,7 @@ import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
+import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
 import io.github.chrislo27.rhre3.registry.GameMetadata
@@ -50,8 +53,6 @@ import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.*
-import io.github.chrislo27.rhre3.soundsystem.SoundSystem
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
@@ -72,6 +73,7 @@ import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -128,6 +130,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         internal val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
+
+        val DEFAULT_CAMERA_BEHAVIOUR: CameraBehaviour = FOLLOW_PLAYBACK
+        var cameraBehaviour: CameraBehaviour = DEFAULT_CAMERA_BEHAVIOUR
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -291,7 +296,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         private set
     val stage: EditorStage = EditorStage(null, stageCamera, main, this)
 
+    data class Particle(val color: Color, var x: Float, var y: Float, var veloX: Float, var veloY: Float, var accelX: Float, var accelY: Float, var width: Float, var height: Float, var expiry: Float)
+
+    val particles: MutableList<Particle> = mutableListOf()
+
+    data class MiningProgress(val entity: ModelEntity<*>, var progress: Float, var miningTime: Float, var timeSinceDigSound: Float = 100f)
+
+    var miningProgress: MiningProgress? = null
+
     internal val buildingNotes = mutableMapOf<MidiHandler.MidiReceiver.Note, BuildingNote>()
+
+    val glassEffect: GlassEffect = GlassEffect(main, this)
 
     fun resetAutosaveTimer() {
         autosaveFrequency = main.preferences.getInteger(PreferenceKeys.SETTINGS_AUTOSAVE,
@@ -400,6 +415,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
+        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        if (themeUsesMenu && useGlassEffect) {
+            glassEffect.renderBackground()
+        }
+
         this.renderBackground(batch, main.shapeRenderer, main.defaultCamera, true)
 
         batch.end()
@@ -423,12 +444,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
             val cameraPan = cameraPan
             if (cameraPan != null) {
-                if (remix.playState == STOPPED) {
-                    cameraPan.update(Gdx.graphics.deltaTime, camera)
-                    if (cameraPan.done) {
-                        this.cameraPan = null
-                    }
-                } else {
+                cameraPan.update(Gdx.graphics.deltaTime, camera)
+                if (cameraPan.done) {
                     this.cameraPan = null
                 }
             }
@@ -490,7 +507,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 batch.color = theme.selection.selectionFill
                 batch.fillRect(rect)
-
                 batch.color = theme.selection.selectionBorder
                 batch.drawRect(rect, toScaleX(SELECTION_BORDER), toScaleY(SELECTION_BORDER))
 
@@ -498,10 +514,33 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 RectanglePool.free(rect)
             }
         }
+
+        if (themeUsesMenu && useGlassEffect) {
+            main.shapeRenderer.projectionMatrix = camera.combined
+            main.shapeRenderer.prepareStencilMask(batch) {
+                begin(ShapeRenderer.ShapeType.Filled)
+                remix.entities.forEach {
+                    if (it is ModelEntity<*> && it !is TextureEntity && it.glassEffect) {
+                        if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
+                            rect(it.bounds.x, it.bounds.y, it.bounds.width, it.bounds.height)
+                        }
+                    }
+                }
+                end()
+            }.useStencilMask {
+                batch.draw(glassEffect.fboRegion, camera.position.x - camera.viewportWidth / 2f * camera.zoom, camera.position.y - camera.viewportHeight / 2f * camera.zoom, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
+            }
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
+        }
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
-                    it.render(this, batch)
+                    if (it is ModelEntity<*>) {
+                        it.render(this, batch, themeUsesMenu && useGlassEffect)
+                        this.renderMining(batch, it)
+                    } else {
+                        it.render(this, batch)
+                    }
                 }
             }
         }
@@ -518,8 +557,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 it.updateInterpolation(!smoothDragging)
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
                     it.render(this, batch)
+                    this.renderMining(batch, it)
                 }
             }
+        }
+
+        // Stripe board in invalid positions
+        if (selection.isNotEmpty()) {
+            this.renderStripeBoard(batch, main.shapeRenderer)
         }
 
         // Playalong
@@ -529,7 +574,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         // waveform
-        if (SoundSystem.system == BeadsSoundSystem && remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
+        if (remix.playState == PLAYING && ViewType.WAVEFORM in views && otherUI) {
             this.renderWaveform(batch, oldCameraX, oldCameraY, adjustedCameraX, adjustedCameraY)
         }
 
@@ -546,14 +591,16 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         // time signatures
-        this.renderTimeSignatures(batch)
+        this.renderTimeSignatures(batch, beatRange)
 
         // bottom trackers
         this.renderBottomTrackers(batch, beatRange)
 
         // render selection box, delete zone, sfx vol, ruler
         if (otherUI) {
-            this.renderOtherUI(batch, beatRange, font)
+            main.shapeRenderer.projectionMatrix = camera.combined
+            this.renderOtherUI(batch, main.shapeRenderer, beatRange, font)
+            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
 
         if (monsterGoal) {
@@ -561,6 +608,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             this.renderPlayalongMonsterGoal(batch, main.shapeRenderer)
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
+
+        this.renderParticles(batch)
 
         font.unscaleFont()
         batch.end()
@@ -671,6 +720,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 borderedFont.unscaleFont()
                 batch.setColor(1f, 1f, 1f, 1f)
             }
+
+            if (remix.tempos.secondsMap.isEmpty()) {
+                val borderedFont = main.defaultBorderedFont
+                borderedFont.scaleFont(staticCamera)
+                borderedFont.scaleMul(1f)
+
+                borderedFont.setColor(1f, 1f, 1f, 1f)
+
+                val startX = 6f
+                val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight + 6f
+                val height = 32f
+                val width = 32f
+
+                borderedFont.drawCompressed(batch, Localization["editor.noTempo"],
+                                            startX, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
+                                            staticCamera.viewportWidth - width, Align.center)
+
+                borderedFont.unscaleFont()
+            }
         }
 
         font.unscaleFont()
@@ -737,14 +805,21 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         if (remix.playState == PLAYING) {
-            val halfWidth = camera.viewportWidth / 2 * camera.zoom
-            if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth) {
-                camera.position.x = remix.beat + halfWidth
-            }
-
-            if (stage.playalongStage.visible || main.preferences.getBoolean(PreferenceKeys.SETTINGS_CHASE_CAMERA, false)) {
+            val camBehav = cameraBehaviour
+            if (stage.playalongStage.visible || camBehav == FOLLOW_PLAYBACK) {
                 // Use linear time to prevent nauseation
                 camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + camera.viewportWidth * 0.25f
+            } else {
+                val smooth = camBehav == PAN_OVER_SMOOTH
+                val halfWidth = camera.viewportWidth / 2 * camera.zoom
+                if (remix.beat !in camera.position.x - halfWidth..camera.position.x + halfWidth && cameraPan == null) {
+                    val target = remix.beat + halfWidth
+                    if (smooth) {
+                        cameraPan = CameraPan(camera.position.x, target, 0.2f, Interpolation.exp10Out)
+                    } else {
+                        camera.position.x = target
+                    }
+                }
             }
         }
 
@@ -902,6 +977,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (selection.isNotEmpty() && !stage.isTyping) {
                             if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
                                 remix.entities.removeAll(this.selection)
+                                selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                                 remix.addActionWithoutMutating(ActionGroup(listOf(
                                         EntityRemoveAction(this, this.selection,
                                                            this.selection.map { Rectangle(it.bounds) }),
@@ -939,6 +1015,40 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             subbeatSection.end = subbeatSection.start + 0.5f
         }
 
+        if (currentTool == Tool.PICKAXE) {
+            val onEntity = getEntityOnMouse() as? ModelEntity<*>?
+            if (onEntity != null && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                val mining = miningProgress
+                if (mining != null && mining.entity != onEntity) {
+                    miningProgress = null
+                }
+                val current = miningProgress ?: MiningProgress(onEntity, 0f, MathUtils.lerp(0.15f, 0.9f, onEntity.bounds.area() / 2f).coerceIn(0.05f, 0.9f)).apply {
+                    miningProgress = this
+                }
+
+                current.progress += Gdx.graphics.deltaTime / current.miningTime
+                if (current.timeSinceDigSound >= 1f / 5f) {
+                    current.timeSinceDigSound = 0f
+                    AssetRegistry.get<LazySound>("pickaxe_dig${MathUtils.random(1, 6)}").sound.play(0.75f, 0.5f, 0f)
+                } else {
+                    current.timeSinceDigSound += Gdx.graphics.deltaTime
+                }
+
+                if (current.progress >= 1f) {
+                    val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+                    val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+                    explodeEntity(onEntity, true)
+                    AssetRegistry.get<LazySound>("pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}").sound.play()
+                    remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
+                    this.selection = this.selection - listOf(onEntity)
+                }
+            } else {
+                miningProgress = null
+            }
+        } else {
+            miningProgress = null
+        }
+
         // undo/redo
         if (control && clickOccupation == ClickOccupation.None) {
             if (remix.canRedo() &&
@@ -973,7 +1083,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             msgBuilder.append(Localization["editor.tapalong.info"])
         } else if (stage.playalongStage.visible) {
             msgBuilder.append(Localization["editor.playalong.info"])
-            ctrlBuilder.append(main.playalongControls.toInputString())
+            ctrlBuilder.append(Playalong.playalongControls.toInputString())
         } else {
             when (currentTool) {
                 Tool.SELECTION -> {
@@ -1106,6 +1216,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 Tool.RULER -> {
                     ctrlBuilder.append(Localization["editor.msg.rulerTool"])
                 }
+                Tool.PICKAXE -> {
+                    msgBuilder.append("Mining away...")
+                }
             }
         }
 
@@ -1117,7 +1230,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val output: MutableList<String> = mutableListOf()
         val entity = getEntityOnMouse()
 
-        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None) {
+        if (remix.playState == STOPPED && entity != null && clickOccupation == ClickOccupation.None && !stage.playalongStage.visible && currentTool != Tool.PICKAXE) {
             if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
                 output += entity.renderText
             }
@@ -1399,18 +1512,18 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
-                val beat = Math.floor(camera.getInputX().toDouble()).toInt()
-                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(
-                        beat.toFloat())?.takeIf { it.beat == beat }
+                val inputX = camera.getInputX()
+                val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
+                val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(inputBeat)?.takeIf { MathUtils.isEqual(inputBeat, it.beat) }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
                     remix.mutate(TimeSignatureAction(remix, timeSig, true))
                 } else if (button == Input.Buttons.LEFT && timeSig == null) {
-                    remix.mutate(
-                            TimeSignatureAction(remix,
-                                                TimeSignature(remix.timeSignatures, beat,
-                                                              remix.timeSignatures.getTimeSignature(beat.toFloat())
-                                                                      ?.divisions ?: 4), false))
+                    val timeSigAt = remix.timeSignatures.getTimeSignature(inputBeat)
+                    remix.mutate(TimeSignatureAction(remix,
+                                                     TimeSignature(remix.timeSignatures, inputBeat,
+                                                                   timeSigAt?.beatsPerMeasure ?: TimeSignature.DEFAULT_NOTE_UNIT,
+                                                                   timeSigAt?.beatUnit ?: TimeSignature.DEFAULT_NOTE_UNIT), false))
                 }
             } else if (tool.isTrackerRelated) {
                 val tracker: Tracker<*>? = getTrackerOnMouse(tool.trackerClass!!.java, true)
@@ -1501,7 +1614,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                     }
                                 }
                             }
-                        }
+                        } ?: Remix.createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null",
+                                                               node["beat"]?.floatValue() ?: 0f, node["track"]?.floatValue() ?: 0f,
+                                                               node["width"]?.floatValue() ?: 1f, node["height"]?.floatValue()?.coerceAtLeast(1f) ?: 1f)
                     }.filterNotNull()
 
                     if (result.isEmpty())
@@ -1604,6 +1719,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                     // delete silently
                     remix.entities.removeAll(selection)
+                    selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     // restore original selection
                     selection = clickOccupation.previousSelection
                 }
@@ -1615,6 +1731,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 } else if (deleting && !storing) {
                     // remove+selection action
                     remix.entities.removeAll(this.selection)
+                    selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     val sel = this.selection.toList()
                     remix.addActionWithoutMutating(ActionGroup(listOf(
                             EntityRemoveAction(this, this.selection, sel.map { clickOccupation.oldBounds.getValue(it) }),
@@ -1696,6 +1813,35 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         return false
+    }
+
+    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
+        if (!doExplode) return
+        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        val alpha = if (themeUsesMenu && useGlassEffect) 0.5f else 1f
+        val color = e.getRenderColor(this, theme).cpy().apply {
+            a *= alpha
+        }
+        val borderC = color.cpy().apply {
+            r = (r - 0.25f).coerceAtLeast(0f)
+            g = (g - 0.25f).coerceAtLeast(0f)
+            b = (b - 0.25f).coerceAtLeast(0f)
+            // not affected by alpha multiplication
+        }
+        val expiry = 4f
+        val scale = 0.25f
+        val numX = (e.bounds.width / (scale / 4f)).roundToInt()
+        for (x in 0..numX) {
+            val numY = (e.bounds.height / scale).roundToInt()
+            for (y in 0..numY) {
+                if (((x * numY + y) % 3) > 1) continue
+                val isBorder = x == 0 || x == numX || y == 0 || y == numY
+                particles += Particle(if (isBorder) borderC else color, e.bounds.x + (x.toFloat() / numX) * e.bounds.width, e.bounds.y + (y.toFloat() / numY) * e.bounds.height,
+                                      MathUtils.random(0.125f, 1f) * MathUtils.randomSign(), MathUtils.random(2.5f, 5f),
+                                      0f, -20f, scale / 4f, scale, expiry)
+            }
+        }
     }
 
     fun getSelectionMode(): SelectionMode {
@@ -1808,24 +1954,43 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             return true
-        } else if (tool == Tool.TIME_SIGNATURE && !shift) {
-            val timeSig = remix.timeSignatures.getTimeSignature(camera.getInputX())
-            val inputBeat = Math.floor(camera.getInputX().toDouble()).toInt()
-            if (timeSig != null && inputBeat == timeSig.beat) {
-                val change = -amount * (if (control) 5 else 1)
-                val newDivisions = (timeSig.divisions + change)
-                        .coerceIn(TimeSignature.LOWER_LIMIT, TimeSignature.UPPER_LIMIT)
-                if ((change < 0 && timeSig.divisions > TimeSignature.LOWER_LIMIT) || (change > 0 && timeSig.divisions < TimeSignature.UPPER_LIMIT)) {
-                    val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
-                    val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions)
+        } else if (tool == Tool.TIME_SIGNATURE) {
+            val inputX = camera.getInputX()
+            val timeSig = remix.timeSignatures.getTimeSignature(inputX)
+            val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
+            if (timeSig != null && MathUtils.isEqual(inputBeat, timeSig.beat)) {
+                if (!shift) {
+                    val change = -amount * (if (control) 5 else 1)
+                    val newDivisions = (timeSig.beatsPerMeasure + change)
+                            .coerceIn(TimeSignature.LOWER_BEATS_PER_MEASURE, TimeSignature.UPPER_BEATS_PER_MEASURE)
+                    if ((change < 0 && timeSig.beatsPerMeasure > TimeSignature.LOWER_BEATS_PER_MEASURE) || (change > 0 && timeSig.beatsPerMeasure < TimeSignature.UPPER_BEATS_PER_MEASURE)) {
+                        val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
+                        val result = TimeSignature(remix.timeSignatures, timeSig.beat, newDivisions, timeSig.beatUnit)
 
-                    if (lastAction != null && lastAction.current === timeSig) {
-                        lastAction.current = result
-                        lastAction.redo(remix)
-                    } else {
-                        remix.mutate(TimeSigValueChange(timeSig, result))
+                        if (lastAction != null && lastAction.current === timeSig) {
+                            lastAction.current = result
+                            lastAction.redo(remix)
+                        } else {
+                            remix.mutate(TimeSigValueChange(timeSig, result))
+                        }
+                        return true
                     }
-                    return true
+                } else if (shift && !control) {
+                    val change = -amount
+                    val index = TimeSignature.NOTE_UNITS.indexOf(timeSig.beatUnit).takeUnless { it == -1 } ?: TimeSignature.NOTE_UNITS.indexOf(TimeSignature.DEFAULT_NOTE_UNIT)
+                    val newUnits = TimeSignature.NOTE_UNITS[(index + change).coerceIn(0, TimeSignature.NOTE_UNITS.size - 1)]
+                    if (newUnits != timeSig.beatUnit) {
+                        val lastAction: TimeSigValueChange? = remix.getUndoStack().peekFirst() as? TimeSigValueChange?
+                        val result = TimeSignature(remix.timeSignatures, timeSig.beat, timeSig.beatsPerMeasure, newUnits)
+
+                        if (lastAction != null && lastAction.current === timeSig) {
+                            lastAction.current = result
+                            lastAction.redo(remix)
+                        } else {
+                            remix.mutate(TimeSigValueChange(timeSig, result))
+                        }
+                        return true
+                    }
                 }
             }
         } else if (tool.isTrackerRelated) {
@@ -1866,7 +2031,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
         }
 
-        if (shift) {
+        if (shift && tool != Tool.TIME_SIGNATURE) {
             // Camera scrolling left/right (CTRL/SHIFT+CTRL)
             val amt = (amount * if (control) 5f else 1f)
             camera.position.x += amt
@@ -1929,64 +2094,76 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         str.apply {
-            append("cam: [")
+            append("Camera: [")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.x))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.y))
             append(", ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.zoom))
-            append(" zoom]")
+            append(" zoom]\n")
+            append("  Pan: ")
+            append(cameraPan)
+            append("\n")
 
-            append("\ne: ")
+            append("Rendered objects (visible/total):\n  Entities: ")
             append(remix.entities.count {
                 it.inRenderRange(rangeStartF, rangeEndF)
             })
             append(" / ")
-            append(remix.entities.size)
+            append(remix.entities.size).append("\n")
 
-            append("\ntrackers: ")
+            append("  Trackers: ")
             append(remix.trackers.sumBy { container ->
                 container.map.values.count { it.beat.roundToInt() in range || it.endBeat.roundToInt() in range }
             })
             append(" / ")
-            append(remix.trackers.sumBy { it.map.values.size })
+            append(remix.trackers.sumBy { it.map.values.size }).append("\n")
 
-            append("\npos: ♩")
+            append("Pos.: ♩")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
             append(" / ")
-            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds))
+            append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)).append("\n")
 
-            append("\nbpm: ♩=")
-            append(remix.tempos.tempoAtSeconds(remix.seconds))
+            val timeSig = remix.timeSignatures.getTimeSignature(remix.beat)
+            val timeSigStr = if (timeSig != null) ("${timeSig.beatsPerMeasure}/${timeSig.beatUnit} (${remix.timeSignatures.getMeasurePart(remix.beat)}, ${remix.timeSignatures.getMeasure(remix.beat)})") else "none"
+            append("Time Sig.: ")
+            append(timeSigStr)
+            append("\n")
 
-            append("\nswing: ")
+            append("Tempo: ♩=")
+            append(remix.tempos.tempoAtSeconds(remix.seconds)).append("\n")
+
+            append("  Swing: ")
             val swing = remix.tempos.swingAtSeconds(remix.seconds)
-            append(swing.ratio).append("%, ").append(swing.division)
+            append(swing.ratio).append("%, ").append(swing.division).append("\n")
 
-            append("\nmusvol: ")
-            append(remix.musicVolumes.volumeAt(remix.beat))
+            append("Music Vol.: ")
+            append((remix.musicVolumes.volumeAt(remix.beat) * 100).roundToInt()).append("%\n")
 
-            append("\nmidi: ")
-            append(remix.midiInstruments)
+            append("Track Count: ")
+            append(remix.trackCount).append("\n")
 
-            append("\nautosave: ")
+            // metadata
+            append("MIDI Instrs.: ")
+            append(remix.midiInstruments).append("\n")
+
+            append("Textures: ")
+            append(remix.textureCache.size).append("\n")
+
+            append("Autosave Timer: ")
             append(timeUntilAutosave)
             append(" sec / ")
             append(autosaveFrequency)
-            append(" min")
+            append(" min\n")
 
-            append("\ntrack: ")
-            append(remix.trackCount)
-
-            append("\nmodkeys: ")
+            append("Modifier Keys: ")
             if (Gdx.input.isControlDown())
                 append("[CTRL]")
             if (Gdx.input.isShiftDown())
                 append("[SHIFT]")
             if (Gdx.input.isAltDown())
                 append("[ALT]")
-
-//            append("\n")
+            append("\n")
         }
 
         return str.toString()

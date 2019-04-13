@@ -18,10 +18,10 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
     var textureHash: String? = null
     override val isStretchable: Boolean = true
     override val renderText: String
-        get() = if (textureHash != null) "${datamodel.name}" else "${datamodel.name}\n<no texture>"
+        get() = if (textureHash != null) datamodel.name else "${datamodel.name}\n<no texture>"
+    override val glassEffect: Boolean = false
 
     init {
-        this.bounds.width = 1f
         this.bounds.height = 1f
     }
 
@@ -44,7 +44,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
                 batch.color = batch.color.apply { a *= 0.25f }
             }
             val ratio = tex.height.toFloat() / tex.width
-            batch.draw(tex, bounds.x, bounds.y, bounds.width, bounds.width * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
+            batch.draw(tex, bounds.x + lerpDifference.x, bounds.y + lerpDifference.y, bounds.width + lerpDifference.width, (bounds.width + lerpDifference.height) * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
             batch.setColor(1f, 1f, 1f, 1f)
         } else {
             super.render(editor, batch)

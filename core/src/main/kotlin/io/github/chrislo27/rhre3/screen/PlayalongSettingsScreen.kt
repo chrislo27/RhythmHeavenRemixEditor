@@ -5,28 +5,28 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.ControllerAdapter
+import com.badlogic.gdx.controllers.Controllers
+import com.badlogic.gdx.controllers.PovDirection
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
-import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.playalong.PlayalongChars
-import io.github.chrislo27.rhre3.playalong.PlayalongControls
-import io.github.chrislo27.rhre3.playalong.PlayalongInput
+import io.github.chrislo27.rhre3.playalong.*
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.rhre3.util.TempoUtils
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
-import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.ColourPane
-import io.github.chrislo27.toolboks.ui.ImageLabel
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -46,6 +46,8 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         private val CALIBRATION_BPM = 125f
         private val CALIBRATION_DURATION_BEATS = 32f
         private val FIVE_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00000", DecimalFormatSymbols())
+
+        private var currentController: Controller? = null
     }
 
     override val stage: GenericStage<PlayalongSettingsScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -55,6 +57,17 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private val pressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val helperPressedControls: EnumSet<PlayalongInput> = EnumSet.noneOf(PlayalongInput::class.java)
     private val playStopButton: Button<PlayalongSettingsScreen>
+    private val controllerTitleButton: Button<PlayalongSettingsScreen>
+    private val controllerButtonLabel: TextLabel<PlayalongSettingsScreen>
+    private val buttonAMapButton: MapButton
+    private val buttonBMapButton: MapButton
+    private val buttonLeftMapButton: MapButton
+    private val buttonRightMapButton: MapButton
+    private val buttonUpMapButton: MapButton
+    private val buttonDownMapButton: MapButton
+    private val allMapButtons: List<MapButton>
+    private val cancelMappingButton: Button<PlayalongSettingsScreen>
+    private val mappingLabel: TextLabel<PlayalongSettingsScreen>
 
     private val music: Music get() = AssetRegistry["playalong_settings_input_calibration"]
     private val preferences: Preferences get() = main.preferences
@@ -88,8 +101,71 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
     }
 
+    inner class ControllerCalibrationListener(val forController: Controller, val input: ControllerInput) : ControllerAdapter() {
+        override fun buttonDown(controller: Controller, buttonIndex: Int): Boolean {
+            if (controller == forController && input is ControllerInput.Button && input.code == buttonIndex && mappingListener == null) {
+                keyCalibration.fireInput()
+                return true
+            }
+            return false
+        }
+
+        override fun povMoved(controller: Controller, povIndex: Int, value: PovDirection): Boolean {
+            if (controller == forController && input is ControllerInput.Pov && input.povCode == povIndex && input.direction == value && mappingListener == null) {
+                keyCalibration.fireInput()
+                return true
+            }
+            return false
+        }
+    }
+
+    inner class ControllerMappingListener(val mapButton: MapButton, val forController: Controller) : ControllerAdapter() {
+        private var used = false
+
+        override fun buttonDown(controller: Controller, buttonIndex: Int): Boolean {
+            if (used)
+                return false
+            if (controller == forController) {
+                used = true
+                onReceiveInput(ControllerInput.Button(buttonIndex))
+                Gdx.app.postRunnable {
+                    Controllers.removeListener(this)
+                }
+                return true
+            }
+            return false
+        }
+
+        override fun povMoved(controller: Controller, povIndex: Int, value: PovDirection): Boolean {
+            if (used)
+                return false
+            if (controller == forController && value != PovDirection.center) {
+                used = true
+                onReceiveInput(ControllerInput.Pov(povIndex, value))
+                Gdx.app.postRunnable {
+                    Controllers.removeListener(this)
+                }
+                return true
+            }
+            return false
+        }
+
+        fun onReceiveInput(input: ControllerInput) {
+            val currentMapping = Playalong.activeControllerMappings[currentController]
+            if (currentMapping != null) {
+                mapButton.inputSetter(input, currentMapping)
+            }
+            cancelMapping()
+            targetMapButton(mapButton)
+        }
+    }
+
     private val keyCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_KEY)
     private val mouseCalibration = Calibration(PreferenceKeys.PLAYALONG_CALIBRATION_MOUSE)
+    private var calibrationListener: ControllerCalibrationListener? = null
+
+    private var mappingListener: ControllerMappingListener? = null
+    private var currentMapButton: MapButton? = null
 
     init {
         val palette = main.uiPalette
@@ -177,12 +253,28 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                     playLabel.visible = false
                     inputCalibrationTitle.visible = false
                     inputCalibrationControls.visible = true
+                    if (calibrationListener != null) {
+                        Controllers.removeListener(calibrationListener)
+                        calibrationListener = null
+                    }
+
+                    val mappings = Playalong.activeControllerMappings
+                    val cc = currentController
+                    val controllerMapping = mappings[cc]
+                    if (cc != null && controllerMapping != null) {
+                        calibrationListener = ControllerCalibrationListener(cc, controllerMapping.buttonA)
+                        Controllers.addListener(calibrationListener)
+                    }
                 } else {
                     music.stop()
                     stopLabel.visible = false
                     playLabel.visible = true
                     inputCalibrationTitle.visible = true
                     inputCalibrationControls.visible = false
+                    if (calibrationListener != null) {
+                        Controllers.removeListener(calibrationListener)
+                        calibrationListener = null
+                    }
                 }
             }
         }.apply {
@@ -235,10 +327,12 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
         stage.centreStage.elements += controlsLabel
 
+        val settingsPadding = 0.0125f
+        // SFX settings
         stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.textWrapping = false
             this.text = "screen.playalongSettings.sfxTitle"
-            this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -253,7 +347,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true)
 
             this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -261,8 +355,9 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textWrapping = false
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.perfectFailSfx"
+                this.location.set(pixelWidth = -4f)
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -277,7 +372,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)
 
             this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -285,8 +380,9 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textWrapping = false
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.monsterFailSfx"
+                this.location.set(pixelWidth = -4f)
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
             override val checkLabelPortion: Float = 0.1f
@@ -301,7 +397,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)
 
             this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
+            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -310,10 +406,155 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                 this.textAlign = Align.left
                 this.text = "screen.playalongSettings.monsterAceSfx"
             }
-            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 3, screenWidth = 0.5f, screenHeight = 0.1f)
+            this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 3, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
 
-        val currentControls = main.playalongControls.copy()
+        // Separator
+        stage.centreStage.elements += ColourPane(stage.centreStage, stage.centreStage).apply {
+            this.colour.set(1f, 1f, 1f, 1f)
+            val barWidth = 0.00275f
+            this.location.set(screenX = 0.5f - barWidth / 2, screenWidth = barWidth, screenY = 0.5f - (0.1f + 0.025f) * 3)
+            this.location.set(screenHeight = 0.6f - this.location.screenY)
+        }
+
+        // Controllers
+        stage.centreStage.elements += TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.textWrapping = false
+            this.text = "screen.playalongSettings.controllersTitle"
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
+        }
+        // rescan
+        val squareWidth = (0.5f - settingsPadding) * 0.075f
+        val squareHeight = 0.1f
+        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (mappingListener == null) {
+                    updateControllers()
+                }
+            }
+        }.apply {
+            addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
+                this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+            })
+            this.visible = false
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        controllerTitleButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            fun cycle(dir: Int) {
+                val controllers = Playalong.activeControllerMappings.keys.toList()
+                if (controllers.isEmpty() || dir == 0) {
+                    if (controllers.isEmpty())
+                        currentController = null
+                    updateCurrentController()
+                    return
+                }
+                val currentController = currentController
+                val currentIndex = if (currentController == null) 0 else controllers.indexOf(currentController).coerceAtLeast(0)
+                var newIndex = currentIndex + dir.coerceIn(-1, 1)
+                newIndex = if (newIndex >= controllers.size) 0 else if (newIndex < 0) controllers.size - 1 else newIndex
+                val newController = controllers[newIndex]
+                PlayalongSettingsScreen.currentController = newController
+                updateCurrentController()
+            }
+
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (mappingListener == null)
+                    cycle(1)
+            }
+
+            override fun onRightClick(xPercent: Float, yPercent: Float) {
+                super.onRightClick(xPercent, yPercent)
+                if (mappingListener == null)
+                    cycle(-1)
+            }
+        }.apply {
+            this.enabled = false
+            this.location.set(screenX = 0.5f + settingsPadding/* + squareWidth + settingsPadding * 0.25f*/, screenY = 0.5f - (0.1f + 0.025f),
+                              screenHeight = 0.1f)
+            this.location.set(screenWidth = 1f - this.location.screenX)
+            controllerButtonLabel = TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.fontScaleMultiplier = 0.75f
+                this.textWrapping = false
+                this.text = Localization["screen.playalongSettings.noControllers"]
+            }
+            addLabel(controllerButtonLabel)
+        }
+        stage.centreStage.elements += controllerTitleButton
+
+        // Mapping buttons
+        buttonUpMapButton = MapButton(PlayalongChars.FILLED_JOY_U,
+                                      { it.buttonUp }, { i, m -> m.buttonUp = i },
+                                      palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding + squareWidth, screenY = 0.25f, screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonUpMapButton
+        buttonDownMapButton = MapButton(PlayalongChars.FILLED_JOY_D,
+                                        { it.buttonDown }, { i, m -> m.buttonDown = i },
+                                        palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding + squareWidth, screenY = 0.125f, screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonDownMapButton
+        buttonLeftMapButton = MapButton(PlayalongChars.FILLED_JOY_L,
+                                        { it.buttonLeft }, { i, m -> m.buttonLeft = i },
+                                        palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.125f + 0.0625f, screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonLeftMapButton
+        buttonRightMapButton = MapButton(PlayalongChars.FILLED_JOY_R,
+                                         { it.buttonRight }, { i, m -> m.buttonRight = i },
+                                         palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding + squareWidth * 2, screenY = 0.125f + 0.0625f, screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonRightMapButton
+        buttonBMapButton = MapButton(PlayalongChars.FILLED_B,
+                                     { it.buttonB }, { i, m -> m.buttonB = i },
+                                     palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding + squareWidth * 3.25f, screenY = 0.125f + 0.125f * (1f / 3), screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonBMapButton
+        buttonAMapButton = MapButton(PlayalongChars.FILLED_A,
+                                     { it.buttonA }, { i, m -> m.buttonA = i },
+                                     palette, stage.centreStage, stage.centreStage).apply {
+            this.location.set(screenX = 0.5f + settingsPadding + squareWidth * 4.25f, screenY = 0.125f + 0.125f * (2f / 3), screenWidth = squareWidth, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += buttonAMapButton
+        allMapButtons = listOf(buttonAMapButton, buttonBMapButton, buttonUpMapButton, buttonDownMapButton, buttonLeftMapButton, buttonRightMapButton)
+        cancelMappingButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
+            override fun onLeftClick(xPercent: Float, yPercent: Float) {
+                super.onLeftClick(xPercent, yPercent)
+                if (mappingListener != null) {
+                    val mb = currentMapButton
+                    cancelMapping()
+                    if (mb != null) {
+                        targetMapButton(mb)
+                    }
+                }
+            }
+        }.apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.playalongSettings.cancelMapping"
+            })
+            this.visible = false
+            this.location.set(screenX = 0.85f, screenWidth = 0.15f, screenY = 0.125f, screenHeight = squareHeight)
+        }
+        stage.centreStage.elements += cancelMappingButton
+        mappingLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
+            this.isLocalizationKey = false
+            this.text = ""
+            this.textAlign = Align.left or Align.center
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.75f
+            this.location.set(screenX = 0.725f, screenWidth = 0.275f, screenY = 0.125f + squareHeight, screenHeight = squareHeight * 1.5f)
+        }
+        stage.centreStage.elements += mappingLabel
+
+        val currentControls = Playalong.playalongControls.copy()
         val isCustom = currentControls !in PlayalongControls.standardControls.values
         val controlsList = (if (isCustom) listOf(PlayalongControls.strCustom to currentControls) else listOf()) + PlayalongControls.standardControls.entries.map { it.toPair() }
         stage.bottomStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.bottomStage, stage.bottomStage) {
@@ -328,7 +569,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
                     newIndex = 0
                 }
                 index = newIndex
-                main.playalongControls = controlsList[index].second
+                Playalong.playalongControls = controlsList[index].second
                 updateLabel()
             }
 
@@ -359,10 +600,45 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }.apply {
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
+
+        Gdx.app.postRunnable {
+            Playalong.loadActiveMappings()
+            updateControllers()
+        }
     }
 
     fun updateControlsLabel() {
-        controlsLabel.text = main.playalongControls.toInputString(pressedControls)
+        controlsLabel.text = Playalong.playalongControls.toInputString(pressedControls)
+    }
+
+    fun updateControllers() {
+        Playalong.loadActiveMappings()
+        updateCurrentController()
+    }
+
+    fun updateCurrentController() {
+        val mappings = Playalong.activeControllerMappings
+        val controllers = mappings.keys
+        controllerTitleButton.enabled = controllers.isNotEmpty()
+        mappingLabel.text = ""
+        cancelMapping()
+        if (controllers.isEmpty()) {
+            controllerButtonLabel.text = Localization["screen.playalongSettings.noControllers"]
+            currentController = null
+            mappingLabel.text = Localization["screen.playalongSettings.noControllers.hint"]
+            allMapButtons.forEach { it.enabled = false }
+        } else {
+            val target = controllers.firstOrNull { it == currentController } ?: controllers.firstOrNull { mappings[it]?.inUse == true } ?: controllers.first()
+            mappings.forEach { _, m -> m.inUse = false }
+            mappings[target]?.inUse = true
+            controllerButtonLabel.text = "${target.name} (${controllers.indexOf(target) + 1}/${controllers.size})"
+            currentController = target
+            allMapButtons.forEach { it.enabled = true }
+        }
+        currentMapButton = null
+        updateMapButtons()
+//        println("Set current controller to ${currentController?.name}")
+//        println(Playalong.activeControllerMappings.values.joinToString(separator = ", "))
     }
 
     override fun renderUpdate() {
@@ -373,7 +649,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         }
 
         if (music.isPlaying) {
-            if (Gdx.input.isKeyJustPressed(main.playalongControls.buttonA)) {
+            if (Gdx.input.isKeyJustPressed(Playalong.playalongControls.buttonA)) {
                 keyCalibration.fireInput()
             }
         }
@@ -388,7 +664,19 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             titleLabelIcon.fontScaleMultiplier = 0.8f
         }
 
-        val controls = main.playalongControls
+        helperPressedControls.clear()
+        val controller = currentController
+        if (controller != null) {
+            Playalong.activeControllerMappings[controller]?.let { mapping ->
+                updatePressedControl(controller, mapping.buttonA, PlayalongInput.BUTTON_A)
+                updatePressedControl(controller, mapping.buttonB, PlayalongInput.BUTTON_B)
+                updatePressedControl(controller, mapping.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
+                updatePressedControl(controller, mapping.buttonRight, PlayalongInput.BUTTON_DPAD_RIGHT)
+                updatePressedControl(controller, mapping.buttonDown, PlayalongInput.BUTTON_DPAD_DOWN)
+                updatePressedControl(controller, mapping.buttonUp, PlayalongInput.BUTTON_DPAD_UP)
+            }
+        }
+        val controls = Playalong.playalongControls
         updatePressedControl(controls.buttonA, PlayalongInput.BUTTON_A)
         updatePressedControl(controls.buttonB, PlayalongInput.BUTTON_B)
         updatePressedControl(controls.buttonLeft, PlayalongInput.BUTTON_DPAD_LEFT)
@@ -405,17 +693,90 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     private fun updatePressedControl(keycode: Int, input: PlayalongInput) {
         if (Gdx.input.isKeyPressed(keycode)) {
             helperPressedControls.add(input)
-        } else {
-            helperPressedControls.remove(input)
         }
+    }
+
+    private fun updatePressedControl(controller: Controller, controllerInput: ControllerInput, input: PlayalongInput) {
+        when (controllerInput) {
+            is ControllerInput.None -> {
+            }
+            is ControllerInput.Button -> {
+                if (controller.getButton(controllerInput.code)) {
+                    helperPressedControls.add(input)
+                }
+            }
+            is ControllerInput.Pov -> {
+                val dir = controller.getPov(controllerInput.povCode)
+                if (dir == controllerInput.direction) {
+                    helperPressedControls.add(input)
+                }
+            }
+        }
+    }
+
+    private fun updateMapButtons() {
+        val c = currentController
+        val m = Playalong.activeControllerMappings[c]
+        fun MapButton.checkColor(input: ControllerInput?) {
+            this.textLabel.textColor = if (mappingListener?.mapButton == this) Colors.get("RAINBOW") else if (currentMapButton == this) Color.CYAN else if (input?.isNothing() == true) Color.RED else null
+        }
+        buttonAMapButton.checkColor(m?.buttonA)
+        buttonBMapButton.checkColor(m?.buttonB)
+        buttonLeftMapButton.checkColor(m?.buttonLeft)
+        buttonRightMapButton.checkColor(m?.buttonRight)
+        buttonUpMapButton.checkColor(m?.buttonUp)
+        buttonDownMapButton.checkColor(m?.buttonDown)
+    }
+
+    fun startMapping(mapButton: MapButton) {
+        if (mappingListener != null) return
+        val forController = currentController ?: return
+        mappingListener = ControllerMappingListener(mapButton, forController)
+        Controllers.addListener(mappingListener)
+        cancelMappingButton.visible = true
+        mappingLabel.text = Localization["screen.playalongSettings.awaitMapping"]
+        updateMapButtons()
+    }
+
+    fun cancelMapping() {
+        if (mappingListener != null) {
+            Controllers.removeListener(mappingListener)
+            mappingListener = null
+        }
+        cancelMappingButton.visible = false
+        currentMapButton = null
+        mappingLabel.text = ""
+        updateMapButtons()
+    }
+
+    fun targetMapButton(mapButton: MapButton) {
+        currentMapButton = mapButton
+        val currentMapping = Playalong.activeControllerMappings[currentController]
+        if (currentMapping != null) {
+            mappingLabel.text = "${mapButton.text}: " + mapButton.inputGetter(currentMapping).toString()
+            if (!mapButton.inputGetter(currentMapping).isNothing()) {
+                mappingLabel.text += "\n${Localization["screen.playalongSettings.clearMapping"]}"
+            }
+        }
+        updateMapButtons()
     }
 
     override fun hide() {
         super.hide()
         music.stop()
+        if (calibrationListener != null) {
+            Controllers.removeListener(calibrationListener)
+            calibrationListener = null
+        }
+
+        cancelMapping()
 
         keyCalibration.persist()
         mouseCalibration.persist()
+
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(Playalong.playalongControls))
+        preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(Playalong.playalongControllerMappings))
+        preferences.flush()
 
         fun mapSfxSettings(vararg key: String): Map<String, Any> {
             return key.associate { it to preferences.getBoolean(it, true) }
@@ -427,6 +788,55 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
     }
 
     override fun dispose() {
+    }
+
+    inner class MapButton(val text: String, val inputGetter: (ControllerMapping) -> ControllerInput,
+                          val inputSetter: (ControllerInput, ControllerMapping) -> Unit,
+                          palette: UIPalette, parent: UIElement<PlayalongSettingsScreen>, stage: Stage<PlayalongSettingsScreen>)
+        : Button<PlayalongSettingsScreen>(palette, parent, stage) {
+
+        val textLabel: TextLabel<PlayalongSettingsScreen>
+
+        init {
+            textLabel = TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.text = this@MapButton.text
+            }
+            addLabel(textLabel)
+        }
+
+        override fun onLeftClick(xPercent: Float, yPercent: Float) {
+            super.onLeftClick(xPercent, yPercent)
+            val mappingListener = mappingListener
+            if (mappingListener != null) {
+                if (mappingListener.mapButton != this) {
+                    // Cancel old one
+                    cancelMapping()
+                    targetMapButton(this)
+                }
+            } else {
+                // Prepare mapping
+                if (currentMapButton == this) {
+                    startMapping(this)
+                } else {
+                    targetMapButton(this)
+                }
+            }
+        }
+
+        override fun onRightClick(xPercent: Float, yPercent: Float) {
+            super.onRightClick(xPercent, yPercent)
+            // Clear
+            if (mappingListener == null) {
+                val currentMapping = Playalong.activeControllerMappings[currentController]
+                if (currentMapping != null) {
+                    inputSetter(ControllerInput.None, currentMapping)
+                    cancelMapping()
+                    updateMapButtons()
+                }
+            }
+        }
     }
 
 }

@@ -8,7 +8,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.action.EntitySelectionAction
 import io.github.chrislo27.rhre3.editor.action.TrackResizeAction
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.special.EndEntity
+import io.github.chrislo27.rhre3.entity.model.special.EndRemixEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
@@ -50,7 +50,7 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         if (remix.playState == PlayState.STOPPED && remix.canDecreaseTrackCount()) {
             if (!remix.wouldEntitiesFitNewTrackCount(remix.trackCount - 1)) {
                 // Jump to first blocking entity
-                val entities = remix.entities.filterNot { it is EndEntity }
+                val entities = remix.entities.filterNot { it is EndRemixEntity }
                         .filter { (it.bounds.y + it.bounds.height).roundToInt() >= remix.trackCount }.takeUnless(List<Entity>::isEmpty) ?: return
 
                 if (!(editor.selection.containsAll(entities) && editor.selection.size == entities.size)) {

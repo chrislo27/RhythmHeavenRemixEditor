@@ -71,8 +71,9 @@ Both objects only have their own `trackers` array of either tempo changes or mus
 | Field Name | Field Type | Optional? | Description |
 |---|---|---|---|
 | `beat` | integer | N | The beat this time signature is on. |
-| `divisions` | integer | Optional, defaults to 4. | The X in X/4 time signatures. |
+| `divisions` | integer | Optional, defaults to 4. | The X in X/Y time signatures. |
 | `measure` | integer | Optional (calculated on-the-fly in RHRE). | The measure this time signature is on. |
+| `beatUnit` | integer | Optional, defaults to 4. | The Y in X/Y time signature. Typically a power of two. |
 
 ### Entity object fields
 

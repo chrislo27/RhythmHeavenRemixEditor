@@ -204,6 +204,9 @@ Example:<br>
   "fileExtension": "ogg",
   "loops": false,
   "baseBpm": 120.0,
+  "earliness": 0.0,
+  "loopStart": 0.1,
+  "loopEnd": 1.0,
 
   "introSound": "other/ID",
   "endingSound": "other/ID2",
@@ -224,12 +227,15 @@ metadata such as the duration and its editable abilities.
 | duration | number | Duration of this cue in beats |
 | stretchable | boolean? | If true, the cue can be dragged longer or shorter |
 | repitchable | boolean? | If true, the cue can have its pitch changed by the user |
-| fileExtension | string? | File extension of the cue sound file. Always use OGG Vorbis files, so don't use this field. |
+| fileExtension | string? | File extension of the cue sound file. You should generally always use OGG Vorbis files, so you shouldn't have to use this field. |
 | loops | boolean? | If true, this cue loops its sound. |
 | baseBpm | number?| If present, this cue will get repitched automatically based on the tempo. See below for more info. Must be greater than zero if present.|
 | introSound | id?| If present, will play this other sound at the start of the cue. See below for more info. |
 | endingSound | id?| If present, will play this other sound at the end of the cue. See below for more info. |
-| responseIDs| (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
+| responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
+| earliness | number? | If present, indicates the number of seconds **early** to play this cue. Useful for voiced cues where certain syllables start earlier. Negative values should not be used. Defaults to 0.0. |
+| loopStart | number? | If present, indicates the loop start point in seconds. Only works if `loops` is true. Must be less than `loopEnd`. |
+| loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than zero, defaults to end of sample. Defaults to -1.0. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,
@@ -406,3 +412,86 @@ You are not limited to just using `CueObjects` in the `cues` array.
 Examples of games with random cue objects: Ringside (has variants), First Contact (speech sounds)
 
 The `CuePointerObject` is unchanged, but the `beat` field is not used.
+
+## Other object types
+Some object types are used internally and should not be edited or created.
+
+### `SubtitleEntityObject`
+
+This object type is for subtitles, and the song artist/song title pop-outs.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "subtitleEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+| subtitleType | string? | The type of subtitle. Only values: "subtitle", "songTitle", and "songArtist". Defaults to "subtitle". |
+
+### `EndRemixEntityObject`
+
+This object type is for the End Remix entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "endEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `ShakeEntityObject`
+
+This object type is for the Shake entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "shakeEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `TextureEntityObject`
+
+This object type is for the Texture entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "textureEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `TapeMeasureObject`
+
+This object type is for the Tape Measure entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "tapeMeasure" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `PlayalongEntityObject`
+
+This object type is used for the Playalong Input entities.
+Note that there is no JSON data for defining the input types, since
+all the Playalong Input Entities are generated at start-up.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "playalongEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `MusicDistortEntityObject`
+
+This object type is used for the DJ School Music Distortion entity.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "musicDistortEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |

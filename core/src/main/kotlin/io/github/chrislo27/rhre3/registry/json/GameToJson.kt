@@ -37,6 +37,9 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.loops = datamodel.loops
                     it.stretchable = datamodel.stretchable
                     it.responseIDs = datamodel.responseIDs.map(String::starSubstitute)
+                    it.earliness = datamodel.earliness
+                    it.loopStart = datamodel.loopStart
+                    it.loopEnd = datamodel.loopEnd
                 }
             }
             is Equidistant -> {
@@ -132,7 +135,14 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.method = datamodel.playalongMethod.name
                 }
             }
-            else -> error("Datamodel not defined for JSON mapping")
+            is MusicDistortModel -> {
+                MusicDistortEntityObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                }
+            }
+            else -> error("Datamodel not defined for JSON mapping: ${datamodel::class.java.canonicalName}")
         }
     }
 

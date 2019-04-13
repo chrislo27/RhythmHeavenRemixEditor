@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor.stage.playalong
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.OrthographicCamera
@@ -80,6 +81,7 @@ class PlayalongStage(val editor: Editor,
         }
     private val main: RHRE3Application get() = editor.main
     private val preferences: Preferences get() = main.preferences
+    private var currentPlayalongControllerListener: PlayalongControllerListener? = null
 
     val lowerStage: Stage<EditorScreen>
     val noEntitiesLabel: TextLabel<EditorScreen>
@@ -560,9 +562,6 @@ class PlayalongStage(val editor: Editor,
 
     fun reset() {
         remix.recomputeCachedData()
-        val noPlayalong = playalong.inputActions.isEmpty()
-        noEntitiesLabel.visible = noPlayalong
-        lowerStage.visible = !noPlayalong
         updateLabels()
         perfectIcon.image = perfectTexReg
         perfectAnimation = 0f
@@ -570,7 +569,23 @@ class PlayalongStage(val editor: Editor,
             perfectIcon.location.set(pixelX = 0f, pixelY = 0f)
             perfectIcon.stage.updatePositions()
         }
+        resetPlayalongControllerListener()
+        updateVisibility()
+    }
+
+    fun updateVisibility() {
+        val noPlayalong = playalong.inputActions.isEmpty()
+        noEntitiesLabel.visible = noPlayalong
+        lowerStage.visible = !noPlayalong
         flickingStage.visible = playalong.needsTouchScreen
+    }
+
+    fun resetPlayalongControllerListener() {
+        if (currentPlayalongControllerListener != null) {
+            Controllers.removeListener(currentPlayalongControllerListener)
+        }
+        currentPlayalongControllerListener = PlayalongControllerListener { playalong }
+        Controllers.addListener(currentPlayalongControllerListener)
     }
 
     fun onTapDown(tapPoint: FlickingStage.TapPoint) {
@@ -598,6 +613,8 @@ class PlayalongStage(val editor: Editor,
     fun onShow() {
         if (remix.playState == STOPPED) {
             reset()
+        } else {
+            updateVisibility()
         }
         setRemixSpeed()
         disableButtonsWhilePlaying(remix.playState != STOPPED)

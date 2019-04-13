@@ -26,9 +26,11 @@ Most songs will have a slight gap of silence at the start, or the beat
 in the song will not match the beats in the editor. You have to correct
 this by moving the music start tracker *backwards*.
 
-Move the tracker by middle clicking or pressing `CTRL+RCLICK` in the track.
+Starting with v3.18.0, the program will try to guess where the start of
+music is. Use the button in the Music Start screen to set it.
+To do it manually, move the tracker by middle clicking or pressing `CTRL+RCLICK` in the track.
 If it doesn't work, make sure you are using the Selection tool (press **`1`**).
-To get more precision, click the Snap setting (looks like 1/4) to increase
+To get more precision, click the Snap setting (will look like 1/4) to increase
 the fineness of movement.
 
 You can use trial-and-error to correct it, or open up a program that
@@ -51,8 +53,7 @@ intervals. Likewise, the use of measures in Rhythm Heaven is very important,
 as certain songs only work in certain time signatures, or only fit in
 certain beats of a time signature.
 
->Note: RHRE3 only supports time signatures in quarter notes (X/4). If
-your derived time signature is not X/4, **skip this step**.
+>Note: RHRE3 only supports time signatures with denominators 2, 4, 8, and 16 (half, quarter, eighth, and sixteenth notes respectively).
 
 The most common time signature is 4/4 time. Other songs (like waltzes)
 are in 3/4. Figuring out the time signature of a piece of music is

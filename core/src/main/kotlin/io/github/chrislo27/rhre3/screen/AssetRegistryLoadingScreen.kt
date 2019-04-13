@@ -44,7 +44,8 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
                        line)
 
         val step = (MathHelper.getSawtoothWave(0.25f) * 4).toInt()
-        batch.draw(AssetRegistry.get<Texture>("playyan_walking"), cam.viewportWidth * 0.5f - width * 0.5f + width * progress,
+        val playYanWidth = width - 26f + 2f
+        batch.draw(AssetRegistry.get<Texture>("playyan_walking"), cam.viewportWidth * 0.5f - width * 0.5f + playYanWidth * progress,
                    cam.viewportHeight * 0.5f + height * 0.5f + line * 2,
                    26f, 35f,
                    step * 26, 0, 26, 35, false, false)

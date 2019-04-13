@@ -1,4 +1,4 @@
-# Welcome to the Rhythm Heaven Remix Editor wiki!
+# Welcome to the Rhythm Heaven Remix Editor docs!
 
 ![RHRE3 Logo](256.png)
 

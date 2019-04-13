@@ -13,7 +13,10 @@ import io.github.chrislo27.rhre3.modding.ModdingMetadata
 import io.github.chrislo27.rhre3.playalong.PlayalongChars
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
-import io.github.chrislo27.rhre3.registry.datamodel.*
+import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
+import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.registry.datamodel.PickerName
+import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.*
 import io.github.chrislo27.rhre3.registry.datamodel.impl.special.*
 import io.github.chrislo27.rhre3.registry.json.*
@@ -238,9 +241,13 @@ object GameRegistry : Disposable {
                 } else if (it.game.isCustom && !it.game.jsonless) {
                     val parent = it.soundHandle.file().resolve("../")
                     val ext = it.soundHandle.extension()
-                    val list = parent.list().map { n -> n.substringAfterLast('/').substringBeforeLast(".$ext") }
-                    if (parent.isDirectory && it.id.substringAfterLast('/') !in list) {
-                        errors += "Handle has wrong casing for ${it.id}: ${it.soundHandle}"
+                    val list = parent.list()?.map { n -> n.substringAfterLast('/').substringBeforeLast(".$ext") }
+                    if (list != null) {
+                        if (parent.isDirectory && it.id.substringAfterLast('/') !in list) {
+                            errors += "Handle has wrong casing for ${it.id}: ${it.soundHandle}"
+                        }
+                    } else {
+                        Toolboks.LOGGER.warn("Failed to list files in parent ${parent.absolutePath} during case-sensitivity check")
                     }
                 }
             }
@@ -305,18 +312,16 @@ object GameRegistry : Disposable {
                     results.filter { it.message.isNotBlank() }.forEach {
                         Toolboks.LOGGER.warn("Verification message for ${it.game.id}:\n${it.message}")
                     }
+                    val endTime = System.nanoTime()
 
                     delay(250L)
 
                     Toolboks.LOGGER.info(
-                            "Registry checked in ${(System.nanoTime() - nanoStart) / 1_000_000.0} ms, $failures error(s)")
+                            "Registry checked in ${(endTime - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
-                        delay(500L)
-
-                        class RegistryVerificationError : RuntimeException()
-
-                        RegistryVerificationError().printStackTrace()
+                        delay(250L)
+                        IllegalStateException("Game registry failed to validate successfully").printStackTrace()
                         Gdx.app.exit()
                     }
                 }
@@ -373,7 +378,7 @@ object GameRegistry : Disposable {
                                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                                 obj.responseIDs.starSubstitution(),
-                                obj.baseBpm, obj.loops)
+                                obj.baseBpm, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
                         is EquidistantObject ->
                             Equidistant(game, objID, obj.deprecatedIDs,
                                         obj.name, obj.distance,
@@ -402,6 +407,8 @@ object GameRegistry : Disposable {
                         is PlayalongEntityObject ->
                             PlayalongModel(game, objID, obj.deprecatedIDs, obj.name, obj.stretchable,
                                            PlayalongInput[obj.input ?: ""] ?: PlayalongInput.BUTTON_A, PlayalongMethod[obj.method ?: ""] ?: PlayalongMethod.PRESS)
+                        is MusicDistortEntityObject ->
+                            MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
                     }
                 }
             } else {
@@ -431,7 +438,7 @@ object GameRegistry : Disposable {
                     val name = if (!loops) fh.nameWithoutExtension() else (fh.nameWithoutExtension().substringBeforeLast(".loop") + " - loop")
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
                                         true, true, fh, null, null,
-                                        listOf(), 0f, loops)
+                                        listOf(), 0f, loops, 0f, 0f, 0f)
                 }
 
                 if (RHRE3.outputCustomSfx) {
@@ -548,6 +555,10 @@ object GameRegistry : Disposable {
                                             "Long Press ${PlayalongChars.FILLED_B}", true,
                                             PlayalongInput.BUTTON_B, PlayalongMethod.LONG_PRESS,
                                             pickerName = PickerName("Long Press ${PlayalongChars.FILLED_B}", "[LIGHT_GRAY](ex: Samurai Slice (Fever) demon horde)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_A", listOf(),
+                                            "Long Press ${PlayalongChars.FILLED_A}", true,
+                                            PlayalongInput.BUTTON_A, PlayalongMethod.LONG_PRESS,
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_A}", "[LIGHT_GRAY](ex: Glee Club transitions)[]"))
 
             // D-pad
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_Dpad_right", listOf(),
@@ -592,6 +603,10 @@ object GameRegistry : Disposable {
                                             "Quick Tap", false,
                                             PlayalongInput.TOUCH_QUICK_TAP, PlayalongMethod.RELEASE,
                                             pickerName = PickerName("Quick Tap", "[LIGHT_GRAY](ex: Moai Doo-Wop \"pah\")[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longTap", listOf(),
+                                            "Long Tap and Hold", true,
+                                            PlayalongInput.TOUCH_TAP, PlayalongMethod.LONG_PRESS,
+                                            pickerName = PickerName("Long Tap and Hold", "[LIGHT_GRAY](ex: Glee Club transitions)[]"))
 
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
@@ -670,10 +685,8 @@ object GameRegistry : Disposable {
                 Model verification:
                 * Duration > 0
                  */
-                if (model is DurationModel) {
-                    if (model.duration <= 0) {
-                        builder.append("Model ${model.id} has a negative duration: ${model.duration}\n")
-                    }
+                if (model.duration <= 0) {
+                    builder.append("Model ${model.id} has a negative duration: ${model.duration}\n")
                 }
 
                 /*
@@ -684,18 +697,17 @@ object GameRegistry : Disposable {
                 */
                 if (model is ContainerModel) {
                     model.cues.forEach { pointer ->
-                        if (objectMap[pointer.id] == null) {
+                        val datamodel = objectMap[pointer.id]
+                        if (datamodel == null) {
                             builder.append("Model ${model.id} has an invalid cue pointer ID: ${pointer.id}\n")
-                        } else if (objectMap[pointer.id] != null && noDeprecationsObjectMap[pointer.id] == null) {
-                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${objectMap[pointer.id]?.id?.starSubstitute()}\n")
+                        } else if (noDeprecationsObjectMap[pointer.id] == null) {
+                            builder.append("Model ${model.id} refers to a deprecated cue pointer ID: ${pointer.id}, replace with ${datamodel.id.starSubstitute()}\n")
                         }
                         if (pointer.track >= Editor.MIN_TRACK_COUNT) {
-                            builder.append(
-                                    "Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
+                            builder.append("Model ${model.id} has a pointer with a track that is too tall: ${pointer.id}, ${pointer.track} / min ${Editor.MIN_TRACK_COUNT}\n")
                         }
-                        if (pointer.duration <= 0) {
-                            builder.append(
-                                    "Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
+                        if (datamodel != null && pointer.duration <= 0) {
+                            builder.append("Model ${model.id} has a pointer with a negative duration: ${pointer.id}, ${pointer.duration}\n")
                         }
                     }
                 }
@@ -713,6 +725,11 @@ object GameRegistry : Disposable {
                             builder.append("Cue ${model.id} has an invalid endingSound ID: ${model.endingSound}\n")
                         } else if (objectMap[model.endingSound] != null && noDeprecationsObjectMap[model.endingSound] == null) {
                             builder.append("Cue ${model.id} refers to a deprecated endingSound ID: ${model.endingSound}, replace with ${objectMap[model.endingSound]?.id?.starSubstitute()}\n")
+                        }
+                    }
+                    if (model.loops) {
+                        if (model.loopStart > model.loopEnd && (model.loopStart >= 0 && model.loopEnd > 0)) {
+                            builder.append("Cue ${model.id} has invalid loop endpoints: start=${model.loopStart}, end=${model.loopEnd}\n")
                         }
                     }
                 }
