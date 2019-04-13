@@ -71,8 +71,6 @@ class InspectionsScreen(main: RHRE3Application, val remix: Remix)
             this.textWrapping = false
             this.fontScaleMultiplier = 0.5f
             location.set(screenX = 0.5f - topBarCentre / 2f, screenWidth = topBarCentre, screenHeight = buttonHeight / 2, screenY = 1f - buttonHeight * 1.5f)
-            // FIXME
-            this.text = "${GLYPHS[1]}  ${GLYPHS[0]}  ${GLYPHS[1]}"
         }
         stage.centreStage.elements += dotsLabel
         area = ColourPane(stage.centreStage, stage.centreStage).apply {
