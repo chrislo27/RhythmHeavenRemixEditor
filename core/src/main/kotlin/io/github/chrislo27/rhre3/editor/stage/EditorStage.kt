@@ -1417,6 +1417,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
             }
             buttonBarStage.elements += playalongToggleButton
+            buttonBarStage.elements += InspectionsButton(this@EditorStage, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 12 + padding * 12)
+            }
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 4 - padding * 4, screenX = size * 13 + padding * 13)
             }
