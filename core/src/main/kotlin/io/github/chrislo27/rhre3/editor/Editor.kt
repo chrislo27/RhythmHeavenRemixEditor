@@ -720,6 +720,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 borderedFont.unscaleFont()
                 batch.setColor(1f, 1f, 1f, 1f)
             }
+
+            if (remix.tempos.secondsMap.isEmpty()) {
+                val borderedFont = main.defaultBorderedFont
+                borderedFont.scaleFont(staticCamera)
+                borderedFont.scaleMul(1f)
+
+                borderedFont.setColor(1f, 1f, 1f, 1f)
+
+                val startX = 6f
+                val startY = (stage.centreAreaStage.location.realY / Gdx.graphics.height) * staticCamera.viewportHeight + 6f
+                val height = 32f
+                val width = 32f
+
+                borderedFont.drawCompressed(batch, Localization["editor.noTempo"],
+                                            startX, startY + height * 0.5f + borderedFont.capHeight * 0.5f,
+                                            staticCamera.viewportWidth - width, Align.center)
+
+                borderedFont.unscaleFont()
+            }
         }
 
         font.unscaleFont()
