@@ -29,7 +29,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
         return theme.entities.cue
     }
 
-    override fun render(editor: Editor, batch: SpriteBatch) {
+    override fun render(editor: Editor, batch: SpriteBatch, glass: Boolean) {
         val textureHash = textureHash
         if (textureHash != null) {
             val tex = remix.textureCache[textureHash] ?: return super.render(editor, batch)
