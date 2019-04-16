@@ -11,11 +11,11 @@ class TimeSignature(val container: TimeSignatures, val beat: Float, beatsPerMeas
     }
 
     var beatsPerMeasure: Int = 4
-        set(value) {
+        private set(value) {
             field = value.coerceIn(LOWER_BEATS_PER_MEASURE, UPPER_BEATS_PER_MEASURE)
         }
     var beatUnit: Int = DEFAULT_NOTE_UNIT
-        set(value) {
+        private set(value) {
             field = if (value !in NOTE_UNITS) {
                 DEFAULT_NOTE_UNIT
             } else {
