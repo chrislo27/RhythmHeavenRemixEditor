@@ -30,7 +30,7 @@ class TimeSignature(val container: TimeSignatures, val beat: Float, beatsPerMeas
     }
 
     var measure: Int = 0
-    val lowerText: String = beatUnit.toString()
+    val lowerText: String = this.beatUnit.toString()
     val upperText: String = "${this.beatsPerMeasure}"
 
 }
