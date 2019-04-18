@@ -255,9 +255,9 @@ Example (First Contact): `alien - 1`, `alien - 2`, etc.
 
 The `introSound` and `endingSound` fields are optional string IDs to indicate
 sounds that should be played at the beginning and end of the main sound cue,
-respectively. Cues that are either intro or ending sounds will not be pickable.
-These are useful for cues like Glee Club, where there is an intro singing sound,
-and an ending sound (mouth shut).
+respectively. They must be CueObjects also. Cues that are either intro or ending sounds will not be pickable.
+These are useful for cues like Moai Doo-Wop, where there is an intro singing sound ('d' in "doo"),
+and an ending sound (wop).
 
 The `responseIDs` array is an array of possible "response" sound IDs for
 use with the response-copying. Useful for copy-and-response games.
