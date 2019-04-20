@@ -913,11 +913,29 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             // Export screen
                             main.screen = ExportRemixScreen(main)
                         }
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+                        // Select following
+                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: remix.playbackStart
+                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+                        // Select preceding
+                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: remix.playbackStart
+                        val newSelection = remix.entities.toList().filter { it.bounds.maxX <= selectionMaxX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
+                        // Select between
+                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
+                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
+                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX && it.bounds.maxX <= selectionMaxX }
+                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+                        // Copy
                         with(PatternStoreScreen(main, this, null, selection.toList())) {
                             Gdx.app.clipboard.contents = entitiesToJson(remix, selection.toList())
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
+                        // Cut
                         with(PatternStoreScreen(main, this, null, selection.toList())) {
                             Gdx.app.clipboard.contents = entitiesToJson(remix, selection.toList())
                         }
@@ -931,6 +949,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                         updateMessageLabel()
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
+                        // Paste
                         val entities: List<Entity>
                         
                         try {
@@ -981,21 +1000,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         remix.entities.addAll(entities)
 
                         this.clickOccupation = selection
-                    }
-                } else if (!control && !alt && shift) {
-                    if (Gdx.input.isKeyJustPressed(Input.Keys.F)) { // Select all following
-                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: remix.playbackStart
-                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX }
-                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
-                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) { // Select all preceding
-                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: remix.playbackStart
-                        val newSelection = remix.entities.toList().filter { it.bounds.maxX <= selectionMaxX }
-                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
-                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) { // Select all between
-                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
-                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
-                        val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX && it.bounds.maxX <= selectionMaxX }
-                        remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
                     }
                 } else if (control && shift && !alt) {
                     if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
