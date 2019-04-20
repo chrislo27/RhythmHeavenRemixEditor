@@ -12,7 +12,7 @@ object Credits {
     fun generateList(): List<Credit> {
         return listOf(
                 "title" crediting RHRE3.GITHUB,
-                "programming" crediting "chrislo27",
+                "programming" crediting "chrislo27\n${Localization["credits.title.programming.contributions", "Kamayana"]}",
                 "localization" crediting
                         """[LIGHT_GRAY]Français (French)[]
                 |Pengu123, minenice55, inkedsplat, chrislo27
@@ -62,8 +62,7 @@ object Credits {
         }
         private val isTitle by lazy { type == "title" }
 
-        val text: String
-            get() = if (isTitle) RHRE3.TITLE_3 else Localization[localization]
+        val text: String = if (isTitle) RHRE3.TITLE_3 else Localization[localization]
 
     }
 
