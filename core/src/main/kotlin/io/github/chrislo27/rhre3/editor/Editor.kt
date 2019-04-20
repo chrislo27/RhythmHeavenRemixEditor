@@ -1124,7 +1124,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 current.progress += Gdx.graphics.deltaTime / current.miningTime
                 if (current.timeSinceDigSound >= 1f / 5f) {
                     current.timeSinceDigSound = 0f
-                    AssetRegistry.get<LazySound>("pickaxe_dig${MathUtils.random(1, 6)}").sound.play(0.75f, 0.5f, 0f)
+                    AssetRegistry.get<LazySound>("""pickaxe_dig${MathUtils.random(1, 6)}""").sound.play(0.75f, 0.5f, 0f)
                 } else {
                     current.timeSinceDigSound += Gdx.graphics.deltaTime
                 }
@@ -1133,7 +1133,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
                     val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
                     explodeEntity(onEntity, true)
-                    AssetRegistry.get<LazySound>("pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}").sound.play()
+                    AssetRegistry.get<LazySound>("""pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}""").sound.play()
                     remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
                     this.selection = this.selection - listOf(onEntity)
                 }
