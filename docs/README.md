@@ -61,7 +61,7 @@ however, read up on the controls first below!
 | **`SPACEBAR`** | Play/stop remix |
 | **`SHIFT+SPACEBAR`** | Pause/resume remix |
 | **`BACKSPACE`** or **`DEL`** | Delete selection |
-| **`INSERT`** | Store selection as a stored pattern (as of v3.12.0) |
+| **`INSERT`** or **`P`** | Store selection as a stored pattern (as of v3.12.0) |
 | **`CTRL+N`** | New remix |
 | **`CTRL+O`** | Open remix |
 | **`CTRL+S`** | Save remix |
@@ -77,6 +77,12 @@ however, read up on the controls first below!
 | **`TAB`** | Cycle through scroll modes (pitch or volume) |
 | **`CTRL+K`** | Focus search bar |
 | **`CTRL+SHIFT+A`** | Select all entities |
+| **`CTRL+F`** | Select entities following selection or playback start |
+| **`CTRL+R`** | Select entities preceding selection or playback start |
+| **`CTRL+T`** | Select entities between selections |
+| **`CTRL+C`** | Copy selected entities to clipboard |
+| **`CTRL+X`** | Cut selected entities to clipboard |
+| **`CTRL+V`** | Paste entities from clipboard |
 | __Camera pan controls__ |
 | Holding **`CTRL`** or **`SHIFT`** will accelerate the camera pan speed |
 | **`A`** or **`LEFT`** | Pan camera left |
