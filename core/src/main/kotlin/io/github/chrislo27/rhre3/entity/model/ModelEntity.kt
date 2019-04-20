@@ -79,7 +79,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         return tmp
     }
 
-    open fun render(editor: Editor, batch: SpriteBatch, glass: Boolean) {
+    open fun renderWithGlass(editor: Editor, batch: SpriteBatch, glass: Boolean) {
         val game = datamodel.game
         val textColor = editor.theme.entities.nameColor
         val text = renderText + (if (ModdingUtils.moddingToolsEnabled && editor.currentTool == Tool.RULER) {
@@ -191,7 +191,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
     }
 
     final override fun render(editor: Editor, batch: SpriteBatch) {
-        render(editor, batch, false)
+        renderWithGlass(editor, batch, false)
     }
 
     private fun drawCornerText(editor: Editor, batch: SpriteBatch, text: String, useNegativeColor: Boolean, x: Float, y: Float) {

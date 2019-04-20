@@ -1,13 +1,17 @@
 package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Align
+import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
@@ -30,6 +34,78 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
 
     companion object {
         private const val ALLOW_SAME_NAMES = true
+
+        fun entitiesToJson(remix: Remix, entities: List<Entity>): String {
+            val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
+
+            val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }
+            val baseX: Float = entities.minBy { it.bounds.x }?.bounds?.x ?: 0f
+            val baseY: Int = entities.minBy { it.bounds.y }?.bounds?.y?.toInt() ?: 0
+
+            entities.forEach {
+                it.updateBounds {
+                    it.bounds.x -= baseX
+                    it.bounds.y -= baseY
+                }
+            }
+
+            val texturesStored: MutableSet<String> = mutableSetOf()
+
+            entities.forEach { entity ->
+                val node = array.addObject()
+
+                node.put("type", entity.jsonType)
+                if (entity is TextureEntity) {
+                    val hash = entity.textureHash
+                    if (hash != null && hash !in texturesStored) {
+                        val texture = remix.textureCache[hash]
+                        if (texture != null) {
+                            node.put("_textureData_hash", hash)
+                            node.put("_textureData_data", Base64.getEncoder().encode(ByteArrayOutputStream().also { baos ->
+                                Remix.writeTexture(baos, texture)
+                            }.toByteArray()).toString(Charset.forName("UTF-8")))
+
+                            texturesStored += hash
+                        }
+                    }
+                }
+
+                entity.saveData(node)
+            }
+
+            // Restore bounds
+            entities.forEach {
+                it.updateBounds { it.bounds.set(oldBounds[it]) }
+            }
+
+            return JsonHandler.toJson(array)
+        }
+
+        fun jsonToEntities(remix: Remix, json: String): List<Entity> {
+            return (JsonHandler.OBJECT_MAPPER.readTree(json) as ArrayNode).map { node ->
+                Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)?.also {
+                    it.readData(node)
+
+                    // Load textures if necessary
+                    val texHashNode = node["_textureData_hash"]
+                    val texDataNode = node["_textureData_data"]
+                    if (texHashNode != null && texDataNode != null) {
+                        val texHash = texHashNode.asText()
+                        if (!remix.textureCache.containsKey(texHash)) {
+                            try {
+                                val bytes = Base64.getDecoder().decode(texDataNode.asText().toByteArray(Charset.forName("UTF-8")))
+                                remix.textureCache[texHash] = Texture(Pixmap(bytes, 0, bytes.size))
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+                        }
+                    }
+                } ?: Remix.createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null",
+                                                       node["beat"]?.floatValue() ?: 0f, node["track"]?.floatValue() ?: 0f,
+                                                       node["width"]?.floatValue() ?: 1f, node["height"]?.floatValue()?.coerceAtLeast(1f) ?: 1f)
+            }.filterNotNull()
+        }
+
     }
 
     override val stage: GenericStage<PatternStoreScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
@@ -161,52 +237,6 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 this.caret = text.length + 1
             }
         }
-    }
-
-    fun entitiesToJson(remix: Remix, entities: List<Entity>): String {
-        val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
-
-        val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }
-        val baseX: Float = entities.minBy { it.bounds.x }?.bounds?.x ?: 0f
-        val baseY: Int = entities.minBy { it.bounds.y }?.bounds?.y?.toInt() ?: 0
-
-        entities.forEach {
-            it.updateBounds {
-                it.bounds.x -= baseX
-                it.bounds.y -= baseY
-            }
-        }
-
-        val texturesStored: MutableSet<String> = mutableSetOf()
-
-        entities.forEach { entity ->
-            val node = array.addObject()
-
-            node.put("type", entity.jsonType)
-            if (entity is TextureEntity) {
-                val hash = entity.textureHash
-                if (hash != null && hash !in texturesStored) {
-                    val texture = remix.textureCache[hash]
-                    if (texture != null) {
-                        node.put("_textureData_hash", hash)
-                        node.put("_textureData_data", Base64.getEncoder().encode(ByteArrayOutputStream().also { baos ->
-                            Remix.writeTexture(baos, texture)
-                        }.toByteArray()).toString(Charset.forName("UTF-8")))
-
-                        texturesStored += hash
-                    }
-                }
-            }
-
-            entity.saveData(node)
-        }
-
-        // Restore bounds
-        entities.forEach {
-            it.updateBounds { it.bounds.set(oldBounds[it]) }
-        }
-
-        return JsonHandler.toJson(array)
     }
 
     override fun tickUpdate() {

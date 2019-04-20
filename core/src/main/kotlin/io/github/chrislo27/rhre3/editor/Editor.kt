@@ -14,8 +14,6 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.SharedLibraryLoader
-import com.fasterxml.jackson.databind.node.ArrayNode
-import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -44,6 +42,7 @@ import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
+import io.github.chrislo27.rhre3.patternstorage.toEntityList
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameGroup
@@ -70,7 +69,10 @@ import io.github.chrislo27.rhre3.track.tracker.TrackerAction
 import io.github.chrislo27.rhre3.track.tracker.TrackerValueChange
 import io.github.chrislo27.rhre3.track.tracker.musicvolume.MusicVolumeChange
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
-import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.rhre3.util.RectanglePool
+import io.github.chrislo27.rhre3.util.Semitones
+import io.github.chrislo27.rhre3.util.scaleFont
+import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.lazysound.LazySound
@@ -80,7 +82,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.nio.charset.Charset
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -402,7 +403,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     fun render() = render(updateDelta = true, otherUI = true)
 
     /**
-     * Pre-stage render.
+     * Pre-stage renderWithGlass.
      */
     fun render(updateDelta: Boolean, otherUI: Boolean) {
         val beatRange = getBeatRange()
@@ -536,7 +537,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (it !is TextureEntity) {
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     if (it is ModelEntity<*>) {
-                        it.render(this, batch, themeUsesMenu && useGlassEffect)
+                        it.renderWithGlass(this, batch, themeUsesMenu && useGlassEffect)
                         this.renderMining(batch, it)
                     } else {
                         it.render(this, batch)
@@ -596,7 +597,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         // bottom trackers
         this.renderBottomTrackers(batch, beatRange)
 
-        // render selection box, delete zone, sfx vol, ruler
+        // renderWithGlass selection box, delete zone, sfx vol, ruler
         if (otherUI) {
             main.shapeRenderer.projectionMatrix = camera.combined
             this.renderOtherUI(batch, main.shapeRenderer, beatRange, font)
@@ -1595,29 +1596,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             } else {
                 try {
                     val pattern: StoredPattern = stage.storedPatternsFilter.currentPattern ?: return true
-
-                    val result = (JsonHandler.OBJECT_MAPPER.readTree(pattern.data) as ArrayNode).map { node ->
-                        Entity.getEntityFromType(node["type"]?.asText(null) ?: return@map null, node as ObjectNode, remix)?.also {
-                            it.readData(node)
-
-                            // Load textures if necessary
-                            val texHashNode = node["_textureData_hash"]
-                            val texDataNode = node["_textureData_data"]
-                            if (texHashNode != null && texDataNode != null) {
-                                val texHash = texHashNode.asText()
-                                if (!remix.textureCache.containsKey(texHash)) {
-                                    try {
-                                        val bytes = Base64.getDecoder().decode(texDataNode.asText().toByteArray(Charset.forName("UTF-8")))
-                                        remix.textureCache[texHash] = Texture(Pixmap(bytes, 0, bytes.size))
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
-                                    }
-                                }
-                            }
-                        } ?: Remix.createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null",
-                                                               node["beat"]?.floatValue() ?: 0f, node["track"]?.floatValue() ?: 0f,
-                                                               node["width"]?.floatValue() ?: 1f, node["height"]?.floatValue()?.coerceAtLeast(1f) ?: 1f)
-                    }.filterNotNull()
+                    val result = pattern.toEntityList(remix)
 
                     if (result.isEmpty())
                         return true
