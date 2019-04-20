@@ -898,25 +898,32 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 camera.update()
             }
 
-            if (control && clickOccupation == ClickOccupation.None && !alt && !shift) {
-                if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
-                    main.screen = ScreenRegistry.getNonNull("newRemix")
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-                    val screen = ScreenRegistry.getNonNull("openRemix")
-                    main.screen = screen
-                    (screen as? OpenRemixScreen)?.attemptOpenPicker()
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-                    main.screen = ScreenRegistry.getNonNull("saveRemix")
-                } else if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-                    if (!shift && !alt) {
-                        // Export screen
-                        main.screen = ExportRemixScreen(main)
+            if (clickOccupation == ClickOccupation.None) {
+                if (control && !alt && !shift) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.N)) {
+                        main.screen = ScreenRegistry.getNonNull("newRemix")
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+                        val screen = ScreenRegistry.getNonNull("openRemix")
+                        main.screen = screen
+                        (screen as? OpenRemixScreen)?.attemptOpenPicker()
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+                        main.screen = ScreenRegistry.getNonNull("saveRemix")
+                    } else if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+                        if (!shift && !alt) {
+                            // Export screen
+                            main.screen = ExportRemixScreen(main)
+                        }
                     }
-                }
-            }
-
-            if (Toolboks.debugMode) {
-                if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+                } else if (control && shift && !alt) {
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                        // Select all
+                        val newSelection = remix.entities.toList()
+                        val oldSelection = selection.toList()
+                        if (newSelection.size != oldSelection.size || !newSelection.containsAll(oldSelection)) {
+                            remix.mutate(EntitySelectionAction(this, oldSelection, newSelection))
+                            updateMessageLabel()
+                        }
+                    }
                 }
             }
         }

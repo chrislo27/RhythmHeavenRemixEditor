@@ -76,10 +76,11 @@ however, read up on the controls first below!
 | **`SHIFT+SCROLL`** | Pan camera (hold **`CTRL`** to increase speed) |
 | **`TAB`** | Cycle through scroll modes (pitch or volume) |
 | **`CTRL+K`** | Focus search bar |
+| **`CTRL+SHIFT+A`** | Select all entities |
 | __Camera pan controls__ |
-| Holding **CTRL** or **SHIFT** will accelerate the camera pan speed |
-| **A** or **LEFT** | Pan camera left |
-| **D** or **RIGHT** | Pan camera right |
+| Holding **`CTRL`** or **`SHIFT`** will accelerate the camera pan speed |
+| **`A`** or **`LEFT`** | Pan camera left |
+| **`D`** or **`RIGHT`** | Pan camera right |
 | __Selection Tool only__ |
 | **`RIGHT CLICK`** on *empty space* | Set playback start |
 | **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *empty space* | Set music start |
