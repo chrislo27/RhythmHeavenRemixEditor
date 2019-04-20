@@ -774,9 +774,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val shift = Gdx.input.isShiftDown()
         val control = Gdx.input.isControlDown()
         val alt = Gdx.input.isAltDown()
-        val left = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)
-        val right = !stage.isTyping && Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)
-        val accelerateCamera = shift || control
+        val cameraLeft = !stage.isTyping && (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
+        val cameraRight = !stage.isTyping && (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        val accelerateCamera = shift xor control
         val cameraDelta = toScaleX(ENTITY_WIDTH * 5 * Gdx.graphics.deltaTime * if (accelerateCamera) 5 else 1)
         val mouseVector = mouseVector
 
@@ -879,12 +879,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         if (!stage.isTyping) {
-            if (left) {
+            if (cameraLeft && !(shift && control)) {
                 camera.position.x -= cameraDelta
                 cameraPan = null
                 camera.update()
             }
-            if (right) {
+            if (cameraRight && !(shift && control)) {
                 camera.position.x += cameraDelta
                 cameraPan = null
                 camera.update()
