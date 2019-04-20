@@ -88,7 +88,7 @@ project(":core") {
         implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.7"
         implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7"
         implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.7"
-        implementation "org.eclipse.jgit:org.eclipse.jgit:4.11.0.201803080745-r"
+        implementation "org.eclipse.jgit:org.eclipse.jgit:5.3.0.201903130848-r"
         implementation "org.slf4j:slf4j-nop:1.7.25"
         implementation "de.sciss:jump3r:1.0.4"
         implementation "com.github.chrislo27:musique-barebones:3807b60"

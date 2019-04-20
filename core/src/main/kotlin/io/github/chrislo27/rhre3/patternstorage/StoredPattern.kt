@@ -1,9 +1,11 @@
 package io.github.chrislo27.rhre3.patternstorage
 
+import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.registry.GameRegistry
 import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
 import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.rhre3.track.Remix
 import java.util.*
 
@@ -24,4 +26,8 @@ data class StoredPattern(val uuid: UUID, val name: String, val data: String) {
         }
     }
 
+}
+
+fun StoredPattern.toEntityList(remix: Remix): List<Entity> {
+    return PatternStoreScreen.jsonToEntities(remix, this.data)
 }

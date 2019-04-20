@@ -28,7 +28,7 @@ class EndRemixEntity(remix: Remix, datamodel: EndRemix) : ModelEntity<EndRemix>(
         return theme.trackLine
     }
 
-    override fun render(editor: Editor, batch: SpriteBatch) {
+    override fun renderWithGlass(editor: Editor, batch: SpriteBatch, glass: Boolean) {
         val oldColor = batch.packedColor
         val theme = editor.theme
         val selectionTint = theme.entities.selectionTint

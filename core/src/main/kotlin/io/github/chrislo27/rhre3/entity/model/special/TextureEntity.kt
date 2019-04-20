@@ -29,13 +29,13 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
         return theme.entities.cue
     }
 
-    override fun render(editor: Editor, batch: SpriteBatch) {
+    override fun renderWithGlass(editor: Editor, batch: SpriteBatch, glass: Boolean) {
         val textureHash = textureHash
         if (textureHash != null) {
             val tex = remix.textureCache[textureHash] ?: return super.render(editor, batch)
             val renderBacking = this.isSelected || editor.clickOccupation is ClickOccupation.CreatingSelection
             if (renderBacking) {
-                super.render(editor, batch)
+                super.renderWithGlass(editor, batch, glass)
             }
             if (this.isSelected) {
                 batch.color = editor.theme.entities.selectionTint
@@ -47,7 +47,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
             batch.draw(tex, bounds.x + lerpDifference.x, bounds.y + lerpDifference.y, bounds.width + lerpDifference.width, (bounds.width + lerpDifference.height) * ratio / (Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH))
             batch.setColor(1f, 1f, 1f, 1f)
         } else {
-            super.render(editor, batch)
+            super.renderWithGlass(editor, batch, glass)
         }
     }
 
