@@ -208,7 +208,7 @@ open class Remix(val main: RHRE3Application)
                     val timeSigs = tree.get("timeSignatures") as ArrayNode
                     timeSigs.filterIsInstance<ObjectNode>().forEach {
                         remix.timeSignatures.add(
-                                TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(), it["divisions"].asInt(4), it["beatUnit"]?.asInt(TimeSignature.DEFAULT_NOTE_UNIT) ?: TimeSignature.DEFAULT_NOTE_UNIT))
+                                TimeSignature(remix.timeSignatures, it["beat"].asDouble().toFloat(), it["divisions"].asInt(4), it["beatUnit"]?.asInt(4) ?: 4))
                     }
                 }
             }
