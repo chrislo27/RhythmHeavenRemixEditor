@@ -458,9 +458,9 @@ class ExportRemixScreen(main: RHRE3Application)
                         music.setVolume(remix.musicVolumes.volumeAt(remix.beat))
                         // Music distort
                         val inDistortion = remix.entities.any { it is MusicDistortEntity && remix.beat in it.bounds.x..it.bounds.maxX }
-                        val currentlyDistorted = music.player.doDistortion
+                        val currentlyDistorted = music.player.doBandpass
                         if (inDistortion != currentlyDistorted) {
-                            music.player.doDistortion = inDistortion
+                            music.player.doBandpass = inDistortion
                         }
                     })
                 })

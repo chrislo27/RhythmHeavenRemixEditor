@@ -15,7 +15,7 @@ class GainedSamplePlayer(val player: SamplePlayer, onKilled: () -> Unit) {
     private val toAdd
         get() = gain
 
-    var doDistortion: Boolean = false
+    var doBandpass: Boolean = false
         set(value) {
             val old = field
             field = value

@@ -879,9 +879,9 @@ open class Remix(val main: RHRE3Application)
                 val beadsMusic: BeadsMusic? = music.music as? BeadsMusic
                 if (beadsMusic != null) {
                     val inDistortion = entities.any { it is MusicDistortEntity && beat in it.bounds.x..it.bounds.maxX }
-                    val currentlyDistorted = beadsMusic.player.doDistortion
+                    val currentlyDistorted = beadsMusic.player.doBandpass
                     if (inDistortion != currentlyDistorted) {
-                        beadsMusic.player.doDistortion = inDistortion
+                        beadsMusic.player.doBandpass = inDistortion
                     }
                 }
             }
