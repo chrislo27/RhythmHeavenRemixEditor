@@ -126,6 +126,8 @@ object GameRegistry : Disposable {
             private set
         lateinit var playalongGame: Game
             private set
+        lateinit var endRemix: EndRemix
+            private set
 
         private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(false)
 
@@ -195,6 +197,7 @@ object GameRegistry : Disposable {
 
         private fun whenDone() {
             specialGame = gameMap[SPECIAL_ENTITIES_GAME_ID] ?: error("Missing special game")
+            endRemix = specialGame.objectsMap.getValue(END_REMIX_ENTITY_ID) as EndRemix
             addSpecialGeneratedGames()
 
             ready = true

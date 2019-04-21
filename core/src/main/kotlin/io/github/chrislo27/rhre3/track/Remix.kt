@@ -331,7 +331,7 @@ open class Remix(val main: RHRE3Application)
             }
 
             // add end entity either 2 beats after furthest point, or on the next measure border
-            remix.entities += GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]!!.createEntity(remix, null).apply {
+            remix.entities += GameRegistry.data.endRemix.createEntity(remix, null).apply {
                 updateBounds {
                     val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
                             ?: 0).toFloat()
