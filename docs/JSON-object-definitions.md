@@ -475,8 +475,6 @@ This object type is for the Tape Measure entity.
 ### `PlayalongEntityObject`
 
 This object type is used for the Playalong Input entities.
-Note that there is no JSON data for defining the input types, since
-all the Playalong Input Entities are generated at start-up.
 
 | Field | Type | Description |
 |---|---|---|
@@ -484,6 +482,37 @@ all the Playalong Input Entities are generated at start-up.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| stretchable | boolean | True if this entity is stretchable. |
+| method | string? | The playalong method for this entity. See below for valid method IDs. Defaults to `PRESS`. |
+| input | string? | The playalong input for this entity. See below for valid input IDs. Defaults to `A`. |
+
+#### Method IDs
+
+| ID | Description | Is two-stage? |
+|----|-------------|---|
+| `PRESS` | Used for pressing a button with no release. This is the most common method type. | N |
+| `PRESS_AND_HOLD` | Used for pressing a button with a release. | Y |
+| `LONG_PRESS` | Used for pressing a button with a release, but the release will never be late. Example: Samurai Slice (Fever) whirlwind | Y |
+| `RELEASE_AND_HOLD` | Used where the first input is a release and ends with a hold. Example: Glee Club | Y |
+| `RELEASE` | Used for Quick Tap. | N |
+
+#### Input IDs
+
+| ID | Description |
+|----|-------------|
+| `A` | Button A inputs |
+| `B` | Button B inputs |
+| `+` | D-Pad (any direction) inputs |
+| `A_+` | Button A or D-Pad inputs |
+| `+_up` | D-Pad Up inputs |
+| `+_down` | D-Pad Down inputs |
+| `+_left` | D-Pad Left inputs |
+| `+_right` | D-Pad Right inputs |
+| `touch_tap` | Tapping the touchscreen inputs |
+| `touch_flick` | Flicking the touchscreen inputs |
+| `touch_release` | Releasing a tap on the touchscreen input |
+| `touch_quick_tap` | Quick Tap on the touchscreen input. Fires on the *release* |
+| `touch_slide` | Sliding on the touchscreen input |
 
 ### `MusicDistortEntityObject`
 
