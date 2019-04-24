@@ -941,13 +941,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.C)) {
                         // Copy
                         if (this.selection.isNotEmpty()) {
-                            Gdx.app.clipboard.contents = PatternStoreScreen.entitiesToJson(remix, selection.toList())
+                            Gdx.app.clipboard.contents = PatternStoreScreen.entitiesToJson(remix, selection.toList(), prettyPrinted = false)
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.X)) {
                         // Cut
                         if (this.selection.isNotEmpty()) {
-                            Gdx.app.clipboard.contents = PatternStoreScreen.entitiesToJson(remix, selection.toList())
-                            
+                            Gdx.app.clipboard.contents = PatternStoreScreen.entitiesToJson(remix, selection.toList(), prettyPrinted = false)
+
                             remix.entities.removeAll(this.selection)
                             remix.addActionWithoutMutating(ActionGroup(listOf(
                                     EntityRemoveAction(this, this.selection,
@@ -959,11 +959,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             updateMessageLabel()
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-                        // Paste
+                        // TODO Paste
                         val entities: List<Entity>
                         try {
                             val result = PatternStoreScreen.jsonToEntities(remix, Gdx.app.clipboard.contents)
-                            if (!result.isEmpty()) {
+                            if (result.isNotEmpty()) {
                                 entities = result
 
                                 entities.forEach { entity ->

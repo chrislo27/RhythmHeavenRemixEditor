@@ -20,10 +20,9 @@ object JsonHandler {
 //	val GSON: Gson = createObjectMapper()
 
     @JvmStatic
-    fun createObjectMapper(failOnUnknown: Boolean = false): ObjectMapper {
+    fun createObjectMapper(failOnUnknown: Boolean = false, prettyPrinted: Boolean = true): ObjectMapper {
         val mapper = ObjectMapper()
                 .enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
-                .enable(SerializationFeature.INDENT_OUTPUT)
                 .enable(MapperFeature.USE_ANNOTATIONS)
                 .enable(JsonParser.Feature.ALLOW_COMMENTS)
                 .disable(JsonGenerator.Feature.AUTO_CLOSE_TARGET)
@@ -38,16 +37,11 @@ object JsonHandler {
             mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
         }
 
-        return mapper
-    }
-
-    @JvmStatic
-    fun setFailOnUnknown(fail: Boolean) {
-        if (fail) {
-            OBJECT_MAPPER.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-        } else {
-            OBJECT_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        if (prettyPrinted) {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT)
         }
+
+        return mapper
     }
 
     @JvmStatic

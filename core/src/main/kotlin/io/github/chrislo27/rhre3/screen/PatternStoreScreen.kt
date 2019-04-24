@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Align
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -34,8 +35,9 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
 
     companion object {
         private const val ALLOW_SAME_NAMES = true
+        private val JSON_SERIALIZER: ObjectMapper by lazy { JsonHandler.createObjectMapper(failOnUnknown = false, prettyPrinted = false)}
 
-        fun entitiesToJson(remix: Remix, entities: List<Entity>): String {
+        fun entitiesToJson(remix: Remix, entities: List<Entity>, prettyPrinted: Boolean = true): String {
             val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
 
             val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }
@@ -78,7 +80,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 it.updateBounds { it.bounds.set(oldBounds[it]) }
             }
 
-            return JsonHandler.toJson(array)
+            return if (prettyPrinted) JsonHandler.toJson(array) else JSON_SERIALIZER.writeValueAsString(array)
         }
 
         fun jsonToEntities(remix: Remix, json: String): List<Entity> {

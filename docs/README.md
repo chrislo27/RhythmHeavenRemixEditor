@@ -82,7 +82,7 @@ however, read up on the controls first below!
 | **`CTRL+T`** | Select entities between selections |
 | **`CTRL+C`** | Copy selected entities to clipboard |
 | **`CTRL+X`** | Cut selected entities to clipboard |
-| **`CTRL+V`** | Paste entities from clipboard |
+| **`CTRL+V`** | Begin pasting entities from clipboard |
 | __Camera pan controls__ |
 | Holding **`CTRL`** or **`SHIFT`** will accelerate the camera pan speed |
 | **`A`** or **`LEFT`** | Pan camera left |
