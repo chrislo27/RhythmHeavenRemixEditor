@@ -121,7 +121,7 @@ fun Editor.renderBeatNumbers(batch: SpriteBatch, beatRange: IntRange, font: Bitm
     }
 
     // Render measure based beat numbers
-    val minInterval = 4f / TimeSignature.NOTE_UNITS.last()
+    val minInterval = remix.timeSignatures.map.values.minBy { it.noteFraction }?.noteFraction ?: (4f / TimeSignature.NOTE_UNITS.last())
     var i = MathHelper.snapToNearest(beatRange.first.toFloat(), minInterval)
     var lastMeasureRendered = -1
     while (i <= MathHelper.snapToNearest(beatRange.last.toFloat(), minInterval)) {
