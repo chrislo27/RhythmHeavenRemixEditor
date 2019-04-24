@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.SharedLibraryLoader
+import com.fasterxml.jackson.core.JsonParseException
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -986,7 +987,15 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                                 this.clickOccupation = selection
                             }
+                        } catch (jpe: JsonParseException) {
+                            // The clipboard was not valid JSON at all
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${jpe::class.java.canonicalName}")
+                        } catch (cce: ClassCastException) {
+                            // Expected ArrayNode, got something else
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${cce::class.java.canonicalName}")
                         } catch (e: Exception) {
+                            // Something else went wrong
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${e::class.java.canonicalName}")
                             e.printStackTrace()
                         }
                     }
