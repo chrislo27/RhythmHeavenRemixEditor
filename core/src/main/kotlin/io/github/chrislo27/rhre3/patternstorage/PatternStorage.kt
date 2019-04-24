@@ -17,7 +17,7 @@ object PatternStorage {
         }
     }
 
-    val patterns: Map<UUID, StoredPattern> = linkedMapOf()
+    val patterns: Map<UUID, FileStoredPattern> = linkedMapOf()
 
     fun load() {
         patterns as MutableMap
@@ -27,7 +27,7 @@ object PatternStorage {
         files.forEach { fh ->
             try {
                 val json = fh.readString("UTF-8")
-                val p = JsonHandler.fromJson<StoredPattern>(json)
+                val p = JsonHandler.fromJson<FileStoredPattern>(json)
                 p.filename = fh.name()
                 patterns[p.uuid] = p
             } catch (e: Exception) {
@@ -65,18 +65,18 @@ object PatternStorage {
         }.also { arrayNode ->
             FOLDER.child("list/").apply { mkdirs() }.child("list.json").writeString(JsonHandler.toJson(arrayNode), false, "UTF-8")
         }
-        val filenames = values.mapNotNull(StoredPattern::filename)
+        val filenames = values.mapNotNull(FileStoredPattern::filename)
         FOLDER.list().filter { it.name() !in filenames }.forEach { it.delete() }
     }
 
-    fun addPattern(pattern: StoredPattern): PatternStorage {
+    fun addPattern(pattern: FileStoredPattern): PatternStorage {
         patterns as MutableMap
         patterns[pattern.uuid] = pattern
         sort()
         return this
     }
 
-    fun deletePattern(pattern: StoredPattern): PatternStorage {
+    fun deletePattern(pattern: FileStoredPattern): PatternStorage {
         patterns as MutableMap
         patterns.remove(pattern.uuid, pattern)
         sort()

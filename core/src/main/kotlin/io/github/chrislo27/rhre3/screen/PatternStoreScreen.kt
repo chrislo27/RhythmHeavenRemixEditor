@@ -14,8 +14,8 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
+import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
-import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream
 import java.nio.charset.Charset
 import java.util.*
 
-class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern?, val entities: List<Entity>?)
+class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern: FileStoredPattern?, val entities: List<Entity>?)
     : ToolboksScreen<RHRE3Application, PatternStoreScreen>(main) {
 
     companion object {
@@ -161,11 +161,11 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
 
                 if (pattern == null) {
                     val entities = entities!!
-                    PatternStorage.addPattern(StoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities.first().remix, entities)))
+                    PatternStorage.addPattern(FileStoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities.first().remix, entities)))
                             .persist()
                 } else {
                     PatternStorage.deletePattern(pattern)
-                            .addPattern(StoredPattern(pattern.uuid, textField.text.trim(), pattern.data))
+                            .addPattern(FileStoredPattern(pattern.uuid, textField.text.trim(), pattern.data))
                             .persist()
                 }
                 editor.stage.updateSelected()

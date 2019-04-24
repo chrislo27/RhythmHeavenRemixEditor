@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
-import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -15,7 +15,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
 
-class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val pattern: StoredPattern, val lastScreen: Screen?)
+class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val pattern: FileStoredPattern, val lastScreen: Screen?)
     : ToolboksScreen<RHRE3Application, PatternDeleteScreen>(main) {
 
     override val stage: GenericStage<PatternDeleteScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)

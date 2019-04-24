@@ -42,6 +42,7 @@ import io.github.chrislo27.rhre3.entity.model.special.TextureEntity
 import io.github.chrislo27.rhre3.midi.MidiHandler
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.oopsies.ActionGroup
+import io.github.chrislo27.rhre3.patternstorage.ClipboardStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.patternstorage.toEntityList
 import io.github.chrislo27.rhre3.playalong.Playalong
@@ -960,44 +961,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             updateMessageLabel()
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.V)) {
-                        // TODO Paste
-                        val entities: List<Entity>
-                        try {
-                            val result = PatternStoreScreen.jsonToEntities(remix, Gdx.app.clipboard.contents)
-                            if (result.isNotEmpty()) {
-                                entities = result
-
-                                entities.forEach { entity ->
-                                    if (entity is ILoadsSounds) {
-                                        entity.loadSounds()
-                                    }
-                                }
-
-                                val oldSelection = this.selection.toList()
-                                this.selection = entities.toList()
-                                val first = this.selection.first()
-                                val selection = ClickOccupation.SelectionDrag(this, first, first, Vector2(0f, 0f),
-                                                                              true, false, oldSelection, StretchRegion.NONE)
-                                selection.setPositionRelativeToMouse()
-                                entities.forEach {
-                                    it.updateInterpolation(true)
-                                }
-
-                                remix.entities.addAll(entities)
-
-                                this.clickOccupation = selection
-                            }
-                        } catch (jpe: JsonParseException) {
-                            // The clipboard was not valid JSON at all
-                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${jpe::class.java.canonicalName}")
-                        } catch (cce: ClassCastException) {
-                            // Expected ArrayNode, got something else
-                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${cce::class.java.canonicalName}")
-                        } catch (e: Exception) {
-                            // Something else went wrong
-                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${e::class.java.canonicalName}")
-                            e.printStackTrace()
-                        }
+                        // Jump to clipboard section in stored patterns
+                        stage.selectInPicker(ClipboardStoredPattern)
                     }
                 } else if (control && shift && !alt) {
                     if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
@@ -1687,39 +1652,59 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                 entities = listOf(entity)
             } else {
-                try {
-                    val pattern: StoredPattern = stage.storedPatternsFilter.currentPattern ?: return true
-                    val result = pattern.toEntityList(remix)
-
-                    if (result.isEmpty())
-                        return true
-
-                    entities = result
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    return true
+                val pattern: StoredPattern = stage.storedPatternsFilter.currentPattern ?: return true
+                entities = when (pattern) {
+                    is ClipboardStoredPattern -> {
+                        try {
+                            pattern.toEntityList(remix)
+                        } catch (jpe: JsonParseException) {
+                            // The clipboard was not valid JSON at all
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${jpe::class.java.canonicalName}")
+                            listOf<Entity>()
+                        } catch (cce: ClassCastException) {
+                            // Expected ArrayNode, got something else
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${cce::class.java.canonicalName}")
+                            listOf<Entity>()
+                        } catch (e: Exception) {
+                            // Something else went wrong
+                            Toolboks.LOGGER.warn("Failed to paste from clipboard: ${e::class.java.canonicalName}")
+                            e.printStackTrace()
+                            listOf<Entity>()
+                        }
+                    }
+                    else -> {
+                        try {
+                            pattern.toEntityList(remix)
+                        } catch (e: Exception) {
+                            Toolboks.LOGGER.warn("Failed to instantiate stored pattern ${pattern.name}: ${e::class.java.canonicalName}")
+                            e.printStackTrace()
+                            listOf<Entity>()
+                        }
+                    }
                 }
             }
 
-            entities.forEach { entity ->
-                if (entity is ILoadsSounds) {
-                    entity.loadSounds()
+            if (entities.isNotEmpty()) {
+                entities.forEach { entity ->
+                    if (entity is ILoadsSounds) {
+                        entity.loadSounds()
+                    }
                 }
+
+                val oldSelection = this.selection.toList()
+                this.selection = entities.toList()
+                val first = this.selection.first()
+                val selection = ClickOccupation.SelectionDrag(this, first, first, Vector2(0f, 0f),
+                                                              true, false, oldSelection, StretchRegion.NONE)
+                selection.setPositionRelativeToMouse()
+                entities.forEach {
+                    it.updateInterpolation(true)
+                }
+
+                remix.entities.addAll(entities)
+
+                this.clickOccupation = selection
             }
-
-            val oldSelection = this.selection.toList()
-            this.selection = entities.toList()
-            val first = this.selection.first()
-            val selection = ClickOccupation.SelectionDrag(this, first, first, Vector2(0f, 0f),
-                                                          true, false, oldSelection, StretchRegion.NONE)
-            selection.setPositionRelativeToMouse()
-            entities.forEach {
-                it.updateInterpolation(true)
-            }
-
-            remix.entities.addAll(entities)
-
-            this.clickOccupation = selection
         }
 
         return true

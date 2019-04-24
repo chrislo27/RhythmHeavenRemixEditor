@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.editor.picker
 
+import io.github.chrislo27.rhre3.patternstorage.ClipboardStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 
@@ -21,6 +22,7 @@ class StoredPatternsFilter : Filter() {
         clearAll()
         patternList.clear()
 
+        patternList += ClipboardStoredPattern
         PatternStorage.patterns.values.mapTo(patternList) { it }
 
         currentDatamodelList.list.apply {

@@ -25,6 +25,8 @@ import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongToggleButton
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
+import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
+import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.registry.Game
 import io.github.chrislo27.rhre3.registry.GameMetadata
 import io.github.chrislo27.rhre3.registry.GameRegistry
@@ -197,6 +199,35 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     fun selectInPicker(datamodel: Datamodel) {
         selectInPicker(datamodel.game, datamodel)
+    }
+
+    fun selectInPicker(storedPattern: StoredPattern) {
+        val datamodel = storedPattern.datamodel
+        val filterButton = filterButtons.find { it.filter == storedPatternsFilter }
+        if (filterButton != null) {
+            val filter = filterButton.filter
+            filterButton.onLeftClick(0f, 0f)
+            filter.update()
+            filter.sort()
+            val game = storedPattern.datamodel.game
+            val datamodelList = filter.datamodelsPerGame[game]
+            if (datamodelList != null) {
+                val newGroupIndex = filter.gameGroups.indexOf(game.gameGroup).coerceAtLeast(0)
+                filter.currentGroupIndex = newGroupIndex
+                filter.groupScroll = ((newGroupIndex + 1 - (Editor.ICON_COUNT_X * (Editor.ICON_COUNT_Y - 1))) / Editor.ICON_COUNT_Y).coerceIn(0, filter.maxGroupScroll)
+                val gameList = filter.currentGameList
+                if (gameList != null) {
+                    val newGameIndex = gameList.list.indexOf(game).coerceAtLeast(0)
+                    gameList.currentIndex = newGameIndex
+                    gameList.scroll = (newGameIndex + 1 - Editor.ICON_COUNT_Y).coerceIn(0, gameList.maxScroll)
+                }
+                if (!datamodelList.isEmpty) {
+                    datamodelList.currentIndex = datamodelList.list.indexOf(datamodel).coerceAtLeast(0)
+                }
+
+                updateSelected()
+            }
+        }
     }
 
     fun selectInPicker(game: Game, datamodel: Datamodel?) {
@@ -419,7 +450,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
             patternAreaArrowLabel.visible = anyDatamodels
             if (filter == storedPatternsFilter) {
-                editStoredPatternButton.visible = storedPatternsFilter.currentPattern != null
+                editStoredPatternButton.visible = storedPatternsFilter.currentPattern is FileStoredPattern
                 patternPreviewButton.visible = false
             } else {
                 patternPreviewButton.visible = editor.remix.playState == PlayState.STOPPED // Allows the update method to change visibility if stopped

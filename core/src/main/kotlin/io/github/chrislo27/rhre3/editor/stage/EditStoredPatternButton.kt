@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.editor.stage
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -28,7 +29,7 @@ class EditStoredPatternButton(val editor: Editor, val editorStage: EditorStage, 
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        val pat = editorStage.storedPatternsFilter.currentPattern ?: return
+        val pat = (editorStage.storedPatternsFilter.currentPattern as? FileStoredPattern?) ?: return
         editor.main.screen = PatternStoreScreen(editor.main, editor, pat, null)
     }
 }
