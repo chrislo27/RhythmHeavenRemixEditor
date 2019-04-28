@@ -2150,6 +2150,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
+        val duration = remix.duration
         str.apply {
             append("Camera: [")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(camera.position.x))
@@ -2180,6 +2181,14 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.beat))
             append(" / ")
             append(THREE_DECIMAL_PLACES_FORMATTER.format(remix.seconds)).append("\n")
+
+            append("Dur.: ♩")
+            append(if (duration.isInfinite()) "$duration" else THREE_DECIMAL_PLACES_FORMATTER.format(duration))
+            append(" / ")
+            val signedSec = remix.tempos.beatsToSeconds(duration)
+            val sec = Math.abs(signedSec)
+            val seconds = if (signedSec.isInfinite()) "$signedSec" else ((if (signedSec < 0) "-" else "") + Editor.TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + Editor.TRACKER_TIME_FORMATTER.format(sec % 60.0))
+            append(seconds).append("\n")
 
             val timeSig = remix.timeSignatures.getTimeSignature(remix.beat)
             val timeSigStr = if (timeSig != null) ("${timeSig.beatsPerMeasure}/${timeSig.beatUnit} (${remix.timeSignatures.getMeasurePart(remix.beat)}, ${remix.timeSignatures.getMeasure(remix.beat)})") else "none"
