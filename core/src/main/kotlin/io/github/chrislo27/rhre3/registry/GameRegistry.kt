@@ -511,10 +511,17 @@ object GameRegistry : Disposable {
         }
 
         private fun addSpecialGeneratedGames() {
+            fun checkGameDoesNotExist(id: String) {
+                if (gameMap[id] != null) {
+                    error("You cannot overwrite the $id game because it is generated on-the-fly")
+                }
+            }
+
             val playalongObjs = mutableListOf<Datamodel>()
             val playalongGame = Game(PLAYALONG_GAME_ID, "Playalong Input Entities", specialGame.series,
                                      playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
+            checkGameDoesNotExist(PLAYALONG_GAME_ID)
             // Press
             playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_press_A", listOf(),
                                             "Press ${PlayalongChars.FILLED_A}", false,
