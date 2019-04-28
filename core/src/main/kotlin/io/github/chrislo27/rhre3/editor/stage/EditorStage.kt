@@ -1588,7 +1588,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             if (game != null) {
                 return (if (if (isVariant) game.isFavourited else game.gameGroup.isFavourited) "[YELLOW]★[] " else "") +
                         (if (game.isCustom) "[CYAN]★[]" else "") +
-                        (if (isVariant) game.name else game.gameGroup.name) + "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]" +
+                        (if (isVariant) game.name else game.gameGroup.name) +
+                        (if (Toolboks.debugMode) "\n[LIGHT_GRAY]${game.id}[]" else "") +
+                        "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]" +
                         if (ModdingUtils.moddingToolsEnabled && (isVariant || isSingleInGameGroup())) {
                             GameRegistry.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
                         } else ("")
