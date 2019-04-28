@@ -1601,7 +1601,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         val tr = when (tool) {
                             Tool.TEMPO_CHANGE -> {
                                 val tempoScale = if (shift && !alt) 0.5f else if (!shift && alt) 2f else 1f
-                                TempoChange(remix.tempos, beat, remix.tempos.tempoAt(beat) * tempoScale, remix.tempos.swingAt(beat), 0f)
+                                TempoChange(remix.tempos, beat, (remix.tempos.tempoAt(beat) * tempoScale).coerceIn(TempoChange.MIN_TEMPO, TempoChange.MAX_TEMPO), remix.tempos.swingAt(beat), 0f)
                             }
                             Tool.MUSIC_VOLUME -> {
                                 MusicVolumeChange(remix.musicVolumes, beat,
