@@ -690,6 +690,11 @@ object GameRegistry : Disposable {
                 if (!model.id.startsWith(game.id + separator)) {
                     builder.append("Model ID (${model.id}) should start with \"*$separator\"\n")
                 }
+                model.deprecatedIDs.forEach { depId ->
+                    if (depId.startsWith("*")) {
+                        builder.append("Deprecated ID $depId for ${model.id} should not be star-substituted, use fully-qualified ID\n")
+                    }
+                }
 
                 /*
                 Model verification:
