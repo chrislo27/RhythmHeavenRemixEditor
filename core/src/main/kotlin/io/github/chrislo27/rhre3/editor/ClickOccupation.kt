@@ -225,7 +225,7 @@ sealed class ClickOccupation {
                 it in selection || selection.all { sel ->
                     !sel.bounds.intersects(it.bounds)
                 }
-            } && selection.none { s -> selection.any { s != it && s.bounds.intersects(it.bounds) } }
+            } && (!isStretching || selection.none { s -> selection.any { s != it && s.bounds.intersects(it.bounds) } })
         }
 
         fun isInDeleteZone(): Boolean {
