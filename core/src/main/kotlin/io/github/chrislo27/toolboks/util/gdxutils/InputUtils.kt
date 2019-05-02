@@ -1,7 +1,6 @@
 package io.github.chrislo27.toolboks.util.gdxutils
 
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.utils.SharedLibraryLoader
 
 
 private val inputMap: MutableMap<Int, Boolean> = mutableMapOf()
@@ -12,23 +11,11 @@ fun Input.isKeyJustReleased(key: Int): Boolean {
         inputMap[key] = false
 
     val old = inputMap[key]
-    val state = isKeyPressed(key)
+    val current = isKeyPressed(key)
 
-    inputMap[key] = state
+    inputMap[key] = current
 
-    return !state && old == true
-}
-
-fun Input.isButtonJustReleased(button: Int): Boolean {
-    if (buttonMap[button] == null)
-        buttonMap[button] = false
-
-    val old = buttonMap[button]
-    val state = isButtonPressed(button)
-
-    inputMap[button] = state
-
-    return state && old == false
+    return !current && old == true
 }
 
 fun Input.isButtonJustPressed(button: Int): Boolean {
@@ -36,15 +23,27 @@ fun Input.isButtonJustPressed(button: Int): Boolean {
         buttonMap[button] = false
 
     val old = buttonMap[button]
-    val state = isButtonPressed(button)
+    val current = isButtonPressed(button)
 
-    inputMap[button] = state
+    buttonMap[button] = current
 
-    return !state && old == true
+    return current && old == false
+}
+
+fun Input.isButtonJustReleased(button: Int): Boolean {
+    if (buttonMap[button] == null)
+        buttonMap[button] = false
+
+    val old = buttonMap[button]
+    val current = isButtonPressed(button)
+
+    buttonMap[button] = current
+
+    return !current && old == true
 }
 
 fun Input.isControlDown(): Boolean {
-    return isKeyPressed(Input.Keys.CONTROL_LEFT) || isKeyPressed(Input.Keys.CONTROL_RIGHT) || (SharedLibraryLoader.isMac && isKeyPressed(Input.Keys.SYM))
+    return isKeyPressed(Input.Keys.CONTROL_LEFT) || isKeyPressed(Input.Keys.CONTROL_RIGHT)
 }
 
 fun Input.isAltDown(): Boolean {
