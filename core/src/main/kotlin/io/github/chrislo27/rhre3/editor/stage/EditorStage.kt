@@ -180,7 +180,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         font.data.setScale(1f)
         val labelParent = label.parent!!
-        label.onResize(labelParent.location.realWidth, labelParent.location.realHeight)
+        label.onResize(labelParent.location.realWidth, labelParent.location.realHeight, 1f, 1f)
     }
 
     private fun UIElement<*>.searchForHoverTextRec(): String? {
@@ -349,7 +349,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                 val isFavourited = isFavourited()
                                 if (isFavourited) {
                                     addLabel(2, favouriteLabel)
-                                    favouriteLabel.onResize(location.realWidth, location.realHeight)
+                                    favouriteLabel.onResize(location.realWidth, location.realHeight, 1f, 1f)
                                 } else {
                                     removeLabel(favouriteLabel)
                                 }
@@ -381,7 +381,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                             val isFavourited = isFavourited()
                             if (isFavourited) {
                                 addLabel(2, favouriteLabel)
-                                favouriteLabel.onResize(location.realWidth, location.realHeight)
+                                favouriteLabel.onResize(location.realWidth, location.realHeight, 1f, 1f)
                             } else {
                                 removeLabel(favouriteLabel)
                             }
@@ -1551,7 +1551,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.removeLabel(selectedLabel)
                     if (field) {
                         this.addLabel(1, selectedLabel)
-                        selectedLabel.onResize(this.location.realWidth, this.location.realHeight)
+                        selectedLabel.onResize(this.location.realWidth, this.location.realHeight, 1f, 1f)
                     }
                 }
             }
