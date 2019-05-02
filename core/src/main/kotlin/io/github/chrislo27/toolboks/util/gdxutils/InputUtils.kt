@@ -1,6 +1,5 @@
 package io.github.chrislo27.toolboks.util.gdxutils
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.utils.SharedLibraryLoader
 
@@ -13,7 +12,7 @@ fun Input.isKeyJustReleased(key: Int): Boolean {
         inputMap[key] = false
 
     val old = inputMap[key]
-    val state = Gdx.input.isKeyPressed(key)
+    val state = isKeyPressed(key)
 
     inputMap[key] = state
 
@@ -25,7 +24,7 @@ fun Input.isButtonJustReleased(button: Int): Boolean {
         buttonMap[button] = false
 
     val old = buttonMap[button]
-    val state = Gdx.input.isButtonPressed(button)
+    val state = isButtonPressed(button)
 
     inputMap[button] = state
 
@@ -37,7 +36,7 @@ fun Input.isButtonJustPressed(button: Int): Boolean {
         buttonMap[button] = false
 
     val old = buttonMap[button]
-    val state = Gdx.input.isButtonPressed(button)
+    val state = isButtonPressed(button)
 
     inputMap[button] = state
 
