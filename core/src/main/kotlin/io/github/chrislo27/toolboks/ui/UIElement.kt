@@ -30,6 +30,9 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
         private set
     var hoverTime: Float = 0f
 
+    var leftClickAction: ((xPercent: Float, yPercent: Float) -> Unit)? = null
+    var rightClickAction: ((xPercent: Float, yPercent: Float) -> Unit)? = null
+
     fun percentageOfWidth(float: Float): Float =
             float / location.realWidth
 
@@ -46,11 +49,11 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
     }
 
     open fun onLeftClick(xPercent: Float, yPercent: Float) {
-
+        leftClickAction?.invoke(xPercent, yPercent)
     }
 
     open fun onRightClick(xPercent: Float, yPercent: Float) {
-
+        rightClickAction?.invoke(xPercent, yPercent)
     }
 
     /**
