@@ -4,7 +4,8 @@ import com.badlogic.gdx.Input
 
 
 private val inputMap: MutableMap<Int, Boolean> = mutableMapOf()
-private val buttonMap: MutableMap<Int, Boolean> = mutableMapOf()
+private val buttonPressedMap: MutableMap<Int, Boolean> = mutableMapOf()
+private val buttonReleasedMap: MutableMap<Int, Boolean> = mutableMapOf()
 
 fun Input.isKeyJustReleased(key: Int): Boolean {
     if (inputMap[key] == null)
@@ -19,25 +20,25 @@ fun Input.isKeyJustReleased(key: Int): Boolean {
 }
 
 fun Input.isButtonJustPressed(button: Int): Boolean {
-    if (buttonMap[button] == null)
-        buttonMap[button] = false
+    if (buttonPressedMap[button] == null)
+        buttonPressedMap[button] = false
 
-    val old = buttonMap[button]
+    val old = buttonPressedMap[button]
     val current = isButtonPressed(button)
 
-    buttonMap[button] = current
+    buttonPressedMap[button] = current
 
     return current && old == false
 }
 
 fun Input.isButtonJustReleased(button: Int): Boolean {
-    if (buttonMap[button] == null)
-        buttonMap[button] = false
+    if (buttonReleasedMap[button] == null)
+        buttonReleasedMap[button] = false
 
-    val old = buttonMap[button]
+    val old = buttonReleasedMap[button]
     val current = isButtonPressed(button)
 
-    buttonMap[button] = current
+    buttonReleasedMap[button] = current
 
     return !current && old == true
 }
