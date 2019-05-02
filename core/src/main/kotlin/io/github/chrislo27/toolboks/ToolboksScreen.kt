@@ -2,6 +2,7 @@ package io.github.chrislo27.toolboks
 
 import com.badlogic.gdx.InputProcessor
 import com.badlogic.gdx.Screen
+import com.badlogic.gdx.math.Matrix4
 import io.github.chrislo27.toolboks.ui.Stage
 
 /**
@@ -9,6 +10,10 @@ import io.github.chrislo27.toolboks.ui.Stage
  */
 @Suppress("UNCHECKED_CAST")
 public abstract class ToolboksScreen<G : ToolboksGame, SELF : ToolboksScreen<G, SELF>>(public val main: G) : Screen, InputProcessor {
+
+    companion object {
+        private val TMP_MATRIX = Matrix4()
+    }
 
     /**
      * The UI stage. By default it is null.
@@ -24,9 +29,12 @@ public abstract class ToolboksScreen<G : ToolboksGame, SELF : ToolboksScreen<G, 
             stage.render(this as SELF, batch, main.shapeRenderer)
             if (Toolboks.stageOutlines != Toolboks.StageOutlineMode.NONE) {
                 val old = batch.packedColor
+                TMP_MATRIX.set(batch.projectionMatrix)
+                batch.projectionMatrix = stage.camera.combined
                 batch.setColor(0f, 1f, 0f, 1f)
                 stage.drawOutline(batch, stage.camera, 1f, Toolboks.stageOutlines == Toolboks.StageOutlineMode.ONLY_VISIBLE)
                 batch.packedColor = old
+                batch.projectionMatrix = TMP_MATRIX
             }
             batch.end()
         }

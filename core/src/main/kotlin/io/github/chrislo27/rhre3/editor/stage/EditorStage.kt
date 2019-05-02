@@ -569,7 +569,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                               screenWidth = 1f - (Editor.BUTTON_PADDING / RHRE3.WIDTH) * 2f,
                               screenHeight = Editor.BUTTON_SIZE / RHRE3.HEIGHT)
         }
-        pickerStage = object : Stage<EditorScreen>(this, camera) {
+        pickerStage = object : Stage<EditorScreen>(this@EditorStage, camera) {
             override fun scrolled(amount: Int): Boolean {
                 if (isMouseOver()) {
                     val filter = editor.pickerSelection.filter

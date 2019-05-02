@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.math.Matrix4
 import io.github.chrislo27.toolboks.ToolboksScreen
 
 
@@ -14,6 +15,10 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: OrthographicCamera,
                                            val pixelsWidth: Float = -1f, val pixelsHeight: Float = -1f)
     : UIElement<S>(parent, null), InputProcessor {
+
+    companion object {
+        private val TMP_MATRIX = Matrix4()
+    }
 
     override val stage: Stage<S>
         get() = this
@@ -34,12 +39,13 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun render(screen: S, batch: SpriteBatch,
                         shapeRenderer: ShapeRenderer) {
         camera.update()
-        val oldProj = batch.projectionMatrix
+        TMP_MATRIX.set(batch.projectionMatrix)
         batch.projectionMatrix = camera.combined
         elements.filter(UIElement<S>::visible).forEach {
             it.render(screen, batch, shapeRenderer)
         }
-        batch.projectionMatrix = oldProj
+        batch.setColor(1f, 1f, 1f, 1f)
+        batch.projectionMatrix = TMP_MATRIX
     }
 
     override fun drawOutline(batch: SpriteBatch, camera: OrthographicCamera, lineThickness: Float, onlyVisible: Boolean) {
