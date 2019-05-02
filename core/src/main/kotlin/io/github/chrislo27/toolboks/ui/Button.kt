@@ -87,10 +87,10 @@ open class Button<S : ToolboksScreen<*, *>>
         }
     }
 
-    override fun onResize(width: Float, height: Float) {
-        super.onResize(width, height)
+    override fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
+        super.onResize(width, height, pixelUnitX, pixelUnitY)
         labels.forEach {
-            it.onResize(this.location.realWidth, this.location.realHeight)
+            it.onResize(this.location.realWidth, this.location.realHeight, pixelUnitX, pixelUnitY)
         }
     }
 }

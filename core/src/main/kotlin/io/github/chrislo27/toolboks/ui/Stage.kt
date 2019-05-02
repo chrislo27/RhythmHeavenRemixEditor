@@ -11,10 +11,9 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 /**
  * A stage is the main root container for most [UIElement]s.
  */
-open class Stage<S : ToolboksScreen<*, *>>
-    : UIElement<S>, InputProcessor {
-
-    val camera: OrthographicCamera
+open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: OrthographicCamera,
+                                           val pixelsWidth: Float = -1f, val pixelsHeight: Float = -1f)
+    : UIElement<S>(parent, null), InputProcessor {
 
     override val stage: Stage<S>
         get() = this
@@ -23,8 +22,7 @@ open class Stage<S : ToolboksScreen<*, *>>
     @Volatile
     private var calledFromUpdatePositions: Boolean = false
 
-    constructor(parent: UIElement<S>?, camera: OrthographicCamera) : super(parent, null) {
-        this.camera = camera
+    init {
         this.location.set(screenWidth = 1f, screenHeight = 1f)
         this.updatePositions()
     }
@@ -76,24 +74,24 @@ open class Stage<S : ToolboksScreen<*, *>>
             error("Unthread-safe use of updatePositions")
         }
         calledFromUpdatePositions = true
-        if (parent == null) {
-            onResize(camera.viewportWidth, camera.viewportHeight)
-        } else {
-            onResize(parent.location.realWidth, parent.location.realHeight)
-        }
+        val w = parent?.location?.realWidth ?: camera.viewportWidth
+        val h = parent?.location?.realHeight ?: camera.viewportHeight
+        val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
+        val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
+        onResize(w, h, pxW, pxH)
     }
 
-    override fun onResize(width: Float, height: Float) {
+    override fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
         val calledFromUpdatePositions = calledFromUpdatePositions
         this.calledFromUpdatePositions = false
         if (parent == null && !calledFromUpdatePositions) {
             error("onResize cannot be called without a parent. Use updatePositions instead.")
         }
-        super.onResize(width, height)
+        super.onResize(width, height, pixelUnitX, pixelUnitY)
         if (elements.any { it.parent !== this }) {
             error("Elements ${elements.filter { it.parent !== this }.map { "[$it, parent=${it.parent}]" }} do not have this as their parent")
         }
-        elements.forEach { it.onResize(this.location.realWidth, this.location.realHeight) }
+        elements.forEach { it.onResize(this.location.realWidth, this.location.realHeight, pixelUnitX, pixelUnitY) }
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {

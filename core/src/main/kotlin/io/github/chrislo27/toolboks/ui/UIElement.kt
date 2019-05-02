@@ -17,26 +17,14 @@ import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 /**
  * The base UI element.
  */
-abstract class UIElement<S : ToolboksScreen<*, *>>
+abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, private val parameterStage: Stage<S>?)
     : InputProcessor {
-
-    val parent: UIElement<S>?
-    private val parameterStage: Stage<S>?
-
-    constructor(parent: UIElement<S>?, parameterStage: Stage<S>?) {
-        this.parent = parent
-        this.parameterStage = parameterStage
-        this.alignment = Align.bottomLeft
-        this.location = UIRectangle(0f, 0f, 1f, 1f, 0f, 0f, 0f, 0f)
-        if (parent != null) {
-        }
-    }
 
     open val stage: Stage<S>
         get() = parameterStage ?: error("Stage is null")
 
-    var alignment: Int
-    var location: UIRectangle
+    var alignment: Int = Align.bottomLeft
+    val location: UIRectangle = UIRectangle(0f, 0f, 1f, 1f, 0f, 0f, 0f, 0f)
     open var visible: Boolean = true
     var wasClickedOn = false
         private set
@@ -91,8 +79,8 @@ abstract class UIElement<S : ToolboksScreen<*, *>>
 
     open fun canBeClickedOn(): Boolean = false
 
-    open fun onResize(width: Float, height: Float) {
-        location.onResize(width, height)
+    open fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
+        location.onResize(width, height, pixelUnitX, pixelUnitY)
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
@@ -185,27 +173,27 @@ abstract class UIElement<S : ToolboksScreen<*, *>>
         var realHeight: Float = 0f
             private set
 
-        fun onResize(width: Float, height: Float) {
+        fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
             realWidth = screenWidth * width + pixelWidth
             realHeight = screenHeight * height + pixelHeight
 
             val parentX: Float = parent?.location?.realX ?: 0f
             val parentY: Float = parent?.location?.realY ?: 0f
 
-            if ((alignment and Align.top) == Align.top) {
-                realY = ((parentY) + (height)) - screenY * height - pixelY
+            realY = if ((alignment and Align.top) == Align.top) {
+                ((parentY) + (height)) - screenY * height - pixelY * pixelUnitY
             } else if ((alignment and Align.bottom) == Align.bottom) {
-                realY = (parentY) + screenY * height + pixelY
+                (parentY) + screenY * height + pixelY * pixelUnitY
             } else {
-                realY = (parentY) + (height / 2) + screenY * height + pixelY
+                (parentY) + (height / 2) + screenY * height + pixelY * pixelUnitY
             }
 
-            if ((alignment and Align.left) == Align.left) {
-                realX = (parentX) + screenX * width + pixelX
+            realX = if ((alignment and Align.left) == Align.left) {
+                (parentX) + screenX * width + pixelX * pixelUnitX
             } else if ((alignment and Align.right) == Align.right) {
-                realX = ((parentX) + width) - screenX * width - pixelX
+                ((parentX) + width) - screenX * width - pixelX * pixelUnitX
             } else {
-                realX = (parentX) + (width / 2) + screenX * width + pixelX
+                (parentX) + (width / 2) + screenX * width + pixelX * pixelUnitX
             }
         }
 
