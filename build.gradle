@@ -94,7 +94,7 @@ project(":core") {
         implementation "com.github.chrislo27:musique-barebones:3807b60"
         implementation "com.github.chrislo27.RSDE:main:master"
         implementation "com.segment.analytics.java:analytics:+"
-        implementation "com.github.MinnDevelopment:java-discord-rpc:v2.0.1"
+        implementation "club.minnced:java-discord-rpc:2.0.2"
 
         implementation fileTree(dir: 'libs', include: ['*.jar'])
     }
