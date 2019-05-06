@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Matrix4
-import io.github.chrislo27.toolboks.Toolboks
+import io.github.chrislo27.toolboks.ToolboksGame
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
@@ -98,6 +98,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                 tooltipLabel.text = tooltip.tooltip
                 // Positioning
                 val font = tooltipLabel.getFont()
+                tooltipLabel.fontScaleMultiplier = camera.viewportWidth / ToolboksGame.gameInstance.defaultCamera.viewportWidth
                 font.data.setScale(tooltipLabel.palette.fontScale * tooltipLabel.fontScaleMultiplier)
                 val loc = tooltipLabel.location
                 // Initial set
@@ -124,9 +125,6 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                 val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
                 val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
                 tooltipLabel.onResize(this.location.realWidth, this.location.realHeight, pxW, pxH)
-                if (Toolboks.debugMode) {
-                    println(tooltipLabel.location)
-                }
             } else {
                 tooltipLabel.visible = false
             }
