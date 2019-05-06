@@ -33,6 +33,9 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
     var leftClickAction: (UIElement<S>.(xPercent: Float, yPercent: Float) -> Unit)? = null
     var rightClickAction: (UIElement<S>.(xPercent: Float, yPercent: Float) -> Unit)? = null
 
+    open var tooltipText: String? = null
+    var tooltipTextIsLocalizationKey: Boolean = false
+
     fun percentageOfWidth(float: Float): Float =
             float / location.realWidth
 
@@ -45,7 +48,7 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
 
     fun isMouseOver(): Boolean {
         return MathHelper.isPointIn(stage.camera.getInputX(), stage.camera.getInputY(), location.realX, location.realY,
-                                    location.realWidth, location.realHeight)
+                location.realWidth, location.realHeight)
     }
 
     open fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -98,7 +101,7 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
     open fun drawOutline(batch: SpriteBatch, camera: OrthographicCamera, lineThickness: Float = 1f, onlyVisible: Boolean) {
         if (!onlyVisible || this.visible) {
             batch.drawRect(location.realX, location.realY, location.realWidth, location.realHeight,
-                           (camera.viewportWidth / Gdx.graphics.width) * lineThickness)
+                    (camera.viewportWidth / Gdx.graphics.width) * lineThickness)
         }
     }
 

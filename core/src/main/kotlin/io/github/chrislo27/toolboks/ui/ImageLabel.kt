@@ -40,7 +40,7 @@ open class ImageLabel<S : ToolboksScreen<*, *>>
     override var background = false
     var image: TextureRegion? = null
     var tint: Color = Color(1f, 1f, 1f, 1f)
-    var renderType: ImageRendering = ImageRendering.RENDER_FULL
+    var renderType: ImageRendering = ImageRendering.ASPECT_RATIO
     var rotation: Float = 0f
     var rotationPoint = Vector2(0.5f, 0.5f)
 
