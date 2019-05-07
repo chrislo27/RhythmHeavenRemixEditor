@@ -109,14 +109,16 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                 // Clamp Y
                 val yLimit = camera.viewportHeight
                 val top = loc.pixelY + loc.pixelHeight
-                if (top > yLimit) {
-                    val height = loc.pixelHeight
-                    loc.set(pixelY = yLimit - height, pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
-                }
                 // Clamp X, flip to left side if necessary
                 val xLimit = camera.viewportWidth - loc.pixelWidth
-                if (loc.pixelX > xLimit) {
-                    loc.set(pixelX = camera.getInputX() - loc.pixelWidth)
+                if (loc.pixelX > xLimit || top > yLimit) {
+                    val newX = camera.getInputX() - loc.pixelWidth
+                    val height = loc.pixelHeight
+                    if (newX < 0) {
+                        loc.set(pixelY = yLimit - height, pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+                    } else {
+                        loc.set(pixelX = camera.getInputX() - loc.pixelWidth, pixelY = loc.pixelY.coerceAtMost(yLimit - height))
+                    }
                 }
                 font.data.setScale(1f)
                 // Resize/update real position
