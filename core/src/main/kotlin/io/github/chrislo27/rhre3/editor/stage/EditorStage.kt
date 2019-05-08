@@ -154,7 +154,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     private fun setHoverText(text: String) {
         val label = hoverTextLabel
-        val labelLoc = label.location
+        val loc = label.location
         val font = label.getFont()
 
         label.visible = true
@@ -162,21 +162,26 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         font.data.setScale(label.palette.fontScale * label.fontScaleMultiplier)
 
-        labelLoc.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
-                     pixelWidth = font.getTextWidth(label.text) + 6,
-                     pixelHeight = font.getTextHeight(text) + font.capHeight)
+        loc.set(pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
+                pixelWidth = font.getTextWidth(label.text) + 6,
+                pixelHeight = font.getTextHeight(text) + font.capHeight)
 
         val yLimit = label.stage.camera.viewportHeight
-        val top = labelLoc.pixelY + labelLoc.pixelHeight
-        if (top > yLimit) {
-            val height = labelLoc.pixelHeight
-            labelLoc.set(pixelY = yLimit - labelLoc.pixelHeight,
-                         pixelX = labelLoc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+        val top = loc.pixelY + loc.pixelHeight
+        val xLimit = label.stage.camera.viewportWidth - loc.pixelWidth
+        if (loc.pixelX > xLimit || top > yLimit) {
+            val newX = label.stage.camera.getInputX() - loc.pixelWidth
+            val height = loc.pixelHeight
+            if (newX < 0) {
+                loc.set(pixelY = yLimit - height, pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+            } else {
+                loc.set(pixelX = camera.getInputX() - loc.pixelWidth, pixelY = loc.pixelY.coerceAtMost(yLimit - height))
+            }
         }
 
         // clamp X
-        labelLoc.set(pixelX = Math.min(labelLoc.pixelX,
-                                       label.stage.camera.viewportWidth - labelLoc.pixelWidth))
+        loc.set(pixelX = Math.min(loc.pixelX,
+                                  label.stage.camera.viewportWidth - loc.pixelWidth))
 
         font.data.setScale(1f)
         val labelParent = label.parent!!
