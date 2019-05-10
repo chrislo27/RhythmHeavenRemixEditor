@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Json
 import com.badlogic.gdx.utils.ObjectMap
 import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
-import java.util.concurrent.CopyOnWriteArrayList
 import kotlin.properties.Delegates
 
 
@@ -23,8 +22,8 @@ object Localization {
         Gdx.files.internal("localization/langs.json")
     }
 
-    var currentIndex: Int by Delegates.observable(0) { _, old, new ->
-        listeners.forEach {
+    var currentIndex: Int by Delegates.observable(0) { _, old, _ ->
+        listeners.keys.forEach {
             it.invoke(bundles[old])
         }
     }
@@ -39,11 +38,19 @@ object Localization {
             }
         }
     val bundles: MutableList<ToolboksBundle> = mutableListOf()
-    val listeners: MutableList<(oldBundle: ToolboksBundle) -> Unit> = CopyOnWriteArrayList()
+    private val listeners: WeakHashMap<(oldBundle: ToolboksBundle) -> Unit, Unit> = WeakHashMap()
     /**
      * Base, Lang
      */
     private var lastLoadedFiles: Pair<FileHandle, FileHandle> = DEFAULT_BASE_HANDLE to DEFAULT_LANG_DEFINITION_FILE
+
+    fun addListener(listener: (oldBundle: ToolboksBundle) -> Unit) {
+        listeners[listener] = Unit
+    }
+
+    fun removeListener(listener: (oldBundle: ToolboksBundle) -> Unit) {
+        listeners.remove(listener, Unit)
+    }
 
     fun createBundle(locale: NamedLocale, baseHandle: FileHandle = DEFAULT_BASE_HANDLE): ToolboksBundle {
         return ToolboksBundle(locale, I18NBundle.createBundle(baseHandle, locale.locale, "UTF-8"))
