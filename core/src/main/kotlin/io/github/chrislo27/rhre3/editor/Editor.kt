@@ -331,7 +331,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
     init {
-        Localization.listeners += {
+        Localization.addListener {
             updateMessageLabel()
 
             cachedPlaybackStart = Float.POSITIVE_INFINITY to ""

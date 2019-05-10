@@ -167,7 +167,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             }
 
             init {
-                Localization.listeners += {
+                Localization.addListener {
                     updateText()
                 }
             }

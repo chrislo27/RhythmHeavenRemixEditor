@@ -147,7 +147,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     }
 
     init {
-        Localization.listeners += {
+        Localization.addListener {
             updateSelected(DirtyType.SEARCH_DIRTY)
         }
     }

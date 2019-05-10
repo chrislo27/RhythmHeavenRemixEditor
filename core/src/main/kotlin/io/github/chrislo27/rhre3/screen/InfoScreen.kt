@@ -136,7 +136,7 @@ class InfoScreen(main: RHRE3Application)
                 updateText()
                 this.fontScaleMultiplier = 0.9f
 
-                Localization.listeners += { updateText() }
+                Localization.addListener { updateText() }
             })
 
             this.location.set(screenX = 0.175f, screenWidth = 0.65f)
@@ -697,7 +697,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 init {
-                    Localization.listeners += {
+                    Localization.addListener {
                         updateText()
                     }
                 }
@@ -753,7 +753,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 init {
-                    Localization.listeners += { updateText() }
+                    Localization.addListener { updateText() }
                     updateText()
                 }
             }.apply {
