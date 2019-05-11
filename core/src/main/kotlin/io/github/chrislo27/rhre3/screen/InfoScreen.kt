@@ -765,7 +765,6 @@ class InfoScreen(main: RHRE3Application)
 
             // Disable minimap
             settings.elements += object : FalseCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP, checked).flush()
@@ -773,9 +772,6 @@ class InfoScreen(main: RHRE3Application)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -793,8 +789,6 @@ class InfoScreen(main: RHRE3Application)
 
             // Minimap preview
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-
-                override val checkLabelPortion: Float = 0.1f
                 private var bufferSupported = true
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -821,9 +815,6 @@ class InfoScreen(main: RHRE3Application)
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
 
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
-
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
@@ -839,7 +830,6 @@ class InfoScreen(main: RHRE3Application)
 
             // Subtitle order
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, checked).flush()
@@ -847,9 +837,6 @@ class InfoScreen(main: RHRE3Application)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale * 0.9f
@@ -867,7 +854,6 @@ class InfoScreen(main: RHRE3Application)
 
             // Remix stops at last cue
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, checked).flush()
@@ -875,9 +861,6 @@ class InfoScreen(main: RHRE3Application)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -895,7 +878,6 @@ class InfoScreen(main: RHRE3Application)
 
             // Smooth dragging
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, checked).flush()
@@ -903,9 +885,6 @@ class InfoScreen(main: RHRE3Application)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -923,13 +902,27 @@ class InfoScreen(main: RHRE3Application)
 
             // Discord rich presence
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
+                val discordIcon = ImageLabel(palette, this, this.stage).apply {
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
+                }
 
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     preferences.putBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, checked).flush()
                     didChangeSettings = true
                     DiscordHelper.enabled = checked
+                }
+
+                override fun computeTextX(): Float {
+                    return computeCheckWidth() * 2.1f
+                }
+
+                override fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
+                    super.onResize(width, height, pixelUnitX, pixelUnitY)
+                    val checkWidth = computeCheckWidth()
+                    discordIcon.location.set(screenX = checkWidth, screenY = 0f, screenWidth = checkWidth, screenHeight = 1f)
+                    discordIcon.onResize(this.location.realWidth, this.location.realHeight, pixelUnitX, pixelUnitY)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
@@ -947,19 +940,11 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
 
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 2.25f, screenWidth = 1f - checkLabelPortion * 2.25f)
-
-                addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = checkLabelPortion, screenWidth = checkLabelPortion)
-                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_discord"))
-                })
+                addLabel(discordIcon)
             }
 
             // Glass entities
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override val checkLabelPortion: Float = 0.1f
                 private var bufferSupported = true
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -985,9 +970,6 @@ class InfoScreen(main: RHRE3Application)
                 }
             }.apply {
                 this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
-
-                this.checkLabel.location.set(screenWidth = checkLabelPortion)
-                this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale

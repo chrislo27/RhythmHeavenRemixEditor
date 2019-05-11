@@ -335,7 +335,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override val checkLabelPortion: Float = 0.1f
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, checked).flush()
@@ -345,9 +344,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             }
         }.apply {
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true)
-
-            this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -360,7 +356,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override val checkLabelPortion: Float = 0.1f
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, checked).flush()
@@ -370,9 +365,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             }
         }.apply {
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)
-
-            this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -385,7 +377,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
         stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override val checkLabelPortion: Float = 0.1f
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, checked).flush()
@@ -395,9 +386,6 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             }
         }.apply {
             this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)
-
-            this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.1f, screenWidth = 1f - checkLabelPortion * 1.1f, pixelWidth = -4f)
 
             this.textLabel.apply {
                 this.isLocalizationKey = true

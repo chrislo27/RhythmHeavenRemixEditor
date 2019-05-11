@@ -60,7 +60,6 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         val bottom = stage.bottomStage
         // Advanced Options setting
         bottom.elements += object : TrueCheckbox<AdvancedOptionsScreen>(palette, bottom, bottom) {
-            override val checkLabelPortion: Float = 0.225f
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, checked).flush()
@@ -69,9 +68,6 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             }
         }.apply {
             this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
-
-            this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
 
             this.textLabel.apply {
 //                this.fontScaleMultiplier = fontScale
@@ -287,8 +283,6 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         centre.elements += pitchStyleButton
         // Exploding entities
         explodingEntitiesButton = object : TrueCheckbox<AdvancedOptionsScreen>(palette, centre, centre) {
-            override val checkLabelPortion: Float = 0.1f
-
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 main.preferences.putBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, this.checked).flush()
@@ -301,8 +295,6 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 it.fontScaleMultiplier = 0.8f
                 it.textAlign = Align.left
             }
-            this.checkLabel.location.set(screenWidth = checkLabelPortion)
-            this.textLabel.location.set(screenX = checkLabelPortion * 1.25f, screenWidth = 1f - checkLabelPortion * 1.25f)
             this.checked = main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 7 + buttonHeight * 6,
