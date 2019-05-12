@@ -180,8 +180,8 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
             private set
 
         fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
-            realWidth = screenWidth * width + pixelWidth
-            realHeight = screenHeight * height + pixelHeight
+            realWidth = screenWidth * width + pixelWidth * pixelUnitX
+            realHeight = screenHeight * height + pixelHeight * pixelUnitY
 
             val parentX: Float = parent?.location?.realX ?: 0f
             val parentY: Float = parent?.location?.realY ?: 0f
