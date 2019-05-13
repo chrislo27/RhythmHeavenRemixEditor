@@ -22,6 +22,7 @@ class PanButton(val editor: Editor, val left: Boolean,
             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_right_chevron")).apply {
                 flip(left, false)
             }
+            this.renderType = ImageLabel.ImageRendering.RENDER_FULL
         })
 
         this.background = false
