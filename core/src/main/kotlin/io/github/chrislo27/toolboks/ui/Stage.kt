@@ -31,6 +31,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override val stage: Stage<S>
         get() = this
     val elements: MutableList<UIElement<S>> = mutableListOf()
+    private val elementsReversed: List<UIElement<S>> = elements.asReversed()
     private val tooltipData: TooltipData = TooltipData("", null)
     override var tooltipText: String? = null
     var tooltipElement: TextLabel<S>? = null
@@ -198,48 +199,96 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.touchUp(screenX, screenY, pointer, button) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.touchUp(screenX, screenY, pointer, button))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.mouseMoved(screenX, screenY) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.mouseMoved(screenX, screenY))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun keyTyped(character: Char): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.keyTyped(character) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.keyTyped(character))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun scrolled(amount: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.scrolled(amount) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.scrolled(amount))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun keyUp(keycode: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.keyUp(keycode) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.keyUp(keycode))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.touchDragged(screenX, screenY, pointer) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.touchDragged(screenX, screenY, pointer))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun keyDown(keycode: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.keyDown(keycode) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.keyDown(keycode))
+                    return true
+            }
+        }
+        return false
     }
 
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (!visible)
             return false
-        return elements.filter { it.visible && it.touchDown(screenX, screenY, pointer, button) }.any()
+        for (e in elementsReversed) {
+            if (e.visible) {
+                if (e.touchDown(screenX, screenY, pointer, button))
+                    return true
+            }
+        }
+        return false
     }
 }
