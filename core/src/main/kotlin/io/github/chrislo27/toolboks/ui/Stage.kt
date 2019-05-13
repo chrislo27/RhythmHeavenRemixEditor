@@ -79,7 +79,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                     }
                 }
             } else if (e is Stage<S>) {
-                return findTooltip(e.elementsReversed)
+                return findTooltip(e.elementsReversed) ?: continue
             }
         }
         return null
