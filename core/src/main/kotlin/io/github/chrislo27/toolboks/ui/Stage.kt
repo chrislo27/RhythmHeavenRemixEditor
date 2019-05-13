@@ -59,17 +59,12 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     }
 
     // Recursive
-    private fun findTooltip(root: Stage<S>): TooltipData? {
+    private fun findTooltip(rootReversed: List<UIElement<S>>): TooltipData? {
         tooltipData.apply {
             tooltip = ""
             element = null
         }
-        for (e in root.elements) {
-            if (e is Stage<S>) {
-                return findTooltip(e) ?: continue
-            }
-        }
-        for (e in root.elements) {
+        for (e in rootReversed) {
             if (e !is Stage<S> && e.isMouseOver()) {
                 val t = e.tooltipText
                 if (t != null) {
@@ -77,7 +72,14 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                         tooltip = if (e.tooltipTextIsLocalizationKey) Localization[t] else t
                         element = e
                     }
+                } else if (e is InputSponge && e.shouldAbsorbInput) {
+                    return tooltipData.apply {
+                        tooltip = ""
+                        element = e
+                    }
                 }
+            } else if (e is Stage<S>) {
+                return findTooltip(e.elementsReversed)
             }
         }
         return null
@@ -90,10 +92,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         batch.projectionMatrix = camera.combined
 
         // tooltip
-        val tooltip = findTooltip(this)
         val tooltipLabel = this.tooltipElement
         if (tooltipLabel != null) {
-            if (tooltip != null) {
+            val tooltip = findTooltip(this.elementsReversed)
+            if (tooltip != null && !(tooltip.tooltip.isEmpty() && tooltip.element is InputSponge)) {
                 tooltipLabel.visible = true
                 tooltipLabel.isLocalizationKey = false
                 tooltipLabel.text = tooltip.tooltip
