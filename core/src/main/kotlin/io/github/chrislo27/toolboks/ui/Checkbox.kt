@@ -18,11 +18,14 @@ abstract class Checkbox<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: UI
         this.textAlign = Align.left
     }
 
+    var checkedStateChanged: (newState: Boolean) -> Unit = {}
     var checked: Boolean = false
         set(value) {
             field = value
             checkLabel.image = if (field) checkedTex else uncheckedTex
+            checkedStateChanged(value)
         }
+
 
     init {
         addLabel(checkLabel)
