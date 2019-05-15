@@ -1,6 +1,7 @@
 package io.github.chrislo27.toolboks.util.gdxutils
 
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.utils.SharedLibraryLoader
 
 
 private val inputMap: MutableMap<Int, Boolean> = mutableMapOf()
@@ -44,7 +45,7 @@ fun Input.isButtonJustReleased(button: Int): Boolean {
 }
 
 fun Input.isControlDown(): Boolean {
-    return isKeyPressed(Input.Keys.CONTROL_LEFT) || isKeyPressed(Input.Keys.CONTROL_RIGHT)
+    return isKeyPressed(Input.Keys.CONTROL_LEFT) || isKeyPressed(Input.Keys.CONTROL_RIGHT) || (SharedLibraryLoader.isMac && isKeyPressed(Input.Keys.SYM))
 }
 
 fun Input.isAltDown(): Boolean {
