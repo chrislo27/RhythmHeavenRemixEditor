@@ -40,6 +40,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import java.util.*
 import kotlin.math.roundToInt
@@ -1727,6 +1728,17 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
         init {
             label.image = TextureRegion(tool.texture)
+        }
+
+        override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+            if (tool == Tool.TEMPO_CHANGE) {
+                if (editor.remix.tempos.secondsMap.isEmpty()) {
+                    label.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                } else {
+                    label.tint.set(1f, 1f, 1f, 1f)
+                }
+            }
+            super.render(screen, batch, shapeRenderer)
         }
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
