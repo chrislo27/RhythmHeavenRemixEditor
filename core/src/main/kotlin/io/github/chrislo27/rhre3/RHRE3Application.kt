@@ -67,7 +67,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         lateinit var instance: RHRE3Application
             private set
 
-        val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder().setFollowRedirect(true).setCompressionEnforced(true))
+        val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder()
+                                                                  .setThreadFactory { Thread(it).apply {
+                                                                      isDaemon = true
+                                                                  } }
+                                                                  .setFollowRedirect(true)
+                                                                  .setCompressionEnforced(true))
 
         private const val RAINBOW_STR = "RAINBOW"
 
