@@ -48,7 +48,6 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -328,7 +327,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     }
 
     override fun preRender() {
-        rainbowColor.setHSB(MathHelper.getSawtoothWave(2f), 0.8f, 0.8f)
+        rainbowColor.fromHsv(MathHelper.getSawtoothWave(2f) * 360f, 0.8f, 0.8f)
         Colors.put(RAINBOW_STR, rainbowColor)
         super.preRender()
     }

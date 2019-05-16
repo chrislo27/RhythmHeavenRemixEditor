@@ -11,7 +11,6 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 
 
 class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, palette: UIPalette,
@@ -35,7 +34,7 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
             val first = labels.first()
             if (first is ImageLabel) {
                 if (editorStage.tapalongStage.visible) {
-                    first.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                    first.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
                 } else {
                     first.tint.set(1f, 1f, 1f, 1f)
                 }

@@ -783,7 +783,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             this.visible = false
         }
         playalongStage = PlayalongStage(editor, palette, this, camera).apply {
-//            this.location.set(0f,
+            //            this.location.set(0f,
 //                              messageBarStage.location.screenY + messageBarStage.location.screenHeight,
 //                              1f, pickerStage.location.screenHeight + minimapBarStage.location.screenHeight)
             this.location.set(screenY = messageBarStage.location.screenY + messageBarStage.location.screenHeight)
@@ -1733,7 +1733,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
             if (tool == Tool.TEMPO_CHANGE) {
                 if (editor.remix.tempos.secondsMap.isEmpty()) {
-                    label.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                    label.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
                 } else {
                     label.tint.set(1f, 1f, 1f, 1f)
                 }

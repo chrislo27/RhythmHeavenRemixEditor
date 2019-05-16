@@ -45,7 +45,6 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
 import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 import io.github.chrislo27.toolboks.version.Version
 
 
@@ -265,7 +264,7 @@ class InfoScreen(main: RHRE3Application)
             }
             centre.elements += headingLabel
 
-            leftPageButton = object : Button<InfoScreen>(palette, centre, centre){
+            leftPageButton = object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     currentPage = Page.SETTINGS
@@ -287,7 +286,7 @@ class InfoScreen(main: RHRE3Application)
             }
             centre.elements += leftPageButton
 
-            rightPageButton = object : Button<InfoScreen>(palette, centre, centre){
+            rightPageButton = object : Button<InfoScreen>(palette, centre, centre) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     currentPage = Page.INFO
@@ -439,7 +438,7 @@ class InfoScreen(main: RHRE3Application)
                         val first = labels.first()
                         if (first is ImageLabel) {
                             if (InfoScreen.shouldSeePartners) {
-                                first.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                                first.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
                             } else {
                                 first.tint.set(1f, 1f, 1f, 1f)
                             }

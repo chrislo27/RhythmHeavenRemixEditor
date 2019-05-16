@@ -253,7 +253,7 @@ fun Editor.renderImplicitTempo(batch: SpriteBatch) {
         val width = f.getTextWidth(text)
         val sign = if (i % 2 == 0) -1 else 1
         val scroll = MathHelper.getSawtoothWave(System.currentTimeMillis() + i * 1234L, 12.5f + sign * i * 0.75f)
-        f.color = Color().setHSB(scroll, 1f, 1f)
+        f.color = Color().fromHsv(scroll * 360f, 1f, 1f)
         f.draw(batch, text, 0f + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
         f.draw(batch, text, -sign * width + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
     }

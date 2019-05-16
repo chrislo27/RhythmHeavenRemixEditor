@@ -11,7 +11,6 @@ import io.github.chrislo27.rhre3.screen.PlayalongSettingsScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 
 
 class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
@@ -33,7 +32,7 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (editorStage.playalongStage.visible) {
-            label.textColor?.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+            label.textColor?.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
         } else {
             label.textColor?.set(1f, 1f, 1f, 1f)
         }
@@ -56,7 +55,7 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
         stage.paneLikeStages.forEach { it.visible = false }
         stage.buttonBarStage.visible = true
         stage.messageBarStage.visible = true
-        stage.centreAreaStage.visible =true
+        stage.centreAreaStage.visible = true
         if (visible) {
             editor.currentTool = Tool.SELECTION
         }

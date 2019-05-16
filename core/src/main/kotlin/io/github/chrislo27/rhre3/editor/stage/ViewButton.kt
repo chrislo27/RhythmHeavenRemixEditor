@@ -7,7 +7,6 @@ import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.setHSB
 
 
 class ViewButton(val editor: Editor, val editorStage: EditorStage,
@@ -26,7 +25,7 @@ class ViewButton(val editor: Editor, val editorStage: EditorStage,
             val first = labels.first()
             if (first is ImageLabel) {
                 if (editor.views.isNotEmpty()) {
-                    first.tint.setHSB(MathHelper.getSawtoothWave(1.5f), 0.3f, 0.75f)
+                    first.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
                 } else {
                     first.tint.set(1f, 1f, 1f, 1f)
                 }
