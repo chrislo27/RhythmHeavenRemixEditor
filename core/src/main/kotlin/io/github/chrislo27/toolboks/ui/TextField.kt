@@ -44,10 +44,12 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
                 val font = getFont()
                 val wasMarkup = font.data.markupEnabled
                 font.data.markupEnabled = false
+                font.scaleMul(palette.fontScale)
                 layout.setText(font, renderedText)
                 font.data.markupEnabled = wasMarkup
                 calculateTextPositions()
                 onTextChange(old)
+                font.scaleMul(1f / palette.fontScale)
             }
 
             caret = caret.coerceIn(0, text.length)
