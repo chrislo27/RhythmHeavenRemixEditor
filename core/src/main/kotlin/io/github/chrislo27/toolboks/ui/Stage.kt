@@ -129,6 +129,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                 val h = parent?.location?.realHeight ?: camera.viewportHeight
                 val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
                 val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
+                tooltipLabel.location.pixelX /= pxW
+                tooltipLabel.location.pixelWidth /= pxW
+                tooltipLabel.location.pixelY /= pxH
+                tooltipLabel.location.pixelHeight /= pxH
                 tooltipLabel.onResize(this.location.realWidth, this.location.realHeight, pxW, pxH)
             } else {
                 tooltipLabel.visible = false
