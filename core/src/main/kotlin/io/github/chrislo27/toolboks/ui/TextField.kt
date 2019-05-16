@@ -312,14 +312,20 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
 
     override fun canBeClickedOn(): Boolean = true
 
-    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        if (super.touchDown(screenX, screenY, pointer, button))
-            return true
+    fun checkFocus() {
+        if (hasFocus && (!isMouseOver() || !visible)) {
+            hasFocus = false
+        }
+    }
 
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (hasFocus && (!isMouseOver() || !visible)) {
             hasFocus = false
             return false
         }
+
+        if (super.touchDown(screenX, screenY, pointer, button))
+            return true
 
         return isMouseOver() && hasFocus && visible
     }

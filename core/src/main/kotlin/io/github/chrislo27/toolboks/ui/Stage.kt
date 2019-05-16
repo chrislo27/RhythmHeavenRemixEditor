@@ -286,9 +286,20 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         return false
     }
 
+    fun checkTextFieldFocus() {
+        for (e in elements) {
+            if (e is TextField) {
+                e.checkFocus()
+            } else if (e is Stage) {
+                e.checkTextFieldFocus()
+            }
+        }
+    }
+
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (!visible)
             return false
+        checkTextFieldFocus()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.touchDown(screenX, screenY, pointer, button))
