@@ -10,14 +10,14 @@ A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhyt
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
 downloading the program!**
 
-[![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](/releases)<br>
+[![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
 Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)—a tool to set remixing challenges<br>
 Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a GUI for editing the RHRE SFX Database<br>
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
-[![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](/blob/dev/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/LICENSE.txt)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
 
 ## Requirements
