@@ -65,6 +65,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
             element = null
         }
         for (e in rootReversed) {
+            if (!e.visible) continue
             if (e !is Stage<S> && e.isMouseOver()) {
                 val t = e.tooltipText
                 if (t != null) {
@@ -288,6 +289,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
 
     fun checkTextFieldFocus() {
         for (e in elements) {
+            if (!e.visible) continue
             if (e is TextField) {
                 e.checkFocus()
             } else if (e is Stage) {
