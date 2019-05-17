@@ -10,21 +10,21 @@ A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhyt
 **Please read the [README](http://rhre.readthedocs.io/en/latest/README/) after
 downloading the program!**
 
-[![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)<br>
+[![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](/releases)<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
 Read the [documentation here](http://rhre.readthedocs.io/en/latest/).<br>
 Check out the [Rhythm Heaven Game Randomizer](https://github.com/chrislo27/RHGR)—a tool to set remixing challenges<br>
 Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a GUI for editing the RHRE SFX Database<br>
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
-[![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](/blob/dev/LICENSE.txt)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
 
 ## Requirements
 * [Java 8](https://java.com/en/download/)
   * A Java version of 9 or newer will work but is not recommended
 * A graphics driver that supports OpenGL 2.0 or higher
-* Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 14.04 LTS or newer)
+* Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
 * An Internet connection initially
 
 ## Features
