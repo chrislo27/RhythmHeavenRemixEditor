@@ -9,9 +9,10 @@ play along!
 ## Playalong Settings
 Right click the Playalong button in the toolbar to access the Playalong Settings.
 You can calibrate your keyboard and mouse lag *independently*, adjust SFX settings,
-and the control scheme used.
+and the control scheme used. You can also set up controller bindings. Note that any controllers
+have to be connected *before* the program is launched. Additionally, analog inputs are not supported.
 
-![img](https://user-images.githubusercontent.com/6299069/53281059-7462a080-36d7-11e9-910e-49aa270f108e.png)
+![img](hhttps://user-images.githubusercontent.com/6299069/57961999-ce829480-78c7-11e9-99e5-88b18a182030.png)
 
 ## Adding input entities
 Go to Other ➡ Special Entities ➡ Playalong Input Entities and place down
