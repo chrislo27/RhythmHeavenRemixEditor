@@ -12,7 +12,7 @@ You can calibrate your keyboard and mouse lag *independently*, adjust SFX settin
 and the control scheme used. You can also set up controller bindings. Note that any controllers
 have to be connected *before* the program is launched. Additionally, analog inputs are not supported.
 
-![img](hhttps://user-images.githubusercontent.com/6299069/57961999-ce829480-78c7-11e9-99e5-88b18a182030.png)
+![img](https://user-images.githubusercontent.com/6299069/57961999-ce829480-78c7-11e9-99e5-88b18a182030.png)
 
 ## Adding input entities
 Go to Other ➡ Special Entities ➡ Playalong Input Entities and place down
