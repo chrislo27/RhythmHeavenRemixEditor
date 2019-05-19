@@ -173,11 +173,17 @@ class OpenRemixScreen(main: RHRE3Application)
 
                     remixType = if (isRHRE2) RemixType.RHRE2 else RemixType.RHRE3
 
-                    if (isRHRE2) {
-                        stage.titleIcon.image = rhre2Icon
-                        Remix.unpackRHRE2(newRemix, zipFile)
-                    } else {
-                        Remix.unpack(newRemix, zipFile)
+                    try {
+                        if (isRHRE2) {
+                            stage.titleIcon.image = rhre2Icon
+                            Remix.unpackRHRE2(newRemix, zipFile)
+                        } else {
+                            Remix.unpack(newRemix, zipFile)
+                        }
+                    } catch (e: Exception) {
+                        throw e
+                    } finally {
+                        zipFile.close()
                     }
                 }
 
