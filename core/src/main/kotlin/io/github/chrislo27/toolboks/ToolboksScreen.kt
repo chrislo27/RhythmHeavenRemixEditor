@@ -26,7 +26,8 @@ public abstract class ToolboksScreen<G : ToolboksGame, SELF : ToolboksScreen<G, 
             val batch = main.batch
 
             batch.begin()
-            stage.render(this as SELF, batch, main.shapeRenderer)
+            if (stage.visible)
+                stage.render(this as SELF, batch, main.shapeRenderer)
             if (Toolboks.stageOutlines != Toolboks.StageOutlineMode.NONE) {
                 val old = batch.packedColor
                 TMP_MATRIX.set(batch.projectionMatrix)
@@ -79,19 +80,19 @@ public abstract class ToolboksScreen<G : ToolboksGame, SELF : ToolboksScreen<G, 
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-        return stage?.touchUp(screenX, screenY, pointer, button)?: false
+        return stage?.touchUp(screenX, screenY, pointer, button) ?: false
     }
 
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-        return stage?.mouseMoved(screenX, screenY)?: false
+        return stage?.mouseMoved(screenX, screenY) ?: false
     }
 
     override fun keyTyped(character: Char): Boolean {
-        return stage?.keyTyped(character)?: false
+        return stage?.keyTyped(character) ?: false
     }
 
     override fun scrolled(amount: Int): Boolean {
-        return stage?.scrolled(amount)?: false
+        return stage?.scrolled(amount) ?: false
     }
 
     override fun keyUp(keycode: Int): Boolean {
