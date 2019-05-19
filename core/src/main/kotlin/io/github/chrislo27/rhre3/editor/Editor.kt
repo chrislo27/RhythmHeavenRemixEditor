@@ -730,7 +730,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 borderedFont.scaleMul(1f)
 
                 if (remix.playState != STOPPED) {
-//                    this.renderImplicitTempo(batch)
+                    // This shouldn't be called since remixes aren't supposed to be playable without tempo changes
+                    this.renderImplicitTempo(batch)
                 }
 
                 borderedFont.setColor(1f, 1f, 1f, 1f)
