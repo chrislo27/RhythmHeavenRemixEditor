@@ -651,6 +651,8 @@ open class Remix(val main: RHRE3Application)
 
     val playStateListeners: MutableList<(old: PlayState, new: PlayState) -> Unit> = mutableListOf()
     var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
+        if (new == PlayState.PLAYING && !canPlayRemix)
+            return@vetoable false
         val music = music
         playStateListeners.forEach { it.invoke(old, new) }
         when (new) {
@@ -702,6 +704,8 @@ open class Remix(val main: RHRE3Application)
 
         true
     }
+    val canPlayRemix: Boolean
+        get() = tempos.secondsMap.isNotEmpty()
 
     private fun setMusicVolume() {
         val music = music ?: return

@@ -1684,6 +1684,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 PlayState.PAUSED -> if (type != PlayState.PAUSED) enabled = true
                 PlayState.PLAYING -> if (type != PlayState.PLAYING) enabled = true
             }
+            if (type == PlayState.PLAYING && !editor.remix.canPlayRemix)
+                enabled = false
         }
 
         override fun getHoverText(): String {
@@ -1691,7 +1693,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 PlayState.STOPPED -> "editor.stop"
                 PlayState.PAUSED -> "editor.pause"
                 PlayState.PLAYING -> "editor.play"
-            }]
+            }] + (if (type == PlayState.PLAYING && !editor.remix.canPlayRemix) "\n${Localization["editor.noTempo"]}" else "")
         }
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
