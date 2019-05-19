@@ -119,7 +119,12 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
                     val newX = camera.getInputX() - loc.pixelWidth
                     val height = loc.pixelHeight
                     if (newX < 0) {
-                        loc.set(pixelY = yLimit - height, pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+                        if (top > yLimit) {
+                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+                        } else {
+
+                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = 0f)
+                        }
                     } else {
                         loc.set(pixelX = camera.getInputX() - loc.pixelWidth, pixelY = loc.pixelY.coerceAtMost(yLimit - height))
                     }
