@@ -729,6 +729,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 borderedFont.scaleFont(staticCamera)
                 borderedFont.scaleMul(1f)
 
+                if (remix.playState != STOPPED) {
+//                    this.renderImplicitTempo(batch)
+                }
+
                 borderedFont.setColor(1f, 1f, 1f, 1f)
 
                 val startX = 6f

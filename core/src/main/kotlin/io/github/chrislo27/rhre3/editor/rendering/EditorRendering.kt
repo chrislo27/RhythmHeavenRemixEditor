@@ -243,22 +243,25 @@ fun Editor.renderStripeBoard(batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
     }
 }
 
+private val implicitTempoTmpColor = Color(1f, 1f, 1f, 1f)
 fun Editor.renderImplicitTempo(batch: SpriteBatch) {
-    val text = "The tempo is implicitly set to ${remix.tempos.defaultTempo} BPM. Please set the tempo explicitly using the Tempo Change tool.   "
+    val text = "The tempo is implicitly set to ${remix.tempos.defaultTempo} BPM. Please set the tempo directly using the Tempo Change tool.   "
     val f = main.defaultBorderedFontLarge
     f.setColor(1f, 1f, 1f, 1f)
+    f.scaleFont(staticCamera)
     f.scaleMul(0.5f)
 
     for (i in 0 until 12) {
         val width = f.getTextWidth(text)
         val sign = if (i % 2 == 0) -1 else 1
         val scroll = MathHelper.getSawtoothWave(System.currentTimeMillis() + i * 1234L, 12.5f + sign * i * 0.75f)
-        f.color = Color().fromHsv(scroll * 360f, 1f, 1f)
-        f.draw(batch, text, 0f + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
-        f.draw(batch, text, -sign * width + sign * width * scroll, i * main.defaultCamera.viewportHeight / 8f)
+        f.color = implicitTempoTmpColor.fromHsv(scroll * 360f, 1f, 1f)
+        f.draw(batch, text, 0f + sign * width * scroll, i * staticCamera.viewportHeight / 8f)
+        f.draw(batch, text, -sign * width + sign * width * scroll, i * staticCamera.viewportHeight / 8f)
     }
     f.setColor(1f, 1f, 1f, 1f)
     f.scaleMul(1 / 0.5f)
+    f.unscaleFont()
 }
 
 fun Editor.renderMining(batch: SpriteBatch, entity: ModelEntity<*>) {
