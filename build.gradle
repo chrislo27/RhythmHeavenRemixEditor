@@ -51,7 +51,7 @@ project(":desktop") {
         implementation "com.github.oshi:oshi-core:3.4.4"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
         implementation "org.asynchttpclient:async-http-client:2.7.0"
         implementation "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
         implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.7"
@@ -82,7 +82,7 @@ project(":core") {
         implementation "com.github.oshi:oshi-core:3.4.4"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
         implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.0"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.2.1"
         implementation "org.asynchttpclient:async-http-client:2.7.0"
         implementation "com.sun.activation:javax.activation:1.2.0" // Required for AHC Java 9+
         implementation "com.fasterxml.jackson.module:jackson-module-afterburner:2.9.7"
