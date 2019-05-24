@@ -10,13 +10,19 @@ to use the ogg file format to reduce save file size.
 
 ## 2. Getting the tempo
 ![Tapalong button](readme/toolbar/tapalong.png)<br>
-Most songs have only one tempo. Click the button with a hand touching ripples
+Most songs have only one tempo.
+
+First, set an *initial* tempo using the Tempo Change tool (press **`3`**)
+and clicking at beat zero. This will let you play the remix, but you're going
+to change this value later.
+
+Click the button with a hand touching ripples
 to open the Tapalong menu. Play the remix, and start pressing **`T`**
 to tap along. The predicted tempo will be shown below. You should aim
 for around 50 or more inputs to get a reliable average.
 
-Set the tempo by clicking the Tempo Change tool (or press **`3`** on the number row)
-and clicking at beat zero. Scroll to change the tempo.
+Set your found tempo by first pressing **`HOME`** to jump back to beat zero,
+selecting the Tempo Change tool again, and scrolling while hovering on the initial tempo change.
 
 ## 3. Moving the music start tracker
 This is a **very important** step. Your remix will *probably be offbeat*
