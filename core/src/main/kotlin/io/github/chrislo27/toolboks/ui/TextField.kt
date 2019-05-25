@@ -333,14 +333,38 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
     override fun keyDown(keycode: Int): Boolean {
         if (!hasFocus)
             return false
+        val control = Gdx.input.isControlDown()
+        val alt = Gdx.input.isAltDown()
+        val shift = Gdx.input.isShiftDown()
         when (keycode) {
             Input.Keys.LEFT -> {
-                caret--
+                if (control && !alt && !shift && text.isNotEmpty()) {
+                    val lookIn = text.substring(0, caret)
+                    caret = lookIn.indexOfLast { it == ' ' || it == '\n' }
+                } else {
+                    caret--
+                }
                 caretMoveTimer = INITIAL_CARET_TIMER
                 return true
             }
             Input.Keys.RIGHT -> {
-                caret++
+                if (control && !alt && !shift && text.isNotEmpty() && caret < text.length) {
+                    val lookIn = text.substring(caret + 1)
+                    val index = lookIn.indexOfFirst { it == ' ' || it == '\n' }
+                    caret = if (index != -1) (index + caret + 1) else text.length
+                } else {
+                    caret++
+                }
+                caretMoveTimer = INITIAL_CARET_TIMER
+                return true
+            }
+            Input.Keys.HOME -> {
+                caret = 0
+                caretMoveTimer = INITIAL_CARET_TIMER
+                return true
+            }
+            Input.Keys.END -> {
+                caret = text.length
                 caretMoveTimer = INITIAL_CARET_TIMER
                 return true
             }
