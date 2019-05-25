@@ -266,23 +266,32 @@ open class TextField<S : ToolboksScreen<*, *>>(override var palette: UIPalette, 
         when (character) {
             TAB -> return false
             BACKSPACE -> {
-                if (text.isNotEmpty() && caret > 0) {
+                return if (text.isNotEmpty() && caret > 0) {
                     val oldCaret = caret
-                    caret--
-                    text = text.substring(0, oldCaret - 1) + text.substring(oldCaret)
-                    return true
+                    if (control && !alt && !shift && text.isNotEmpty()) {
+                        val lookIn = text.substring(0, caret)
+                        caret = lookIn.indexOfLast { it == ' ' || it == '\n' }
+                    } else {
+                        caret--
+                    }
+                    text = text.substring(0, caret) + text.substring(oldCaret)
+                    true
                 } else {
-                    return false
+                    false
                 }
             }
             DELETE -> {
-                if (text.isNotEmpty() && caret < text.length) {
+                return if (text.isNotEmpty() && caret < text.length) {
                     val oldCaret = caret
-//                    caret--
-                    text = text.substring(0, oldCaret) + text.substring(oldCaret + 1)
-                    return true
+                    val newNextIndex = if (control && !alt && !shift && text.isNotEmpty() && caret < text.length) {
+                        val lookIn = text.substring(caret + 1)
+                        val index = lookIn.indexOfFirst { it == ' ' || it == '\n' }
+                        if (index != -1) (index + caret + 1) else text.length
+                    } else (oldCaret + 1)
+                    text = text.substring(0, oldCaret) + text.substring(newNextIndex)
+                    true
                 } else {
-                    return false
+                    false
                 }
             }
             ENTER_ANDROID, ENTER_DESKTOP -> {
