@@ -12,9 +12,9 @@ import kotlin.math.absoluteValue
  * During a transition, only the render method is called for the entry and destination screens.
  *
  */
-class TransitionScreen<G : ToolboksGame>(main: G,
-                                         val entryScreen: Screen?, val destScreen: Screen?,
-                                         entryTransition: Transition?, destTransition: Transition?)
+open class TransitionScreen<G : ToolboksGame>(main: G,
+                                              val entryScreen: Screen?, val destScreen: Screen?,
+                                              entryTransition: Transition?, destTransition: Transition?)
     : ToolboksScreen<G, TransitionScreen<G>>(main) {
 
     val entryTransition: Transition = entryTransition ?: Transition.EMPTY
@@ -73,7 +73,7 @@ class TransitionScreen<G : ToolboksGame>(main: G,
             (screen as? ToolboksScreen<*, *>)?.showTransition() ?: (screen?.show())
             lastScreen = screen
         }
-        transition.render(this, { screen?.render(delta) })
+        transition.render(this) { screen?.render(delta) }
 
         if (transition.overrideDone) {
             timeElapsed = if (doneEntry) {
@@ -87,10 +87,6 @@ class TransitionScreen<G : ToolboksGame>(main: G,
             dispose()
             main.screen = destScreen
         }
-    }
-
-    override fun getDebugString(): String? {
-        return super.getDebugString()
     }
 
     override fun tickUpdate() {
