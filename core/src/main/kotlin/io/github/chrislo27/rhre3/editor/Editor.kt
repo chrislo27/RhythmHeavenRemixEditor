@@ -402,12 +402,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun calculatePlayalongCameraY(): Float = calculateNormalCameraY() // 4f + remix.trackCount
 
-    fun render() = render(updateDelta = true, otherUI = true)
+    fun render() = render(updateDelta = true, otherUI = true, noGlassEffect = false)
 
     /**
      * Pre-stage renderWithGlass.
      */
-    fun render(updateDelta: Boolean, otherUI: Boolean) {
+    fun render(updateDelta: Boolean, otherUI: Boolean, noGlassEffect: Boolean) {
         val beatRange = getBeatRange()
         val beatRangeStartFloat = beatRange.first.toFloat()
         val beatRangeEndFloat = beatRange.last.toFloat()
@@ -420,7 +420,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
-        if (themeUsesMenu && useGlassEffect) {
+        if (!noGlassEffect && themeUsesMenu && useGlassEffect) {
             glassEffect.renderBackground()
         }
 
