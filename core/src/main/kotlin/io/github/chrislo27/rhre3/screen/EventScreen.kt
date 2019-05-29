@@ -14,7 +14,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
-import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
@@ -87,9 +86,7 @@ class EventScreen(main: RHRE3Application)
 
     private var nextScreen: ToolboksScreen<*, *>? = null
     private var eventType = EventType.NONE
-    private val editor = Editor(main, main.defaultCamera, false)
-    private val remix: Remix
-        get() = editor.remix
+    private var remix: Remix = Remix(main)
     private var canUpdate = 0
     private var canContinue = -1f
     private var showNotes = false
@@ -105,14 +102,14 @@ class EventScreen(main: RHRE3Application)
     fun loadEventJson(eventType: EventType, file: FileHandle, nextScreen: ToolboksScreen<*, *>?): Boolean {
         return try {
             val loadInfo = Remix.fromJson(JsonHandler.OBJECT_MAPPER.readTree(file.readString("UTF-8")) as ObjectNode,
-                                          editor.createRemix())
-            editor.remix = loadInfo.remix
+                                          Remix(main))
+            remix = loadInfo.remix
             remix.playbackStart = -1f
             remix.playState = PlayState.STOPPED
 
             this.nextScreen = nextScreen
             this.eventType = eventType
-            this.canContinue = if (eventType.canImmediatelyContinue) 0f else if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateEvent % 2 != 0) 0f else -1f
+            this.canContinue = if (eventType.canImmediatelyContinue) 0f else if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateEvent % 2 != 0 && RHRE3.immediateEvent != 0) 0f else -1f
             main.preferences.putInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, NOW.year).flush()
             this.canUpdate = 0
             this.background = eventType.backgroundFactory()
@@ -136,9 +133,7 @@ class EventScreen(main: RHRE3Application)
 
         val font = main.defaultBorderedFont
         font.setColor(1f, 1f, 1f, 1f)
-        with(editor) {
-            font.scaleFont(this@EventScreen.camera)
-        }
+        font.scaleFont(this@EventScreen.camera)
 
         if (remix.midiInstruments > 0) {
             // each cell is 88x136 with a 1 px black border
@@ -244,9 +239,7 @@ class EventScreen(main: RHRE3Application)
         }
 
         font.setColor(1f, 1f, 1f, 1f)
-        with(editor) {
-            font.unscaleFont()
-        }
+        font.unscaleFont()
 
         batch.end()
         batch.projectionMatrix = main.defaultCamera.combined
@@ -308,7 +301,7 @@ class EventScreen(main: RHRE3Application)
     }
 
     override fun getDebugString(): String? {
-        return "I - Show notes | DEBUG: R - Restart | S - Speed up\ntype: $eventType\ncanContinue: $canContinue\nnext: ${nextScreen?.let { it::class.java.canonicalName }}\nnotes: $showNotes" + "\n\n${editor.getDebugString()}"
+        return "I - Show notes | DEBUG: R - Restart | S - Speed up\ntype: $eventType\ncanContinue: $canContinue\nnext: ${nextScreen?.let { it::class.java.canonicalName }}\nnotes: $showNotes"
     }
 
     private fun getNumberSuffix(number: Int): String {
