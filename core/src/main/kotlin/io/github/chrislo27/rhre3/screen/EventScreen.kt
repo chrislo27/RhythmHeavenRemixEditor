@@ -306,7 +306,7 @@ class EventScreen(main: RHRE3Application)
 
     private fun getNumberSuffix(number: Int): String {
         return when {
-            number in 11..19 -> "th"
+            number % 100 in 11..19 -> "th"
             number % 10 == 1 -> "st"
             number % 10 == 2 -> "nd"
             number % 10 == 3 -> "rd"
