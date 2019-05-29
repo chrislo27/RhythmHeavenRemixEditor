@@ -109,7 +109,7 @@ class EventScreen(main: RHRE3Application)
 
             this.nextScreen = nextScreen
             this.eventType = eventType
-            this.canContinue = if (eventType.canImmediatelyContinue) 0f else if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && RHRE3.immediateEvent % 2 != 0 && RHRE3.immediateEvent != 0) 0f else -1f
+            this.canContinue = if (eventType.canImmediatelyContinue) 0f else if (main.preferences.getInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, 0) == NOW.year && (RHRE3.immediateEvent % 2 != 0 || RHRE3.immediateEvent == 0)) 0f else -1f
             main.preferences.putInteger(PreferenceKeys.EVENT_PREFIX + eventType.name, NOW.year).flush()
             this.canUpdate = 0
             this.background = eventType.backgroundFactory()
