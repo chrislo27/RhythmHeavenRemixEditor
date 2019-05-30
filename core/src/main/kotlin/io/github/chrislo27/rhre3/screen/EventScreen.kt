@@ -63,9 +63,8 @@ class EventScreen(main: RHRE3Application)
 
             return when {
                 // RHRE anniversary:
-                // Occurs from day of to 3 days after (exclusive)
-                today == anniversaryButNow || (today.isAfter(anniversaryButNow)
-                        && today.isBefore(anniversaryButNow.plusDays(3))) -> {
+                // Occurs from day of only
+                today == anniversaryButNow -> {
                     EventScreen(main).takeIf {
                         it.loadEventJson(EventType.ANNIVERSARY,
                                          Gdx.files.internal("event/anniversary.json"), nextScreen)
