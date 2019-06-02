@@ -235,7 +235,7 @@ metadata such as the duration and its editable abilities.
 | responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
 | earliness | number? | If present, indicates the number of seconds **early** to play this cue. Useful for voiced cues where certain syllables start earlier. Negative values should not be used. Defaults to 0.0. |
 | loopStart | number? | If present, indicates the loop start point in seconds. Only works if `loops` is true. Must be less than `loopEnd`. |
-| loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than zero, defaults to end of sample. Defaults to -1.0. |
+| loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than or equal to zero, defaults to the end of the sample. Defaults to 0.0. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,
