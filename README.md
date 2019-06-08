@@ -53,4 +53,3 @@ This is a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license), for free.
 
 RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).<br>
-Please view the [Privacy Policy](PRIVACY_POLICY.md) for information on data collection.
