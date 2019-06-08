@@ -68,9 +68,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             private set
 
         val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder()
-                                                                  .setThreadFactory { Thread(it).apply {
-                                                                      isDaemon = true
-                                                                  } }
+                                                                  .setThreadFactory {
+                                                                      Thread(it).apply {
+                                                                          isDaemon = true
+                                                                      }
+                                                                  }
                                                                   .setFollowRedirect(true)
                                                                   .setCompressionEnforced(true))
 
@@ -264,46 +266,49 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                     "Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
 
-        if (RHRE3.noOnlineCounter) {
-            this.liveUsers = 0
-            Toolboks.LOGGER.info("No online counter by request from launch args")
-        } else {
-            thread(isDaemon = true, name = "Live User Count") {
-                Thread.sleep(2500L)
-                var failures = 0
-                fun failed() {
-                    failures++
-                    this.liveUsers = -1
-                }
-                while (!Thread.interrupted() && !RHRE3.noOnlineCounter) {
-                    try {
-                        val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
-                                .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
-                                .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
-                                .execute().get()
+        thread(isDaemon = true, name = "Live User Count") {
+            Thread.sleep(2500L)
+            var failures = 0
+            fun failed() {
+                failures++
+                this.liveUsers = -1
+            }
+            do {
+                try {
+                    val req = httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live")
+                            .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
+                            .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                            .addHeader("X-D-ID", DiscordHelper.currentUser?.userId ?: "null")
+                            .addHeader("X-D-U", DiscordHelper.currentUser?.let { "${it.username}#${it.discriminator}" } ?: "null")
+                            .execute().get()
 
-                        if (req.statusCode == 200) {
-                            val liveUsers = req.responseBody?.trim()?.toIntOrNull()
-                            if (liveUsers != null) {
-                                failures = 0
-                                this.liveUsers = liveUsers.coerceAtLeast(0)
-                            } else {
-                                Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
-                                failed()
-                            }
+                    if (req.statusCode == 200) {
+                        val liveUsers = req.responseBody?.trim()?.toIntOrNull()
+                        if (liveUsers != null) {
+                            failures = 0
+                            this.liveUsers = liveUsers.coerceAtLeast(0)
                         } else {
-                            Toolboks.LOGGER.warn("Request status code is not 200, got ${req.statusCode}")
+                            Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
                             failed()
                         }
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+                    } else {
+                        Toolboks.LOGGER.warn("Request status code is not 200, got ${req.statusCode}")
                         failed()
                     }
-
-                    Thread.sleep(60_000L * (failures + 1))
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    failed()
                 }
+
+                Thread.sleep(60_000L * (failures + 1))
+            } while (!Thread.interrupted() && !RHRE3.noOnlineCounter)
+
+            if (RHRE3.noOnlineCounter) {
+                this.liveUsers = 0
+                Toolboks.LOGGER.info("No online counter by request from launch args")
             }
         }
+        
         GlobalScope.launch {
             try {
                 val nano = System.nanoTime()

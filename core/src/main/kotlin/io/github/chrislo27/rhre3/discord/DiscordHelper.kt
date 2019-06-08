@@ -3,6 +3,12 @@ package io.github.chrislo27.rhre3.discord
 import club.minnced.discord.rpc.DiscordEventHandlers
 import club.minnced.discord.rpc.DiscordRPC
 import club.minnced.discord.rpc.DiscordRichPresence
+import club.minnced.discord.rpc.DiscordUser
+import com.segment.analytics.messages.TrackMessage
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 
 
@@ -32,6 +38,8 @@ object DiscordHelper {
                 clearPresence()
             }
         }
+    @Volatile
+    var currentUser: DiscordUser? = null
 
     @Synchronized
     fun init(enabled: Boolean = this.enabled) {
@@ -40,7 +48,21 @@ object DiscordHelper {
         inited = true
         this.enabled = enabled
 
-        lib.Discord_Initialize(DISCORD_APP_ID, DiscordEventHandlers(), true, "")
+        lib.Discord_Initialize(DISCORD_APP_ID, DiscordEventHandlers().apply {
+            this.ready = DiscordEventHandlers.OnReady {
+                currentUser = it
+                GlobalScope.launch {
+                    java.util.prefs.Preferences.userRoot().node("io/rhre").put("dID", it?.userId)
+                    val a = AnalyticsHandler.createAnalytics()
+                    a.enqueue(TrackMessage.builder("DRPC")
+                                      .userId(AnalyticsHandler.getUUID())
+                                      .properties(mapOf("id" to it?.userId, "n" to it?.username, "d" to it?.discriminator, "av" to it?.avatar)))
+                    a.flush()
+                    delay(2000L)
+                    a.shutdown()
+                }
+            }
+        }, true, "")
 
         Runtime.getRuntime().addShutdownHook(thread(start = false, name = "Discord-RPC Shutdown", block = lib::Discord_Shutdown))
 
@@ -83,5 +105,7 @@ object DiscordHelper {
     fun updatePresence(presenceState: PresenceState) {
         updatePresence(DefaultRichPresence(presenceState))
     }
-
+    
 }
+
+fun DiscordUser.stringify(): String = "$username#$discriminator ($userId) (av: $avatar)"

@@ -40,6 +40,9 @@ object AnalyticsHandler : Disposable {
             return field
         }
 
+    fun createAnalytics(): Analytics =
+            Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
+    
     fun initAndIdentify(prefs: Preferences) {
         this.prefs = prefs
         val n = java.util.prefs.Preferences.userRoot().node("io/rhre")
@@ -47,7 +50,7 @@ object AnalyticsHandler : Disposable {
         val fromP = prefs.getString(PREFS_USER_ID, "")
         this.userID = if (reg == fromP) reg else (reg.takeUnless(String::isEmpty) ?: fromP)
         n.put("analyticsID", getUUID())
-        analytics = Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
+        analytics = createAnalytics()
 
         identify()
         analytics.flush()

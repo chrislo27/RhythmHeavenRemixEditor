@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
+import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import kotlinx.coroutines.GlobalScope
@@ -62,6 +63,8 @@ object Articles {
                 val req = httpClient.prepareGet(FETCH_URL)
                         .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                         .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                        .addHeader("X-D-ID", DiscordHelper.currentUser?.userId ?: "null")
+                        .addHeader("X-D-U", DiscordHelper.currentUser?.let { "${it.username}#${it.discriminator}" } ?: "null")
                         .addQueryParam("limit", "${(ARTICLE_COUNT - list.size).coerceIn(1, ARTICLE_COUNT)}")
                 if (RHRE3.EXPERIMENTAL || Toolboks.debugMode) {
                     req.addQueryParam("experimental", "true")
