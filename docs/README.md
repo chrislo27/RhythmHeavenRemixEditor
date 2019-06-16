@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.18.1`.
+This readme is accurate as of version `v3.18.4`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -69,8 +69,6 @@ however, read up on the controls first below!
 | **`CTRL+Z`** | Undo |
 | **`CTRL+SHIFT+Z`** or **`CTRL+Y`** | Redo |
 | **`F`** | Quick switch to last game (doesn't work in search results) |
-| **`HOME`** | Jump to beat 0 |
-| **`END`** | Jump to last entity/End Remix entity |
 | **`UP`** or **`W`** | Scroll up (only in editor) |
 | **`DOWN`** or **`S`** | Scroll down (only in editor) |
 | **`SHIFT+SCROLL`** | Pan camera (hold **`CTRL`** to increase speed) |
@@ -87,6 +85,9 @@ however, read up on the controls first below!
 | Holding **`CTRL`** or **`SHIFT`** will accelerate the camera pan speed |
 | **`A`** or **`LEFT`** | Pan camera left |
 | **`D`** or **`RIGHT`** | Pan camera right |
+| **`HOME`** | Jump to beat 0 |
+| **`END`** | Jump to last entity/End Remix entity |
+| **`M`** | Jump to Music Start tracker |
 | __Selection Tool only__ |
 | **`RIGHT CLICK`** on *empty space* | Set playback start |
 | **`MIDDLE CLICK`** or **`CTRL+RIGHT CLICK`** on *empty space* | Set music start |
