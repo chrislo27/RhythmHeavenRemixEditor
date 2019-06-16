@@ -903,6 +903,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.END)) {
                 cameraPan = CameraPan(camera.position.x, remix.getLastEntityPoint(), 0.25f, Interpolation.exp10Out)
                 camera.update()
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.M)) {
+                cameraPan = CameraPan(camera.position.x, remix.musicStartSec, 0.25f, Interpolation.exp10Out)
+                camera.update()
             }
 
             if (clickOccupation == ClickOccupation.None) {
