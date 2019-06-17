@@ -49,7 +49,7 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameGroup
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
@@ -1328,7 +1328,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             if (ModdingUtils.moddingToolsEnabled && entity is ModelEntity<*>) {
-                val str = GameRegistry.moddingMetadata.currentData.joinToStringFromData(entity.datamodel, entity)
+                val str = SFXDatabase.moddingMetadata.currentData.joinToStringFromData(entity.datamodel, entity)
                 if (str.isNotEmpty()) {
                     output += str
                 }
@@ -1517,7 +1517,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 datamodel as ResponseModel
                                 if (datamodel.responseIDs.isNotEmpty()) {
                                     val id = datamodel.responseIDs.random()
-                                    val entity = GameRegistry.data.objectMap[id]?.createEntity(remix, null) ?: error(
+                                    val entity = SFXDatabase.data.objectMap[id]?.createEntity(remix, null) ?: error(
                                             "ID $id not found in game registry when making response copy")
 
                                     entity.updateBounds {

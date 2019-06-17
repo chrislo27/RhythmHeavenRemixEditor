@@ -2,7 +2,7 @@ package io.github.chrislo27.rhre3.sfxdb.datamodel.impl
 
 import io.github.chrislo27.rhre3.entity.model.multipart.PatternEntity
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
@@ -16,7 +16,7 @@ class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
 
     val repitchable: Boolean by lazy {
         cues.any {
-            (GameRegistry.data.objectMap[it.id] as? Cue)?.repitchable == true
+            (SFXDatabase.data.objectMap[it.id] as? Cue)?.repitchable == true
         }
     }
 

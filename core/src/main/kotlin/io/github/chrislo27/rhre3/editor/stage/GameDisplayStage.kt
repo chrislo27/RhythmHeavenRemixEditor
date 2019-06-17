@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.ui.*
@@ -35,7 +35,7 @@ open class GameDisplayStage(val editor: Editor, palette: UIPalette, parent: UIEl
                 field = value
 
                 icon.image = if (value == null) null else textureRegion.apply { this.setRegion(value.icon) }
-                label.text = GameRegistry.data.gameGroupsMap[value?.group]?.name ?: (value?.name) ?: ""
+                label.text = SFXDatabase.data.gameGroupsMap[value?.group]?.name ?: (value?.name) ?: ""
             }
         }
 

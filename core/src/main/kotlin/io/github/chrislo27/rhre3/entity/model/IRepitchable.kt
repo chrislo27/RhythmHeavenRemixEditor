@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.entity.model
 
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.util.Semitones
@@ -13,7 +13,7 @@ interface IRepitchable {
         fun anyInModel(model: ContainerModel): Lazy<Boolean> {
             return lazy {
                 model.cues.any {
-                    (GameRegistry.data.objectMap[it.id] as? Cue)?.repitchable == true
+                    (SFXDatabase.data.objectMap[it.id] as? Cue)?.repitchable == true
                 }
             }
         }

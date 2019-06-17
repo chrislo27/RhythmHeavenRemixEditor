@@ -17,7 +17,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.playalong.*
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -171,13 +171,13 @@ class PlayalongStage(val editor: Editor,
 
         noEntitiesLabel = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getRealText(): String {
-                return if (!isLocalizationKey) super.getRealText() else Localization[text, "[#DDDDDD]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.playalongGame.group} ➡ ${GameRegistry.data.playalongGame.name}[]"]
+                return if (!isLocalizationKey) super.getRealText() else Localization[text, "[#DDDDDD]${Localization[Series.OTHER.localization]} ➡ ${SFXDatabase.data.playalongGame.group} ➡ ${SFXDatabase.data.playalongGame.name}[]"]
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 editor.stage.playalongToggleButton.onLeftClick(0f, 0f)
-                val game = GameRegistry.data.playalongGame
+                val game = SFXDatabase.data.playalongGame
                 editor.stage.selectInPicker(game, null)
             }
 

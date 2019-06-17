@@ -2,7 +2,7 @@ package io.github.chrislo27.rhre3.editor.picker
 
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameGroup
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 
 
@@ -24,7 +24,7 @@ open class SimpleFilter(val groupFilter: (GameGroup) -> Boolean,
 
         clearAll()
 
-        GameRegistry.data.gameGroupsList.filterTo(gameGroups, groupFilter)
+        SFXDatabase.data.gameGroupsList.filterTo(gameGroups, groupFilter)
         gameGroups.associateTo(gamesPerGroup) {
             it to GameList().apply {
                 it.games.filterTo(this.list, gameFilter)

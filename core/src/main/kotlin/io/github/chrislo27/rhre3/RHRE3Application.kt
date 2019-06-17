@@ -24,7 +24,7 @@ import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -380,7 +380,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(Playalong.playalongControllerMappings))
         preferences.flush()
         try {
-            GameRegistry.dispose()
+            SFXDatabase.dispose()
         } catch (e: Exception) {
             e.printStackTrace()
         }

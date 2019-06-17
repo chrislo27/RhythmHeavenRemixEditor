@@ -22,7 +22,7 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
@@ -221,7 +221,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     // Analytics
                     AnalyticsHandler.track("Export Remix",
                                            mapOf(
-                                                   "sfxDatabase" to GameRegistry.data.version,
+                                                   "sfxDatabase" to SFXDatabase.data.version,
                                                    "fileType" to MP3.extension,
                                                    "fileSize" to exportFile.length(),
                                                    "partial" to partial,
@@ -412,9 +412,9 @@ class ExportRemixScreen(main: RHRE3Application)
             BeadsSoundSystem.resume()
 
             if (success) {
-                (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)?.takeIf { playSuccessDing }
+                (SFXDatabase.data.objectMap["mrUpbeatWii/applause"] as? Cue)?.takeIf { playSuccessDing }
             } else {
-                (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
+                (SFXDatabase.data.objectMap["mountainManeuver/toot"] as? Cue)
             }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                     ?: (if (!playSuccessDing && success) Unit else Toolboks.LOGGER.warn("Export SFX (success=$success) not found"))
 
@@ -606,7 +606,7 @@ class ExportRemixScreen(main: RHRE3Application)
                                 // Analytics
                                 AnalyticsHandler.track("Export Remix",
                                                        mapOf(
-                                                               "sfxDatabase" to GameRegistry.data.version,
+                                                               "sfxDatabase" to SFXDatabase.data.version,
                                                                "fileType" to fileType.extension,
                                                                "fileSize" to correctFile.length(),
                                                                "partial" to partial,
@@ -640,7 +640,7 @@ class ExportRemixScreen(main: RHRE3Application)
         isCapableOfExporting = hasEndRemix || canOmitEndRemix
         if (!isCapableOfExporting) {
             if (!hasEndRemix) {
-                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix", GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${GameRegistry.data.specialGame.name} ➡ ${GameRegistry.data.objectMap[GameRegistry.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix", SFXDatabase.data.objectMap[SFXDatabase.END_REMIX_ENTITY_ID]?.name] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${SFXDatabase.data.specialGame.name} ➡ ${SFXDatabase.data.objectMap[SFXDatabase.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
             }
         } else {
             if (throwable == null) {

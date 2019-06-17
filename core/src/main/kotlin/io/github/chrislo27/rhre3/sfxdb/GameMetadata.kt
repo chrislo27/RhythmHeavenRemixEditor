@@ -70,11 +70,11 @@ object GameMetadata {
         groups.clear()
 
         obj.games.forEach {
-            val game = GameRegistry.data.gameMap[it] ?: return@forEach
+            val game = SFXDatabase.data.gameMap[it] ?: return@forEach
             games[game] = true
         }
         obj.gameGroups.forEach {
-            val group = GameRegistry.data.gameGroupsMap[it] ?: return@forEach
+            val group = SFXDatabase.data.gameGroupsMap[it] ?: return@forEach
             groups[group] = true
         }
 
@@ -86,7 +86,7 @@ object GameMetadata {
             recents.clear()
 
             recentsObj.games.mapNotNullTo(recents) {
-                GameRegistry.data.gameMap[it]
+                SFXDatabase.data.gameMap[it]
             }
         }
     }

@@ -22,7 +22,7 @@ import io.github.chrislo27.rhre3.entity.model.special.*
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.rhre2.RemixObject
@@ -68,7 +68,7 @@ open class Remix(val main: RHRE3Application)
                             val extra: MutableMap<String, Any> = mutableMapOf())
 
         fun createMissingEntitySubtitle(remix: Remix, id: String, x: Float, y: Float, w: Float, h: Float): SubtitleEntity {
-            return (GameRegistry.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+            return (SFXDatabase.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
                 this.subtitle = "[RED]MISSING ENTITY[]\n$id"
                 this.updateBounds {
                     this.bounds.set(x, y, w, h)
@@ -81,7 +81,7 @@ open class Remix(val main: RHRE3Application)
 
             remix.apply {
                 tree.put("version", RHRE3.VERSION.toString())
-                tree.put("databaseVersion", GameRegistry.data.version)
+                tree.put("databaseVersion", SFXDatabase.data.version)
 
                 tree.put("playbackStart", playbackStart)
                 tree.put("musicStartSec", musicStartSec)
@@ -303,8 +303,8 @@ open class Remix(val main: RHRE3Application)
             remix.midiInstruments = tracksWithNotes.size
             remix.trackCount = remix.midiInstruments.coerceIn(Editor.DEFAULT_TRACK_COUNT, Editor.MAX_TRACK_COUNT)
 
-            val defaultCue = GameRegistry.data.objectMap[DEFAULT_MIDI_NOTE]!! as Cue
-            val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(
+            val defaultCue = SFXDatabase.data.objectMap[DEFAULT_MIDI_NOTE]!! as Cue
+            val noteCue = SFXDatabase.data.objectMap[remix.main.preferences.getString(
                     PreferenceKeys.MIDI_NOTE)] ?: defaultCue
             points.mapTo(remix.entities) { point ->
                 val ent = noteCue.createEntity(remix, null).apply {
@@ -331,7 +331,7 @@ open class Remix(val main: RHRE3Application)
             }
 
             // add end entity either 2 beats after furthest point, or on the next measure border
-            remix.entities += GameRegistry.data.endRemix.createEntity(remix, null).apply {
+            remix.entities += SFXDatabase.data.endRemix.createEntity(remix, null).apply {
                 updateBounds {
                     val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
                             ?: 0).toFloat()
@@ -492,7 +492,7 @@ open class Remix(val main: RHRE3Application)
                                      ))
 
             remixObject.entities?.forEach {
-                val datamodel = GameRegistry.data.objectMap[it.id] ?: run {
+                val datamodel = SFXDatabase.data.objectMap[it.id] ?: run {
                     missing++
                     remix.entities += createMissingEntitySubtitle(remix, it.id ?: "null", it.beat, it.level.toFloat(), it.width, 1f)
                     return@forEach
@@ -641,7 +641,7 @@ open class Remix(val main: RHRE3Application)
     open var doUpdatePlayalong: Boolean = false
 
     private val metronomeSFX: LazySound by lazy {
-                (GameRegistry.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
+                (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()

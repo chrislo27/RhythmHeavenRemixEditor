@@ -14,7 +14,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.Semitones
@@ -192,7 +192,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 var success: Boolean = false
                 val nano = measureNanoTime {
                     success = try {
-                        GameRegistry.data.loadModdingMetadata(true)
+                        SFXDatabase.data.loadModdingMetadata(true)
                     } catch (e: Exception) {
                         e.printStackTrace()
                         false
@@ -228,7 +228,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
 
-                Gdx.net.openURI("file:///${GameRegistry.CUSTOM_MODDING_METADATA_FOLDER.file().absolutePath}")
+                Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_MODDING_METADATA_FOLDER.file().absolutePath}")
             }
         }.apply {
             val width = buttonWidth * 0.09f

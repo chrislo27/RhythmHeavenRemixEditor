@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.sfxdb.datamodel
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.SpecialDatamodel
@@ -30,7 +30,7 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
             return this.baseBpm..this.baseBpm
 
         if (this is ContainerModel) {
-            val ranges = this.cues.mapNotNull { GameRegistry.data.objectMap[it.id] }
+            val ranges = this.cues.mapNotNull { SFXDatabase.data.objectMap[it.id] }
                     .mapNotNull(Datamodel::checkBaseBpm)
             if (ranges.isEmpty())
                 return null

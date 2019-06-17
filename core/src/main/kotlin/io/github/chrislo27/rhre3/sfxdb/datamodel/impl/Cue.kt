@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.sfxdb.datamodel.impl
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
@@ -29,13 +29,13 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
 
     val introSoundCue: Cue?
         get() =
-            GameRegistry.data.objectMap[introSound] as Cue?
+            SFXDatabase.data.objectMap[introSound] as Cue?
     val endingSoundCue: Cue?
         get() =
-            GameRegistry.data.objectMap[endingSound] as Cue?
+            SFXDatabase.data.objectMap[endingSound] as Cue?
 
     override val pickerName: PickerName
-        get() = if (id != GameRegistry.SKILL_STAR_ID) super.pickerName else super.pickerName.copy(sub = "[LIGHT_GRAY](usable in Playalong)[]")
+        get() = if (id != SFXDatabase.SKILL_STAR_ID) super.pickerName else super.pickerName.copy(sub = "[LIGHT_GRAY](usable in Playalong)[]")
 
     init {
         if (!soundHandle.exists()) {

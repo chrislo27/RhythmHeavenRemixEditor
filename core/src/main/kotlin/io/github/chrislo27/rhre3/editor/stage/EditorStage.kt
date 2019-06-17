@@ -29,7 +29,7 @@ import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
@@ -310,7 +310,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             }
         }
 
-        if (isDirty != DirtyType.CLEAN && !GameRegistry.isDataLoading()) {
+        if (isDirty != DirtyType.CLEAN && !SFXDatabase.isDataLoading()) {
             val pickerSelection = editor.pickerSelection
             val filter = pickerSelection.filter
             val isSearching = filter === searchFilter
@@ -476,7 +476,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 } else if (filter == searchFilter) {
                     gameStageText.text = Localization["editor.nothing.search"]
                 } else if (filter is CustomFilter) {
-                    gameStageText.text = Localization["editor.nothing.customs", "${if (OSUtils.IS_WINDOWS) "<user>" else "~"}/" + RHRE3.RHRE3_FOLDER.name() + "/" + GameRegistry.CUSTOM_SFX_FOLDER.name()]
+                    gameStageText.text = Localization["editor.nothing.customs", "${if (OSUtils.IS_WINDOWS) "<user>" else "~"}/" + RHRE3.RHRE3_FOLDER.name() + "/" + SFXDatabase.CUSTOM_SFX_FOLDER.name()]
                     val screenX = 0.25f - customSoundsFolderButton.location.screenWidth / 2f
                     if (customSoundsFolderButton.location.screenX != screenX) {
                         customSoundsFolderButton.location.set(screenY = 0.5f * pickerStage.percentageOfHeight(Editor.ICON_PADDING), screenX = screenX)
@@ -855,7 +855,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
 
-                        Gdx.net.openURI("file:///${GameRegistry.CUSTOM_SFX_FOLDER.file().absolutePath}")
+                        Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
                     }
                 }.apply {
                     setLocation(Editor.ICON_COUNT_X, 0)
@@ -881,7 +881,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     super.render(screen, batch, shapeRenderer)
                                     val filter = editor.pickerSelection.filter
                                     val label = this.labels.first() as TextLabel
-                                    if (GameRegistry.isDataLoading() || if (isVariant) filter.areGamesEmpty else filter.areGroupsEmpty) {
+                                    if (SFXDatabase.isDataLoading() || if (isVariant) filter.areGamesEmpty else filter.areGroupsEmpty) {
                                         if (isUp) {
                                             label.text = Editor.ARROWS[2]
                                         } else {
@@ -1041,7 +1041,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val label = this.labels.first() as TextLabel
 
                         val currentDatamodelList = filter.currentDatamodelList
-                        if (GameRegistry.isDataLoading() || currentDatamodelList == null) {
+                        if (SFXDatabase.isDataLoading() || currentDatamodelList == null) {
                             label.text = Editor.ARROWS[2]
                         } else {
                             if (currentDatamodelList.currentIndex > 0) {
@@ -1096,7 +1096,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val label = this.labels.first() as TextLabel
 
                         val currentDatamodelList = filter.currentDatamodelList
-                        if (GameRegistry.isDataLoading() || currentDatamodelList == null) {
+                        if (SFXDatabase.isDataLoading() || currentDatamodelList == null) {
                             label.text = Editor.ARROWS[3]
                         } else {
                             if (currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
@@ -1598,7 +1598,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         (if (Toolboks.debugMode) "\n[LIGHT_GRAY]${game.id}[]" else "") +
                         "\n[LIGHT_GRAY]${Localization["editor.favouriteToggle"]}[]" +
                         if (ModdingUtils.moddingToolsEnabled && (isVariant || isSingleInGameGroup())) {
-                            GameRegistry.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
+                            SFXDatabase.moddingMetadata.currentData.joinToStringFromData(game, null).takeIf { it.isNotEmpty() }?.let { "\n$it" } ?: ""
                         } else ("")
             }
             return ""

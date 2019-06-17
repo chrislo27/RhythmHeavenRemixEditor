@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Equidistant
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
@@ -37,7 +37,7 @@ class EquidistantEntity(remix: Remix, datamodel: Equidistant)
 
     init {
         datamodel.cues.mapIndexedTo(internal) { index, pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
+            SFXDatabase.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
                 this.updateBounds {
                     this@apply.bounds.x = this@EquidistantEntity.bounds.x
                     this@apply.bounds.y = this@EquidistantEntity.bounds.y + pointer.track

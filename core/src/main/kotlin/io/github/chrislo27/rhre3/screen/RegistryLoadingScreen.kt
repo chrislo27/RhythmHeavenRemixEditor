@@ -9,7 +9,7 @@ import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -28,7 +28,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
         val DEF_AFTER_LOAD_SCREEN: String = "editor"
     }
 
-    private var registryData: GameRegistry.RegistryData? = null
+    private var registryData: SFXDatabase.RegistryData? = null
 
     override val stage: Stage<RegistryLoadingScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     private val gameIcon: ImageLabel<RegistryLoadingScreen>
@@ -124,7 +124,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        registryData = GameRegistry.initialize()
+        registryData = SFXDatabase.initialize()
     }
 
     override fun tickUpdate() {

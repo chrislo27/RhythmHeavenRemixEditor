@@ -12,7 +12,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -406,9 +406,9 @@ class UploadRemixScreen(main: RHRE3Application, private val file: File, private 
                 fun playEndSound(success: Boolean) {
                     BeadsSoundSystem.resume()
                     if (success) {
-                        (GameRegistry.data.objectMap["mrUpbeatWii/applause"] as? Cue)
+                        (SFXDatabase.data.objectMap["mrUpbeatWii/applause"] as? Cue)
                     } else {
-                        (GameRegistry.data.objectMap["mountainManeuver/toot"] as? Cue)
+                        (SFXDatabase.data.objectMap["mountainManeuver/toot"] as? Cue)
                     }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
                             ?: Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
                 }

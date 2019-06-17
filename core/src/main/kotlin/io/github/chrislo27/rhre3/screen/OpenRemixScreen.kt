@@ -15,7 +15,7 @@ import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
@@ -239,7 +239,7 @@ class OpenRemixScreen(main: RHRE3Application)
                     goodBad(remix.version.toString(), true)
                 else
                     goodBad(remix.databaseVersion.toString(),
-                            remix.databaseVersion != GameRegistry.data.version)
+                            remix.databaseVersion != SFXDatabase.data.version)
 
                 mainLabel.text = ""
 
@@ -259,7 +259,7 @@ class OpenRemixScreen(main: RHRE3Application)
                             goodBad(if (remixType != RemixType.RHRE3) "?" else missingAssets.second.toString(),
                                     missingAssets.second > 0, "RED")]
                 }
-                if (GameRegistry.data.version < remix.databaseVersion) {
+                if (SFXDatabase.data.version < remix.databaseVersion) {
                     mainLabel.text += "\n\n" + Localization["screen.open.oldDatabase"]
                 } else if (remix.version < RHRE3.VERSION) {
                     mainLabel.text += "\n\n" +

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.soundsystem.LoopParams
@@ -50,7 +50,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     private val cue: Cue = datamodel
     val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
-    val isSkillStar: Boolean = cue.id == GameRegistry.SKILL_STAR_ID
+    val isSkillStar: Boolean = cue.id == SFXDatabase.SKILL_STAR_ID
 
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable

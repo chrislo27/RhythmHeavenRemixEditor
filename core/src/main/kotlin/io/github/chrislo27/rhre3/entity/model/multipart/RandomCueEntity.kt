@@ -6,7 +6,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.RandomCue
@@ -25,7 +25,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
 
     private fun getPossibleObjects(): List<Pair<Datamodel, CuePointer>> {
         return datamodel.cues.mapNotNull { pointer ->
-            GameRegistry.data.objectMap[pointer.id]?.let { it to pointer }
+            SFXDatabase.data.objectMap[pointer.id]?.let { it to pointer }
         }
     }
 

@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.sfxdb.datamodel.impl
 
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.json.CuePointerObject
 
 fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(this)
@@ -41,7 +41,7 @@ class CuePointer {
     val duration: Float
         get() =
             if (backingDuration <= 0f) {
-                GameRegistry.data.objectMap[id]?.duration ?: error("$id does not exist")
+                SFXDatabase.data.objectMap[id]?.duration ?: error("$id does not exist")
             } else {
                 backingDuration
             }

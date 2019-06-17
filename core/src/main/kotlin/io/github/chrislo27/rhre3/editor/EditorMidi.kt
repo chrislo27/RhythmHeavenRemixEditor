@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.midi.MidiHandler
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
@@ -28,8 +28,8 @@ class EditorMidiListener(val editor: Editor) : MidiHandler.MidiNoteListener {
                     editor.changePitchOfSelection(note.semitone, false, true, selection)
                 }
             } else if (RHRE3.midiRecording && remix.playState == PlayState.PLAYING) {
-                val defaultCue = GameRegistry.data.objectMap[Remix.DEFAULT_MIDI_NOTE]!! as Cue
-                val noteCue = GameRegistry.data.objectMap[remix.main.preferences.getString(PreferenceKeys.MIDI_NOTE)] ?: defaultCue
+                val defaultCue = SFXDatabase.data.objectMap[Remix.DEFAULT_MIDI_NOTE]!! as Cue
+                val noteCue = SFXDatabase.data.objectMap[remix.main.preferences.getString(PreferenceKeys.MIDI_NOTE)] ?: defaultCue
                 val ent = noteCue.createEntity(remix, null).apply {
                     updateBounds {
                         bounds.set(remix.beat, (numberOfNotes % remix.trackCount).toFloat(), 0f, 1f)

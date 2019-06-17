@@ -9,7 +9,7 @@ import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.USE_IN_REMIX
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameGroupListComparatorIgnorePriority
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import java.util.*
@@ -52,7 +52,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
 
         when (filterButton.filter) {
             GAME_NAME -> {
-                GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
+                SFXDatabase.data.gameGroupsList.filterTo(gameGroups) { group ->
                     query in group.name.toLowerCase(Locale.ROOT)
                             || group.games.any { game -> query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) } }
                 }
@@ -69,7 +69,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 addAllDatamodelsFromGames()
             }
             ENTITY_NAME -> {
-                GameRegistry.data.gameGroupsList.forEach { group ->
+                SFXDatabase.data.gameGroupsList.forEach { group ->
                     val result: List<List<Datamodel>> = group.games.mapNotNull { game ->
                         game.placeableObjects.filter {
                             query in it.name.toLowerCase(Locale.ROOT)
@@ -95,7 +95,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 }
             }
             CALL_AND_RESPONSE -> {
-                GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
+                SFXDatabase.data.gameGroupsList.filterTo(gameGroups) { group ->
                     group.games.any { game ->
                         game.hasCallAndResponse && (query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) })
                     }
@@ -113,7 +113,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
                 }
             }
             FAVOURITES -> {
-                GameRegistry.data.gameGroupsList.filterTo(gameGroups) { group ->
+                SFXDatabase.data.gameGroupsList.filterTo(gameGroups) { group ->
                     (group.isFavourited && query in group.name.toLowerCase(Locale.ROOT))
                             || group.games.any { game ->
                         game.isFavourited && (query in game.name.toLowerCase(Locale.ROOT) || game.searchHints.any { query in it.toLowerCase(Locale.ROOT) })

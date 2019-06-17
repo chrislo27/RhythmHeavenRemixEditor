@@ -5,14 +5,14 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.sfxdb.Game
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
 
 
-class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
+class ModdingMetadata(private val sfxDb: SFXDatabase.RegistryData,
                       private val sourceFolder: FileHandle, private val customFolder: FileHandle) {
 
     class BadModdingMetadataException(data: Data, fh: FileHandle, message: String)
@@ -113,9 +113,9 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
             }
             val mappedApplyTo: Map<Any, IDType> = applyToIDs.associate {
                 // Attempt to find game, then no deprecations, then deprecations (with warning), then error
-                registryData.gameMap[it]?.to(IDType.GAME)
-                        ?: registryData.noDeprecationsObjectMap[it]?.to(IDType.DATAMODEL)
-                        ?: registryData.objectMap[it]?.also { dm ->
+                sfxDb.gameMap[it]?.to(IDType.GAME)
+                        ?: sfxDb.noDeprecationsObjectMap[it]?.to(IDType.DATAMODEL)
+                        ?: sfxDb.objectMap[it]?.also { dm ->
                             Toolboks.LOGGER.warn("Warning in $dataName[$arrayIndex].applyTo: $it refers to a deprecated ID, use ${dm.id} instead")
                         }?.to(IDType.DATAMODEL)
                         ?: badMetadata("Error in [$arrayIndex].applyTo: $it does not exist as a game or datamodel.")
@@ -167,7 +167,7 @@ class ModdingMetadata(private val registryData: GameRegistry.RegistryData,
                 }
 
                 // Map this data to each datamodel/game in mappedApplyTo
-                mappedApplyTo.forEach { any, type ->
+                mappedApplyTo.forEach { (any, type) ->
                     val newMap = data.mappedData.getOrPut(any) { linkedMapOf() } as MutableMap
                     if (newMap[metadataField] != null) {
                         Toolboks.LOGGER.warn("Duplicate metadata field $dataName[$arrayIndex].$metadataField for ${getID(any)}")

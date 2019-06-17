@@ -22,7 +22,7 @@ import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
@@ -412,7 +412,7 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
-                    Gdx.net.openURI("file:///${GameRegistry.CUSTOM_SFX_FOLDER.file().absolutePath}")
+                    Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
                 }
             }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
@@ -1019,7 +1019,7 @@ class InfoScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
-        dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${GameRegistry.data.version}"]
+        dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${SFXDatabase.data.version}"]
         versionLabel.text = RHRE3.VERSION.toString()
         DiscordHelper.updatePresence(PresenceState.InSettings)
         updateSeePartners()

@@ -1,9 +1,60 @@
 package io.github.chrislo27.rhre3.sfxdb.json
 
+import com.badlogic.gdx.files.FileHandle
+import io.github.chrislo27.rhre3.playalong.PlayalongInput
+import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.sfxdb.Game
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.*
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.*
 
+
+fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: String): Datamodel {
+    fun String.starSubstitution(): String = replace("*", game.id)
+    fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
+    
+    return when (val obj = this) {
+        // Note: if this is updated, remember to update GameToJson
+        is CueObject ->
+            Cue(game, objID, obj.deprecatedIDs, obj.name,
+                obj.duration,
+                obj.stretchable, obj.repitchable,
+                baseFileHandle.child("$objID.${obj.fileExtension}"),
+                obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
+                obj.responseIDs.starSubstitution(),
+                obj.baseBpm, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
+        is EquidistantObject ->
+            Equidistant(game, objID, obj.deprecatedIDs,
+                        obj.name, obj.distance,
+                        obj.stretchable,
+                        obj.cues.mapToDatamodel(game.id))
+        is KeepTheBeatObject ->
+            KeepTheBeat(game, objID, obj.deprecatedIDs,
+                        obj.name, obj.defaultDuration,
+                        obj.cues.mapToDatamodel(game.id))
+        is PatternObject ->
+            Pattern(game, objID, obj.deprecatedIDs,
+                    obj.name, obj.cues.mapToDatamodel(game.id), obj.stretchable)
+        is RandomCueObject ->
+            RandomCue(game, objID, obj.deprecatedIDs,
+                      obj.name, obj.cues.mapToDatamodel(game.id), obj.responseIDs.starSubstitution())
+        is EndRemixObject ->
+            EndRemix(game, objID, obj.deprecatedIDs, obj.name)
+        is SubtitleEntityObject ->
+            Subtitle(game, objID, obj.deprecatedIDs, obj.name, obj.subtitleType)
+        is ShakeEntityObject ->
+            ShakeScreen(game, objID, obj.deprecatedIDs, obj.name)
+        is TextureEntityObject ->
+            TextureModel(game, objID, obj.deprecatedIDs, obj.name)
+        is TapeMeasureObject ->
+            TapeMeasure(game, objID, obj.deprecatedIDs, obj.name)
+        is PlayalongEntityObject ->
+            PlayalongModel(game, objID, obj.deprecatedIDs, obj.name, obj.stretchable,
+                           PlayalongInput[obj.input ?: ""] ?: PlayalongInput.BUTTON_A, PlayalongMethod[obj.method ?: ""] ?: PlayalongMethod.PRESS)
+        is MusicDistortEntityObject ->
+            MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
+    }
+}
 
 fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
     val obj = GameObject()

@@ -10,7 +10,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
@@ -30,7 +30,7 @@ abstract class Entity(val remix: Remix) {
                     val datamodelID = node[ModelEntity.JSON_DATAMODEL].asText(null)
                             ?: error("Entity of type 'model' is missing field ${ModelEntity.JSON_DATAMODEL}")
 
-                    GameRegistry.data.objectMap[datamodelID]?.createEntity(remix, null)
+                    SFXDatabase.data.objectMap[datamodelID]?.createEntity(remix, null)
                 }
                 else -> error("Unsupported entity type: $type")
             }

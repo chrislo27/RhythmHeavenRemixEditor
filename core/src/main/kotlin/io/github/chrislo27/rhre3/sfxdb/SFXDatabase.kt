@@ -17,9 +17,12 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.ContainerModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
-import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.*
-import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.*
-import io.github.chrislo27.rhre3.sfxdb.json.*
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.EndRemix
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.PlayalongModel
+import io.github.chrislo27.rhre3.sfxdb.json.GameObject
+import io.github.chrislo27.rhre3.sfxdb.json.mapToDatamodel
+import io.github.chrislo27.rhre3.sfxdb.json.toJsonObject
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
@@ -30,7 +33,7 @@ import java.io.File
 import java.util.*
 
 
-object GameRegistry : Disposable {
+object SFXDatabase : Disposable {
 
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
@@ -131,11 +134,7 @@ object GameRegistry : Disposable {
 
         private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(false)
 
-        class SfxDirectory(val folder: FileHandle, val isCustom: Boolean, val datajson: FileHandle) {
-            val textureFh: FileHandle = folder.child(ICON_FILENAME)
-        }
-
-        private val folders: List<SfxDirectory> by lazy {
+        private val folders: List<SFXDirectory> by lazy {
             val list = SFX_FOLDER.list { fh ->
                 val datajson = fh.resolve(DATA_JSON_FILENAME)
                 fh.isDirectory && datajson.exists() && datajson.isFile
@@ -146,7 +145,7 @@ object GameRegistry : Disposable {
             }
 
             CUSTOM_SFX_FOLDER.mkdirs()
-            CUSTOM_SFX_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getActualCustomSoundNotice(), false,
+            CUSTOM_SFX_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getNotice(), false,
                                                                   "UTF-8")
             val custom = CUSTOM_SFX_FOLDER.list { fh ->
                 fh.isDirectory
@@ -165,8 +164,8 @@ object GameRegistry : Disposable {
                 }
             }.toList()
 
-            list.map { SfxDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
-                    custom.map { SfxDirectory(it, true, it.child(DATA_JSON_FILENAME)) }
+            list.map { SFXDirectory(it, false, it.child(DATA_JSON_FILENAME)) } +
+                    custom.map { SFXDirectory(it, true, it.child(DATA_JSON_FILENAME)) }
         }
         private val currentObjFh: FileHandle by lazy {
             GitHelper.SOUNDS_DIR.child("current.json")
@@ -342,7 +341,7 @@ object GameRegistry : Disposable {
 
             val directive = folders[index]
             val folder: FileHandle = directive.folder
-            val datajsonFile: FileHandle = directive.datajson
+            val datajsonFile: FileHandle = directive.dataJson
             val game: Game
 
             if (datajsonFile.exists()) {
@@ -364,55 +363,12 @@ object GameRegistry : Disposable {
                             jsonless = false, isSpecial = gameObject.id == SPECIAL_ENTITIES_GAME_ID)
                 val baseFileHandle = directive.folder.parent()
 
-                fun String.starSubstitution(): String = replace("*", gameID)
-                fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
-
                 gameObject.objects.mapTo(game.objects as MutableList) { obj ->
-                    val objID = obj.id.starSubstitution()
+                    val objID = obj.id.replace("*", gameID)
                     if (!objID.matches(ID_REGEX))
                         error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
 
-                    when (obj) {
-                        // Note: if this is updated, remember to update GameToJson
-                        is CueObject ->
-                            Cue(game, objID, obj.deprecatedIDs, obj.name,
-                                obj.duration,
-                                obj.stretchable, obj.repitchable,
-                                baseFileHandle.child("$objID.${obj.fileExtension}"),
-                                obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
-                                obj.responseIDs.starSubstitution(),
-                                obj.baseBpm, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
-                        is EquidistantObject ->
-                            Equidistant(game, objID, obj.deprecatedIDs,
-                                        obj.name, obj.distance,
-                                        obj.stretchable,
-                                        obj.cues.mapToDatamodel(gameID))
-                        is KeepTheBeatObject ->
-                            KeepTheBeat(game, objID, obj.deprecatedIDs,
-                                        obj.name, obj.defaultDuration,
-                                        obj.cues.mapToDatamodel(gameID))
-                        is PatternObject ->
-                            Pattern(game, objID, obj.deprecatedIDs,
-                                    obj.name, obj.cues.mapToDatamodel(gameID), obj.stretchable)
-                        is RandomCueObject ->
-                            RandomCue(game, objID, obj.deprecatedIDs,
-                                      obj.name, obj.cues.mapToDatamodel(gameID), obj.responseIDs.starSubstitution())
-                        is EndRemixObject ->
-                            EndRemix(game, objID, obj.deprecatedIDs, obj.name)
-                        is SubtitleEntityObject ->
-                            Subtitle(game, objID, obj.deprecatedIDs, obj.name, obj.subtitleType)
-                        is ShakeEntityObject ->
-                            ShakeScreen(game, objID, obj.deprecatedIDs, obj.name)
-                        is TextureEntityObject ->
-                            TextureModel(game, objID, obj.deprecatedIDs, obj.name)
-                        is TapeMeasureObject ->
-                            TapeMeasure(game, objID, obj.deprecatedIDs, obj.name)
-                        is PlayalongEntityObject ->
-                            PlayalongModel(game, objID, obj.deprecatedIDs, obj.name, obj.stretchable,
-                                           PlayalongInput[obj.input ?: ""] ?: PlayalongInput.BUTTON_A, PlayalongMethod[obj.method ?: ""] ?: PlayalongMethod.PRESS)
-                        is MusicDistortEntityObject ->
-                            MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
-                    }
+                    obj.mapToDatamodel(baseFileHandle, game, objID)
                 }
             } else {
                 val nameWithoutExt = folder.nameWithoutExtension()

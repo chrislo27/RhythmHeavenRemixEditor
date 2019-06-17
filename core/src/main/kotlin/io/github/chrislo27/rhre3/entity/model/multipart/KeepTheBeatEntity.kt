@@ -6,7 +6,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.KeepTheBeat
 import io.github.chrislo27.rhre3.theme.Theme
@@ -60,7 +60,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
             if (beat >= this.bounds.width)
                 break
 
-            internal += GameRegistry.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
+            internal += SFXDatabase.data.objectMap[pointer.id]?.createEntity(remix, pointer)?.apply {
                 this.updateBounds {
                     this@apply.bounds.x = this@KeepTheBeatEntity.bounds.x + beat
                     this@apply.bounds.y = this@KeepTheBeatEntity.bounds.y + pointer.track

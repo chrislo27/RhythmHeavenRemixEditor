@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.credits
 
 import io.github.chrislo27.rhre3.RHRE3
-import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.toolboks.i18n.Localization
 
 
@@ -22,7 +22,7 @@ object Credits {
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
-                "sfx" crediting (GameRegistry.let { if (!it.isDataLoading()) it.data.sfxCredits.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
+                "sfx" crediting (SFXDatabase.let { if (!it.isDataLoading()) it.data.sfxCredits.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
                 "gfx" crediting "GlitchyPSIX, lilbitdun, Steppy, Tickflow",
                 "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_, " +
                         "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +

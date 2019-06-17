@@ -28,7 +28,7 @@ data class Game(val id: String, val name: String, val series: Series,
     }
 
     val gameGroup: GameGroup
-        get() = GameRegistry.data.gameGroupsMap[group] ?: error("No valid game group for $id with group $group")
+        get() = SFXDatabase.data.gameGroupsMap[group] ?: error("No valid game group for $id with group $group")
 
     val isFavourited: Boolean
         get() = GameMetadata.isGameFavourited(this)
