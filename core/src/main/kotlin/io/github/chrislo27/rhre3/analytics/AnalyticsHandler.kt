@@ -41,8 +41,15 @@ object AnalyticsHandler : Disposable {
         }
 
     fun createAnalytics(): Analytics =
-            Analytics.builder(writeKey).flushInterval(5000L, TimeUnit.MILLISECONDS).build()
-    
+            Analytics.builder(writeKey)
+                    .flushInterval(5000L, TimeUnit.MILLISECONDS)
+                    .threadFactory {
+                        Thread(it).apply {
+                            isDaemon = true
+                        }
+                    }
+                    .build()
+
     fun initAndIdentify(prefs: Preferences) {
         this.prefs = prefs
         val n = java.util.prefs.Preferences.userRoot().node("io/rhre")
