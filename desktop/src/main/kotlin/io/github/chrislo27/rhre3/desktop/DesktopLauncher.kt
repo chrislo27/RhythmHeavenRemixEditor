@@ -55,7 +55,7 @@ object DesktopLauncher {
                     RHRE3.skipGitScreen = "--skip-git" in args
                     RHRE3.forceGitFetch = "--force-git-fetch" in args
                     RHRE3.forceGitCheck = "--force-git-check" in args
-                    RHRE3.verifyRegistry = "--verify-registry" in args
+                    RHRE3.verifySfxDb = "--verify-sfxdb" in args || "--verify-registry" in args
                     RHRE3.immediateEvent = when {
                         "--immediate-anniversary-like-new" in args -> 2
                         "--immediate-anniversary" in args -> 1

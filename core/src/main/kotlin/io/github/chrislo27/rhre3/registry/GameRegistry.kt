@@ -295,7 +295,7 @@ object GameRegistry : Disposable {
             // Load favourites, recents, etc
             GameMetadata.initialize()
 
-            if (RHRE3.verifyRegistry) {
+            if (RHRE3.verifySfxDb) {
                 Toolboks.LOGGER.info("Checking registry for errors")
                 val nanoStart = System.nanoTime()
                 GlobalScope.launch {

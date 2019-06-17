@@ -53,7 +53,7 @@ object RHRE3 {
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false
     var forceGitCheck: Boolean = false
-    var verifyRegistry: Boolean = false
+    var verifySfxDb: Boolean = false
     var immediateEvent: Int = 0
     var noAnalytics: Boolean = false
     var noOnlineCounter: Boolean = false
