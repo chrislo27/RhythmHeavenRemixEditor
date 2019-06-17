@@ -245,7 +245,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
     }
 
     private fun toNextScreen() {
-        main.screen = ScreenRegistry["registryLoad"]
+        main.screen = ScreenRegistry["sfxdbLoad"]
     }
 
     override fun renderUpdate() {

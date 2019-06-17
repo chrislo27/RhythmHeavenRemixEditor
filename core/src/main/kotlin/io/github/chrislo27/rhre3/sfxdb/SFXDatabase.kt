@@ -58,9 +58,9 @@ object SFXDatabase : Disposable {
         RHRE3.RHRE3_FOLDER.child("customModdingMetadata/")
     }
 
-    private val backingData: RegistryData = RegistryData()
+    private val backingData: SFXDBData = SFXDBData()
 
-    val data: RegistryData
+    val data: SFXDBData
         get() {
             if (!backingData.ready)
                 throw IllegalStateException("Cannot get data when loading")
@@ -72,13 +72,13 @@ object SFXDatabase : Disposable {
     fun isDataLoading(): Boolean =
             !backingData.ready
 
-    fun initialize(): RegistryData {
+    fun initialize(): SFXDBData {
         if (!isDataLoading())
-            throw IllegalStateException("Cannot initialize registry when already loaded")
+            throw IllegalStateException("Cannot initialize SFX database when already loaded")
         return backingData
     }
 
-    class RegistryData : Disposable {
+    class SFXDBData : Disposable {
 
         @Volatile
         var ready: Boolean = false
@@ -191,7 +191,7 @@ object SFXDatabase : Disposable {
             editorVersion = Version.fromString(dbInfoObj.requiresVersion)
 
             if (editorVersion > RHRE3.VERSION)
-                error("Registry version ($editorVersion) is higher than this RHRE version (${RHRE3.VERSION})")
+                error("SFX database version ($editorVersion) is higher than this RHRE version (${RHRE3.VERSION})")
         }
 
         private fun whenDone() {
@@ -264,7 +264,7 @@ object SFXDatabase : Disposable {
                 error("Check above for database errors")
             }
 
-            Toolboks.LOGGER.info("Finished loading game registry: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count { it !is Cue }} patterns")
+            Toolboks.LOGGER.info("Finished loading SFX database: ${gameList.size} games, ${objectList.size} datamodels, ${objectList.count { it is Cue }} cues, ${objectList.count { it !is Cue }} patterns")
 
             // Load modding metadata
             loadModdingMetadata(false)
@@ -295,7 +295,7 @@ object SFXDatabase : Disposable {
             GameMetadata.initialize()
 
             if (RHRE3.verifySfxDb) {
-                Toolboks.LOGGER.info("Checking registry for errors")
+                Toolboks.LOGGER.info("Checking SFX database for errors")
                 val nanoStart = System.nanoTime()
                 GlobalScope.launch {
                     val coroutines = LinkedList<Deferred<VerificationResult>>()
@@ -318,12 +318,11 @@ object SFXDatabase : Disposable {
 
                     delay(250L)
 
-                    Toolboks.LOGGER.info(
-                            "Registry checked in ${(endTime - nanoStart) / 1_000_000.0} ms, $failures error(s)")
+                    Toolboks.LOGGER.info("SFX database checked in ${(endTime - nanoStart) / 1_000_000.0} ms, $failures error(s)")
 
                     if (failures > 0) {
                         delay(250L)
-                        IllegalStateException("Game registry failed to validate successfully").printStackTrace()
+                        IllegalStateException("SFX database failed to validate successfully").printStackTrace()
                         Gdx.app.exit()
                     }
                 }
@@ -375,7 +374,7 @@ object SFXDatabase : Disposable {
                 val id = CUSTOM_PREFIX + nameWithoutExt
                 if (gameMap.containsKey(id)) {
                     throw UnsupportedOperationException(
-                            "Cannot load custom sound folder $id/ - already exists in registry")
+                            "Cannot load custom sound folder $id/ - already exists in database")
                 }
                 game = Game(id,
                             nameWithoutExt,

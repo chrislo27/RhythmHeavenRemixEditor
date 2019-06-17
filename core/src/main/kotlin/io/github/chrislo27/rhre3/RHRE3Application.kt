@@ -23,9 +23,9 @@ import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.playalong.Playalong
+import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
-import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
@@ -231,7 +231,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
             fun addOtherScreens() {
                 ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
-                ScreenRegistry += "registryLoad" to RegistryLoadingScreen(this)
+                ScreenRegistry += "sfxdbLoad" to SFXDBLoadingScreen(this)
                 ScreenRegistry += "editor" to EditorScreen(this)
                 ScreenRegistry += "musicSelect" to MusicSelectScreen(this)
                 ScreenRegistry += "info" to InfoScreen(this)
@@ -252,7 +252,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
                 addOtherScreens()
                 loadWindowSettings()
-                val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "registryLoad" else "databaseUpdate"]
+                val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "sfxdbLoad" else "databaseUpdate"]
 //                if (preferences.getString(PreferenceKeys.LAST_VERSION, null) == null) {
 //                    Gdx.net.openURI("https://rhre.readthedocs.io/en/latest/")
 //                }

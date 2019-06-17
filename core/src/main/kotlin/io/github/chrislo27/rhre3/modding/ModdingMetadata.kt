@@ -12,7 +12,7 @@ import io.github.chrislo27.toolboks.Toolboks
 import java.util.*
 
 
-class ModdingMetadata(private val sfxDb: SFXDatabase.RegistryData,
+class ModdingMetadata(private val sfxDb: SFXDatabase.SFXDBData,
                       private val sourceFolder: FileHandle, private val customFolder: FileHandle) {
 
     class BadModdingMetadataException(data: Data, fh: FileHandle, message: String)

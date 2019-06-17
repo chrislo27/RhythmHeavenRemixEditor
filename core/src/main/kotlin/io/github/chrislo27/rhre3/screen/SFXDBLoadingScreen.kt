@@ -21,18 +21,18 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 
 
-class RegistryLoadingScreen(main: RHRE3Application)
-    : ToolboksScreen<RHRE3Application, RegistryLoadingScreen>(main) {
+class SFXDBLoadingScreen(main: RHRE3Application)
+    : ToolboksScreen<RHRE3Application, SFXDBLoadingScreen>(main) {
 
     companion object {
         val DEF_AFTER_LOAD_SCREEN: String = "editor"
     }
 
-    private var registryData: SFXDatabase.RegistryData? = null
+    private var backingData: SFXDatabase.SFXDBData? = null
 
-    override val stage: Stage<RegistryLoadingScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
-    private val gameIcon: ImageLabel<RegistryLoadingScreen>
-    private val gameTitle: TextLabel<RegistryLoadingScreen>
+    override val stage: Stage<SFXDBLoadingScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    private val gameIcon: ImageLabel<SFXDBLoadingScreen>
+    private val gameTitle: TextLabel<SFXDBLoadingScreen>
     private val texRegion: TextureRegion = TextureRegion()
 
     init {
@@ -44,9 +44,9 @@ class RegistryLoadingScreen(main: RHRE3Application)
         gameIcon = ImageLabel(main.uiPalette, stage.centreStage, stage.centreStage)
         gameIcon.apply {
             this.alignment = Align.bottom or Align.center
-            this@RegistryLoadingScreen.stage.centreStage.updatePositions()
-            val width = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realWidth
-            val height = 64f / this@RegistryLoadingScreen.stage.centreStage.location.realHeight
+            this@SFXDBLoadingScreen.stage.centreStage.updatePositions()
+            val width = 64f / this@SFXDBLoadingScreen.stage.centreStage.location.realWidth
+            val height = 64f / this@SFXDBLoadingScreen.stage.centreStage.location.realHeight
             this.location.set(screenX = -width / 2f, screenWidth = width, screenHeight = height,
                               screenY = 0.5f - width / 2)
         }
@@ -64,8 +64,8 @@ class RegistryLoadingScreen(main: RHRE3Application)
             add(gameTitle)
         }
 
-        stage.bottomStage.elements += object : Button<RegistryLoadingScreen>(main.uiPalette, stage.bottomStage,
-                                                                             stage.bottomStage) {
+        stage.bottomStage.elements += object : Button<SFXDBLoadingScreen>(main.uiPalette, stage.bottomStage,
+                                                                          stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
@@ -87,7 +87,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
     override fun render(delta: Float) {
         super.render(delta)
 
-        val registryData = registryData ?: return
+        val registryData = backingData ?: return
 
         val progress: Float = try {
             registryData.loadFor(1 / 60f)
@@ -124,7 +124,7 @@ class RegistryLoadingScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        registryData = SFXDatabase.initialize()
+        backingData = SFXDatabase.initialize()
     }
 
     override fun tickUpdate() {
