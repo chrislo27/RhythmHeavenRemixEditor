@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.credits
 
 import io.github.chrislo27.rhre3.RHRE3
-import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
 import io.github.chrislo27.toolboks.i18n.Localization
 
 

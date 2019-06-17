@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.editor.picker
 
-import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameMetadata
+import io.github.chrislo27.rhre3.sfxdb.Game
+import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 
 
 class RecentFilter : Filter() {

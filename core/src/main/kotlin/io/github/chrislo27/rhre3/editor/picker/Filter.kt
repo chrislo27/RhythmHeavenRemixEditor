@@ -1,10 +1,10 @@
 package io.github.chrislo27.rhre3.editor.picker
 
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameGroup
-import io.github.chrislo27.rhre3.registry.GameGroupListComparator
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.Game
+import io.github.chrislo27.rhre3.sfxdb.GameGroup
+import io.github.chrislo27.rhre3.sfxdb.GameGroupListComparator
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 
 
 abstract class Filter {

@@ -6,10 +6,10 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SONG_ARTIST
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SONG_TITLE
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.Subtitle.SubtitleType.SUBTITLE
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SONG_ARTIST
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SONG_TITLE
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SUBTITLE
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
 import io.github.chrislo27.rhre3.track.Remix

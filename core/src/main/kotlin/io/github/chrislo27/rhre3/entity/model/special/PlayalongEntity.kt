@@ -7,7 +7,7 @@ import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.playalong.InputAction
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.PlayalongModel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.PlayalongModel
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 

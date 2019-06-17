@@ -1,6 +1,6 @@
 package io.github.chrislo27.rhre3.editor.picker
 
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 
 
 class DatamodelList : ScrollList<Datamodel>() {

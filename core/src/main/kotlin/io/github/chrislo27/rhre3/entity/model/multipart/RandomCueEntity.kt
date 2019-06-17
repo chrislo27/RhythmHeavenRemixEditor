@@ -6,10 +6,10 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
-import io.github.chrislo27.rhre3.registry.datamodel.impl.RandomCue
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.RandomCue
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.random

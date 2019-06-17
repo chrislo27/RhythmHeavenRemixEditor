@@ -23,8 +23,8 @@ import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.registry.GameMetadata
-import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.GameMetadata
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage

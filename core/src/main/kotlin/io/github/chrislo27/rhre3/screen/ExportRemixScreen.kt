@@ -22,9 +22,9 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.Series
-import io.github.chrislo27.rhre3.registry.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.Series
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.OGG_VORBIS

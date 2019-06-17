@@ -7,11 +7,11 @@ import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.FAVOURITES
 import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.GAME_NAME
 import io.github.chrislo27.rhre3.editor.stage.SearchBar.Filter.USE_IN_REMIX
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.registry.Game
-import io.github.chrislo27.rhre3.registry.GameGroupListComparatorIgnorePriority
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.ResponseModel
+import io.github.chrislo27.rhre3.sfxdb.Game
+import io.github.chrislo27.rhre3.sfxdb.GameGroupListComparatorIgnorePriority
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import java.util.*
 
 

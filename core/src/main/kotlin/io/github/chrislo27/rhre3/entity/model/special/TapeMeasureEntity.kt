@@ -5,7 +5,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
-import io.github.chrislo27.rhre3.registry.datamodel.impl.special.TapeMeasure
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.TapeMeasure
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 

@@ -3,10 +3,10 @@ package io.github.chrislo27.rhre3.patternstorage
 import com.badlogic.gdx.Gdx
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
-import io.github.chrislo27.rhre3.registry.GameRegistry
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.PickerName
-import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.rhre3.track.Remix
 import java.util.*

@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
-import io.github.chrislo27.rhre3.registry.datamodel.ContainerModel
-import io.github.chrislo27.rhre3.registry.datamodel.Datamodel
-import io.github.chrislo27.rhre3.registry.datamodel.impl.CuePointer
+import io.github.chrislo27.rhre3.sfxdb.datamodel.ContainerModel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect

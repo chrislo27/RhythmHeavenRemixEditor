@@ -21,8 +21,8 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.registry.GameMetadata
-import io.github.chrislo27.rhre3.registry.GameRegistry
+import io.github.chrislo27.rhre3.sfxdb.GameMetadata
+import io.github.chrislo27.rhre3.sfxdb.GameRegistry
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
