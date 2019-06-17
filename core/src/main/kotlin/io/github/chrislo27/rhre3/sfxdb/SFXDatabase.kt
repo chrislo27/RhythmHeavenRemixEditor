@@ -58,7 +58,7 @@ object SFXDatabase : Disposable {
         RHRE3.RHRE3_FOLDER.child("customModdingMetadata/")
     }
 
-    private val backingData: SFXDBData = SFXDBData()
+    private var backingData: SFXDBData = SFXDBData()
 
     val data: SFXDBData
         get() {
@@ -72,6 +72,11 @@ object SFXDatabase : Disposable {
     fun isDataLoading(): Boolean =
             !backingData.ready
 
+    fun reset() {
+        backingData.dispose()
+        backingData = SFXDBData()
+    }
+    
     fun initialize(): SFXDBData {
         if (!isDataLoading())
             throw IllegalStateException("Cannot initialize SFX database when already loaded")

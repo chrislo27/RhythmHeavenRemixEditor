@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -70,7 +71,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
 
             this.textLabel.apply {
-//                this.fontScaleMultiplier = fontScale
+                //                this.fontScaleMultiplier = fontScale
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.left
@@ -302,6 +303,32 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                               screenHeight = buttonHeight)
         }
         centre.elements += explodingEntitiesButton
+        centre.elements += Button(palette, centre, centre).apply {
+            this.leftClickAction = { _, _ ->
+                ScreenRegistry.remove("editor")
+                ScreenRegistry += "editor" to EditorScreen(main)
+                SFXDatabase.reset()
+                main.screen = SFXDBLoadingScreen(main)
+            }
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "Reload SFX Database"
+                this.textWrapping = false
+                this.fontScaleMultiplier = 0.8f
+            })
+            tooltipTextIsLocalizationKey = false
+            tooltipText = "[ORANGE]WARNING[]: This will clear the editor and discard all unsaved changes.\nReloads the entire SFX database. May fail (and crash) if there are errors.\nThis will also reload modding metadata from scratch."
+        }
+
+        stage.tooltipElement = TextLabel(palette.copy(backColor = Color(0f, 0f, 0f, 0.75f), fontScale = 0.75f), stage, stage).apply {
+            this.isLocalizationKey = false
+            this.background = true
+            this.textAlign = Align.center
+        }
 
         updateLabels()
     }

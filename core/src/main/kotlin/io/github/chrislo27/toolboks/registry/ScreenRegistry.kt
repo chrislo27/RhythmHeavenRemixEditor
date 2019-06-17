@@ -42,6 +42,10 @@ object ScreenRegistry : Disposable {
         (screens as MutableMap)[key] = screen
     }
 
+    fun remove(key: String) {
+        (screens as MutableMap).remove(key)?.dispose()
+    }
+
     internal fun addToolboks(keyWithoutPrefix: String, screen: ToolboksScreen<*, *>) {
         if (screens.containsKey(Toolboks.TOOLBOKS_ASSET_PREFIX + keyWithoutPrefix)) {
             throw IllegalArgumentException("Already contains key " + Toolboks.TOOLBOKS_ASSET_PREFIX + keyWithoutPrefix)
