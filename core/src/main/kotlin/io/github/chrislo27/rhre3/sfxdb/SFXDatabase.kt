@@ -72,11 +72,17 @@ object SFXDatabase : Disposable {
     fun isDataLoading(): Boolean =
             !backingData.ready
 
-    fun reset() {
-        backingData.dispose()
-        backingData = SFXDBData()
+    fun reset(data: SFXDBData? = null) {
+        backingData = if (data == null) {
+            backingData.dispose()
+            SFXDBData()
+        } else {
+            if (backingData !== data)
+                backingData.dispose()
+            data
+        }
     }
-    
+
     fun initialize(): SFXDBData {
         if (!isDataLoading())
             throw IllegalStateException("Cannot initialize SFX database when already loaded")
