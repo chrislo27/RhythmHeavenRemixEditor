@@ -140,7 +140,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
     var advancedOptions: Boolean = false
 
-    private val rainbowColor: Color = Color()
+    private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
 
     override val programLaunchArguments: List<String>
         get() = RHRE3.launchArguments
