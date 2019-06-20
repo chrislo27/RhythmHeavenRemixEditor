@@ -21,7 +21,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 
 
-class SFXDBLoadingScreen(main: RHRE3Application)
+class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksScreen<*, *>? = {null})
     : ToolboksScreen<RHRE3Application, SFXDBLoadingScreen>(main) {
 
     companion object {
@@ -109,16 +109,19 @@ class SFXDBLoadingScreen(main: RHRE3Application)
         gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
-            val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else DEF_AFTER_LOAD_SCREEN
-            val nextScreen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion) {
-                ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
-                    it.isBeginning = true to ScreenRegistry[normalScreen]
+            val next = nextScreen()
+            main.screen = if (next == null) {
+                val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else DEF_AFTER_LOAD_SCREEN
+                val nextScreen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion) {
+                    ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
+                        it.isBeginning = true to ScreenRegistry[normalScreen]
+                    }
+                } else {
+                    ScreenRegistry[normalScreen]
                 }
-            } else {
-                ScreenRegistry[normalScreen]
-            }
-            val possibleEvent: Screen? = EventScreen.getPossibleEvent(main, nextScreen)
-            main.screen = possibleEvent ?: (nextScreen)
+                val possibleEvent: Screen? = EventScreen.getPossibleEvent(main, nextScreen)
+                possibleEvent ?: (nextScreen)
+            } else next
         }
     }
 

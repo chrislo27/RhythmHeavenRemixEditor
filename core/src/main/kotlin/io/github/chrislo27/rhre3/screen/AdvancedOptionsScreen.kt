@@ -308,7 +308,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 ScreenRegistry.remove("editor")
                 ScreenRegistry += "editor" to EditorScreen(main)
                 SFXDatabase.reset()
-                main.screen = SFXDBLoadingScreen(main)
+                main.screen = SFXDBLoadingScreen(main) { ScreenRegistry["editor"] }
             }
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 6 + buttonHeight * 5,
