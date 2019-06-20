@@ -13,12 +13,14 @@ import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import kotlin.system.exitProcess
 
 
 class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksScreen<*, *>? = {null})
@@ -38,7 +40,7 @@ class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksS
     init {
         stage as GenericStage
         stage.updatePositions()
-        stage.titleLabel.setText("screen.registry.title", isLocalization = true)
+        stage.titleLabel.setText("screen.sfxdbLoading.title", isLocalization = true)
         stage.titleIcon.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
 
         gameIcon = ImageLabel(main.uiPalette, stage.centreStage, stage.centreStage)
@@ -64,20 +66,15 @@ class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksS
             add(gameTitle)
         }
 
-        stage.bottomStage.elements += object : Button<SFXDBLoadingScreen>(main.uiPalette, stage.bottomStage,
-                                                                          stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        stage.bottomStage.elements += Button(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
+            this.leftClickAction = {_, _ ->
                 Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
             }
-        }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
                 this.text = "screen.info.database"
-//                this.fontScaleMultiplier = 0.9f
             })
-
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
 
@@ -87,17 +84,15 @@ class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksS
     override fun render(delta: Float) {
         super.render(delta)
 
-        val registryData = backingData ?: return
+        val dbData = backingData ?: return
 
         val progress: Float = try {
-            registryData.loadFor(1 / 60f)
+            dbData.loadFor(1 / 60f)
         } catch (e: Exception) {
             e.printStackTrace()
-            System.exit(1)
-            throw e // should never happen since System.exit doesn't return
+            exitProcess(1)
         }
-//        println("Loaded ${registryData.gameMap.size - numLoaded} this frame in ${(System.nanoTime() - nano) / 1_000_000.0} ms")
-        val game: Game? = registryData.gameMap[registryData.lastLoadedID]
+        val game: Game? = dbData.gameMap[dbData.lastLoadedID]
 
         val texture = game?.icon
         if (texture == null) {
@@ -106,7 +101,7 @@ class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksS
             texRegion.setRegion(texture)
             gameIcon.image = texRegion
         }
-        gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]"
+        gameTitle.text = "${game?.name}\n[GRAY]${game?.id}[]\n[LIGHT_GRAY]${Localization["screen.sfxdbLoading.objects", game?.objects?.size]}[]"
 
         if (progress >= 1f && !Toolboks.debugMode) {
             val next = nextScreen()

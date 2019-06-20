@@ -1518,7 +1518,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                                 if (datamodel.responseIDs.isNotEmpty()) {
                                     val id = datamodel.responseIDs.random()
                                     val entity = SFXDatabase.data.objectMap[id]?.createEntity(remix, null) ?: error(
-                                            "ID $id not found in game registry when making response copy")
+                                            "ID $id not found in SFX database when making response copy")
 
                                     entity.updateBounds {
                                         entity.bounds.setPosition(it.bounds.x, it.bounds.y)
