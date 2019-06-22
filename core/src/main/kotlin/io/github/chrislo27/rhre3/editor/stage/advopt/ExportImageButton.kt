@@ -9,14 +9,13 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.GdxRuntimeException
 import com.badlogic.gdx.utils.ScreenUtils
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
-import io.github.chrislo27.rhre3.util.FileChooser
-import io.github.chrislo27.rhre3.util.FileChooserExtensionFilter
-import io.github.chrislo27.rhre3.util.getDefaultDirectory
+import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
@@ -57,10 +56,12 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         super.onLeftClick(xPercent, yPercent)
         val wasShiftHeld = Gdx.input.isShiftDown()
         val filters = listOf(FileChooserExtensionFilter("Supported image output files", "*.png"))
-        FileChooser.saveFileChooser("Choose image to export to", getDefaultDirectory(), null, filters) { file ->
+        FileChooser.saveFileChooser("Choose image to export to", attemptRememberDirectory(editor.main, PreferenceKeys.FILE_CHOOSER_EXPORT_IMAGE) ?: getDefaultDirectory(), null, filters) { file ->
             val remix = editor.remix
             val duration = remix.duration
             if (file != null && duration > 0f) {
+                val newInitialDirectory = if (!file.isDirectory) file.parentFile else file
+                persistDirectory(editor.main, PreferenceKeys.FILE_CHOOSER_EXPORT_IMAGE, newInitialDirectory)
                 Gdx.app.postRunnable {
                     val scale = 1f // Very large scales may cause errors when initing the pixmap
                     val singleRowWidth = (duration + 1) * Editor.ENTITY_WIDTH * scale
