@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.editor.picker.*
 import io.github.chrislo27.rhre3.editor.quickswitch.SwitchToGame
 import io.github.chrislo27.rhre3.editor.stage.advopt.CopyGamesUsedButton
+import io.github.chrislo27.rhre3.editor.stage.advopt.ExportImageButton
 import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongToggleButton
@@ -27,13 +28,13 @@ import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.patternstorage.FileStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.util.OSUtils
 import io.github.chrislo27.toolboks.Toolboks
@@ -1454,6 +1455,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
             }
             buttonBarStage.elements += playalongToggleButton
+            buttonBarStage.elements += ExportImageButton(editor, palette, buttonBarStage, buttonBarStage).apply {
+                this.location.set(screenWidth = size, screenX = size * 12 + padding * 12)
+            }
             buttonBarStage.elements += SelectionToJSONButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size * 4 - padding * 4, screenX = size * 13 + padding * 13)
             }

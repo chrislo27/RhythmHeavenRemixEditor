@@ -46,6 +46,7 @@ import io.github.chrislo27.rhre3.patternstorage.ClipboardStoredPattern
 import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.patternstorage.toEntityList
 import io.github.chrislo27.rhre3.playalong.Playalong
+import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameGroup
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
@@ -53,7 +54,6 @@ import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
@@ -407,24 +407,24 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     /**
      * Pre-stage renderWithGlass.
      */
-    fun render(updateDelta: Boolean, otherUI: Boolean, noGlassEffect: Boolean) {
+    fun render(updateDelta: Boolean, otherUI: Boolean, noGlassEffect: Boolean, disableThemeUsesMenu: Boolean = false) {
         val beatRange = getBeatRange()
         val beatRangeStartFloat = beatRange.first.toFloat()
         val beatRangeEndFloat = beatRange.last.toFloat()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
 
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
-        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
-        if (!noGlassEffect && themeUsesMenu && useGlassEffect) {
+        val themeUsesMenu = !disableThemeUsesMenu && main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val useGlassEffect = !noGlassEffect && glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        if (themeUsesMenu && useGlassEffect) {
             glassEffect.renderBackground()
         }
 
-        this.renderBackground(batch, main.shapeRenderer, main.defaultCamera, true)
+        this.renderBackground(batch, main.shapeRenderer, main.defaultCamera, true, disableThemeUsesMenu)
 
         batch.end()
 

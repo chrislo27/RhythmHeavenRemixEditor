@@ -29,13 +29,12 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         const val BORDER: Float = 4f
         const val JSON_DATAMODEL = "datamodel"
         private val TMP_COLOR = Color(1f, 1f, 1f, 1f)
+        var attemptTextOnScreen: Boolean = true
     }
 
     final override val jsonType: String = "model"
     open val renderText: String
         get() = datamodel.newlinedName
-    open val attemptTextOnScreen: Boolean
-        get() = true
     val isSpecialEntity: Boolean get() = datamodel.isSpecial
     open var needsNameTooltip: Boolean = false
         protected set
