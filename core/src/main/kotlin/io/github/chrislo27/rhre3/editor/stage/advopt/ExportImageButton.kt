@@ -19,6 +19,7 @@ import io.github.chrislo27.rhre3.util.FileChooserExtensionFilter
 import io.github.chrislo27.rhre3.util.getDefaultDirectory
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import java.io.IOException
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -49,12 +50,13 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
     }
 
     override fun getHoverText(): String {
-        return "Export remix as image"
+        return "Export remix as image\nHold [CYAN]SHIFT[] and click to export a horizontal image"
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        val filters = listOf(FileChooserExtensionFilter("Supported image files", "*.png"))
+        val wasShiftHeld = Gdx.input.isShiftDown()
+        val filters = listOf(FileChooserExtensionFilter("Supported image output files", "*.png"))
         FileChooser.saveFileChooser("Choose image to export to", getDefaultDirectory(), null, filters) { file ->
             val remix = editor.remix
             val duration = remix.duration
@@ -63,7 +65,7 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
                     val singleRowWidth = (duration + 1) * Editor.ENTITY_WIDTH
                     val singleRowHeight = ((remix.trackCount + 4) * Editor.ENTITY_HEIGHT)
                     val rowEstimate = (sqrt(singleRowWidth / singleRowHeight).roundToInt()).coerceAtLeast(1)
-                    val rows = rowEstimate
+                    val rows = if (wasShiftHeld) 1 else rowEstimate
                     val pixmap = Pixmap(((duration + 1) * Editor.ENTITY_WIDTH / rows).roundToInt(), singleRowHeight.roundToInt() * rows, Pixmap.Format.RGBA8888)
 
                     val oldCamX = editor.camera.position.x
