@@ -68,6 +68,7 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
                     val rowEstimate = (sqrt(singleRowWidth / singleRowHeight).roundToInt()).coerceAtLeast(1)
                     val rows = if (wasShiftHeld) 1 else rowEstimate
                     val pixmap = Pixmap((singleRowWidth / rows).roundToInt(), singleRowHeight.roundToInt() * rows, Pixmap.Format.RGBA8888)
+                    pixmap.blending = Pixmap.Blending.None
 
                     val oldCamX = editor.camera.position.x
                     val oldCamZoom = editor.camera.zoom
