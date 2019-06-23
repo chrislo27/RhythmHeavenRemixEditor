@@ -1491,6 +1491,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             field.text = firstEntityInMouse.text
                             field.canInputNewlines = firstEntityInMouse.canInputNewlines
                             field.hasFocus = true
+//                            if (firstEntityInMouse is SubtitleEntity) {
+//                                stage.subtitleTypewriterCheckbox.visible = true
+//                                stage.subtitleTypewriterCheckbox.checked = firstEntityInMouse.typewriter
+//                            }
                             updateMessageLabel()
                         } else if (firstEntityInMouse is TextureEntity) {
                             // Open file chooser

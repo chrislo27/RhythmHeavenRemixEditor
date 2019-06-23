@@ -107,6 +107,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     val subtitleLabel: TextLabel<EditorScreen>
     val entityTextField: TextField<EditorScreen>
+//    val subtitleTypewriterCheckbox: Checkbox<EditorScreen>
     lateinit var gameStageText: TextLabel<EditorScreen>
         private set
     lateinit var patternAreaArrowLabel: TextLabel<EditorScreen>
@@ -677,7 +678,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                     text = (if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false))
                         editor.remix.currentSubtitles
-                    else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n", transform = SubtitleEntity::subtitle)
+                    else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n", transform = SubtitleEntity::getSubtitleText)
 
                     super.render(screen, batch, shapeRenderer)
                 }
@@ -711,9 +712,9 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     if (!hasFocus || !visible)
                         return
 
-                    if (editor.selection.firstOrNull() is IEditableText) {
-                        val entity = editor.selection.first() as IEditableText
-                        entity.text = this.text
+                    val firstInSel = editor.selection.firstOrNull()
+                    if (firstInSel is IEditableText) {
+                        firstInSel.text = this.text
                     }
                 }
 
@@ -723,7 +724,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     return true
                 }
             }.apply {
-                this.location.set(screenY = subtitleLabel.location.screenHeight,
+                this.location.set(screenY = subtitleLabel.location.screenHeight + 0.025f,
                                   screenHeight = 0.1f,
                                   screenWidth = 0.5f,
                                   screenX = 0.25f)
@@ -732,6 +733,34 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.canInputNewlines = true
             }
             this.elements += entityTextField
+//            subtitleTypewriterCheckbox = object : TrueCheckbox<EditorScreen>(palette, this@apply, this@apply) {
+//                override fun frameUpdate(screen: EditorScreen) {
+//                    super.frameUpdate(screen)
+//
+//                    attemptSetInvisible()
+//                }
+//
+//                private fun attemptSetInvisible() {
+//                    if (visible && (!entityTextField.hasFocus || editor.selection.size != 1 || editor.selection.first() !is SubtitleEntity)) {
+//                        visible = false
+//                    }
+//                }
+//            }.apply {
+//                this.textLabel.isLocalizationKey = true
+//                this.textLabel.text = "editor.subtitleTypewriter"
+//                this.textLabel.fontScaleMultiplier = 0.75f
+//                this.location.set(screenY = 0.0125f,
+//                                  screenHeight = 0.075f,
+//                                  screenWidth = 0.5f,
+//                                  screenX = 0.25f)
+//                this.checkedStateChanged = {
+//                    val firstInSel = editor.selection.firstOrNull()
+//                    if (firstInSel is SubtitleEntity) {
+//                        firstInSel.typewriter = it
+//                    }
+//                }
+//            }
+//            this.elements += subtitleTypewriterCheckbox
         }
 
         hoverTextLabel = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }),

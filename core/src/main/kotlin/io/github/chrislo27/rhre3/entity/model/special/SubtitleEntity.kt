@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model.special
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.MathUtils
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.IEditableText
@@ -10,10 +11,12 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SONG_ARTIST
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SONG_TITLE
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.SUBTITLE
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle.SubtitleType.TYPEWRITER
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.ui.TextField
+import kotlin.math.roundToInt
 
 
 class SubtitleEntity(remix: Remix, datamodel: Subtitle)
@@ -34,6 +37,14 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
     init {
         bounds.height = 1f
     }
+    
+    fun getSubtitleText(): String {
+        if (datamodel.type != Subtitle.SubtitleType.TYPEWRITER)
+            return subtitle
+        val sub = subtitle
+        val firstRightBracket = sub.indexOf(']') + 1
+        return sub.substring(0, MathUtils.lerp(firstRightBracket.coerceAtLeast(0).toFloat(), sub.length.toFloat(), (remix.beat - bounds.x) / bounds.width).roundToInt().coerceIn(0, sub.length))
+    }
 
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
@@ -51,7 +62,7 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
 
     override fun onStart() {
         when (datamodel.type) {
-            SUBTITLE -> {
+            SUBTITLE, TYPEWRITER -> {
                 if (this !in remix.currentSubtitles) {
                     remix.currentSubtitles += this
                 }
@@ -66,7 +77,7 @@ class SubtitleEntity(remix: Remix, datamodel: Subtitle)
 
     override fun onEnd() {
         when (datamodel.type) {
-            SUBTITLE -> remix.currentSubtitles.remove(this)
+            SUBTITLE, TYPEWRITER -> remix.currentSubtitles.remove(this)
             SONG_TITLE -> (remix as? EditorRemix)?.editor?.songTitle(null)
             SONG_ARTIST -> (remix as? EditorRemix)?.editor?.songArtist(null)
         }
