@@ -881,10 +881,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             autosaveState.time -= Gdx.graphics.deltaTime
         }
 
-        if (Toolboks.debugMode && Gdx.input.isKeyJustPressed(Input.Keys.J)) {
-            timeUntilAutosave = 0f
-        }
-
         if (!stage.isTyping) {
             if (cameraLeft && !(shift && control)) {
                 camera.position.x -= cameraDelta
