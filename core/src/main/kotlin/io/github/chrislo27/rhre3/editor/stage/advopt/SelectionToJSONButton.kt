@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.fasterxml.jackson.annotation.JsonInclude
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
@@ -17,7 +16,7 @@ import kotlin.math.roundToInt
 
 class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                             stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     companion object {
         val strings: List<String> = listOf("Copy selection as\nSFXDB pattern JSON", "[CYAN]Copied successfully![]", "No selection...", "An [RED]error[] occurred\nPlease see console")
@@ -37,14 +36,16 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
         this.isLocalizationKey = false
     }
 
-    override fun getHoverText(): String {
-        return when (label.text) {
-            strings[1] -> "Copied successfully to clipboard!"
-            strings[2] -> "Make a selection first"
-            strings[3] -> strings[3]
-            else -> "Click to convert entity selection\nas SFX database pattern JSON and copy to clipboard"
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return when (label.text) {
+                strings[1] -> "Copied successfully to clipboard!"
+                strings[2] -> "Make a selection first"
+                strings[3] -> strings[3]
+                else -> "Click to convert entity selection\nas SFX database pattern JSON and copy to clipboard"
+            }
         }
-    }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
@@ -112,7 +113,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
         var duration: Float = 0f
         @JsonInclude(JsonInclude.Include.NON_DEFAULT)
         var semitone: Int = 0
-//        @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+        //        @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 //        var volume: Int = IVolumetric.DEFAULT_VOLUME
         @JsonInclude(JsonInclude.Include.NON_DEFAULT)
         var track: Int = 0

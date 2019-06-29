@@ -9,9 +9,9 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
-import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlayState.PAUSED
 import io.github.chrislo27.rhre3.track.PlayState.PLAYING
@@ -24,7 +24,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 
 class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     companion object {
         private val TEXTS: List<String> = listOf(Editor.VOLUME_CHAR, "■", "♬")
@@ -48,9 +48,11 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
     private var datamodel: Datamodel? = null
     private var playState: PlayState = STOPPED
 
-    override fun getHoverText(): String {
-        return Localization[if (playState == STOPPED) "editor.previewPattern" else "editor.previewPattern.stop"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization[if (playState == STOPPED) "editor.previewPattern" else "editor.previewPattern.stop"]
+        }
 
     init {
         addLabel(label)

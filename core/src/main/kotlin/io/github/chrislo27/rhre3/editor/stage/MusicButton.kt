@@ -14,7 +14,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 class MusicButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                   stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private var wasMuted: Boolean? = null
 
@@ -28,9 +28,11 @@ class MusicButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         addLabel(label)
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.music"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.music"]
+        }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         val current = editor.remix.isMusicMuted

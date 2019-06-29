@@ -91,7 +91,7 @@ import kotlin.math.roundToInt
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attachMidiListeners: Boolean)
-    : Disposable, InputProcessor, EditorStage.HasHoverText {
+    : Disposable, InputProcessor {
 
     companion object {
         const val ENTITY_HEIGHT: Float = 48f
@@ -1288,7 +1288,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         controlsLabel.text = ctrlBuilder.toString()
     }
 
-    override fun getHoverText(): String {
+    fun getHoverText(): String {
         val output: MutableList<String> = mutableListOf()
         val entity = getEntityOnMouse()
 

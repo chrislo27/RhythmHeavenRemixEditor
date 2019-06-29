@@ -14,7 +14,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 
 
 class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val main: RHRE3Application get() = editorStage.main
     private val label = TextLabel(palette, this, this.stage).apply {
@@ -28,7 +28,9 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
         this.addLabel(label)
     }
 
-    override fun getHoverText(): String = Localization["editor.playalong"]
+    override var tooltipText: String?
+        set(_) {}
+        get() = Localization["editor.playalong"]
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (editorStage.playalongStage.visible) {

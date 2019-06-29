@@ -14,11 +14,13 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 class IOButton(val editor: Editor, val screen: String, val localization: String,
                palette: UIPalette, parent: UIElement<EditorScreen>,
                stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
-    override fun getHoverText(): String {
-        return Localization[localization]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization[localization]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

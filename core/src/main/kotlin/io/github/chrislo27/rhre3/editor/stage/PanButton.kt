@@ -15,7 +15,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 class PanButton(val editor: Editor, val left: Boolean,
                 palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     init {
         addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -50,7 +50,9 @@ class PanButton(val editor: Editor, val left: Boolean,
         camera.update()
     }
 
-    override fun getHoverText(): String {
-        return Localization[if (left) "editor.pan.left" else "editor.pan.right"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization[if (left) "editor.pan.left" else "editor.pan.right"]
+        }
 }

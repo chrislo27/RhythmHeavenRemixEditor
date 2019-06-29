@@ -12,7 +12,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                  stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     companion object {
         val snapLevels = intArrayOf(4, 6, 8, 12, 16, 24, 32)
@@ -42,9 +42,11 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
         hoverTime = 0f
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.snap", fractionString]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.snap", fractionString]
+        }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)

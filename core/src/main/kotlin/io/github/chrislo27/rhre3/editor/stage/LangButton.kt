@@ -16,7 +16,7 @@ import java.util.*
 
 class LangButton<S : ToolboksScreen<*, *>>(val editor: Editor, palette: UIPalette, parent: UIElement<S>,
                                            stage: Stage<S>)
-    : Button<S>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<S>(palette, parent, stage) {
 
     private val main = editor.main
 
@@ -24,9 +24,11 @@ class LangButton<S : ToolboksScreen<*, *>>(val editor: Editor, palette: UIPalett
         private val OLD_LANGS: List<LangObj> = listOf(LangObj(""), LangObj("fr"), LangObj("es"), LangObj("de"))
     }
 
-    override fun getHoverText(): String {
-        return "${Localization.currentBundle.locale.name}\n${Localization["editor.translationsMayNotBeAccurate"]}"
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return "${Localization.currentBundle.locale.name}\n${Localization["editor.translationsMayNotBeAccurate"]}"
+        }
 
     private fun persist() {
         val current = Localization.currentBundle

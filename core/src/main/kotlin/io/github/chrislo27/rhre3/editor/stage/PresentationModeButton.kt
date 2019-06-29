@@ -13,7 +13,7 @@ import io.github.chrislo27.toolboks.ui.*
 class PresentationModeButton(val editor: Editor, val editorStage: EditorStage, palette: UIPalette,
                              parent: UIElement<EditorScreen>,
                              stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     init {
         addLabel(ImageLabel(palette, this, stage).apply {
@@ -21,9 +21,11 @@ class PresentationModeButton(val editor: Editor, val editorStage: EditorStage, p
         })
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.presentationMode.info"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.presentationMode.info"]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

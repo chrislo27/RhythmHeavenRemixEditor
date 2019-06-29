@@ -104,7 +104,7 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         elements += filterButton
     }
 
-    inner class FilterButton : Button<S>(palette, this, this), EditorStage.HasHoverText {
+    inner class FilterButton : Button<S>(palette, this, this) {
 
         var filter: Filter = Filter.GAME_NAME
             private set
@@ -125,7 +125,9 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
             updateLabel()
         }
 
-        override fun getHoverText(): String = Localization[filter.localizationKey]
+        override var tooltipText: String?
+            set(_) {}
+            get() = Localization[filter.localizationKey]
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
@@ -158,9 +160,11 @@ class SearchBar<S : ToolboksScreen<*, *>>(screenWidth: Float, val editor: Editor
         }
     }
 
-    inner class ClearButton : Button<S>(palette, this, this), EditorStage.HasHoverText {
+    inner class ClearButton : Button<S>(palette, this, this) {
 
-        override fun getHoverText(): String = Localization["editor.search.clear"]
+        override var tooltipText: String?
+            set(_) {}
+            get() = Localization["editor.search.clear"]
 
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)

@@ -4,14 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.ui.*
 
 
 class CopyGamesUsedButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                           stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     companion object {
         val strings: List<String> = listOf("Copy\ngames", "[CYAN]Copied![]", "No\ngames...")
@@ -30,13 +29,15 @@ class CopyGamesUsedButton(val editor: Editor, palette: UIPalette, parent: UIElem
         this.isLocalizationKey = false
     }
 
-    override fun getHoverText(): String {
-        return when (label.text) {
-            strings[1] -> "Copied successfully to clipboard!"
-            strings[2] -> "No games in remix"
-            else -> "Click to copy games used to clipboard"
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return when (label.text) {
+                strings[1] -> "Copied successfully to clipboard!"
+                strings[2] -> "No games in remix"
+                else -> "Click to copy games used to clipboard"
+            }
         }
-    }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)

@@ -14,7 +14,7 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 
 class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                   stage: Stage<EditorScreen>)
-    : TextField<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : TextField<EditorScreen>(palette, parent, stage) {
 
     private var beat: Float = Float.MIN_VALUE
 
@@ -45,7 +45,9 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
         editor.camera.position.x = int.toFloat()
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.jumpTo"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.jumpTo"]
+        }
 }

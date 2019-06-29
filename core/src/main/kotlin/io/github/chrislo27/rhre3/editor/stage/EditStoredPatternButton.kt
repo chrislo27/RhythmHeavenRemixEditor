@@ -12,15 +12,17 @@ import io.github.chrislo27.toolboks.ui.*
 
 
 class EditStoredPatternButton(val editor: Editor, val editorStage: EditorStage, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     val label = ImageLabel(palette, this, this.stage).apply {
         this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_pencil"))
     }
 
-    override fun getHoverText(): String {
-        return Localization["screen.patternStore.edit.title"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["screen.patternStore.edit.title"]
+        }
 
     init {
         addLabel(label)

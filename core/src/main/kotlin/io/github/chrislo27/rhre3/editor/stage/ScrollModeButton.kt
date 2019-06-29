@@ -16,7 +16,7 @@ import io.github.chrislo27.toolboks.ui.*
 class ScrollModeButton(val editor: Editor, palette: UIPalette,
                        parent: UIElement<EditorScreen>,
                        stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     companion object {
         private val texRegions: Map<ScrollMode, TextureRegion> by lazy {
@@ -37,13 +37,15 @@ class ScrollModeButton(val editor: Editor, palette: UIPalette,
         get() = labels.first() as ImageLabel
     private var lastScrollMode: ScrollMode = editor.scrollMode
 
-    override fun getHoverText(): String {
-        return Localization["editor.scrollMode"] + "\n" + if (editor.currentTool != Tool.SELECTION) {
-            Localization["editor.scrollMode.useSelectionTool", "${Tool.SELECTION.index + 1}"]
-        } else {
-            Localization[lastScrollMode.buttonLocalization]
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.scrollMode"] + "\n" + if (editor.currentTool != Tool.SELECTION) {
+                Localization["editor.scrollMode.useSelectionTool", "${Tool.SELECTION.index + 1}"]
+            } else {
+                Localization[lastScrollMode.buttonLocalization]
+            }
         }
-    }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (lastScrollMode != editor.scrollMode || label.image == null) {

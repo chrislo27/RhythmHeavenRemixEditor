@@ -13,11 +13,13 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 
 class ResetWindowButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                         stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
-    override fun getHoverText(): String {
-        return Localization["editor.resetwindow"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.resetwindow"]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

@@ -15,7 +15,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 class NewsButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                  stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val plainRegion = TextureRegion(AssetRegistry.get<Texture>("ui_icon_news"))
     private val newRegion = TextureRegion(AssetRegistry.get<Texture>("ui_icon_news_indicator"))
@@ -34,9 +34,11 @@ class NewsButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
         super.render(screen, batch, shapeRenderer)
     }
 
-    override fun getHoverText(): String {
-        return (if (newsScreen.hasNewNews) "[RAINBOW]${Localization["screen.news.tooltip.new"]}[] " else "") + Localization["screen.news.title"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return (if (newsScreen.hasNewNews) "[RAINBOW]${Localization["screen.news.tooltip.new"]}[] " else "") + Localization["screen.news.title"]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

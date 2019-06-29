@@ -15,7 +15,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 
 class MetronomeButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                       stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val metronomeFrames: List<TextureRegion> by lazy {
         val tex = AssetRegistry.get<Texture>("ui_icon_metronome")
@@ -37,9 +37,11 @@ class MetronomeButton(val editor: Editor, palette: UIPalette, parent: UIElement<
         this.image = metronomeFrames[0]
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.metronome"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.metronome"]
+        }
 
     init {
         addLabel(label)

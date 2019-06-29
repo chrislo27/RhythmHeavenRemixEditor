@@ -13,13 +13,15 @@ import io.github.chrislo27.toolboks.util.MathHelper
 
 class InfoButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                  stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val infoScreen: InfoScreen by lazy { ScreenRegistry.getNonNullAsType<InfoScreen>("info") }
 
-    override fun getHoverText(): String {
-        return Localization["editor.info"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.info"]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

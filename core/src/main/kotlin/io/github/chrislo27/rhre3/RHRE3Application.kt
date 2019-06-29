@@ -87,6 +87,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     val defaultFontLargeKey = "default_font_large"
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
     val timeSignatureFontKey = "time_signature"
+    val robotoFontKey = "roboto"
 
     val defaultFontFTF: FreeTypeFont
         get() = fonts[defaultFontKey]
@@ -98,6 +99,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         get() = fonts[defaultBorderedFontLargeKey]
     val timeSignatureFontFTF: FreeTypeFont
         get() = fonts[timeSignatureFontKey]
+    val robotoFontFTF: FreeTypeFont
+        get() = fonts[robotoFontKey]
 
     val defaultFontLarge: BitmapFont
         get() = defaultFontLargeFTF.font!!
@@ -105,6 +108,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         get() = defaultBorderedFontLargeFTF.font!!
     val timeSignatureFont: BitmapFont
         get() = timeSignatureFontFTF.font!!
+    val robotoFont: BitmapFont
+        get() = robotoFontFTF.font!!
 
     private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
@@ -175,6 +180,14 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 size *= 6
                 characters = "0123456789?_+-!&%"
                 incremental = false
+            }).setAfterLoad {
+                this.font!!.apply {
+                    setFixedWidthGlyphs("0123456789")
+                }
+            }
+            fonts[robotoFontKey] = FreeTypeFont(Gdx.files.internal("fonts/Roboto-Regular.ttf"), emulatedSize, createDefaultTTFParameter().apply {
+                size *= 3
+                incremental = true
             }).setAfterLoad {
                 this.font!!.apply {
                     setFixedWidthGlyphs("0123456789")

@@ -15,11 +15,10 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.playalong.*
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
-import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.PlayState.PAUSED
 import io.github.chrislo27.rhre3.track.PlayState.PLAYING
@@ -272,8 +271,10 @@ class PlayalongStage(val editor: Editor,
         }
         lowerStage.elements += acesLabel
 
-        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = Localization["playalong.goForPerfect.tooltip"]
+        lowerStage.elements += object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = Localization["playalong.goForPerfect.tooltip"]
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
@@ -286,8 +287,11 @@ class PlayalongStage(val editor: Editor,
             })
             this.location.set(screenX = paddingX / 2f, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
-        monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.monsterGoal.tooltip"]
+        monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = if (!enabled) "" else Localization["playalong.monsterGoal.tooltip"]
+
             fun cycle(dir: Int) {
                 val monsterPreset = monsterGoalPreset
                 val values = MonsterPresets.VALUES
@@ -318,8 +322,11 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = (paddingX / 2f) * 2 + buttonWidth, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += monsterMawButton
-        tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.tempoDown.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+        tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = if (!enabled) "" else Localization["playalong.tempoDown.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 tempoChange -= TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
@@ -351,8 +358,11 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = (paddingX / 2f) * 3 + buttonWidth * 2.75f, screenY = paddingY, screenWidth = buttonWidth * 2, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoLabel
-        tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.tempoUp.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+        tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = if (!enabled) "" else Localization["playalong.tempoUp.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 tempoChange += TEMPO_CHANGE_INCREMENT.absoluteValue * (if (Gdx.input.isControlDown() || Gdx.input.isShiftDown()) 2 else 1)
@@ -370,8 +380,10 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = (paddingX / 2f) * 3 + buttonWidth * 4.75f, screenY = paddingY, screenWidth = buttonWidth * 0.75f, screenHeight = 0.25f)
         }
         lowerStage.elements += tempoUpButton
-        heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = if (!enabled) "" else Localization["playalong.lifeGoal.tooltip"]
+        heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = if (!enabled) "" else Localization["playalong.lifeGoal.tooltip"]
 
             val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
             fun cycle(dir: Int) {
@@ -402,8 +414,10 @@ class PlayalongStage(val editor: Editor,
             this.location.set(screenX = (paddingX / 2f) * 4 + buttonWidth * 5.5f, screenY = paddingY, screenWidth = buttonWidth, screenHeight = 0.25f)
         }
         lowerStage.elements += heartsButton
-        hideIndicatorsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage), EditorStage.HasHoverText {
-            override fun getHoverText(): String = if (!enabled) "" else Localization[if (hideIndicators) "playalong.hideIndicators.tooltip.show" else "playalong.hideIndicators.tooltip.hide"]
+        hideIndicatorsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
+            override var tooltipText: String?
+                set(_) {}
+                get() = if (!enabled) "" else Localization[if (hideIndicators) "playalong.hideIndicators.tooltip.show" else "playalong.hideIndicators.tooltip.hide"]
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)

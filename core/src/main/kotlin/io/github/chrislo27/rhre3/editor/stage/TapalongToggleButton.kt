@@ -16,7 +16,7 @@ import io.github.chrislo27.toolboks.util.MathHelper
 class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, palette: UIPalette,
                            parent: UIElement<EditorScreen>,
                            stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     init {
         addLabel(ImageLabel(palette, this, this.stage).apply {
@@ -25,9 +25,11 @@ class TapalongToggleButton(val editor: Editor, val editorStage: EditorStage, pal
         })
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.tapalong"] + "\n" + Localization["editor.tapalong.info"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.tapalong"] + "\n" + Localization["editor.tapalong.info"]
+        }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (labels.isNotEmpty()) {

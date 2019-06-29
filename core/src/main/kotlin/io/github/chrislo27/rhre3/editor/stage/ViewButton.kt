@@ -12,13 +12,15 @@ import io.github.chrislo27.toolboks.util.MathHelper
 class ViewButton(val editor: Editor, val editorStage: EditorStage,
                  palette: UIPalette, parent: UIElement<EditorScreen>,
                  stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
-    override fun getHoverText(): String {
-        return Localization["editor.view", if (editor.views.isEmpty())
-            Localization["editor.view.default"]
-        else editor.views.joinToString(separator = ", ") { Localization[it.localizationKey] }]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.view", if (editor.views.isEmpty())
+                Localization["editor.view.default"]
+            else editor.views.joinToString(separator = ", ") { Localization[it.localizationKey] }]
+        }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (labels.isNotEmpty()) {

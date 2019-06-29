@@ -14,11 +14,13 @@ import io.github.chrislo27.toolboks.ui.UIPalette
 class ThemeButton(val editor: Editor, val editorStage: EditorStage,
                   palette: UIPalette, parent: UIElement<EditorScreen>,
                   stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
-    override fun getHoverText(): String {
-        return Localization["editor.theme", LoadedThemes.currentTheme.getRealName()]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.theme", LoadedThemes.currentTheme.getRealName()]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.ScreenUtils
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.util.*
@@ -26,7 +25,7 @@ import kotlin.math.sqrt
 
 class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
                         stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     init {
         addLabel(TextLabel(palette, this, this.stage).apply {
@@ -49,9 +48,11 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         this.visible = editor.main.advancedOptions
     }
 
-    override fun getHoverText(): String {
-        return "Export remix as image\nHold [CYAN]SHIFT[] and click to export a horizontal image"
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return "Export remix as image\nHold [CYAN]SHIFT[] and click to export a horizontal image"
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)

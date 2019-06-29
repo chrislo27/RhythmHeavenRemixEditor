@@ -13,7 +13,7 @@ import io.github.chrislo27.toolboks.ui.*
 
 class UndoRedoButton(val editor: Editor, val undo: Boolean, palette: UIPalette, parent: UIElement<EditorScreen>,
                      stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val i18nKey = if (undo) "editor.undo" else "editor.redo"
 
@@ -48,7 +48,9 @@ class UndoRedoButton(val editor: Editor, val undo: Boolean, palette: UIPalette, 
         }
     }
 
-    override fun getHoverText(): String {
-        return Localization[i18nKey]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization[i18nKey]
+        }
 }

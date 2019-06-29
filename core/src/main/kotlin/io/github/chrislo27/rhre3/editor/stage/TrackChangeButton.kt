@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 
 
 class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
-    : Button<EditorScreen>(palette, parent, stage), EditorStage.HasHoverText {
+    : Button<EditorScreen>(palette, parent, stage) {
 
     private val remix: Remix
         get() = editor.remix
@@ -31,11 +31,13 @@ class TrackChangeButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         })
     }
 
-    override fun getHoverText(): String {
-        return Localization["editor.trackChange"] + " [LIGHT_GRAY](${Editor.MIN_TRACK_COUNT}≦[]${remix.trackCount}[LIGHT_GRAY]≦${Editor.MAX_TRACK_COUNT})[]\n" +
-                Localization[if (remix.canIncreaseTrackCount()) "editor.trackChange.increase" else "editor.trackChange.max"] + "\n" +
-                Localization[if (!remix.canDecreaseTrackCount()) "editor.trackChange.min" else if (remix.entitiesTouchTrackTop) "editor.trackChange.impedance" else "editor.trackChange.decrease"]
-    }
+    override var tooltipText: String?
+        set(_) {}
+        get() {
+            return Localization["editor.trackChange"] + " [LIGHT_GRAY](${Editor.MIN_TRACK_COUNT}≦[]${remix.trackCount}[LIGHT_GRAY]≦${Editor.MAX_TRACK_COUNT})[]\n" +
+                    Localization[if (remix.canIncreaseTrackCount()) "editor.trackChange.increase" else "editor.trackChange.max"] + "\n" +
+                    Localization[if (!remix.canDecreaseTrackCount()) "editor.trackChange.min" else if (remix.entitiesTouchTrackTop) "editor.trackChange.impedance" else "editor.trackChange.decrease"]
+        }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
