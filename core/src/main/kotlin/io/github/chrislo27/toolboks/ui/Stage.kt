@@ -94,56 +94,6 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
 
         // tooltip
         val tooltipLabel = this.tooltipElement
-        if (tooltipLabel != null) {
-            val tooltip = findTooltip(this.elementsReversed)
-            if (tooltip != null && !(tooltip.tooltip.isEmpty() && tooltip.element is InputSponge)) {
-                tooltipLabel.visible = true
-                tooltipLabel.isLocalizationKey = false
-                tooltipLabel.text = tooltip.tooltip
-                // Positioning
-                val font = tooltipLabel.getFont()
-                tooltipLabel.fontScaleMultiplier = camera.viewportWidth / ToolboksGame.gameInstance.defaultCamera.viewportWidth
-                font.data.setScale(tooltipLabel.palette.fontScale * tooltipLabel.fontScaleMultiplier)
-                val loc = tooltipLabel.location
-                // Initial set
-                loc.set(screenWidth = 0f, screenHeight = 0f, screenX = 0f, screenY = 0f,
-                        pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
-                        pixelWidth = font.getTextWidth(tooltipLabel.text) + 6,
-                        pixelHeight = font.getTextHeight(tooltipLabel.text) + font.capHeight)
-                // Clamp Y
-                val yLimit = camera.viewportHeight
-                val top = loc.pixelY + loc.pixelHeight
-                // Clamp X, flip to left side if necessary
-                val xLimit = camera.viewportWidth - loc.pixelWidth
-                if (loc.pixelX > xLimit || top > yLimit) {
-                    val newX = camera.getInputX() - loc.pixelWidth
-                    val height = loc.pixelHeight
-                    if (newX < 0) {
-                        if (top > yLimit) {
-                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
-                        } else {
-
-                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = 0f)
-                        }
-                    } else {
-                        loc.set(pixelX = camera.getInputX() - loc.pixelWidth, pixelY = loc.pixelY.coerceAtMost(yLimit - height))
-                    }
-                }
-                font.data.setScale(1f)
-                // Resize/update real position
-                val w = parent?.location?.realWidth ?: camera.viewportWidth
-                val h = parent?.location?.realHeight ?: camera.viewportHeight
-                val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
-                val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
-                tooltipLabel.location.pixelX /= pxW
-                tooltipLabel.location.pixelWidth /= pxW
-                tooltipLabel.location.pixelY /= pxH
-                tooltipLabel.location.pixelHeight /= pxH
-                tooltipLabel.onResize(this.location.realWidth, this.location.realHeight, pxW, pxH)
-            } else {
-                tooltipLabel.visible = false
-            }
-        }
 
         elements.filter(UIElement<S>::visible).forEach {
             if (it !== tooltipLabel) {
@@ -193,6 +143,62 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
         val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
         onResize(w, h, pxW, pxH)
+        updateTooltip()
+    }
+
+    open fun updateTooltip() {
+        val tooltipLabel = this.tooltipElement
+        if (tooltipLabel != null) {
+            val tooltip = findTooltip(this.elementsReversed)
+            if (tooltip != null && !(tooltip.tooltip.isEmpty() && tooltip.element is InputSponge)) {
+                tooltipLabel.visible = true
+                tooltipLabel.isLocalizationKey = false
+                tooltipLabel.text = tooltip.tooltip
+                // Positioning
+                val font = tooltipLabel.getFont()
+                tooltipLabel.fontScaleMultiplier = camera.viewportWidth / ToolboksGame.gameInstance.defaultCamera.viewportWidth
+                font.data.setScale(tooltipLabel.palette.fontScale * tooltipLabel.fontScaleMultiplier)
+                val loc = tooltipLabel.location
+                // Initial set
+                loc.set(screenWidth = 0f, screenHeight = 0f, screenX = 0f, screenY = 0f,
+                        pixelX = camera.getInputX(), pixelY = camera.getInputY() + 2,
+                        pixelWidth = font.getTextWidth(tooltipLabel.text) + 6,
+                        pixelHeight = font.getTextHeight(tooltipLabel.text) + font.capHeight)
+                // Clamp Y
+                val yLimit = camera.viewportHeight
+                val top = loc.pixelY + loc.pixelHeight
+                // Clamp X, flip to left side if necessary
+                val xLimit = camera.viewportWidth - loc.pixelWidth
+                if (loc.pixelX > xLimit || top > yLimit) {
+                    val newX = camera.getInputX() - loc.pixelWidth
+                    val height = loc.pixelHeight
+                    if (newX < 0) {
+                        if (top > yLimit) {
+                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = loc.pixelX + ((top - yLimit) / height).coerceAtMost(1f) * height)
+                        } else {
+                            loc.set(pixelY = loc.pixelY.coerceAtMost(yLimit - height), pixelX = 0f)
+                        }
+                    } else {
+                        loc.set(pixelX = camera.getInputX() - loc.pixelWidth, pixelY = loc.pixelY.coerceAtMost(yLimit - height))
+                    }
+                }
+                font.data.setScale(1f)
+                // Resize/update real position
+                val w = parent?.location?.realWidth ?: camera.viewportWidth
+                val h = parent?.location?.realHeight ?: camera.viewportHeight
+                val pxW = if (pixelsWidth > 0f) w / pixelsWidth else 1f
+                val pxH = if (pixelsHeight > 0f) h / pixelsHeight else 1f
+                tooltipLabel.location.pixelX /= pxW
+                tooltipLabel.location.pixelWidth /= pxW
+                tooltipLabel.location.pixelY /= pxH
+                tooltipLabel.location.pixelHeight /= pxH
+                tooltipLabel.onResize(this.location.realWidth, this.location.realHeight, pxW, pxH)
+                tooltipLabel.location.realX -= tooltipLabel.stage.location.realX
+                tooltipLabel.location.realY -= tooltipLabel.stage.location.realY
+            } else {
+                tooltipLabel.visible = false
+            }
+        }
     }
 
     override fun onResize(width: Float, height: Float, pixelUnitX: Float, pixelUnitY: Float) {
@@ -223,6 +229,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.mouseMoved(screenX, screenY))
@@ -235,6 +242,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun keyTyped(character: Char): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.keyTyped(character))
@@ -247,6 +255,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun scrolled(amount: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.scrolled(amount))
@@ -259,6 +268,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun keyUp(keycode: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.keyUp(keycode))
@@ -271,6 +281,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.touchDragged(screenX, screenY, pointer))
@@ -283,6 +294,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun keyDown(keycode: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
                 if (e.keyDown(keycode))
@@ -306,6 +318,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         checkTextFieldFocus()
         for (e in elementsReversed) {
             if (e.visible) {

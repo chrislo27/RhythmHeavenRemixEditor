@@ -170,9 +170,9 @@ abstract class UIElement<S : ToolboksScreen<*, *>>(val parent: UIElement<S>?, pr
         }
 
         var realX: Float = 0f
-            private set
+            internal set
         var realY: Float = 0f
-            private set
+            internal set
 
         var realWidth: Float = 0f
             private set
