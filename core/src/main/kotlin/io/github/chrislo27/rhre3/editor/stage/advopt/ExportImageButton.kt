@@ -35,6 +35,7 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.35f
         })
+        this.visible = false
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
