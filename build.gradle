@@ -37,7 +37,6 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
-
     dependencies {
         implementation project(":core")
         
@@ -60,7 +59,6 @@ project(":desktop") {
         implementation "org.slf4j:slf4j-nop:1.7.25"
         implementation "de.sciss:jump3r:1.0.4"
         implementation "com.github.chrislo27:musique-barebones:3807b60"
-        implementation "com.github.chrislo27.RSDE:main:master"
         implementation "com.segment.analytics.java:analytics:+"
         implementation "club.minnced:java-discord-rpc:2.0.2"
         
@@ -70,8 +68,7 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java"
-
-
+    
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
@@ -92,7 +89,6 @@ project(":core") {
         implementation "org.slf4j:slf4j-nop:1.7.25"
         implementation "de.sciss:jump3r:1.0.4"
         implementation "com.github.chrislo27:musique-barebones:3807b60"
-        implementation "com.github.chrislo27.RSDE:main:master"
         implementation "com.segment.analytics.java:analytics:+"
         implementation "club.minnced:java-discord-rpc:2.0.2"
 
