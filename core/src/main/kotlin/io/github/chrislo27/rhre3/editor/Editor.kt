@@ -1876,6 +1876,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         return false
     }
 
+    fun explodeRegion(rect: Rectangle, c: Color) {
+        val color = c.cpy()
+        val expiry = 4f
+        val scale = 0.25f
+        val numX = (rect.width / (scale / 4f)).roundToInt()
+        for (x in 0..numX) {
+            val numY = (rect.height / scale).roundToInt()
+            for (y in 0..numY) {
+                if (((x * numY + y) % 3) > 1) continue
+                particles += Particle(color, rect.x + (x.toFloat() / numX) * rect.width, rect.y + (y.toFloat() / numY) * rect.height,
+                                      MathUtils.random(0.125f, 1f) * MathUtils.randomSign(), MathUtils.random(2.5f, 5f),
+                                      0f, -20f, scale / 4f, scale, expiry)
+            }
+        }
+    }
+
     fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
         if (!doExplode) return
         val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)

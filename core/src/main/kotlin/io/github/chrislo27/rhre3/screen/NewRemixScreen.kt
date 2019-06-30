@@ -5,11 +5,13 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -18,6 +20,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.util.gdxutils.maxX
 
 
 class NewRemixScreen(main: RHRE3Application)
@@ -52,9 +55,34 @@ class NewRemixScreen(main: RHRE3Application)
                                 it.unloadSounds()
                             }
                         }
-                        editor.remix = editor.createRemix()
+                        val oldRemix = editor.remix
+                        val newRemix = editor.createRemix()
+                        editor.remix = newRemix
+                        oldRemix.entities.filter { it.bounds.x <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.bounds.maxX >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
+                                .filterIsInstance<ModelEntity<*>>()
+                                .forEach { editor.explodeEntity(it, doExplode = true) }
+                        val tmpRect = Rectangle(0f, 0f, 0f, 0.75f)
+                        oldRemix.trackersReverseView.forEach { container ->
+                            tmpRect.y = -0.75f * (container.renderLayer + 1)
+                            container.map.values
+                                    .filter { it.beat <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.endBeat >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
+                                    .forEach { tracker ->
+                                        if (tracker.isZeroWidth) {
+                                            tmpRect.width = 0.15f
+                                            tmpRect.x = tracker.beat - tmpRect.width / 2
+                                        } else {
+                                            tmpRect.width = tracker.width
+                                            tmpRect.x = tracker.beat
+                                        }
+                                        editor.explodeRegion(tmpRect, tracker.getColour(editor.theme))
+                                    }
+                        }
+                        val timeSigColor = editor.theme.trackLine.cpy().apply { a *= 0.25f }
+                        oldRemix.timeSignatures.map.values.forEach { ts ->
+                            editor.explodeRegion(tmpRect.set(ts.beat + 0.125f, 0f, 0.25f, oldRemix.trackCount.toFloat()), timeSigColor)
+                        }
                         this@NewRemixScreen.stage.onBackButtonClick()
-                        RemixRecovery.cacheRemixChecksum(editor.remix)
+                        RemixRecovery.cacheRemixChecksum(newRemix)
                         Gdx.app.postRunnable {
                             System.gc()
                         }
