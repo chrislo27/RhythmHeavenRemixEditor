@@ -81,6 +81,7 @@ All `data.json` files for each game are a `GameObject`.
   "objects": [],
   "series": "tengoku",
   // optional fields after this comment
+  "language": "en",
   "group": "Human-Readable Name",
   "groupDefault": false,
   "priority": 0,
@@ -94,6 +95,7 @@ All `data.json` files for each game are a `GameObject`.
 | id | id | Game type ID |
 | name | string | Name of game (see below for specific info) |
 | objects | array of objects | Objects like cues, patterns, etc. |
+| language | string? | Language type of the game. See above section "Language suffixes" for allowed values. Used to append language names in-editor. |
 | group | string? | Name of game without language/game info (see below) |
 | groupDefault | boolean? | Whether this game is the first to show in its group |
 | priority | integer? | Priority for sorting games in the picker. Higher numbers are earlier, lower numbers are later (can be negative). |
@@ -105,7 +107,8 @@ If this game appears in multiple series, for example both in RHDS and Megamix,
 the name of the series used should be in parentheses after the name of the game.
 Use official game name titles wherever possible; use fan-translated names as a last resort.<br>
 Example of series: `Space Dance (Megamix)` and `Space Dance (GBA)`.<br>
-Example of using official game titles: instead of `Cosmo Dance`, use `Cosmic Dance`
+Example of using official game titles: instead of `Cosmo Dance`, use `Cosmic Dance`<br>
+If the `language` field is set, the language name will automatically be appended to the game name.
 
 Series' names:
 

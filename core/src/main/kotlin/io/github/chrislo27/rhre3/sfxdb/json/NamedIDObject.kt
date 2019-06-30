@@ -58,6 +58,9 @@ class GameObject {
     var series: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var language: String? = null
+
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var group: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)

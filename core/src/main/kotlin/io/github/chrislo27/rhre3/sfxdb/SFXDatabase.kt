@@ -367,6 +367,7 @@ object SFXDatabase : Disposable {
                             Series.valueOf(gameObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture(MISSING_GAME_ICON_PATH),
+                            Language.getOrUnknown(gameObject.language),
                             gameObject.group ?: gameObject.name,
                             gameObject.groupDefault,
                             gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(),
@@ -393,6 +394,7 @@ object SFXDatabase : Disposable {
                             mutableListOf(),
                             if (directive.textureFh.exists()) Texture(directive.textureFh)
                             else Texture(MISSING_GAME_ICON_PATH),
+                            null,
                             nameWithoutExt,
                             true,
                             0, true, false, listOf(), jsonless = true, isSpecial = id == SPECIAL_ENTITIES_GAME_ID)
@@ -485,7 +487,7 @@ object SFXDatabase : Disposable {
 
             val playalongObjs = mutableListOf<Datamodel>()
             val playalongGame = Game(PLAYALONG_GAME_ID, "Playalong Input Entities", specialGame.series,
-                                     playalongObjs, Texture("images/gameicon/playableEntities.png"), "Special Entities", false, specialGame.priority,
+                                     playalongObjs, Texture("images/gameicon/playableEntities.png"), null, "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
             checkGameDoesNotExist(PLAYALONG_GAME_ID)
             // Press

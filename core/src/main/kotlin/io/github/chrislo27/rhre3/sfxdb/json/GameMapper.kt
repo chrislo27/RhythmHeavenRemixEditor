@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.sfxdb.Game
+import io.github.chrislo27.rhre3.sfxdb.Language
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.*
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.*
@@ -60,6 +61,7 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
     val obj = GameObject()
 
     obj.id = id
+    obj.language = language?.takeUnless { it == Language.UNKNOWN }?.code
     obj.group = group
     obj.groupDefault = groupDefault
     obj.name = name
