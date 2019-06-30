@@ -305,6 +305,30 @@ object SFXDatabase : Disposable {
             // Load favourites, recents, etc
             GameMetadata.initialize()
 
+            // language refactorer
+//            val outputFolder: File = RHRE3.RHRE3_FOLDER.child("out/").file()
+//            outputFolder.deleteRecursively()
+//            outputFolder.mkdir()
+//            // Detect all games with language suffixes
+//            gameList.sortedBy { it.id }.filter { !it.isCustom }.forEach { game ->
+//                for (lang in Language.VALUES) {
+//                    if (game.id.endsWith(lang.code.capitalize())) {
+//                        val gameFolder = outputFolder.resolve("${game.id}/")
+//                        gameFolder.mkdir()
+//                        gameFolder.resolve("data.json").apply {
+//                            createNewFile()
+//                            writeText(SFX_FOLDER.child("${game.id}/").file().resolve("data.json").readText().lines().toMutableList().also {
+//                                it.add(4, """  "language": "${lang.code}",""")
+//                                val nameIndex = it.indexOfFirst { it.trim().startsWith("\"name\"") }
+//                                it[nameIndex] = it[nameIndex].replace(" (${lang.langName})", "")
+//                            }.joinToString(separator="\n"))
+//                        }
+//                        Toolboks.LOGGER.debug("Wrote ${game.id} with correct language out")
+//                        break
+//                    }
+//                }
+//            }
+
             if (RHRE3.verifySfxDb) {
                 Toolboks.LOGGER.info("Checking SFX database for errors")
                 val nanoStart = System.nanoTime()
