@@ -64,7 +64,6 @@ class CreditsScreen(main: RHRE3Application)
 
                             for (i in -1..1) {
                                 val y = location.realY + location.realHeight * 0.125f + (scroll % maxScroll) - maxScroll * i
-                                val textHeight = font.getTextHeight(text, location.realWidth, true)
 
                                 font.draw(batch, text, location.realX,
                                           y,
