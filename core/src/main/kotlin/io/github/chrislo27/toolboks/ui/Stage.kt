@@ -94,6 +94,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
 
         // tooltip
         val tooltipLabel = this.tooltipElement
+        updateTooltip(true)
 
         elements.filter(UIElement<S>::visible).forEach {
             if (it !== tooltipLabel) {
@@ -146,12 +147,14 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
     }
 
-    open fun updateTooltip() {
+    open fun updateTooltip(dontMakeVisibleIfNotVisible: Boolean = false) {
         val tooltipLabel = this.tooltipElement
         if (tooltipLabel != null) {
             val tooltip = findTooltip(this.elementsReversed)
             if (tooltip != null && !(tooltip.tooltip.isEmpty() && tooltip.element is InputSponge)) {
-                tooltipLabel.visible = true
+                if (!dontMakeVisibleIfNotVisible) {
+                    tooltipLabel.visible = true
+                }
                 tooltipLabel.isLocalizationKey = false
                 tooltipLabel.text = tooltip.tooltip
                 // Positioning
@@ -217,10 +220,13 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
         if (!visible)
             return false
+        updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.touchUp(screenX, screenY, pointer, button))
+                if (e.touchUp(screenX, screenY, pointer, button)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -232,8 +238,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.mouseMoved(screenX, screenY))
+                if (e.mouseMoved(screenX, screenY)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -245,8 +253,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.keyTyped(character))
+                if (e.keyTyped(character)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -258,8 +268,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.scrolled(amount))
+                if (e.scrolled(amount)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -271,8 +283,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.keyUp(keycode))
+                if (e.keyUp(keycode)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -284,8 +298,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.touchDragged(screenX, screenY, pointer))
+                if (e.touchDragged(screenX, screenY, pointer)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -297,8 +313,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         updateTooltip()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.keyDown(keycode))
+                if (e.keyDown(keycode)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
@@ -322,8 +340,10 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         checkTextFieldFocus()
         for (e in elementsReversed) {
             if (e.visible) {
-                if (e.touchDown(screenX, screenY, pointer, button))
+                if (e.touchDown(screenX, screenY, pointer, button)) {
+                    updateTooltip()
                     return true
+                }
             }
         }
         return false
