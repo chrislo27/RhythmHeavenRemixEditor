@@ -26,13 +26,13 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         private val TMP_MATRIX = Matrix4()
     }
 
-    private inner class TooltipData(var tooltip: String, var element: UIElement<S>?)
+    protected inner class TooltipData(var tooltip: String, var element: UIElement<S>?)
 
     override val stage: Stage<S>
         get() = this
     val elements: MutableList<UIElement<S>> = mutableListOf()
     private val elementsReversed: List<UIElement<S>> = elements.asReversed()
-    private val tooltipData: TooltipData = TooltipData("", null)
+    protected val tooltipData: TooltipData = TooltipData("", null)
     override var tooltipText: String? = null
     var tooltipElement: TextLabel<S>? = null
         set(value) {
@@ -59,7 +59,7 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
     }
 
     // Recursive
-    private fun findTooltip(rootReversed: List<UIElement<S>>): TooltipData? {
+    protected open fun findTooltip(rootReversed: List<UIElement<S>>): TooltipData? {
         tooltipData.apply {
             tooltip = ""
             element = null
