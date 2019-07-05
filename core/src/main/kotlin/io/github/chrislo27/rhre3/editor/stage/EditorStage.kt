@@ -213,6 +213,20 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     }
 
+    override fun findTooltip(rootReversed: List<UIElement<EditorScreen>>): TooltipData? {
+        val superResult = super.findTooltip(rootReversed)
+        if (superResult == null) {
+            val editorText = editor.getHoverText()
+            if (editorText.isNotEmpty()) {
+                return tooltipData.apply {
+                    this.element = this@EditorStage
+                    this.tooltip = editorText
+                }
+            }
+        }
+        return superResult
+    }
+
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         if (Toolboks.debugMode != wasDebug) {
             wasDebug = Toolboks.debugMode
