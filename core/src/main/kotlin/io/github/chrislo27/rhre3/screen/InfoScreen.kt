@@ -983,6 +983,29 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
+
+            // Close warning
+            settings.elements += TrueCheckbox(palette, settings, settings).apply {
+                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true)
+
+                this.textLabel.apply {
+                    this.fontScaleMultiplier = fontScale * 0.9f
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.textAlign = Align.left
+                    this.text = "screen.info.closeWarning"
+                }
+
+                this.checkedStateChanged = {
+                    preferences.putBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, it)
+                    didChangeSettings = true
+                }
+
+                this.location.set(screenX = 1f - (padding + buttonWidth),
+                                  screenY = padding * 5 + buttonHeight * 4,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
         }
 
         stage.updatePositions()

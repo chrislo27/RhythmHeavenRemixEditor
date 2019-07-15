@@ -396,7 +396,22 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         MidiHandler.dispose()
     }
 
-    override fun attemptClose(): Boolean = (screen as? CloseListener)?.attemptClose() != false
+    override fun attemptClose(): Boolean {
+        val screenRequestedStop = (screen as? CloseListener)?.attemptClose() == false
+        return if (screenRequestedStop) {
+            false
+        } else {
+            // Close warning only if the editor screen has been entered at least once and if the preferences say so
+            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen) {
+                Gdx.app.postRunnable {
+                    setScreen(CloseWarningScreen(this, this.screen))
+                }
+                false
+            } else {
+                true
+            }
+        }
+    }
 
     fun persistWindowSettings() {
         val isFullscreen = Gdx.graphics.isFullscreen

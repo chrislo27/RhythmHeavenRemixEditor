@@ -14,6 +14,11 @@ import io.github.chrislo27.toolboks.ToolboksScreen
 
 class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, EditorScreen>(main) {
 
+    companion object {
+        var enteredEditor: Boolean = false
+            private set
+    }
+
     val editor: Editor = Editor(main, main.defaultCamera, true)
     override val stage: EditorStage
         get() = editor.stage
@@ -26,6 +31,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
     override fun show() {
         super.show()
         (Gdx.input.inputProcessor as? InputMultiplexer)?.addProcessor(editor)
+        enteredEditor = true
 
         if (firstShowing) {
             firstShowing = false
