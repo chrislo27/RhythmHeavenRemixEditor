@@ -13,6 +13,7 @@ import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 
@@ -70,6 +71,17 @@ class CloseWarningScreen(main: RHRE3Application, val lastScreen: Screen?) : Tool
             this.text = "screen.closeWarning.areYouSure"
 
             this.location.set(screenX = 0.1f, screenY = 0.25f, screenWidth = 0.8f, screenHeight = 0.75f)
+        }
+        stage.bottomStage.elements += Button(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                          clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage).apply {
+            val backBtnLoc = this@CloseWarningScreen.stage.backButton.location
+            this.location.set(0.5f - backBtnLoc.screenWidth / 2, backBtnLoc.screenY, backBtnLoc.screenWidth, backBtnLoc.screenHeight)
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_x"))
+            })
+            this.leftClickAction = { _, _ ->
+                Gdx.app.exit()
+            }
         }
 
         stage.updatePositions()
