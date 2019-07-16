@@ -338,7 +338,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         LC.all(this)
     }
 
-    override fun onExceptionInRender(t: Throwable) {
+    override fun exceptionHandler(t: Throwable) {
         val currentScreen = this.screen
         AnalyticsHandler.track("Render Crash", mapOf(
                 "throwable" to t::class.java.canonicalName,
@@ -358,7 +358,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
             setScreen(RenderCrashScreen(this, t, currentScreen))
         } else {
-            super.onExceptionInRender(t)
+            super.exceptionHandler(t)
             Gdx.app.exit()
         }
     }
