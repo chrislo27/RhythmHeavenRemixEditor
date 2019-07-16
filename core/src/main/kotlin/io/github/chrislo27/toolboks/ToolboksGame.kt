@@ -72,7 +72,7 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
     val defaultBorderedFont: BitmapFont
         get() = fonts[defaultBorderedFontKey].font!!
 
-    open val inputMultiplexer = InputMultiplexer()
+    open val inputMultiplexer: InputMultiplexer = ExceptionalInputMultiplexer({ exceptionHandler(it) })
 
     private var memoryDeltaTime: Float = 0f
     private var lastMemory: Long = 0L
@@ -229,11 +229,11 @@ ${(screen as? ToolboksScreen<*, *>)?.getDebugString() ?: ""}"""
             }
         } catch (t: Throwable) {
             t.printStackTrace()
-            onExceptionInRender(t)
+            exceptionHandler(t)
         }
     }
 
-    protected open fun onExceptionInRender(t: Throwable) {
+    protected open fun exceptionHandler(t: Throwable) {
         Gdx.app.exit()
     }
 
