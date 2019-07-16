@@ -114,4 +114,10 @@ object AnalyticsHandler : Disposable {
         }
     }
 
+    fun flush() {
+        if (this::analytics.isInitialized) {
+            analytics.flush()
+        }
+    }
+
 }

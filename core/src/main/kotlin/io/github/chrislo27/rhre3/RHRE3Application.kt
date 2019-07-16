@@ -56,6 +56,8 @@ import org.asynchttpclient.DefaultAsyncHttpClientConfig
 import org.asynchttpclient.Dsl.asyncHttpClient
 import org.lwjgl.opengl.Display
 import java.io.File
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.util.*
 import kotlin.concurrent.thread
 
@@ -308,7 +310,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 Toolboks.LOGGER.info("No online counter by request from launch args")
             }
         }
-        
+
         GlobalScope.launch {
             try {
                 val nano = System.nanoTime()
@@ -334,6 +336,31 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
 
         LC.all(this)
+    }
+
+    override fun onExceptionInRender(t: Throwable) {
+        val currentScreen = this.screen
+        AnalyticsHandler.track("Render Crash", mapOf(
+                "throwable" to t::class.java.canonicalName,
+                "stackTrace" to StringWriter().apply {
+                    val pw = PrintWriter(this)
+                    t.printStackTrace(pw)
+                    pw.flush()
+                }.toString(),
+                "currentScreen" to (currentScreen?.javaClass?.canonicalName ?: "null")
+                                                    ))
+        thread(start = true, isDaemon = true, name = "Crash Report Analytics Flusher") {
+            AnalyticsHandler.flush()
+        }
+        if (currentScreen !is RenderCrashScreen) {
+            thread(start = true, isDaemon = true, name = "Crash Remix Recovery") {
+                RemixRecovery.saveRemixInRecovery()
+            }
+            setScreen(RenderCrashScreen(this, t, currentScreen))
+        } else {
+            super.onExceptionInRender(t)
+            Gdx.app.exit()
+        }
     }
 
     override fun preRender() {
@@ -369,6 +396,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             font.data.setScale(1f)
         }
 
+//        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY) && Gdx.input.isKeyJustPressed(Input.Keys.C)) {
+//            error("Test exception")
+//        }
+
         super.postRender()
     }
 
@@ -402,7 +433,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             false
         } else {
             // Close warning only if the editor screen has been entered at least once and if the preferences say so
-            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen) {
+            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen && this.screen !is RenderCrashScreen) {
                 Gdx.app.postRunnable {
                     setScreen(CloseWarningScreen(this, this.screen))
                 }
