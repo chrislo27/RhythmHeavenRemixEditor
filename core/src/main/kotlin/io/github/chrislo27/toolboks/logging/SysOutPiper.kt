@@ -33,6 +33,9 @@ object SysOutPiper {
     @Volatile
     private var piped: Boolean = false
 
+    lateinit var logFile: File
+        private set
+
     fun pipe(args: List<String>, game: ToolboksGame, folder: File) {
         if (piped)
             return
@@ -41,9 +44,9 @@ object SysOutPiper {
         oldErr = System.err
 
         folder.mkdirs()
-        val file: File = File(folder, "log_" + SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(
-                Date(System.currentTimeMillis())) + ".txt")
+        val file: File = File(folder, "log_" + SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(Date(System.currentTimeMillis())) + ".txt")
         file.createNewFile()
+        logFile = file
 
         stream = FileOutputStream(file)
 
