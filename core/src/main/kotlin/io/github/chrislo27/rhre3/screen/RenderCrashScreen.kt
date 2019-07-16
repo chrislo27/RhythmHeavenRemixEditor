@@ -11,7 +11,6 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.logging.SysOutPiper
-import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
@@ -90,7 +89,7 @@ class RenderCrashScreen(main: RHRE3Application, val throwable: Throwable, val la
     override fun renderUpdate() {
         super.renderUpdate()
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            main.screen = ScreenRegistry["editor"]
+//            main.screen = ScreenRegistry["editor"]
         }
     }
 
