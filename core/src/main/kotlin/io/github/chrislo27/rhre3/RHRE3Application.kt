@@ -352,11 +352,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         thread(start = true, isDaemon = true, name = "Crash Report Analytics Flusher") {
             AnalyticsHandler.flush()
         }
-        if (currentScreen !is RenderCrashScreen) {
+        if (currentScreen !is CrashScreen) {
             thread(start = true, isDaemon = true, name = "Crash Remix Recovery") {
                 RemixRecovery.saveRemixInRecovery()
             }
-            setScreen(RenderCrashScreen(this, t, currentScreen))
+            setScreen(CrashScreen(this, t, currentScreen))
         } else {
             super.exceptionHandler(t)
             Gdx.app.exit()
@@ -433,7 +433,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             false
         } else {
             // Close warning only if the editor screen has been entered at least once and if the preferences say so
-            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen && this.screen !is RenderCrashScreen) {
+            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen && this.screen !is CrashScreen) {
                 Gdx.app.postRunnable {
                     setScreen(CloseWarningScreen(this, this.screen))
                 }

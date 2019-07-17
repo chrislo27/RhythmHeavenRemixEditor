@@ -19,8 +19,8 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 
-class RenderCrashScreen(main: RHRE3Application, val throwable: Throwable, val lastScreen: Screen?)
-    : ToolboksScreen<RHRE3Application, RenderCrashScreen>(main), HidesVersionText {
+class CrashScreen(main: RHRE3Application, val throwable: Throwable, val lastScreen: Screen?)
+    : ToolboksScreen<RHRE3Application, CrashScreen>(main), HidesVersionText {
 
     private data class Splash(val title: String, val subtitle: String, val titleScale: Float = 1f)
 
@@ -33,14 +33,14 @@ class RenderCrashScreen(main: RHRE3Application, val throwable: Throwable, val la
                                                    )
     }
 
-    override val stage: Stage<RenderCrashScreen> = Stage(null, main.defaultCamera, 1280f, 720f)
+    override val stage: Stage<CrashScreen> = Stage(null, main.defaultCamera, 1280f, 720f)
 
     private var crashIcon: Texture? = null
 
     init {
         val palette = main.uiPalette
 
-        fun label(pal: UIPalette = palette, st: Stage<RenderCrashScreen> = stage): TextLabel<RenderCrashScreen> = TextLabel(pal, st, st).apply {
+        fun label(pal: UIPalette = palette, st: Stage<CrashScreen> = stage): TextLabel<CrashScreen> = TextLabel(pal, st, st).apply {
             this.isLocalizationKey = false
             this.textWrapping = false
         }
