@@ -1066,7 +1066,7 @@ class InfoScreen(main: RHRE3Application)
     }
 
     override fun getDebugString(): String? {
-        return "${Input.Keys.toString(Toolboks.DEBUG_KEY)}+Q - Render background on top"
+        return "CTRL+A - Open Advanced Options\n${Input.Keys.toString(Toolboks.DEBUG_KEY)}+Q - Render background on top"
     }
 
     override fun tickUpdate() {
