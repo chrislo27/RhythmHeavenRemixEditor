@@ -68,12 +68,13 @@ class CrashScreen(main: RHRE3Application, val throwable: Throwable, val lastScre
         }
 
         stage.elements += label().apply {
-            this.location.set(screenY = 0.55f, screenHeight = 0.25f)
-            this.text = "${selectedSplash.subtitle}\n\nThe program has crashed, but we're able to display this crash info screen.\nWe've attempted to save your remix (if any) and you should be able to recover it the next time\nyou start the program. " + (if (!RHRE3.noAnalytics) "An anonymous crash report has also been sent to the developer." else "") + "\nIf you can, take a screenshot of this screen as it contains useful info for the developer."
+            this.location.set(screenY = 0.5f, screenHeight = 0.3f)
+            this.fontScaleMultiplier = 0.9f
+            this.text = "${selectedSplash.subtitle}\n\nThe program has crashed, but we're able to display this crash info screen.\nWe've attempted to save your remix (if any) and you should be able to recover it the next time\nyou start the program. " + (if (!RHRE3.noAnalytics) "An anonymous crash report has also been sent to the developer." else "") + "\nIf you can, take a screenshot of this screen as it contains useful info for the developer.\nConsider submitting a bug report at\n[#8CCFFF]${RHRE3.GITHUB}/issues/new/choose[]."
         }
 
         stage.elements += label().apply {
-            this.location.set(screenY = 0.05f, screenHeight = 0.5f, screenX = 0.1f, screenWidth = 0.875f)
+            this.location.set(screenY = 0.05f, screenHeight = 0.45f, screenX = 0.1f, screenWidth = 0.875f)
             this.fontScaleMultiplier = 0.85f
             this.textAlign = Align.topLeft
             this.textWrapping = true
@@ -85,16 +86,16 @@ class CrashScreen(main: RHRE3Application, val throwable: Throwable, val lastScre
         }
 
         stage.elements += label().apply {
-            this.location.set(screenWidth = 0.5f, screenHeight = 0.03333f, pixelX = 6f, pixelY = 8f, pixelWidth = -12f)
-            this.textAlign = Align.bottomLeft
+            this.location.set(screenWidth = 0.5f, screenHeight = 0.03333f, pixelHeight = 8f, pixelWidth = -6f)
+            this.textAlign = Align.left
             this.fontScaleMultiplier = 0.75f
             this.text = "When you're done, you can close the program."
             this.background = true
         }
 
         stage.elements += label().apply {
-            this.location.set(screenX = 0.5f, screenWidth = 0.5f, screenHeight = 0.03333f, pixelX = 6f, pixelWidth = -12f, pixelY = 8f)
-            this.textAlign = Align.bottomRight
+            this.location.set(screenX = 0.5f, screenWidth = 0.5f, screenHeight = 0.03333f, pixelX = 6f, pixelWidth = -6f, pixelHeight = 8f)
+            this.textAlign = Align.right
             this.fontScaleMultiplier = 0.75f
             this.text = RHRE3.VERSION.toString()
             this.background = true
