@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.18.4`.
+This readme is accurate as of version `v3.18.5`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -218,7 +218,7 @@ dragging the ends will allow you to make smooth transitions
 for a perfect fade-out.
 
 ![4/4 time signature](readme/timeSignature.png)<br>
-The **time signature** tool changes the time signature. It supports beat units
+The **time signature** tool changes the time signature. It supports lower beat units
 of 2, 4, 8, and 16. Use this tool to your advantage
 to create measures so your patterns don't sound "off". You can only place this
 on non-negative beats.
