@@ -65,7 +65,7 @@ however, read up on the controls first below!
 | **`CTRL+N`** | New remix |
 | **`CTRL+O`** | Open remix |
 | **`CTRL+S`** | Save remix |
-| **`CTRL+E`** | Export/upload remix |
+| **`CTRL+E`** | Export remix |
 | **`CTRL+Z`** | Undo |
 | **`CTRL+SHIFT+Z`** or **`CTRL+Y`** | Redo |
 | **`F`** | Quick switch to last game (doesn't work in search results) |
