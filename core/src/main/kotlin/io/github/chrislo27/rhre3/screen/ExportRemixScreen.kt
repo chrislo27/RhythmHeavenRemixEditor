@@ -22,16 +22,13 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
-import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
-import io.github.chrislo27.rhre3.sfxdb.Series
-import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.OGG_VORBIS
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
-import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.MAX_PICOSONG_BYTES
-import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_AUP_URL
-import io.github.chrislo27.rhre3.screen.UploadRemixScreen.Companion.PICOSONG_TOS_URL
+import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
+import io.github.chrislo27.rhre3.sfxdb.Series
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -87,12 +84,9 @@ class ExportRemixScreen(main: RHRE3Application)
     private var partial = false
     private var isCapableOfExporting = false
     private val mainLabel: TextLabel<ExportRemixScreen>
-    private val picosongButton: Button<ExportRemixScreen>
-    private var picosongFunc: (() -> UploadRemixScreen)? = null
     private val folderButton: Button<ExportRemixScreen>
     private var folderFile: File? = null
     private val readyButton: Button<ExportRemixScreen>
-    private lateinit var uploadImmediatelyButton: Button<ExportRemixScreen>
     private val selectionStage: SelectionStage
 
     private enum class ExportFileType(val extension: String) {
@@ -148,28 +142,6 @@ class ExportRemixScreen(main: RHRE3Application)
         }
         stage.centreStage.elements += selectionStage
 
-        picosongButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                picosongFunc?.let {
-                    main.screen = it.invoke()
-                }
-                visible = false
-                picosongFunc = null
-            }
-        }.apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.text = "screen.export.picosong"
-            })
-
-            this.visible = false
-
-            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
-        }
-        stage.bottomStage.elements += picosongButton
-
         readyButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
@@ -177,7 +149,6 @@ class ExportRemixScreen(main: RHRE3Application)
                 updateLabels()
 
                 this.visible = false
-                uploadImmediatelyButton.visible = false
                 selectionStage.visible = false
             }
         }.apply {
@@ -192,55 +163,6 @@ class ExportRemixScreen(main: RHRE3Application)
             this.location.set(screenX = 0.225f, screenWidth = 0.55f)
         }
         stage.bottomStage.elements += readyButton
-
-        uploadImmediatelyButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-
-                this.visible = false
-                readyButton.visible = false
-                selectionStage.visible = false
-
-                GlobalScope.launch {
-                    val exportFile = File.createTempFile("rhre3-quickupload-", ".mp3").apply {
-                        deleteOnExit()
-                    }
-                    export(exportFile, MP3, false, exportOptions = ExportOptions.QUICKUPLOAD)
-
-                    val fileSize = exportFile.length()
-
-                    Gdx.app.postRunnable {
-                        if (fileSize > MAX_PICOSONG_BYTES) {
-                            this@ExportRemixScreen.stage.backButton.enabled = true
-                            this@ExportRemixScreen.mainLabel.text = Localization["screen.export.uploadImmediately.cannot"]
-                        } else {
-                            main.screen = UploadRemixScreen(main, exportFile, exportFile.name, true)
-                        }
-                    }
-
-                    // Analytics
-                    AnalyticsHandler.track("Export Remix",
-                                           mapOf(
-                                                   "sfxDatabase" to SFXDatabase.data.version,
-                                                   "fileType" to MP3.extension,
-                                                   "fileSize" to exportFile.length(),
-                                                   "partial" to partial,
-                                                   "uploadImmediately" to true
-                                                ))
-                }
-            }
-        }.apply {
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.text = "screen.export.uploadImmediately"
-            })
-
-            this.visible = false
-
-            this.location.set(screenX = 0.8f, screenWidth = 0.2f)
-        }
-        stage.bottomStage.elements += uploadImmediatelyButton
 
         folderButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -554,7 +476,7 @@ class ExportRemixScreen(main: RHRE3Application)
             GlobalScope.launch {
                 isChooserOpen = true
                 Gdx.app.postRunnable {
-                    mainLabel.text = Localization["screen.export.uploadHint"]
+                    mainLabel.text = ""
                 }
                 val filters = listOf(FileChooserExtensionFilter(Localization["screen.export.fileFilter", "MP3, OGG, FLAC, WAV"], "*.mp3", "*.ogg", "*.flac", "*.wav"))
                 FileChooser.saveFileChooser(Localization["screen.export.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
@@ -578,29 +500,8 @@ class ExportRemixScreen(main: RHRE3Application)
 
                                 export(correctFile, fileType, true)
 
-                                val canUploadToPicosong = fileType == MP3 && correctFile.length() <= MAX_PICOSONG_BYTES
-
                                 Gdx.app.postRunnable {
-                                    mainLabel.text = Localization[
-                                            if (fileType == MP3)
-                                                (if (correctFile.length() <= MAX_PICOSONG_BYTES)
-                                                    "screen.export.success.picosong.yes"
-                                                else "screen.export.success.picosong.no")
-                                            else "screen.export.success", PICOSONG_AUP_URL, PICOSONG_TOS_URL]
-
-                                    picosongButton.visible = canUploadToPicosong
-                                    picosongFunc = if (canUploadToPicosong) {
-                                        val tempFile = File.createTempFile("rhre3exportupload", ".mp3").apply {
-                                            deleteOnExit()
-                                        }
-                                        val originalName = correctFile.name
-                                        correctFile.copyTo(tempFile, true);
-                                        {
-                                            UploadRemixScreen(main, tempFile, originalName, true)
-                                        }
-                                    } else {
-                                        null
-                                    }
+                                    mainLabel.text = Localization["screen.export.success"]
                                 }
 
                                 // Analytics
@@ -609,8 +510,7 @@ class ExportRemixScreen(main: RHRE3Application)
                                                                "sfxDatabase" to SFXDatabase.data.version,
                                                                "fileType" to fileType.extension,
                                                                "fileSize" to correctFile.length(),
-                                                               "partial" to partial,
-                                                               "uploadImmediately" to false
+                                                               "partial" to partial
                                                             ))
                             } catch (t: Throwable) {
                                 t.printStackTrace()
@@ -631,9 +531,6 @@ class ExportRemixScreen(main: RHRE3Application)
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
         readyButton.visible = false
-        uploadImmediatelyButton.visible = false
-        picosongButton.visible = false
-        picosongFunc = null
         folderButton.visible = false
         folderFile = null
         selectionStage.visible = false
@@ -644,9 +541,8 @@ class ExportRemixScreen(main: RHRE3Application)
             }
         } else {
             if (throwable == null) {
-                label.text = "${Localization["screen.export.prepare"]}\n\n${Localization["screen.export.uploadHint"]}"
+                label.text = Localization["screen.export.prepare"]
                 readyButton.visible = true
-                uploadImmediatelyButton.visible = true
                 selectionStage.visible = true
             } else {
                 label.text = Localization["screen.export.failed", throwable::class.java.canonicalName]
@@ -662,8 +558,6 @@ class ExportRemixScreen(main: RHRE3Application)
     override fun hide() {
         super.hide()
         BeadsSoundSystem.stop()
-        picosongButton.visible = false
-        picosongFunc = null
         folderButton.visible = false
         folderFile = null
     }

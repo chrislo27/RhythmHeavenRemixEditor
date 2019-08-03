@@ -21,13 +21,11 @@ sing cues by default. Be careful, because you will lose all unsaved changes.
 
 The **Save Remix** button will ask you where to save your remix.
 
-## Exporting and Uploading
-![Export/Upload button](readme/toolbar/export.png)
+## Exporting
+![Export button](readme/toolbar/export.png)
 
 This will allow you to export your remixes as WAV, MP3, OGG (Vorbis), or FLAC
 files, as long as you have placed an End Remix entity.
-If you export the remix as an MP3, you can upload directly
-to [picosong](https://picosong.com) afterwards too.
 
 [See this article for more info.](Exporting)
 
