@@ -1,3 +1,3 @@
 java -version
-java -jar RHRE.jar
+java -jar -Xmx1024m RHRE.jar
 pause

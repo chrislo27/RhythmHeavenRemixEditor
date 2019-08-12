@@ -12,14 +12,16 @@ it tries to allocate up to a quarter of your system memory.
 
 In order to force the Java Virtual Machine to be allowed to use more memory,
 you have to edit either the **bat**ch file for Windows, or **sh**ell file
-for Linux/macOS. Replace the line `java -jar RHRE3.jar` with the below:
+for Linux/macOS. Replace the line that starts with `java -jar` with the below:
 
 ```
-java -jar -Xmx1024m RHRE.jar
+java -jar -Xmx1500m RHRE.jar
 ```
 
->`Xmx1024m` indicates that you want a max of 1024 MB allocated. Change that
-value if you need to.
+>`Xmx1500m` indicates that you want a maximum of 1500 MB of RAM allocated. Change that
+value if you are still having out of memory errors.
+
+Note that as of v3.18.7 the default maximum memory allocated is 1024 MB.
 
 Now, you must **ALWAYS** run RHRE through that file, or else the *settings
 will be ignored*.
