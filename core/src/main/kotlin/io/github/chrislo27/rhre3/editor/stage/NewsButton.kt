@@ -23,25 +23,26 @@ class NewsButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
         this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
         this.image = plainRegion
     }
-    private val newsScreen: NewsScreen by lazy { ScreenRegistry.getNonNullAsType<NewsScreen>("news") }
+    private val newsScreen: NewsScreen?
+        get() = ScreenRegistry.getAsType("news")
 
     init {
         addLabel(label)
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        label.image = if (newsScreen.hasNewNews) newRegion else plainRegion
+        label.image = if (newsScreen?.hasNewNews == true) newRegion else plainRegion
         super.render(screen, batch, shapeRenderer)
     }
 
     override var tooltipText: String?
         set(_) {}
         get() {
-            return (if (newsScreen.hasNewNews) "[RAINBOW]${Localization["screen.news.tooltip.new"]}[] " else "") + Localization["screen.news.title"]
+            return (if (newsScreen?.hasNewNews == true) "[RAINBOW]${Localization["screen.news.tooltip.new"]}[] " else "") + Localization["screen.news.title"]
         }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        editor.main.screen = ScreenRegistry.getNonNull("news")
+        editor.main.screen = newsScreen!!
     }
 }
