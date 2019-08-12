@@ -1443,9 +1443,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             buttonBarStage.elements += FullscreenButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,
                                   screenX = 1f - (size * 4 + padding * 3))
-                this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_fullscreen"))
-                })
             }
             buttonBarStage.elements += ResetWindowButton(editor, palette, buttonBarStage, buttonBarStage).apply {
                 this.location.set(screenWidth = size,

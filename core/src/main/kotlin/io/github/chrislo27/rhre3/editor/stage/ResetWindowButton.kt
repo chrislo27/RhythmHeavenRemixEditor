@@ -1,7 +1,5 @@
 package io.github.chrislo27.rhre3.editor.stage
 
-import com.badlogic.gdx.Gdx
-import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.toolboks.i18n.Localization
@@ -18,12 +16,12 @@ class ResetWindowButton(val editor: Editor, palette: UIPalette, parent: UIElemen
     override var tooltipText: String?
         set(_) {}
         get() {
-            return Localization["editor.resetwindow"]
+            return Localization["editor.resetwindow"] + " [LIGHT_GRAY](SHIFT+F11)[]"
         }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
-        Gdx.graphics.setWindowedMode(RHRE3.WIDTH, RHRE3.HEIGHT)
+        editor.main.attemptResetWindow()
         editor.main.persistWindowSettings()
     }
 }

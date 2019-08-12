@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.files.FileHandle
@@ -48,6 +49,9 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
+import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
+import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -141,6 +145,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         private set
 
     var advancedOptions: Boolean = false
+    private var lastWindowed: Pair<Int, Int> = RHRE3.DEFAULT_SIZE.copy()
 
     private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
 
@@ -396,10 +401,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             font.data.setScale(1f)
         }
 
-//        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY) && Gdx.input.isKeyJustPressed(Input.Keys.C)) {
-//            error("Test exception")
-//        }
-
         super.postRender()
     }
 
@@ -476,6 +477,40 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
             Gdx.graphics.setWindowedMode(width, height)
         }
+    }
+
+    fun attemptFullscreen() {
+        lastWindowed = Gdx.graphics.width to Gdx.graphics.height
+        Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
+    }
+
+    fun attemptEndFullscreen() {
+        val last = lastWindowed
+        Gdx.graphics.setWindowedMode(last.first, last.second)
+    }
+
+    fun attemptResetWindow() {
+        Gdx.graphics.setWindowedMode(RHRE3.DEFAULT_SIZE.first, RHRE3.DEFAULT_SIZE.second)
+    }
+
+    override fun keyDown(keycode: Int): Boolean {
+        val res = super.keyDown(keycode)
+        if (!res) {
+            if (!Gdx.input.isControlDown() && !Gdx.input.isAltDown()) {
+                if (keycode == Input.Keys.F11) {
+                    if (!Gdx.input.isShiftDown()) {
+                        if (Gdx.graphics.isFullscreen) {
+                            attemptEndFullscreen()
+                        } else {
+                            attemptFullscreen()
+                        }
+                    } else {
+                        attemptResetWindow()
+                    }
+                }
+            }
+        }
+        return res
     }
 
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
