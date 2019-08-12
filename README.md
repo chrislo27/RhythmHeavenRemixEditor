@@ -25,7 +25,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
   * A Java version of 9 or newer will work but is not recommended
 * A graphics driver that supports OpenGL 2.0 or higher
 * Windows 7 or newer, Mac OS X 10.11 (El Capitan) or macOS 10.12 (Sierra) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
-* An Internet connection initially
+* An Internet connection initially to download the sound effect database
 
 ## Features
 ![Screenshot](.github/rhre3palettes.png)
@@ -49,6 +49,7 @@ Installation is straightforward.
 Rhythm Heaven is not my property—it is the intellectual property of Nintendo.<br>
 This program is **NOT** endorsed nor sponsored in any way by Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to maliciously infringe trademark rights.<br>
+All other trademarks and assets are property of their respective owners.
 This is a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license), for free.
 
