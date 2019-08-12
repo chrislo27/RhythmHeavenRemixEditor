@@ -145,7 +145,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     }
                 }
                 GitHelper.ensureRemoteExists()
-                GitHelper.fetchOrClone(ScreenProgressMonitor())
+                GitHelper.fetchOrClone(ScreenProgressMonitor(!GitHelper.doesGitFolderExist()))
                 repoStatus = RepoStatus.DONE
                 run {
                     val str = GitHelper.SOUNDS_DIR.child("current.json").readString("UTF-8")
@@ -189,7 +189,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         UNKNOWN, DOING, DONE, ERROR, NO_INTERNET_CAN_CONTINUE, NO_INTERNET_CANNOT_CONTINUE, INCOMPAT_VERSION
     }
 
-    private inner class ScreenProgressMonitor : ProgressMonitor {
+    private inner class ScreenProgressMonitor(val clone: Boolean) : ProgressMonitor {
 
         var currentTask: Int = 0
 
@@ -197,7 +197,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         var taskTotalWork: Int = ProgressMonitor.UNKNOWN
         var task: String? = ""
             set(value) {
-                field = if (value == "Updating references") {
+                field = (if (clone) "Performing first-time SFX Database setup...\nThis will take a while.\n\n" else "") + if (value == "Updating references") {
                     "Updating references (please be patient)"
                 } else {
                     value
