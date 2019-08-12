@@ -24,7 +24,6 @@ import io.github.chrislo27.toolboks.tick.TickController
 import io.github.chrislo27.toolboks.tick.TickHandler
 import io.github.chrislo27.toolboks.util.MemoryUtils
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
-import io.github.chrislo27.toolboks.util.gdxutils.isKeyJustReleased
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.version.Version
 import java.io.File
@@ -39,7 +38,7 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
                             val version: Version,
                             val emulatedSize: Pair<Int, Int>, val resizeAction: ResizeAction,
                             val minimumSize: Pair<Int, Int>)
-    : Game(), TickHandler {
+    : Game(), TickHandler, InputProcessor {
 
     companion object {
 
@@ -111,12 +110,14 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
         fonts[defaultFontKey] = createDefaultFont()
         fonts[defaultBorderedFontKey] = createDefaultBorderedFont()
         fonts.loadAll(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
-
-        Gdx.input.inputProcessor = inputMultiplexer
+        
+        Gdx.input.inputProcessor = inputMultiplexer.apply {
+            addProcessor(0, this@ToolboksGame)
+        }
     }
 
     /**
-     * This function handles camera updates, debug keystrokes, and clearing.
+     * This function handles camera updates and screen clearing.
      */
     open fun preRender() {
         defaultCamera.update()
@@ -125,40 +126,6 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
         tickController.update()
 
         // render update
-        if (Gdx.input.isKeyJustReleased(Toolboks.DEBUG_KEY)) {
-            if (shouldToggleDebugAfterPress) {
-                val old = Toolboks.debugMode
-                Toolboks.debugMode = !old
-                onDebugChange(old, !old)
-                Toolboks.LOGGER.debug("Switched debug mode to ${!old}")
-            }
-            shouldToggleDebugAfterPress = true
-        }
-        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
-            var pressed = true
-            if (Gdx.input.isKeyJustPressed(Input.Keys.I)) {
-                val nano = measureNanoTime {
-                    Localization.reloadAll(true)
-                    Localization.logMissingLocalizations()
-                }
-                Toolboks.LOGGER.debug("Reloaded I18N from files in ${nano / 1_000_000.0} ms")
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-                Toolboks.stageOutlines = if (Gdx.input.isShiftDown()) {
-                    if (Toolboks.stageOutlines == ONLY_VISIBLE) ALL else ONLY_VISIBLE
-                } else if (Toolboks.stageOutlines == NONE) ALL else NONE
-                Toolboks.LOGGER.debug("Toggled stage outlines to ${Toolboks.stageOutlines}")
-            } else if (Gdx.input.isKeyJustPressed(Input.Keys.G)) {
-                System.gc()
-            } else if (checkDebugKeybind()) {
-
-            } else {
-                pressed = false
-            }
-
-            if (shouldToggleDebugAfterPress && pressed) {
-                shouldToggleDebugAfterPress = false
-            }
-        }
         if (screen != null) {
             (screen as? ToolboksScreen<*, *>)?.renderUpdate()
         }
@@ -177,10 +144,6 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
     }
 
     protected open fun onDebugChange(old: Boolean, new: Boolean) {
-    }
-
-    protected open fun checkDebugKeybind(): Boolean {
-        return false
     }
 
     /**
@@ -338,5 +301,76 @@ ${(screen as? ToolboksScreen<*, *>)?.getDebugString() ?: ""}"""
         defaultCamera.update()
         Toolboks.LOGGER.info(
                 "Resizing camera as $resizeAction, window is ${Gdx.graphics.width} x ${Gdx.graphics.height}, camera is ${defaultCamera.viewportWidth} x ${defaultCamera.viewportHeight}")
+    }
+
+    override fun keyDown(keycode: Int): Boolean {
+        if (Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
+            var pressed = true
+            when (keycode) {
+                Input.Keys.I -> {
+                    val nano = measureNanoTime {
+                        Localization.reloadAll(true)
+                        Localization.logMissingLocalizations()
+                    }
+                    Toolboks.LOGGER.debug("Reloaded I18N from files in ${nano / 1_000_000.0} ms")
+                }
+                Input.Keys.S -> {
+                    Toolboks.stageOutlines = if (Gdx.input.isShiftDown()) {
+                        if (Toolboks.stageOutlines == ONLY_VISIBLE) ALL else ONLY_VISIBLE
+                    } else if (Toolboks.stageOutlines == NONE) ALL else NONE
+                    Toolboks.LOGGER.debug("Toggled stage outlines to ${Toolboks.stageOutlines}")
+                }
+                Input.Keys.G -> System.gc()
+                else -> {
+                    pressed = false
+                }
+            }
+            if (shouldToggleDebugAfterPress && pressed) {
+                shouldToggleDebugAfterPress = false
+            }
+            if (pressed) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    override fun keyUp(keycode: Int): Boolean {
+        if (keycode == Toolboks.DEBUG_KEY) {
+            val shouldToggle = shouldToggleDebugAfterPress
+            shouldToggleDebugAfterPress = true
+            if (shouldToggle) {
+                val old = Toolboks.debugMode
+                Toolboks.debugMode = !old
+                onDebugChange(old, !old)
+                Toolboks.LOGGER.debug("Switched debug mode to ${!old}")
+                return true
+            }
+        }
+        return false
+    }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        return false
+    }
+    
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        return false
+    }
+
+    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+        return false
+    }
+
+    override fun keyTyped(character: Char): Boolean {
+        return false
+    }
+
+    override fun scrolled(amount: Int): Boolean {
+        return false
+    }
+
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        return false
     }
 }
