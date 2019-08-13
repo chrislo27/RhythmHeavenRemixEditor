@@ -517,7 +517,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         return FreeTypeFontGenerator.FreeTypeFontParameter().apply {
             magFilter = Texture.TextureFilter.Nearest
             minFilter = Texture.TextureFilter.Linear
-            genMipMaps = !true
+            genMipMaps = false
             incremental = true
             size = 24
             characters = ""
