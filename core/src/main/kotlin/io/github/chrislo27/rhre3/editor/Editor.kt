@@ -196,9 +196,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
                             val durationSeconds = tempos.beatsToSeconds(lastPoint) - seconds
                             if (durationSeconds > 5f) {
-                                if (stage.presentationModeStage.visible) {
-                                    DiscordHelper.updatePresence(PresenceState.Elapsable.PresentationMode(durationSeconds))
-                                } else if (midiInstruments > 0) {
+                                if (midiInstruments > 0) {
                                     DiscordHelper.updatePresence(PresenceState.Elapsable.PlayingMidi(durationSeconds))
                                 } else if (stage.playalongStage.visible) {
                                     DiscordHelper.updatePresence(PresenceState.PlayingAlong)

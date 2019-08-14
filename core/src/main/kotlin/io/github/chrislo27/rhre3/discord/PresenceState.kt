@@ -55,8 +55,6 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
         class PlayingMidi(duration: Float)
             : Elapsable("Playing a MIDI", duration)
 
-        class PresentationMode(duration: Float)
-            : Elapsable("In Presentation Mode", duration, "presentation_mode")
     }
 
 }

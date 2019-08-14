@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.18.6`.
+This readme is accurate as of version `v3.18.7`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
@@ -258,14 +258,12 @@ Views are useful ways of viewing your remix. You can mix and match views too.
 
 ## Game Boundaries
 This highlights all the game boundaries and where they transition at.
-This also works in presentation mode. A game is said to transition when
-a new cue/pattern from a different game is introduced.
+A game is said to transition when a new cue/pattern from a different game is introduced.
 
 ![Game boundaries](https://i.imgur.com/Ek397zm.png)
 
 ## Waveform
 This shows the live audio data as the remix plays.
-This also works in presentation mode.
 
 ![Waveform](readme/waveform.png)
 
