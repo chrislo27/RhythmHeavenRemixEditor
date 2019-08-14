@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -54,6 +55,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
         val weeklyGraph = false
         request = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live/history")
                 .addQueryParam("weekly", "$weeklyGraph")
+                .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                 .execute().toCompletableFuture()
                 .thenAccept { response ->
                     if (response.statusCode == 200) {
