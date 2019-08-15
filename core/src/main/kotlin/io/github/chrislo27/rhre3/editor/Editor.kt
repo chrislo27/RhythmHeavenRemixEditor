@@ -406,9 +406,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
      * Pre-stage renderWithGlass.
      */
     fun render(updateDelta: Boolean, otherUI: Boolean, noGlassEffect: Boolean, disableThemeUsesMenu: Boolean = false) {
-        val beatRange = getBeatRange()
-        val beatRangeStartFloat = beatRange.first.toFloat()
-        val beatRangeEndFloat = beatRange.last.toFloat()
         val isGameBoundariesInViews = ViewType.GAME_BOUNDARIES in views
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
@@ -479,6 +476,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.projectionMatrix = camera.combined
         batch.begin()
 
+        val beatRange = getBeatRange()
+        val beatRangeStartFloat = beatRange.first.toFloat()
+        val beatRangeEndFloat = beatRange.last.toFloat()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE_THICKNESS / 2f)
 
