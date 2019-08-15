@@ -507,6 +507,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                     } else {
                         attemptResetWindow()
                     }
+                    persistWindowSettings()
                     return true
                 }
             }
