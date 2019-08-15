@@ -5,12 +5,14 @@ import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
+import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.ColourPane
@@ -51,6 +53,8 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
             this.visible = false
         }
         centre.elements += barsStage
+        
+        val palette = main.uiPalette
 
         val weeklyGraph = false
         request = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live/history")
@@ -73,14 +77,20 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                     if (!(data.max == 0 && data.min == 0)) {
                                         barsStage.elements += ColourPane(barsStage, barsStage).apply {
                                             this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f, screenHeight = 0.6f * (data.mean.toFloat() / max))
+                                            this.tooltipText = "${Localization["screen.onlineCounter.mean", "${data.mean}"]}\n${Localization["screen.onlineCounter.median", "${data.median}"]}"
+                                            this.tooltipTextIsLocalizationKey = false
                                         }
                                         barsStage.elements += ColourPane(barsStage, barsStage).apply {
                                             this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.max.toFloat() / max), screenHeight = 0.0125f)
                                             this.colour.set(maxColor)
+                                            this.tooltipText = Localization["screen.onlineCounter.max", "${data.max}"]
+                                            this.tooltipTextIsLocalizationKey = false
                                         }
                                         barsStage.elements += ColourPane(barsStage, barsStage).apply {
                                             this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0.25f + 0.6f * (data.min.toFloat() / max), screenHeight = 0.0125f / (if (data.max == data.min) 2f else 1f))
                                             this.colour.set(minColor)
+                                            this.tooltipText = Localization["screen.onlineCounter.min", "${data.min}"]
+                                            this.tooltipTextIsLocalizationKey = false
                                         }
                                     }
                                     barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
@@ -114,6 +124,17 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                         }
                     }
                 }
+        
+        stage.tooltipElement = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a = 0.75f }, fontScale = 0.75f),
+                                         stage, stage).apply {
+            this.background = true
+            this.isLocalizationKey = false
+            this.textWrapping = false
+            this.visible = false
+            this.alignment = Align.bottomLeft
+            this.textAlign = Align.center
+            this.location.set(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+        }
     }
 
     override fun renderUpdate() {
