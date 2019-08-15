@@ -17,6 +17,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 import io.github.chrislo27.toolboks.util.gdxutils.prepareStencilMask
 import io.github.chrislo27.toolboks.util.gdxutils.useStencilMask
+import kotlin.math.sqrt
 
 
 class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterStage: Stage<S>)
@@ -117,7 +118,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
             point.veloY = (mouseY - point.y) * 25f
             point.isHeldDown = false
 
-            val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
+            val veloScalar = sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
             val isFlick = veloScalar > 700f
             if (isFlick) {
 //                println("FLICK   with power $veloScalar\n    Duration: ${point.holdDuration}")
@@ -172,7 +173,7 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
         point.y = mouseY
 
         if (fireSlideEvents) {
-            val veloScalar = Math.sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
+            val veloScalar = sqrt(point.veloX * point.veloX + point.veloY * point.veloY * 1.0).toFloat()
             if (veloScalar > 65f) {
                 if (!point.didFireSlideEvent) {
                     onSlide(point)

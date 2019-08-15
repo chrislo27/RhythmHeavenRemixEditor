@@ -87,7 +87,7 @@ import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 
 class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attachMidiListeners: Boolean)
@@ -352,14 +352,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     private fun setSubbeatSectionToMouse() {
         subbeatSection.enabled = true
-        subbeatSection.start = Math.floor(camera.getInputX().toDouble()).toFloat()
+        subbeatSection.start = floor(camera.getInputX().toDouble()).toFloat()
         subbeatSection.end = subbeatSection.start
     }
 
     fun getBeatRange(): IntRange =
-            Math.round((camera.position.x - camera.viewportWidth / 2 * camera.zoom) / toScaleX(
-                    ENTITY_WIDTH)) - 4..(Math.round(
-                    (camera.position.x + camera.viewportWidth / 2 * camera.zoom) / toScaleX(ENTITY_WIDTH)) + 4)
+            ((camera.position.x - camera.viewportWidth / 2 * camera.zoom) / toScaleX(
+                    ENTITY_WIDTH)).roundToInt() - 4..(((camera.position.x + camera.viewportWidth / 2 * camera.zoom) / toScaleX(ENTITY_WIDTH)).roundToInt() + 4)
 
     fun getStretchRegionForStretchable(beat: Float, entity: Entity): StretchRegion {
         if (entity !is IStretchable)
@@ -368,14 +367,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         if (!entity.isStretchable)
             return StretchRegion.NONE
 
-        if (beat in entity.bounds.x..Math.min(entity.bounds.x + IStretchable.STRETCH_AREA,
-                                              entity.bounds.x + entity.bounds.width / 2f)) {
+        if (beat in entity.bounds.x..min(entity.bounds.x + IStretchable.STRETCH_AREA, entity.bounds.x + entity.bounds.width / 2f)) {
             return StretchRegion.LEFT
         }
 
         val right = entity.bounds.x + entity.bounds.width
 
-        if (beat in Math.max(right - IStretchable.STRETCH_AREA, right - entity.bounds.width / 2f)..right) {
+        if (beat in max(right - IStretchable.STRETCH_AREA, right - entity.bounds.width / 2f)..right) {
             return StretchRegion.RIGHT
         }
 
@@ -1024,7 +1022,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
 
                         subbeatSection.enabled = true
-                        subbeatSection.start = Math.floor(clickOccupation.left.toDouble()).toFloat()
+                        subbeatSection.start = floor(clickOccupation.left.toDouble()).toFloat()
                         subbeatSection.end = clickOccupation.right
 
                         updateMessageLabel()
@@ -1071,7 +1069,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         if (currentTool.showSubbeatLines) {
             subbeatSection.enabled = true
-            subbeatSection.start = Math.floor(camera.getInputX().toDouble()).toFloat()
+            subbeatSection.start = floor(camera.getInputX().toDouble()).toFloat()
             subbeatSection.end = subbeatSection.start + 0.5f
         }
 
@@ -1573,7 +1571,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
             } else if (tool == Tool.TIME_SIGNATURE) {
                 val inputX = camera.getInputX()
-                val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
+                val inputBeat = floor(inputX.toDouble() / snap).toFloat() * snap
                 val timeSig: TimeSignature? = remix.timeSignatures.getTimeSignature(inputBeat)?.takeIf { MathUtils.isEqual(inputBeat, it.beat) }
 
                 if (button == Input.Buttons.RIGHT && timeSig != null) {
@@ -1608,7 +1606,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                             Tool.MUSIC_VOLUME -> {
                                 MusicVolumeChange(remix.musicVolumes, beat,
                                                   0f,
-                                                  Math.round(remix.musicVolumes.volumeAt(beat) * 100)
+                                                  (remix.musicVolumes.volumeAt(beat) * 100).roundToInt()
                                                           .coerceIn(0, MusicVolumeChange.MAX_VOLUME))
                             }
                             else -> error("Tracker creation not supported for tool $tool")
@@ -1803,7 +1801,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
 
                     // revert positions silently
-                    clickOccupation.oldBounds.forEach { entity, rect ->
+                    clickOccupation.oldBounds.forEach { (entity, rect) ->
                         entity.updateBounds {
                             entity.bounds.set(rect)
                         }
@@ -2032,7 +2030,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         } else if (tool == Tool.TIME_SIGNATURE) {
             val inputX = camera.getInputX()
             val timeSig = remix.timeSignatures.getTimeSignature(inputX)
-            val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
+            val inputBeat = floor(inputX.toDouble() / snap).toFloat() * snap
             if (timeSig != null && MathUtils.isEqual(inputBeat, timeSig.beat)) {
                 if (!shift) {
                     val change = -amount * (if (control) 5 else 1)
@@ -2204,7 +2202,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append(if (duration.isInfinite()) "$duration" else THREE_DECIMAL_PLACES_FORMATTER.format(duration))
             append(" / ")
             val signedSec = remix.tempos.beatsToSeconds(duration)
-            val sec = Math.abs(signedSec)
+            val sec = abs(signedSec)
             val seconds = if (signedSec.isInfinite()) "$signedSec" else ((if (signedSec < 0) "-" else "") + Editor.TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + Editor.TRACKER_TIME_FORMATTER.format(sec % 60.0))
             append(seconds).append("\n")
 

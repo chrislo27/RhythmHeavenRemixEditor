@@ -15,6 +15,8 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import kotlin.math.absoluteValue
+import kotlin.math.max
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -138,8 +140,8 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
             val currentSnap = if (Gdx.input.isShiftDown() && !Gdx.input.isControlDown() && !Gdx.input.isAltDown()) 0f else snap
             val mouseX = MathHelper.snapToNearest(camera.getInputX(), currentSnap)
             val width = (clickOccupation.startPoint.x - mouseX).absoluteValue
-            val leftPoint = Math.min(clickOccupation.startPoint.x, mouseX)
-            val rightPoint = Math.max(clickOccupation.startPoint.x, mouseX)
+            val leftPoint = min(clickOccupation.startPoint.x, mouseX)
+            val rightPoint = max(clickOccupation.startPoint.x, mouseX)
             val height = 1.5f
             val borderThickness = Editor.TRACK_LINE_THICKNESS * 1.5f
             val markThickness = Editor.TRACK_LINE_THICKNESS
@@ -151,8 +153,8 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
             batch.drawRect(leftPoint - toScaleX(Editor.TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(Editor.TRACK_LINE_THICKNESS), height, toScaleX(borderThickness), toScaleY(borderThickness))
 
             if (width > 0) {
-                val leftTextPoint = Math.max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
-                val rightTextPoint = Math.min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
+                val leftTextPoint = max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
+                val rightTextPoint = min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
                 val textWidth = rightTextPoint - leftTextPoint
                 font.color = theme.trackLine
                 font.scaleMul(0.75f)

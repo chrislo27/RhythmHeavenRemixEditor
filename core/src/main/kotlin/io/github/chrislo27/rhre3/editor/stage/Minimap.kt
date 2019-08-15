@@ -22,6 +22,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.UIElement
 import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -51,8 +52,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         val furthest: Entity? = remix.entities.maxBy { it.bounds.x + it.bounds.width }
-        val maxX: Float = if (furthest == null) editor.camera.viewportWidth else Math.min(
-                (furthest.bounds.x + furthest.bounds.width).coerceAtLeast(0f), remix.duration)
+        val maxX: Float = if (furthest == null) editor.camera.viewportWidth else min((furthest.bounds.x + furthest.bounds.width).coerceAtLeast(0f), remix.duration)
 
         shapeRenderer.prepareStencilMask(batch) {
             Gdx.gl.glClear(GL20.GL_DEPTH_BUFFER_BIT)

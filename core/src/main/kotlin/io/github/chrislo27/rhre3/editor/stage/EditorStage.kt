@@ -47,6 +47,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
 import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import java.util.*
+import kotlin.math.min
 import kotlin.math.roundToInt
 
 
@@ -903,24 +904,24 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                     if (isVariant) {
                                         if (isUp) {
                                             if (gameList.scroll > 0) {
-                                                gameList.scroll -= Math.min(Editor.ICON_COUNT_Y, gameList.scroll)
+                                                gameList.scroll -= min(Editor.ICON_COUNT_Y, gameList.scroll)
                                                 updateSelected()
                                             }
                                         } else {
                                             if (gameList.scroll < gameList.maxIndex) {
-                                                gameList.scroll += Math.min(Editor.ICON_COUNT_Y, gameList.maxIndex - gameList.scroll)
+                                                gameList.scroll += min(Editor.ICON_COUNT_Y, gameList.maxIndex - gameList.scroll)
                                                 updateSelected()
                                             }
                                         }
                                     } else {
                                         if (isUp) {
                                             if (filter.groupScroll > 0) {
-                                                filter.groupScroll -= Math.min(Editor.ICON_COUNT_Y, filter.groupScroll)
+                                                filter.groupScroll -= min(Editor.ICON_COUNT_Y, filter.groupScroll)
                                                 updateSelected()
                                             }
                                         } else {
                                             if (filter.groupScroll < filter.maxGroupScroll) {
-                                                filter.groupScroll += Math.min(Editor.ICON_COUNT_Y, filter.maxGroupScroll - filter.groupScroll)
+                                                filter.groupScroll += min(Editor.ICON_COUNT_Y, filter.maxGroupScroll - filter.groupScroll)
                                                 updateSelected()
                                             }
                                         }
@@ -1023,7 +1024,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val filter = editor.pickerSelection.filter
                         val currentDatamodelList = filter.currentDatamodelList
                         if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex > 0) {
-                            currentDatamodelList.currentIndex -= Math.min(currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
+                            currentDatamodelList.currentIndex -= min(currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
                             updateSelected()
                         }
                     }
@@ -1078,7 +1079,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         val filter = editor.pickerSelection.filter
                         val currentDatamodelList = filter.currentDatamodelList
                         if (!filter.areDatamodelsEmpty && currentDatamodelList != null && currentDatamodelList.currentIndex < currentDatamodelList.maxIndex) {
-                            currentDatamodelList.currentIndex += Math.min(currentDatamodelList.maxIndex - currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
+                            currentDatamodelList.currentIndex += min(currentDatamodelList.maxIndex - currentDatamodelList.currentIndex, Editor.PATTERN_COUNT)
                             updateSelected()
                         }
                     }

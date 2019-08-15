@@ -52,6 +52,9 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import javax.sound.midi.*
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.properties.Delegates
 
@@ -285,7 +288,7 @@ open class Remix(val main: RHRE3Application)
                                 val data = message.data
                                 val numerator = data[0].toInt() and 0xFF
                                 val denominatorPower = data[1].toInt() and 0xFF
-                                val denominator = Math.pow(2.0, denominatorPower.toDouble()).toInt()
+                                val denominator = 2.0.pow(denominatorPower.toDouble()).toInt()
 
                                 if (denominator >= 2) {
                                     remix.timeSignatures.add(
@@ -395,7 +398,7 @@ open class Remix(val main: RHRE3Application)
             }
 
             if (remix.textureCache.isNotEmpty()) {
-                remix.textureCache.forEach { name, tex ->
+                remix.textureCache.forEach { (name, tex) ->
                     stream.putNextEntry(ZipEntry("$name.png"))
 
                     writeTexture(stream, tex)
@@ -458,7 +461,7 @@ open class Remix(val main: RHRE3Application)
                 if (loaded.any { it.value.second != null }) {
                     throw loaded.values.first { it.second != null }.second!!
                 } else {
-                    loaded.forEach { key, pair ->
+                    loaded.forEach { (key, pair) ->
                         remix.textureCache[key] = pair.first!!
                     }
                 }
@@ -683,7 +686,7 @@ open class Remix(val main: RHRE3Application)
                         }
                     }
 
-                    lastMetronomeMeasure = Math.ceil(playbackStart - 1.0).toInt()
+                    lastMetronomeMeasure = ceil(playbackStart - 1.0).toInt()
                     lastMetronomeMeasurePart = -1
 
                     currentSubtitles.clear()
@@ -901,7 +904,7 @@ open class Remix(val main: RHRE3Application)
             playalong.frameUpdate()
         }
 
-        val measure = timeSignatures.getMeasure(beat).takeIf { it >= 0 } ?: Math.floor(beat.toDouble()).toInt()
+        val measure = timeSignatures.getMeasure(beat).takeIf { it >= 0 } ?: floor(beat.toDouble()).toInt()
         val measurePart = timeSignatures.getMeasurePart(beat)
         if (lastMetronomeMeasure != measure || lastMetronomeMeasurePart != measurePart) {
             lastMetronomeMeasure = measure

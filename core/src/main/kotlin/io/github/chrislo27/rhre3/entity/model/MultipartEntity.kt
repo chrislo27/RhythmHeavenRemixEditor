@@ -12,6 +12,8 @@ import io.github.chrislo27.rhre3.track.PlaybackCompletion
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.intersects
+import kotlin.math.max
+import kotlin.math.min
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
@@ -94,11 +96,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun getLowerUpdateableBound(): Float {
-        return Math.min(bounds.x, internal.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: bounds.x)
+        return min(bounds.x, internal.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: bounds.x)
     }
 
     override fun getUpperUpdateableBound(): Float {
-        return Math.max(bounds.x + internalWidth, internal.maxBy { it.getUpperUpdateableBound() }?.getUpperUpdateableBound() ?: (bounds.x + internalWidth))
+        return max(bounds.x + internalWidth, internal.maxBy { it.getUpperUpdateableBound() }?.getUpperUpdateableBound() ?: (bounds.x + internalWidth))
     }
 
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false,

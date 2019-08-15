@@ -14,6 +14,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 
@@ -24,7 +25,7 @@ fun Editor.renderTopTrackers(batch: SpriteBatch, beatRange: IntRange, trackYOffs
 
     fun getTrackerTime(time: Float, noBeat: Boolean = false): String {
         val signedSec = if (noBeat) time else remix.tempos.beatsToSeconds(time)
-        val sec = Math.abs(signedSec)
+        val sec = abs(signedSec)
         val seconds = (if (signedSec < 0) "-" else "") +
                 Editor.TRACKER_MINUTES_FORMATTER.format((sec / 60).toLong()) + ":" + Editor.TRACKER_TIME_FORMATTER.format(sec % 60.0)
         if (noBeat) {

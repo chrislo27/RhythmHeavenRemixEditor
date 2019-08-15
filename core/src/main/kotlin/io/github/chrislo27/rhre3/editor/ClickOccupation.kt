@@ -13,6 +13,9 @@ import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 import io.github.chrislo27.toolboks.util.gdxutils.intersects
+import kotlin.math.abs
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 
 /**
@@ -86,7 +89,7 @@ sealed class ClickOccupation {
             val height = editor.camera.getInputY() - startY
 
             if (width < 0) {
-                val abs = Math.abs(width)
+                val abs = abs(width)
                 rectangle.x = startX - abs
                 rectangle.width = abs
             } else {
@@ -95,7 +98,7 @@ sealed class ClickOccupation {
             }
 
             if (height < 0) {
-                val abs = Math.abs(height)
+                val abs = abs(height)
                 rectangle.y = startY - abs
                 rectangle.height = abs
             } else {
@@ -156,7 +159,7 @@ sealed class ClickOccupation {
             right - left
         }
         val height: Int by lazy {
-            Math.round(top - bottom)
+            (top - bottom).roundToInt()
         }
 
         val lerpLeft: Float
@@ -208,7 +211,7 @@ sealed class ClickOccupation {
 
             val y = editor.camera.getInputY() - mouseOffset.y
             setFirstPosition(MathHelper.snapToNearest(editor.camera.getInputX() - mouseOffset.x, snap),
-                             if (intY) Math.round(y).toFloat() else y)
+                             if (intY) y.roundToLong().toFloat() else y)
         }
 
         fun isPlacementValid(): Boolean {
@@ -251,7 +254,7 @@ sealed class ClickOccupation {
 
         fun normalizeWidth() {
             if (width < 0) {
-                width = Math.abs(width)
+                width = abs(width)
                 beat -= width
             }
         }

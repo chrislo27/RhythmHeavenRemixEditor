@@ -28,6 +28,7 @@ import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 import java.util.*
+import kotlin.math.sign
 import kotlin.system.measureNanoTime
 
 
@@ -251,7 +252,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             private fun cycle(dir: Int) {
                 val values = Semitones.PitchStyle.VALUES
                 val index = values.indexOf(Semitones.pitchStyle).coerceAtLeast(0)
-                val absNextIndex = index + Math.signum(dir.toFloat()).toInt()
+                val absNextIndex = index + sign(dir.toFloat()).toInt()
                 val nextIndex = if (absNextIndex < 0) values.size - 1 else if (absNextIndex >= values.size) 0 else absNextIndex
                 val next = values[nextIndex]
                 Semitones.pitchStyle = next

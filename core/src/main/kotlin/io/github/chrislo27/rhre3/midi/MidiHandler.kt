@@ -8,6 +8,7 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import java.util.concurrent.CopyOnWriteArrayList
 import javax.sound.midi.*
 import kotlin.concurrent.thread
+import kotlin.math.sqrt
 
 
 object MidiHandler : Disposable {
@@ -88,7 +89,7 @@ object MidiHandler : Disposable {
 
             val command = message.command
             val semitone: Int = message.data1 - 60
-            val volume = Math.sqrt(message.data2 / 127.0).toFloat()
+            val volume = sqrt(message.data2 / 127.0).toFloat()
 
             fun on() {
                 notes.remove(semitone)?.onRemove()

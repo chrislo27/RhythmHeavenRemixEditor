@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.KeepTheBeat
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
+import kotlin.math.max
 
 
 class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
@@ -36,7 +37,7 @@ class KeepTheBeatEntity(remix: Remix, datamodel: KeepTheBeat)
         if (cues.isEmpty())
             error("KeepTheBeat datamodel has nothing in it")
 
-        val sequenceLength: Float = Math.max(datamodel.duration, datamodel.totalSequenceDuration)
+        val sequenceLength: Float = max(datamodel.duration, datamodel.totalSequenceDuration)
         val percentage: Float = bounds.width / sequenceLength
         val thisSemitone = semitone
         val thisVolume = volumePercent

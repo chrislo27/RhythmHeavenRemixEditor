@@ -10,6 +10,7 @@ import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextField
 import io.github.chrislo27.toolboks.ui.UIElement
 import io.github.chrislo27.toolboks.ui.UIPalette
+import kotlin.math.roundToLong
 
 
 class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<EditorScreen>,
@@ -28,11 +29,11 @@ class JumpToField(val editor: Editor, palette: UIPalette, parent: UIElement<Edit
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
         if (!hasFocus) {
-            val oldBeat = Math.round(beat)
+            val oldBeat = beat.roundToLong()
             beat = editor.camera.position.x
 
-            if (oldBeat != Math.round(beat) || this.text.isEmpty()) {
-                this.text = "${Math.round(beat)}"
+            if (oldBeat != beat.roundToLong() || this.text.isEmpty()) {
+                this.text = "${beat.roundToLong()}"
             }
         }
     }

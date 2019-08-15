@@ -1,5 +1,7 @@
 package io.github.chrislo27.rhre3.util
 
+import kotlin.math.floor
+
 
 object TempoUtils {
     fun beatsToSeconds(beat: Float, bpm: Float): Float =
@@ -39,7 +41,7 @@ object SwingUtils {
      * @param division The note division as a ratio of eighth notes. Usually 1.0 or 0.5 (8th and 16th respectively).
      */
     fun linearToSwing(linear: Float, ratio: Float, division: Float): Float {
-        val base: Int = Math.floor(linear.toDouble() / division).toInt()
+        val base: Int = floor(linear.toDouble() / division).toInt()
 
         return base * division + basicLinearToSwing(linear % division, ratio)
     }
@@ -51,7 +53,7 @@ object SwingUtils {
      * @param division The note division as a ratio of eighth notes. Usually 1.0 or 0.5 (8th and 16th respectively).
      */
     fun swingToLinear(swing: Float, ratio: Float, division: Float): Float {
-        val base: Int = Math.floor(swing.toDouble() / division).toInt()
+        val base: Int = floor(swing.toDouble() / division).toInt()
 
         return base * division + basicSwingToLinear(swing % division, ratio)
     }

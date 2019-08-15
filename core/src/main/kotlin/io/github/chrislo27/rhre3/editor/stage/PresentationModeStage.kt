@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.util.Swing
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.drawRect
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import kotlin.math.max
 import kotlin.properties.Delegates
 
 
@@ -148,7 +149,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
 
     private fun secondsToText(seconds: Int): String {
         val sec = seconds % 60
-        return "${seconds / 60}:${if (sec < 10) "0" else ""}${Math.max(0, sec)}"
+        return "${seconds / 60}:${if (sec < 10) "0" else ""}${max(0, sec)}"
     }
 
     private var timeSeconds: Int by Delegates.observable(0) { _, old, new ->

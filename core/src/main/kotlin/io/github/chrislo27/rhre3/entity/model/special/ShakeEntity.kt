@@ -9,6 +9,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.ShakeScreen
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
+import kotlin.math.roundToLong
 
 
 class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
@@ -36,7 +37,7 @@ class ShakeEntity(remix: Remix, datamodel: ShakeScreen)
     }
 
     override fun getTextForSemitone(semitone: Int): String {
-        return "${Math.round(getShakeIntensity(semitone) * 100)}%"
+        return "${(getShakeIntensity(semitone) * 100).roundToLong()}%"
     }
 
     override fun onStart() {

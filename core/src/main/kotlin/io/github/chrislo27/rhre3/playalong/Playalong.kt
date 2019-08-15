@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.JsonHandler
 import java.util.*
 import kotlin.math.absoluteValue
+import kotlin.math.pow
 import kotlin.properties.Delegates
 
 
@@ -182,7 +183,7 @@ class Playalong(val remix: Remix) {
         val end = timingEndForMonster
         val start = timingStartForMonster
         if (start == end) return 0f
-        return 1f / ((3 * countedDuration) / Math.pow(10.0, goal / 100.0).toFloat())
+        return 1f / ((3 * countedDuration) / 10.0.pow(goal / 100.0).toFloat())
     }
 
     fun getMonsterGoalCameraZoom(): Float {

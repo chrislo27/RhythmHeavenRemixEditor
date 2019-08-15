@@ -1,5 +1,8 @@
 package io.github.chrislo27.rhre3.util
 
+import kotlin.math.abs
+import kotlin.math.pow
+
 object Semitones {
 
     const val SEMITONES_IN_OCTAVE = 12
@@ -49,8 +52,8 @@ object Semitones {
             val VALUES = values().toList()
 
             private fun convertToName(baseMap: Map<Int, String>, semitone: Int): String {
-                val abs = Math.abs(Math.floorMod(semitone, SEMITONES_IN_OCTAVE))
-                val repeats = Math.abs(Math.floorDiv(semitone, SEMITONES_IN_OCTAVE))
+                val abs = abs(Math.floorMod(semitone, SEMITONES_IN_OCTAVE))
+                val repeats = kotlin.math.abs(Math.floorDiv(semitone, SEMITONES_IN_OCTAVE))
                 return baseMap[abs] +
                         if ((semitone >= 12 || semitone <= -1))
                             (if (repeats > 1) "$repeats" else "") + (if (semitone > 0) "+" else "-")
@@ -68,7 +71,7 @@ object Semitones {
     }
 
     fun getALPitch(semitone: Int): Float {
-        return cachedPitches.getOrPut(semitone) { Math.pow(2.0, (semitone * SEMITONE_VALUE).toDouble()).toFloat() }
+        return cachedPitches.getOrPut(semitone) { 2.0.pow((semitone * SEMITONE_VALUE).toDouble()).toFloat() }
     }
 
 }

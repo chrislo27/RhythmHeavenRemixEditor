@@ -14,6 +14,8 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
+import kotlin.math.roundToInt
+import kotlin.math.roundToLong
 
 
 class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorStage, camera: OrthographicCamera)
@@ -29,7 +31,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     var tempo: Float = 0f
         private set
     val roundedTempo: Int
-        get() = Math.round(tempo)
+        get() = tempo.roundToInt()
 
     private val backgroundPane = ColourPane(this, this).apply {
         this.location.set(0f, 0f, 1f, 1f)

@@ -617,7 +617,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
             allMapButtons.forEach { it.enabled = false }
         } else {
             val target = controllers.firstOrNull { it == currentController } ?: controllers.firstOrNull { mappings[it]?.inUse == true } ?: controllers.first()
-            mappings.forEach { _, m -> m.inUse = false }
+            mappings.forEach { (_, m) -> m.inUse = false }
             mappings[target]?.inUse = true
             controllerButtonLabel.text = "${target.name} (${controllers.indexOf(target) + 1}/${controllers.size})"
             currentController = target

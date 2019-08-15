@@ -55,8 +55,7 @@ import java.io.File
 import java.util.*
 import javax.sound.sampled.AudioFileFormat
 import javax.sound.sampled.AudioFormat
-import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 
 class ExportRemixScreen(main: RHRE3Application)
@@ -227,7 +226,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     "$localPercent",
                     stage,
                     maxProgressStages,
-                    "${Math.round((localPercent + (stage - 1) * 100f) / (maxProgressStages * 100f) * 100)}"]
+                    "${((localPercent + (stage - 1) * 100f) / (maxProgressStages * 100f) * 100).roundToLong()}"]
         }
 
         // prepare
@@ -354,7 +353,7 @@ class ExportRemixScreen(main: RHRE3Application)
 
         try {
             // prep triggers
-            val startMs = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
+            val startMs = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
             val endMs = endSeconds * 1000.0
             val durationMs = endMs - startMs
 
@@ -444,7 +443,7 @@ class ExportRemixScreen(main: RHRE3Application)
             // Update labels at 60 fps
             context.out.addDependent(Clock(context, 1000f / 60).apply {
                 addMessageListener(addBead {
-                    val percent = Math.round(context.time / (endMs - startMs) * 100).coerceIn(0, 100).toInt()
+                    val percent = (context.time / (endMs - startMs) * 100).roundToLong().coerceIn(0, 100).toInt()
                     updateProgress("pcm", percent, 1)
                 })
             })
@@ -577,7 +576,7 @@ class ExportRemixScreen(main: RHRE3Application)
         val leftLabel: TextLabel<ExportRemixScreen>
         val rightLabel: TextLabel<ExportRemixScreen>
 
-        val remixStartSeconds: Float = Math.min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat()
+        val remixStartSeconds: Float = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat()
         val remixEndSeconds: Float = remix.tempos.beatsToSeconds(if (remix.duration == Float.POSITIVE_INFINITY) remix.lastPoint else remix.duration)
         private val remixAbsDuration = remixEndSeconds - remixStartSeconds
 
@@ -635,7 +634,7 @@ class ExportRemixScreen(main: RHRE3Application)
                     // bar darker outline
                     val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
                     val arrowHeight = height - lineThickness * 2f
-                    val arrowheadWidth = Math.min(barWidth / 2f, height * 0.5f)
+                    val arrowheadWidth = min(barWidth / 2f, height * 0.5f)
                     batch.setColor(0f, 0f, 0f, 0.2f)
                     batch.draw(arrowTex, barX + arrowheadWidth, y + lineThickness, barWidth - arrowheadWidth * 2, arrowHeight, arrowTex.width / 2, 0, arrowTex.width / 2, arrowTex.height, false, false)
                     batch.draw(arrowTex, barX, y + lineThickness, arrowheadWidth, arrowHeight, 0, 0, arrowTex.width / 2, arrowTex.height, false, false)
@@ -704,7 +703,7 @@ class ExportRemixScreen(main: RHRE3Application)
         private fun secondsToText(seconds: Int): String {
             val abs = seconds.absoluteValue
             val sec = abs % 60
-            return "${if (seconds < 0) "-" else ""}${abs / 60}:${if (sec < 10) "0" else ""}${Math.max(0, sec)}"
+            return "${if (seconds < 0) "-" else ""}${abs / 60}:${if (sec < 10) "0" else ""}${max(0, sec)}"
         }
 
     }

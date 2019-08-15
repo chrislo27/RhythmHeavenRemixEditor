@@ -20,6 +20,7 @@ import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import kotlin.math.min
 
 
 abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
@@ -109,7 +110,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
 
         if (this is IStretchable && this.isStretchable) {
             val oldColor = batch.packedColor
-            val arrowWidth: Float = Math.min(width / 2f, Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH)
+            val arrowWidth: Float = min(width / 2f, Editor.ENTITY_HEIGHT / Editor.ENTITY_WIDTH)
             val y = y + height / 2 - 0.5f
             val arrowTex = AssetRegistry.get<Texture>("entity_stretchable_arrow")
 
@@ -158,7 +159,7 @@ abstract class ModelEntity<out M : Datamodel>(remix: Remix, val datamodel: M)
         val textX = x + 1 * (editor.toScaleX(BORDER))
         val textY = y + height / 2
         if (textHeight > allottedHeight) {
-            val ratio = Math.min(allottedWidth / (font.getTextWidth(text, allottedWidth, false)), allottedHeight / textHeight)
+            val ratio = min(allottedWidth / (font.getTextWidth(text, allottedWidth, false)), allottedHeight / textHeight)
             font.data.setScale(ratio * font.data.scaleX, ratio * font.data.scaleY)
         }
         needsNameTooltip = textHeight > allottedHeight

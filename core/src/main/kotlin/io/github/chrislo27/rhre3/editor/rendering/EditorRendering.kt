@@ -21,8 +21,7 @@ import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
-import kotlin.math.absoluteValue
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 
 fun Editor.renderPlayYan(batch: SpriteBatch) {
@@ -32,7 +31,7 @@ fun Editor.renderPlayYan(batch: SpriteBatch) {
         val interval = timeSig?.noteFraction ?: 1f
         val beatPercent = (beat - (timeSig?.beat ?: 0f)) % interval
         val playbackStartPercent = (remix.playbackStart - (timeSig?.beat ?: 0f)) % interval
-        val floorPbStart = Math.floor(playbackStartPercent.toDouble()).toFloat()
+        val floorPbStart = floor(playbackStartPercent.toDouble()).toFloat()
         val jumpHeight: Float = MathUtils.sin(MathUtils.PI / interval * (if (playbackStartPercent > 0f && remix.beat < floorPbStart + 1f) (beat - remix.playbackStart) / (1f - playbackStartPercent) else beatPercent)).absoluteValue
 
         val currentSwing = remix.tempos.swingAt(beat)
@@ -55,7 +54,7 @@ private fun Editor.renderTimeSignature(batch: SpriteBatch, beat: Float, lowerTex
 
     val lowerWidth = bigFont.getTextWidth(lowerText, maxWidth, false).coerceAtMost(maxWidth)
     val upperWidth = bigFont.getTextWidth(upperText, maxWidth, false).coerceAtMost(maxWidth)
-    val biggerWidth = Math.max(lowerWidth, upperWidth)
+    val biggerWidth = max(lowerWidth, upperWidth)
 
     bigFont.drawCompressed(batch, lowerText,
                            x + biggerWidth * 0.5f - lowerWidth * 0.5f,
@@ -72,7 +71,7 @@ fun Editor.renderTimeSignatures(batch: SpriteBatch, beatRange: IntRange) {
     val bigFont = main.timeSignatureFont
     val heightOfTrack = remix.trackCount.toFloat() - toScaleY(Editor.TRACK_LINE_THICKNESS) * 2f
     val inputX = camera.getInputX()
-    val inputBeat = Math.floor(inputX.toDouble() / snap).toFloat() * snap
+    val inputBeat = floor(inputX.toDouble() / snap).toFloat() * snap
     bigFont.scaleFont(camera)
     bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / Editor.DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
@@ -103,7 +102,7 @@ fun Editor.renderBeatNumbers(batch: SpriteBatch, beatRange: IntRange, font: Bitm
     // Render quarter note beat numbers/lines
     for (i in beatRange) {
         val x = i - width / 2f
-        val text = if (i == 0) Editor.ZERO_BEAT_SYMBOL else "${Math.abs(i)}"
+        val text = if (i == 0) Editor.ZERO_BEAT_SYMBOL else "${abs(i)}"
         if (stage.jumpToField.hasFocus && i == stage.jumpToField.text.toIntOrNull() ?: Int.MAX_VALUE) {
             val glow = MathHelper.getTriangleWave(1f)
             val sel = theme.selection.selectionBorder
@@ -156,7 +155,7 @@ fun Editor.renderBeatLines(batch: SpriteBatch, beatRange: IntRange, trackYOffset
             batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
                            theme.trackLine.a * 0.3f *
                                    if (!actuallyInRange) subbeatSection.flashAnimation else 1f)
-            for (j in 1 until Math.round(1f / snap)) {
+            for (j in 1 until (1f / snap).roundToLong()) {
                 batch.fillRect(i.toFloat() + snap * j + xOffset, trackYOffset, toScaleX(Editor.TRACK_LINE_THICKNESS),
                                remix.trackCount + toScaleY(Editor.TRACK_LINE_THICKNESS))
             }
@@ -276,8 +275,8 @@ fun Editor.renderMining(batch: SpriteBatch, entity: ModelEntity<*>) {
             for (y in 0..(entity.bounds.height / height).roundToInt()) {
                 val renderX = entity.bounds.x + width * x
                 val renderY = entity.bounds.y + height * y
-                val cutX = ((Math.min(entity.bounds.maxX, renderX + width) - renderX) / width).coerceIn(0f, 1f)
-                val cutY = ((Math.min(entity.bounds.maxY, renderY + height) - renderY) / height).coerceIn(0f, 1f)
+                val cutX = ((min(entity.bounds.maxX, renderX + width) - renderX) / width).coerceIn(0f, 1f)
+                val cutY = ((min(entity.bounds.maxY, renderY + height) - renderY) / height).coerceIn(0f, 1f)
                 batch.draw(breaking, renderX, renderY, width * cutX, height * cutY, portion / 10f, 1f, (portion + cutX) / 10f, 0f)
             }
         }

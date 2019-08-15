@@ -5,6 +5,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.beads.getValues
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import kotlin.math.abs
 
 
 fun Editor.renderWaveform(batch: SpriteBatch, oldCameraX: Float, oldCameraY: Float, adjustedCameraX: Float, adjustedCameraY: Float) {
@@ -24,7 +25,7 @@ fun Editor.renderWaveform(batch: SpriteBatch, oldCameraX: Float, oldCameraY: Flo
     val data = BeadsSoundSystem.sampleArray
     for (x in 0 until fineness) {
         val dataPoint = data[(x.toFloat() / fineness * data.size).toInt()]
-        val h = height * (if (isPresentationMode) Math.abs(dataPoint) else dataPoint.coerceIn(-1f, 1f))
+        val h = height * (if (isPresentationMode) abs(dataPoint) else dataPoint.coerceIn(-1f, 1f))
         val width = viewportWidth / fineness.toFloat() * camera.zoom
         if (!isPresentationMode) {
             batch.fillRect((camera.position.x - viewportWidth / 2 * camera.zoom) + x * width,

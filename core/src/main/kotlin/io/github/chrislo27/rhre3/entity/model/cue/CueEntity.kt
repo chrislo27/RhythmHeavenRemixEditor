@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.util.gdxutils.maxX
 import net.beadsproject.beads.ugens.SamplePlayer
+import kotlin.math.min
 
 
 class CueEntity(remix: Remix, datamodel: Cue)
@@ -116,7 +117,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun getLowerUpdateableBound(): Float {
-        return Math.min(bounds.x, remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - Math.min(cue.earliness, cue.introSoundCue?.earliness ?: Float.POSITIVE_INFINITY)))
+        return min(bounds.x, remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - min(cue.earliness, cue.introSoundCue?.earliness ?: Float.POSITIVE_INFINITY)))
     }
 
     override fun onStart() {

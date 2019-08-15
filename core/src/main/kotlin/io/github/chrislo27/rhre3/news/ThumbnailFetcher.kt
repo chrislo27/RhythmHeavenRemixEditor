@@ -54,7 +54,7 @@ object ThumbnailFetcher : Disposable {
 
     @Synchronized
     fun removeAll() {
-        map.forEach { _, t ->
+        map.forEach { (_, t) ->
             t.dispose()
         }
         map.clear()
