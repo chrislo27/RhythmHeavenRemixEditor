@@ -18,7 +18,7 @@ for Linux/macOS. Replace the line that starts with `java -jar` with the below:
 java -jar -Xmx1500m RHRE.jar
 ```
 
->`Xmx1500m` indicates that you want a maximum of 1500 MB of RAM allocated. Change that
+`Xmx1500m` indicates that you want a maximum of 1500 MB of RAM allocated. Change that
 value if you are still having out of memory errors.
 
 Note that as of v3.18.7 the default maximum memory allocated is 1024 MB.
@@ -28,3 +28,7 @@ will be ignored*.
 
 There is no way to omit this requirement.
 You are working with an audio editor and it is expected you have the requirements to have it in memory.
+
+### Could not reserve enough space for ... KB object heap
+If you're getting this error and you allocated 1500 MB or more, you will require a 64-bit version of Java.
+Check the bit-ness of your installation by running `java -version` and seeing if 64-Bit appears in the text.
