@@ -22,7 +22,7 @@ object ScreenRegistry : Disposable {
 
     @Suppress("UNCHECKED_CAST")
     inline fun <reified S : ToolboksScreen<*, *>> getAsType(key: String): S? {
-        return screens[key] as S
+        return screens[key] as? S?
     }
 
     inline fun <reified S : ToolboksScreen<*, *>> getNonNullAsType(key: String): S =
