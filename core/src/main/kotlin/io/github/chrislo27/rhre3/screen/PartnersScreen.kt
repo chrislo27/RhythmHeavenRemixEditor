@@ -184,10 +184,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-
-                if (article.genuine) {
-                    AnalyticsHandler.track("View Partner Page", mapOf("partner" to article.title))
-                }
+                AnalyticsHandler.track("View Partner Page", mapOf("partner" to article.title))
             }
         }
     }
