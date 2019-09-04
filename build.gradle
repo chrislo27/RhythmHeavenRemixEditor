@@ -18,7 +18,7 @@ allprojects {
     version = '1.0'
     ext {
         appName = "rhythm-heaven-remix-editor-3"
-        gdxVersion = '1.9.9'
+        gdxVersion = '1.9.10'
     }
 
     repositories {
