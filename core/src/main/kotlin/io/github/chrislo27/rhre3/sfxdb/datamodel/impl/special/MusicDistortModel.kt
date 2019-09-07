@@ -11,6 +11,7 @@ class MusicDistortModel(game: Game, id: String, deprecatedIDs: List<String>, nam
     : SpecialDatamodel(game, id, deprecatedIDs, name, 1f) {
 
     override val pickerName: PickerName = super.pickerName.copy(sub = "[LIGHT_GRAY]Applies bandpass filter on music[]")
+    override val hideInPresentationMode: Boolean = true
 
     override fun createEntity(remix: Remix,
                               cuePointer: CuePointer?): MusicDistortEntity {

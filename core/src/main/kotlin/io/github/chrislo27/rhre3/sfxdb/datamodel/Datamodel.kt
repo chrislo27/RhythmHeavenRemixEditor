@@ -22,6 +22,7 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
     @Suppress("LeakingThis")
     val possibleBaseBpm: ClosedRange<Float>? by lazy(this::checkBaseBpm)
     val isSpecial: Boolean get() = game.isSpecial || this is SpecialDatamodel
+    open val hideInPresentationMode: Boolean = false
 
     constructor(game: Game, id: String, deprecatedIDs: List<String>, name: String) : this(game, id, deprecatedIDs, name, 1.0f)
 

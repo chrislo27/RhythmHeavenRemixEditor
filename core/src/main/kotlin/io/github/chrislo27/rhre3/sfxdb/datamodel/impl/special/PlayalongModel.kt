@@ -17,6 +17,8 @@ class PlayalongModel(game: Game, id: String, deprecatedIDs: List<String>, name: 
                      override val pickerName: PickerName = name.toPickerName())
     : SpecialDatamodel(game, id, deprecatedIDs, "Playalong - $name", if (playalongMethod.instantaneous) 0.5f else 1f) {
 
+    override val hideInPresentationMode: Boolean = true
+    
     override fun createEntity(remix: Remix, cuePointer: CuePointer?): PlayalongEntity {
         return PlayalongEntity(remix, this)
     }

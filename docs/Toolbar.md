@@ -97,6 +97,7 @@ The left button is the Presentation Mode button. Use this mode when
 recording a remix for use on a video sharing site.
 A progress bar will appear, with credits and a link to the project's
 GitHub page, along with the current game being played and the current BPM.
+Certain entities will be hidden from view for neatness.
 
 The button with an eye on it is the Views menu. You can select different view types there.
 <br>[See this section for more details.](README#views)

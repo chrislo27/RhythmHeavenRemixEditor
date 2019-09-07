@@ -479,6 +479,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val beatRangeEndFloat = beatRange.last.toFloat()
         val font = main.defaultFont
         val trackYOffset = toScaleY(-TRACK_LINE_THICKNESS / 2f)
+        val isPresentationMode = stage.presentationModeStage.visible
 
         font.scaleFont(camera)
 
@@ -533,6 +534,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
         remix.entities.forEach {
             if (it !is TextureEntity) {
+                if (it is ModelEntity<*> && isPresentationMode && it.datamodel.hideInPresentationMode)
+                    return@forEach
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                     if (it is ModelEntity<*>) {
                         it.renderWithGlass(this, batch, themeUsesMenu && useGlassEffect)
