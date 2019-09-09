@@ -216,6 +216,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
 
         DiscordHelper.updatePresence(PresenceState.ViewingNews)
+        AnalyticsHandler.track("Enter News Screen", linkedMapOf("currentFetchState" to state.toString(), "hadNewNews" to hasNewNews))
     }
 
     override fun hide() {
