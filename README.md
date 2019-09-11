@@ -18,7 +18,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 
 [![Documentation Status](https://readthedocs.org/projects/rhre/badge/?version=latest)](http://rhre.readthedocs.io/en/latest/?badge=latest)
 [![GitHub license](https://img.shields.io/github/license/chrislo27/RhythmHeavenRemixEditor.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/blob/dev/LICENSE.txt)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)
+[![Donate to the project maintainer](https://img.shields.io/badge/Donate-PayPal-blue.svg?logo=paypal)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958)†
 
 ## Requirements
 * [Java 8](https://java.com/en/download/)
@@ -52,5 +52,7 @@ All used properties of Nintendo (such as names, audio, graphics, etc.) in this s
 All other trademarks and assets are property of their respective owners.
 This is a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license), for free.
+
+† Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
 RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).<br>
