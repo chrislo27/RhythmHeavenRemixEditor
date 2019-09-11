@@ -63,6 +63,7 @@ project(":desktop") {
         implementation "club.minnced:java-discord-rpc:2.0.2"
         
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "com.beust:jcommander:1.71"
     }
 }
 

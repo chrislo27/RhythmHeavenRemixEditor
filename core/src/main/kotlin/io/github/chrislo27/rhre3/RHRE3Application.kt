@@ -171,7 +171,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         // localization stuff
         run {
             Localization.loadBundlesFromLangFile()
-            Localization.logMissingLocalizations()
+            if (RHRE3.logMissingLocalizations) {
+                Localization.logMissingLocalizations()
+            }
         }
 
         // font stuff

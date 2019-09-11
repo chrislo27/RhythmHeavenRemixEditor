@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.desktop
 
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
+import com.beust.jcommander.JCommander
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
@@ -10,16 +11,25 @@ import io.github.chrislo27.toolboks.logging.Logger
 import java.io.File
 
 object DesktopLauncher {
-
+    
     @JvmStatic
     fun main(args: Array<String>) {
         // https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/273
         System.setProperty("jna.nosys", "true")
-
+        
         RHRE3.launchArguments = args.toList()
-
+        
+        val arguments = Arguments()
+        val jcommander = JCommander.newBuilder().addObject(arguments).build()
+        jcommander.parse(*args)
+        
+        if (arguments.printHelp) {
+            println("${RHRE3.TITLE} ${RHRE3.VERSION}\n${RHRE3.GITHUB}\n\n${StringBuilder().apply { jcommander.usage(this) }}")
+            return
+        }
+        
         val logger = Logger()
-        val portable = "--portable-mode" in args
+        val portable = arguments.portableMode
         val app = RHRE3Application(logger, File(if (portable) ".rhre3/logs/" else System.getProperty("user.home") + "/.rhre3/logs/"))
         ToolboksDesktopLauncher(app)
                 .editConfig {
@@ -27,18 +37,7 @@ object DesktopLauncher {
                     this.height = app.emulatedSize.second
                     this.title = app.getTitle()
                     this.fullscreen = false
-                    val fpsArg = args.find { it.startsWith("--fps=") }
-                    this.foregroundFPS = (if (fpsArg != null) {
-                        val num = fpsArg.substringAfter('=')
-                        val parsed = num.toIntOrNull()
-                        val adjusted = parsed?.coerceAtLeast(30) ?: 60
-                        if (parsed == null) {
-                            logger.info("Failed to parse manual FPS: $num")
-                        } else {
-                            logger.info("Manually setting FPS to $adjusted (requested: $num)")
-                        }
-                        adjusted
-                    } else 60).coerceAtLeast(30)
+                    this.foregroundFPS = arguments.fps.coerceAtLeast(30)
                     this.backgroundFPS = this.foregroundFPS.coerceIn(30, 60)
                     this.resizable = true
                     this.vSyncEnabled = this.foregroundFPS <= 60
@@ -50,36 +49,37 @@ object DesktopLauncher {
                         this.preferencesFileType = Files.FileType.Local
                         this.preferencesDirectory = ".rhre3/.prefs/"
                     }
-
+                    
                     RHRE3.portableMode = portable
-                    RHRE3.skipGitScreen = "--skip-git" in args
-                    RHRE3.forceGitFetch = "--force-git-fetch" in args
-                    RHRE3.forceGitCheck = "--force-git-check" in args
-                    RHRE3.verifySfxDb = "--verify-sfxdb" in args || "--verify-registry" in args
+                    RHRE3.skipGitScreen = arguments.skipGit
+                    RHRE3.forceGitFetch = arguments.forceGitFetch
+                    RHRE3.forceGitCheck = arguments.forceGitCheck
+                    RHRE3.verifySfxDb = arguments.verifySfxdb
                     RHRE3.immediateEvent = when {
-                        "--immediate-anniversary-like-new" in args -> 2
-                        "--immediate-anniversary" in args -> 1
-                        "--immediate-xmas" in args -> 3
+                        arguments.eventImmediateAnniversaryLikeNew -> 2
+                        arguments.eventImmediateAnniversary -> 1
+                        arguments.eventImmediateXmas -> 3
                         else -> 0
                     }
-                    RHRE3.noAnalytics = "--no-analytics" in args
-                    RHRE3.noOnlineCounter = "--no-online-counter" in args
-                    RHRE3.outputGeneratedDatamodels = "--output-generated-datamodels" in args
-                    RHRE3.outputCustomSfx = "--output-custom-sfx" in args
-                    RHRE3.showTapalongMarkers = "--show-tapalong-markers" in args
-                    RHRE3.midiRecording = "--midi-recording" in args
-                    LazySound.loadLazilyWithAssetManager = "--force-lazy-sound-load" !in args
-
+                    RHRE3.noAnalytics = arguments.noAnalytics
+                    RHRE3.noOnlineCounter = arguments.noOnlineCounter
+                    RHRE3.outputGeneratedDatamodels = arguments.outputGeneratedDatamodels
+                    RHRE3.outputCustomSfx = arguments.outputCustomSfx
+                    RHRE3.showTapalongMarkers = arguments.showTapalongMarkers
+                    RHRE3.midiRecording = arguments.midiRecording
+                    RHRE3.logMissingLocalizations = arguments.logMissingLocalizations
+                    LazySound.loadLazilyWithAssetManager = !arguments.lazySoundsForceLoad
+                    
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
                     sizes.forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
                     }
-
+                    
                     listOf(24, 16).forEach {
                         this.addIcon("images/icon/$it.png", Files.FileType.Internal)
                     }
                 }
                 .launch()
     }
-
+    
 }

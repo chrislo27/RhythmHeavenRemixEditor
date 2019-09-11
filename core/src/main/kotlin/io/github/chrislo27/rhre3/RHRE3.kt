@@ -62,6 +62,7 @@ object RHRE3 {
     var showTapalongMarkers: Boolean = false
     var exportOptions: ExportOptions = ExportOptions.DEFAULT
     var midiRecording: Boolean = false
+    var logMissingLocalizations: Boolean = false
 
     lateinit var launchArguments: List<String>
 
