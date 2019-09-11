@@ -30,5 +30,5 @@ Example (if you wanted to see all available arguments): `java -jar RHRE.jar --he
 |------|:-------------:|-------------|
 | `--beads-sound-system` | `v3.3.0` to `v3.6.4` | Forces the use of the Beads sound system. This does nothing as the libGDX sound system is disabled due to a bug (as of v3.3.0). |
 | `--force-expansion-splash` | `v3.12.0` to `v3.16.0` | Forces the RHRExpansion splash screen to appear on startup. This has since been removed. |
-| `--verify-registry` | `v3.1.1` | An alias for `--verify-sfxdb`. |
+| `--verify-registry` | `v3.1.1` to `v3.18.7` | A deprecated alias for `--verify-sfxdb`. |
 | `--fps=<number>` | `v3.17.0` to `v3.18.7` | Same as `--fps` but required the equals sign before the value. |

@@ -27,7 +27,7 @@ class Arguments {
     @Parameter(names = ["--force-git-check"], description = "Forces checking the online Git repository for the SFX Database.")
     var forceGitCheck: Boolean = false
     
-    @Parameter(names = ["--verify-sfxdb", "--verify-registry"], description = "Forces lazy-loaded sounds to be loaded when initialized.")
+    @Parameter(names = ["--verify-sfxdb"], description = "Verifies and reports warnings/errors for the entire SFX Database after loading.")
     var verifySfxdb: Boolean = false
     
     @Parameter(names = ["--no-analytics"], description = "Disables sending of analytics and crash reports.")
