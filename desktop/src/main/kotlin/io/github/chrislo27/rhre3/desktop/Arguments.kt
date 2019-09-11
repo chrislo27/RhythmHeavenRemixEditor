@@ -33,7 +33,7 @@ class Arguments {
     @Parameter(names = ["--no-analytics"], description = "Disables sending of analytics and crash reports.")
     var noAnalytics: Boolean = false
     
-    @Parameter(names = ["--no-online-counter"], description = "Disables sending and retrieving data for the online user counter.")
+    @Parameter(names = ["--no-online-counter"], description = "Disables the online user count feature.")
     var noOnlineCounter: Boolean = false
     
     @Parameter(names = ["--output-generated-datamodels"], description = "Writes out games that are generated internally in JSON format to console on start-up.")

@@ -15,7 +15,7 @@ Example (if you wanted to see all available arguments): `java -jar RHRE.jar --he
 | `--force-git-check` | `v3.1.0` | Forces a check to the online Git repository. |
 | `--verify-sfxdb` | `v3.18.4` | Does a verification on the loaded SFX Database. Useful to ensure all pointers point to valid objects, etc. |
 | `--no-analytics` | `v3.10.0` | Disables sending of analytics.  |
-| `--no-online-counter` | `v3.12.0` | Prevents the program from sending and retrieving online user counts. |
+| `--no-online-counter` | `v3.12.0` | Disables the online user count feature. |
 | `--output-generated-datamodels` | `v3.12.0` | Writes out games that are generated internally in JSON format to console on start-up. |
 | `--output-custom-sfx` | `v3.12.0` | Writes out custom SFX that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
 | `--show-tapalong-markers` | `v3.17.0` | Shows tapalong tap markers, a hidden feature. |
