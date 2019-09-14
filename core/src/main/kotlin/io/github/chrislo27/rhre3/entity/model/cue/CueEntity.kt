@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
+import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.soundsystem.BeadsSound
 import io.github.chrislo27.rhre3.soundsystem.LoopParams
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSound
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -104,15 +104,15 @@ class CueEntity(remix: Remix, datamodel: Cue)
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
         val rate = cue.getBaseBpmRate()
         val apparentRate = if (BeadsSound.useGranular) rate else (pitch * rate)
-        soundId = cue.sound.sound.playWithLoop(pitch = pitch,
-                                               rate = rate, volume = volume, position = (position.toDouble()) * apparentRate,
-                                               loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS)
+        soundId = cue.sound.beadsSound.playWithLoop(pitch = pitch,
+                                                    rate = rate, volume = volume, position = (position.toDouble()) * apparentRate,
+                                                    loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS)
 
         val introSoundCue = cue.introSoundCue
         if (introSoundCue != null) {
-            introSoundId = introSoundCue.sound.sound.play(loop = false, pitch = pitch,
-                                                          rate = introSoundCue.getBaseBpmRate(), volume = volume,
-                                                          position = (introSoundPos.toDouble()) * apparentRate)
+            introSoundId = introSoundCue.sound.beadsSound.play(loop = false, pitch = pitch,
+                                                               rate = introSoundCue.getBaseBpmRate(), volume = volume,
+                                                               position = (introSoundPos.toDouble()) * apparentRate)
         }
     }
 
@@ -139,9 +139,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.sound.setRate(soundId, cue.getBaseBpmRate())
+                    cue.sound.beadsSound.setRate(soundId, cue.getBaseBpmRate())
                 isFillbotsFill -> {
-                    val sound = cue.sound.sound
+                    val sound = cue.sound.beadsSound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
 
                     sound.setPitch(soundId, pitch)
@@ -151,18 +151,18 @@ class CueEntity(remix: Remix, datamodel: Cue)
         val endingSoundCue = cue.endingSoundCue
         if (endingSoundCue != null && endingSoundId == -1L) {
             if (remix.seconds >= remix.tempos.beatsToSeconds(bounds.maxX) - endingSoundCue.earliness) {
-                endingSoundId = endingSoundCue.sound.sound.play(loop = false, volume = volume,
-                                                                rate = endingSoundCue.getBaseBpmRate(),
-                                                                pitch = getSemitonePitch()).coerceAtLeast(0L)
+                endingSoundId = endingSoundCue.sound.beadsSound.play(loop = false, volume = volume,
+                                                                     rate = endingSoundCue.getBaseBpmRate(),
+                                                                     pitch = getSemitonePitch(), position = 0.0).coerceAtLeast(0L)
             }
         }
     }
 
     override fun onEnd() {
         if (cue.loops || cue.usesBaseBpm || isFillbotsFill || stopAtEnd) {
-            cue.sound.sound.stop(soundId)
+            cue.sound.beadsSound.stop(soundId)
             if (introSoundId != -1L) {
-                cue.introSoundCue?.sound?.sound?.stop(introSoundId)
+                cue.introSoundCue?.sound?.beadsSound?.stop(introSoundId)
             }
         }
     }

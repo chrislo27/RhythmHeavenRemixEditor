@@ -1,20 +1,15 @@
-package io.github.chrislo27.rhre3.soundsystem.beads
+package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.StreamUtils
-import io.github.chrislo27.rhre3.soundsystem.Music
-import io.github.chrislo27.rhre3.soundsystem.Sound
-import io.github.chrislo27.rhre3.util.err.MusicTooLargeException
-import io.github.chrislo27.rhre3.util.err.MusicWayTooLargeException
 import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.concurrent.CopyOnWriteArrayList
 import javax.sound.sampled.AudioFormat
 import javax.sound.sampled.AudioSystem
 import javax.sound.sampled.DataLine
@@ -33,8 +28,6 @@ object BeadsSoundSystem {
 
     @Volatile
     var isRealtime: Boolean = true
-
-    private val sounds: MutableList<BeadsSound> = CopyOnWriteArrayList()
 
     var sampleArray: FloatArray = FloatArray(AudioContext.DEFAULT_BUFFER_SIZE)
         private set
@@ -56,10 +49,10 @@ object BeadsSoundSystem {
                 } else {
                     val ioAudioFormat = context.audioFormat
                     val audioFormat = AudioFormat(ioAudioFormat.sampleRate, ioAudioFormat.bitDepth,
-                                                  ioAudioFormat.outputs,
-                                                  ioAudioFormat.signed, ioAudioFormat.bigEndian)
+                            ioAudioFormat.outputs,
+                            ioAudioFormat.signed, ioAudioFormat.bigEndian)
                     val info = DataLine.Info(SourceDataLine::class.java,
-                                             audioFormat)
+                            audioFormat)
 
                     val otherIndex = AudioSystem.getMixerInfo().toList().indexOfFirst {
                         val mixer = AudioSystem.getMixer(it)
@@ -142,16 +135,17 @@ object BeadsSoundSystem {
             val length = currentLength
             Toolboks.LOGGER.info("Loading audio ${handle.name()} - $length bytes")
             if (length > Int.MAX_VALUE || overflowed)
-                throw MusicWayTooLargeException(length)
+//                throw MusicWayTooLargeException(length)
+                error("Audio is too large (${length} bytes)")
 
             val nFrames = length / (2 * music.channels)
-            try {
-                sample.resize(nFrames)
-            } catch (oome: OutOfMemoryError) {
-                oome.printStackTrace()
-                // 32 bit float per sample
-                throw MusicTooLargeException(nFrames * music.channels * 4, oome)
-            }
+//            try {
+            sample.resize(nFrames)
+//            } catch (oome: OutOfMemoryError) {
+//                oome.printStackTrace()
+//                // 32 bit float per sample
+//                throw MusicTooLargeException(nFrames * music.channels * 4, oome)
+//            }
             val interleaved = FloatArray(music.channels * (BUFFER_SIZE / (2 * music.channels)))
             val sampleData = Array(music.channels) { FloatArray(interleaved.size / music.channels) }
 
@@ -184,17 +178,19 @@ object BeadsSoundSystem {
         return beadsAudio
     }
 
-    fun newSound(handle: FileHandle): Sound {
-        return BeadsSound(newAudio(handle)).apply {
-            sounds += this
-        }
+    fun newSound(audio: BeadsAudio): BeadsSound {
+        return BeadsSound(audio)
     }
 
-    fun newMusic(handle: FileHandle): Music {
-        return BeadsMusic(newAudio(handle))
+    fun newMusic(audio: BeadsAudio): BeadsMusic {
+        return BeadsMusic(audio)
     }
 
-    fun disposeSound(sound: BeadsSound) {
-        sounds -= sound
+    fun newSound(handle: FileHandle): BeadsSound {
+        return newSound(newAudio(handle))
+    }
+
+    fun newMusic(handle: FileHandle): BeadsMusic {
+        return newMusic(newAudio(handle))
     }
 }

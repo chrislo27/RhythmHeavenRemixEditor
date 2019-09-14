@@ -1,16 +1,15 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.files.FileHandle
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 
 
 class LazySound(val handle: FileHandle) {
 
     @Volatile
     var isLoaded = false
-    private var backingSound: Sound? = null
+    private var backingSound: BeadsSound? = null
 
-    val sound: Sound
+    val beadsSound: BeadsSound
         get() {
             if (!isLoaded) {
                 load()

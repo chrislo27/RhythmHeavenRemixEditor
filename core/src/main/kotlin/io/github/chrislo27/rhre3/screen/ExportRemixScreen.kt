@@ -29,8 +29,8 @@ import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.WAV
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.BeadsMusic
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
@@ -336,7 +336,7 @@ class ExportRemixScreen(main: RHRE3Application)
                 (SFXDatabase.data.objectMap["mrUpbeatWii/applause"] as? Cue)?.takeIf { playSuccessDing }
             } else {
                 (SFXDatabase.data.objectMap["mountainManeuver/toot"] as? Cue)
-            }?.sound?.sound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f)
+            }?.sound?.beadsSound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f, position = 0.0)
                     ?: (if (!playSuccessDing && success) Unit else Toolboks.LOGGER.warn("Export SFX (success=$success) not found"))
 
             if (playSuccessDing) {

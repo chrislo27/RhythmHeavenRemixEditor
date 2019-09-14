@@ -48,7 +48,8 @@ object Credits {
                         "Segment\n" +
                         "java-discord-rpc\n" +
                         "bccad-editor\n" +
-                        "JCommander",
+                        "JCommander\n" +
+                        "SoundStretch and SoundTouch",
                 "donators" crediting "",
                 "you" crediting ""
                      )

@@ -21,14 +21,14 @@ import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
 import io.github.chrislo27.rhre3.entity.model.special.*
 import io.github.chrislo27.rhre3.oopsies.ActionHistory
 import io.github.chrislo27.rhre3.playalong.Playalong
+import io.github.chrislo27.rhre3.rhre2.RemixObject
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle
-import io.github.chrislo27.rhre3.rhre2.RemixObject
+import io.github.chrislo27.rhre3.soundsystem.BeadsMusic
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.LazySound
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsMusic
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
@@ -644,7 +644,7 @@ open class Remix(val main: RHRE3Application)
     open var doUpdatePlayalong: Boolean = false
 
     private val metronomeSFX: LazySound by lazy {
-                (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
+        (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
     }
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
@@ -883,7 +883,7 @@ open class Remix(val main: RHRE3Application)
                 music.music.setPitch(speedMultiplier)
 
                 // Music distort
-                val beadsMusic: BeadsMusic? = music.music as? BeadsMusic
+                val beadsMusic: BeadsMusic? = music.music
                 if (beadsMusic != null) {
                     val inDistortion = entities.any { it is MusicDistortEntity && beat in it.bounds.x..it.bounds.maxX }
                     val currentlyDistorted = beadsMusic.player.doBandpass
@@ -911,7 +911,7 @@ open class Remix(val main: RHRE3Application)
             lastMetronomeMeasurePart = measurePart
             if (metronome) {
                 val isStartOfMeasure = measurePart == 0
-                metronomeSFX.sound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f)
+                metronomeSFX.beadsSound.play(loop = false, pitch = if (isStartOfMeasure) 1.5f else 1.1f, volume = 1.25f, rate = 1f, position = 0.0)
             }
         }
 

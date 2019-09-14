@@ -1,11 +1,11 @@
-package io.github.chrislo27.rhre3.soundsystem.beads
+package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.math.MathUtils
-import io.github.chrislo27.rhre3.soundsystem.Music
+import com.badlogic.gdx.utils.Disposable
 import net.beadsproject.beads.ugens.SamplePlayer
 
 
-class BeadsMusic(val audio: BeadsAudio) : Music {
+class BeadsMusic(val audio: BeadsAudio) : Disposable {
 
     val player: GainedSamplePlayer = GainedSamplePlayer(
             SamplePlayer(BeadsSoundSystem.audioContext, audio.sample).apply {
@@ -26,45 +26,45 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
         -1f
     }
 
-    override fun getStartOfSound(): Float {
+    fun getStartOfSound(): Float {
         return startOfSound
     }
 
-    override fun play() {
+    fun play() {
         player.addToContext()
         player.player.start()
     }
 
-    override fun stop() {
+    fun stop() {
         player.player.pause(true)
         player.player.reset()
     }
 
-    override fun pause() {
+    fun pause() {
         player.player.pause(true)
     }
 
-    override fun getPosition(): Float {
+    fun getPosition(): Float {
         return player.player.position.toFloat() / 1000
     }
 
-    override fun setPosition(seconds: Float) {
+    fun setPosition(seconds: Float) {
         player.player.position = seconds.toDouble() * 1000
     }
 
-    override fun getVolume(): Float {
+    fun getVolume(): Float {
         return player.gain.gain
     }
 
-    override fun setVolume(vol: Float) {
+    fun setVolume(vol: Float) {
         player.gain.gain = vol.coerceAtLeast(0f)
     }
 
-    override fun getPitch(): Float {
+    fun getPitch(): Float {
         return player.pitch.value
     }
 
-    override fun setPitch(pitch: Float) {
+    fun setPitch(pitch: Float) {
         player.pitch.value = pitch
     }
 
@@ -73,10 +73,10 @@ class BeadsMusic(val audio: BeadsAudio) : Music {
 //        player.player.kill()
     }
 
-    override fun isPlaying(): Boolean {
+    fun isPlaying(): Boolean {
         return !player.player.isPaused
     }
 
-    override fun update(delta: Float) {
+    fun update(delta: Float) {
     }
 }

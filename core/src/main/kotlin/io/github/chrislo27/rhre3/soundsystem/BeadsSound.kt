@@ -1,14 +1,12 @@
-package io.github.chrislo27.rhre3.soundsystem.beads
+package io.github.chrislo27.rhre3.soundsystem
 
-import io.github.chrislo27.rhre3.soundsystem.LoopParams
-import io.github.chrislo27.rhre3.soundsystem.Sound
 import net.beadsproject.beads.ugens.GranularSamplePlayer
 import net.beadsproject.beads.ugens.SamplePlayer
 import net.beadsproject.beads.ugens.Static
 import java.util.concurrent.ConcurrentHashMap
 
 
-class BeadsSound(val audio: BeadsAudio) : Sound {
+class BeadsSound(val audio: BeadsAudio) {
 
     companion object {
         var useGranular: Boolean = false
@@ -18,7 +16,7 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
     @Volatile
     private var disposed = false
 
-    override val duration: Double
+    val duration: Double
         get() = audio.sample.length / 1000
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
@@ -37,11 +35,11 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         return result
     }
 
-    override fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float, position: Double): Long {
+    fun play(loop: Boolean, pitch: Float, rate: Float, volume: Float, position: Double): Long {
         return playWithLoop(pitch, rate, volume, position, if (loop) LoopParams.LOOP_FORWARDS_ENTIRE.copy(endPoint = duration) else LoopParams.NO_LOOP_FORWARDS)
     }
 
-    override fun playWithLoop(pitch: Float, rate: Float, volume: Float, position: Double, loopParams: LoopParams): Long {
+    fun playWithLoop(pitch: Float, rate: Float, volume: Float, position: Double, loopParams: LoopParams): Long {
         if (disposed)
             return -1L
 
@@ -67,36 +65,35 @@ class BeadsSound(val audio: BeadsAudio) : Sound {
         return id
     }
 
-    override fun setPitch(id: Long, pitch: Float) {
+    fun setPitch(id: Long, pitch: Float) {
         val player = players[id] ?: return
         player.pitch.value = pitch
     }
 
-    override fun setRate(id: Long, rate: Float) {
+    fun setRate(id: Long, rate: Float) {
         val player = players[id] ?: return
         player.rate.value = rate
     }
 
-    override fun setVolume(id: Long, vol: Float) {
+    fun setVolume(id: Long, vol: Float) {
         val player = players[id] ?: return
         player.gain.gain = vol
     }
 
-    override fun stop(id: Long) {
+    fun stop(id: Long) {
         val player = players[id] ?: return
         players.remove(id)
 
         player.player.kill()
     }
 
-    override fun dispose() {
+    fun dispose() {
         if (disposed)
             return
 
         disposed = true
         players.forEach { stop(it.key) }
         players.clear()
-        BeadsSoundSystem.disposeSound(this)
     }
 
     fun getPlayer(id: Long): GainedSamplePlayer? = players[id]

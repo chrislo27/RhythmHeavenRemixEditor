@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.soundsystem.beads
+package io.github.chrislo27.rhre3.soundsystem
 
 import net.beadsproject.beads.core.io.JavaSoundAudioIO
 import kotlin.concurrent.thread

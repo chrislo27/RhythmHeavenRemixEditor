@@ -1,0 +1,2 @@
+Windows: v2.1.1
+macOS:   v2.1.2

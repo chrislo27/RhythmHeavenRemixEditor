@@ -27,7 +27,8 @@ import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.stage.bg.Background
@@ -190,6 +191,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 }
             }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
+        }
+
+        // Copy over SoundStretch executables
+        RHRE3.SOUNDSTRETCH_FOLDER.mkdirs()
+        val currentOS = SoundStretch.currentOS
+        if (currentOS != SoundStretch.OS.UNSUPPORTED) {
+            Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
         }
 
         // preferences

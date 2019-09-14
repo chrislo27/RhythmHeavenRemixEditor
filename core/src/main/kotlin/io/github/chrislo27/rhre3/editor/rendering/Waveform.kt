@@ -2,8 +2,8 @@ package io.github.chrislo27.rhre3.editor.rendering
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.soundsystem.beads.BeadsSoundSystem
-import io.github.chrislo27.rhre3.soundsystem.beads.getValues
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.getValues
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import kotlin.math.abs
 

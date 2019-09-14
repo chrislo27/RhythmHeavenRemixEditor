@@ -1,4 +1,4 @@
-package io.github.chrislo27.rhre3.soundsystem.beads
+package io.github.chrislo27.rhre3.soundsystem
 
 import net.beadsproject.beads.core.AudioContext
 
@@ -11,7 +11,7 @@ fun AudioContext.getValues(buffer: FloatArray) {
         error("Buffer size incorrect, got ${buffer.size}, should be ${this.bufferSize}")
 
     for (channel in 0 until out.ins) {
-        for (i in 0 until buffer.size) {
+        for (i in buffer.indices) {
             if (channel == 0)
                 buffer[i] = 0f
             buffer[i] += out.getValue(channel, i)
@@ -30,7 +30,7 @@ fun AudioContext.getValues(buffer: FloatArray, channel: Int) {
     if (buffer.size != this.bufferSize)
         error("Buffer size incorrect, got ${buffer.size}, should be ${this.bufferSize}")
 
-    for (i in 0 until buffer.size) {
+    for (i in buffer.indices) {
         buffer[i] = out.getValue(channel, i)
     }
 }
