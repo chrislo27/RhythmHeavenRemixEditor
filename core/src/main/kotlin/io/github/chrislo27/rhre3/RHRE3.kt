@@ -12,13 +12,14 @@ object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor"
     const val TITLE_3 = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 18, 8, "")
+    val VERSION: Version = Version(3, 19, 0, "DEVELOPMENT")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     const val WIDTH = 1280
     const val HEIGHT = 720
     val DEFAULT_SIZE = WIDTH to HEIGHT
     val MINIMUM_SIZE: Pair<Int, Int> = 640 to 360
     val RHRE3_FOLDER: FileHandle by lazy { (if (portableMode) Gdx.files.local(".rhre3/") else Gdx.files.external(".rhre3/")).apply(FileHandle::mkdirs) }
+    val SOUNDSTRETCH_FOLDER: FileHandle by lazy { RHRE3_FOLDER.child("soundstretch/") }
 
     val SUPPORTED_DECODING_SOUND_TYPES = listOf("ogg", "mp3", "wav")
     val tmpMusic: FileHandle by lazy {
