@@ -88,7 +88,7 @@ class CueObject : NamedIDObject() {
     var stretchable: Boolean = false
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var repitchable: Boolean = false
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    @JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = FileExtValueFilter::class)
     var fileExtension: String = "ogg"
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -119,6 +119,16 @@ class CueObject : NamedIDObject() {
         override fun equals(other: Any?): Boolean {
             if (other is Boolean) {
                 return other
+            }
+            return super.equals(other)
+        }
+    }
+    
+    @Suppress("EqualsOrHashCode")
+    class FileExtValueFilter {
+        override fun equals(other: Any?): Boolean {
+            if (other is String) {
+                return other.isEmpty() || other == "ogg"
             }
             return super.equals(other)
         }
