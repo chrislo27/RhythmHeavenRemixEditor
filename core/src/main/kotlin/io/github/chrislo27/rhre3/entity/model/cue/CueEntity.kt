@@ -105,16 +105,14 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
 
+    private val usesAudioDerivatives: Boolean get() = SoundStretch.isSupported && cue.usesBaseBpm && cue.useTimeStretching
+
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
-        get() = if (cue.usesBaseBpm && cue.useTimeStretching) {
-            if (!SoundStretch.isSupported) {
-                cue.sound.audio.beadsSound
-            } else {
-                val deriv = createDerivative()
-                lastCachedDerivative = deriv
-                cue.sound.derivativeOf(deriv, quick = !remix.isExporting).beadsSound
-            }
+        get() = if (usesAudioDerivatives) {
+            val deriv = createDerivative()
+            lastCachedDerivative = deriv
+            cue.sound.derivativeOf(deriv, quick = !remix.isExporting).beadsSound
         } else {
             cue.sound.audio.beadsSound
         }
@@ -126,7 +124,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
         // Combination of the semitone pitch + the remix speed multiplier
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
-        val rate = if (cue.usesBaseBpm && cue.useTimeStretching && SoundStretch.isSupported) 1f else cue.getBaseBpmRate(remix.beat)
+        val rate = if (usesAudioDerivatives) 1f else cue.getBaseBpmRate(remix.beat)
         val apparentRate = (pitch * rate)
         val loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS
         soundId = beadsSound.playWithLoop(pitch = pitch, rate = rate, volume = volume,
@@ -164,7 +162,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm -> {
-                    beadsSound.setRate(soundId, if (cue.usesBaseBpm && cue.useTimeStretching && SoundStretch.isSupported) {
+                    beadsSound.setRate(soundId, if (usesAudioDerivatives) {
                         (remix.tempos.tempoAt(remix.beat) / remix.tempos.tempoAt(this.bounds.x))
                     } else cue.getBaseBpmRate(remix.beat))
                 }
@@ -224,7 +222,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     override fun loadSounds() {
         datamodel.loadSounds()
-        if (cue.usesBaseBpm && cue.useTimeStretching) {
+        if (usesAudioDerivatives) {
             val currentDeriv = createDerivative()
             val lastCached = lastCachedDerivative
             if (lastCached != currentDeriv) {
