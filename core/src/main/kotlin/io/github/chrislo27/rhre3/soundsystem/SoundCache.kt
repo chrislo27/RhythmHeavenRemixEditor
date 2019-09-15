@@ -7,89 +7,75 @@ import java.util.concurrent.ConcurrentHashMap
 
 
 object SoundCache {
-    
-    data class Derivative(val originalFile: File, val tempoPercent: Float, val pitchSemitones: Float, val ratePercent: Float = 0f) {
+
+    data class Derivative(val tempoPercent: Float, val pitchSemitones: Float, val ratePercent: Float = 0f) {
         fun isUnmodified(): Boolean = tempoPercent == 0f && pitchSemitones == 0f && ratePercent == 0f
     }
-    
-    private data class DerivativeAudio(val audio: BeadsAudio, val quick: Boolean)
-    
-    private val rawCache: MutableMap<File, BeadsAudio> = ConcurrentHashMap()
-    private val originalFileToWav: MutableMap<File, File> = ConcurrentHashMap()
-    private val derivativeFileMap: MutableMap<File, MutableList<Derivative>> = ConcurrentHashMap()
-    private val derivativeAudioCache: MutableMap<Derivative, DerivativeAudio> = ConcurrentHashMap()
-    
-    fun clean(keepThese: List<File> = listOf()) {
-        (rawCache.keys.toSet() - keepThese.toSet()).forEach { f ->
-            rawCache.remove(f)
-            originalFileToWav.remove(f)?.delete()
-            val deriv = derivativeFileMap[f]
-            if (deriv != null) {
-                derivativeFileMap.remove(f)
-                deriv.forEach { d ->
-                    derivativeAudioCache.remove(d)
-                }
-            }
-        }
-    }
-    
-    fun getOrLoad(file: File): BeadsAudio {
-        return rawCache.getOrPut(file) { BeadsSoundSystem.newAudio(FileHandle(file)) }
-    }
-    
-    private fun getWavOrLoad(originalFile: File): File {
-        val audio = getOrLoad(originalFile)
-        val wavFile = originalFileToWav.getOrPut(originalFile) {
-            File.createTempFile("lampshade-derivative-", ".wav").apply {
+
+    data class DerivativeAudio(val audio: BeadsAudio, val quick: Boolean)
+    data class AudioPointer(val originalFile: File, val audio: BeadsAudio) {
+        val wavFile: File by lazy {
+            val wavFile = File.createTempFile("lampshade-derivative-", ".wav").apply {
                 deleteOnExit()
             }
-        }
-        if (!wavFile.exists() || wavFile.length() == 0L) {
-            // Save the wav version of the original here
-            wavFile.createNewFile()
-            audio.sample.write(wavFile.canonicalPath)
-        }
-        return wavFile
-    }
-    
-    private fun createDerivativeAudio(derivative: Derivative, quick: Boolean): DerivativeAudio {
-        derivativeFileMap.getOrPut(derivative.originalFile) { mutableListOf() }.also { l ->
-            if (derivative !in l) {
-                l.add(derivative)
+            if (!wavFile.exists() || wavFile.length() == 0L) {
+                // Save the wav version of the original to this file
+                wavFile.createNewFile()
+                audio.sample.write(wavFile.canonicalPath)
             }
+            wavFile
         }
-        // If it's not cached, use SoundStretch to create it and cache it
-        val originalWav: File = getWavOrLoad(derivative.originalFile)
-        val tmpFile: File = File.createTempFile("lampshade-derivative-gen-", ".wav").apply {
-            deleteOnExit()
+        private val derivativeAudioCache: MutableMap<Derivative, DerivativeAudio> = ConcurrentHashMap()
+
+        fun derivativeOf(derivative: Derivative, quick: Boolean): BeadsAudio {
+            if (derivative.isUnmodified()) {
+                return audio
+            }
+            val cachedDerivAudio = derivativeAudioCache.getOrPut(derivative) {
+                createDerivativeAudio(derivative, quick)
+            }
+            return (if (!quick && cachedDerivAudio.quick) {
+                // If non-quick audio is requested, then the derivative audio must be non-quick
+                // If quick audio is requested, non-quick audio is okay if it was already in the cache
+                // This prioritizes quality
+                val newDeriv: DerivativeAudio = createDerivativeAudio(derivative, false)
+                derivativeAudioCache[derivative] = newDeriv
+                newDeriv
+            } else cachedDerivAudio).audio
         }
-        SoundStretch.processStreams(RHRE3.SOUNDSTRETCH_FOLDER.file(), originalWav, tmpFile,
-                                    derivative.tempoPercent, derivative.pitchSemitones, derivative.ratePercent, quick)
-        val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile)).apply {
-            tmpFile.delete()
+
+        fun derivativeOf(tempoPercent: Float, pitchSemitones: Float, ratePercent: Float = 0f, quick: Boolean = false): BeadsAudio {
+            return derivativeOf(Derivative(tempoPercent, pitchSemitones, ratePercent), quick)
         }
-        return DerivativeAudio(moddedAudio, quick)
+
+        private fun createDerivativeAudio(derivative: Derivative, quick: Boolean): DerivativeAudio {
+            val originalWav: File = wavFile
+            val tmpFile: File = File.createTempFile("lampshade-derivative-gen-", ".wav").apply {
+                deleteOnExit()
+            }
+            SoundStretch.processStreams(RHRE3.SOUNDSTRETCH_FOLDER.file(), originalWav, tmpFile,
+                                        derivative.tempoPercent, derivative.pitchSemitones, derivative.ratePercent, quick)
+            val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile)).apply {
+                tmpFile.delete()
+            }
+            return DerivativeAudio(moddedAudio, quick)
+        }
     }
-    
-    fun derivativeOf(file: File, tempoPercent: Float, pitchSemitones: Float, ratePercent: Float = 0f, quick: Boolean = false): BeadsAudio {
-        return derivativeOf(Derivative(file, tempoPercent, pitchSemitones, ratePercent), quick)
+
+    private val cache: MutableMap<File, AudioPointer> = ConcurrentHashMap()
+
+    fun unload(f: File) {
+        cache.remove(f)
     }
-    
-    fun derivativeOf(derivative: Derivative, quick: Boolean): BeadsAudio {
-        if (derivative.isUnmodified()) {
-            return getOrLoad(derivative.originalFile)
+
+    fun clean(keepThese: List<File> = listOf()) {
+        (cache.keys.toSet() - keepThese.toSet()).forEach { f ->
+            unload(f)
         }
-        val cachedDerivAudio = derivativeAudioCache.getOrPut(derivative) {
-            createDerivativeAudio(derivative, quick)
-        }
-        return (if (!quick && cachedDerivAudio.quick) {
-            // If non-quick audio is requested, then the derivative audio must be non-quick
-            // If quick audio is requested, non-quick audio is okay if it was already in the cache
-            // This prioritizes quality
-            val newDeriv: DerivativeAudio = createDerivativeAudio(derivative, false)
-            derivativeAudioCache[derivative] = newDeriv
-            newDeriv
-        } else cachedDerivAudio).audio
     }
-    
+
+    fun getOrLoad(file: File): AudioPointer {
+        return cache.getOrPut(file) { AudioPointer(file, BeadsSoundSystem.newAudio(FileHandle(file))) }
+    }
+
 }
