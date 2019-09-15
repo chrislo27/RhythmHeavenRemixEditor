@@ -953,7 +953,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (this.selection.isNotEmpty()) {
                             Gdx.app.clipboard.contents = PatternStoreScreen.entitiesToJson(remix, selection.toList(), prettyPrinted = false)
 
-                            remix.entities.removeAll(this.selection)
+                            remix.removeEntities(this.selection)
                             remix.addActionWithoutMutating(ActionGroup(listOf(
                                     EntityRemoveAction(this, this.selection,
                                                        this.selection.map { Rectangle(it.bounds) }),
@@ -1037,7 +1037,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     ClickOccupation.None -> {
                         if (selection.isNotEmpty() && !stage.isTyping) {
                             if (Gdx.input.isKeyJustPressed(Input.Keys.FORWARD_DEL) || Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
-                                remix.entities.removeAll(this.selection)
+                                remix.removeEntities(this.selection)
                                 selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                                 remix.addActionWithoutMutating(ActionGroup(listOf(
                                         EntityRemoveAction(this, this.selection,
@@ -1546,7 +1546,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (isCopying) {
                             this.selection = newSel
                             val notIn = newSel.filter { it !in remix.entities }
-                            if (notIn.isNotEmpty()) remix.entities.addAll(notIn)
+                            if (notIn.isNotEmpty()) remix.addEntities(notIn)
                         }
 
                         newSel.forEach {
@@ -1704,7 +1704,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     it.updateInterpolation(true)
                 }
 
-                remix.entities.addAll(entities)
+                remix.addEntities(entities)
 
                 this.clickOccupation = selection
             }
@@ -1778,7 +1778,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     }
 
                     // delete silently
-                    remix.entities.removeAll(selection)
+                    remix.removeEntities(selection)
                     selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     // restore original selection
                     selection = clickOccupation.previousSelection
@@ -1790,7 +1790,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     remix.addActionWithoutMutating(EntityMoveAction(this, sel, sel.map { clickOccupation.oldBounds.getValue(it) }))
                 } else if (deleting && !storing) {
                     // remove+selection action
-                    remix.entities.removeAll(this.selection)
+                    remix.removeEntities(this.selection)
                     selection.filterIsInstance<ModelEntity<*>>().forEach { explodeEntity(it) }
                     val sel = this.selection.toList()
                     remix.addActionWithoutMutating(ActionGroup(listOf(

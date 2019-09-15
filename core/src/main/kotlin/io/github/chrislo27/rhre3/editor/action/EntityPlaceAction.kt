@@ -9,13 +9,11 @@ import io.github.chrislo27.rhre3.track.Remix
 class EntityPlaceAction(val editor: Editor, val entities: List<Entity>) : ReversibleAction<Remix> {
 
     override fun redo(context: Remix) {
-        context.entities.addAll(entities)
-        context.recomputeCachedData()
+        context.addEntities(entities, false)
     }
 
     override fun undo(context: Remix) {
-        context.entities.removeAll(entities)
-        context.recomputeCachedData()
+        context.removeEntities(entities, false)
     }
 
 }

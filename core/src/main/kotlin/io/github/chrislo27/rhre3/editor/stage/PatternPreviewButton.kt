@@ -76,7 +76,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
         if (playState == STOPPED) {
             val datamodel = datamodel
             if (datamodel != null) {
-                ownRemix.entities.clear()
+                ownRemix.removeEntities(ownRemix.entities.toList())
                 val entity = datamodel.createEntity(ownRemix, null)
                 if (entity is ILoadsSounds) {
                     entity.loadSounds()
@@ -86,7 +86,7 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
                     entity.bounds.x = 0f
                 }
 
-                ownRemix.entities += entity
+                ownRemix.addEntity(entity)
 
                 ownRemix.tempos.map.values.toList().forEach { ownRemix.tempos.remove(it) }
                 fun ModelEntity<*>.checkSelfAndChildrenForBaseBpm(): Float {

@@ -128,16 +128,16 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             val internalCache = internal.toList()
 
             override fun redo(context: Remix) {
-                context.entities.remove(original)
-                context.entities.addAll(internalCache)
+                context.removeEntity(original, false)
+                context.addEntities(internalCache, false)
                 internalCache.forEach {
                     it.updateInterpolation(true)
                 }
             }
 
             override fun undo(context: Remix) {
-                context.entities.removeAll(internalCache)
-                context.entities.add(original)
+                context.removeEntities(internalCache, false)
+                context.addEntity(original)
                 original.updateInterpolation(true)
             }
 

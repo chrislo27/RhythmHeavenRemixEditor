@@ -181,13 +181,13 @@ open class Remix(val main: RHRE3Application)
                                 missingCustom++
 
                             Toolboks.LOGGER.warn("Missing ${if (isCustom) "custom " else ""}asset: ${node[ModelEntity.JSON_DATAMODEL].asText(null)}")
-                            remix.entities += createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null", node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue())
+                            remix.addEntity(createMissingEntitySubtitle(remix, node[ModelEntity.JSON_DATAMODEL]?.textValue() ?: "null", node["beat"]!!.floatValue(), node["track"]!!.floatValue(), node["width"]!!.floatValue(), node["height"]!!.floatValue()))
                             return@forEach
                         }
 
                         entity.readData(node)
 
-                        remix.entities += entity
+                        remix.addEntity(entity)
                     }
 
             // trackers
@@ -309,7 +309,7 @@ open class Remix(val main: RHRE3Application)
             val defaultCue = SFXDatabase.data.objectMap[DEFAULT_MIDI_NOTE]!! as Cue
             val noteCue = SFXDatabase.data.objectMap[remix.main.preferences.getString(
                     PreferenceKeys.MIDI_NOTE)] ?: defaultCue
-            points.mapTo(remix.entities) { point ->
+            remix.addEntities(points.map { point ->
                 val ent = noteCue.createEntity(remix, null).apply {
                     if (this is CueEntity) {
                         instrument = tracksWithNotes.indexOf(point.track.second) + 1
@@ -331,10 +331,10 @@ open class Remix(val main: RHRE3Application)
                 }
 
                 ent
-            }
+            })
 
             // add end entity either 2 beats after furthest point, or on the next measure border
-            remix.entities += SFXDatabase.data.endRemix.createEntity(remix, null).apply {
+            remix.addEntity(SFXDatabase.data.endRemix.createEntity(remix, null).apply {
                 updateBounds {
                     val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
                             ?: 0).toFloat()
@@ -347,7 +347,7 @@ open class Remix(val main: RHRE3Application)
                     }
                     bounds.y = 0f
                 }
-            }
+            })
 
             // remove redundant tempo changes
             remix.tempos.map.values.toList()
@@ -497,7 +497,7 @@ open class Remix(val main: RHRE3Application)
             remixObject.entities?.forEach {
                 val datamodel = SFXDatabase.data.objectMap[it.id] ?: run {
                     missing++
-                    remix.entities += createMissingEntitySubtitle(remix, it.id ?: "null", it.beat, it.level.toFloat(), it.width, 1f)
+                    remix.addEntity(createMissingEntitySubtitle(remix, it.id ?: "null", it.beat, it.level.toFloat(), it.width, 1f))
                     return@forEach
                 }
 
@@ -519,7 +519,7 @@ open class Remix(val main: RHRE3Application)
                     }
                 }
 
-                remix.entities += entity
+                remix.addEntity(entity)
             }
 
             if (musicPresent) {
@@ -578,7 +578,7 @@ open class Remix(val main: RHRE3Application)
     var databaseVersion: Int = -1
         private set
 
-    val entities: MutableList<Entity> = mutableListOf()
+    val entities: List<Entity> = mutableListOf()
     val timeSignatures: TimeSignatures = TimeSignatures()
     val trackers: MutableList<TrackerContainer<*>> = mutableListOf()
     val trackersReverseView: List<TrackerContainer<*>> = trackers.asReversed()
@@ -744,7 +744,7 @@ open class Remix(val main: RHRE3Application)
      * Call whenever entities move.
      */
     fun recomputeCachedData() {
-        entities.sortBy { it.bounds.x }
+        (entities as MutableList).sortBy { it.bounds.x }
         duration = entities.firstOrNull { it is EndRemixEntity }?.bounds?.x ?: Float.POSITIVE_INFINITY
         lastPoint = getLastEntityPoint()
         entitiesTouchTrackTop = entities.filterNot { it is EndRemixEntity }.firstOrNull { (it.bounds.y + it.bounds.height).toInt() >= trackCount } != null
@@ -799,6 +799,42 @@ open class Remix(val main: RHRE3Application)
     }
 
     protected open fun createPlayalongInstance(): Playalong = Playalong(this)
+
+    fun addEntity(entity: Entity, doRecompute: Boolean = true) {
+        if (entity !in entities) {
+            (entities as MutableList) += entity
+            if (doRecompute)
+                recomputeCachedData()
+        }
+    }
+
+    fun removeEntity(entity: Entity, doRecompute: Boolean = true) {
+        if (entity in entities) {
+            (entities as MutableList) -= entity
+            if (doRecompute)
+                recomputeCachedData()
+        }
+    }
+
+    fun addEntities(list: List<Entity>, doRecomputeForEach: Boolean = false) {
+        list.forEach { e ->
+            addEntity(e, doRecomputeForEach)
+        }
+        if (!doRecomputeForEach) {
+            // Recompute once if not done for each addition
+            recomputeCachedData()
+        }
+    }
+
+    fun removeEntities(list: List<Entity>, doRecomputeForEach: Boolean = true) {
+        list.forEach { e ->
+            removeEntity(e, doRecomputeForEach)
+        }
+        if (!doRecomputeForEach) {
+            // Recompute once if not done for each removal
+            recomputeCachedData()
+        }
+    }
 
     fun getLastEntityPoint(): Float {
         if (entities.isEmpty())

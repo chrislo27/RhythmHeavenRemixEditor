@@ -43,7 +43,7 @@ class EditorMidiListener(val editor: Editor) : MidiHandler.MidiNoteListener {
                 ent.updateInterpolation(true)
 
                 ent.playbackCompletion = PlaybackCompletion.FINISHED
-                remix.entities += ent
+                remix.addEntity(ent)
 
                 val bn = BuildingNote(note, ent)
 
