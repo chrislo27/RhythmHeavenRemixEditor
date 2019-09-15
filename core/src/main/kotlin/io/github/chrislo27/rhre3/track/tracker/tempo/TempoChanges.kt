@@ -52,7 +52,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
         backingSecondsMap.clear()
 
         old.forEach {
-            val previous: TempoChange? = backingMap.lowerEntry(it.beat)?.value
+            val previous: TempoChange? = backingMap.floorEntry(it.beat)?.value
             it.seconds = if (previous == null) {
                 TempoUtils.beatsToSeconds(it.beat, defaultTempo) // If not present, use straight beats
             } else {
@@ -66,7 +66,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
     }
 
     fun secondsToBeats(seconds: Float): Float {
-        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
+        val tc: TempoChange = backingSecondsMap.floorEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
 
         return tc.secondsToBeats(seconds)
     }
@@ -81,7 +81,7 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
      * Same as [secondsToBeats] but disregards swing
      */
     fun linearSecondsToBeats(seconds: Float): Float {
-        val tc: TempoChange = backingSecondsMap.lowerEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
+        val tc: TempoChange = backingSecondsMap.floorEntry(seconds)?.value ?: return TempoUtils.secondsToBeats(seconds, defaultTempo)
 
         return tc.secondsToBeats(seconds)
     }
@@ -96,18 +96,18 @@ class TempoChanges(val defaultTempo: Float = 120f, val defaultSwing: Swing = Swi
     }
 
     fun tempoAt(beat: Float): Float {
-        return backingMap.lowerEntry(beat)?.value?.tempoAt(beat) ?: defaultTempo
+        return backingMap.floorEntry(beat)?.value?.tempoAt(beat) ?: defaultTempo
     }
 
     fun tempoAtSeconds(seconds: Float): Float {
-        return backingSecondsMap.lowerEntry(seconds)?.value?.tempoAtSeconds(seconds) ?: defaultTempo
+        return backingSecondsMap.floorEntry(seconds)?.value?.tempoAtSeconds(seconds) ?: defaultTempo
     }
 
     fun swingAt(beat: Float): Swing {
-        return backingMap.lowerEntry(beat)?.value?.swing ?: defaultSwing
+        return backingMap.floorEntry(beat)?.value?.swing ?: defaultSwing
     }
 
     fun swingAtSeconds(seconds: Float): Swing {
-        return backingSecondsMap.lowerEntry(seconds)?.value?.swing ?: defaultSwing
+        return backingSecondsMap.floorEntry(seconds)?.value?.swing ?: defaultSwing
     }
 }
