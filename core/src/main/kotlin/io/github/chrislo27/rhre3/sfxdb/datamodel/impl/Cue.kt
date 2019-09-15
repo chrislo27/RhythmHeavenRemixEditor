@@ -59,11 +59,11 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         endingSoundCue?.unloadSounds()
     }
 
-    fun getPitchForBaseBpm(bpm: Float, entityDuration: Float): Float {
+    fun getAdjustedRateForBaseBpm(bpm: Float): Float {
         if (baseBpm <= 0f)
             return 1f
 
-        return (bpm / baseBpm) // * (duration / entityDuration)
+        return (bpm / baseBpm)
     }
 
     override fun createEntity(remix: Remix,

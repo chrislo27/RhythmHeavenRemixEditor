@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
+import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
@@ -683,6 +684,9 @@ open class Remix(val main: RHRE3Application)
                             it.playbackCompletion = PlaybackCompletion.FINISHED
                         } else {
                             it.playbackCompletion = PlaybackCompletion.WAITING
+                        }
+                        if (it is ILoadsSounds) {
+                            it.loadSounds()
                         }
                     }
 

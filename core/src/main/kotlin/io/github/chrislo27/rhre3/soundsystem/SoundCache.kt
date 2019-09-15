@@ -66,6 +66,10 @@ data class AudioPointer(val originalFile: File, val audio: BeadsAudio) {
     fun derivativeOf(tempoPercent: Float, pitchSemitones: Float, ratePercent: Float = 0f, quick: Boolean = false): BeadsAudio {
         return derivativeOf(Derivative(tempoPercent, pitchSemitones, ratePercent), quick)
     }
+    
+    fun unloadDerivative(derivative: Derivative) {
+        derivativeAudioCache.remove(derivative)
+    }
 
     private fun createDerivativeAudio(derivative: Derivative, quick: Boolean): DerivativeAudio {
         val originalWav: File = wavFile
