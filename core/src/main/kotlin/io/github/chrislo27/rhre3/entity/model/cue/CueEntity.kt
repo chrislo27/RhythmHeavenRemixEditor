@@ -113,7 +113,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             } else {
                 val deriv = createDerivative()
                 lastCachedDerivative = deriv
-                cue.sound.derivativeOf(deriv, quick = true /* TODO only use non-quick when exporting */).beadsSound
+                cue.sound.derivativeOf(deriv, quick = !remix.isExporting).beadsSound
             }
         } else {
             cue.sound.audio.beadsSound

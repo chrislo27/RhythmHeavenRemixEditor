@@ -204,6 +204,7 @@ class ExportRemixScreen(main: RHRE3Application)
             return
         isExporting = true
         BeadsSoundSystem.isRealtime = false
+        remix.isExporting = true
 
         fun addBead(function: () -> Unit): Bead {
             return object : Bead() {
@@ -349,6 +350,7 @@ class ExportRemixScreen(main: RHRE3Application)
             }
 
             isExporting = false
+            remix.isExporting = false
 
             if (!playSuccessDing) {
                 stage.backButton.enabled = false

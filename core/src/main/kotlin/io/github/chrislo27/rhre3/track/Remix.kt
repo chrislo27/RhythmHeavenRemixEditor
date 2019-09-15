@@ -711,6 +711,7 @@ open class Remix(val main: RHRE3Application)
 
         true
     }
+    var isExporting: Boolean = false
     val canPlayRemix: Boolean
         get() = tempos.secondsMap.isNotEmpty()
 
