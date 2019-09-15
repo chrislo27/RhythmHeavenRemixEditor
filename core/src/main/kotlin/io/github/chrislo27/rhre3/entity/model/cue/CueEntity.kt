@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.BeadsSound
 import io.github.chrislo27.rhre3.soundsystem.Derivative
 import io.github.chrislo27.rhre3.soundsystem.LoopParams
+import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
@@ -107,7 +108,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
         get() = if (cue.usesBaseBpm && cue.useTimeStretching) {
-            cue.sound.derivativeOf(createDerivative(), quick = true /* TODO only use non-quick when exporting */).beadsSound
+            if (!SoundStretch.isSupported) {
+                cue.sound.audio.beadsSound
+            } else {
+                val deriv = createDerivative()
+                lastCachedDerivative = deriv
+                cue.sound.derivativeOf(deriv, quick = true /* TODO only use non-quick when exporting */).beadsSound
+            }
         } else {
             cue.sound.audio.beadsSound
         }
@@ -119,7 +126,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
         // Combination of the semitone pitch + the remix speed multiplier
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
-        val rate = if (cue.usesBaseBpm && cue.useTimeStretching) 1f else cue.getBaseBpmRate(remix.beat)
+        val rate = if (cue.usesBaseBpm && cue.useTimeStretching && SoundStretch.isSupported) 1f else cue.getBaseBpmRate(remix.beat)
         val apparentRate = (pitch * rate)
         val loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS
         soundId = beadsSound.playWithLoop(pitch = pitch, rate = rate, volume = volume,
@@ -157,7 +164,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm -> {
-                    beadsSound.setRate(soundId, if (cue.usesBaseBpm && cue.useTimeStretching) {
+                    beadsSound.setRate(soundId, if (cue.usesBaseBpm && cue.useTimeStretching && SoundStretch.isSupported) {
                         (remix.tempos.tempoAt(remix.beat) / remix.tempos.tempoAt(this.bounds.x))
                     } else cue.getBaseBpmRate(remix.beat))
                 }

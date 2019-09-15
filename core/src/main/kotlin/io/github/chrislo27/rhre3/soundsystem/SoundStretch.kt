@@ -9,8 +9,8 @@ import java.util.*
  */
 object SoundStretch {
 
-    enum class OS(val executableName: String) {
-        UNSUPPORTED(""), WINDOWS("SoundStretch_windows.exe"), MACOS("SoundStretch_macOS");
+    enum class OS(val supported: Boolean, val executableName: String) {
+        UNSUPPORTED(false, ""), WINDOWS(true, "SoundStretch_windows.exe"), MACOS(true, "SoundStretch_macOS");
         
         companion object {
             val ALL_VALUES: List<OS> = values().toList()
@@ -34,6 +34,7 @@ object SoundStretch {
         e.printStackTrace()
         OS.UNSUPPORTED
     }
+    val isSupported: Boolean get() = currentOS.supported
 
     private fun makeProcessBuilder(directoryPath: File, args: List<String>): ProcessBuilder = when (val os = currentOS) {
         OS.WINDOWS, OS.MACOS -> {
