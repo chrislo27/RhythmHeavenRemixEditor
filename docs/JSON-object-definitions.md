@@ -207,6 +207,7 @@ Example:<br>
   "fileExtension": "ogg",
   "loops": false,
   "baseBpm": 120.0,
+  "useTimeStretching": true,
   "earliness": 0.0,
   "loopStart": 0.1,
   "loopEnd": 1.0,
@@ -231,8 +232,9 @@ metadata such as the duration and its editable abilities.
 | stretchable | boolean? | If true, the cue can be dragged longer or shorter |
 | repitchable | boolean? | If true, the cue can have its pitch changed by the user |
 | fileExtension | string? | File extension of the cue sound file. You should generally always use OGG Vorbis files, so you shouldn't have to use this field. |
-| loops | boolean? | If true, this cue loops its sound. |
-| baseBpm | number?| If present, this cue will get repitched automatically based on the tempo. See below for more info. Must be greater than zero if present.|
+| loops | boolean? | If true, this cue loops its sound. Defaults to false. |
+| baseBpm | number?| If present, this cue will get adjusted automatically based on the tempo. See below for more info. Must be greater than zero if present.|
+| useTimeStretching | boolean? | If true, this cue will use time stretching when used in conjunction with `baseBpm`. Defaults to true. If false, only the rate will change (which will naturally affect the pitch). |
 | introSound | id?| If present, will play this other sound at the start of the cue. See below for more info. |
 | endingSound | id?| If present, will play this other sound at the end of the cue. See below for more info. |
 | responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
@@ -268,6 +270,7 @@ use with the response-copying. Useful for copy-and-response games.
 If `baseBpm` is used, the sound effect will be pitched
 accordingly during playback based on the current tempo relative to the value
 set in `baseBpm`. Example: When playing at 180 BPM and the base BPM is 120, the sound effect will be sped up by 1.5x.
+The `useTimeStretching` field (introduced in v3.19.0) attempts to keep the pitch constant while changing the sound's tempo.
 
 ## `PatternObject` structure
 ```json

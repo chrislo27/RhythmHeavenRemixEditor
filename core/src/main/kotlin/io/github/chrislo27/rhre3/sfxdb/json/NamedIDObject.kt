@@ -101,6 +101,8 @@ class CueObject : NamedIDObject() {
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var baseBpm: Float = 0f
+    @JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = UseTimeStretchingValueFilter::class)
+    var useTimeStretching: Boolean = true
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loops: Boolean = false
@@ -111,6 +113,16 @@ class CueObject : NamedIDObject() {
     var loopStart: Float = 0f
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loopEnd: Float = -1f
+    
+    @Suppress("EqualsOrHashCode")
+    class UseTimeStretchingValueFilter {
+        override fun equals(other: Any?): Boolean {
+            if (other is Boolean) {
+                return other
+            }
+            return super.equals(other)
+        }
+    }
 
 }
 

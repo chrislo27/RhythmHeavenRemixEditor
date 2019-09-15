@@ -15,7 +15,7 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
     fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
     
     return when (val obj = this) {
-        // Note: if this is updated, remember to update GameToJson
+        // Note: if this is updated, remember to update the Game.toJsonObject func below
         is CueObject ->
             Cue(game, objID, obj.deprecatedIDs, obj.name,
                 obj.duration,
@@ -23,7 +23,7 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                 obj.responseIDs.starSubstitution(),
-                obj.baseBpm, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
+                obj.baseBpm, obj.useTimeStretching, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
         is EquidistantObject ->
             Equidistant(game, objID, obj.deprecatedIDs,
                         obj.name, obj.distance,
@@ -82,6 +82,7 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.name = datamodel.name
 
                     it.baseBpm = datamodel.baseBpm
+                    it.useTimeStretching = datamodel.useTimeStretching
                     it.duration = datamodel.duration
                     it.fileExtension = datamodel.soundHandle.extension()
                     it.introSound = datamodel.introSound?.starSubstitute()

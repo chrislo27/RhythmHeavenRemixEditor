@@ -432,8 +432,9 @@ object SFXDatabase : Disposable {
                     val loops = fh.nameWithoutExtension().endsWith(".loop")
                     val name = if (!loops) fh.nameWithoutExtension() else (fh.nameWithoutExtension().substringBeforeLast(".loop") + " - loop")
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
-                                        true, true, fh, null, null,
-                                        listOf(), 0f, loops, 0f, 0f, 0f)
+                                        true, repitchable = true, soundHandle = fh, introSound = null, endingSound = null,
+                                        responseIDs = listOf(), baseBpm = 0f, useTimeStretching = true, loops = loops,
+                                        earliness = 0f, loopStart = 0f, loopEnd = 0f)
                 }
 
                 if (RHRE3.outputCustomSfx) {
