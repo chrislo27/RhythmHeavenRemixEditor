@@ -105,14 +105,15 @@ class CueEntity(remix: Remix, datamodel: Cue)
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
 
-    private val usesAudioDerivatives: Boolean get() = SoundStretch.isSupported && cue.usesBaseBpm && cue.useTimeStretching
+    private val usesAudioDerivatives: Boolean
+        get() = SoundStretch.isSupported && cue.usesBaseBpm && cue.useTimeStretching && !remix.main.disableTimeStretching
 
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
         get() = if (usesAudioDerivatives) {
             val deriv = createDerivative()
             lastCachedDerivative = deriv
-            cue.sound.derivativeOf(deriv, quick = !remix.isExporting).beadsSound
+            cue.sound.derivativeOf(deriv, quick = !remix.main.useHighQualityTimeStretching && !remix.isExporting).beadsSound
         } else {
             cue.sound.audio.beadsSound
         }
@@ -222,14 +223,18 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     override fun loadSounds() {
         datamodel.loadSounds()
+        val lastCached = lastCachedDerivative
         if (usesAudioDerivatives) {
             val currentDeriv = createDerivative()
-            val lastCached = lastCachedDerivative
             if (lastCached != currentDeriv) {
                 if (lastCached != null) {
                     cue.sound.unloadDerivative(lastCached)
                 }
                 beadsSound
+            }
+        } else {
+            if (lastCached != null) {
+                cue.sound.unloadDerivative(lastCached)
             }
         }
     }
