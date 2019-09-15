@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.special.MusicDistortEntity
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.FLAC
 import io.github.chrislo27.rhre3.screen.ExportRemixScreen.ExportFileType.MP3
@@ -236,6 +237,7 @@ class ExportRemixScreen(main: RHRE3Application)
         context.stop()
         context.out.pause(true)
         context.out.clearDependents()
+        remix.entities.filterIsInstance<ILoadsSounds>().forEach { it.loadSounds() }
 
         // prep recorder
         val recorderFile = if (fileType != WAV)
