@@ -15,7 +15,7 @@ object SoundCache {
     data class DerivativeAudio(val audio: BeadsAudio, val quick: Boolean)
     data class AudioPointer(val originalFile: File, val audio: BeadsAudio) {
         val wavFile: File by lazy {
-            val wavFile = File.createTempFile("lampshade-derivative-", ".wav").apply {
+            val wavFile = File.createTempFile("rhre-lampshade-derivative-", ".wav").apply {
                 deleteOnExit()
             }
             if (!wavFile.exists() || wavFile.length() == 0L) {
@@ -50,7 +50,7 @@ object SoundCache {
 
         private fun createDerivativeAudio(derivative: Derivative, quick: Boolean): DerivativeAudio {
             val originalWav: File = wavFile
-            val tmpFile: File = File.createTempFile("lampshade-derivative-gen-", ".wav").apply {
+            val tmpFile: File = File.createTempFile("rhre-lampshade-derivative-gen-", ".wav").apply {
                 deleteOnExit()
             }
             SoundStretch.processStreams(RHRE3.SOUNDSTRETCH_FOLDER.file(), originalWav, tmpFile,

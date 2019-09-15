@@ -10,6 +10,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.soundsystem.LazySound
 import io.github.chrislo27.rhre3.track.Remix
+import java.io.File
 
 
 open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
@@ -22,6 +23,8 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
 
     val usesBaseBpm: Boolean
         get() = baseBpm > 0f
+    
+    val soundFile: File = soundHandle.file()
 
     val sound: LazySound by lazy {
         LazySound(soundHandle)
