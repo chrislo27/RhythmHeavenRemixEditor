@@ -1,16 +1,11 @@
 package io.github.chrislo27.rhre3.soundsystem
 
-import net.beadsproject.beads.ugens.GranularSamplePlayer
 import net.beadsproject.beads.ugens.SamplePlayer
 import net.beadsproject.beads.ugens.Static
 import java.util.concurrent.ConcurrentHashMap
 
 
 class BeadsSound(val audio: BeadsAudio) {
-
-    companion object {
-        var useGranular: Boolean = false
-    }
 
     private val players: MutableMap<Long, GainedSamplePlayer> = ConcurrentHashMap()
     @Volatile
@@ -21,9 +16,7 @@ class BeadsSound(val audio: BeadsAudio) {
 
     private fun obtainPlayer(): Pair<Long, GainedSamplePlayer> {
         val id = BeadsSoundSystem.obtainSoundID()
-        val samplePlayer = if (useGranular)
-            GranularSamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
-        else SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
+        val samplePlayer = SamplePlayer(BeadsSoundSystem.audioContext, audio.sample)
         val result = id to GainedSamplePlayer(samplePlayer) { players.remove(id) }.also { gsp ->
             samplePlayer.apply {
                 killOnEnd = true

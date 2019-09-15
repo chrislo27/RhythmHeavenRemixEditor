@@ -7,7 +7,6 @@ import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
-import io.github.chrislo27.rhre3.soundsystem.BeadsSound
 import io.github.chrislo27.rhre3.soundsystem.LoopParams
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
@@ -103,10 +102,11 @@ class CueEntity(remix: Remix, datamodel: Cue)
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
         val rate = cue.getBaseBpmRate()
-        val apparentRate = if (BeadsSound.useGranular) rate else (pitch * rate)
-        soundId = cue.sound.audio.beadsSound.playWithLoop(pitch = pitch,
-                                                    rate = rate, volume = volume, position = (position.toDouble()) * apparentRate,
-                                                    loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS)
+        val apparentRate = (pitch * rate)
+        val loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS
+        soundId = cue.sound.audio.beadsSound.playWithLoop(pitch = pitch, rate = rate, volume = volume,
+                                                          position = (position.toDouble()) * apparentRate,
+                                                          loopParams = loopParams)
 
         val introSoundCue = cue.introSoundCue
         if (introSoundCue != null) {
@@ -138,8 +138,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override fun whilePlaying() {
         if (soundId != -1L) {
             when {
-                cue.usesBaseBpm ->
+                cue.usesBaseBpm -> {
                     cue.sound.audio.beadsSound.setRate(soundId, cue.getBaseBpmRate())
+                }
                 isFillbotsFill -> {
                     val sound = cue.sound.audio.beadsSound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
