@@ -104,13 +104,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
         val rate = cue.getBaseBpmRate()
         val apparentRate = if (BeadsSound.useGranular) rate else (pitch * rate)
-        soundId = cue.sound.beadsSound.playWithLoop(pitch = pitch,
+        soundId = cue.sound.audio.beadsSound.playWithLoop(pitch = pitch,
                                                     rate = rate, volume = volume, position = (position.toDouble()) * apparentRate,
                                                     loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS)
 
         val introSoundCue = cue.introSoundCue
         if (introSoundCue != null) {
-            introSoundId = introSoundCue.sound.beadsSound.play(loop = false, pitch = pitch,
+            introSoundId = introSoundCue.sound.audio.beadsSound.play(loop = false, pitch = pitch,
                                                                rate = introSoundCue.getBaseBpmRate(), volume = volume,
                                                                position = (introSoundPos.toDouble()) * apparentRate)
         }
@@ -139,9 +139,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
         if (soundId != -1L) {
             when {
                 cue.usesBaseBpm ->
-                    cue.sound.beadsSound.setRate(soundId, cue.getBaseBpmRate())
+                    cue.sound.audio.beadsSound.setRate(soundId, cue.getBaseBpmRate())
                 isFillbotsFill -> {
-                    val sound = cue.sound.beadsSound
+                    val sound = cue.sound.audio.beadsSound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
 
                     sound.setPitch(soundId, pitch)
@@ -151,7 +151,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         val endingSoundCue = cue.endingSoundCue
         if (endingSoundCue != null && endingSoundId == -1L) {
             if (remix.seconds >= remix.tempos.beatsToSeconds(bounds.maxX) - endingSoundCue.earliness) {
-                endingSoundId = endingSoundCue.sound.beadsSound.play(loop = false, volume = volume,
+                endingSoundId = endingSoundCue.sound.audio.beadsSound.play(loop = false, volume = volume,
                                                                      rate = endingSoundCue.getBaseBpmRate(),
                                                                      pitch = getSemitonePitch(), position = 0.0).coerceAtLeast(0L)
             }
@@ -160,9 +160,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     override fun onEnd() {
         if (cue.loops || cue.usesBaseBpm || isFillbotsFill || stopAtEnd) {
-            cue.sound.beadsSound.stop(soundId)
+            cue.sound.audio.beadsSound.stop(soundId)
             if (introSoundId != -1L) {
-                cue.introSoundCue?.sound?.beadsSound?.stop(introSoundId)
+                cue.introSoundCue?.sound?.audio?.beadsSound?.stop(introSoundId)
             }
         }
     }

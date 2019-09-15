@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
+import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -55,6 +56,7 @@ class NewRemixScreen(main: RHRE3Application)
                                 it.unloadSounds()
                             }
                         }
+                        SoundCache.clean(emptyList())
                         val oldRemix = editor.remix
                         val newRemix = editor.createRemix()
                         editor.remix = newRemix

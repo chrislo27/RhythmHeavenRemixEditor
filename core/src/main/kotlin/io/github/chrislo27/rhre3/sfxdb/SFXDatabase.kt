@@ -285,13 +285,13 @@ object SFXDatabase : Disposable {
                     objectList.filterIsInstance<Cue>().map {
                         launch {
                             try {
-                                it.sound.load()
+                                it.loadSounds()
                             } catch (e: Exception) {
                                 Toolboks.LOGGER.warn("Failed to load ${it.id} in game ${it.game.id}")
                                 e.printStackTrace()
                             }
                             try {
-                                it.sound.unload()
+                                it.unloadSounds()
                             } catch (e: Exception) {
                                 e.printStackTrace()
                             }

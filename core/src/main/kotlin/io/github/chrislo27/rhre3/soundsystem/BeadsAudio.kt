@@ -8,5 +8,7 @@ open class BeadsAudio(channels: Int, sampleRate: Int) {
     val sample: Sample = Sample(0.0, channels, sampleRate.toFloat()).apply {
         clear()
     }
+    
+    val beadsSound: BeadsSound by lazy { BeadsSoundSystem.newSound(this) }
 
 }

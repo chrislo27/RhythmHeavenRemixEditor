@@ -332,13 +332,17 @@ class ExportRemixScreen(main: RHRE3Application)
             BeadsSoundSystem.isRealtime = true
             BeadsSoundSystem.resume()
 
-            if (success) {
+            val sound = if (success) {
                 (SFXDatabase.data.objectMap["mrUpbeatWii/applause"] as? Cue)?.takeIf { playSuccessDing }
             } else {
                 (SFXDatabase.data.objectMap["mountainManeuver/toot"] as? Cue)
-            }?.sound?.beadsSound?.play(loop = false, pitch = 1f, rate = 1f, volume = 1f, position = 0.0)
-                    ?: (if (!playSuccessDing && success) Unit else Toolboks.LOGGER.warn("Export SFX (success=$success) not found"))
-
+            }?.sound?.audio
+            if (sound != null) {
+                BeadsSoundSystem.newSound(sound).play(loop = false, pitch = 1f, rate = 1f, volume = 1f, position = 0.0)
+            } else {
+                Toolboks.LOGGER.warn("Export SFX (success=$success) not found")
+            }
+            
             if (playSuccessDing) {
                 folderFile = file
                 folderButton.visible = true
