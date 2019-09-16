@@ -103,6 +103,8 @@ class CueObject : NamedIDObject() {
     var baseBpm: Float = 0f
     @JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = UseTimeStretchingValueFilter::class)
     var useTimeStretching: Boolean = true
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var baseBpmOnlyWhenNotTimeStretching: Boolean = false
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loops: Boolean = false

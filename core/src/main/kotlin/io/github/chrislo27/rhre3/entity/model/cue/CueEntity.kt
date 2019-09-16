@@ -110,7 +110,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
-        get() = if (usesAudioDerivatives) {
+        get() = if (usesAudioDerivatives && !cue.baseBpmOnlyWhenNotTimeStretching) {
             val deriv = createDerivative()
             lastCachedDerivative = deriv
             cue.sound.derivativeOf(deriv, quick = !remix.main.useHighQualityTimeStretching && !remix.isExporting).beadsSound
@@ -164,7 +164,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
             when {
                 cue.usesBaseBpm -> {
                     beadsSound.setRate(soundId, if (usesAudioDerivatives) {
-                        (remix.tempos.tempoAt(remix.beat) / remix.tempos.tempoAt(this.bounds.x))
+                        if (cue.baseBpmOnlyWhenNotTimeStretching) 1f
+                        else (remix.tempos.tempoAt(remix.beat) / remix.tempos.tempoAt(this.bounds.x))
                     } else cue.getBaseBpmRate(remix.beat))
                 }
                 isFillbotsFill -> {
@@ -186,7 +187,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun onEnd() {
-        if (cue.loops || cue.usesBaseBpm || isFillbotsFill || stopAtEnd) {
+        if (cue.loops || (cue.usesBaseBpm && (usesAudioDerivatives && !cue.baseBpmOnlyWhenNotTimeStretching)) || isFillbotsFill || stopAtEnd) {
             beadsSound.stop(soundId)
             if (introSoundId != -1L) {
                 cue.introSoundCue?.sound?.audio?.beadsSound?.stop(introSoundId)

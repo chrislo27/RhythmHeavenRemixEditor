@@ -235,6 +235,7 @@ metadata such as the duration and its editable abilities.
 | loops | boolean? | If true, this cue loops its sound. Defaults to false. |
 | baseBpm | number?| If present, this cue will get adjusted automatically based on the tempo. See below for more info. Must be greater than zero if present.|
 | useTimeStretching | boolean? | If true, this cue will use time stretching when used in conjunction with `baseBpm`. Defaults to true. If false, only the rate will change (which will naturally affect the pitch). |
+| baseBpmOnlyWhenNotTimeStretching | boolean? | If true, the sound will be pitched up/down according to its `baseBpm` *only when* time stretching is not available/disabled. Defaults to false. |
 | introSound | id?| If present, will play this other sound at the start of the cue. See below for more info. |
 | endingSound | id?| If present, will play this other sound at the end of the cue. See below for more info. |
 | responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |

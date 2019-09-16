@@ -23,7 +23,8 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                 obj.responseIDs.starSubstitution(),
-                obj.baseBpm, obj.useTimeStretching, obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
+                obj.baseBpm, obj.useTimeStretching, obj.baseBpmOnlyWhenNotTimeStretching,
+                obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
         is EquidistantObject ->
             Equidistant(game, objID, obj.deprecatedIDs,
                         obj.name, obj.distance,
@@ -83,6 +84,7 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
 
                     it.baseBpm = datamodel.baseBpm
                     it.useTimeStretching = datamodel.useTimeStretching
+                    it.baseBpmOnlyWhenNotTimeStretching = datamodel.baseBpmOnlyWhenNotTimeStretching
                     it.duration = datamodel.duration
                     it.fileExtension = datamodel.soundHandle.extension()
                     it.introSound = datamodel.introSound?.starSubstitute()
