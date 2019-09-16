@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.sfxdb.json
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.playalong.PlayalongMethod
+import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.Language
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
@@ -23,7 +24,8 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                 baseFileHandle.child("$objID.${obj.fileExtension}"),
                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                 obj.responseIDs.starSubstitution(),
-                obj.baseBpm, obj.useTimeStretching, obj.baseBpmOnlyWhenNotTimeStretching,
+                obj.baseBpm, obj.useTimeStretching,
+                BaseBpmRules.MAP.getOrDefault(obj.baseBpmRules ?: BaseBpmRules.ALWAYS.id, BaseBpmRules.ALWAYS),
                 obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
         is EquidistantObject ->
             Equidistant(game, objID, obj.deprecatedIDs,
@@ -84,7 +86,7 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
 
                     it.baseBpm = datamodel.baseBpm
                     it.useTimeStretching = datamodel.useTimeStretching
-                    it.baseBpmOnlyWhenNotTimeStretching = datamodel.baseBpmOnlyWhenNotTimeStretching
+                    it.baseBpmRules = datamodel.baseBpmRules.id
                     it.duration = datamodel.duration
                     it.fileExtension = datamodel.soundHandle.extension()
                     it.introSound = datamodel.introSound?.starSubstitute()

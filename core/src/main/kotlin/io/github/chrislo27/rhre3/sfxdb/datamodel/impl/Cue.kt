@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.sfxdb.datamodel.impl
 
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
+import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
@@ -19,7 +20,7 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
                val soundHandle: FileHandle,
                val introSound: String?, val endingSound: String?,
                override val responseIDs: List<String>,
-               val baseBpm: Float, val useTimeStretching: Boolean, val baseBpmOnlyWhenNotTimeStretching: Boolean,
+               val baseBpm: Float, val useTimeStretching: Boolean, val baseBpmRules: BaseBpmRules,
                val loops: Boolean, val earliness: Float,
                val loopStart: Float, val loopEnd: Float)
     : Datamodel(game, id, deprecatedIDs, name, duration), ResponseModel, PreviewableModel {

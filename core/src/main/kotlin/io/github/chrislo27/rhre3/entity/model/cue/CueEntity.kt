@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
 import io.github.chrislo27.rhre3.screen.EditorScreen
+import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.soundsystem.BeadsSound
@@ -110,7 +111,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
 
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
-        get() = if (usesAudioDerivatives && !cue.baseBpmOnlyWhenNotTimeStretching) {
+        get() = if (usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) {
             val deriv = createDerivative()
             lastCachedDerivative = deriv
             cue.sound.derivativeOf(deriv, quick = !remix.main.useHighQualityTimeStretching && !remix.isExporting).beadsSound
@@ -125,7 +126,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
         // Combination of the semitone pitch + the remix speed multiplier
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
-        val rate = if (usesAudioDerivatives) 1f else cue.getBaseBpmRate(remix.beat)
+        val rate = if (usesAudioDerivatives && !(cue.baseBpmRules == BaseBpmRules.NO_TIME_STRETCH && cue.usesBaseBpm)) {
+            1f
+        } else cue.getBaseBpmRate(remix.beat)
         val apparentRate = (pitch * rate)
         val loopParams = if (cue.loops) LoopParams(SamplePlayer.LoopType.LOOP_FORWARDS, cue.loopStart.toDouble(), cue.loopEnd.toDouble()) else LoopParams.NO_LOOP_FORWARDS
         soundId = beadsSound.playWithLoop(pitch = pitch, rate = rate, volume = volume,
@@ -164,7 +167,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             when {
                 cue.usesBaseBpm -> {
                     beadsSound.setRate(soundId, if (usesAudioDerivatives) {
-                        if (cue.baseBpmOnlyWhenNotTimeStretching) 1f
+                        if (cue.baseBpmRules == BaseBpmRules.NO_TIME_STRETCH) 1f
                         else (remix.tempos.tempoAt(remix.beat) / remix.tempos.tempoAt(this.bounds.x))
                     } else cue.getBaseBpmRate(remix.beat))
                 }
@@ -187,7 +190,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
 
     override fun onEnd() {
-        if (cue.loops || (cue.usesBaseBpm && (usesAudioDerivatives && !cue.baseBpmOnlyWhenNotTimeStretching)) || isFillbotsFill || stopAtEnd) {
+        if (cue.loops || (cue.usesBaseBpm && ((usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) || (!usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.ONLY_TIME_STRETCH)))
+                || isFillbotsFill || stopAtEnd) {
             beadsSound.stop(soundId)
             if (introSoundId != -1L) {
                 cue.introSoundCue?.sound?.audio?.beadsSound?.stop(introSoundId)

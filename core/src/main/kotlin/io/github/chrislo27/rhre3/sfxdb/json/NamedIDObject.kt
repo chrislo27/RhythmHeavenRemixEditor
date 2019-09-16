@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonTypeName
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
+import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes(
@@ -103,8 +104,8 @@ class CueObject : NamedIDObject() {
     var baseBpm: Float = 0f
     @JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = UseTimeStretchingValueFilter::class)
     var useTimeStretching: Boolean = true
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    var baseBpmOnlyWhenNotTimeStretching: Boolean = false
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    var baseBpmRules: String? = null
 
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loops: Boolean = false
@@ -131,6 +132,16 @@ class CueObject : NamedIDObject() {
         override fun equals(other: Any?): Boolean {
             if (other is String) {
                 return other.isEmpty() || other == "ogg"
+            }
+            return super.equals(other)
+        }
+    }
+    
+    @Suppress("EqualsOrHashCode")
+    class BaseBpmRulesValueFilter {
+        override fun equals(other: Any?): Boolean {
+            if (other is String) {
+                return other.isEmpty() || other == BaseBpmRules.ALWAYS.id
             }
             return super.equals(other)
         }

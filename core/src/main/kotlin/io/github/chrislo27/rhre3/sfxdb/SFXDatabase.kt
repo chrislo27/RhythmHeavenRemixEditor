@@ -401,7 +401,7 @@ object SFXDatabase : Disposable {
                 gameObject.objects.mapTo(game.objects as MutableList) { obj ->
                     val objID = obj.id.replace("*", gameID)
                     if (!objID.matches(ID_REGEX))
-                        error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _, or spaces")
+                        error("Model ID ($objID) doesn't match allowed characters: must only contain alphanumerics, -, /, _")
 
                     obj.mapToDatamodel(baseFileHandle, game, objID)
                 }
@@ -434,7 +434,7 @@ object SFXDatabase : Disposable {
                     game.objects += Cue(game, "${game.id}/$name", listOf(), name, CustomSoundNotice.DURATION,
                                         true, repitchable = true, soundHandle = fh, introSound = null, endingSound = null,
                                         responseIDs = listOf(), baseBpm = 0f, useTimeStretching = true,
-                                        baseBpmOnlyWhenNotTimeStretching = false, loops = loops,
+                                        baseBpmRules = BaseBpmRules.ALWAYS, loops = loops,
                                         earliness = 0f, loopStart = 0f, loopEnd = 0f)
                 }
 

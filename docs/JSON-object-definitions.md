@@ -95,6 +95,7 @@ All `data.json` files for each game are a `GameObject`.
 | id | id | Game type ID |
 | name | string | Name of game (see below for specific info) |
 | objects | array of objects | Objects like cues, patterns, etc. |
+| series | string | Determines the sort category. See below for valid values. |
 | language | string? | Language type of the game. See above section "Language suffixes" for allowed values. Used to append language names in-editor. |
 | group | string? | Name of game without language/game info (see below) |
 | groupDefault | boolean? | Whether this game is the first to show in its group |
@@ -110,7 +111,7 @@ Example of series: `Space Dance (Megamix)` and `Space Dance (GBA)`.<br>
 Example of using official game titles: instead of `Cosmo Dance`, use `Cosmic Dance`<br>
 If the `language` field is set, the language name will automatically be appended to the game name.
 
-Series' names:
+__Series' names:__
 
 | Game | Suffix |
 |---|---|
@@ -235,7 +236,7 @@ metadata such as the duration and its editable abilities.
 | loops | boolean? | If true, this cue loops its sound. Defaults to false. |
 | baseBpm | number?| If present, this cue will get adjusted automatically based on the tempo. See below for more info. Must be greater than zero if present.|
 | useTimeStretching | boolean? | If true, this cue will use time stretching when used in conjunction with `baseBpm`. Defaults to true. If false, only the rate will change (which will naturally affect the pitch). |
-| baseBpmOnlyWhenNotTimeStretching | boolean? | If true, the sound will be pitched up/down according to its `baseBpm` *only when* time stretching is not available/disabled. Defaults to false. |
+| baseBpmRules | string? | The rules for when to apply `baseBpm`. See below for valid values. Defaults to "always". |
 | introSound | id?| If present, will play this other sound at the start of the cue. See below for more info. |
 | endingSound | id?| If present, will play this other sound at the end of the cue. See below for more info. |
 | responseIDs | (array of IDs)? | If present, these IDs will be used for response-copying. See below for more info. |
@@ -272,6 +273,14 @@ If `baseBpm` is used, the sound effect will be pitched
 accordingly during playback based on the current tempo relative to the value
 set in `baseBpm`. Example: When playing at 180 BPM and the base BPM is 120, the sound effect will be sped up by 1.5x.
 The `useTimeStretching` field (introduced in v3.19.0) attempts to keep the pitch constant while changing the sound's tempo.
+
+__`baseBpmRules` values:__
+
+| Value | Meaning |
+|---|---|
+| `always` | The `baseBpm` value will always be applied. |
+| `noTimeStretch` | The `baseBpm` value will only be applied if time stretching *is not* available. |
+| `onlyTimeStretch` | The `baseBpm` value will only be applied if time stretching *is* available. |
 
 ## `PatternObject` structure
 ```json
