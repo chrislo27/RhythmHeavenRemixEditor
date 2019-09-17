@@ -143,7 +143,7 @@ object SFXDatabase : Disposable {
         lateinit var endRemix: EndRemix
             private set
 
-        private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(true)
+        private val objectMapper: ObjectMapper = JsonHandler.createObjectMapper(false)
 
         private val folders: List<SFXDirectory> by lazy {
             val list = SFX_FOLDER.list { fh ->
