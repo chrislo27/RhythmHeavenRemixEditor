@@ -25,7 +25,7 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                 obj.introSound?.starSubstitution(), obj.endingSound?.starSubstitution(),
                 obj.responseIDs.starSubstitution(),
                 obj.baseBpm, obj.useTimeStretching,
-                BaseBpmRules.MAP.getOrDefault(obj.baseBpmRules ?: BaseBpmRules.ALWAYS.id, BaseBpmRules.ALWAYS),
+                BaseBpmRules.MAP[obj.baseBpmRules ?: BaseBpmRules.ALWAYS.id] ?: error("Unrecognized baseBpmRules value: ${obj.baseBpmRules}"),
                 obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
         is EquidistantObject ->
             Equidistant(game, objID, obj.deprecatedIDs,
