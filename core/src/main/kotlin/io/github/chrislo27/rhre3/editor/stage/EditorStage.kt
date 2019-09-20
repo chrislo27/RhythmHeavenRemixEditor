@@ -692,7 +692,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         tooltipTextIsLocalizationKey = false
-        tooltipElement = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a *= 1.5f }, fontScale = 0.75f),
+        tooltipElement = TextLabel(palette.copy(backColor = Color(palette.backColor).also { it.a = 0.85f }, fontScale = 0.75f),
                                    this, this).apply {
             this.background = true
             this.isLocalizationKey = false
