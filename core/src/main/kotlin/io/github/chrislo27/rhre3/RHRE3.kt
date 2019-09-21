@@ -35,7 +35,8 @@ object RHRE3 {
     const val DONATION_URL: String = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VA45DPLCC4958"
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
-    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEV")/* || VERSION.suffix.startsWith("RC")*/) {
+    val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEV") 
+            || (VERSION.suffix.startsWith("SNAPSHOT") || VERSION.suffix.startsWith("RC") /* For v3.19.0 only */)) {
         DEV_DATABASE_BRANCH
     } else {
         MASTER_DATABASE_BRANCH
