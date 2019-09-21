@@ -26,7 +26,7 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                 obj.responseIDs.starSubstitution(),
                 obj.baseBpm, obj.useTimeStretching,
                 BaseBpmRules.MAP[obj.baseBpmRules ?: BaseBpmRules.ALWAYS.id] ?: error("Unrecognized baseBpmRules value: ${obj.baseBpmRules}"),
-                obj.loops, obj.earliness, obj.loopStart, obj.loopEnd)
+                obj.loops, obj.earliness, obj.loopStart, obj.loopEnd, obj.pitchBending)
         is EquidistantObject ->
             Equidistant(game, objID, obj.deprecatedIDs,
                         obj.name, obj.distance,
@@ -57,6 +57,8 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
                            PlayalongInput[obj.input ?: ""] ?: PlayalongInput.BUTTON_A, PlayalongMethod[obj.method ?: ""] ?: PlayalongMethod.PRESS)
         is MusicDistortEntityObject ->
             MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
+        is PitchBenderEntityObject ->
+            PitchBenderModel(game, objID, obj.deprecatedIDs, obj.name)
     }
 }
 
@@ -98,6 +100,7 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.earliness = datamodel.earliness
                     it.loopStart = datamodel.loopStart
                     it.loopEnd = datamodel.loopEnd
+                    it.pitchBending = datamodel.pitchBending
                 }
             }
             is Equidistant -> {
@@ -195,6 +198,13 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
             }
             is MusicDistortModel -> {
                 MusicDistortEntityObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                }
+            }
+            is PitchBenderModel -> {
+                PitchBenderEntityObject().also {
                     it.id = datamodel.id
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name

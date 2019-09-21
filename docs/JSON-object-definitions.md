@@ -243,6 +243,7 @@ metadata such as the duration and its editable abilities.
 | earliness | number? | If present, indicates the number of seconds **early** to play this cue. Useful for voiced cues where certain syllables start earlier. Negative values should not be used. Defaults to 0.0. |
 | loopStart | number? | If present, indicates the loop start point in seconds. Only works if `loops` is true. Must be less than `loopEnd`. |
 | loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than or equal to zero, defaults to the end of the sample. Defaults to 0.0. |
+| pitchBending | boolean? | If present, this cue is affected by the pitch bending entity. Has no effect if this cue uses `baseBpm`. Defaults to false. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,
@@ -537,6 +538,17 @@ This object type is used for the DJ School Music Distortion entity.
 | Field | Type | Description |
 |---|---|---|
 | type | string | Always "musicDistortEntity" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+
+### `PitchBenderObject`
+
+This object type is used to affect cues that have pitch bending enabled.
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "pitchBenderEntity" |
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |

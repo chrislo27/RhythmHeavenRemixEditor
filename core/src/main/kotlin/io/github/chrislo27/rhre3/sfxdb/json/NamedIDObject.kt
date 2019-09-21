@@ -20,7 +20,8 @@ import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
         JsonSubTypes.Type(TextureEntityObject::class),
         JsonSubTypes.Type(TapeMeasureObject::class),
         JsonSubTypes.Type(PlayalongEntityObject::class),
-        JsonSubTypes.Type(MusicDistortEntityObject::class)
+        JsonSubTypes.Type(MusicDistortEntityObject::class),
+        JsonSubTypes.Type(PitchBenderEntityObject::class)
              )
 sealed class NamedIDObject {
 
@@ -116,6 +117,9 @@ class CueObject : NamedIDObject() {
     var loopStart: Float = 0f
     @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     var loopEnd: Float = -1f
+    
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var pitchBending: Boolean = false
     
     @Suppress("EqualsOrHashCode")
     class UseTimeStretchingValueFilter {
@@ -215,3 +219,6 @@ class PlayalongEntityObject : NamedIDObject() {
 
 @JsonTypeName("musicDistortEntity")
 class MusicDistortEntityObject : NamedIDObject()
+
+@JsonTypeName("pitchBenderEntity")
+class PitchBenderEntityObject : NamedIDObject()

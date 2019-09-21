@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
+import io.github.chrislo27.rhre3.entity.model.special.PitchBenderEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
@@ -82,8 +83,8 @@ class CueEntity(remix: Remix, datamodel: Cue)
         return theme.entities.cue
     }
 
-    private fun getSemitonePitch(): Float {
-        return Semitones.getALPitch(semitone)
+    private fun getSemitonePitch(offset: Int = 0): Float {
+        return Semitones.getALPitch(semitone + offset)
     }
 
     /**
@@ -176,6 +177,16 @@ class CueEntity(remix: Remix, datamodel: Cue)
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
 
                     sound.setPitch(soundId, pitch)
+                }
+                cue.pitchBending -> {
+                    val firstPitchBender: PitchBenderEntity? = remix.entities.find { it is PitchBenderEntity && remix.beat in it.bounds.x..it.bounds.maxX } as PitchBenderEntity?
+                    val sound = beadsSound
+                    if (firstPitchBender != null) {
+                        // See #play
+                        sound.setPitch(soundId, getSemitonePitch(firstPitchBender.semitone) * getPitchMultiplierFromRemixSpeed())
+                    } else {
+                        sound.setPitch(soundId, getSemitonePitch() * getPitchMultiplierFromRemixSpeed())
+                    }
                 }
             }
         }
