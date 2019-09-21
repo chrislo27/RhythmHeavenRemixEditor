@@ -54,8 +54,8 @@ repositories {
 
 shadowJar {
     baseName = "RHRE"
-    classifier = null
-    version = null
+    classifier = "distribution"
+    version = this.version
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
