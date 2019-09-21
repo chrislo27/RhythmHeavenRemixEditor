@@ -56,6 +56,23 @@ shadowJar {
     classifier = null
     version = null
 }
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives shadowJar
+    archives sourcesJar
+    archives javadocJar
+}
+
 jar {
     manifest {
         attributes "Main-Class": "io.github.chrislo27.rhre3.desktop.DesktopLauncher"
