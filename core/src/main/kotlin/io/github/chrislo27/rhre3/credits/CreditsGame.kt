@@ -213,7 +213,6 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         super.render(delta)
 
         val batch = main.batch
-        val oldProjMatrix = batch.projectionMatrix
         batch.projectionMatrix = camera.combined
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
@@ -222,8 +221,10 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         val stageY: Float = -7f
 
         // Stage
-        batch.draw(gradientRegion, 0f, 0f, camera.viewportWidth, camera.viewportHeight)
-        batch.draw(checkeredRegion, camera.viewportWidth / 2 - checkeredRegion.regionWidth / 2, 0f)
+        batch.draw(gradientRegion, -camera.viewportWidth + stageX + 70f, 0f, camera.viewportWidth, camera.viewportHeight)
+        batch.draw(checkeredRegion, camera.viewportWidth / 2 - checkeredRegion.regionWidth / 2 + stageX - checkeredRegion.regionWidth + 0.5f + 70f, 0f)
+        batch.draw(gradientRegion, stageX + 70f, 0f, camera.viewportWidth, camera.viewportHeight)
+        batch.draw(checkeredRegion, camera.viewportWidth / 2 - checkeredRegion.regionWidth / 2 + stageX + 70f, 0f)
         batch.draw(stageRegion, camera.viewportWidth / 2 - stageRegion.regionWidth / 2 + stageX, -10f + stageY)
 
         fun freshInList(list: List<Int>, beatOffset: Float = 0f): Boolean = (lastBeat - beatOffset).toInt() < (beat - beatOffset).toInt() && ((beat - beatOffset).toInt()) in list
@@ -544,7 +545,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 
         if (beat < LAST_SHAKE && beat >= saxophoneBeats.first().first && (vocalistFaceState.danceState == D_SING_0 || vocalistFaceState.danceState == D_SING_1)) {
             var index: Int = -1
-            for (i in 0 until saxophoneBeats.size) {
+            for (i in saxophoneBeats.indices) {
                 val range = saxophoneBeats[i]
                 val next = saxophoneBeats.getOrNull(i + 1)?.first ?: LAST_SHAKE
                 if (beat.roundToInt() in range) {
@@ -587,7 +588,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 
         var goodSum = 0f
         var badSum = 0f
-        for (i in 0 until saxophonePlayed.size) {
+        for (i in saxophonePlayed.indices) {
             val range = saxophoneBeats[i / 2]
             if (i % 2 == 0) {
                 goodSum += (saxophonePlayed[i] / (range.last - range.first).coerceAtLeast(1)).coerceAtMost(1f)
