@@ -432,6 +432,50 @@ The `CuePointerObject` is unchanged, but the `beat` field is not used.
 
 ## Other object types
 Some object types are used internally and should not be edited or created.
+They are generally not editable using RSDE (RHRE SFX Database Editor) but can
+be loaded by it.
+
+### `PitchDependentObject` structure
+
+```json
+{
+  "type": "pitchDependent",
+  "id": "*_lowerCamelCaseID",
+  "deprecatedIDs": [],
+  "name": "human-readable name",
+  "intervals": {
+    "..-13": "*/lowerRegister",
+    "-12..12": "*/middleRegister",
+    "13..": "*/higherRegister"
+  }
+}
+```
+
+This entity is used to select other `CueObjects` depending on the pitch of this entity.
+Useful for situations where one has multiple instrument samples for various pitch intervals.
+All samples should be pitched in unison (have the same base pitch).
+
+| Field | Type | Description |
+|---|---|---|
+| type | string | Always "pitchDependent" |
+| id | id | Pattern type ID |
+| deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
+| name | string | Human-readable name |
+| intervals | map<string, string> | A map of intervals to `CueObject` IDs. May be star-substituted. See section below for interval format. |
+
+#### Interval format
+Intervals are integers-only. Intervals may not mutually contain the same integer in their bounds.
+Intervals may be unbounded on only zero or one ends.
+
+__Syntax:__
+
+| Syntax | Meaning | Example(s) |
+|---|---|---|
+| `X..Y` | The all-inclusive interval from X to Y, where X is less than or equal to Y. | "0..5", "-1 .. 0" |
+| `X..X` | The single-element interval containing only X. | "5..5" |
+| `..Y` | The inclusive unbounded interval from negative infinity to Y. | "..-1" |
+| `X..` | The inclusive unbounded interval from X to positive infinity. | "0.." |
+
 
 ### `SubtitleEntityObject`
 
