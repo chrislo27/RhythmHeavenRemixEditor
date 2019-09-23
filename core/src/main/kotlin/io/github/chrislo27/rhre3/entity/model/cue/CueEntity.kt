@@ -14,6 +14,7 @@ import io.github.chrislo27.rhre3.soundsystem.Derivative
 import io.github.chrislo27.rhre3.soundsystem.LoopParams
 import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.theme.Theme
+import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.util.gdxutils.maxX
@@ -113,7 +114,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
         get() = if (usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) {
-            val deriv = createDerivative()
+            val deriv = if (remix.playState != PlayState.STOPPED) (lastCachedDerivative ?: createDerivative()) else createDerivative()
             lastCachedDerivative = deriv
             cue.sound.derivativeOf(deriv, quick = !remix.main.useHighQualityTimeStretching && !remix.isExporting).beadsSound
         } else {
