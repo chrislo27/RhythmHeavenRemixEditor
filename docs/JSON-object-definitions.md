@@ -465,7 +465,7 @@ All samples should be pitched in unison (have the same base pitch).
 
 #### Interval format
 Intervals are integers-only. Intervals may not mutually contain the same integer in their bounds.
-Intervals may be unbounded on only zero or one ends.
+Intervals may be unbounded on only zero or one ends. All space characters are ignored.
 
 __Syntax:__
 
