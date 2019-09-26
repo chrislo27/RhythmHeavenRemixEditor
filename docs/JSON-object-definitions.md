@@ -463,7 +463,7 @@ All samples should be pitched in unison (have the same base pitch).
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
-| intervals | map<string, string> | A map of intervals to `CueObject` IDs. May be star-substituted. See section below for interval format. |
+| intervals | map<string, string> | A map of intervals to `CueObject` IDs. May be star-substituted. See section below for interval format. If a semitone value does not fit in any interval, an arbitrary value is chosen, so it's up to you to ensure that all values are included in an interval. |
 
 #### Interval format
 Intervals are integers-only. Intervals may not mutually contain the same integer in their bounds.
