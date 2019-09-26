@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.sfxdb
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
@@ -18,6 +17,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.PitchDependent
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.EndRemix
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.PlayalongModel
 import io.github.chrislo27.rhre3.sfxdb.json.GameObject
@@ -31,6 +31,7 @@ import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.*
 import java.io.File
 import java.util.*
+import kotlin.system.exitProcess
 
 
 object SFXDatabase : Disposable {
@@ -264,6 +265,15 @@ object SFXDatabase : Disposable {
                     }
                 }
             }
+            objectList.filterIsInstance<PitchDependent>().filter { pd ->
+                pd.intervals.any { it.key.isInvalid } || pd.intervals.keys.any { i -> (pd.intervals.keys - setOf(i)).any { i.intersects(it) } }
+            }.forEach { pd ->
+                if (pd.intervals.any { it.key.isInvalid }) {
+                    errors += "Invalid intervals listed in ${pd.id}; check for unbounded ranges or bad values"
+                } else {
+                    errors += "Intersecting intervals listed in ${pd.id}; check that no values can be selected more than one interval at once"
+                }
+            }
             gameList.forEach {
                 if (!it.isCustom && it.id.startsWith(CUSTOM_PREFIX)) {
                     errors += "Game ${it.id} starts with custom prefix $CUSTOM_PREFIX"
@@ -358,7 +368,7 @@ object SFXDatabase : Disposable {
                     if (failures > 0) {
                         delay(250L)
                         IllegalStateException("SFX database failed to validate successfully").printStackTrace()
-                        Gdx.app.exit()
+                        exitProcess(1)
                     }
                 }
             }

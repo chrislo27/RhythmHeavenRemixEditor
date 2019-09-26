@@ -14,6 +14,9 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.*
 fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: String): Datamodel {
     fun String.starSubstitution(): String = replace("*", game.id)
     fun List<String>.starSubstitution(): List<String> = map(String::starSubstitution)
+    fun Map<String, String>.toIntervalFormat(): Map<PitchRange, String> = this.entries.associate { (k, v) ->
+        PitchRange.parseFromString(k) to v.starSubstitution()
+    }
     
     return when (val obj = this) {
         // Note: if this is updated, remember to update the Game.toJsonObject func below
@@ -59,6 +62,9 @@ fun NamedIDObject.mapToDatamodel(baseFileHandle: FileHandle, game: Game, objID: 
             MusicDistortModel(game, objID, obj.deprecatedIDs, obj.name)
         is PitchBenderEntityObject ->
             PitchBenderModel(game, objID, obj.deprecatedIDs, obj.name)
+        is PitchDependentObject ->
+            PitchDependent(game, objID, obj.deprecatedIDs, obj.name, obj.intervals.toIntervalFormat(),
+                           obj.responseIDs.starSubstitution())
     }
 }
 
@@ -208,6 +214,15 @@ fun Game.toJsonObject(starSubstitution: Boolean): GameObject {
                     it.id = datamodel.id
                     it.deprecatedIDs = datamodel.deprecatedIDs
                     it.name = datamodel.name
+                }
+            }
+            is PitchDependent -> {
+                PitchDependentObject().also {
+                    it.id = datamodel.id
+                    it.deprecatedIDs = datamodel.deprecatedIDs
+                    it.name = datamodel.name
+                    it.intervals = datamodel.intervals.entries.sortedBy { it.key }.associate { (k, v) -> k.toString() to v.id.starSubstitute() }.toMutableMap()
+                    it.responseIDs = datamodel.responseIDs.map(String::starSubstitute)
                 }
             }
             else -> error("Datamodel not defined for JSON mapping: ${datamodel::class.java.canonicalName}")

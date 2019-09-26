@@ -21,7 +21,8 @@ import io.github.chrislo27.rhre3.sfxdb.BaseBpmRules
         JsonSubTypes.Type(TapeMeasureObject::class),
         JsonSubTypes.Type(PlayalongEntityObject::class),
         JsonSubTypes.Type(MusicDistortEntityObject::class),
-        JsonSubTypes.Type(PitchBenderEntityObject::class)
+        JsonSubTypes.Type(PitchBenderEntityObject::class),
+        JsonSubTypes.Type(PitchDependentObject::class)
              )
 sealed class NamedIDObject {
 
@@ -222,3 +223,10 @@ class MusicDistortEntityObject : NamedIDObject()
 
 @JsonTypeName("pitchBenderEntity")
 class PitchBenderEntityObject : NamedIDObject()
+
+@JsonTypeName("pitchDependent")
+class PitchDependentObject : NamedIDObject() {
+    var intervals: MutableMap<String, String> = mutableMapOf()
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
+    var responseIDs: List<String> = listOf()
+}

@@ -447,7 +447,9 @@ be loaded by it.
     "..-13": "*/lowerRegister",
     "-12..12": "*/middleRegister",
     "13..": "*/higherRegister"
-  }
+  },
+  // optional fields after this comment
+  "responseIDs": []
 }
 ```
 
@@ -471,7 +473,7 @@ __Syntax:__
 
 | Syntax | Meaning | Example(s) |
 |---|---|---|
-| `X..Y` | The all-inclusive interval from X to Y, where X is less than or equal to Y. | "0..5", "-1 .. 0" |
+| `X..Y` | The all-inclusive interval from X to Y, where X is less than or equal to Y. | "0..5", "-1 .. 0", "-9..+9" |
 | `X..X` | The single-element interval containing only X. | "5..5" |
 | `..Y` | The inclusive unbounded interval from negative infinity to Y. | "..-1" |
 | `X..` | The inclusive unbounded interval from X to positive infinity. | "0.." |

@@ -9,92 +9,94 @@ import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
-import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.RandomCue
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.PitchDependent
+import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.PitchRange
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.Remix
-import io.github.chrislo27.toolboks.util.gdxutils.random
 
 
-class RandomCueEntity(remix: Remix, datamodel: RandomCue)
-    : MultipartEntity<RandomCue>(remix, datamodel) {
-
+class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
+    : MultipartEntity<PitchDependent>(remix, datamodel) {
+    
     init {
         bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
-                "RandomCue datamodel ${datamodel.id} has no internal cues")
+                "PitchDependent datamodel ${datamodel.id} has no internal cues")
     }
-
-    private fun getPossibleObjects(): List<Pair<Datamodel, CuePointer>> {
-        return datamodel.cues.mapNotNull { pointer ->
-            SFXDatabase.data.objectMap[pointer.id]?.let { it to pointer }
+    
+    private fun getPossibleObjects(): List<Triple<PitchRange, Datamodel, CuePointer>> {
+        return datamodel.intervals.mapNotNull { (interval, pointer) ->
+            SFXDatabase.data.objectMap[pointer.id]?.let { Triple(interval, it, pointer) }
         }
     }
-
-    private fun reroll() {
+    
+    private fun pickSound() {
         val thisSemitone = semitone
         val thisVolume = volumePercent
-
+        
         // Set semitone and volume to zero, repopulate, and reset it so the setters in MultipartEntity take effect
         semitone = 0
         volumePercent = IVolumetric.DEFAULT_VOLUME
-
+        
         internal.clear()
+        val possible = getPossibleObjects()
+        if (possible.isEmpty()) {
+            error("No valid entities found for pitch picking for PitchDependent ${datamodel.id}")
+        }
         internal +=
-                getPossibleObjects().takeIf {
-                    it.isNotEmpty()
-                }?.random()?.let { pair ->
-                    pair.first.createEntity(remix, pair.second).also { ent ->
+                (possible.firstOrNull { thisSemitone in it.first } ?: possible.first()).let { pair ->
+                    pair.second.createEntity(remix, pair.third).also { ent ->
                         ent.updateBounds {
-                            ent.bounds.x = this@RandomCueEntity.bounds.x
-                            ent.bounds.width = this@RandomCueEntity.bounds.width
-                            ent.bounds.y = this@RandomCueEntity.bounds.y
+                            ent.bounds.x = this.bounds.x
+                            ent.bounds.width = this.bounds.width
+                            ent.bounds.y = this.bounds.y
                         }
                     }
-                } ?: error("No valid entities found from randomization for RandomCue ${datamodel.id}")
-
+                }
+        
         // Re-set semitone and volume so it takes effect in the internals
         semitone = thisSemitone
         volumePercent = thisVolume
     }
-
+    
     override fun getRenderColor(editor: Editor, theme: Theme): Color {
         return theme.entities.pattern
     }
-
+    
     override fun loadSounds() {
         super.loadSounds()
         getPossibleObjects()
-                .map { it.first.createEntity(remix, null) }
+                .map { it.second.createEntity(remix, null) }
                 .forEach {
                     if (it is ILoadsSounds) {
                         it.loadSounds()
                     }
                 }
     }
-
+    
     override fun unloadSounds() {
         super.unloadSounds()
         getPossibleObjects()
-                .map { it.first.createEntity(remix, null) }
+                .map { it.second.createEntity(remix, null) }
                 .forEach {
                     if (it is ILoadsSounds) {
                         it.unloadSounds()
                     }
                 }
     }
-
+    
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)
         if (internal.isEmpty())
-            reroll()
+            pickSound()
     }
-
+    
     override fun onStart() {
-        reroll()
+        pickSound()
         super.onStart()
     }
-
-    override fun copy(remix: Remix): RandomCueEntity {
-        return RandomCueEntity(remix, datamodel).also {
+    
+    override fun copy(remix: Remix): PitchDependentEntity {
+        return PitchDependentEntity(remix, datamodel).also {
             it.updateBounds {
                 it.bounds.set(this.bounds)
             }
