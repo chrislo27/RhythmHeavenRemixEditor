@@ -265,7 +265,18 @@ object SFXDatabase : Disposable {
                     }
                 }
             }
-            objectList.filterIsInstance<PitchDependent>().filter { pd ->
+            val pitchDependents = objectList.filterIsInstance<PitchDependent>()
+            pitchDependents.forEach { pd ->
+                pd.intervals.entries.forEach { (range, ptr) ->
+                    val pointingTo = objectMap[ptr.id]
+                    if (pointingTo == null) {
+                        errors += "'$range' in ${pd.id} points to a non-existent object"
+                    } else if (pointingTo !is Cue) {
+                        errors += "'$range' in ${pd.id} does not point to a Cue, it points to a ${pointingTo::class.java.simpleName}"
+                    }
+                }
+            }
+            pitchDependents.filter { pd ->
                 pd.intervals.any { it.key.isInvalid } || pd.intervals.keys.any { i -> (pd.intervals.keys - setOf(i)).any { i.intersects(it) } }
             }.forEach { pd ->
                 if (pd.intervals.any { it.key.isInvalid }) {
