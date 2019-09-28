@@ -73,5 +73,9 @@ object Semitones {
     fun getALPitch(semitone: Int): Float {
         return cachedPitches.getOrPut(semitone) { 2.0.pow((semitone * SEMITONE_VALUE).toDouble()).toFloat() }
     }
+    
+    fun getALPitchF(semitone: Float): Float {
+        return 2.0.pow((semitone * SEMITONE_VALUE).toDouble()).toFloat()
+    }
 
 }

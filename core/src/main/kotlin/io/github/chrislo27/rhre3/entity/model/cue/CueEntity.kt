@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.entity.model.cue
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.MathUtils
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.model.*
@@ -24,10 +25,10 @@ import kotlin.math.min
 
 class CueEntity(remix: Remix, datamodel: Cue)
     : ModelEntity<Cue>(remix, datamodel), IRepitchable, IStretchable, ILoadsSounds, IVolumetric {
-    
+
     companion object {
         val FILLBOTS_ID_REGEX: Regex = "fillbots(.+)?/water".toRegex()
-        
+
         /**
          * https://www.desmos.com/calculator/kqyb422xh7
          */
@@ -35,7 +36,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             // small:  1.0f - 1.6f
             // medium: 0.6f - 1.2f
             // big:    0.5f - 1.1f
-            
+
             /*
             The function below was computed by graphing the three cases (1, 3, 7 beats duration)
             and the pitch as y. By plotting three points of which were the b value of each linear equation,
@@ -45,7 +46,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             two linear equations.
              */
             // f(x, z) = (0.6/z)x + (z <= 3 ? -0.2z + 1.2 : -0.025z + 0.675)
-            
+
             return (0.6f / duration) * beat +
                     if (duration <= 3)
                         (-0.2f * duration + 1.2f)
@@ -53,11 +54,25 @@ class CueEntity(remix: Remix, datamodel: Cue)
                         (-0.025f * duration + 0.675f)
         }
     }
-    
+
+    private inner class PitchBendingSemitone(var toSemitone: Int = 0, var secondsTriggeredAt: Float = 0f) {
+        val progressTime: Float = 0.05f
+        
+        var fromSemitone: Float = 0f
+        val progress: Float
+            get() = MathUtils.lerp(fromSemitone, toSemitone.toFloat(), ((remix.seconds - secondsTriggeredAt) / progressTime).coerceIn(0f, 1f))
+        
+        fun update(to: Int) {
+            fromSemitone = progress
+            toSemitone = to
+            secondsTriggeredAt = remix.seconds
+        }
+    }
+
     private val cue: Cue = datamodel
     val isFillbotsFill: Boolean = cue.id.matches(FILLBOTS_ID_REGEX)
     val isSkillStar: Boolean = cue.id == SFXDatabase.SKILL_STAR_ID
-    
+
     override var semitone: Int = 0
     override val canBeRepitched: Boolean = datamodel.repitchable
     override val isStretchable: Boolean = datamodel.stretchable
@@ -70,35 +85,35 @@ class CueEntity(remix: Remix, datamodel: Cue)
         set(value) {
             instrumentByte = value.toByte()
         }
-    
+
     private var soundId: Long = -1L
     private var introSoundId: Long = -1L
     private var endingSoundId: Long = -1L
-    
+
     init {
         this.bounds.width = cue.duration
         this.bounds.height = 1f
     }
-    
+
     override fun getRenderColor(editor: Editor, theme: Theme): Color {
         return theme.entities.cue
     }
-    
-    private fun getSemitonePitch(offset: Int = 0): Float {
-        return Semitones.getALPitch(semitone + offset)
+
+    private fun getSemitonePitch(): Float {
+        return Semitones.getALPitch(semitone)
     }
-    
+
     /**
      * Simply returns the current adjusted pitch, not accounting for [Cue.useTimeStretching]
      */
     private fun Cue.getBaseBpmRate(atBeat: Float): Float {
         return getAdjustedRateForBaseBpm(remix.tempos.tempoAt(atBeat))
     }
-    
+
     private fun getPitchMultiplierFromRemixSpeed(): Float {
         return if (this.canBeRepitched || this.semitone != 0 || cue.usesBaseBpm) remix.speedMultiplier else 1f
     }
-    
+
     override var volumePercent: Int = IVolumetric.DEFAULT_VOLUME
         set(value) {
             field = value.coerceIn(volumeRange)
@@ -107,10 +122,10 @@ class CueEntity(remix: Remix, datamodel: Cue)
     override val isMuted: Boolean
         get() = IVolumetric.isRemixMutedExternally(remix)
     override val isVolumetric: Boolean = true
-    
+
     private val usesAudioDerivatives: Boolean
         get() = SoundStretch.isSupported && cue.usesBaseBpm && cue.useTimeStretching && !remix.main.disableTimeStretching
-    
+
     private var lastCachedDerivative: Derivative? = null
     private val beadsSound: BeadsSound
         get() = if (usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) {
@@ -120,11 +135,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
         } else {
             cue.sound.audio.beadsSound
         }
-    
+
+    private val currentPitchBendingSemitone = PitchBendingSemitone()
+
     private fun createDerivative(): Derivative {
         return Derivative((cue.getBaseBpmRate(this.bounds.x) - 1f) * 100, semitone.toFloat(), 0f)
     }
-    
+
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
         // Combination of the semitone pitch + the remix speed multiplier
         val pitch = getSemitonePitch() * getPitchMultiplierFromRemixSpeed()
@@ -136,7 +153,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
         soundId = beadsSound.playWithLoop(pitch = pitch, rate = rate, volume = volume,
                                           position = (position.toDouble()) * apparentRate,
                                           loopParams = loopParams)
-        
+
         val introSoundCue = cue.introSoundCue
         if (introSoundCue != null) {
             introSoundId = introSoundCue.sound.audio.beadsSound.play(loop = false, pitch = pitch,
@@ -144,11 +161,11 @@ class CueEntity(remix: Remix, datamodel: Cue)
                                                                      position = (introSoundPos.toDouble()) * apparentRate)
         }
     }
-    
+
     override fun getLowerUpdateableBound(): Float {
         return min(bounds.x, remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - min(cue.earliness, cue.introSoundCue?.earliness ?: Float.POSITIVE_INFINITY)))
     }
-    
+
     override fun onStart() {
         if (isSkillStar && remix.doUpdatePlayalong && remix.main.screen is EditorScreen) {
             return // Do not play if in playalong mode
@@ -160,10 +177,12 @@ class CueEntity(remix: Remix, datamodel: Cue)
         val introPos = if (introSoundCue != null && remix.playbackStart > remix.tempos.secondsToBeats(remix.tempos.beatsToSeconds(bounds.x) - introSoundCue.earliness)) {
             remix.seconds - remix.tempos.beatsToSeconds(this.bounds.x) + introSoundCue.earliness
         } else 0f
+        if (cue.pitchBending) 
+            currentPitchBendingSemitone.update(0)
         play(startPos, introPos)
         endingSoundId = -1L
     }
-    
+
     override fun whilePlaying() {
         if (soundId != -1L) {
             when {
@@ -176,13 +195,20 @@ class CueEntity(remix: Remix, datamodel: Cue)
                 isFillbotsFill -> {
                     val sound = beadsSound
                     val pitch = getFillbotsPitch(remix.beat - bounds.x, bounds.width)
-                    
+
                     sound.setPitch(soundId, pitch)
                 }
                 cue.pitchBending -> {
                     val firstPitchBender: PitchBenderEntity? = remix.entities.find { it is PitchBenderEntity && remix.beat in it.bounds.x..it.bounds.maxX } as PitchBenderEntity?
                     val sound = beadsSound
-                    val pitch = getSemitonePitch(firstPitchBender?.semitone ?: 0) * getPitchMultiplierFromRemixSpeed()
+                    val targetPitchBendTone = firstPitchBender?.semitone ?: 0
+                    if (targetPitchBendTone != currentPitchBendingSemitone.toSemitone) {
+                        currentPitchBendingSemitone.update(targetPitchBendTone)
+                    }
+                    val currentPitchBendTone = currentPitchBendingSemitone.progress
+                    val pitch = (if (currentPitchBendTone == 0f)
+                        getSemitonePitch()
+                    else Semitones.getALPitchF(semitone + currentPitchBendTone)) * getPitchMultiplierFromRemixSpeed()
                     sound.setPitch(soundId, pitch)
                     val introSoundCue = cue.introSoundCue
                     if (introSoundCue != null && introSoundId != -1L) {
@@ -196,11 +222,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
             if (remix.seconds >= remix.tempos.beatsToSeconds(bounds.maxX) - endingSoundCue.earliness) {
                 endingSoundId = endingSoundCue.sound.audio.beadsSound.play(loop = false, volume = volume,
                                                                            rate = endingSoundCue.getBaseBpmRate(remix.beat),
-                                                                           pitch = getSemitonePitch(), position = 0.0).coerceAtLeast(0L)
+                                                                           pitch = (if (!cue.pitchBending)
+                                                                               getSemitonePitch()
+                                                                           else Semitones.getALPitchF(semitone + currentPitchBendingSemitone.progress)) * getPitchMultiplierFromRemixSpeed(), position = 0.0).coerceAtLeast(0L)
             }
         }
     }
-    
+
     override fun onEnd() {
         if (cue.loops || (cue.usesBaseBpm && ((usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) || (!usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.ONLY_TIME_STRETCH)))
                 || isFillbotsFill || stopAtEnd) {
@@ -210,7 +238,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             }
         }
     }
-    
+
     override fun copy(remix: Remix): CueEntity {
         return CueEntity(remix, datamodel).also {
             it.updateBounds {
@@ -221,7 +249,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             it.volumePercent = this.volumePercent
         }
     }
-    
+
     override fun saveData(objectNode: ObjectNode) {
         super.saveData(objectNode)
         if (stopAtEnd) {
@@ -231,13 +259,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
             objectNode.put("instrument", instrument)
         }
     }
-    
+
     override fun readData(objectNode: ObjectNode) {
         super.readData(objectNode)
         stopAtEnd = objectNode["stopAtEnd"]?.asBoolean(false) ?: false
         instrument = objectNode["instrument"]?.asInt(0) ?: 0
     }
-    
+
     override fun loadSounds() {
         datamodel.loadSounds()
         val lastCached = lastCachedDerivative
@@ -255,7 +283,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
             }
         }
     }
-    
+
     override fun unloadSounds() {
         val lastCached = lastCachedDerivative
         if (lastCached != null) {
