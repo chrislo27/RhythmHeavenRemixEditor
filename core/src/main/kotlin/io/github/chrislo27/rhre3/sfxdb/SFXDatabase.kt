@@ -456,7 +456,7 @@ object SFXDatabase : Disposable {
                                         true, repitchable = true, soundHandle = fh, introSound = null, endingSound = null,
                                         responseIDs = listOf(), baseBpm = 0f, useTimeStretching = true,
                                         baseBpmRules = BaseBpmRules.ALWAYS, loops = loops,
-                                        earliness = 0f, loopStart = 0f, loopEnd = 0f, pitchBending = false)
+                                        earliness = 0f, loopStart = 0f, loopEnd = 0f, pitchBending = false, writtenPitch = 0)
                 }
 
                 if (RHRE3.outputCustomSfx) {
