@@ -39,6 +39,7 @@ class PitchBenderEntity(remix: Remix, datamodel: PitchBenderModel)
             it.updateBounds {
                 it.bounds.set(this.bounds)
             }
+            it.semitone = this.semitone
         }
     }
 
