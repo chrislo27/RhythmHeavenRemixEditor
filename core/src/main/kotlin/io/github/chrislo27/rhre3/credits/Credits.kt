@@ -49,7 +49,8 @@ object Credits {
                         "java-discord-rpc\n" +
                         "bccad-editor\n" +
                         "JCommander\n" +
-                        "SoundStretch and SoundTouch",
+                        "SoundStretch and SoundTouch\n" +
+                        "box2d",
                 "donators" crediting "",
                 "you" crediting ""
                      )

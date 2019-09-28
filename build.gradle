@@ -43,9 +43,8 @@ project(":desktop") {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "commons-io:commons-io:2.6"
         implementation "com.github.oshi:oshi-core:3.4.4"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -63,6 +62,8 @@ project(":desktop") {
         implementation "club.minnced:java-discord-rpc:2.0.2"
         
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.beust:jcommander:1.71"
     }
 }
@@ -76,6 +77,7 @@ project(":core") {
         implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         implementation "commons-io:commons-io:2.6"
         implementation "com.github.oshi:oshi-core:3.4.4"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
