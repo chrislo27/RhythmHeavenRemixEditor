@@ -263,11 +263,11 @@ This view also works in presentation mode.
 
 ![Game boundaries](https://i.imgur.com/Ek397zm.png)
 
-## Waveform
+## Live Waveform
 This shows the live audio data as the remix plays.
 This view also works in presentation mode.
 
-![Waveform](readme/waveform.png)
+![Live waveform](readme/liveWaveform.png)
 
 ## Glee Club (midis only)
 This shows the tracks of a loaded midi file as Glee Club singers.
