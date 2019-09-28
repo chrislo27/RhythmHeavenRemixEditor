@@ -205,6 +205,7 @@ Example:<br>
   // optional fields after this comment
   "stretchable": false,
   "repitchable": false,
+  "writtenPitch": 0,
   "fileExtension": "ogg",
   "loops": false,
   "baseBpm": 120.0,
@@ -212,6 +213,7 @@ Example:<br>
   "earliness": 0.0,
   "loopStart": 0.1,
   "loopEnd": 1.0,
+  "pitchBending": false,
 
   "introSound": "other/ID",
   "endingSound": "other/ID2",
@@ -244,6 +246,7 @@ metadata such as the duration and its editable abilities.
 | loopStart | number? | If present, indicates the loop start point in seconds. Only works if `loops` is true. Must be less than `loopEnd`. |
 | loopEnd | number? | If present, indicates the loop end point in seconds. Only works if `loops` is true. Must be greater than `loopStart`. If less than or equal to zero, defaults to the end of the sample. Defaults to 0.0. |
 | pitchBending | boolean? | If present, this cue is affected by the pitch bending entity. Has no effect if this cue uses `baseBpm`. Defaults to false. |
+| writtenPitch | int? | If present and not zero, represents the written pitch of this cue. Ex: if 2, the zero-semitone pitch will be displayed as "[D]" instead of "C". Defaults to zero. |
 
 The `id` field is structured like this: `dataObjectID/lowerCamelCaseSoundFileName`.
 If the parent data object's ID is `spaceDance`, and this sound's name is `turnRight`,

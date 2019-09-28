@@ -102,6 +102,13 @@ class CueEntity(remix: Remix, datamodel: Cue)
     private fun getSemitonePitch(): Float {
         return Semitones.getALPitch(semitone)
     }
+    
+    override fun getTextForSemitone(semitone: Int): String {
+        if (cue.writtenPitch != 0) {
+            return "[${Semitones.getSemitoneName(semitone + cue.writtenPitch)}]"
+        }
+        return Semitones.getSemitoneName(semitone)
+    }
 
     /**
      * Simply returns the current adjusted pitch, not accounting for [Cue.useTimeStretching]
