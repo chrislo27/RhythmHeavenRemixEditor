@@ -27,9 +27,7 @@ import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.Subtitle
-import io.github.chrislo27.rhre3.soundsystem.AudioPointer
-import io.github.chrislo27.rhre3.soundsystem.BeadsMusic
-import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
+import io.github.chrislo27.rhre3.soundsystem.*
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignature
 import io.github.chrislo27.rhre3.track.timesignature.TimeSignatures
 import io.github.chrislo27.rhre3.track.tracker.TrackerContainer
@@ -644,9 +642,11 @@ open class Remix(val main: RHRE3Application)
     var playalong: Playalong by settableLazy { createPlayalongInstance() }
     open var doUpdatePlayalong: Boolean = false
 
-    private val metronomeSFX: AudioPointer by lazy {
-        (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue)?.sound ?: error("Missing metronome sound")
+    private val metronomeCue: Cue = (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue) ?: error("Missing metronome sound")
+    private val metronomeSFXLazy: Lazy<AudioPointer> = lazy {
+        SoundCache.load(SampleID(metronomeCue.soundFile, Derivative.NO_CHANGES))
     }
+    private val metronomeSFX: AudioPointer by metronomeSFXLazy
     var isMusicMuted: Boolean by Delegates.observable(false) { _, _, _ ->
         setMusicVolume()
     }
@@ -964,6 +964,9 @@ open class Remix(val main: RHRE3Application)
 
     override fun dispose() {
         music?.dispose()
+        if (metronomeSFXLazy.isInitialized()) {
+            SoundCache.unload(SampleID(metronomeCue.soundFile, Derivative.NO_CHANGES))
+        }
         textureCache.values.forEach(Texture::dispose)
         textureCache.clear()
     }
