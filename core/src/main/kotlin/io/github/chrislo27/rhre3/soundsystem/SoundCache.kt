@@ -17,6 +17,7 @@ object SoundCache {
     private val cache: ConcurrentMap<SampleID, AudioPtrData> = ConcurrentHashMap()
 
     fun isLoaded(id: SampleID): Boolean = cache.containsKey(id)
+    fun getNumReferences(id: SampleID): Int = cache[id]?.numReferences ?: 0
     
     /**
      * Loads the audio file and increments the internal reference counter.
