@@ -56,7 +56,7 @@ class NewRemixScreen(main: RHRE3Application)
                                 it.unloadSounds()
                             }
                         }
-                        SoundCache.clean(emptyList())
+                        SoundCache.unloadAll()
                         val oldRemix = editor.remix
                         val newRemix = editor.createRemix()
                         editor.remix = newRemix

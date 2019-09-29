@@ -4,83 +4,134 @@ import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.RHRE3
 import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentMap
 
 
+/**
+ * Singleton handler for sound data and reference counting.
+ */
 object SoundCache {
 
-    private val cache: MutableMap<File, AudioPointer> = ConcurrentHashMap()
+    private data class AudioPtrData(val pointer: AudioPointer, var numReferences: Int)
 
-    fun unload(f: File) {
-        cache.remove(f)
-    }
+    private val cache: ConcurrentMap<SampleID, AudioPtrData> = ConcurrentHashMap()
 
-    fun clean(keepThese: List<File> = listOf()) {
-        (cache.keys.toSet() - keepThese.toSet()).forEach { f ->
-            unload(f)
+    fun isLoaded(id: SampleID): Boolean = cache.containsKey(id)
+    
+    /**
+     * Loads the audio file and increments the internal reference counter.
+     */
+    fun load(id: SampleID): AudioPointer {
+        val ptrData = cache[id]
+        if (ptrData == null) {
+            // Create and load the audio pointer
+            if (id.derivative.isUnmodified()) {
+                val newData = AudioPtrData(AudioPointer.BaseAudioPointer(id, BeadsSoundSystem.newAudio(FileHandle(id.file))), 1)
+                cache[id] = newData
+                return newData.pointer
+            } else {
+                // Depends on parent unmodified derivative version of sample
+                // This derivative is a dependency on the parent (counts towards # of references)
+                val parent: AudioPointer.BaseAudioPointer = load(id.copy(derivative = Derivative.NO_CHANGES)) as AudioPointer.BaseAudioPointer
+                // Create the derivative
+                val derivative = id.derivative
+                val originalWav: File = parent.wavFile
+                val tmpFile: File = File.createTempFile("rhre-lampshade-derivative-gen-", ".wav").apply {
+                    deleteOnExit()
+                }
+                SoundStretch.processStreams(RHRE3.SOUNDSTRETCH_FOLDER.file(), originalWav, tmpFile,
+                                            derivative.tempoPercent, derivative.pitchSemitones, derivative.ratePercent, false)
+                val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile))
+                tmpFile.delete()
+                
+                val newData = AudioPtrData(AudioPointer.DerivAudioPointer(id, moddedAudio), 1)
+                cache[id] = newData
+                return newData.pointer
+            }
+        } else {
+            ptrData.numReferences++
+            return ptrData.pointer
         }
     }
 
-    fun getOrLoad(file: File): AudioPointer {
-        return cache.getOrPut(file) { AudioPointer(file, BeadsSoundSystem.newAudio(FileHandle(file))) }
+    /**
+     * Decrements the internal reference counter for this sample ID.
+     * If the ref. counter is <= zero then the entire sample is unloaded.
+     */
+    fun unload(id: SampleID) {
+        val ptrData = cache[id]
+        if (ptrData != null) {
+            ptrData.numReferences--
+            // Unload if no more references are held
+            if (ptrData.numReferences <= 0) {
+                cache.remove(id, ptrData)
+                // If this is a derivative, we have to also handle dereferencing the parent
+                if (!id.derivative.isUnmodified()) {
+                    unload(id.copy(derivative = Derivative.NO_CHANGES))
+                }
+            }
+        }
+    }
+
+    /**
+     * Unloads all samples.
+     */
+    fun unloadAll() {
+        cache.clear()
     }
 
 }
 
+/**
+ * A simple parameter class for SoundStretch.
+ */
 data class Derivative(val tempoPercent: Float, val pitchSemitones: Float, val ratePercent: Float = 0f) {
+
+    companion object {
+        val NO_CHANGES: Derivative = Derivative(0f, 0f, 0f).apply {
+            require(this.isUnmodified())
+        }
+    }
+
     fun isUnmodified(): Boolean = tempoPercent == 0f && pitchSemitones == 0f && ratePercent == 0f
 }
 
-data class DerivativeAudio(val audio: BeadsAudio, val quick: Boolean)
 
-data class AudioPointer(val originalFile: File, val audio: BeadsAudio) {
-    val wavFile: File by lazy {
-        val wavFile = File.createTempFile("rhre-lampshade-derivative-", ".wav").apply {
-            deleteOnExit()
-        }
-        if (!wavFile.exists() || wavFile.length() == 0L) {
-            // Save the wav version of the original to this file
-            wavFile.createNewFile()
-            audio.sample.write(wavFile.canonicalPath)
-        }
-        wavFile
-    }
-    private val derivativeAudioCache: MutableMap<Derivative, DerivativeAudio> = ConcurrentHashMap()
+/**
+ * Data class pointing to the sound file and what derivative params it has.
+ */
+data class SampleID(val file: File, val derivative: Derivative)
 
-    fun derivativeOf(derivative: Derivative, quick: Boolean): BeadsAudio {
-        if (derivative.isUnmodified()) {
-            return audio
+/**
+ * Contains sample data for a given audio file.
+ */
+sealed class AudioPointer(val sampleID: SampleID, val audio: BeadsAudio) {
+
+    /**
+     * No derivative change.
+     */
+    class BaseAudioPointer(sampleID: SampleID, audio: BeadsAudio)
+        : AudioPointer(sampleID, audio) {
+        val wavFile: File by lazy {
+            val wavFile = File.createTempFile("rhre-lampshade-derivative-", ".wav").apply {
+                deleteOnExit()
+            }
+            if (!wavFile.exists() || wavFile.length() == 0L) {
+                // Save the wav version of the original to this file
+                wavFile.createNewFile()
+                audio.sample.write(wavFile.canonicalPath)
+            }
+            wavFile
         }
-        val cachedDerivAudio = derivativeAudioCache.getOrPut(derivative) {
-            createDerivativeAudio(derivative, quick)
-        }
-        return (if (!quick && cachedDerivAudio.quick) {
-            // If non-quick audio is requested, then the derivative audio must be non-quick
-            // If quick audio is requested, non-quick audio is okay if it was already in the cache
-            // This prioritizes quality
-            val newDeriv: DerivativeAudio = createDerivativeAudio(derivative, false)
-            derivativeAudioCache[derivative] = newDeriv
-            newDeriv
-        } else cachedDerivAudio).audio
     }
 
-    fun derivativeOf(tempoPercent: Float, pitchSemitones: Float, ratePercent: Float = 0f, quick: Boolean = false): BeadsAudio {
-        return derivativeOf(Derivative(tempoPercent, pitchSemitones, ratePercent), quick)
+    /**
+     * Contains the derivative params for this sample.
+     */
+    class DerivAudioPointer(sampleID: SampleID, audio: BeadsAudio)
+        : AudioPointer(sampleID, audio) {
+        val derivative: Derivative
+            get() = sampleID.derivative
     }
     
-    fun unloadDerivative(derivative: Derivative) {
-        derivativeAudioCache.remove(derivative)
-    }
-
-    private fun createDerivativeAudio(derivative: Derivative, quick: Boolean): DerivativeAudio {
-        val originalWav: File = wavFile
-        val tmpFile: File = File.createTempFile("rhre-lampshade-derivative-gen-", ".wav").apply {
-            deleteOnExit()
-        }
-        SoundStretch.processStreams(RHRE3.SOUNDSTRETCH_FOLDER.file(), originalWav, tmpFile,
-                                    derivative.tempoPercent, derivative.pitchSemitones, derivative.ratePercent, quick)
-        val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile)).apply {
-            tmpFile.delete()
-        }
-        return DerivativeAudio(moddedAudio, quick)
-    }
 }
