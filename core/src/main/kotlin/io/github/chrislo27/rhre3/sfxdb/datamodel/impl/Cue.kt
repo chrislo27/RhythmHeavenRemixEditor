@@ -9,8 +9,6 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
-import io.github.chrislo27.rhre3.soundsystem.AudioPointer
-import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.track.Remix
 import java.io.File
 
@@ -31,8 +29,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     
     val soundFile: File = soundHandle.file()
 
-    val sound: AudioPointer get() = SoundCache.getOrLoad(soundFile)
-
     val introSoundCue: Cue?
         get() =
             SFXDatabase.data.objectMap[introSound] as Cue?
@@ -47,18 +43,6 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
         if (!soundHandle.exists()) {
             error("Sound handle for $id doesn't exist")
         }
-    }
-
-    fun loadSounds() {
-        sound
-        introSoundCue?.loadSounds()
-        endingSoundCue?.loadSounds()
-    }
-
-    fun unloadSounds() {
-        SoundCache.unload(soundFile)
-        introSoundCue?.unloadSounds()
-        endingSoundCue?.unloadSounds()
     }
 
     fun getAdjustedRateForBaseBpm(bpm: Float): Float {
@@ -79,6 +63,5 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
     }
 
     override fun dispose() {
-        unloadSounds()
     }
 }
