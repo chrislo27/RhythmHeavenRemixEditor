@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
@@ -65,24 +65,22 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
     override fun getRenderColor(editor: Editor, theme: Theme): Color {
         return theme.entities.pattern
     }
-
-    override fun loadSounds() {
-        super.loadSounds()
+    
+    override fun onPreloadSounds() {
         getPossibleObjects()
                 .map { it.second.createEntity(remix, null) }
                 .forEach {
-                    if (it is ILoadsSounds) {
-                        it.loadSounds()
+                    if (it is ISoundDependent) {
+                        it.preloadSounds()
                     }
                 }
     }
-
-    override fun unloadSounds() {
-        super.unloadSounds()
+    
+    override fun onUnloadSounds() {
         getPossibleObjects()
                 .map { it.second.createEntity(remix, null) }
                 .forEach {
-                    if (it is ILoadsSounds) {
+                    if (it is ISoundDependent) {
                         it.unloadSounds()
                     }
                 }

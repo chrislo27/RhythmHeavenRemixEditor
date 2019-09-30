@@ -23,6 +23,7 @@ import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
+import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -1025,39 +1026,15 @@ class InfoScreen(main: RHRE3Application)
         
                 this.checkedStateChanged = {
                     preferences.putBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, it)
+                    if (!main.disableTimeStretching && it) {
+                        SoundCache.unloadAllDerivatives()
+                    }
                     main.disableTimeStretching = it
                     didChangeSettings = true
                 }
         
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = padding * 4 + buttonHeight * 3,
-                                  screenWidth = buttonWidth,
-                                  screenHeight = buttonHeight)
-                this.enabled = SoundStretch.isSupported
-            }
-            // High-quality time stretching
-            settings.elements += TrueCheckbox(palette, settings, settings).apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_HIGH_QUALITY_TIME_STRETCHING, false)
-        
-                this.textLabel.apply {
-                    this.fontScaleMultiplier = fontScale * 0.85f
-                    this.isLocalizationKey = true
-                    this.textWrapping = false
-                    this.textAlign = Align.left
-                    this.text = "screen.info.highQualityTimeStretching"
-                }
-        
-                this.tooltipTextIsLocalizationKey = true
-                this.tooltipText = "screen.info.highQualityTimeStretching.tooltip"
-        
-                this.checkedStateChanged = {
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_HIGH_QUALITY_TIME_STRETCHING, it)
-                    main.useHighQualityTimeStretching = it
-                    didChangeSettings = true
-                }
-        
-                this.location.set(screenX = 1f - (padding + buttonWidth),
-                                  screenY = padding * 3 + buttonHeight * 2,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
                 this.enabled = SoundStretch.isSupported

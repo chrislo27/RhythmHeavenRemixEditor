@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.Tool
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
@@ -78,9 +77,6 @@ class PatternPreviewButton(val editor: Editor, palette: UIPalette, parent: UIEle
             if (datamodel != null) {
                 ownRemix.removeEntities(ownRemix.entities.toList())
                 val entity = datamodel.createEntity(ownRemix, null)
-                if (entity is ILoadsSounds) {
-                    entity.loadSounds()
-                }
 
                 entity.updateBounds {
                     entity.bounds.x = 0f

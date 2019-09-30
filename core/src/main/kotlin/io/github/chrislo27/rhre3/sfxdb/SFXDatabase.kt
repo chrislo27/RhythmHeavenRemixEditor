@@ -23,6 +23,10 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.special.PlayalongModel
 import io.github.chrislo27.rhre3.sfxdb.json.GameObject
 import io.github.chrislo27.rhre3.sfxdb.json.mapToDatamodel
 import io.github.chrislo27.rhre3.sfxdb.json.toJsonObject
+import io.github.chrislo27.rhre3.soundsystem.AudioPointer
+import io.github.chrislo27.rhre3.soundsystem.Derivative
+import io.github.chrislo27.rhre3.soundsystem.SampleID
+import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.lazysound.LazySound
@@ -63,9 +67,7 @@ object SFXDatabase : Disposable {
 
     val data: SFXDBData
         get() {
-            if (!backingData.ready)
-                throw IllegalStateException("Cannot get data when loading")
-
+            check(backingData.ready) { "Cannot get data when loading" }
             return backingData
         }
     val moddingMetadata: ModdingMetadata get() = data.moddingMetadata
@@ -303,18 +305,21 @@ object SFXDatabase : Disposable {
 
             if (!LazySound.loadLazilyWithAssetManager) {
                 runBlocking {
-                    objectList.filterIsInstance<Cue>().map {
+                    objectList.filterIsInstance<Cue>().map { cue ->
                         launch {
-                            try {
-                                it.loadSounds()
+                            val ptr: AudioPointer? = try {
+                                SoundCache.load(SampleID(cue.soundFile, Derivative.NO_CHANGES))
                             } catch (e: Exception) {
-                                Toolboks.LOGGER.warn("Failed to load ${it.id} in game ${it.game.id}")
+                                Toolboks.LOGGER.warn("Failed to load cue ${cue.id} in game ${cue.game.id}")
                                 e.printStackTrace()
+                                null
                             }
-                            try {
-                                it.unloadSounds()
-                            } catch (e: Exception) {
-                                e.printStackTrace()
+                            if (ptr != null) {
+                                try {
+                                    SoundCache.unload(ptr.sampleID)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
                             }
                         }
                     }.forEach {

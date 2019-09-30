@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
 import io.github.chrislo27.rhre3.entity.model.MultipartEntity
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
@@ -17,26 +17,26 @@ import io.github.chrislo27.toolboks.util.gdxutils.random
 
 class RandomCueEntity(remix: Remix, datamodel: RandomCue)
     : MultipartEntity<RandomCue>(remix, datamodel) {
-
+    
     init {
         bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
                 "RandomCue datamodel ${datamodel.id} has no internal cues")
     }
-
+    
     private fun getPossibleObjects(): List<Pair<Datamodel, CuePointer>> {
         return datamodel.cues.mapNotNull { pointer ->
             SFXDatabase.data.objectMap[pointer.id]?.let { it to pointer }
         }
     }
-
+    
     private fun reroll() {
         val thisSemitone = semitone
         val thisVolume = volumePercent
-
+        
         // Set semitone and volume to zero, repopulate, and reset it so the setters in MultipartEntity take effect
         semitone = 0
         volumePercent = IVolumetric.DEFAULT_VOLUME
-
+        
         internal.clear()
         internal +=
                 getPossibleObjects().takeIf {
@@ -50,49 +50,47 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
                         }
                     }
                 } ?: error("No valid entities found from randomization for RandomCue ${datamodel.id}")
-
+        
         // Re-set semitone and volume so it takes effect in the internals
         semitone = thisSemitone
         volumePercent = thisVolume
     }
-
+    
     override fun getRenderColor(editor: Editor, theme: Theme): Color {
         return theme.entities.pattern
     }
-
-    override fun loadSounds() {
-        super.loadSounds()
+    
+    override fun onPreloadSounds() {
         getPossibleObjects()
                 .map { it.first.createEntity(remix, null) }
                 .forEach {
-                    if (it is ILoadsSounds) {
-                        it.loadSounds()
+                    if (it is ISoundDependent) {
+                        it.preloadSounds()
                     }
                 }
     }
-
-    override fun unloadSounds() {
-        super.unloadSounds()
+    
+    override fun onUnloadSounds() {
         getPossibleObjects()
                 .map { it.first.createEntity(remix, null) }
                 .forEach {
-                    if (it is ILoadsSounds) {
+                    if (it is ISoundDependent) {
                         it.unloadSounds()
                     }
                 }
     }
-
+    
     override fun updateInternalCache(oldBounds: Rectangle) {
         translateInternal(oldBounds)
         if (internal.isEmpty())
             reroll()
     }
-
+    
     override fun onStart() {
         reroll()
         super.onStart()
     }
-
+    
     override fun copy(remix: Remix): RandomCueEntity {
         return RandomCueEntity(remix, datamodel).also {
             it.updateBounds {

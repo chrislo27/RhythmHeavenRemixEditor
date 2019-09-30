@@ -15,8 +15,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.stage.bg.Background
 import io.github.chrislo27.rhre3.stage.bg.Particle
@@ -286,8 +286,8 @@ class EventScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         remix.entities.forEach { entity ->
-            if (entity is ILoadsSounds) {
-                entity.loadSounds()
+            if (entity is ISoundDependent) {
+                entity.preloadSounds()
             }
         }
         remix.playState = PlayState.PLAYING

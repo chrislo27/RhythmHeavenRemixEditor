@@ -53,7 +53,7 @@ import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
-import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.Cue
+import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.theme.LoadedThemes
 import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.track.EditorRemix
@@ -1645,13 +1645,13 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 val datamodel: Datamodel = pickerSelection.filter.currentDatamodel ?: return true
                 val entity = datamodel.createEntity(remix, null)
 
-                if (Toolboks.debugMode) {
-                    entity.datamodel.game.objects.forEach { obj ->
-                        if (obj is Cue) {
-                            obj.loadSounds()
-                        }
-                    }
-                }
+//                if (Toolboks.debugMode) {
+//                    entity.datamodel.game.objects.forEach { obj ->
+//                        if (obj is Cue) {
+//                            SoundCache.load(SampleID(obj.soundFile, Derivative.NO_CHANGES), doNotTrack = true)
+//                        }
+//                    }
+//                }
 
                 entities = listOf(entity)
             } else {
@@ -1688,12 +1688,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
 
             if (entities.isNotEmpty()) {
-                entities.forEach { entity ->
-                    if (entity is ILoadsSounds) {
-                        entity.loadSounds()
-                    }
-                }
-
                 val oldSelection = this.selection.toList()
                 this.selection = entities.toList()
                 val first = this.selection.first()
@@ -2180,6 +2174,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             append(" zoom]\n")
             append("  Pan: ")
             append(cameraPan)
+            append("\n")
+    
+            append("SoundCache: ")
+            append(SoundCache.getTotalReferences())
+            append(" / ")
+            append(SoundCache.getNumLoaded())
             append("\n")
 
             append("Rendered objects (visible/total):\n  Entities: ")

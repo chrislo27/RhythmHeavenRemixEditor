@@ -17,7 +17,7 @@ import kotlin.math.min
 
 
 abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
-    : ModelEntity<M>(remix, datamodel), IRepitchable, ILoadsSounds, IVolumetric
+    : ModelEntity<M>(remix, datamodel), IRepitchable, ISoundDependent, IVolumetric
         where M : Datamodel, M : ContainerModel {
 
     override var semitone: Int = 0
@@ -194,12 +194,21 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override fun onEnd() {
     }
-
-    override fun loadSounds() {
-        internal.filterIsInstance<ILoadsSounds>().forEach(ILoadsSounds::loadSounds)
+    
+    final override fun preloadSounds() {
+        internal.filterIsInstance<ISoundDependent>().forEach { it.preloadSounds() }
+        onPreloadSounds()
     }
-
-    override fun unloadSounds() {
-        internal.filterIsInstance<ILoadsSounds>().forEach(ILoadsSounds::unloadSounds)
+    
+    protected open fun onPreloadSounds() {
+    }
+    
+    final override fun unloadSounds() {
+        internal.filterIsInstance<ISoundDependent>().forEach { it.unloadSounds() }
+        onUnloadSounds()
+    }
+    
+    protected open fun onUnloadSounds() {
+    
     }
 }

@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.stage.GenericStage
@@ -52,7 +52,7 @@ class NewRemixScreen(main: RHRE3Application)
                     override fun onLeftClick(xPercent: Float, yPercent: Float) {
                         super.onLeftClick(xPercent, yPercent)
                         editor.remix.entities.forEach {
-                            if (it is ILoadsSounds) {
+                            if (it is ISoundDependent) {
                                 it.unloadSounds()
                             }
                         }

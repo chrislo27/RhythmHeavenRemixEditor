@@ -143,10 +143,6 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("playyan_jumping", "images/playyan/jumping_26.png")
         AssetRegistry.loadAsset<Texture>("playyan_pogo", "images/playyan/pogo.png")
 
-        // goat
-        AssetRegistry.loadAsset<Texture>("goat_full", "images/goat/goat_full.png")
-        AssetRegistry.loadAsset<Texture>("goat_base", "images/goat/goat_base.png")
-
         // glee club midi visualization
         AssetRegistry.loadAsset<Texture>("glee_club", "images/chorusmen_rot.png")
 

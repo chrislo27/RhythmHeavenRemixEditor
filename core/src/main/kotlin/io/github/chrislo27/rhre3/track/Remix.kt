@@ -14,8 +14,8 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
 import io.github.chrislo27.rhre3.entity.model.IRepitchable
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.entity.model.cue.CueEntity
 import io.github.chrislo27.rhre3.entity.model.multipart.EquidistantEntity
@@ -642,7 +642,9 @@ open class Remix(val main: RHRE3Application)
     var playalong: Playalong by settableLazy { createPlayalongInstance() }
     open var doUpdatePlayalong: Boolean = false
 
-    private val metronomeCue: Cue = (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue) ?: error("Missing metronome sound")
+    private val metronomeCue: Cue by lazy {
+        (SFXDatabase.data.objectMap["countInEn/cowbell"] as? Cue) ?: error("Missing metronome sound")
+    }
     private val metronomeSFXLazy: Lazy<AudioPointer> = lazy {
         SoundCache.load(SampleID(metronomeCue.soundFile, Derivative.NO_CHANGES))
     }
@@ -685,8 +687,8 @@ open class Remix(val main: RHRE3Application)
                         } else {
                             it.playbackCompletion = PlaybackCompletion.WAITING
                         }
-                        if (it is ILoadsSounds) {
-                            it.loadSounds()
+                        if (it is ISoundDependent) {
+                            it.preloadSounds()
                         }
                     }
 
@@ -808,6 +810,9 @@ open class Remix(val main: RHRE3Application)
     fun addEntity(entity: Entity, doRecompute: Boolean = true) {
         if (entity !in entities) {
             (entities as MutableList) += entity
+            if (entity is ISoundDependent) {
+                entity.preloadSounds()
+            }
             if (doRecompute)
                 recomputeCachedData()
         }
@@ -816,6 +821,9 @@ open class Remix(val main: RHRE3Application)
     fun removeEntity(entity: Entity, doRecompute: Boolean = true) {
         if (entity in entities) {
             (entities as MutableList) -= entity
+            if (entity is ISoundDependent) {
+                entity.unloadSounds()
+            }
             if (doRecompute)
                 recomputeCachedData()
         }

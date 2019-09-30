@@ -13,7 +13,7 @@ import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
 import io.github.chrislo27.rhre3.entity.Entity
-import io.github.chrislo27.rhre3.entity.model.ILoadsSounds
+import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
@@ -70,7 +70,7 @@ class OpenRemixScreen(main: RHRE3Application)
         }
 
     private fun List<Entity>.applyFilter(): List<ModelEntity<*>> {
-        return filter { entity -> entity is ILoadsSounds }
+        return filterIsInstance<ISoundDependent>()
                 .filterIsInstance<ModelEntity<*>>()
                 .distinctBy { it.datamodel.id }
     }
@@ -85,8 +85,8 @@ class OpenRemixScreen(main: RHRE3Application)
         stage.onBackButtonClick = {
             if (!isChooserOpen && !isLoading) {
                 editor.remix.entities.applyFilter().forEach { entity ->
-                    if (entity is ILoadsSounds) {
-                        entity.loadSounds()
+                    if (entity is ISoundDependent) {
+                        entity.preloadSounds()
                     }
                 }
                 main.screen = ScreenRegistry.getNonNull("editor")
@@ -188,7 +188,7 @@ class OpenRemixScreen(main: RHRE3Application)
                 }
 
                 val toLoad = result.remix.entities.applyFilter()
-                val toLoadIDs = toLoad.map { it.datamodel.id }
+                val toLoadIDs = toLoad.map { it.datamodel.id }.toSet()
                 val toUnload = editor.remix.entities.applyFilter().filter { it.datamodel.id !in toLoadIDs }
 
                 val isAutosave = overrideAutosave ?: result.isAutosave
@@ -202,14 +202,14 @@ class OpenRemixScreen(main: RHRE3Application)
                         }
                     }
                     toUnload.forEachIndexed { i, entity ->
-                        if (entity is ILoadsSounds) {
+                        if (entity is ISoundDependent) {
                             entity.unloadSounds()
                         }
                         updateLabel(i + 1)
                     }
                     toLoad.forEachIndexed { i, entity ->
-                        if (entity is ILoadsSounds) {
-                            entity.loadSounds()
+                        if (entity is ISoundDependent) {
+                            entity.preloadSounds()
                         }
                         updateLabel(i + 1 + toUnload.size)
                     }

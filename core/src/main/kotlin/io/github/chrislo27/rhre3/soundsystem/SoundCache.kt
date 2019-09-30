@@ -18,16 +18,20 @@ object SoundCache {
 
     fun isLoaded(id: SampleID): Boolean = cache.containsKey(id)
     fun getNumReferences(id: SampleID): Int = cache[id]?.numReferences ?: 0
+    fun getNumLoaded(): Int = cache.size
+    fun getTotalReferences(): Int = cache.values.sumBy { it.numReferences }
     
     /**
      * Loads the audio file and increments the internal reference counter.
+     * @param doNotTrack If true, this call is not counted towards the number of references.
      */
-    fun load(id: SampleID): AudioPointer {
+    fun load(id: SampleID, doNotTrack: Boolean = false): AudioPointer {
         val ptrData = cache[id]
         if (ptrData == null) {
+            val initialRefCount = if (doNotTrack) 0 else 1
             // Create and load the audio pointer
             if (id.derivative.isUnmodified()) {
-                val newData = AudioPtrData(AudioPointer.BaseAudioPointer(id, BeadsSoundSystem.newAudio(FileHandle(id.file))), 1)
+                val newData = AudioPtrData(AudioPointer.BaseAudioPointer(id, BeadsSoundSystem.newAudio(FileHandle(id.file))), initialRefCount)
                 cache[id] = newData
                 return newData.pointer
             } else {
@@ -45,12 +49,14 @@ object SoundCache {
                 val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile))
                 tmpFile.delete()
                 
-                val newData = AudioPtrData(AudioPointer.DerivAudioPointer(id, moddedAudio), 1)
+                val newData = AudioPtrData(AudioPointer.DerivAudioPointer(id, moddedAudio), initialRefCount)
                 cache[id] = newData
                 return newData.pointer
             }
         } else {
-            ptrData.numReferences++
+            if (!doNotTrack) {
+                ptrData.numReferences++
+            }
             return ptrData.pointer
         }
     }
@@ -79,6 +85,16 @@ object SoundCache {
      */
     fun unloadAll() {
         cache.clear()
+    }
+    
+    /**
+     * Unloads all derivative samples.
+     */
+    fun unloadAllDerivatives() {
+        cache.keys.filter { !it.derivative.isUnmodified() }.forEach {
+            cache.remove(it)
+            unload(it.copy(derivative = Derivative.NO_CHANGES))
+        }
     }
 
 }
