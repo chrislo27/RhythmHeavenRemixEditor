@@ -92,14 +92,14 @@ class CueEntity(remix: Remix, datamodel: Cue)
     private var endingSoundId: Long = -1L
     
     // Audio derivatives
-    private val usesAudioDerivatives: Boolean
+    val usesAudioDerivatives: Boolean
         get() = SoundStretch.isSupported && cue.usesBaseBpm && cue.useTimeStretching && !remix.main.disableTimeStretching
     
     private var mainCueLoaded: Boolean = false
     private var _mainCuePtr: AudioPointer? = null
         get() {
             // Compute current derivative
-            val currentDeriv = if (usesAudioDerivatives) createDerivative() else Derivative.NO_CHANGES
+            val currentDeriv = if (usesAudioDerivatives && !remix.suppressDerivativeAudioLoading) createDerivative() else Derivative.NO_CHANGES
             
             val currentValue = field
             if (currentValue == null) {
@@ -111,14 +111,15 @@ class CueEntity(remix: Remix, datamodel: Cue)
             } else {
                 // Check that the derivative hasn't changed; if so then unload the old sample and load a new one in
                 if (currentValue.sampleID.derivative != currentDeriv) {
-                    _beadsSound = null
-                    SoundCache.unload(currentValue.sampleID)
-                    mainCueLoaded = false
+                    val oldSampleID = currentValue.sampleID
                     
                     val loaded = SoundCache.load(SampleID(cue.soundFile, currentDeriv))
                     field = loaded
                     _beadsSound = BeadsSound(loaded.audio)
                     mainCueLoaded = true
+    
+                    // Unload the old sample ID last because its parent is used to create the new deriv
+                    SoundCache.unload(oldSampleID)
                 }
             }
             return field

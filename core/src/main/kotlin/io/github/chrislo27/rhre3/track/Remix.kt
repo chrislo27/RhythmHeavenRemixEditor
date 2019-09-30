@@ -165,7 +165,15 @@ open class Remix(val main: RHRE3Application)
 
             // backwards compatibility silent upgrades
             val shouldConvertTimeSignatures = fromThisVersion(VersionHistory.TIME_SIGNATURES_REFACTOR)
-
+            
+            // trackers
+            run {
+                val trackers = tree.get("trackers") as ObjectNode
+        
+                remix.tempos.fromTree(trackers["tempos"] as ObjectNode)
+                remix.musicVolumes.fromTree(trackers["musicVolumes"] as ObjectNode)
+            }
+            
             // entities
             val entitiesArray = tree["entities"] as ArrayNode
             entitiesArray.filterIsInstance<ObjectNode>()
@@ -188,14 +196,6 @@ open class Remix(val main: RHRE3Application)
 
                         remix.addEntity(entity)
                     }
-
-            // trackers
-            run {
-                val trackers = tree.get("trackers") as ObjectNode
-
-                remix.tempos.fromTree(trackers["tempos"] as ObjectNode)
-                remix.musicVolumes.fromTree(trackers["musicVolumes"] as ObjectNode)
-            }
 
             // time signatures
             run {
@@ -654,7 +654,11 @@ open class Remix(val main: RHRE3Application)
     }
 
     val textureCache: MutableMap<String, Texture> = mutableMapOf()
-
+    /**
+     * Used to suppress cues from loading their derivatives such as when initially placed.
+     * It doesn't make sense to have a derivative made if the position of the cue is not yet set, for example.
+     */
+    var suppressDerivativeAudioLoading: Boolean = false
     val playStateListeners: MutableList<(old: PlayState, new: PlayState) -> Unit> = mutableListOf()
     var playState: PlayState by Delegates.vetoable(PlayState.STOPPED) { _, old, new ->
         if (new == PlayState.PLAYING && !canPlayRemix)

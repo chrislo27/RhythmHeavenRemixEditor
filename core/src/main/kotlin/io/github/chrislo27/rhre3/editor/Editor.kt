@@ -1546,7 +1546,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         if (isCopying) {
                             this.selection = newSel
                             val notIn = newSel.filter { it !in remix.entities }
-                            if (notIn.isNotEmpty()) remix.addEntities(notIn)
+                            if (notIn.isNotEmpty()) {
+                                remix.addEntities(notIn)
+                            }
                         }
 
                         newSel.forEach {
@@ -1697,9 +1699,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 entities.forEach {
                     it.updateInterpolation(true)
                 }
-
+                
+                remix.suppressDerivativeAudioLoading = true
                 remix.addEntities(entities)
-
+                remix.suppressDerivativeAudioLoading = false
+                
                 this.clickOccupation = selection
             }
         }
