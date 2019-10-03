@@ -1022,7 +1022,7 @@ class InfoScreen(main: RHRE3Application)
                 }
                 
                 this.tooltipTextIsLocalizationKey = true
-                this.tooltipText = "screen.info.disableTimeStretching.tooltip"
+                this.tooltipText = if (SoundStretch.isSupported) "screen.info.disableTimeStretching.tooltip" else "screen.info.disableTimeStretching.notSupported.tooltip"
         
                 this.checkedStateChanged = {
                     preferences.putBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, it)
