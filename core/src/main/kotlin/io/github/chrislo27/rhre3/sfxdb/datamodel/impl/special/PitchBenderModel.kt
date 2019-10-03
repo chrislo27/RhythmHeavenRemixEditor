@@ -10,7 +10,7 @@ import io.github.chrislo27.rhre3.track.Remix
 class PitchBenderModel(game: Game, id: String, deprecatedIDs: List<String>, name: String)
     : SpecialDatamodel(game, id, deprecatedIDs, name, 1f) {
 
-    override val pickerName: PickerName = super.pickerName.copy(sub = "[LIGHT_GRAY]Affects pitch bending cues[]")
+    override val pickerName: PickerName = super.pickerName.copy(sub = "[LIGHT_GRAY]Affects Rockers's pitch bending cues[]")
     override val hideInPresentationMode: Boolean = false
 
     override fun createEntity(remix: Remix, cuePointer: CuePointer?): PitchBenderEntity {
