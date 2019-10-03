@@ -1041,7 +1041,7 @@ class InfoScreen(main: RHRE3Application)
             }
             
         }
-
+        
         stage.updatePositions()
 
         currentPage = currentPage // force update

@@ -325,12 +325,6 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             tooltipText = "[ORANGE]WARNING[]: This will clear the editor and discard all unsaved changes.\nReloads the entire SFX database. May fail (and crash) if there are errors.\nThis will also reload modding metadata from scratch."
         }
 
-        stage.tooltipElement = TextLabel(palette.copy(backColor = Color(0f, 0f, 0f, 0.75f), fontScale = 0.75f), stage, stage).apply {
-            this.isLocalizationKey = false
-            this.background = true
-            this.textAlign = Align.center
-        }
-
         updateLabels()
     }
 
