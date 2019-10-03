@@ -9,7 +9,7 @@ import java.util.*
 
 object PatternStorage {
 
-    val MAX_PATTERN_NAME_SIZE: Int = 32
+    val MAX_PATTERN_NAME_SIZE: Int = 40
 
     private val FOLDER: FileHandle by lazy {
         RHRE3.RHRE3_FOLDER.child("storedPatterns/").apply {
