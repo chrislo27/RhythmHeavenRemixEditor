@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -11,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.modding.ModdingGame
@@ -307,7 +307,13 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         centre.elements += Button(palette, centre, centre).apply {
             this.leftClickAction = { _, _ ->
                 ScreenRegistry.remove("editor")
+                val defaultCamera = main.defaultCamera
+                val oldDim = defaultCamera.viewportWidth to defaultCamera.viewportHeight
+                defaultCamera.setToOrtho(false, RHRE3.WIDTH.toFloat(), RHRE3.HEIGHT.toFloat())
+                defaultCamera.update()
                 ScreenRegistry += "editor" to EditorScreen(main)
+                defaultCamera.setToOrtho(false, oldDim.first, oldDim.second)
+                defaultCamera.update()
                 SFXDatabase.reset()
                 main.screen = SFXDBLoadingScreen(main) { ScreenRegistry["editor"] }
             }
