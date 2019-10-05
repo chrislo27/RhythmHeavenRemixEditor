@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
+import io.github.chrislo27.rhre3.sfxdb.Language
 import io.github.chrislo27.rhre3.sfxdb.Series
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -19,6 +20,12 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         }
         AssetRegistry.loadAsset<Texture>("logo_rhre2_128", "images/icon/rhre2/128.png")
 
+        AssetRegistry.loadAsset<Texture>("sfxdb_missing_icon", "images/gameicon/missing.png")
+        (Language.VALUES - Language.UNKNOWN).forEach { lang ->
+//            AssetRegistry.loadAsset<Texture>("sfxdb_langicon_${lang.code}", "images/gameicon/lang/${lang.code}.png")
+            AssetRegistry.loadAsset<Pixmap>("sfxdb_langicon_${lang.code}_pixmap", "images/gameicon/lang/${lang.code}.png")
+        }
+        
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
         }

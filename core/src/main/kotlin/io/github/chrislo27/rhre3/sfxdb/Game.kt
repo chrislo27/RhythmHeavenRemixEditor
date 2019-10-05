@@ -1,19 +1,22 @@
 package io.github.chrislo27.rhre3.sfxdb
 
+import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.DatamodelComparator
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
+import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 
 data class Game(val id: String, val rawName: String, val series: Series,
                 val objects: List<Datamodel>,
-                val icon: Texture, val language: Language?, val group: String, val groupDefault: Boolean,
+                val iconFh: FileHandle, val language: Language?, val group: String, val groupDefault: Boolean,
                 val priority: Int, val isCustom: Boolean, val noDisplay: Boolean, val searchHints: List<String>,
                 val jsonless: Boolean, val isSpecial: Boolean)
     : Disposable, Comparable<Game> {
-    
+
     val name: String = if (language != null) "$rawName (${language.langName})" else rawName
 
     val placeableObjects: List<Datamodel> by lazy {
@@ -23,10 +26,10 @@ data class Game(val id: String, val rawName: String, val series: Series,
         placeableObjects.any { it is ResponseModel && it.responseIDs.isNotEmpty() }
     }
     val objectsMap: Map<String, Datamodel> by lazy {
-        objects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map {dep -> dep to it} }
+        objects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map { dep -> dep to it } }
     }
     val placeableObjectsMap: Map<String, Datamodel> by lazy {
-        placeableObjects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map {dep -> dep to it} }
+        placeableObjects.associateBy { it.id } + objects.filter { it.deprecatedIDs.isNotEmpty() }.flatMap { it.deprecatedIDs.map { dep -> dep to it } }
     }
 
     val gameGroup: GameGroup
@@ -39,12 +42,30 @@ data class Game(val id: String, val rawName: String, val series: Series,
     val isRecent: Boolean
         get() = recency != -1
 
+    val icon: Texture = if (language != null && !(id.startsWith("countIn") && id.length == 9 /* Count-In games don't get a language code baked in */)) {
+        // Add on language code
+        val pixmap = Pixmap(if (iconFh.exists()) iconFh else FileHandle(AssetRegistry.assetMap.getValue("sfxdb_missing_icon")))
+        // Draw language code
+        val langPixmap: Pixmap = AssetRegistry["sfxdb_langicon_${language.code}_pixmap"]
+        pixmap.drawPixmap(langPixmap, 0, 0, langPixmap.width, langPixmap.height, 0, 0, pixmap.width, pixmap.height)
+        val newTex = Texture(pixmap)
+        pixmap.dispose()
+        newTex
+    } else if (!iconFh.exists()) {
+        AssetRegistry["sfxdb_missing_icon"]
+    } else {
+        Texture(iconFh)
+    }
+
     override fun compareTo(other: Game): Int {
         return GameGroupListComparator.compare(this, other)
     }
 
     override fun dispose() {
         objects.forEach(Disposable::dispose)
+        if (!icon.isManaged) {
+            icon.dispose()
+        }
     }
 }
 

@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.sfxdb
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
@@ -416,7 +417,7 @@ object SFXDatabase : Disposable {
                             gameObject.name,
                             Series.valueOf(gameObject.series?.toUpperCase(Locale.ROOT) ?: Series.OTHER.name),
                             mutableListOf(),
-                            if (directive.textureFh.exists()) Texture(directive.textureFh) else Texture(MISSING_GAME_ICON_PATH),
+                            directive.textureFh,
                             Language.getOrUnknown(gameObject.language),
                             gameObject.group ?: gameObject.name,
                             gameObject.groupDefault,
@@ -442,8 +443,7 @@ object SFXDatabase : Disposable {
                             nameWithoutExt,
                             Series.OTHER,
                             mutableListOf(),
-                            if (directive.textureFh.exists()) Texture(directive.textureFh)
-                            else Texture(MISSING_GAME_ICON_PATH),
+                            directive.textureFh,
                             null,
                             nameWithoutExt,
                             true,
@@ -539,7 +539,8 @@ object SFXDatabase : Disposable {
 
             val playalongObjs = mutableListOf<Datamodel>()
             val playalongGame = Game(PLAYALONG_GAME_ID, "Playalong Input Entities", specialGame.series,
-                                     playalongObjs, Texture("images/gameicon/playableEntities.png"), null, "Special Entities", false, specialGame.priority,
+                                     playalongObjs, Gdx.files.internal("images/gameicon/playableEntities.png"),
+                                     null, "Special Entities", false, specialGame.priority,
                                      false, specialGame.noDisplay, listOf("playable"), false, true)
             checkGameDoesNotExist(PLAYALONG_GAME_ID)
             // Press
