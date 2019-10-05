@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.entity.model.multipart
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Rectangle
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.IStretchable
 import io.github.chrislo27.rhre3.entity.model.IVolumetric
@@ -20,17 +21,18 @@ import io.github.chrislo27.rhre3.track.Remix
 class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
     : MultipartEntity<PitchDependent>(remix, datamodel), IStretchable {
 
-    override val isStretchable: Boolean = datamodel.cues.mapNotNull { SFXDatabase.data.objectMap[it.id] }.any { it is Cue && it.stretchable }
+    private data class DatamodelPointer(val datamodel: Datamodel, val ptr: CuePointer, val bounds: PitchRange)
+    
+    private val possibleObjects: List<DatamodelPointer> = datamodel.intervals.mapNotNull { (interval, pointer) ->
+        SFXDatabase.data.objectMap[pointer.id]?.let { DatamodelPointer(it, pointer, interval) }
+    }
+    private val createdEntities: Map<DatamodelPointer, Entity> = possibleObjects.associateWith { it.datamodel.createEntity(remix, it.ptr.copy(beat = 0f)) }
 
+    override val isStretchable: Boolean = datamodel.cues.mapNotNull { SFXDatabase.data.objectMap[it.id] }.any { it is Cue && it.stretchable }
+    
     init {
         bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
                 "PitchDependent datamodel ${datamodel.id} has no internal cues")
-    }
-
-    private fun getPossibleObjects(): List<Triple<PitchRange, Datamodel, CuePointer>> {
-        return datamodel.intervals.mapNotNull { (interval, pointer) ->
-            SFXDatabase.data.objectMap[pointer.id]?.let { Triple(interval, it, pointer) }
-        }
     }
 
     private fun pickSound() {
@@ -42,19 +44,17 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
         volumePercent = IVolumetric.DEFAULT_VOLUME
 
         internal.clear()
-        val possible = getPossibleObjects()
-        if (possible.isEmpty()) {
+        if (createdEntities.isEmpty()) {
             error("No valid entities found for pitch picking for PitchDependent ${datamodel.id}")
         }
         internal +=
-                (possible.firstOrNull { thisSemitone in it.first } ?: possible.first()).let { pair ->
-                    pair.second.createEntity(remix, pair.third).also { ent ->
-                        ent.updateBounds {
-                            ent.bounds.x = this.bounds.x
-                            ent.bounds.width = this.bounds.width
-                            ent.bounds.y = this.bounds.y
-                        }
+                (createdEntities.entries.firstOrNull { thisSemitone in it.key.bounds } ?: createdEntities.entries.first()).let { (_, ent) ->
+                    ent.updateBounds {
+                        ent.bounds.x = this.bounds.x
+                        ent.bounds.width = this.bounds.width
+                        ent.bounds.y = this.bounds.y
                     }
+                    ent
                 }
 
         // Re-set semitone and volume so it takes effect in the internals
@@ -66,10 +66,8 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
         return theme.entities.pattern
     }
 
-    // FIXME should not be re-creating entities every time due to how sounds are cached now
     override fun onPreloadSounds() {
-        getPossibleObjects()
-                .map { it.second.createEntity(remix, null) }
+        createdEntities
                 .forEach {
                     if (it is ISoundDependent) {
                         it.preloadSounds()
@@ -78,8 +76,7 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
     }
     
     override fun onUnloadSounds() {
-        getPossibleObjects()
-                .map { it.second.createEntity(remix, null) }
+        createdEntities
                 .forEach {
                     if (it is ISoundDependent) {
                         it.unloadSounds()

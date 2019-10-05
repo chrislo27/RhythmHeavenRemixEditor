@@ -5,17 +5,6 @@ import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.json.CuePointerObject
 
 fun CuePointerObject.toDatamodel(): CuePointer = CuePointer(this)
-fun CuePointer.toJsonObject(): CuePointerObject {
-    return CuePointerObject().also {
-        it.id = this.id
-        it.beat = this.beat
-        it.duration = this.backingDuration
-        it.semitone = this.semitone
-        it.volume = this.volume
-        it.track = this.track
-        it.metadata = this.metadata
-    }
-}
 
 fun List<CuePointerObject>.mapToDatamodel(): List<CuePointer> = this.map(::CuePointer)
 fun List<CuePointerObject>.mapToDatamodel(starSubstitution: String): List<CuePointer> = this.map { CuePointer(it, starSubstitution) }
@@ -71,6 +60,21 @@ class CuePointer {
         this.volume = volume.coerceAtLeast(0)
         this.metadata = metadata
     }
+    
+    fun toJsonObject(): CuePointerObject {
+        return CuePointerObject().also {
+            it.id = this.id
+            it.beat = this.beat
+            it.duration = this.backingDuration
+            it.semitone = this.semitone
+            it.volume = this.volume
+            it.track = this.track
+            it.metadata = this.metadata
+        }
+    }
 
+    fun copy(id: String = this.id, beat: Float = this.beat, duration: Float = this.duration, semitone: Int = this.semitone, track: Int = this.track,
+             volume: Int = this.volume,
+             metadata: Map<String, Any?> = this.metadata): CuePointer = CuePointer(id, beat, duration, semitone, track, volume, metadata)
 
 }
