@@ -290,8 +290,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     
     override fun onEnd() {
         // If the sound needs to be stopped, stop it (and its intro sound if any)
-        if (cue.loops || (cue.usesBaseBpm && ((usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.NO_TIME_STRETCH) || (!usesAudioDerivatives && cue.baseBpmRules != BaseBpmRules.ONLY_TIME_STRETCH)))
-                || isFillbotsFill || stopAtEnd) {
+        if (cue.loops || rulesAllowBaseBpm || isFillbotsFill || stopAtEnd) {
             beadsSound.stop(soundId)
             if (introSoundId != -1L) {
                 introCueBeadsSound?.stop(introSoundId)
