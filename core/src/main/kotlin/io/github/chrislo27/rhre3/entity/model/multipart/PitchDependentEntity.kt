@@ -65,7 +65,8 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
     override fun getRenderColor(editor: Editor, theme: Theme): Color {
         return theme.entities.pattern
     }
-    
+
+    // FIXME should not be re-creating entities every time due to how sounds are cached now
     override fun onPreloadSounds() {
         getPossibleObjects()
                 .map { it.second.createEntity(remix, null) }

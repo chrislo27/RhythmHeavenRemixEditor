@@ -60,6 +60,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
         return theme.entities.pattern
     }
     
+    // FIXME should not be re-creating entities every time due to how sounds are cached now
     override fun onPreloadSounds() {
         getPossibleObjects()
                 .map { it.first.createEntity(remix, null) }
