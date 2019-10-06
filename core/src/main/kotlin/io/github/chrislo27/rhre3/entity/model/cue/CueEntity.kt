@@ -148,6 +148,12 @@ class CueEntity(remix: Remix, datamodel: Cue)
                 field!!
             } else null
         }
+        set(value) {
+            field = value
+            if (value == null) {
+                introCueLoaded = false
+            }
+        }
     private var endingCueLoaded: Boolean = false
     private var endingCueBeadsSound: BeadsSound? = null
         get() {
@@ -159,6 +165,12 @@ class CueEntity(remix: Remix, datamodel: Cue)
                 }
                 field!!
             } else null
+        }
+        set(value) {
+            field = value
+            if (value == null) {
+                endingCueLoaded = false
+            }
         }
     
     private val currentPitchBendingSemitone = PitchBendingSemitone()
