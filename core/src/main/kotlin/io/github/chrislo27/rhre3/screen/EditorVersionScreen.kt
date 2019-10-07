@@ -131,9 +131,12 @@ class EditorVersionScreen(main: RHRE3Application)
         if (isBeginning.first) {
             stage.backButton.enabled = false
             stage.backButton.tooltipText = "screen.version.cantBackOutYet"
-            val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1) + 20
-            val asymptoteWaitTime = 7.5f
-            timeToStayOnScreen = (-asymptoteWaitTime / (timesSkipped + 1).coerceAtLeast(1)) + asymptoteWaitTime
+            val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1).coerceAtLeast(1)
+            val limitSkips = 5
+            val minWaitTime = 2f
+            val waitTimeAtLimit = 4f
+            val waitTimeAfterLimit = 7.5f
+            timeToStayOnScreen = if (timesSkipped <= limitSkips) ((waitTimeAtLimit / limitSkips) * timesSkipped).coerceAtLeast(minWaitTime) else waitTimeAfterLimit
 
             // Analytics
             AnalyticsHandler.track("Update Notification",
