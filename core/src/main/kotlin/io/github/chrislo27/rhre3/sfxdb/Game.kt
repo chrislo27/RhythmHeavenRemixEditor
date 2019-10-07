@@ -8,6 +8,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.DatamodelComparator
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.toolboks.registry.AssetRegistry
+import java.util.*
 
 
 data class Game(val id: String, val rawName: String, val series: Series,
@@ -18,6 +19,14 @@ data class Game(val id: String, val rawName: String, val series: Series,
     : Disposable, Comparable<Game> {
 
     val name: String = if (language != null) "$rawName (${language.langName})" else rawName
+    val lowerCaseName: String = name.toLowerCase(Locale.ROOT)
+    val searchHintsAsSet: Set<String> = searchHints.map { it.toLowerCase(Locale.ROOT) }.toMutableSet().also { set ->
+        if (series == Series.FEVER) {
+            set += "wii"
+        } else if (series == Series.MEGAMIX) {
+            set += "3ds"
+        }
+    }
 
     val placeableObjects: List<Datamodel> by lazy {
         objects.filter { !it.hidden }.sortedWith(DatamodelComparator)

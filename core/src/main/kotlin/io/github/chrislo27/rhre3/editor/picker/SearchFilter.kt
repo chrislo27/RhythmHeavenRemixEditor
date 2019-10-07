@@ -20,7 +20,7 @@ class SearchFilter(val editorStage: EditorStage) : Filter() {
     var query = ""
     
     private fun Game.queryMatchesGame(): Boolean {
-        return query in this.name.toLowerCase(Locale.ROOT) || this.searchHints.any { query in it.toLowerCase(Locale.ROOT) }
+        return query in this.lowerCaseName || query in this.searchHintsAsSet
     }
     
     override fun update() {
