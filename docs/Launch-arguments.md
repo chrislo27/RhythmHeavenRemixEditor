@@ -23,6 +23,7 @@ Example (if you wanted to see all available arguments): `java -jar RHRE.jar --he
 | `--portable-mode` | `v3.17.0` | Puts the `.rhre3/` folder and preferences locally next to the RHRE.jar file. May be useful for portable flash drives. |
 | `--fps <number>` | `v3.18.8` | Sets the target frame rate. Defaults to 60. Always at least 30. |
 | `--log-missing-localizations` | `v3.18.8` | Logs any missing localizations to the console, checked against the default properties file. |
+| `--disable-custom-sounds` | `v3.19.0` | Disables loading of custom sounds. |
 
 ## Historical
 

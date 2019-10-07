@@ -2,7 +2,6 @@ package io.github.chrislo27.rhre3.sfxdb
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chrislo27.rhre3.RHRE3
@@ -88,8 +87,7 @@ object SFXDatabase : Disposable {
     }
 
     fun initialize(): SFXDBData {
-        if (!isDataLoading())
-            throw IllegalStateException("Cannot initialize SFX database when already loaded")
+        check(isDataLoading()) { "Cannot initialize SFX database when already loaded" }
         return backingData
     }
 
@@ -162,7 +160,7 @@ object SFXDatabase : Disposable {
             CUSTOM_SFX_FOLDER.mkdirs()
             CUSTOM_SFX_FOLDER.child("README_SFX.txt").writeString(CustomSoundNotice.getNotice(), false,
                                                                   "UTF-8")
-            val custom = CUSTOM_SFX_FOLDER.list { fh ->
+            val custom = if (RHRE3.disableCustomSounds) emptyList() else CUSTOM_SFX_FOLDER.list { fh ->
                 fh.isDirectory
             }.mapNotNull {
                 if (it.child("data.json").exists()) {
@@ -171,7 +169,7 @@ object SFXDatabase : Disposable {
                 val sfx = it.list { file: File ->
                     file.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
                 }
-
+    
                 if (sfx.isEmpty()) {
                     return@mapNotNull null
                 } else {

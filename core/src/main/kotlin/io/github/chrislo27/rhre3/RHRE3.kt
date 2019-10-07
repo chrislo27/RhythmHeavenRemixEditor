@@ -65,6 +65,7 @@ object RHRE3 {
     var exportOptions: ExportOptions = ExportOptions.DEFAULT
     var midiRecording: Boolean = false
     var logMissingLocalizations: Boolean = false
+    var disableCustomSounds: Boolean = false
 
     lateinit var launchArguments: List<String>
 

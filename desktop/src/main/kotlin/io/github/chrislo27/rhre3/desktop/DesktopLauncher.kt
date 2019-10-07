@@ -68,6 +68,7 @@ object DesktopLauncher {
                     RHRE3.showTapalongMarkers = arguments.showTapalongMarkers
                     RHRE3.midiRecording = arguments.midiRecording
                     RHRE3.logMissingLocalizations = arguments.logMissingLocalizations
+                    RHRE3.disableCustomSounds = arguments.disableCustomSounds
                     LazySound.loadLazilyWithAssetManager = !arguments.lazySoundsForceLoad
                     
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)

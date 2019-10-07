@@ -51,6 +51,9 @@ class Arguments {
     @Parameter(names = ["--portable-mode"], description = "Puts the `.rhre3/` folder and preferences locally next to the RHRE.jar file.")
     var portableMode: Boolean = false
     
+    @Parameter(names = ["--disable-custom-sounds"], description = "Disables loading of custom sounds.")
+    var disableCustomSounds: Boolean = false
+    
     // -----------------------------------------------------------
     
     @Parameter(names = ["--immmediate-anniversary"], hidden = true)
