@@ -25,15 +25,15 @@ open class SimpleFilter(val groupFilter: (GameGroup) -> Boolean,
         clearAll()
 
         SFXDatabase.data.gameGroupsList.filterTo(gameGroups, groupFilter)
-        gameGroups.associateTo(gamesPerGroup) {
-            it to GameList().apply {
+        gameGroups.associateWithTo(gamesPerGroup) {
+            GameList().apply {
                 it.games.filterTo(this.list, gameFilter)
             }
         }
         // would normally flatmap but this is faster
         gamesPerGroup.values.forEach { gameList ->
-            gameList.list.associateTo(datamodelsPerGame) {
-                it to DatamodelList().apply {
+            gameList.list.associateWithTo(datamodelsPerGame) {
+                DatamodelList().apply {
                     it.placeableObjects.filterTo(this.list, datamodelFilter)
                 }
             }
