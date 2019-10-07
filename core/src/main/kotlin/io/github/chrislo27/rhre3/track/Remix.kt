@@ -70,7 +70,7 @@ open class Remix(val main: RHRE3Application)
                             val extra: MutableMap<String, Any> = mutableMapOf())
 
         fun createMissingEntitySubtitle(remix: Remix, id: String, x: Float, y: Float, w: Float, h: Float): SubtitleEntity {
-            return (SFXDatabase.data.objectMap["special_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
+            return (SFXDatabase.data.objectMap["specialVfx_subtitleEntity"] as Subtitle).createEntity(remix, null).apply {
                 this.subtitle = "[RED]MISSING ENTITY[]\n$id"
                 this.updateBounds {
                     this.bounds.set(x, y, w, h)

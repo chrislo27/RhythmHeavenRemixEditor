@@ -43,11 +43,13 @@ object SFXDatabase : Disposable {
     const val DATA_JSON_FILENAME: String = "data.json"
     const val ICON_FILENAME: String = "icon.png"
     const val SPECIAL_ENTITIES_GAME_ID: String = "special"
-    const val END_REMIX_ENTITY_ID: String = "special_endEntity"
+    const val SPECIAL_VFX_ENTITIES_GAME_ID: String = "specialVfx"
     const val PLAYALONG_GAME_ID: String = "specialPlayalong"
+    const val END_REMIX_ENTITY_ID: String = "special_endEntity"
     const val SKILL_STAR_ID: String = "extraSFX/skillStar"
     const val CUSTOM_PREFIX: String = "custom_"
     private const val MISSING_GAME_ICON_PATH = "images/gameicon/missing.png"
+    val SPECIAL_IDS: Set<String> = setOf(SPECIAL_ENTITIES_GAME_ID, SPECIAL_VFX_ENTITIES_GAME_ID, PLAYALONG_GAME_ID)
     val ID_REGEX: Regex = "(?:[A-Za-z0-9_/\\-])+".toRegex()
 
     val SFX_FOLDER: FileHandle by lazy {
@@ -137,8 +139,10 @@ object SFXDatabase : Disposable {
         val version: Int
             get() = dbInfoObj.version
         val editorVersion: Version
-
+    
         lateinit var specialGame: Game
+            private set
+        lateinit var specialVfxGame: Game
             private set
         lateinit var playalongGame: Game
             private set
@@ -208,7 +212,8 @@ object SFXDatabase : Disposable {
         }
 
         private fun whenDone() {
-            specialGame = gameMap[SPECIAL_ENTITIES_GAME_ID] ?: error("Missing special game")
+            specialGame = gameMap[SPECIAL_ENTITIES_GAME_ID] ?: error("Missing special (ID: special) game")
+            specialVfxGame = gameMap[SPECIAL_VFX_ENTITIES_GAME_ID] ?: error("Missing special visual effects (ID: specialVfx) game")
             endRemix = specialGame.objectsMap.getValue(END_REMIX_ENTITY_ID) as EndRemix
             addSpecialGeneratedGames()
 
@@ -225,9 +230,7 @@ object SFXDatabase : Disposable {
             gameGroupsList
 
             seriesCount as MutableMap
-            Series.VALUES.associateTo(seriesCount) { series ->
-                series to gameList.count { it.series == series }
-            }
+            Series.VALUES.associateWithTo(seriesCount) { series -> gameList.count { it.series == series } }
 
             hasCustom = gameList.any(Game::isCustom)
 
@@ -420,7 +423,7 @@ object SFXDatabase : Disposable {
                             gameObject.group ?: gameObject.name,
                             gameObject.groupDefault,
                             gameObject.priority, directive.isCustom, gameObject.noDisplay, gameObject.searchHints ?: listOf(),
-                            jsonless = false, isSpecial = gameObject.id == SPECIAL_ENTITIES_GAME_ID)
+                            jsonless = false, isSpecial = gameObject.id in SPECIAL_IDS)
                 val baseFileHandle = directive.folder.parent()
 
                 gameObject.objects.mapTo(game.objects as MutableList) { obj ->
@@ -445,7 +448,7 @@ object SFXDatabase : Disposable {
                             null,
                             nameWithoutExt,
                             true,
-                            0, true, false, listOf(), jsonless = true, isSpecial = id == SPECIAL_ENTITIES_GAME_ID)
+                            0, true, false, listOf(), jsonless = true, isSpecial = id in SPECIAL_IDS)
 
                 val sfxList = directive.folder.list { fh ->
                     fh.isFile && fh.extension in RHRE3.SUPPORTED_DECODING_SOUND_TYPES
@@ -489,7 +492,7 @@ object SFXDatabase : Disposable {
                 if (isOverwriting) {
                     Toolboks.LOGGER.info("Overwrote existing non-custom game with custom game ${game.id}")
                     if (game.isSpecial && !RHRE3.EXPERIMENTAL)
-                        error("You cannot overwrite the ${game.id} game because it is special")
+                        error("You cannot overwrite the ${game.id} game because it is marked as special")
                     // Deprecation check
                     val missingDeps = existingGame.objects.filter { exObj -> !game.objectsMap.containsKey(exObj.id) }
                     if (missingDeps.isNotEmpty()) {
