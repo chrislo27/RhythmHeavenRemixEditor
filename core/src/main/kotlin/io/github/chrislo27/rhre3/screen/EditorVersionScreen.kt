@@ -17,7 +17,6 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.Stage
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
 
@@ -29,7 +28,7 @@ class EditorVersionScreen(main: RHRE3Application)
         private val DEFAULT_BEGINNING: Pair<Boolean, ToolboksScreen<*, *>?> = false to null
     }
 
-    override val stage: Stage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
+    override val stage: GenericStage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val label: TextLabel<EditorVersionScreen>
 
@@ -38,13 +37,13 @@ class EditorVersionScreen(main: RHRE3Application)
     private var timeToStayOnScreen = 0f
 
     init {
-        stage as GenericStage
         val palette = stage.palette
 
         stage.titleIcon.apply {
             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_update"))
         }
         stage.backButton.visible = true
+        stage.backButton.tooltipTextIsLocalizationKey = true
         stage.onBackButtonClick = {
             main.screen = if (isBeginning.first) isBeginning.second else ScreenRegistry.getNonNull("info")
             isBeginning = DEFAULT_BEGINNING
@@ -116,8 +115,8 @@ class EditorVersionScreen(main: RHRE3Application)
         timeOnScreen += Gdx.graphics.deltaTime
 
         if (timeOnScreen >= timeToStayOnScreen) {
-            stage as GenericStage
             stage.backButton.enabled = true
+            stage.backButton.tooltipText = null
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 stage.onBackButtonClick()
@@ -127,13 +126,13 @@ class EditorVersionScreen(main: RHRE3Application)
 
     override fun show() {
         super.show()
-        stage as GenericStage
         stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 5)}"
         timeOnScreen = 0f
         if (isBeginning.first) {
             stage.backButton.enabled = false
-            val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
-            val asymptoteWaitTime = 3f
+            stage.backButton.tooltipText = "screen.version.cantBackOutYet"
+            val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1) + 20
+            val asymptoteWaitTime = 7.5f
             timeToStayOnScreen = (-asymptoteWaitTime / (timesSkipped + 1).coerceAtLeast(1)) + asymptoteWaitTime
 
             // Analytics
