@@ -33,7 +33,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
 * Automatic SFX database updating as community fixes/additions get pulled in
-* Play the remixes you create
+* Play the remixes you create using the Playalong function
 * Every Rhythm Heaven minigame is here!
 
 ## Installation
