@@ -51,7 +51,7 @@ import io.github.chrislo27.toolboks.version.Version
 
 
 class InfoScreen(main: RHRE3Application)
-    : ToolboksScreen<RHRE3Application, InfoScreen>(main) {
+    : ToolboksScreen<RHRE3Application, InfoScreen>(main), HidesVersionText {
 
     companion object {
         const val DEFAULT_AUTOSAVE_TIME = 5
@@ -93,7 +93,8 @@ class InfoScreen(main: RHRE3Application)
                 }
             }
         }
-
+    override val hidesVersionText: Boolean
+        get() = currentPage == Page.INFO
     override val stage: GenericStage<InfoScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
 
     private val settingsStage: Stage<InfoScreen>
