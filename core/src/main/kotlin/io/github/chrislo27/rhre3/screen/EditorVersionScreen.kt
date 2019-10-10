@@ -135,7 +135,7 @@ class EditorVersionScreen(main: RHRE3Application)
             val limitSkips = 5
             val minWaitTime = 2f
             val waitTimeAtLimit = 4f
-            val waitTimeAfterLimit = 7.5f
+            val waitTimeAfterLimit = 6.5f
             timeToStayOnScreen = if (timesSkipped <= limitSkips) ((waitTimeAtLimit / limitSkips) * timesSkipped).coerceAtLeast(minWaitTime) else waitTimeAfterLimit
 
             // Analytics
