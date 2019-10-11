@@ -225,9 +225,9 @@ class CueEntity(remix: Remix, datamodel: Cue)
                                           position = (position.toDouble()) * apparentRate,
                                           loopParams = loopParams)
         
-        introCueBeadsSound?.play(loop = false, pitch = pitch,
+        introSoundId = introCueBeadsSound?.play(loop = false, pitch = pitch,
                                  rate = cue.introSoundCue!!.getBaseBpmRate(remix.beat), volume = volume,
-                                 position = (introSoundPos.toDouble()) * apparentRate)
+                                 position = (introSoundPos.toDouble()) * apparentRate) ?: -1L
     }
     
     override fun getLowerUpdateableBound(): Float {
