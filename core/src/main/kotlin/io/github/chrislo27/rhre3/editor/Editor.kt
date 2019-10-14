@@ -747,6 +747,19 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 borderedFont.unscaleFont()
             }
         }
+        
+        // FIXME
+        if (clickOccupation != ClickOccupation.None) {
+            val hands: Texture = AssetRegistry["weird_hands"]
+            val handIndex = (clickOccupation.initedAt / 1000L % 4L).toInt()
+            batch.draw(hands, staticCamera.getInputX() - 20f, staticCamera.getInputY() - 1000f + 137f, 900f, 1000f, (handIndex % 3) * 901, (handIndex / 3) * 1001, 900, 1000, false, false)
+            val co = clickOccupation
+            if (co is ClickOccupation.CreatingSelection) {
+                batch.draw(hands, ((co.startPoint.x - camera.position.x) / camera.viewportWidth * staticCamera.viewportWidth) - 230f,
+                           ((co.startPoint.y - camera.position.y) / camera.viewportHeight * staticCamera.viewportHeight) + 235f,
+                           900f, 1000f, ((handIndex ) % 3) * 901, ((handIndex) / 3) * 1001, 900, 1000, true, true)
+            }
+        }
 
         font.unscaleFont()
         batch.end()
