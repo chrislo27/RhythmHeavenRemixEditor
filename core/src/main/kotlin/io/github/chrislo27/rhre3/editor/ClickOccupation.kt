@@ -28,6 +28,8 @@ sealed class ClickOccupation {
         var finished: Boolean
         var final: Float
     }
+    
+    val initedAt: Long = System.currentTimeMillis()
 
     object None : ClickOccupation()
 
@@ -44,7 +46,7 @@ sealed class ClickOccupation {
             }
 
         override fun redo(context: Remix) {
-            if (final == Float.NaN)
+            if (final.isNaN())
                 error("Final value was NaN which is impossible")
             editor.remix.playbackStart = final
         }
