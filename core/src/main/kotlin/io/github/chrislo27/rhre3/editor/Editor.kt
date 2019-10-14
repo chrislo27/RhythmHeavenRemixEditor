@@ -663,7 +663,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             // song subtitles
             run {
                 val camera = staticCamera
-                font.scaleMul(camera.zoom)
+                val subtitleFont = main.defaultBorderedFont
+                subtitleFont.scaleFont(camera)
+                subtitleFont.scaleMul(camera.zoom)
                 val texture = AssetRegistry.get<Texture>("ui_songtitle")
                 val scale = 1.15f
                 val texWidth = texture.width.toFloat() * scale * camera.zoom
@@ -680,21 +682,22 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     batch.draw(texture, x, y, texWidth, texHeight,
                                0, 0, texture.width, texture.height,
                                bottom, bottom)
-                    font.setColor(1f, 1f, 1f, 1f)
+                    subtitleFont.setColor(1f, 1f, 1f, 1f)
                     val padding = 8f * camera.zoom
                     val textWidth = (texture.width.toFloat() - texture.height) * scale * camera.zoom - padding * 2
                     val triangleWidth = texture.height.toFloat() * scale * camera.zoom
-                    font.drawCompressed(batch, timedString.str,
-                                        (if (!bottom) x else x + triangleWidth) + padding,
-                                        y + font.capHeight + texHeight / 2 - font.capHeight / 2,
-                                        textWidth,
-                                        if (bottom) Align.left else Align.right)
+                    subtitleFont.drawCompressed(batch, timedString.str,
+                                                (if (!bottom) x else x + triangleWidth) + padding,
+                                                y + subtitleFont.capHeight + texHeight / 2 - subtitleFont.capHeight / 2,
+                                                textWidth,
+                                                if (bottom) Align.left else Align.right)
                 }
 
                 renderBar(songTitle, false)
                 renderBar(songArtist, true)
 
-                font.scaleMul(1f / camera.zoom)
+                subtitleFont.scaleMul(1f / camera.zoom)
+                subtitleFont.unscaleFont()
             }
 
             // autosave indicator
