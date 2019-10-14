@@ -91,7 +91,7 @@ class SaveRemixScreen(main: RHRE3Application)
     override fun renderUpdate() {
         super.renderUpdate()
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             stage.onBackButtonClick()
         }
     }
