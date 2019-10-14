@@ -423,7 +423,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         fun prep(article: Article) {
             this.article = article
 
-            label.text = "[LIGHT_GRAY]${article.publishedDate}[]${if (article.experimental) " - EXPERIMENTAL" else ""}\n${article.title}"
+            label.text = "[LIGHT_GRAY]${article.publishedDate}[]${if (article.experimental) " - EXPERIMENTAL" else ""}\n${article.longTitle}"
             body.text = article.body
             articleLinkButton.visible = article.url != null
             articleLinkButton.title.text = article.urlTitle ?: article.url ?: ""

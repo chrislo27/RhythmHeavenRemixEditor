@@ -7,10 +7,10 @@ import java.time.ZoneId
 
 class Article(val id: String, val title: String, val body: String,
               val thumbnail: String, val publishedAt: Long,
-              val url: String?, val urlTitle: String?, val experimental: Boolean) {
+              val url: String?, val urlTitle: String?, val experimental: Boolean, val longTitle: String = title) {
 
     companion object {
-        val BLANK = Article("---", "", "", "", 0L, null, null, false)
+        val BLANK = Article("---", "", "", "", 0L, null, null, false, "")
     }
 
     val publishedDate: LocalDate by lazy(Instant.ofEpochMilli(publishedAt).atZone(ZoneId.systemDefault())::toLocalDate)
