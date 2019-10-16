@@ -17,6 +17,7 @@ import io.github.chrislo27.rhre3.entity.model.ISoundDependent
 import io.github.chrislo27.rhre3.entity.model.ModelEntity
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
+import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.LoadingIcon
 import io.github.chrislo27.rhre3.track.Remix
@@ -84,6 +85,7 @@ class OpenRemixScreen(main: RHRE3Application)
         stage.backButton.visible = true
         stage.onBackButtonClick = {
             if (!isChooserOpen && !isLoading) {
+                SoundCache.unloadAll()
                 editor.remix.entities.applyFilter().forEach { entity ->
                     if (entity is ISoundDependent) {
                         entity.preloadSounds()
