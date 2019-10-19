@@ -200,7 +200,7 @@ class OpenRemixScreen(main: RHRE3Application)
                     val total = toUnload.size + toLoad.size
                     fun updateLabel(progress: Int) {
                         Gdx.app.postRunnable {
-                            loadingCountLabel.text = if (progress >= total) "" else "$progress / $total"
+                            loadingCountLabel.text = if (progress >= total) "" else Localization["screen.open.loadingEntities", "$progress / $total"]
                         }
                     }
                     toUnload.forEachIndexed { i, entity ->
