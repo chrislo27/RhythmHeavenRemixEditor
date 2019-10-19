@@ -766,8 +766,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         remix.timeUpdate(Gdx.graphics.deltaTime)
         if (remix.playState == PLAYING) {
             songSubtitles.values.forEach { it.time += Gdx.graphics.deltaTime }
-            if (RHRE3.midiRecording) {
-                buildingNotes.values.forEach { bn ->
+            if (RHRE3.midiRecording && buildingNotes.isNotEmpty()) {
+                buildingNotes.values.toList().forEach { bn ->
                     val ent = bn.entity
                     ent.updateBounds {
                         ent.bounds.width = remix.beat - ent.bounds.x
