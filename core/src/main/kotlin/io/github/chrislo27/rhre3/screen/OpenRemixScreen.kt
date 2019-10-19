@@ -180,7 +180,7 @@ class OpenRemixScreen(main: RHRE3Application)
                             stage.titleIcon.image = rhre2Icon
                             Remix.unpackRHRE2(newRemix, zipFile)
                         } else {
-                            Remix.unpack(newRemix, zipFile)
+                            Remix.unpack(newRemix, zipFile, false)
                         }
                     } catch (e: Exception) {
                         throw e

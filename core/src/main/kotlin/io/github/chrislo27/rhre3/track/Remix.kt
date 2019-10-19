@@ -145,7 +145,7 @@ open class Remix(val main: RHRE3Application)
             return tree
         }
 
-        fun fromJson(tree: ObjectNode, remix: Remix): RemixLoadInfo {
+        fun fromJson(tree: ObjectNode, remix: Remix, preloadSounds: Boolean): RemixLoadInfo {
             remix.version = Version.fromString(tree["version"].asText())
             remix.databaseVersion = tree["databaseVersion"].asInt(-1)
 
@@ -194,7 +194,7 @@ open class Remix(val main: RHRE3Application)
 
                         entity.readData(node)
 
-                        remix.addEntity(entity)
+                        remix.addEntity(entity, preloadSounds = preloadSounds)
                     }
 
             // time signatures
@@ -410,7 +410,7 @@ open class Remix(val main: RHRE3Application)
         /**
          * Must NOT be called in the GL context thread! Will deadlock if this happens.
          */
-        fun unpack(remix: Remix, zip: ZipFile): RemixLoadInfo {
+        fun unpack(remix: Remix, zip: ZipFile, preloadSounds: Boolean): RemixLoadInfo {
             val jsonStream = zip.getInputStream(zip.getEntry("remix.json"))
             val objectNode: ObjectNode = JsonHandler.OBJECT_MAPPER.readTree(jsonStream) as ObjectNode
             jsonStream.close()
@@ -418,7 +418,7 @@ open class Remix(val main: RHRE3Application)
             val musicNode = objectNode["musicData"] as ObjectNode
             val musicPresent = musicNode["present"].booleanValue()
 
-            val result = Remix.fromJson(objectNode, remix)
+            val result = Remix.fromJson(objectNode, remix, preloadSounds)
 
             if (musicPresent) {
                 val folder = RHRE3.tmpMusic
@@ -814,10 +814,10 @@ open class Remix(val main: RHRE3Application)
 
     protected open fun createPlayalongInstance(): Playalong = Playalong(this)
 
-    fun addEntity(entity: Entity, doRecompute: Boolean = true) {
+    fun addEntity(entity: Entity, doRecompute: Boolean = true, preloadSounds: Boolean = true) {
         if (entity !in entities) {
             (entities as MutableList) += entity
-            if (entity is ISoundDependent) {
+            if (preloadSounds && entity is ISoundDependent) {
                 entity.preloadSounds()
             }
             if (doRecompute)
@@ -836,9 +836,9 @@ open class Remix(val main: RHRE3Application)
         }
     }
 
-    fun addEntities(list: List<Entity>, doRecomputeForEach: Boolean = false) {
+    fun addEntities(list: List<Entity>, doRecomputeForEach: Boolean = false, preloadSounds: Boolean = true) {
         list.forEach { e ->
-            addEntity(e, doRecomputeForEach)
+            addEntity(e, doRecomputeForEach, preloadSounds)
         }
         if (!doRecomputeForEach) {
             // Recompute once if not done for each addition

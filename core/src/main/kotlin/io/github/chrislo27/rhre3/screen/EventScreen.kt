@@ -101,7 +101,7 @@ class EventScreen(main: RHRE3Application)
     fun loadEventJson(eventType: EventType, file: FileHandle, nextScreen: ToolboksScreen<*, *>?): Boolean {
         return try {
             val loadInfo = Remix.fromJson(JsonHandler.OBJECT_MAPPER.readTree(file.readString("UTF-8")) as ObjectNode,
-                                          Remix(main))
+                                          Remix(main), true)
             remix = loadInfo.remix
             remix.playbackStart = -1f
             remix.playState = PlayState.STOPPED
