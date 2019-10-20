@@ -188,7 +188,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     fun selectInPicker(game: Game, datamodel: Datamodel?) {
         val series = game.series
-        val filterButton = filterButtons.find { it.filter is SeriesFilter && it.filter.series == series }
+        val filterButton = filterButtons.find { it is SeriesFilterButton && it.filter.series == series }
         if (filterButton != null) {
             val filter = filterButton.filter
             filterButton.onLeftClick(0f, 0f)
@@ -1188,15 +1188,13 @@ class EditorStage(parent: UIElement<EditorScreen>?,
             minimapBarStage.updatePositions()
             filterButtons as MutableList
 
-            val buttonWidth: Float = minimapBarStage.percentageOfWidth(
-                    Editor.ICON_SIZE)
+            val buttonWidth: Float = minimapBarStage.percentageOfWidth(Editor.ICON_SIZE)
             val buttonHeight: Float = 1f
 
             Series.VALUES.forEachIndexed { index, series ->
-                val filter: Filter = SeriesFilter.allSeriesFilters[series]
+                val filter: SeriesFilter = SeriesFilter.allSeriesFilters[series]
                         ?: error("Series filter not found: $series")
-                val tmp: FilterButton = FilterButton(filter, series.localization,
-                                                     palette, minimapBarStage, minimapBarStage).apply {
+                val tmp: FilterButton = SeriesFilterButton(filter, palette, minimapBarStage, minimapBarStage).apply {
                     this.location.set(
                             screenWidth = buttonWidth,
                             screenHeight = buttonHeight,
@@ -1612,7 +1610,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     }
 
-    open inner class FilterButton(val filter: Filter, val localization: String,
+    open inner class FilterButton(open val filter: Filter, val localization: String,
                                   palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
         : SelectableButton(palette, parent, stage, { _, _ -> }) {
 
@@ -1632,6 +1630,15 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         override val selectedLabel: ImageLabel<EditorScreen> = ImageLabel(palette, this, stage).apply {
             this.image = selectorRegionSeries
         }
+    }
+    
+    inner class SeriesFilterButton(override val filter: SeriesFilter, palette: UIPalette, parent: UIElement<EditorScreen>, stage: Stage<EditorScreen>)
+        : FilterButton(filter, filter.series.localization, palette, parent, stage) {
+        override var tooltipText: String?
+            set(_) {}
+            get() {
+                return if (filter.series.console.isNotEmpty()) ("${Localization[localization]} (${filter.series.console})") else Localization[localization]
+            }
     }
 
     open inner class PlaybackButton(val type: PlayState, palette: UIPalette, parent: UIElement<EditorScreen>,
@@ -1679,8 +1686,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
 
         private val keyText: String by lazy {
-            val moddedIndex = tool.index + 1
-            when (moddedIndex) {
+            when (val moddedIndex = tool.index + 1) {
                 10 -> " [LIGHT_GRAY][[0][]"
                 in 1..9 -> " [LIGHT_GRAY][[$moddedIndex][]"
                 else -> ""
