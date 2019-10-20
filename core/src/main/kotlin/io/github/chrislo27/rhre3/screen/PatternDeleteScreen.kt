@@ -51,7 +51,7 @@ class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val patter
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
 
-                PatternStorage.deletePattern(pattern).persist(deleteAllOthers = true)
+                PatternStorage.deletePattern(pattern).persist()
                 editor.stage.updateSelected()
                 main.screen = ScreenRegistry["editor"]
             }

@@ -39,7 +39,7 @@ object PatternStorage {
         sort()
     }
 
-    fun persist(deleteAllOthers: Boolean = false) {
+    fun persist() {
         val values = patterns.values.toList()
 
         values.mapNotNull { pattern ->
