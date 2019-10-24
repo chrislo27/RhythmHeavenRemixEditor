@@ -26,7 +26,8 @@ abstract class Background(val id: String) {
                     SeesawBackground("seesaw") to "See-Saw",
                     KarateManStripesBackground("karateManStripes1", stripe1 = Color.valueOf("FEC652"),
                     stripe2 = Color.valueOf("FFE86C")) to "Karate Man GBA 1",
-                    KarateManStripesBackground("karateManStripes2") to "Karate Man GBA 2"
+                    KarateManStripesBackground("karateManStripes2") to "Karate Man GBA 2",
+                    BTSDSBackground("btsDS") to "Built to Scale DS"
                   )
         }
         val backgrounds: List<Background> by lazy { backgroundsNames.keys.toList() }

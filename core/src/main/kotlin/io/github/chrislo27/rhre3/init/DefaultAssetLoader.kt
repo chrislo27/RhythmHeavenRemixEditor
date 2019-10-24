@@ -145,6 +145,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("bg_sd_starfield", "images/menu/sd_starfield.png")
         AssetRegistry.loadAsset<Texture>("bg_tapTrial", "images/menu/bg_tapTrial.png")
         AssetRegistry.loadAsset<Texture>("bg_launchparty_objects", "images/menu/launchparty.png")
+            AssetRegistry.loadAsset<Texture>("bg_btsds_spritesheet", "images/menu/btsds_spritesheet.png")
 
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_jumping", "images/playyan/jumping_26.png")
