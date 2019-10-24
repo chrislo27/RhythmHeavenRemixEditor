@@ -58,32 +58,34 @@ fun SpriteBatch.drawQuad(x1: Float, y1: Float, color1: Float,
                          x2: Float, y2: Float, color2: Float,
                          x3: Float, y3: Float, color3: Float,
                          x4: Float, y4: Float, color4: Float,
-                         texture: Texture = ToolboksGame.smallTexture) {
+                         texture: Texture = ToolboksGame.smallTexture,
+                         blU: Float = 0f, blV: Float = 0f, brU: Float = 1f, brV: Float = 0f,
+                         trU: Float = 1f, trV: Float = 1f, tlU: Float = 0f, tlV: Float = 1f) {
     var idx = 0
 
     quadVerts[idx++] = x1
     quadVerts[idx++] = y1
     quadVerts[idx++] = color1
-    quadVerts[idx++] = 0f
-    quadVerts[idx++] = 0f
+    quadVerts[idx++] = blU
+    quadVerts[idx++] = blV
 
     quadVerts[idx++] = x2
     quadVerts[idx++] = y2
     quadVerts[idx++] = color2
-    quadVerts[idx++] = 1f
-    quadVerts[idx++] = 0f
+    quadVerts[idx++] = brU
+    quadVerts[idx++] = brV
 
     quadVerts[idx++] = x3
     quadVerts[idx++] = y3
     quadVerts[idx++] = color3
-    quadVerts[idx++] = 1f
-    quadVerts[idx++] = 1f
+    quadVerts[idx++] = trU
+    quadVerts[idx++] = trV
 
     quadVerts[idx++] = x4
     quadVerts[idx++] = y4
     quadVerts[idx++] = color4
-    quadVerts[idx++] = 0f
-    quadVerts[idx] = 1f
+    quadVerts[idx++] = tlU
+    quadVerts[idx] = tlV
 
     this.draw(texture, quadVerts, 0, 20)
 }
