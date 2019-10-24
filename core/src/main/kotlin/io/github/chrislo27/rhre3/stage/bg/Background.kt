@@ -21,7 +21,8 @@ abstract class Background(val id: String) {
                     TilingBackground("tapTrial", 5f, speedX = 0f, speedY = 1f) { AssetRegistry["bg_tapTrial"] } to "Tap Trial",
                     TilingBackground("tiled", 5f, speedX = 1f, speedY = 1f) { AssetRegistry["bg_tile"] } to "Tiled",
                     LaunchPartyBackground("launchParty") to "Launch Party",
-                    KittiesBackground("kitties") to "Kitties!"
+                    KittiesBackground("kitties") to "Kitties!",
+                    SeesawBackground("seesaw") to "See-Saw"
                   )
         }
         val backgrounds: List<Background> by lazy { backgroundsNames.keys.toList() }

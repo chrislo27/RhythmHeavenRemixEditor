@@ -15,7 +15,6 @@ import kotlin.math.roundToLong
 class RetroBackground(id: String, var cycleSpeed: Float = 1f / 15f)
     : Background(id) {
 
-    private val hsv: FloatArray = FloatArray(3)
     private val color: Color = Color()
     private val color2: Color = Color()
     private val hColor: Color = Color()

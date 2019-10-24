@@ -150,7 +150,7 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = false
                 this.fontScaleMultiplier = 1f
                 this.textWrapping = false
-                this.location.set(screenX = 0.5f, screenWidth = 0.5f, screenY = 0.3f, screenHeight = 0.7f)
+                this.location.set(screenX = 0.525f, screenWidth = 0.45f, screenY = 0.3f, screenHeight = 0.7f)
             }
             val nameLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
                 this.textAlign = Align.center
