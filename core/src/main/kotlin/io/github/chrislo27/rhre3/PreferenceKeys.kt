@@ -55,6 +55,7 @@ object PreferenceKeys {
     val READ_NEWS = "readNewsArticles"
     val PADDLER_LOADING_ICON = "paddlerLoadingIcon"
     val VIEWED_PARTNERS_VERSION = "viewedPartnersVersion"
+    val LAMPSHADE_EARLY_ADOPTER = "lampshadeEarlyAdopter"
     val PLAYALONG_CONTROLS = "playalongControls"
     val PLAYALONG_CONTROLLER_MAPPINGS = "playalongControllerMappings"
     val PLAYALONG_CALIBRATION_KEY = "playalongCalibrationKey"
