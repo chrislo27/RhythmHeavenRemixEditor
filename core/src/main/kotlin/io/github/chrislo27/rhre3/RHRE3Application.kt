@@ -211,12 +211,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (lastVersion != RHRE3.VERSION) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0)
         }
-        if (lastVersion != null && RHRE3.VERSION.minor == VersionHistory.LAMPSHADE_UPDATE.minor && preferences.getLong(PreferenceKeys.LAMPSHADE_EARLY_ADOPTER, 0L) == 0L) {
-            preferences.putLong(PreferenceKeys.LAMPSHADE_EARLY_ADOPTER, System.currentTimeMillis())
-        }
-//        if (preferences.getLong(PreferenceKeys.LAMPSHADE_EARLY_ADOPTER, 0L) in 1000L..10001L) {
-            Background.confirmedLampshadeEarlyAdopter = true
-//        }
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
         advancedOptions = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)

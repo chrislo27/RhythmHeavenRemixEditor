@@ -14,9 +14,7 @@ abstract class Background(val id: String) {
     companion object {
         data class BgData(val bg: Background, val name: String)
         
-        val kmStripes2: BgData = BgData(KarateManStripesBackground("karateManStripes2"), "Karate Man GBA 2")
-        
-        var confirmedLampshadeEarlyAdopter: Boolean = false
+        private val kmStripes2: BgData = BgData(KarateManStripesBackground("karateManStripes2"), "Karate Man GBA 2")
         
         val backgroundsData: List<BgData> by lazy {
             listOf(
@@ -34,8 +32,9 @@ abstract class Background(val id: String) {
                     BgData(SeesawBackground("seesaw"), "See-Saw"),
                     BgData(KarateManStripesBackground("karateManStripes1", stripe1 = Color.valueOf("FEC652"),
                                                       stripe2 = Color.valueOf("FFE86C")), "Karate Man GBA"),
+                    kmStripes2,
                     BgData(BTSDSBackground("btsDS"), "Built to Scale DS")
-                  ) + (if (confirmedLampshadeEarlyAdopter) listOf(kmStripes2) else emptyList())
+                  )
         }
         val backgrounds: List<Background> by lazy { backgroundsData.map { it.bg } }
         val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) }
