@@ -158,17 +158,19 @@ class InfoScreen(main: RHRE3Application)
                 this.isLocalizationKey = false
                 this.fontScaleMultiplier = 0.6f
                 this.textWrapping = false
-                this.location.set(screenY = 0.05f, screenHeight = 0.25f)
+                this.location.set(screenY = 0.05f, screenHeight = 0.25f, pixelX = 1f, pixelWidth = -2f)
             }
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 cycle(1)
+                hoverTime = 0f
             }
 
             override fun onRightClick(xPercent: Float, yPercent: Float) {
                 super.onRightClick(xPercent, yPercent)
                 cycle(-1)
+                hoverTime = 0f
             }
 
             fun cycle(dir: Int) {

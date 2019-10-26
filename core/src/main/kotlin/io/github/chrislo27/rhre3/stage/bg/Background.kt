@@ -18,7 +18,7 @@ abstract class Background(val id: String) {
         
         val backgroundsData: List<BgData> by lazy {
             listOf(
-                    BgData(TengokuBackground("tengoku"), "Tengoku"),
+                    BgData(TengokuBackground("tengoku"), "GBA Game Select"),
                     BgData(KarateManBackground("karateMan"), "Karate Man"),
                     BgData(TilingBackground("rhdsPolkaDots", 5f,
                                             speedX = 3f, speedY = -3f, widthCoeff = 0.5f, heightCoeff = 0.5f)
@@ -33,11 +33,15 @@ abstract class Background(val id: String) {
                     BgData(KarateManStripesBackground("karateManStripes1", stripe1 = Color.valueOf("FEC652"),
                                                       stripe2 = Color.valueOf("FFE86C")), "Karate Man GBA"),
                     kmStripes2,
-                    BgData(BTSDSBackground("btsDS"), "Built to Scale DS")
+                    BgData(BTSDSBackground("btsDS"), "Built to Scale DS"),
+                    BgData(BTSDSBackground("btsDS2", Color.valueOf("E1E11FFF")), "Built to Scale DS 2"),
+                    BgData(BTSDSBackground("btsDSBlue", Color.valueOf("2963FFFF")), "Built to Scale DS (Blue)")
+//                    BgData(PolyrhythmBackground("polyrhythm"), "Polyrhythm")
                   )
         }
         val backgrounds: List<Background> by lazy { backgroundsData.map { it.bg } }
         val backgroundMap: Map<String, Background> by lazy { backgrounds.associateBy(Background::id) }
+        val backgroundMapByBg: Map<Background, BgData> by lazy { backgroundsData.associateBy { it.bg } }
         val defaultBackground: Background
             get() = backgroundMap.getValue("tengoku")
     }
