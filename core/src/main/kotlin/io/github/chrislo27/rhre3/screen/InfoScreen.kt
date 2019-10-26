@@ -107,6 +107,7 @@ class InfoScreen(main: RHRE3Application)
     private val versionLabel: TextLabel<InfoScreen>
     private val onlineLabel: TextLabel<InfoScreen>
     private val loadingIcon: LoadingIcon<InfoScreen>
+    private val menuBgButton: Button<InfoScreen>
 
     init {
         val palette = stage.palette
@@ -144,7 +145,7 @@ class InfoScreen(main: RHRE3Application)
             this.location.set(screenX = 0.175f, screenWidth = 0.65f)
         }
 
-        stage.bottomStage.elements += object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
+        menuBgButton = object : Button<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
             val numberLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), this, this.stage).apply {
                 this.textAlign = Align.center
                 this.isLocalizationKey = false
@@ -189,7 +190,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 numberLabel.text = "${values.indexOf(GenericStage.backgroundImpl) + 1}/${values.size}"
-                nameLabel.text = "${Background.backgroundsNames[GenericStage.backgroundImpl]}"
+                nameLabel.text = "${Background.backgroundMapByBg[GenericStage.backgroundImpl]?.name}"
 
                 main.preferences.putString(PreferenceKeys.BACKGROUND, GenericStage.backgroundImpl.id).flush()
             }
@@ -206,6 +207,7 @@ class InfoScreen(main: RHRE3Application)
 
             this.location.set(screenX = 0.85f, screenWidth = 1f - 0.85f)
         }
+        stage.bottomStage.elements += menuBgButton
 
         onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
             var last = Int.MIN_VALUE
@@ -1055,7 +1057,7 @@ class InfoScreen(main: RHRE3Application)
 
     override fun render(delta: Float) {
         super.render(delta)
-        if (backgroundOnly) {
+        if (backgroundOnly || menuBgButton.hoverTime >= 1.5f) {
             val batch = main.batch
             batch.begin()
             GenericStage.backgroundImpl.render(main.defaultCamera, batch, main.shapeRenderer, 0f)
