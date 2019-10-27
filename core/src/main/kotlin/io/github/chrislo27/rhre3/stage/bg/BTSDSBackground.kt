@@ -13,6 +13,7 @@ class BTSDSBackground(id: String, val floorColor: Color = Color.valueOf("3DFD46F
     private val floor3Face = Face(0, 0, floorColor.cpy().sub(17f / 255f, 74f / 255f, 20f / 255f, 0f))
     private val floor4Face = Face(0, 0, floorColor.cpy().sub(24f / 255f, 100f / 255f, 26f / 255f, 0f))
     private val floor5Face = Face(0, 0, floorColor.cpy().sub(29f / 255f, 124f / 255f, 34f / 255f, 0f))
+    private val conveyorFace = Face(0, 2, floor5Face.tint.cpy(), 1f, 0, 3)
     private val whitePlatformFace = Face(0, 0)
     private val redStripesTopFace = Face(1, 0)
     private val redStripesSideFace = Face(2, 0)
@@ -22,6 +23,7 @@ class BTSDSBackground(id: String, val floorColor: Color = Color.valueOf("3DFD46F
     val FLOOR3: Block = Block("floor3", floor3Face, floor3Face, floor3Face)
     val FLOOR4: Block = Block("floor4", floor4Face, floor4Face, floor4Face)
     val FLOOR5: Block = Block("floor5", floor5Face, floor5Face, floor5Face)
+    val CONVEYOR: Block = Block("conveyor", floor5Face, conveyorFace, floor5Face)
     val FLOOR_LIST: List<Block> = listOf(FLOOR, FLOOR2, FLOOR3, FLOOR4, FLOOR5)
     val PLATFORM: Block = Block("platform", floor2Face, whitePlatformFace, floor2Face)
     val PLATFORM_CENTRE: Block = Block("platform_centre", redStripesSideFace, redStripesTopFace, redStripesSideFace)
@@ -51,6 +53,7 @@ class BTSDSBackground(id: String, val floorColor: Color = Color.valueOf("3DFD46F
                 if (x in -1..1) {
                     map.setBlock(Block.NOTHING, x + map.sizeX / 2, map.sizeY - 4, z)
                 }
+                map.setBlock(CONVEYOR, map.sizeX / 2, map.sizeY - 5, z)
             }
         }
         val platform = 9

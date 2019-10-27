@@ -21,7 +21,8 @@ import kotlin.math.sin
 abstract class BlockBasedBackground(id: String)
     : Background(id) {
     
-    data class Face(val spriteX: Int, val spriteY: Int, val tint: Color = Color(1f, 1f, 1f, 1f)) {
+    data class Face(val spriteX: Int, val spriteY: Int, val tint: Color = Color(1f, 1f, 1f, 1f),
+                    val interpolateTime: Float = 0f, val lerpX: Int = 0, val lerpY: Int = 0) {
         companion object {
             val FACELESS: Face = Face(3, 1)
         }
@@ -115,41 +116,47 @@ abstract class BlockBasedBackground(id: String)
                 val rootY = x * map.xOffsetY + z * map.zOffsetY + y
                 if (block.xFace != Face.FACELESS && map.getBlock(x - 1, y, z) == Block.NOTHING) {
                     val f = block.xFace
+                    val spriteX = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteX.toFloat(), f.lerpX.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteX.toFloat()
+                    val spriteY = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteY.toFloat(), f.lerpY.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteY.toFloat()
                     batch.drawQuad(rootX + map.zOffsetX, rootY + map.zOffsetY, f.tint.toFloatBits(),
                                    rootX, rootY, f.tint.toFloatBits(),
                                    rootX, rootY + 1f, f.tint.toFloatBits(),
                                    rootX + map.zOffsetX, rootY + map.zOffsetY + 1f, f.tint.toFloatBits(),
                                    spritesheet,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY) * spritesheetCellV,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY) * spritesheetCellV
+                                   (spriteX) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY) * spritesheetCellV,
+                                   (spriteX) * spritesheetCellU, (spriteY) * spritesheetCellV
                                   )
                 }
                 if (block.zFace != Face.FACELESS && map.getBlock(x, y, z - 1) == Block.NOTHING) {
                     val f = block.zFace
+                    val spriteX = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteX.toFloat(), f.lerpX.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteX.toFloat()
+                    val spriteY = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteY.toFloat(), f.lerpY.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteY.toFloat()
                     batch.drawQuad(rootX, rootY, f.tint.toFloatBits(),
                                    rootX + map.xOffsetX, rootY + map.xOffsetY, f.tint.toFloatBits(),
                                    rootX + map.xOffsetX, rootY + map.xOffsetY + 1f, f.tint.toFloatBits(),
                                    rootX, rootY + 1f, f.tint.toFloatBits(),
                                    spritesheet,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY) * spritesheetCellV,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY) * spritesheetCellV
+                                   (spriteX) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY) * spritesheetCellV,
+                                   (spriteX) * spritesheetCellU, (spriteY) * spritesheetCellV
                                   )
                 }
                 if (block.yFace != Face.FACELESS && map.getBlock(x, y + 1, z) == Block.NOTHING) {
                     val f = block.yFace
+                    val spriteX = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteX.toFloat(), f.lerpX.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteX.toFloat()
+                    val spriteY = if (f.interpolateTime > 0f) MathUtils.lerp(f.spriteY.toFloat(), f.lerpY.toFloat(), MathHelper.getSawtoothWave(f.interpolateTime)) else f.spriteY.toFloat()
                     batch.drawQuad(rootX, rootY + 1f, f.tint.toFloatBits(),
                                    rootX + map.xOffsetX, rootY + map.xOffsetY + 1f, f.tint.toFloatBits(),
                                    rootX + map.zOffsetX + map.xOffsetX, rootY + map.zOffsetY + map.xOffsetY + 1f, f.tint.toFloatBits(),
                                    rootX + map.zOffsetX, rootY + map.zOffsetY + 1f, f.tint.toFloatBits(),
                                    spritesheet,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY + 1) * spritesheetCellV,
-                                   (f.spriteX + 1) * spritesheetCellU, (f.spriteY) * spritesheetCellV,
-                                   (f.spriteX) * spritesheetCellU, (f.spriteY) * spritesheetCellV
+                                   (spriteX) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY + 1) * spritesheetCellV,
+                                   (spriteX + 1) * spritesheetCellU, (spriteY) * spritesheetCellV,
+                                   (spriteX) * spritesheetCellU, (spriteY) * spritesheetCellV
                                   )
                     if (map.getMetadata(x, y, z) > 0) {
                         val flash = if (map.getMetadata(x, y, z) > 1) flashColor2 else flashColor1
