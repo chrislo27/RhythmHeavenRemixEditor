@@ -51,9 +51,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
-import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
-import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import io.github.chrislo27.toolboks.version.Version
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -70,11 +68,11 @@ import kotlin.concurrent.thread
 
 class RHRE3Application(logger: Logger, logToFile: File?)
     : ToolboksGame(logger, logToFile, RHRE3.VERSION, RHRE3.DEFAULT_SIZE, ResizeAction.KEEP_ASPECT_RATIO, RHRE3.MINIMUM_SIZE), CloseListener {
-
+    
     companion object {
         lateinit var instance: RHRE3Application
             private set
-
+        
         val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder()
                                                                   .setThreadFactory {
                                                                       Thread(it).apply {
@@ -83,19 +81,19 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                                                                   }
                                                                   .setFollowRedirect(true)
                                                                   .setCompressionEnforced(true))
-
+        
         private const val RAINBOW_STR = "RAINBOW"
-
+        
         init {
             Colors.put("X", Color.CLEAR)
             Colors.put("PICOSONG", Color.valueOf("26AB57"))
         }
     }
-
+    
     val defaultFontLargeKey = "default_font_large"
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
     val timeSignatureFontKey = "time_signature"
-
+    
     val defaultFontFTF: FreeTypeFont
         get() = fonts[defaultFontKey]
     val defaultBorderedFontFTF: FreeTypeFont
@@ -106,14 +104,14 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         get() = fonts[defaultBorderedFontLargeKey]
     val timeSignatureFontFTF: FreeTypeFont
         get() = fonts[timeSignatureFontKey]
-
+    
     val defaultFontLarge: BitmapFont
         get() = defaultFontLargeFTF.font!!
     val defaultBorderedFontLarge: BitmapFont
         get() = defaultBorderedFontLargeFTF.font!!
     val timeSignatureFont: BitmapFont
         get() = timeSignatureFontFTF.font!!
-
+    
     private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
         this.font!!.apply {
@@ -124,7 +122,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             data.missingGlyph = data.getGlyph('☒')
         }
     }
-
+    
     val uiPalette: UIPalette by lazy {
         UIPalette(defaultFontFTF, defaultFontLargeFTF, 1f,
                   Color(1f, 1f, 1f, 1f),
@@ -132,32 +130,32 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                   Color(0.25f, 0.25f, 0.25f, 0.75f),
                   Color(0f, 0.5f, 0.5f, 0.75f))
     }
-
+    
     lateinit var preferences: Preferences
         private set
-
+    
     var versionTextWidth: Float = -1f
         private set
-
+    
     @Volatile
     var githubVersion: Version = Version.RETRIEVING
         private set
     @Volatile
     var liveUsers: Int = -1
         private set
-
+    
     var advancedOptions: Boolean = false
     var disableTimeStretching: Boolean = false
     private var lastWindowed: Pair<Int, Int> = RHRE3.DEFAULT_SIZE.copy()
-
+    
     private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
-
+    
     override val programLaunchArguments: List<String>
         get() = RHRE3.launchArguments
-
+    
     override fun getTitle(): String =
             "${RHRE3.TITLE} $versionString"
-
+    
     override fun create() {
         super.create()
         Toolboks.LOGGER.info("${RHRE3.TITLE} $versionString is starting...")
@@ -168,9 +166,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         // 9.X.Y(extra)
         val javaVersion = System.getProperty("java.version").trim()
         Toolboks.LOGGER.info("Running on JRE $javaVersion")
-
+        
         instance = this
-
+        
         // localization stuff
         run {
             Localization.loadBundlesFromLangFile()
@@ -178,7 +176,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 Localization.logMissingLocalizations()
             }
         }
-
+        
         // font stuff
         run {
             fonts[defaultFontLargeKey] = createDefaultLargeFont()
@@ -194,17 +192,17 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
         }
-
+        
         // Copy over SoundStretch executables
         RHRE3.SOUNDSTRETCH_FOLDER.mkdirs()
         val currentOS = SoundStretch.currentOS
         if (currentOS != SoundStretch.OS.UNSUPPORTED) {
             Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
         }
-
+        
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
-
+        
         AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
         GameMetadata.setPreferencesInstance(preferences)
         val lastVersion = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, null) ?: "")
@@ -231,26 +229,26 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         disableTimeStretching = preferences.getBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, false)
         Playalong.loadFromPrefs(preferences)
         Controllers.getControllers() // Initialize
-
+        
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
         preferences.flush()
-
+        
         PatternStorage.load()
-
+        
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
-
+        
         // load themes
         LoadedThemes.reloadThemes(preferences, true)
-
+        
         // MIDI input
         MidiHandler
-
+        
         // screens
         run {
             ScreenRegistry += "assetLoad" to AssetRegistryLoadingScreen(this)
-
+            
             fun addOtherScreens() {
                 ScreenRegistry += "databaseUpdate" to GitUpdateScreen(this)
                 ScreenRegistry += "sfxdbLoad" to SFXDBLoadingScreen(this)
@@ -266,12 +264,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 ScreenRegistry += "partners" to PartnersScreen(this)
                 ScreenRegistry += "advancedOptions" to AdvancedOptionsScreen(this)
             }
-
+            
             val nextScreenLambda: (() -> ToolboksScreen<*, *>?) = nextScreenLambda@{
                 defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
                 defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
                 defaultCamera.update()
-
+                
                 addOtherScreens()
                 loadWindowSettings()
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "sfxdbLoad" else "databaseUpdate"]
@@ -282,12 +280,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
             setScreen(ScreenRegistry.getNonNullAsType<AssetRegistryLoadingScreen>("assetLoad")
                               .setNextScreen(nextScreenLambda))
-
+            
             RemixRecovery.addSelfToShutdownHooks()
             Toolboks.LOGGER.info(
                     "Can recover last remix: ${RemixRecovery.canBeRecovered()}; Should recover: ${RemixRecovery.shouldBeRecovered()}")
         }
-
+        
         thread(isDaemon = true, name = "Live User Count") {
             Thread.sleep(2500L)
             var failures = 0
@@ -303,7 +301,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                             .addHeader("X-D-ID", DiscordHelper.currentUser?.userId ?: "null")
                             .addHeader("X-D-U", DiscordHelper.currentUser?.let { "${it.username}#${it.discriminator}" } ?: "null")
                             .execute().get()
-
+                    
                     if (req.statusCode == 200) {
                         val liveUsers = req.responseBody?.trim()?.toIntOrNull()
                         if (liveUsers != null) {
@@ -321,26 +319,26 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                     e.printStackTrace()
                     failed()
                 }
-
+                
                 Thread.sleep(60_000L * (failures + 1))
             } while (!Thread.interrupted() && !RHRE3.noOnlineCounter)
-
+            
             if (RHRE3.noOnlineCounter) {
                 this.liveUsers = 0
                 Toolboks.LOGGER.info("No online counter by request from launch args")
             }
         }
-
+        
         GlobalScope.launch {
             try {
                 val nano = System.nanoTime()
                 val obj = JsonHandler.fromJson<ReleaseObject>(
                         httpClient.prepareGet(RHRE3.RELEASE_API_URL).execute().get().responseBody)
-
+                
                 githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
                 Toolboks.LOGGER.info(
                         "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
-
+                
                 val v = githubVersion
                 if (!v.isUnknown) {
                     if (v > RHRE3.VERSION) {
@@ -354,10 +352,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 e.printStackTrace()
             }
         }
-
+        
         LC.all(this)
     }
-
+    
     override fun exceptionHandler(t: Throwable) {
         val currentScreen = this.screen
         AnalyticsHandler.track("Render Crash", mapOf(
@@ -382,25 +380,25 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             Gdx.app.exit()
         }
     }
-
+    
     override fun preRender() {
         rainbowColor.fromHsv(MathHelper.getSawtoothWave(2f) * 360f, 0.8f, 0.8f)
         Colors.put(RAINBOW_STR, rainbowColor)
         super.preRender()
     }
-
+    
     override fun postRender() {
         val screen = screen
         if (screen !is HidesVersionText || !screen.hidesVersionText) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
-
+            
             if (!githubVersion.isUnknown && githubVersion > RHRE3.VERSION) {
                 font.color = Color.ORANGE
             } else {
                 font.setColor(1f, 1f, 1f, 1f)
             }
-
+            
             val oldProj = batch.projectionMatrix
             batch.projectionMatrix = defaultCamera.combined
             batch.begin()
@@ -412,13 +410,35 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             batch.end()
             batch.projectionMatrix = oldProj
             font.setColor(1f, 1f, 1f, 1f)
-
+            
             font.data.setScale(1f)
         }
-
+        
+        @Suppress("ConstantConditionIf")
+        if (RHRE3.enableEarlyAccessMessage) {
+            val font = defaultBorderedFont
+            val height = 0.9f
+            val alpha = if (defaultCamera.getInputY() / defaultCamera.viewportHeight in (height - font.capHeight / defaultCamera.viewportHeight)..(height)) 0.6f else 1f
+            font.scaleMul(0.85f)
+            font.setColor(1f, 1f, 1f, alpha)
+            
+            val oldProj = batch.projectionMatrix
+            batch.projectionMatrix = defaultCamera.combined
+            batch.begin()
+            font.drawCompressed(batch, "Early-access version. Do not redistribute; do not publish video recordings. (Licensed to ${AnalyticsHandler.getUUID().takeUnless { it.isEmpty() }?.run { substring(24) }})",
+                                0f,
+                                height * defaultCamera.viewportHeight,
+                                defaultCamera.viewportWidth, Align.center)
+            batch.end()
+            batch.projectionMatrix = oldProj
+            font.setColor(1f, 1f, 1f, 1f)
+            
+            font.data.setScale(1f)
+        }
+        
         super.postRender()
     }
-
+    
     override fun dispose() {
         super.dispose()
         preferences.putString(PreferenceKeys.LAST_VERSION, RHRE3.VERSION.toString())
@@ -443,7 +463,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         MidiHandler.dispose()
         SoundCache.unloadAll()
     }
-
+    
     override fun attemptClose(): Boolean {
         val screenRequestedStop = (screen as? CloseListener)?.attemptClose() == false
         return if (screenRequestedStop) {
@@ -460,7 +480,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
         }
     }
-
+    
     fun persistWindowSettings() {
         val isFullscreen = Gdx.graphics.isFullscreen
         if (isFullscreen) {
@@ -469,12 +489,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             preferences.putString(PreferenceKeys.WINDOW_STATE,
                                   "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
         }
-
+        
         Toolboks.LOGGER.info("Persisting window settings as ${preferences.getString(PreferenceKeys.WINDOW_STATE)}")
-
+        
         preferences.flush()
     }
-
+    
     fun loadWindowSettings() {
         val str: String = preferences.getString(PreferenceKeys.WINDOW_STATE,
                                                 "${RHRE3.WIDTH}x${RHRE3.HEIGHT}").toLowerCase(Locale.ROOT)
@@ -490,25 +510,25 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 width = str.substringBefore('x').toIntOrNull()?.coerceAtLeast(160) ?: RHRE3.WIDTH
                 height = str.substringAfter('x').toIntOrNull()?.coerceAtLeast(90) ?: RHRE3.HEIGHT
             }
-
+            
             Gdx.graphics.setWindowedMode(width, height)
         }
     }
-
+    
     fun attemptFullscreen() {
         lastWindowed = Gdx.graphics.width to Gdx.graphics.height
         Gdx.graphics.setFullscreenMode(Gdx.graphics.displayMode)
     }
-
+    
     fun attemptEndFullscreen() {
         val last = lastWindowed
         Gdx.graphics.setWindowedMode(last.first, last.second)
     }
-
+    
     fun attemptResetWindow() {
         Gdx.graphics.setWindowedMode(RHRE3.DEFAULT_SIZE.first, RHRE3.DEFAULT_SIZE.second)
     }
-
+    
     override fun keyDown(keycode: Int): Boolean {
         val res = super.keyDown(keycode)
         if (!res) {
@@ -530,7 +550,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         return res
     }
-
+    
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
         return FreeTypeFontGenerator.FreeTypeFontParameter().apply {
             magFilter = Texture.TextureFilter.Nearest
@@ -542,12 +562,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             hinting = FreeTypeFontGenerator.Hinting.AutoFull
         }
     }
-
+    
     override fun createDefaultFont(): FreeTypeFont {
         return FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter())
                 .setAfterLoad(fontAfterLoadFunction)
     }
-
+    
     override fun createDefaultBorderedFont(): FreeTypeFont {
         return FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter()
                 .apply {
@@ -555,7 +575,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 })
                 .setAfterLoad(fontAfterLoadFunction)
     }
-
+    
     private fun createDefaultLargeFont(): FreeTypeFont {
         return FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter()
                 .apply {
@@ -564,12 +584,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 })
                 .setAfterLoad(fontAfterLoadFunction)
     }
-
+    
     private fun createDefaultLargeBorderedFont(): FreeTypeFont {
         return FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter()
                 .apply {
                     borderWidth = 1.5f
-
+                    
                     size *= 4
                     borderWidth *= 4
                 })
