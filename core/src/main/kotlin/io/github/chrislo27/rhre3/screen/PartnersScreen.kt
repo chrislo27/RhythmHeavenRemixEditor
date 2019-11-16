@@ -98,8 +98,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
     override fun renderUpdate() {
         super.renderUpdate()
 
-        if (Gdx.input.isControlDown()) {
-        } else {
+        if (!Gdx.input.isControlDown()) {
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 stage.backButton.onLeftClick(0f, 0f)
             }
