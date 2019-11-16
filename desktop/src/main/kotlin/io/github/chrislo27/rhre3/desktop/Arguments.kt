@@ -42,7 +42,7 @@ class Arguments {
     @Parameter(names = ["--output-custom-sfx"], description = "Writes out custom SFX that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up.")
     var outputCustomSfx: Boolean = false
     
-    @Parameter(names = ["--show-tapalong-markers"], description = "Shows tapalong tap markers.")
+    @Parameter(names = ["--show-tapalong-markers"], description = "Shows tapalong tap markers by default.")
     var showTapalongMarkers: Boolean = false
     
     @Parameter(names = ["--midi-recording"], description = "Enables MIDI recording, a hidden feature. Using a MIDI device while the remix is playing will write notes to the remix.")

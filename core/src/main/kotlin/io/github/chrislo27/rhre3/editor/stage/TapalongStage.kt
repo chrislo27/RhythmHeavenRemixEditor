@@ -15,7 +15,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.ui.*
 import kotlin.math.roundToInt
-import kotlin.math.roundToLong
+import kotlin.math.sqrt
 
 
 class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorStage, camera: OrthographicCamera)
@@ -23,12 +23,14 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
 
     companion object {
         const val AUTO_RESET_SECONDS = 5
-        const val MAX_INPUTS = 1024
+        const val MAX_INPUTS = 4096
     }
 
-    var markersEnabled: Boolean = RHRE3.showTapalongMarkers
+    var markersEnabled: Boolean = RHRE3.showTapalongMarkersByDefault
     val tapRecords = mutableListOf<TapRecord>()
     var tempo: Float = 0f
+        private set
+    var stdDeviation: Float = 0f
         private set
     val roundedTempo: Int
         get() = tempo.roundToInt()
@@ -38,7 +40,8 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     }
     private val tempoLabel: TextLabel<EditorScreen>
     private val inputsLabel: TextLabel<EditorScreen>
-    private val realTempoLabel: TextLabel<EditorScreen>
+    private val rawTempoLabel: TextLabel<EditorScreen>
+    private val stdDevLabel: TextLabel<EditorScreen>
     private val remix: Remix
         get() = editor.remix
     private var timeSinceLastTap: Long = System.currentTimeMillis()
@@ -50,28 +53,6 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.location.set(0f, 0f, 1f, 1f)
         }
-//        this.elements += object : UIElement<EditorScreen>(this, this) {
-//            override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-//            }
-//
-//            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-//                return this@TapalongStage.visible
-//            }
-//
-//            override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-//                return this@TapalongStage.visible
-//            }
-//
-//            override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-//                return this@TapalongStage.visible
-//            }
-//
-//            override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-//                return this@TapalongStage.visible
-//            }
-//        }.apply {
-//            this.location.set(0f, 0f, 1f, 1f)
-//        }
 
         tempoLabel = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getFont(): BitmapFont {
@@ -124,27 +105,44 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
             this.text = "editor.tapalong.numberOfInputs"
         }
         this.elements += inputsLabel
-        realTempoLabel = object : TextLabel<EditorScreen>(palette, this, this) {
+        rawTempoLabel = object : TextLabel<EditorScreen>(palette, this, this) {
             override fun getRealText(): String {
                 return Localization[text, tempo]
             }
         }.apply {
-            this.location.set(screenWidth = 0.25f, screenHeight = tempoLabel.location.screenHeight)
-            this.location.set(screenX = (4 / 5f) - this.location.screenWidth / 2,
+            this.location.set(screenWidth = 0.2f, screenHeight = tempoLabel.location.screenHeight)
+            this.location.set(screenX = (4 / 5f) - 0.125f,
                               screenY = tempoLabel.location.screenY)
 
             this.isLocalizationKey = true
             this.textAlign = Align.center
+            this.textWrapping = false
             this.text = "editor.tapalong.avgTempo"
         }
-        this.elements += realTempoLabel
-
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                reset()
+        this.elements += rawTempoLabel
+        stdDevLabel = object : TextLabel<EditorScreen>(palette, this, this) {
+            override fun getRealText(): String {
+                return Localization[text, stdDeviation]
             }
         }.apply {
+            this.location.set(screenWidth = 0.1f, screenHeight = tempoLabel.location.screenHeight)
+            this.location.set(screenX = (4 / 5f) - 0.125f + 0.0125f + rawTempoLabel.location.screenWidth,
+                              screenY = tempoLabel.location.screenY)
+
+            this.isLocalizationKey = true
+            this.fontScaleMultiplier = 0.75f
+            this.textAlign = Align.center
+            this.textWrapping = false
+            this.text = "editor.tapalong.stdDev"
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "editor.tapalong.stdDev.tooltip"
+        }
+        this.elements += stdDevLabel
+
+        this.elements += Button(palette, this, this).apply {
+            leftClickAction = { _, _ ->
+                reset()
+            }
             addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage) {
                 override fun getRealText(): String {
                     return Localization[text, AUTO_RESET_SECONDS]
@@ -154,31 +152,13 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
                 this.text = "editor.tapalong.button.reset"
                 this.fontScaleMultiplier = 0.75f
             })
-            this.location.set(screenWidth = 0.3f, screenHeight = 0.35f)
-            this.location.set(screenX = 0.025f, screenY = 0.05f)
+            this.location.set(screenWidth = 0.3125f, screenHeight = 0.35f)
+            this.location.set(screenX = 0.0125f, screenY = 0.05f)
         }
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                this@TapalongStage.markersEnabled = !this@TapalongStage.markersEnabled
-            }
-        }.apply {
-            addLabel(TextLabel(palette, this, this@TapalongStage).apply {
-                this.isLocalizationKey = true
-                this.text = "editor.tapalong.button.toggleMarkers"
-                this.fontScaleMultiplier = 0.75f
-            })
-            this.location.set(screenWidth = 0.3f, screenHeight = 0.35f)
-            this.location.set(screenX = 0.675f, screenY = 0.05f)
-
-            this.visible = false
-        }
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        this.elements += Button(palette, this, this).apply {
+            leftClickAction = { _, _ ->
                 remix.cuesMuted = !remix.cuesMuted
             }
-        }.apply {
             addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage) {
                 override fun getRealText(): String {
                     return Localization["editor.tapalong.button.toggleCues.${remix.cuesMuted}"]
@@ -187,15 +167,28 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
                 this.isLocalizationKey = true
                 this.fontScaleMultiplier = 0.75f
             })
-            this.location.set(screenWidth = 0.3f, screenHeight = 0.35f)
+            this.location.set(screenWidth = (0.3125f - 0.0125f) / 2f, screenHeight = 0.35f)
             this.location.set(screenX = 0.675f, screenY = 0.05f)
         }
-        this.elements += object : Button<EditorScreen>(palette, this, this) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        this.elements += Button(palette, this, this).apply {
+            leftClickAction = { _, _ ->
+                this@TapalongStage.markersEnabled = !this@TapalongStage.markersEnabled
+            }
+            addLabel(object : TextLabel<EditorScreen>(palette, this, this@TapalongStage) {
+                override fun getRealText(): String {
+                    return Localization["editor.tapalong.button.toggleMarkers.${this@TapalongStage.markersEnabled}"]
+                }
+            }.apply {
+                this.isLocalizationKey = true
+                this.fontScaleMultiplier = 0.75f
+            })
+            this.location.set(screenWidth = (0.3125f - 0.0125f) / 2f, screenHeight = 0.35f)
+            this.location.set(screenX = 0.675f + this.location.screenWidth + 0.0125f, screenY = 0.05f)
+        }
+        this.elements += Button(palette, this, this).apply {
+            leftClickAction = { _, _ ->
                 tap()
             }
-        }.apply {
             addLabel(TextLabel(palette, this, this@TapalongStage).apply {
                 this.isLocalizationKey = true
                 this.text = "editor.tapalong.button.tap"
@@ -227,13 +220,18 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
         // compute new tempo
         if (tapRecords.size >= 2) {
             tapRecords.sortBy { it.sec }
-            val avgDelta = tapRecords.drop(1).mapIndexed { index, rec -> rec.sec - tapRecords[index].sec }.average().toFloat()
+            val deltas = tapRecords.drop(1).mapIndexed { index, rec -> rec.sec - tapRecords[index].sec }
+            val bpms = deltas.map { 60.0 / it }
+            val avgDeltas = deltas.average()
+            val avgBpms = bpms.average()
+            val stdDev = sqrt((deltas.map { (it - avgDeltas) * (it - avgDeltas) }).average()) * 1000.0
 
             // 120 BPM is 2 beats per second b/c 120 / 60
             // 120 BPM is 0.5 seconds per beat b/c 60 / 120
             // sec = 60 / tempo
             // tempo = 60 / sec
-            tempo = 60f / avgDelta
+            tempo = avgBpms.toFloat()
+            stdDeviation = stdDev.toFloat()
         }
 
         updateLabels()
@@ -256,6 +254,7 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     fun reset() {
         tapRecords.clear()
         tempo = 0f
+        stdDeviation = 0f
         updateLabels()
     }
 

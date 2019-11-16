@@ -62,7 +62,7 @@ object RHRE3 {
     var noOnlineCounter: Boolean = false
     var outputGeneratedDatamodels: Boolean = false
     var outputCustomSfx: Boolean = false
-    var showTapalongMarkers: Boolean = false
+    var showTapalongMarkersByDefault: Boolean = false
     var exportOptions: ExportOptions = ExportOptions.DEFAULT
     var midiRecording: Boolean = false
     var logMissingLocalizations: Boolean = false

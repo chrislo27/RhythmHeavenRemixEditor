@@ -65,7 +65,7 @@ object DesktopLauncher {
                     RHRE3.noOnlineCounter = arguments.noOnlineCounter
                     RHRE3.outputGeneratedDatamodels = arguments.outputGeneratedDatamodels
                     RHRE3.outputCustomSfx = arguments.outputCustomSfx
-                    RHRE3.showTapalongMarkers = arguments.showTapalongMarkers
+                    RHRE3.showTapalongMarkersByDefault = arguments.showTapalongMarkers
                     RHRE3.midiRecording = arguments.midiRecording
                     RHRE3.logMissingLocalizations = arguments.logMissingLocalizations
                     RHRE3.disableCustomSounds = arguments.disableCustomSounds
