@@ -821,6 +821,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                         renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                         image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                     })
+                    this.tooltipTextIsLocalizationKey = true
+                    this.tooltipText = "editor.customSfx.openFolder"
                     this.visible = false
                 }
                 pickerStage.elements += customSoundsFolderButton

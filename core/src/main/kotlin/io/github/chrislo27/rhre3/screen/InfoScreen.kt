@@ -430,6 +430,8 @@ class InfoScreen(main: RHRE3Application)
                     renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                 })
+                this.tooltipTextIsLocalizationKey = true
+                this.tooltipText = "editor.customSfx.openFolder"
             }
 
             // Partners button
