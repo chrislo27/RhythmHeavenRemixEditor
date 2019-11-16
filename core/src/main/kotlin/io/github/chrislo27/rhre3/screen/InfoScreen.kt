@@ -558,7 +558,7 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                    val shiftDown = (Gdx.input.isShiftDown() && main.screen == this@InfoScreen) || (main.screen is TransitionScreen<*> && lastShift)
+                    val shiftDown = (Gdx.input.isShiftDown() && !Gdx.input.isControlDown() && !Gdx.input.isAltDown() && main.screen == this@InfoScreen) || (main.screen is TransitionScreen<*> && lastShift)
                     if (lastShift != shiftDown) {
                         lastShift = shiftDown
                         textLabel.textColor = if (shiftDown) {
