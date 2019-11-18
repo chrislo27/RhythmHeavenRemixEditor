@@ -306,7 +306,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                         val liveUsers = req.responseBody?.trim()?.toIntOrNull()
                         if (liveUsers != null) {
                             failures = 0
-                            this.liveUsers = liveUsers.coerceAtLeast(0)
+                            if (!RHRE3.noOnlineCounter)
+                                this.liveUsers = liveUsers.coerceAtLeast(0)
                         } else {
                             Toolboks.LOGGER.warn("Got no integer for return value (got ${req.responseBody})")
                             failed()
