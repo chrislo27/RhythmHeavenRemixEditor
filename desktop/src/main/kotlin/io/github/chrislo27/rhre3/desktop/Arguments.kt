@@ -62,5 +62,9 @@ class Arguments {
     var eventImmediateAnniversaryLikeNew: Boolean = false
     @Parameter(names = ["--immmediate-xmas"], hidden = true)
     var eventImmediateXmas: Boolean = false
+
+    // -----------------------------------------------------------
+    @Parameter(names = ["--lc"], hidden = true)
+    var lc: String? = null
     
 }

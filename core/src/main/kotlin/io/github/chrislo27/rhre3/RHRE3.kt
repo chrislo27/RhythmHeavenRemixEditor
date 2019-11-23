@@ -67,6 +67,7 @@ object RHRE3 {
     var midiRecording: Boolean = false
     var logMissingLocalizations: Boolean = false
     var disableCustomSounds: Boolean = false
+    var lc: String? = null
 
     lateinit var launchArguments: List<String>
 

@@ -53,8 +53,12 @@ object LC {
                 e.printStackTrace()
             }
 
-            fun persist() = persist("l", source, main)
-            Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
+            if (RHRE3.lc != null) {
+                source = RHRE3.lc?.replace("\\n", "\n") ?: ""
+            } else {
+                fun persist() = persist("l", source, main)
+                Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
+            }
 
             if (source.isNotEmpty()) {
                 val reason = source
