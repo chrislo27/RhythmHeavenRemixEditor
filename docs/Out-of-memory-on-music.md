@@ -11,24 +11,23 @@ By default (Java 8) the default amount is up to 256 MB, and in Java 9+
 it tries to allocate up to a quarter of your system memory.
 
 In order to force the Java Virtual Machine to be allowed to use more memory,
-you have to edit either the **bat**ch file for Windows, or **sh**ell file
-for Linux/macOS. Replace the line that starts with `java -jar` with the below:
+you have to edit either the **bat**ch file for Windows (`run_windows.bat`), or **sh**ell file
+for Linux/macOS (`run_macOS-linux.sh`). Open the file with Notepad++ or your favourite text editor,
+and replace the line that starts with `java -jar` with the below:
 
 ```
 java -jar -Xmx1500m RHRE.jar
 ```
 
-`Xmx1500m` indicates that you want a maximum of 1500 MB of RAM allocated. Change that
-value if you are still having out of memory errors.
+`Xmx1500m` indicates that you want a maximum of 1500 MB of memory allocated. Change that
+value if you are still having out of memory errors. Obviously, you can't allocate more than what your
+system has available.
 
-Note that as of v3.18.7 the default maximum memory allocated is 1024 MB.
+Note that as of v3.18.7, the default maximum memory allocated is 1024 MB. Also, as of v3.19.0, sound memory management has been improved.
 
-Now, you must **ALWAYS** run RHRE through that file, or else the *settings
+Now, you must **ALWAYS** run RHRE through that file, or else these *settings
 will be ignored*.
-
-There is no way to omit this requirement.
-You are working with an audio editor and it is expected you have the requirements to have it in memory.
 
 ### Could not reserve enough space for ... KB object heap
 If you're getting this error and you allocated 1500 MB or more, you will require a 64-bit version of Java.
-Check the bit-ness of your installation by running `java -version` and seeing if 64-Bit appears in the text.
+Check the bit-ness of your installation by running `java -version` in the command prompt and seeing if 64-Bit appears in the text.
