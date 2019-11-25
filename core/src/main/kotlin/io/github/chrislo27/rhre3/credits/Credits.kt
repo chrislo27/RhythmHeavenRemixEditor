@@ -7,7 +7,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 
 object Credits {
 
-    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "WaluigiTime64", "Draster", "NP", "Eggman199", "Huebird", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").joinToString(separator = ", ")
+    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "GenericArrangements", "Draster", "NP", "Eggman199", "Huebird", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").joinToString(separator = ", ")
 
     fun generateList(): List<Credit> {
         return listOf(
