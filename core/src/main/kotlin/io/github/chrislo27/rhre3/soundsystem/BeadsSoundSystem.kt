@@ -107,7 +107,7 @@ object BeadsSoundSystem {
         run {
             val BUFFER_SIZE = 4096 * 4
             val audioBytes = ByteArray(BUFFER_SIZE)
-            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}-${System.nanoTime() % 1_000_000}", ".tmp").apply {
+            val tempFile = File.createTempFile("rhre3-data-${System.currentTimeMillis()}", ".tmp").apply {
                 deleteOnExit()
             }
             val fileOutStream = FileOutputStream(tempFile)
