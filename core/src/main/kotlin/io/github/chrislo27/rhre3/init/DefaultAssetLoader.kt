@@ -13,16 +13,16 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 
 
 class DefaultAssetLoader : AssetRegistry.IAssetLoader {
-
+    
     override fun addManagedAssets(manager: AssetManager) {
         listOf(16, 24, 32, 64, 128, 256, 512, 1024).forEach {
             AssetRegistry.loadAsset<Texture>("logo_$it", "images/icon/$it.png")
         }
         AssetRegistry.loadAsset<Texture>("logo_rhre2_128", "images/icon/rhre2/128.png")
-
+        
         AssetRegistry.loadAsset<Texture>("sfxdb_missing_icon", "images/gameicon/missing.png")
         (Language.VALUES - Language.UNKNOWN).forEach { lang ->
-//            AssetRegistry.loadAsset<Texture>("sfxdb_langicon_${lang.code}", "images/gameicon/lang/${lang.code}.png")
+            //            AssetRegistry.loadAsset<Texture>("sfxdb_langicon_${lang.code}", "images/gameicon/lang/${lang.code}.png")
             AssetRegistry.loadAsset<Pixmap>("sfxdb_langicon_${lang.code}_pixmap", "images/gameicon/lang/${lang.code}.png")
         }
         
@@ -34,11 +34,11 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_selector_ds", "images/selector/ds.png")
         AssetRegistry.loadAsset<Texture>("ui_selector", "images/selector/generic.png")
         AssetRegistry.loadAsset<Texture>("ui_selector_favourite", "images/selector/favourite.png")
-
+        
         AssetRegistry.loadAsset<Texture>("tracker_right_tri", "images/ui/tracker_right_triangle.png")
         AssetRegistry.loadAsset<Texture>("tracker_tri", "images/ui/tracker_triangle.png")
         AssetRegistry.loadAsset<Texture>("tracker_right_tri_bordered", "images/ui/tracker_triangle_right_bordered.png")
-
+        
         AssetRegistry.loadAsset<Texture>("tool_selection", "images/tool/selection.png")
         AssetRegistry.loadAsset<Texture>("tool_tempo_change", "images/tool/tempo_change.png")
         AssetRegistry.loadAsset<Texture>("tool_multipart_split", "images/tool/multipart_split.png")
@@ -50,7 +50,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
 
 //        AssetRegistry.loadAsset<Texture>("entity_stretchable_line", "images/entity/stretchable/line.png")
         AssetRegistry.loadAsset<Texture>("entity_stretchable_arrow", "images/entity/stretchable/arrow.png")
-
+        
         AssetRegistry.loadAsset<Texture>("ui_icon_update", "images/ui/icons/update.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_credits", "images/ui/icons/credits.png")
         AssetRegistry.loadAsset<Texture>("ui_icon_updatesfx", "images/ui/icons/update_sfx.png")
@@ -108,21 +108,23 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_icon_unfullscreen", "images/ui/icons/unfullscreen.png")
         AssetRegistry.loadAsset<Texture>("ui_stripe_board", "images/ui/stripe_board.png")
         AssetRegistry.loadAsset<Texture>("ui_breaking", "images/ui/breaking.png")
-
+        AssetRegistry.loadAsset<Texture>("ui_transparent_checkerboard", "images/ui/transparent_checkerboard.png")
+        AssetRegistry.loadAsset<Texture>("ui_colour_picker_arrow", "images/ui/colour_picker_arrow.png")
+        
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/gameName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_entityName", "images/ui/searchbar/entityName.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_callAndResponse", "images/ui/searchbar/callAndResponse.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_favourites", "images/ui/searchbar/favourites.png")
         AssetRegistry.loadAsset<Texture>("ui_search_filter_useInRemix", "images/ui/searchbar/useInRemix.png")
-
+        
         AssetRegistry.loadAsset<Texture>("ui_songtitle", "images/ui/songtitle.png")
         AssetRegistry.loadAsset<Texture>("ui_loading_icon", "images/loading/rhre3_animation.png")
         AssetRegistry.loadAsset<Texture>("ui_loading_paddler", "images/loading/loading_paddler.png")
-
+        
         AssetRegistry.loadAsset<Texture>("menu_bg_square", "images/menu/bg_square.png")
         AssetRegistry.loadAsset<Texture>("menu_snowflake", "images/menu/snowflake.png")
-
+        
         AssetRegistry.loadAsset<Texture>("weird_wakame", "images/etc/wakame.png")
         AssetRegistry.loadAsset<Texture>("weird_wakaaa", "images/etc/wakaaa.png")
         AssetRegistry.loadAsset<Texture>("weird_wakamad", "images/etc/wakamad.png")
@@ -132,12 +134,12 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("weird_sfx_honk", "sound/honk.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_c", "sound/c.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
-
+        
         // pickaxe
         (1..6).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }
         (1..4).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_stone$it", "sound/destroy/stone$it.ogg") }
         (1..3).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_glass$it", "sound/destroy/glass$it.ogg") }
-
+        
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png")
         AssetRegistry.loadAsset<Texture>("bg_polkadot", "images/menu/polkadot.png")
@@ -145,22 +147,22 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("bg_sd_starfield", "images/menu/sd_starfield.png")
         AssetRegistry.loadAsset<Texture>("bg_tapTrial", "images/menu/bg_tapTrial.png")
         AssetRegistry.loadAsset<Texture>("bg_launchparty_objects", "images/menu/launchparty.png")
-            AssetRegistry.loadAsset<Texture>("bg_btsds_spritesheet", "images/menu/btsds_spritesheet.png")
-
+        AssetRegistry.loadAsset<Texture>("bg_btsds_spritesheet", "images/menu/btsds_spritesheet.png")
+        
         // play-yan
         AssetRegistry.loadAsset<Texture>("playyan_jumping", "images/playyan/jumping_26.png")
         AssetRegistry.loadAsset<Texture>("playyan_pogo", "images/playyan/pogo.png")
-
+        
         // glee club midi visualization
         AssetRegistry.loadAsset<Texture>("glee_club", "images/chorusmen_rot.png")
-
+        
         // MIDI stuff
         AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/singLoop.ogg")
-
+        
         // Credits
         AssetRegistry.loadAsset<Texture>("credits_frog", "credits/frog_rot.png")
         AssetRegistry.loadAsset<Texture>("credits_bg", "credits/frog_bg.png")
-
+        
         // Playalong
         AssetRegistry.loadAsset<Texture>("playalong_tappoint", "images/playalong/tappoint.png")
         AssetRegistry.loadAsset<Texture>("playalong_perfect", "images/playalong/perfect.png")
@@ -178,18 +180,18 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monsterGoalAce.ogg")
         AssetRegistry.loadAsset<Music>("playalong_settings_input_calibration", "playalong/input_calibration.ogg")
     }
-
+    
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
 //        listOf(512, 256, 128, 64, 32, 24, 16).forEach {
 //            assets[AssetRegistry.bindAsset("rhre3_icon_$it", "images/icon/$it.png").first] = Texture(
 //                    "images/icon/$it.png")
 //        }
-
+        
         assets["playyan_walking"] = Texture("images/playyan/walking.png")
-
+        
         assets["cursor_horizontal_resize"] =
                 Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontalResize.png")),
                                        16, 8)
     }
-
+    
 }

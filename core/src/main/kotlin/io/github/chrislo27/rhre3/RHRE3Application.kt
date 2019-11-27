@@ -7,6 +7,7 @@ import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
@@ -150,6 +151,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     
     private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
     
+    lateinit var hueBar: Texture
+        private set
+    
     override val programLaunchArguments: List<String>
         get() = RHRE3.launchArguments
     
@@ -198,6 +202,20 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         val currentOS = SoundStretch.currentOS
         if (currentOS != SoundStretch.OS.UNSUPPORTED) {
             Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
+        }
+    
+        // Generate hue bar
+        run {
+            val pixmap = Pixmap(360, 1, Pixmap.Format.RGBA8888)
+            val tmpColor = Color(1f, 1f, 1f, 1f)
+            for (i in 0 until 360) {
+                tmpColor.fromHsv(i.toFloat(), 1f, 1f)
+                pixmap.setColor(tmpColor)
+                pixmap.drawPixel(i, 0)
+            }
+            hueBar = Texture(pixmap).apply {
+                this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+            }
         }
         
         // preferences
