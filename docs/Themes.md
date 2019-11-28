@@ -10,7 +10,7 @@ and inside of that folder will be one more folder called `examples`. Inside
 the `examples` folder, every built-in theme will be put into a
 `example_#.json` file, where the `#` is just a number. You can open
 json files with a text editor
-(like [Notepad++](https://notepad-plus-plus.org/), please don't use Notepad).
+(like [Notepad++](https://notepad-plus-plus.org/), don't use Notepad).
 
 Below is a sample json file:<br>
 ```json
@@ -42,12 +42,6 @@ Below is a sample json file:<br>
 }
 ```
 
-> Note: the `subtitle` field name in entities was changed to `special` starting in v3.4.0.
-Using `subtitle` still works, but `special` is now the correct field name.
-
-
-> Note: as of `v3.6.0`, the `timeSignature` field inside `trackers` has been removed. The colour now uses the track line colour.
-
 You'll notice that most of these are just RGB hex values. The `name`
 is self-explanatory. Most of the colours are grouped into sections,
 like `trackers` or `entities`.
@@ -61,3 +55,10 @@ like [this one](https://www.browserling.com/tools/image-to-base64) to
 convert your images for you. If this field is omitted, blank, or the
 text is something like `<text here>` in angle brackets, no texture will
 be loaded.
+
+<u>Changelog:</u>
+
+| Version | Description |
+|---|---|
+| v3.4.0 | The `subtitle` field name in entities was changed to `special`. |
+| v3.6.0 | the `timeSignature` field inside the `trackers` group was removed. Time signatures now use the `trackLine` colour. |
