@@ -133,6 +133,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         internal val TRACKER_MINUTES_FORMATTER = DecimalFormat("00", DecimalFormatSymbols())
         val ONE_DECIMAL_PLACE_FORMATTER = DecimalFormat("0.0", DecimalFormatSymbols())
         val TWO_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.00", DecimalFormatSymbols())
+        val ONE_TO_TWO_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.0#", DecimalFormatSymbols())
 
         val DEFAULT_CAMERA_BEHAVIOUR: CameraBehaviour = FOLLOW_PLAYBACK
         var cameraBehaviour: CameraBehaviour = DEFAULT_CAMERA_BEHAVIOUR

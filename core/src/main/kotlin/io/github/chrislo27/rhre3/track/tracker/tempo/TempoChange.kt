@@ -26,7 +26,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
             return (secondsWidth / 60f) * (startBpm + endBpm) / 2f
         }
 
-        fun getFormattedText(bpm: Float): String = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(bpm)}"
+        fun getFormattedText(bpm: Float): String = "♩=${Editor.ONE_TO_TWO_DECIMAL_PLACES_FORMATTER.format(bpm)}"
     }
 
     override val allowsResize: Boolean = true
@@ -44,7 +44,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
     }
 
     override fun scroll(amount: Int, control: Boolean, shift: Boolean): TempoChange? {
-        val change = amount * (if (control) 5 else 1) * (if (shift) 0.1f else 1f)
+        val change = amount * (if (shift) (if (control) 0.05f else 0.01f) else (if (control) 5f else 1f))
 
         if ((change < 0 && bpm <= MIN_TEMPO) || (change > 0 && bpm >= MAX_TEMPO))
             return null
@@ -65,7 +65,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
             val currentIndex: Int = if (swing.ratio < list.first().ratio) -1 else list.let { _ ->
                 var last: Int = 0
 
-                for (it in 0 until list.size) {
+                for (it in list.indices) {
                     if (this.swing.ratio > list[last].ratio)
                         last = it
                 }
