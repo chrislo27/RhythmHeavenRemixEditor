@@ -187,7 +187,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter().apply {
                 size *= 6
-                characters = "0123456789?_+-!&%"
+                characters = "0123456789-"
                 incremental = false
             }).setAfterLoad {
                 this.font!!.apply {
