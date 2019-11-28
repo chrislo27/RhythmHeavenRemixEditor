@@ -207,7 +207,7 @@ Hold **`CONTROL`** - Change value by 5x
 
 ![Tempo changes](https://i.imgur.com/87NoA3o.png)<br>
 The **tempo change** tool can change the tempo
-mid-remix. You can hold **`SHIFT`** to change it in increments of 0.1 BPM.
+mid-remix. You can hold **`SHIFT`** to change it in increments of 0.01 BPM.
 Holding **`CONTROL`** while holding `SHIFT` will change it in increments of
 0.5 BPM. You can also click and drag the ends to make it a linear gradient of change, but this is tricky to do correctly.
 
