@@ -38,8 +38,7 @@ object LoadedThemes {
     fun reloadThemes(preferences: Preferences, fromPrefs: Boolean) {
         themes.filter { it !in Themes.defaultThemes }.forEach(Theme::dispose)
 
-        themes = Themes.defaultThemes.toMutableList()
-        themes as MutableList
+        val themes = Themes.defaultThemes.toMutableList()
 
         val folder = THEMES_FOLDER
         folder.mkdirs()
@@ -65,6 +64,8 @@ object LoadedThemes {
                 e.printStackTrace()
             }
         }
+        
+        this.themes = themes
 
         val exampleFolder = folder.child("example/")
         exampleFolder.mkdirs()
