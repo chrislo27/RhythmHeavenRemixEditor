@@ -43,7 +43,7 @@ object LoadedThemes {
         val folder = THEMES_FOLDER
         folder.mkdirs()
         val files = folder.list(".json").filter { it.nameWithoutExtension() != "example" }
-        Toolboks.LOGGER.info("Found ${files.size} json palette files")
+        Toolboks.LOGGER.info("Found ${files.size} json theme files")
         files.forEachIndexed { index, it ->
             Toolboks.LOGGER.info("Attempting to parse theme ${it.name()}")
             try {
