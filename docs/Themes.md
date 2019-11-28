@@ -1,21 +1,21 @@
 # Themes
 
-You may have noticed that RHRE3 comes with some themes built-in.
-Have you ever wanted to tweak it or make an entirely new one?
+You may have noticed that RHRE comes with some themes built-in.
+Have you ever wanted to tweak a theme or make an entirely new one?
 
-This is very simple to do!
+You can, and this is very simple to do!
 
 Every time you start the editor, a folder `~/.rhre3/themes` (`<user>/.rhre3/themes` on Windows) will be made,
 and inside of that folder will be one more folder called `examples`. Inside
 the `examples` folder, every built-in theme will be put into a
 `example_#.json` file, where the `#` is just a number. You can open
 json files with a text editor
-(like [Notepad++](https://notepad-plus-plus.org/), don't use Notepad).
+(like [Notepad++](https://notepad-plus-plus.org/), don't use Windows Notepad).
 
 Below is a sample json file:<br>
 ```json
 {
-  "name" : "(Example) theme.light",
+  "name" : "(Example) Classic Light",
   "background" : "#EBEBEB",
   "trackLine" : "#191919",
   "waveform" : "#191919",
