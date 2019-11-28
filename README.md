@@ -44,6 +44,7 @@ Installation is straightforward.
 4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
 5. Read the [README](http://rhre.readthedocs.io/en/latest/README/) and get remixing!
 
+To update the program, you download the latest version and run RHRE from the new version.
 
 ## Other information
 Rhythm Heaven is not my property—it is the intellectual property of Nintendo.<br>
