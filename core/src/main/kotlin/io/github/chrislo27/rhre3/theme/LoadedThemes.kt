@@ -49,7 +49,7 @@ object LoadedThemes {
             try {
                 val themeObj: Theme = JsonHandler.fromJson(it.readString("UTF-8"))
                 if (!themeObj.nameIsLocalization && themeObj.name == Theme.DEFAULT_NAME) {
-                    themeObj.name = "Custom Palette ${index + 1}"
+                    themeObj.name = "Custom Theme ${index + 1}"
                 }
                 val uninitialized = themeObj.getUninitialized()
                 if (uninitialized.isEmpty()) {
