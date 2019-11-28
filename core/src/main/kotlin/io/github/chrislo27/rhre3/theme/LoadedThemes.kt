@@ -71,7 +71,7 @@ object LoadedThemes {
         exampleFolder.mkdirs()
         Themes.defaultThemes.forEachIndexed { index, it ->
             val name = it.name
-            it.name = "(Example) ${it.name}"
+            it.name = "(Example) ${it.getRealName()}"
             exampleFolder.child("example_${index + 1}.json").writeString(JsonHandler.toJson(it), false, "UTF-8")
             it.name = name
         }
