@@ -8,7 +8,7 @@ You can, and this is very simple to do!
 Every time you start the editor, a folder `~/.rhre3/themes` (`<user>/.rhre3/themes` on Windows) will be made,
 and inside of that folder will be one more folder called `examples`. Inside
 the `examples` folder, every built-in theme will be put into a
-`example_#.json` file, where the `#` is just a number. You can open
+`example_X.json` file, where `X` is a number. You can open
 json files with a text editor
 (like [Notepad++](https://notepad-plus-plus.org/), don't use Windows Notepad).
 
@@ -47,12 +47,12 @@ is self-explanatory. Most of the colours are grouped into sections,
 like `trackers` or `entities`.
 
 > Note: if you see a longer hex colour like `#19BFBF54`, the last *two*
-digits are alpha/transparency values. If left out, these default to `FF` (full opaque).
+digits are alpha/transparency values. If left out, these default to `FF` (full opacity).
 
 The **optional** `texture` field accepts a Base64 encoded PNG image. The `RGBA8888` simply
 means each pixel is 32-bits, and has transparency. You can use a website
 like [this one](https://www.browserling.com/tools/image-to-base64) to
-convert your images for you. If this field is omitted, blank, or the
+convert your images for you. If this field is omitted, blank, invalid, or the
 text is something like `<text here>` in angle brackets, no texture will
 be loaded.
 
@@ -62,3 +62,4 @@ be loaded.
 |---|---|
 | v3.4.0 | The `subtitle` field name in entities was changed to `special`. |
 | v3.6.0 | the `timeSignature` field inside the `trackers` group was removed. Time signatures now use the `trackLine` colour. |
+| v3.19.0 | All fields are optional and inherit from the Classic Light theme if missing. |
