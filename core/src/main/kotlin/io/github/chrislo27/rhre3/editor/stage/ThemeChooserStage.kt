@@ -54,25 +54,34 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             this.location.set(screenWidth = 0.95f, screenX = 0.025f)
         }
 
+        this.elements += Button(palette, this, this).apply {
+            this.location.set(0.05f, 0.025f, 0.65f, 0.075f)
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.text = "editor.themeEditor"
+                this.textWrapping = true
+                this.fontScaleMultiplier = 0.75f
+                this.location.set(pixelWidth = -4f, pixelX = 2f)
+            })
+        }
+    
         this.elements += object : Button<EditorScreen>(palette, this, this) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-
+            
                 LoadedThemes.reloadThemes(preferences, false)
                 LoadedThemes.persistIndex(preferences)
                 editor.theme = LoadedThemes.currentTheme
                 buttonScroll = 0
-
+            
                 resetButtons()
             }
         }.apply {
-            this.location.set(0.05f, 0.025f, 0.775f, 0.075f)
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.text = "editor.themeChooser.reset"
-                this.textWrapping = true
-                this.fontScaleMultiplier = 0.75f
-                this.location.set(pixelWidth = -4f, pixelX = 2f)
+            this.location.set(0.725f, 0.025f, 0.1f, 0.075f)
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "editor.themeChooser.reset"
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
             })
         }
 
