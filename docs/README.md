@@ -251,7 +251,7 @@ The tapalong menu is recurring from RHRE2, this time it is inline with the
 editor. The main purpose of tapalong is to be able to tap to the rhythm of
 a song to determine its BPM.
 
-![Tapalong](https://i.imgur.com/PYNsBYZ.png)
+![Tapalong](readme/tapalongMenu.png)
 
 # Views
 Views are useful ways of viewing your remix. You can mix and match views too.
