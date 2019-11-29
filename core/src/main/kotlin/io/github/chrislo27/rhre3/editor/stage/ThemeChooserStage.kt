@@ -23,7 +23,7 @@ import kotlin.math.roundToInt
 class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: EditorStage, camera: OrthographicCamera)
     : Stage<EditorScreen>(parent, camera) {
 
-    private val buttons: List<ThemeChangeButton> = mutableListOf()
+    private val buttons: MutableList<ThemeChangeButton> = mutableListOf()
     private val preferences: Preferences
         get() = editor.main.preferences
 
@@ -32,8 +32,6 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
         get() = (LoadedThemes.themes.size - buttons.size).coerceAtLeast(0)
 
     init {
-        buttons as MutableList
-
         this.elements += object : ColourPane<EditorScreen>(this, this) {
             override fun scrolled(amount: Int): Boolean {
                 scroll(-amount)
