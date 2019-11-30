@@ -93,9 +93,9 @@ open class Theme : Disposable {
         @HexColor
         var musicStart: Color = Color(1f, 0f, 0f, 1f)
         @HexColor
-        var musicVolume: Color = Color(0.4f, 0.4f, 0.9f, 1f)
+        var tempoChange: Color = Color(0.4f, 0.4f, 0.9f, 1f)
         @HexColor
-        var tempoChange: Color = Color(1f, 0.4f, 0f, 1f)
+        var musicVolume: Color = Color(1f, 0.4f, 0f, 1f)
     }
     
     var trackers: TrackersGroup = TrackersGroup()
@@ -113,9 +113,9 @@ open class Theme : Disposable {
         @HexColor
         var special: Color = Color(1f, 212f / 255f, 186f / 255f, 1f)
         @HexColor
-        var equidistant: Color = Color(1f, 178f / 255f, 191f / 255f, 1f)
-        @HexColor
         var keepTheBeat: Color = Color(1f, 226f / 255f, 124f / 255f, 1f)
+        @HexColor
+        var equidistant: Color = Color(1f, 178f / 255f, 191f / 255f, 1f)
         
         @JsonSetter("subtitle")
         @HexColor
