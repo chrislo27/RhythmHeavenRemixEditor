@@ -537,14 +537,17 @@ class ExportRemixScreen(main: RHRE3Application)
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
         val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+        val hasTempoChanges = remix.tempos.secondsMap.isNotEmpty()
         readyButton.visible = false
         folderButton.visible = false
         folderFile = null
         selectionStage.visible = false
-        isCapableOfExporting = hasEndRemix || canOmitEndRemix
+        isCapableOfExporting = (hasEndRemix || canOmitEndRemix) && hasTempoChanges
         if (!isCapableOfExporting) {
             if (!hasEndRemix) {
                 label.text = Localization["screen.export.cannot", Localization["screen.export.needsEndRemix", SFXDatabase.data.objectMap[SFXDatabase.END_REMIX_ENTITY_ID]?.name] + "\n[LIGHT_GRAY]${Localization[Series.OTHER.localization]} ➡ ${SFXDatabase.data.specialGame.name} ➡ ${SFXDatabase.data.objectMap[SFXDatabase.END_REMIX_ENTITY_ID]?.name ?: "End Remix"}[]"]
+            } else if (!hasTempoChanges) {
+                label.text = Localization["screen.export.cannot", Localization["screen.export.needsTempoChanges"]]
             }
         } else {
             if (throwable == null) {
