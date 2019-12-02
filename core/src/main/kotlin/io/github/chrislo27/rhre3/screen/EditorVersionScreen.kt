@@ -130,7 +130,6 @@ class EditorVersionScreen(main: RHRE3Application)
         timeOnScreen = 0f
         if (isBeginning.first) {
             stage.backButton.enabled = false
-            stage.backButton.tooltipText = "screen.version.cantBackOutYet"
             val timesSkipped = main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1).coerceAtLeast(1)
             val limitSkips = 5
             val minWaitTime = 2f
