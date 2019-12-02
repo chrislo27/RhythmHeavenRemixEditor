@@ -120,7 +120,7 @@ class EditorVersionScreen(main: RHRE3Application)
         stage.bottomStage.elements += shortChangelogButton
         gotoUpdaterButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
             this.leftClickAction = { _, _ ->
-            
+                main.screen = AutoUpdaterScreen(main)
             }
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
