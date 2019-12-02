@@ -23,22 +23,27 @@ import io.github.chrislo27.toolboks.version.Version
 
 class EditorVersionScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, EditorVersionScreen>(main) {
-
+    
     companion object {
         private val DEFAULT_BEGINNING: Pair<Boolean, ToolboksScreen<*, *>?> = false to null
     }
-
+    
+    private enum class State {
+        CHECKING, GOOD, AVAILABLE;
+    }
+    
     override val stage: GenericStage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
-
+    
+    private var state: State = State.CHECKING
     private val label: TextLabel<EditorVersionScreen>
-
+    
     var isBeginning: Pair<Boolean, ToolboksScreen<*, *>?> = DEFAULT_BEGINNING
     private var timeOnScreen = 0f
     private var timeToStayOnScreen = 0f
-
+    
     init {
         val palette = stage.palette
-
+        
         stage.titleIcon.apply {
             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_update"))
         }
@@ -48,7 +53,7 @@ class EditorVersionScreen(main: RHRE3Application)
             main.screen = if (isBeginning.first) isBeginning.second else ScreenRegistry.getNonNull("info")
             isBeginning = DEFAULT_BEGINNING
         }
-
+        
         stage.bottomStage.elements += object : Button<EditorVersionScreen>(palette, stage.bottomStage,
                                                                            stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
@@ -63,17 +68,17 @@ class EditorVersionScreen(main: RHRE3Application)
                 this.textWrapping = false
                 this.text = "screen.version.button"
             })
-
+            
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
-
+        
         label = object : TextLabel<EditorVersionScreen>(palette, stage.centreStage, stage.centreStage) {
             private var lastGithubVer: Version = main.githubVersion
-
+            
             override fun render(screen: EditorVersionScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                if (lastGithubVer != main.githubVersion || text == "") {
+                if (lastGithubVer != main.githubVersion || text.isEmpty()) {
                     lastGithubVer = main.githubVersion
-
+                    
                     val ghVer = lastGithubVer
                     val currentVer: String = (if (ghVer.isUnknown)
                         "[LIGHT_GRAY]"
@@ -85,15 +90,21 @@ class EditorVersionScreen(main: RHRE3Application)
                         "[LIGHT_GRAY]...[]"
                     else
                         "[CYAN]$ghVer[]")
-                    val humanFriendly: String =
-                            (if (ghVer.isUnknown)
-                                Localization["screen.version.checking"]
+                    val newState: State =
+                            if (ghVer.isUnknown)
+                                State.CHECKING
                             else if (ghVer <= RHRE3.VERSION && !RHRE3.triggerUpdateScreen)
-                                Localization["screen.version.upToDate"]
+                                State.GOOD
                             else
-                                Localization["screen.version.outOfDate",
-                                        main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
-                                                .coerceAtLeast(1)])
+                                State.AVAILABLE
+                    val humanFriendly: String = when (newState) {
+                        State.CHECKING -> Localization["screen.version.checking"]
+                        State.GOOD -> Localization["screen.version.upToDate"]
+                        State.AVAILABLE -> Localization["screen.version.outOfDate",
+                                main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
+                                        .coerceAtLeast(1)]
+                    }
+                    this@EditorVersionScreen.state = newState
                     text = Localization["screen.version.label", currentVer, onlineVer, humanFriendly]
                 }
                 super.render(screen, batch, shapeRenderer)
@@ -103,25 +114,25 @@ class EditorVersionScreen(main: RHRE3Application)
             this.textWrapping = true
         }
         stage.centreStage.elements += label
-
+        
         stage.updatePositions()
     }
-
+    
     override fun renderUpdate() {
         super.renderUpdate()
-
+        
         timeOnScreen += Gdx.graphics.deltaTime
-
+        
         if (timeOnScreen >= timeToStayOnScreen) {
             stage.backButton.enabled = true
             stage.backButton.tooltipText = null
-
+            
             if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
                 stage.onBackButtonClick()
             }
         }
     }
-
+    
     override fun show() {
         super.show()
         stage.titleLabel.text = "screen.version.title${MathUtils.random(0, 5)}"
@@ -134,7 +145,7 @@ class EditorVersionScreen(main: RHRE3Application)
             val waitTimeAtLimit = 4f
             val waitTimeAfterLimit = 6.5f
             timeToStayOnScreen = if (timesSkipped <= limitSkips) ((waitTimeAtLimit / limitSkips) * timesSkipped).coerceAtLeast(minWaitTime) else waitTimeAfterLimit
-
+            
             // Analytics
             AnalyticsHandler.track("Update Notification",
                                    mapOf(
@@ -144,10 +155,10 @@ class EditorVersionScreen(main: RHRE3Application)
         }
         label.text = ""
     }
-
+    
     override fun dispose() {
     }
-
+    
     override fun tickUpdate() {
     }
 }
