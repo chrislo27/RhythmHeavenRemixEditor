@@ -19,6 +19,9 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.version.Version
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 
 class EditorVersionScreen(main: RHRE3Application)
@@ -34,8 +37,11 @@ class EditorVersionScreen(main: RHRE3Application)
     
     override val stage: GenericStage<EditorVersionScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     
-    private var state: State = State.CHECKING
+    private var state: State by Delegates.observable(State.CHECKING) { _, _, newState ->
+        checkButton.enabled = newState != State.CHECKING
+    }
     private val label: TextLabel<EditorVersionScreen>
+    private val checkButton: Button<EditorVersionScreen>
     
     var isBeginning: Pair<Boolean, ToolboksScreen<*, *>?> = DEFAULT_BEGINNING
     private var timeOnScreen = 0f
@@ -69,17 +75,37 @@ class EditorVersionScreen(main: RHRE3Application)
                 this.text = "screen.version.button"
             })
             
-            this.location.set(screenX = 0.15f, screenWidth = 0.7f)
+            this.location.set(screenX = 0.175f, screenWidth = 0.65f)
         }
+        checkButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.text = "screen.version.checkForUpdates"
+                this.fontScaleMultiplier = 0.9f
+                this.textWrapping = false
+            })
+            this.location.set(screenX = 0.85f, screenWidth = 0.15f)
+            this.leftClickAction = { _, _ ->
+                if (this@EditorVersionScreen.state != State.CHECKING) {
+                    this@EditorVersionScreen.state = State.CHECKING
+                    enabled = false
+                    GlobalScope.launch {
+                        main.fetchGithubVersion()
+                    }
+                }
+            }
+            this.enabled = false
+        }
+        stage.bottomStage.elements += checkButton
         
         label = object : TextLabel<EditorVersionScreen>(palette, stage.centreStage, stage.centreStage) {
-            private var lastGithubVer: Version = main.githubVersion
+            private var lastGhVer: Version = main.githubVersion
             
             override fun render(screen: EditorVersionScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                if (lastGithubVer != main.githubVersion || text.isEmpty()) {
-                    lastGithubVer = main.githubVersion
+                if (lastGhVer != main.githubVersion || text.isEmpty()) {
+                    lastGhVer = main.githubVersion
                     
-                    val ghVer = lastGithubVer
+                    val ghVer = main.githubVersion
                     val currentVer: String = (if (ghVer.isUnknown)
                         "[LIGHT_GRAY]"
                     else if (ghVer <= RHRE3.VERSION)

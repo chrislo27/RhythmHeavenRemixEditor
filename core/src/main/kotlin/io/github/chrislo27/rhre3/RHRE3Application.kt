@@ -350,7 +350,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         
         GlobalScope.launch {
             try {
-                fetchGithubVersion(false)
+                fetchGithubVersion()
                 val v = githubVersion
                 if (!v.isUnknown) {
                     if (v > RHRE3.VERSION) {
@@ -368,14 +368,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         LC.all(this)
     }
     
-    fun fetchGithubVersion(ignoreIfUnknown: Boolean) {
+    fun fetchGithubVersion() {
+        githubVersion = Version.RETRIEVING
         val nano = System.nanoTime()
         val obj = JsonHandler.fromJson<ReleaseObject>(httpClient.prepareGet(RHRE3.RELEASE_API_URL).execute().get().responseBody)
-    
+        
         val ghVer = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
-        if (ghVer != Version.UNKNOWN || !ignoreIfUnknown) {
-            githubVersion = ghVer
-        }
+        githubVersion = ghVer
         Toolboks.LOGGER.info("Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
     }
     
