@@ -88,14 +88,12 @@ class EditorVersionScreen(main: RHRE3Application)
                     val humanFriendly: String =
                             (if (ghVer.isUnknown)
                                 Localization["screen.version.checking"]
-                            else if (ghVer <= RHRE3.VERSION)
+                            else if (ghVer <= RHRE3.VERSION && !RHRE3.triggerUpdateScreen)
                                 Localization["screen.version.upToDate"]
                             else
                                 Localization["screen.version.outOfDate",
                                         main.preferences.getInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 1)
                                                 .coerceAtLeast(1)])
-//                    val test = Localization["screen.version.outOfDate", 2]
-
                     text = Localization["screen.version.label", currentVer, onlineVer, humanFriendly]
                 }
                 super.render(screen, batch, shapeRenderer)
