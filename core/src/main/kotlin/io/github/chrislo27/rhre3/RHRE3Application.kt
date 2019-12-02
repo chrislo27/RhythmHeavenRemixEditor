@@ -203,7 +203,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (currentOS != SoundStretch.OS.UNSUPPORTED) {
             Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
         }
-    
+        
         // Generate hue bar
         run {
             val pixmap = Pixmap(360, 1, Pixmap.Format.RGBA8888)
@@ -350,14 +350,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         
         GlobalScope.launch {
             try {
-                val nano = System.nanoTime()
-                val obj = JsonHandler.fromJson<ReleaseObject>(
-                        httpClient.prepareGet(RHRE3.RELEASE_API_URL).execute().get().responseBody)
-                
-                githubVersion = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
-                Toolboks.LOGGER.info(
-                        "Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
-                
+                fetchGithubVersion(false)
                 val v = githubVersion
                 if (!v.isUnknown) {
                     if (v > RHRE3.VERSION) {
@@ -373,6 +366,17 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         
         LC.all(this)
+    }
+    
+    fun fetchGithubVersion(ignoreIfUnknown: Boolean) {
+        val nano = System.nanoTime()
+        val obj = JsonHandler.fromJson<ReleaseObject>(httpClient.prepareGet(RHRE3.RELEASE_API_URL).execute().get().responseBody)
+    
+        val ghVer = Version.fromStringOrNull(obj.tag_name!!) ?: Version.UNKNOWN
+        if (ghVer != Version.UNKNOWN || !ignoreIfUnknown) {
+            githubVersion = ghVer
+        }
+        Toolboks.LOGGER.info("Fetched editor version from GitHub in ${(System.nanoTime() - nano) / 1_000_000f} ms, is $githubVersion")
     }
     
     override fun exceptionHandler(t: Throwable) {
