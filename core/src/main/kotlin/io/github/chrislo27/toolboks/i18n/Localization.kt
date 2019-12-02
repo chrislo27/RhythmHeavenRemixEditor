@@ -38,7 +38,7 @@ object Localization {
             }
         }
     val bundles: MutableList<ToolboksBundle> = mutableListOf()
-    private val listeners: WeakHashMap<(oldBundle: ToolboksBundle) -> Unit, Unit> = WeakHashMap()
+    private val listeners: MutableMap<(oldBundle: ToolboksBundle) -> Unit, Unit> = HashMap()
     /**
      * Base, Lang
      */
