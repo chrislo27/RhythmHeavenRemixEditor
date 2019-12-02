@@ -4,17 +4,25 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.MathUtils
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.util.JsonHandler
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
+import org.asynchttpclient.AsyncCompletionHandlerBase
+import org.asynchttpclient.AsyncHandler
+import org.asynchttpclient.HttpResponseBodyPart
 import java.io.File
+import java.io.FileOutputStream
+import kotlin.math.roundToLong
 
 
 class AutoUpdaterScreen(main: RHRE3Application)
@@ -122,6 +130,82 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 5. Advance to Complete Update stage for user input
                 6. Copy jar file atomically and exit forcibly (System.exit())
                  */
+                val releaseResponseBody = RHRE3Application.httpClient
+                        .prepareGet("https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest")
+                        .addHeader("Accept", "application/vnd.github.v3+json")
+                        .execute().get().responseBody
+                val releaseMeta: JsonNode = JsonHandler.OBJECT_MAPPER.readTree(releaseResponseBody)
+                val assetNode = (releaseMeta["assets"] as ArrayNode).first {
+                    val filename = it["name"].asText()
+                    filename.startsWith("RHRE_") && filename.endsWith(".zip")
+                }
+                val zipUrl = assetNode["browser_download_url"].asText()
+                val filesize = assetNode["size"].asLong(1L).coerceAtLeast(1L)
+                
+                val zipFileLoc = updaterFolder.resolve("RHRE_archive.zip").apply {
+                    createNewFile()
+                }
+                val fileStream = FileOutputStream(zipFileLoc)
+                val download = RHRE3Application.httpClient.prepareGet(zipUrl)
+                        .execute(object : AsyncCompletionHandlerBase() {
+                            private val speedUpdateRate = 500L
+                            private var timeBetweenProgress: Long = System.currentTimeMillis()
+                            private var lastSpeed = 0L
+                            private var speedAcc = 0L
+                            private var bytesSoFar = 0L
+                            override fun onContentWriteProgress(amount: Long, current: Long, total: Long): AsyncHandler.State {
+                                val time = System.currentTimeMillis() - timeBetweenProgress
+                                speedAcc += amount
+                                if (time >= speedUpdateRate) {
+                                    timeBetweenProgress = System.currentTimeMillis()
+                                    lastSpeed = (speedAcc / (time / 1000.0)).roundToLong()
+                                    speedAcc = 0L
+                                }
+                                
+                                Gdx.app.postRunnable {
+                                    val percent = (current.toDouble() / total).coerceIn(0.0, 1.0)
+                                    val barLength = 30
+                                    val barPortion = "${"█".repeat((percent * barLength).toInt())}[][GRAY]${"█".repeat(((1.0 - percent) * barLength).toInt())}"
+                                    val bar = "[[[WHITE]$barPortion[]]"
+                                    label.text = Localization["screen.autoUpdater.progress.downloadingArchive",
+                                            (percent * 100).roundToLong(), bar, bytesSoFar / 1024, total / 1024,
+                                            if (current >= total || lastSpeed <= 0L) "---" else (lastSpeed / 1024)]
+                                }
+                                return super.onContentWriteProgress(amount, current, total)
+                            }
+                            
+    
+                            override fun onBodyPartReceived(content: HttpResponseBodyPart): AsyncHandler.State {
+                                fileStream.channel.write(content.bodyByteBuffer)
+                                val amount = content.length()
+                                val total = filesize // FIXME response bytes won't always match filesize in metadata
+                                val time = System.currentTimeMillis() - timeBetweenProgress
+                                speedAcc += amount
+                                if (time >= speedUpdateRate) {
+                                    timeBetweenProgress = System.currentTimeMillis()
+                                    lastSpeed = (speedAcc / (time / 1000.0)).roundToLong()
+                                    speedAcc = 0L
+                                }
+                                
+                                bytesSoFar += amount
+                                
+                                Gdx.app.postRunnable {
+                                    val percent = (bytesSoFar.toDouble() / total).coerceIn(0.0, 1.0)
+                                    val barLength = 30
+                                    val barPortion = "${"█".repeat((percent * barLength).toInt())}[][GRAY]${"█".repeat(((1.0 - percent) * barLength).toInt())}"
+                                    val bar = "[WHITE]$barPortion[]"
+                                    label.text = Localization["screen.autoUpdater.progress.downloadingArchive",
+                                            (percent * 100).roundToLong(), bar, bytesSoFar / 1024, total / 1024,
+                                            if (bytesSoFar >= total || lastSpeed <= 0L) "---" else (lastSpeed / 1024)]
+                                }
+                                return AsyncHandler.State.CONTINUE
+                            }
+                        }).get()
+                fileStream.close()
+                Gdx.app.postRunnable {
+                    progress = Progress.EXTRACTING
+                    label.text = Localization["screen.autoUpdater.progress.extractingArchive"]
+                }
             } catch (ie: InterruptedException) {
                 ie.printStackTrace()
             } catch (e: Exception) {
