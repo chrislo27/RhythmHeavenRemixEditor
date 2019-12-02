@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -39,9 +40,15 @@ class EditorVersionScreen(main: RHRE3Application)
     
     private var state: State by Delegates.observable(State.CHECKING) { _, _, newState ->
         checkButton.enabled = newState != State.CHECKING
+        longChangelogButton.visible = newState != State.AVAILABLE
+        shortChangelogButton.visible = newState == State.AVAILABLE
+        gotoUpdaterButton.visible = newState == State.AVAILABLE
     }
     private val label: TextLabel<EditorVersionScreen>
     private val checkButton: Button<EditorVersionScreen>
+    private val longChangelogButton: Button<EditorVersionScreen>
+    private val shortChangelogButton: Button<EditorVersionScreen>
+    private val gotoUpdaterButton: Button<EditorVersionScreen>
     
     var isBeginning: Pair<Boolean, ToolboksScreen<*, *>?> = DEFAULT_BEGINNING
     private var timeOnScreen = 0f
@@ -60,23 +67,22 @@ class EditorVersionScreen(main: RHRE3Application)
             isBeginning = DEFAULT_BEGINNING
         }
         
-        stage.bottomStage.elements += object : Button<EditorVersionScreen>(palette, stage.bottomStage,
-                                                                           stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        longChangelogButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.leftClickAction = { _, _ ->
                 Gdx.net.openURI(RHRE3.GITHUB_RELEASES)
                 val stage: GenericStage<EditorVersionScreen> = this@EditorVersionScreen.stage
                 stage.backButton.enabled = true
             }
-        }.apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
                 this.text = "screen.version.viewChangelog"
             })
-            
+    
             this.location.set(screenX = 0.175f, screenWidth = 0.65f)
+            this.visible = true
         }
+        stage.bottomStage.elements += longChangelogButton
         checkButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
@@ -97,6 +103,36 @@ class EditorVersionScreen(main: RHRE3Application)
             this.enabled = false
         }
         stage.bottomStage.elements += checkButton
+        shortChangelogButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.leftClickAction = { _, _ ->
+                Gdx.net.openURI(RHRE3.GITHUB_RELEASES + "/latest")
+            }
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.fontScaleMultiplier = 0.9f
+                this.text = "screen.version.viewChangelog.short"
+            })
+    
+            this.location.set(screenX = 0.125f, screenWidth = 0.2f)
+            this.visible = false
+        }
+        stage.bottomStage.elements += shortChangelogButton
+        gotoUpdaterButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.leftClickAction = { _, _ ->
+            
+            }
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.version.gotoUpdater"
+                this.textColor = Color.CYAN.cpy()
+            })
+        
+            this.location.set(screenX = 0.35f, screenWidth = 0.475f)
+            this.visible = false
+        }
+        stage.bottomStage.elements += gotoUpdaterButton
         
         label = object : TextLabel<EditorVersionScreen>(palette, stage.centreStage, stage.centreStage) {
             private var lastGhVer: Version = main.githubVersion
