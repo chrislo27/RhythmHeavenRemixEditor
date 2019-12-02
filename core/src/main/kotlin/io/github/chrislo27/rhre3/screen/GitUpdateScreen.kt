@@ -67,7 +67,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
 
             override fun frameUpdate(screen: GitUpdateScreen) {
                 if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE && !setToReleases) {
-                    (labels.first() as TextLabel).text = "screen.version.button"
+                    (labels.first() as TextLabel).text = "screen.version.viewChangelog"
                     setToReleases = true
                 }
 

@@ -72,7 +72,7 @@ class EditorVersionScreen(main: RHRE3Application)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
-                this.text = "screen.version.button"
+                this.text = "screen.version.viewChangelog"
             })
             
             this.location.set(screenX = 0.175f, screenWidth = 0.65f)
