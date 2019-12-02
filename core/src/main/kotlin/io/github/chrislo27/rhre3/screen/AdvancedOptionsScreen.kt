@@ -306,6 +306,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         centre.elements += explodingEntitiesButton
         centre.elements += Button(palette, centre, centre).apply {
             this.leftClickAction = { _, _ ->
+                ScreenRegistry["editor"]?.dispose()
                 ScreenRegistry.remove("editor")
                 val defaultCamera = main.defaultCamera
                 val oldDim = defaultCamera.viewportWidth to defaultCamera.viewportHeight

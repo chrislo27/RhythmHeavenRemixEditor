@@ -77,6 +77,7 @@ import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.i18n.ToolboksBundle
 import io.github.chrislo27.toolboks.lazysound.LazySound
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
@@ -328,14 +329,17 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             field = value
             updateMessageLabel()
         }
+    
+    private val localizationListener: (ToolboksBundle) -> Unit
 
     init {
-        Localization.addListener {
+        localizationListener = {
             updateMessageLabel()
-
+    
             cachedPlaybackStart = Float.POSITIVE_INFINITY to ""
             cachedMusicStart = Float.POSITIVE_INFINITY to ""
         }
+        Localization.addListener(localizationListener)
 
         camera.position.y = calculateNormalCameraY()
         camera.update()
@@ -2138,6 +2142,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     }
 
     override fun dispose() {
+        Localization.removeListener(localizationListener)
+        stage.dispose()
     }
 
     private fun resizeCameraToEntityScale(camera: OrthographicCamera) {
@@ -2168,7 +2174,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 //        val click = clickOccupation
         val range = getBeatRange()
         val str = StringBuilder(100)
-        val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
+//        val debugKey = Input.Keys.toString(Toolboks.DEBUG_KEY)
         val rangeStartF = range.first.toFloat()
         val rangeEndF = range.last.toFloat()
         val duration = remix.duration

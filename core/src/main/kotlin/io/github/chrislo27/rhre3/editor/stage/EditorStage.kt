@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -39,6 +40,7 @@ import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.util.OSUtils
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
+import io.github.chrislo27.toolboks.i18n.ToolboksBundle
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -53,7 +55,7 @@ import kotlin.math.roundToInt
 
 class EditorStage(parent: UIElement<EditorScreen>?,
                   camera: OrthographicCamera, val main: RHRE3Application, val editor: Editor)
-    : Stage<EditorScreen>(parent, camera), Palettable {
+    : Stage<EditorScreen>(parent, camera), Palettable, Disposable {
 
     override var palette: UIPalette = main.uiPalette.copy(
             backColor = Color(main.uiPalette.backColor).apply { this.a = 0.5f })
@@ -140,17 +142,23 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
     private var isDirty = DirtyType.CLEAN
     private var wasDebug = false
+    private val localizationListener: (ToolboksBundle) -> Unit
 
     private var gameSwitchBack: SwitchToGame? = null
-
+    
     enum class DirtyType {
         CLEAN, DIRTY, SEARCH_DIRTY
     }
 
     init {
-        Localization.addListener {
+        localizationListener = {
             updateSelected(DirtyType.SEARCH_DIRTY)
         }
+        Localization.addListener(localizationListener)
+    }
+    
+    override fun dispose() {
+        Localization.removeListener(localizationListener)
     }
 
     fun selectInPicker(datamodel: Datamodel) {

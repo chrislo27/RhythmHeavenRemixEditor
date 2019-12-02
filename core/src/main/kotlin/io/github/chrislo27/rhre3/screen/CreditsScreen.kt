@@ -97,7 +97,6 @@ class CreditsScreen(main: RHRE3Application)
                     this.text = Localization["screen.info.github", RHRE3.GITHUB]
                 }
                 update()
-                Localization.addListener { update() }
                 this.fontScaleMultiplier = 0.9f
             })
 
