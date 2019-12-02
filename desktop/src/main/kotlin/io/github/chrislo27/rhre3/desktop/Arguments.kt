@@ -54,6 +54,9 @@ class Arguments {
     @Parameter(names = ["--disable-custom-sounds"], description = "Disables loading of custom sounds.")
     var disableCustomSounds: Boolean = false
     
+    @Parameter(names = ["--trigger-update-screen"], description = "Triggers the \"new version available\" screen on startup. Requires that the latest version be known, however.")
+    var triggerUpdateScreen: Boolean = false
+    
     // -----------------------------------------------------------
     
     @Parameter(names = ["--immmediate-anniversary"], hidden = true)

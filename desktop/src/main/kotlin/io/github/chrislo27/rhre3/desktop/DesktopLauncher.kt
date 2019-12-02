@@ -70,6 +70,7 @@ object DesktopLauncher {
                     RHRE3.logMissingLocalizations = arguments.logMissingLocalizations
                     RHRE3.disableCustomSounds = arguments.disableCustomSounds
                     RHRE3.lc = arguments.lc
+                    RHRE3.triggerUpdateScreen = arguments.triggerUpdateScreen
                     LazySound.loadLazilyWithAssetManager = !arguments.lazySoundsForceLoad
                     
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)

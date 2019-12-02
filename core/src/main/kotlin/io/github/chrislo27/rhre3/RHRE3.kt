@@ -68,6 +68,7 @@ object RHRE3 {
     var logMissingLocalizations: Boolean = false
     var disableCustomSounds: Boolean = false
     var lc: String? = null
+    var triggerUpdateScreen: Boolean = false
 
     lateinit var launchArguments: List<String>
 

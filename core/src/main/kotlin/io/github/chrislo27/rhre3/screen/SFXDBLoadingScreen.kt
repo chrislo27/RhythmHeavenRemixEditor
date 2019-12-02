@@ -107,7 +107,7 @@ class SFXDBLoadingScreen(main: RHRE3Application, val nextScreen: () -> ToolboksS
             val next = nextScreen()
             main.screen = if (next == null) {
                 val normalScreen = if (RemixRecovery.shouldBeRecovered()) "recoverRemix" else DEF_AFTER_LOAD_SCREEN
-                val nextScreen = if (!main.githubVersion.isUnknown && RHRE3.VERSION < main.githubVersion) {
+                val nextScreen = if (!main.githubVersion.isUnknown && (RHRE3.triggerUpdateScreen || RHRE3.VERSION < main.githubVersion)) {
                     ScreenRegistry.getNonNullAsType<EditorVersionScreen>("editorVersion").also {
                         it.isBeginning = true to ScreenRegistry[normalScreen]
                     }
