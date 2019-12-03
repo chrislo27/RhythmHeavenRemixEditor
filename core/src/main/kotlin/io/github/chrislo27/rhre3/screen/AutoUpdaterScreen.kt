@@ -17,12 +17,16 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.TextLabel
+import net.lingala.zip4j.ZipFile
 import org.asynchttpclient.AsyncCompletionHandlerBase
 import org.asynchttpclient.AsyncHandler
 import org.asynchttpclient.HttpResponseBodyPart
 import java.io.File
 import java.io.FileOutputStream
+import java.nio.file.Files
+import java.nio.file.Path
 import kotlin.math.roundToLong
+import kotlin.system.exitProcess
 
 
 class AutoUpdaterScreen(main: RHRE3Application)
@@ -89,9 +93,6 @@ class AutoUpdaterScreen(main: RHRE3Application)
         }
         stage.bottomStage.elements += changelogButton
         completeButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
-            this.leftClickAction = { _, _ ->
-            
-            }
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
@@ -161,7 +162,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                                     lastSpeed = (speedAcc / (time / 1000.0)).roundToLong()
                                     speedAcc = 0L
                                 }
-                                
+
                                 Gdx.app.postRunnable {
                                     val percent = (current.toDouble() / total).coerceIn(0.0, 1.0)
                                     val barLength = 30
@@ -173,8 +174,8 @@ class AutoUpdaterScreen(main: RHRE3Application)
                                 }
                                 return super.onContentWriteProgress(amount, current, total)
                             }
-                            
-    
+
+
                             override fun onBodyPartReceived(content: HttpResponseBodyPart): AsyncHandler.State {
                                 fileStream.channel.write(content.bodyByteBuffer)
                                 val amount = content.length()
@@ -186,13 +187,13 @@ class AutoUpdaterScreen(main: RHRE3Application)
                                     lastSpeed = (speedAcc / (time / 1000.0)).roundToLong()
                                     speedAcc = 0L
                                 }
-                                
+
                                 bytesSoFar += amount
-                                
+
                                 Gdx.app.postRunnable {
                                     val percent = (bytesSoFar.toDouble() / total).coerceIn(0.0, 1.0)
                                     val barLength = 30
-                                    val barPortion = "${"█".repeat((percent * barLength).toInt())}[][GRAY]${"█".repeat(((1.0 - percent) * barLength).toInt())}"
+                                    val barPortion = "${"█".repeat((percent * barLength).toInt())}[][DARK_GRAY]${"█".repeat(((1.0 - percent) * barLength).toInt())}"
                                     val bar = "[WHITE]$barPortion[]"
                                     label.text = Localization["screen.autoUpdater.progress.downloadingArchive",
                                             (percent * 100).roundToLong(), bar, bytesSoFar / 1024, total / 1024,
@@ -206,18 +207,55 @@ class AutoUpdaterScreen(main: RHRE3Application)
                     progress = Progress.EXTRACTING
                     label.text = Localization["screen.autoUpdater.progress.extractingArchive"]
                 }
+                val extractFolder: File = updaterFolder.resolve("extract/")
+                val zipFile: ZipFile = ZipFile(zipFileLoc)
+                extractFolder.mkdir()
+                zipFile.extractAll(extractFolder.canonicalPath)
+                val mainFolder = extractFolder.resolve("Rhythm Heaven Remix Editor/")
+                if (!mainFolder.exists()) error("'Rhythm Heaven Remix Editor' directory did not exist after extraction")
+                if (!mainFolder.isDirectory) error("Extracted 'Rhythm Heaven Remix Editor' was not a directory")
+                // Copy over allowed files
+                val fileList = mainFolder.listFiles()!!.toList()
+                val newJarFile = fileList.first { it.name == "RHRE.jar" } ?: error("RHRE.jar was not found after extraction")
+                fileList.filter {
+                    (it.isDirectory && it.name == "oss_licenses") || (it.isFile && it.extension == "txt")
+                }.forEach { f ->
+                    if (f.isFile) {
+                        f.copyTo(containingFolder.resolve(f.name), true)
+                    } else if (f.isDirectory) {
+                        f.copyRecursively(containingFolder.resolve(f.name + "/"), true)
+                    }
+                }
+                progress = Progress.READY_TO_COMPLETE
+                if (autocompleteCheckbox.checked) {
+                    // Continue
+                    Gdx.app.postRunnable {
+                        completeJarCopy(newJarFile)
+                    }
+                } else {
+                    Gdx.app.postRunnable {
+                        autocompleteCheckbox.visible = false
+                        completeButton.visible = true
+                        label.text = Localization["screen.autoUpdater.progress.readyToComplete"]
+                        completeButton.leftClickAction = { _, _ ->
+                            completeButton.visible = false
+                            completeJarCopy(newJarFile)
+                        }
+                    }
+                }
             } catch (ie: InterruptedException) {
                 ie.printStackTrace()
+                cleanup()
             } catch (e: Exception) {
                 e.printStackTrace()
                 Gdx.app.postRunnable {
                     progress = Progress.ERROR
-                    label.text = Localization["screen.autoUpdater.error", "${e::class.java.canonicalName}: ${e.localizedMessage}"]
+                    label.textWrapping = true
+                    label.text = Localization["screen.autoUpdater.error", "[LIGHT_GRAY]${e::class.java.canonicalName}\n${e.localizedMessage}[]"]
                     stage.backButton.visible = true
                     completeButton.visible = false
                     autocompleteCheckbox.visible = false
                 }
-            } finally {
                 cleanup()
             }
         }, "Auto-Updater Worker").apply {
@@ -226,9 +264,32 @@ class AutoUpdaterScreen(main: RHRE3Application)
         worker.start()
     }
     
+    private fun completeJarCopy(newJarFile: File) {
+        try {
+            val oldJarFileLoc: Path = jarFileLocation.toPath()
+            Files.delete(oldJarFileLoc)
+            newJarFile.copyTo(jarFileLocation, true)
+//            // Atomic move
+//            Files.move(newJarFile.toPath(), oldJarFileLoc, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
+            cleanup()
+            exitProcess(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Gdx.app.postRunnable {
+                progress = Progress.ERROR
+                label.textWrapping = true
+                label.text = Localization["screen.autoUpdater.error", "[LIGHT_GRAY]${e::class.java.canonicalName}\n${e.localizedMessage}[]"]
+                stage.backButton.visible = true
+                completeButton.visible = false
+                autocompleteCheckbox.visible = false
+            }
+            cleanup()
+        }
+    }
+    
     private fun cleanup() {
         // Delete any temporary files created
-        updaterFolder.deleteRecursively()
+//        updaterFolder.deleteRecursively()
     }
     
     override fun renderUpdate() {
