@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.File;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
@@ -23,6 +24,7 @@ public class Updater {
                 } else {
                     Files.move(file1, file2, StandardCopyOption.REPLACE_EXISTING);
                 }
+                break;
             } catch (Exception e) {
                 e.printStackTrace();
                 if (e instanceof AtomicMoveNotSupportedException) {
@@ -32,5 +34,6 @@ public class Updater {
                 Thread.sleep(waitBetween);
             }
         }
+        JOptionPane.showMessageDialog(null, (attemptNum >= maxAttempts ? "Rhythm Heaven Remix Editor update failed." : "Rhythm Heaven Remix Editor updated successfully! You can relaunch the program now."), "RHRE Auto-Update Information", attemptNum >= maxAttempts ? JOptionPane.ERROR_MESSAGE : JOptionPane.INFORMATION_MESSAGE);
     }
 }
