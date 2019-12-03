@@ -19,6 +19,7 @@ Below is a sample json file:<br>
   "background" : "#EBEBEB",
   "trackLine" : "#191919",
   "waveform" : "#191919",
+  "playalongFlicking" : "#00BC67CC",
   "texture" : "<insert optional Base64 encoded RGBA8888 PNG here>",
   "trackers" : {
     "playback" : "#00FF00",
@@ -63,3 +64,4 @@ be loaded.
 | v3.4.0 | The `subtitle` field name in entities was changed to `special`. |
 | v3.6.0 | the `timeSignature` field inside the `trackers` group was removed. Time signatures now use the `trackLine` colour. |
 | v3.19.0 | All fields are optional and inherit from the Classic Light theme if missing. |
+| v3.19.0 | Added `playalongFlicking` field. |

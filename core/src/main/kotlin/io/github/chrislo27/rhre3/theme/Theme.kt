@@ -59,6 +59,8 @@ open class Theme : Disposable {
     var background: Color = Color(0.925f, 0.925f, 0.925f, 1f)
     @HexColor
     var trackLine: Color = Color(0.1f, 0.1f, 0.1f, 1f)
+    @HexColor
+    var playalongFlicking: Color = Color.valueOf("00BC67CC")
     
     @field:JsonIgnore
     private var waveformBacking: Color? = null

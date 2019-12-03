@@ -107,7 +107,7 @@ class PlayalongStage(val editor: Editor,
     private val perfectHitTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_hit"))
     private val perfectFailTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_perfect_failed"))
     private val heartTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
-    private val heartBrokenTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
+//    private val heartBrokenTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_heart"), 0, 0, 64, 64)
     private val monsterIconTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_monster_icon"))
     private val hideInputIndTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_hide_input_indicators"))
     private val hideInputIndDisableTexReg: TextureRegion = TextureRegion(AssetRegistry.get<Texture>("playalong_hide_input_indicators_disable"))
@@ -152,10 +152,7 @@ class PlayalongStage(val editor: Editor,
             this.colour.set(0f, 0f, 0f, 0.65f)
             this.location.set(lowerStage.location)
         }
-        flickingStage = FlickingStage(this, this).apply {
-            this.colour.set(Color.valueOf("00BC67").apply {
-                this.a = 0.8f
-            })
+        flickingStage = FlickingStage(this, this, editor).apply {
             this.location.set(screenX = 0.65f)
             this.location.set(location.screenX, 0f, 1f - location.screenX, 1f)
             this.visible = false

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
+import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.ColourPane
@@ -20,7 +21,7 @@ import io.github.chrislo27.toolboks.util.gdxutils.useStencilMask
 import kotlin.math.sqrt
 
 
-class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterStage: Stage<S>)
+class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterStage: Stage<S>, val editor: Editor)
     : ColourPane<S>(parent, parameterStage) {
 
     data class TapPoint(var x: Float, var y: Float, var veloX: Float, var veloY: Float,
@@ -36,6 +37,8 @@ class FlickingStage<S : ToolboksScreen<*, *>>(parent: UIElement<S>, parameterSta
     var onSlide: (tapPoint: TapPoint) -> Unit = {}
 
     override fun render(screen: S, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+        // Update internal colour
+        this.colour.set(editor.theme.playalongFlicking)
         super.render(screen, batch, shapeRenderer)
 
         batch.setColor(1f, 1f, 1f, 1f)
