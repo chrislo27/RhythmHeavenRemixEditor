@@ -11,6 +11,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.JsonHandler
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -23,8 +24,6 @@ import org.asynchttpclient.AsyncHandler
 import org.asynchttpclient.HttpResponseBodyPart
 import java.io.File
 import java.io.FileOutputStream
-import java.nio.file.Files
-import java.nio.file.Path
 import kotlin.math.roundToLong
 import kotlin.system.exitProcess
 
@@ -245,7 +244,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 }
             } catch (ie: InterruptedException) {
                 ie.printStackTrace()
-                cleanup()
+                cleanupAfterFail()
             } catch (e: Exception) {
                 e.printStackTrace()
                 Gdx.app.postRunnable {
@@ -256,7 +255,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                     completeButton.visible = false
                     autocompleteCheckbox.visible = false
                 }
-                cleanup()
+                cleanupAfterFail()
             }
         }, "Auto-Updater Worker").apply {
             this.isDaemon = false
@@ -266,12 +265,11 @@ class AutoUpdaterScreen(main: RHRE3Application)
     
     private fun completeJarCopy(newJarFile: File) {
         try {
-            val oldJarFileLoc: Path = jarFileLocation.toPath()
-            Files.delete(oldJarFileLoc)
-            newJarFile.copyTo(jarFileLocation, true)
-//            // Atomic move
-//            Files.move(newJarFile.toPath(), oldJarFileLoc, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING)
-            cleanup()
+            val updaterFolderPath = updaterFolder.canonicalPath
+            ZipFile(jarFileLocation).extractFile("Updater.class", updaterFolderPath, "Updater.class")
+            ProcessBuilder("java", "-cp", updaterFolderPath, "Updater", newJarFile.canonicalPath, jarFileLocation.canonicalPath)
+                    .start()
+            Toolboks.LOGGER.info("Launched Updater class, exiting now.")
             exitProcess(0)
         } catch (e: Exception) {
             e.printStackTrace()
@@ -283,13 +281,13 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 completeButton.visible = false
                 autocompleteCheckbox.visible = false
             }
-            cleanup()
+            cleanupAfterFail()
         }
     }
     
-    private fun cleanup() {
+    private fun cleanupAfterFail() {
         // Delete any temporary files created
-//        updaterFolder.deleteRecursively()
+        updaterFolder.deleteRecursively()
     }
     
     override fun renderUpdate() {
@@ -306,7 +304,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
     override fun dispose() {
         // Cancel a download if it is happening
         worker.interrupt()
-        cleanup()
+        cleanupAfterFail()
     }
     
 }
