@@ -6,28 +6,45 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Align
+import com.badlogic.gdx.utils.Pool
 
 
-private val glyphLayout: GlyphLayout = GlyphLayout()
+private val glyphLayoutPool: Pool<GlyphLayout> = object : Pool<GlyphLayout>(32) {
+    override fun newObject(): GlyphLayout {
+        return GlyphLayout()
+    }
+}
 
 fun BitmapFont.getTextWidth(text: String): Float {
+    val glyphLayout = glyphLayoutPool.obtain()
     glyphLayout.setText(this, text)
-    return glyphLayout.width
+    val width = glyphLayout.width
+    glyphLayoutPool.free(glyphLayout)
+    return width
 }
 
 fun BitmapFont.getTextHeight(text: String): Float {
+    val glyphLayout = glyphLayoutPool.obtain()
     glyphLayout.setText(this, text)
-    return glyphLayout.height
+    val height = glyphLayout.height
+    glyphLayoutPool.free(glyphLayout)
+    return height
 }
 
 fun BitmapFont.getTextWidth(text: String, width: Float, wrap: Boolean): Float {
+    val glyphLayout = glyphLayoutPool.obtain()
     glyphLayout.setText(this, text, Color.WHITE, width, Align.left, wrap)
-    return glyphLayout.width
+    val w = glyphLayout.width
+    glyphLayoutPool.free(glyphLayout)
+    return w
 }
 
 fun BitmapFont.getTextHeight(text: String, width: Float, wrap: Boolean): Float {
+    val glyphLayout = glyphLayoutPool.obtain()
     glyphLayout.setText(this, text, Color.WHITE, width, Align.left, wrap)
-    return glyphLayout.height
+    val height = glyphLayout.height
+    glyphLayoutPool.free(glyphLayout)
+    return height
 }
 
 /**
@@ -46,15 +63,15 @@ fun BitmapFont.drawCompressed(batch: SpriteBatch, text: String, x: Float, y: Flo
     val font = this
     val textWidth = this.getTextWidth(text)
     val oldScaleX = font.data.scaleX
-
+    
     if (textWidth > width) {
         font.data.scaleX = (width / textWidth) * oldScaleX
     }
-
+    
     val layout = font.draw(batch, text, x, y, width, align, false)
-
+    
     font.data.scaleX = oldScaleX
-
+    
     return layout
 }
 
@@ -66,22 +83,22 @@ fun BitmapFont.drawConstrained(batch: SpriteBatch, text: String, x: Float, y: Fl
     val oldScaleX = font.data.scaleX
     val oldScaleY = font.data.scaleY
     val oldLineHeight = font.data.down
-
+    
     if (textWidth > width) {
         font.data.scaleX = (width / textWidth) * oldScaleX
     }
-
+    
     if (textHeight > height) {
         font.data.scaleY = (height / textHeight) * oldScaleY
         font.data.down = (height / textHeight) * oldLineHeight
     }
-
+    
     val layout = font.draw(batch, text, x, y, width, align, true)
-
+    
     font.data.scaleX = oldScaleX
     font.data.scaleY = oldScaleY
     font.data.down = oldLineHeight
-
+    
     return layout
 }
 
