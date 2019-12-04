@@ -28,8 +28,8 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Edito
 
             this.textAlign = Align.center
             this.textWrapping = false
-            this.isLocalizationKey = false
-            this.text = "Theme Editor"
+            this.isLocalizationKey = true
+            this.text = "editor.themeEditor"
         }
     }
 

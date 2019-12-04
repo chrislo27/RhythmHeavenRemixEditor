@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.theme.LoadedThemes
-import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getInputY
@@ -22,8 +21,10 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
 
     abstract val itemList: List<T>
     private val buttons: MutableList<ItemButton> = mutableListOf()
-    var buttonScroll = 0
-        private set
+    var buttonScroll: Int = 0
+        set(value) {
+            field = value.coerceIn(0, maxButtonScroll)
+        }
     private val maxButtonScroll: Int
         get() = (itemList.size - buttons.size).coerceAtLeast(0)
 
@@ -95,8 +96,8 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
 
                 if (canBeClickedOn()) {
                     // Render window
-                    val themes = LoadedThemes.themes
-                    val total = themes.size
+                    val items = itemList
+                    val total = items.size
                     val barHeight = (buttons.size.toFloat() / total.coerceAtLeast(1)) * location.realHeight
                     val barHeightAlpha = barHeight / location.realHeight
                     val click = clickPoint
@@ -104,12 +105,14 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
                     batch.color = if (click.first in 0f..1f) palette.clickedBackColor else palette.highlightedBackColor
                     batch.fillRect(location.realX, location.realY + location.realHeight - buttonScroll.toFloat() / total * location.realHeight, location.realWidth, -barHeight)
 
-                    val numDefaultThemes = Themes.defaultThemes.size
-                    if (total > numDefaultThemes) {
-                        // Has custom, add blue bar
-                        batch.setColor(0f, 1f, 1f, 0.5f)
-                        val smallBarHeight = location.realHeight * (1f / total)
-                        batch.fillRect(location.realX, location.realY + (1f - numDefaultThemes.toFloat() / total) * location.realHeight, location.realWidth, -smallBarHeight)
+                    val blueBarLimit = getBlueBarLimit()
+                    if (blueBarLimit > 0) {
+                        if (total > blueBarLimit) {
+                            // Has custom, add blue bar
+                            batch.setColor(0f, 1f, 1f, 0.5f)
+                            val smallBarHeight = location.realHeight * (1f / total)
+                            batch.fillRect(location.realX, location.realY + (1f - blueBarLimit.toFloat() / total) * location.realHeight, location.realWidth, -smallBarHeight)
+                        }
                     }
 
                     if (click.first in 0f..1f) {
@@ -130,7 +133,7 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
             override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
                 if (canBeClickedOn() && button == Input.Buttons.LEFT && isMouseOver()) {
                     val scrollAlpha = 1f - (this.stage.camera.getInputY() - location.realY) / location.realHeight
-                    val total = LoadedThemes.themes.size
+                    val total = itemList.size
                     val alphaInBar = (scrollAlpha - (buttonScroll.toFloat() / total)) / (buttons.size.toFloat() / total.coerceAtLeast(1))
                     if (alphaInBar in 0f..1f) {
                         clickPoint = scrollAlpha to buttonScroll
@@ -156,6 +159,7 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
     abstract fun isItemNameLocalizationKey(item: T): Boolean
     abstract fun getItemBgColor(item: T): Color
     abstract fun getItemLineColor(item: T): Color
+    open fun getBlueBarLimit(): Int = -1
 
     abstract fun onItemButtonSelected(leftClick: Boolean, realIndex: Int, buttonIndex: Int)
 

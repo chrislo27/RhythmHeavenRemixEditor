@@ -32,6 +32,7 @@ object Themes : Disposable {
                     DarkPastelTheme("theme.darkPastel.indigo", Color(0.70f, 0.70f, 1f, 1f)),
                     DarkPastelTheme("theme.darkPastel.violet", Color.valueOf("C59FFF"))
                   )
+    val defaultThemesAsSet: Set<Theme> = defaultThemes.toSet()
     
     override fun dispose() {
         defaultThemes.forEach(Theme::dispose)
