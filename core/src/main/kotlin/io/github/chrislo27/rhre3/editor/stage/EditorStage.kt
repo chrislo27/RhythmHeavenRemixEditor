@@ -24,6 +24,8 @@ import io.github.chrislo27.rhre3.editor.stage.advopt.ExportImageButton
 import io.github.chrislo27.rhre3.editor.stage.advopt.SelectionToJSONButton
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongStage
 import io.github.chrislo27.rhre3.editor.stage.playalong.PlayalongToggleButton
+import io.github.chrislo27.rhre3.editor.stage.theme.ThemeChooserStage
+import io.github.chrislo27.rhre3.editor.stage.theme.ThemeEditorStage
 import io.github.chrislo27.rhre3.entity.model.IEditableText
 import io.github.chrislo27.rhre3.entity.model.special.SubtitleEntity
 import io.github.chrislo27.rhre3.modding.ModdingUtils
@@ -732,7 +734,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                                       Editor.BUTTON_PADDING)) - (this.location.screenY))
             this.visible = false
         }
-        themeChooserStage = ThemeChooserStage(editor, palette, this, camera).apply {
+        themeChooserStage = ThemeChooserStage(editor, palette, this, camera, 384f, 462f).apply {
             this.location.set(screenWidth = 0.3f,
                               screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
             this.location.set(screenX = 1f - this.location.screenWidth,

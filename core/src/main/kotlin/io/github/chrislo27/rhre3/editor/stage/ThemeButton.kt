@@ -29,7 +29,7 @@ class ThemeButton(val editor: Editor, val editorStage: EditorStage,
         editorStage.paneLikeStages.forEach { it.visible = false }
         chooserStage.visible = !wasVisible
         if (chooserStage.visible) {
-            chooserStage.resetButtons()
+            chooserStage.resetEverything()
         }
     }
 
