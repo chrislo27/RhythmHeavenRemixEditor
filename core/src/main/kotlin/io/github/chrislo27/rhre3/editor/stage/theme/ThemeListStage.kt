@@ -159,6 +159,7 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
     abstract fun isItemNameLocalizationKey(item: T): Boolean
     abstract fun getItemBgColor(item: T): Color
     abstract fun getItemLineColor(item: T): Color
+    abstract fun isItemSelected(item: T): Boolean
     open fun getBlueBarLimit(): Int = -1
 
     abstract fun onItemButtonSelected(leftClick: Boolean, realIndex: Int, buttonIndex: Int)
@@ -175,6 +176,14 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
         }
 
         resetButtons()
+    }
+
+    override fun scrolled(amount: Int): Boolean {
+        if (this.isMouseOver()) {
+            scroll(amount)
+        }
+
+        return true
     }
 
     inner class ItemButton(val index: Int, palette: UIPalette, parent: UIElement<EditorScreen>,
@@ -235,7 +244,7 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
             val item = itemList[index + buttonScroll]
             textLabel.text = getItemName(item)
             textLabel.isLocalizationKey = isItemNameLocalizationKey(item)
-            textLabel.textColor = if (index + buttonScroll == LoadedThemes.index) Editor.SELECTED_TINT else null
+            textLabel.textColor = if (isItemSelected(item)) Editor.SELECTED_TINT else null
         }
 
         override fun frameUpdate(screen: EditorScreen) {

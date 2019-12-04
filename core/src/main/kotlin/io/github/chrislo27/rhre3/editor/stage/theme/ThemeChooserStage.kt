@@ -26,6 +26,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
     private val title: TextLabel<EditorScreen>
     private val chooserButtonBar: Stage<EditorScreen>
     private val themeList: ThemeListStage<Theme>
+    private val themeEditor: ThemeEditorStage
 
     init {
         this.elements += ColourPane(this, this).apply {
@@ -40,6 +41,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             override fun isItemNameLocalizationKey(item: Theme): Boolean = item.nameIsLocalization
             override fun getItemBgColor(item: Theme): Color = item.background
             override fun getItemLineColor(item: Theme): Color = item.trackLine
+            override fun isItemSelected(item: Theme): Boolean = item == LoadedThemes.themes[LoadedThemes.index]
             override fun getBlueBarLimit(): Int = Themes.defaultThemes.size
 
             override fun onItemButtonSelected(leftClick: Boolean, realIndex: Int, buttonIndex: Int) {
@@ -115,21 +117,19 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             }
         }
         this.elements += chooserButtonBar
+        
+        themeEditor = ThemeEditorStage(editor, palette, this, this.camera, 362f, 392f).apply {
+            this.location.set(screenX = 0f, screenY = 0f, screenWidth = 0f, screenHeight = 0f,
+                         pixelX = 20f, pixelY = 13f, pixelWidth = 362f, pixelHeight = 352f)
+            this.visible = false
+        }
+        this.elements += themeEditor
 
     }
 
     fun resetEverything() {
         // TODO implement correctly
         themeList.resetButtons()
-    }
-
-    override fun scrolled(amount: Int): Boolean {
-        if (this.isMouseOver()) {
-            // FIXME
-            themeList.scroll(amount)
-        }
-
-        return true
     }
 
 }

@@ -74,7 +74,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
     val patternAreaStage: Stage<EditorScreen>
     val tapalongStage: TapalongStage
     val presentationModeStage: PresentationModeStage
-    val themeEditorStage: ThemeEditorStage
     val themeChooserStage: ThemeChooserStage
     val viewChooserStage: ViewChooserStage
     val playalongStage: PlayalongStage
@@ -726,14 +725,6 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             this.visible = false
         }
-        themeEditorStage = ThemeEditorStage(editor, palette, this, camera).apply {
-            this.location.set(screenWidth = 0.3f,
-                              screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
-            this.location.set(screenX = 1f - this.location.screenWidth,
-                              screenHeight = (buttonBarStage.location.screenY - this@EditorStage.percentageOfHeight(
-                                      Editor.BUTTON_PADDING)) - (this.location.screenY))
-            this.visible = false
-        }
         themeChooserStage = ThemeChooserStage(editor, palette, this, camera, 384f, 462f).apply {
             this.location.set(screenWidth = 0.3f,
                               screenY = minimapBarStage.location.screenY + minimapBarStage.location.screenHeight)
@@ -770,12 +761,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         elements += centreAreaStage
         elements += subtitleStage
         elements += playalongStage
-//        elements += themeEditorStage
         elements += themeChooserStage
         elements += viewChooserStage
         paneLikeStages += themeChooserStage
         paneLikeStages += viewChooserStage
-        paneLikeStages += themeEditorStage
         this.updatePositions()
 
         pickerDisplay = PickerDisplay(editor, Editor.PATTERN_COUNT, palette, patternAreaStage, patternAreaStage)
