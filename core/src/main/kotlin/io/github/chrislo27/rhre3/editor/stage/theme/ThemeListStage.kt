@@ -181,9 +181,10 @@ abstract class ThemeListStage<T>(val editor: Editor, val palette: UIPalette, par
     override fun scrolled(amount: Int): Boolean {
         if (this.isMouseOver()) {
             scroll(amount)
+            return true
         }
 
-        return true
+        return super.scrolled(amount)
     }
 
     inner class ItemButton(val index: Int, palette: UIPalette, parent: UIElement<EditorScreen>,
