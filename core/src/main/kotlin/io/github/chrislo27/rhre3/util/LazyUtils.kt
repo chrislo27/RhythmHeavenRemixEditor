@@ -40,6 +40,7 @@ private class SettableLazyImpl<T>(private val initBlock: () -> T) : SettableLazy
 
     private fun init() {
         backing = initBlock()
+        inited = true
     }
 
     override fun isInitialized(): Boolean {
