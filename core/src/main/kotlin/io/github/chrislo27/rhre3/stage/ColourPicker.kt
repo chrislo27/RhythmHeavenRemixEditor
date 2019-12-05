@@ -48,6 +48,9 @@ class ColourPicker<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: UIEleme
     val copyButton: Button<S>
 
     var onColourChange: (color: Color) -> Unit = {}
+    
+    val textFieldsHaveFocus: Boolean
+        get() = hex.hasFocus || hueField.hasFocus || satField.hasFocus || valueField.hasFocus || alphaField.hasFocus
 
     init {
         elements += ColourPane(this, this).apply {
@@ -244,7 +247,7 @@ class ColourPicker<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: UIEleme
             this.tooltipTextIsLocalizationKey = true
             this.tooltipText = "colourPicker.copy"
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_copy"))
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_copy"))
             })
             this.leftClickAction = { _, _ ->
                 Gdx.app.clipboard.contents = currentColour.toString().toUpperCase(Locale.ROOT)
@@ -257,7 +260,7 @@ class ColourPicker<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: UIEleme
             this.tooltipTextIsLocalizationKey = true
             this.tooltipText = "colourPicker.clear"
             this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_x"))
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_x"))
                 this.tint.set(1f, 0.25f, 0.25f, 1f)
             })
             this.leftClickAction = { _, _ ->

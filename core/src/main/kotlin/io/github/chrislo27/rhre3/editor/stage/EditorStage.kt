@@ -136,7 +136,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         }
     val isTyping: Boolean
         get() {
-            return searchBar.textField.hasFocus || jumpToField.hasFocus || entityTextField.hasFocus
+            return searchBar.textField.hasFocus || jumpToField.hasFocus || entityTextField.hasFocus || themeChooserStage.themeEditor.editNameStage.field.hasFocus || themeChooserStage.themeEditor.editElementStage.colourPicker.textFieldsHaveFocus
         }
     val tapalongMarkersEnabled: Boolean
         get() = tapalongStage.markersEnabled

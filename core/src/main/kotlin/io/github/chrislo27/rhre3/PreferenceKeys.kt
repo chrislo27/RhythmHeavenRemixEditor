@@ -45,6 +45,7 @@ object PreferenceKeys {
     val FILE_CHOOSER_EXPORT = "fileChooser_export"
     val FILE_CHOOSER_TEXENT = "fileChooser_texEnt"
     val FILE_CHOOSER_EXPORT_IMAGE = "fileChooser_exportImage"
+    val FILE_CHOOSER_THEME_EDITOR_IMAGE = "fileChooser_themeEditorImage"
 
     val FAVOURITES = "favourites"
     val RECENT_GAMES = "recentGames"

@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonSetter
+import io.github.chrislo27.rhre3.util.settableLazy
 import io.github.chrislo27.toolboks.i18n.Localization
 
 
@@ -75,7 +76,7 @@ open class Theme : Disposable {
     var texture: String? = "<insert optional Base64 encoded RGBA8888 PNG here>"
     
     @delegate:JsonIgnore
-    val textureObj: Texture? by lazy {
+    var textureObj: Texture? by settableLazy {
         if (texture.isNullOrBlank() || texture!!.matches("<.*>".toRegex())) {
             null
         } else {

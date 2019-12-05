@@ -23,10 +23,10 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
     private val preferences: Preferences
         get() = editor.main.preferences
 
-    private val title: TextLabel<EditorScreen>
+    val title: TextLabel<EditorScreen>
     private val chooserButtonBar: Stage<EditorScreen>
     private val themeList: ThemeListStage<Theme>
-    private val themeEditor: ThemeEditorStage
+    val themeEditor: ThemeEditorStage
 
     init {
         this.elements += ColourPane(this, this).apply {
@@ -68,6 +68,13 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
         }
         this.elements += title
 
+        themeEditor = ThemeEditorStage(editor, palette, this, this.camera, 362f, 392f).apply {
+            this.location.set(screenX = 0f, screenY = 0f, screenWidth = 0f, screenHeight = 0f,
+                              pixelX = 20f, pixelY = 13f, pixelWidth = 362f, pixelHeight = 352f)
+            this.visible = false
+        }
+        this.elements += themeEditor
+
         chooserButtonBar = Stage(this, this.camera, 346f, 34f).apply {
             location.set(screenX = 0f, screenY = 0f, screenWidth = 0f, screenHeight = 0f,
                          pixelX = 20f, pixelY = 13f, pixelWidth = 346f, pixelHeight = 34f)
@@ -80,6 +87,11 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                     this.fontScaleMultiplier = 0.75f
                     this.location.set(pixelWidth = -4f, pixelX = 2f)
                 })
+                this.leftClickAction = { _, _ ->
+                    themeEditor.state = ThemeEditorStage.State.ChooseTheme
+                    themeEditor.update()
+                    updateVisibility(true)
+                }
             }
 
             this.elements += object : Button<EditorScreen>(palette, this, this.stage) {
@@ -117,19 +129,18 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
             }
         }
         this.elements += chooserButtonBar
-        
-        themeEditor = ThemeEditorStage(editor, palette, this, this.camera, 362f, 392f).apply {
-            this.location.set(screenX = 0f, screenY = 0f, screenWidth = 0f, screenHeight = 0f,
-                         pixelX = 20f, pixelY = 13f, pixelWidth = 362f, pixelHeight = 352f)
-            this.visible = false
-        }
-        this.elements += themeEditor
-
     }
 
+    fun updateVisibility(inThemeEditor: Boolean) {
+        themeEditor.visible = inThemeEditor
+        chooserButtonBar.visible = !inThemeEditor
+        themeList.visible = !inThemeEditor
+    }
+    
     fun resetEverything() {
-        // TODO implement correctly
+        updateVisibility(false)
         themeList.resetButtons()
+        title.text = "editor.themeChooser.title"
     }
 
 }

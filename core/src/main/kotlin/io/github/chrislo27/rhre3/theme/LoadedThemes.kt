@@ -19,6 +19,8 @@ object LoadedThemes {
     
     var themes: List<Theme> = listOf()
         private set
+    var fileHandles: Map<Theme, FileHandle> = mapOf()
+        private set
     val THEMES_FOLDER: FileHandle by lazy { RHRE3.RHRE3_FOLDER.child("themes/") }
     
     fun scroll(dir: Int) {
@@ -39,6 +41,7 @@ object LoadedThemes {
         themes.filter { it !in Themes.defaultThemes }.forEach(Theme::dispose)
         
         val themes = Themes.defaultThemes.toMutableList()
+        val fileHandles = mutableMapOf<Theme, FileHandle>()
         
         val folder = THEMES_FOLDER
         folder.mkdirs()
@@ -52,6 +55,7 @@ object LoadedThemes {
                     themeObj.name = "Custom Theme ${index + 1}"
                 }
                 themes += themeObj
+                fileHandles[themeObj] = it
                 Toolboks.LOGGER.info("Loaded theme ${it.name()} successfully")
             } catch (e: Exception) {
                 Toolboks.LOGGER.error("Failed to parse theme ${it.name()}, skipping")
@@ -60,6 +64,7 @@ object LoadedThemes {
         }
         
         this.themes = themes
+        this.fileHandles = fileHandles
         
         val exampleFolder = folder.child("example/")
         exampleFolder.mkdirs()
