@@ -331,6 +331,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
 
     inner class EditNameStage : StateStage() {
         val field: TextField<EditorScreen>
+        private val filenameLabel: TextLabel<EditorScreen>
 
         init {
             field = TextField(palette, contentStage, contentStage).apply {
@@ -339,6 +340,13 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                 location.set(0f, 0.5f, 0f, 0f, pixelY = -20f, pixelWidth = 346f, pixelHeight = 40f)
             }
             contentStage.elements += field
+            filenameLabel = TextLabel(palette, contentStage, contentStage).apply {
+                isLocalizationKey = false
+                textWrapping = false
+                fontScaleMultiplier = 0.9f
+                location.set(0f, 0.5f, 0f, 0f, pixelY = -20f - 40f * 2, pixelWidth = 346f, pixelHeight = 40f * 2f)
+            }
+            contentStage.elements += filenameLabel
             buttonBar.elements += Button(palette, buttonBar, buttonBar).apply {
                 addLabel(ImageLabel(palette, this, this.stage).apply {
                     image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_back"))
@@ -371,12 +379,14 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
         override fun onUpdate() {
             super.onUpdate()
             field.text = theme.name
+            filenameLabel.text = Localization["editor.themeEditor.savedAs", "${themeFile?.file()?.name}"]
         }
     }
 
     inner class EditTextureStage : StateStage() {
 
         val label: TextLabel<EditorScreen>
+        private val removeButton: Button<EditorScreen>
 
         init {
             label = TextLabel(palette, contentStage, contentStage).apply {
@@ -458,7 +468,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                     }
                 }
             }
-            buttonBar.elements += Button(palette, buttonBar, buttonBar).apply {
+            removeButton = Button(palette, buttonBar, buttonBar).apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     text = "editor.themeEditor.editTexture.remove"
                     textWrapping = false
@@ -478,6 +488,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                     saveTheme()
                 }
             }
+            buttonBar.elements += removeButton
             buttonBar.elements += Button(palette, buttonBar, buttonBar).apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     text = "editor.themeEditor.done"
@@ -498,6 +509,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
             super.onUpdate()
             val tex = theme.textureObj
             label.text = if (tex == null) Localization["editor.themeEditor.noTexture"] else "${tex.width}x${tex.height}"
+            removeButton.enabled = tex != null
         }
     }
 
