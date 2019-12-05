@@ -3,7 +3,7 @@
 Starting in `v3.8.0`, the localization system changed (as a result of
 the backend system changing).
 
->All files noted are found inside the RHRE3.jar file in the `localization` directory.
+>All files noted are found inside the RHRE.jar file in the `localization` directory.
 
 >All text files noted use the encoding **UTF-8**.
 
