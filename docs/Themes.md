@@ -3,7 +3,10 @@
 You may have noticed that RHRE comes with some themes built-in.
 Have you ever wanted to tweak a theme or make an entirely new one?
 
-You can, and this is very simple to do!
+You can, and this is very simple to do! Starting with v3.19.0, a built-in
+Theme Editor was added. You can edit all the properties of themes and see the results in real-time.
+
+## JSON Editing
 
 Every time you start the editor, a folder `~/.rhre3/themes` (`<user>/.rhre3/themes` on Windows) will be made,
 and inside of that folder will be one more folder called `examples`. Inside
