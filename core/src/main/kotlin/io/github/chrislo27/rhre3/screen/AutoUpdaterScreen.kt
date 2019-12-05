@@ -62,7 +62,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
             this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
         }
         stage.backButton.apply {
-            this.visible = false // TODO handle cancellation?
+            this.visible = false
             this.tooltipTextIsLocalizationKey = true
             this.tooltipText = "screen.autoUpdater.cancel"
         }
