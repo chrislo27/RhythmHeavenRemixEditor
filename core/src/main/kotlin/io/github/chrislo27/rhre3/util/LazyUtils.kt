@@ -23,14 +23,15 @@ interface SettableLazy<T> {
 private class SettableLazyImpl<T>(private val initBlock: () -> T) : SettableLazy<T> {
 
     private var inited: Boolean = false
-    private var backing: T? = null
+    private var backing: Any? = UNINITIALIZED_SETTABLE_LAZY_VALUE
 
     override var value: T
         get() {
             if (!isInitialized()) {
                 init()
             }
-            return backing!!
+            @Suppress("UNCHECKED_CAST")
+            return (backing as T)
         }
         set(value) {
             backing = value
@@ -46,5 +47,7 @@ private class SettableLazyImpl<T>(private val initBlock: () -> T) : SettableLazy
     }
 
 }
+
+private object UNINITIALIZED_SETTABLE_LAZY_VALUE
 
 fun <T> settableLazy(initBlock: () -> T): SettableLazy<T> = SettableLazyImpl(initBlock)
