@@ -37,7 +37,8 @@ object RHRE3 {
     val DEV_DATABASE_BRANCH: String = "prototype"
     val MASTER_DATABASE_BRANCH: String = "master"
     val DATABASE_BRANCH: String = if (VERSION.suffix.startsWith("DEV") 
-            || (VERSION.suffix.startsWith("SNAPSHOT") || VERSION.suffix.startsWith("RC") /* For v3.19.0 only */)) {
+            || (VERSION.suffix.startsWith("SNAPSHOT") || VERSION.suffix.startsWith("RC") /* TODO remove for v3.19.0 release */
+                    )) {
         DEV_DATABASE_BRANCH
     } else {
         MASTER_DATABASE_BRANCH
