@@ -174,6 +174,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
         override fun onUpdate() {
             super.onUpdate()
             themeList.resetButtons()
+            themeList.buttonScroll = 0
         }
     }
 
@@ -239,6 +240,11 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                 this.tooltipTextIsLocalizationKey = true
                 this.tooltipText = "editor.themeEditor.editTexture"
             }
+        }
+
+        override fun onUpdate() {
+            super.onUpdate()
+            fieldList.resetButtons()
         }
     }
 
