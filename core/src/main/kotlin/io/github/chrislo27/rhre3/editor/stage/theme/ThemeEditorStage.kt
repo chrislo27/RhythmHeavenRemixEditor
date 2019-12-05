@@ -145,6 +145,10 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                             LoadedThemes.index = realIndex
                             editor.theme = theme
                         }
+                        val main = editor.main
+                        main.themeUsesMenu = false
+                        main.preferences.putBoolean(PreferenceKeys.THEME_USES_MENU, false).flush()
+
                         state = if (isStock) State.EditName else State.ChooseElement
                         update()
                     }
@@ -180,11 +184,11 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
 
     inner class ChooseElementStage : StateStage() {
         val fieldList: ThemeListStage<ThemeField>
-        
+
         init {
             fieldList = object : ThemeListStage<ThemeField>(editor, palette, contentStage, contentStage.camera, 362f, 352f) {
                 override val itemList: List<ThemeField> get() = ThemeField.FIELDS
-                
+
                 override fun getItemName(item: ThemeField): String = "editor.themeEditor.element." + item.name
                 override fun isItemNameLocalizationKey(item: ThemeField): Boolean = true
                 override fun getItemBgColor(item: ThemeField): Color = item.bgColor(theme)
@@ -240,6 +244,22 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                 this.tooltipTextIsLocalizationKey = true
                 this.tooltipText = "editor.themeEditor.editTexture"
             }
+
+            buttonBar.elements += Button(palette, buttonBar, buttonBar).apply {
+                this.location.set(0f, 0f, 0f, 1f, 34f * 3 + 4f * 3, 0f, 34f, 0f)
+                this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                    this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+                })
+                this.tooltipTextIsLocalizationKey = true
+                this.tooltipText = "editor.themeEditor.openContainingFolder"
+                leftClickAction = { _, _ ->
+                    val f = themeFile
+                    if (f != null) {
+                        Gdx.net.openURI("file:///${f.parent().file().canonicalPath}")
+                    }
+                }
+            }
         }
 
         override fun onUpdate() {
@@ -253,7 +273,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
         val colourPicker: ColourPicker<EditorScreen> = ColourPicker(palette.copy(fontScale = 0.9f), contentStage, contentStage, true).apply {
             this.location.set(0f, 1f, 0f, 0f, pixelY = -256f, pixelWidth = 346f, pixelHeight = 256f)
         }
-        
+
         private val oldColor: Color = Color(1f, 1f, 1f, 1f)
         var field: ThemeField = ThemeField.FIELDS.first()
             set(value) {
@@ -261,7 +281,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                 oldColor.set(value.getter(theme))
                 colourPicker.setColor(oldColor, false)
             }
-        
+
         init {
             contentStage.elements += colourPicker
             colourPicker.onColourChange = { c ->
@@ -355,12 +375,12 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
     }
 
     inner class EditTextureStage : StateStage() {
-        
+
         val label: TextLabel<EditorScreen>
-        
+
         init {
             label = TextLabel(palette, contentStage, contentStage).apply {
-                location.set(0f, 0f, 1f, 1f, pixelY = 128f, pixelHeight =  -128f)
+                location.set(0f, 0f, 1f, 1f, pixelY = 128f, pixelHeight = -128f)
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.center
@@ -434,7 +454,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                                 }
                             }
                         }
-                        
+
                     }
                 }
             }

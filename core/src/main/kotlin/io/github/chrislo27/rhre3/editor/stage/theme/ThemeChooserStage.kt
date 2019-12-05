@@ -118,7 +118,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
 
-                    Gdx.net.openURI("file:///${LoadedThemes.THEMES_FOLDER.file().absolutePath}")
+                    Gdx.net.openURI("file:///${LoadedThemes.THEMES_FOLDER.file().canonicalPath}")
                 }
             }.apply {
                 this.location.set(0f, 0f, 0f, 1f, 346f - 34f, 0f, 34f, 0f)
@@ -126,6 +126,8 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                     this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                 })
+                this.tooltipTextIsLocalizationKey = true
+                this.tooltipText = "editor.themeEditor.openContainingFolder"
             }
         }
         this.elements += chooserButtonBar
