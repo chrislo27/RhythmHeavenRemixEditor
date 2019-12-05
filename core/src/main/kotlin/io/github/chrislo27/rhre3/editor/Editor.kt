@@ -416,7 +416,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        val themeUsesMenu = !disableThemeUsesMenu && main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val themeUsesMenu = !disableThemeUsesMenu && main.themeUsesMenu
         val useGlassEffect = !noGlassEffect && glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
         if (themeUsesMenu && useGlassEffect) {
             glassEffect.renderBackground()
@@ -1104,7 +1104,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
 
                 if (current.progress >= 1f) {
-                    val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+                    val themeUsesMenu = main.themeUsesMenu
                     val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
                     explodeEntity(onEntity, true)
                     AssetRegistry.get<LazySound>("""pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}""").sound.play()
@@ -1899,7 +1899,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
     fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
         if (!doExplode) return
-        val themeUsesMenu = main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
+        val themeUsesMenu = main.themeUsesMenu
         val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
         val alpha = if (themeUsesMenu && useGlassEffect) 0.5f else 1f
         val color = e.getRenderColor(this, theme).cpy().apply {

@@ -147,6 +147,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     
     var advancedOptions: Boolean = false
     var disableTimeStretching: Boolean = false
+    var themeUsesMenu: Boolean = false
     private var lastWindowed: Pair<Int, Int> = RHRE3.DEFAULT_SIZE.copy()
     
     private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
@@ -245,6 +246,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             Editor.cameraBehaviour = CameraBehaviour.MAP.getOrDefault(preferences.getString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR), Editor.DEFAULT_CAMERA_BEHAVIOUR)
         }
         disableTimeStretching = preferences.getBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, false)
+        themeUsesMenu = preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         Playalong.loadFromPrefs(preferences)
         Controllers.getControllers() // Initialize
         

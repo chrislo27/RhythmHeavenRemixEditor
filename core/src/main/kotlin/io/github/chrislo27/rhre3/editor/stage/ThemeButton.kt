@@ -35,6 +35,8 @@ class ThemeButton(val editor: Editor, val editorStage: EditorStage,
 
     override fun onRightClick(xPercent: Float, yPercent: Float) {
         super.onRightClick(xPercent, yPercent)
-        editor.main.preferences.putBoolean(PreferenceKeys.THEME_USES_MENU, !editor.main.preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)).flush()
+        val main = editor.main
+        main.themeUsesMenu = !main.themeUsesMenu
+        main.preferences.putBoolean(PreferenceKeys.THEME_USES_MENU, main.themeUsesMenu).flush()
     }
 }
