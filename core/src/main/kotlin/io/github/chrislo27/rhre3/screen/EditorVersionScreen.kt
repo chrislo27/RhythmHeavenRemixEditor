@@ -106,6 +106,7 @@ class EditorVersionScreen(main: RHRE3Application)
         shortChangelogButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
             this.leftClickAction = { _, _ ->
                 Gdx.net.openURI(RHRE3.GITHUB_RELEASES + "/latest")
+                AnalyticsHandler.track("View Changelog", mapOf())
             }
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
@@ -120,6 +121,7 @@ class EditorVersionScreen(main: RHRE3Application)
         stage.bottomStage.elements += shortChangelogButton
         gotoUpdaterButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
             this.leftClickAction = { _, _ ->
+                AnalyticsHandler.track("Run Auto-Updater", mapOf())
                 main.screen = AutoUpdaterScreen(main)
             }
             this.addLabel(TextLabel(palette, this, this.stage).apply {

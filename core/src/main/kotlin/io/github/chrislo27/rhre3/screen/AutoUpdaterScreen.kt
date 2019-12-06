@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.rhre3.util.JsonHandler
@@ -229,6 +230,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 progress = Progress.READY_TO_COMPLETE
                 if (autocompleteCheckbox.checked) {
                     // Continue
+                    AnalyticsHandler.track("Complete Auto-Update", mapOf("automatic" to true))
                     Gdx.app.postRunnable {
                         completeJarCopy(newJarFile)
                     }
@@ -238,6 +240,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                         completeButton.visible = true
                         label.text = Localization["screen.autoUpdater.progress.readyToComplete"]
                         completeButton.leftClickAction = { _, _ ->
+                            AnalyticsHandler.track("Complete Auto-Update", mapOf("automatic" to false))
                             completeButton.visible = false
                             completeJarCopy(newJarFile)
                         }
