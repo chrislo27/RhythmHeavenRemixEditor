@@ -43,7 +43,7 @@ object DesktopLauncher {
                     this.vSyncEnabled = this.foregroundFPS <= 60
                     this.initialBackgroundColor = Color(0f, 0f, 0f, 1f)
                     this.allowSoftwareMode = true
-                    this.audioDeviceSimultaneousSources = 250
+                    this.audioDeviceSimultaneousSources = 32
                     this.useHDPI = true
                     if (portable) {
                         this.preferencesFileType = Files.FileType.Local
