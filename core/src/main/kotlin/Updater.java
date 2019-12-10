@@ -13,7 +13,7 @@ public class Updater {
     public static void main(String[] args) throws InterruptedException {
         final Path file1 = new File(args[0]).toPath();
         final Path file2 = new File(args[1]).toPath();
-        final int maxAttempts = 40;
+        final int maxAttempts = 20 * 4;
         final long waitBetween = 250L;
         int attemptNum = 0;
         boolean atomic = true;
