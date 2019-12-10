@@ -21,6 +21,7 @@ object RemixRecovery {
     private const val RECOVERY_FILE_NAME: String = "recovery.${RHRE3.REMIX_FILE_EXTENSION}"
     private const val LAST_LOADED_FILE = "lastLoadedFile.${RHRE3.REMIX_FILE_EXTENSION}"
 
+    private val shutdownHook: Thread = thread(start = false, isDaemon = true, block = this::saveRemixInRecovery, name = "Remix Recovery Shutdown Hook")
     @Volatile
     private var addedToShutdownhook: Boolean = false
     val recoveryFolder: FileHandle by lazy { RHRE3.RHRE3_FOLDER.child("recovery/").apply(FileHandle::mkdirs) }
@@ -34,9 +35,15 @@ object RemixRecovery {
     fun addSelfToShutdownHooks() {
         if (!addedToShutdownhook) {
             addedToShutdownhook = true
-            Runtime.getRuntime().addShutdownHook(
-                    thread(start = false, isDaemon = true, block = this::saveRemixInRecovery,
-                           name = "Remix Recovery Shutdown Hook"))
+            Runtime.getRuntime().addShutdownHook(shutdownHook)
+        }
+    }
+
+    @Synchronized
+    fun removeSelfFromShutdownHooks() {
+        if (addedToShutdownhook) {
+            addedToShutdownhook = false
+            Runtime.getRuntime().removeShutdownHook(shutdownHook)
         }
     }
 

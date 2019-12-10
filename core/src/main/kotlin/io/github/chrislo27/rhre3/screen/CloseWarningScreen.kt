@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -80,6 +81,7 @@ class CloseWarningScreen(main: RHRE3Application, val lastScreen: Screen?) : Tool
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_x"))
             })
             this.leftClickAction = { _, _ ->
+                RemixRecovery.removeSelfFromShutdownHooks()
                 Gdx.app.exit()
             }
         }

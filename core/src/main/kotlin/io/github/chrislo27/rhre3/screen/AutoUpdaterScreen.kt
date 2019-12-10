@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
@@ -269,6 +270,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
     
     private fun completeJarCopy(newJarFile: File) {
         try {
+            RemixRecovery.removeSelfFromShutdownHooks()
             val updaterFolderPath = updaterFolder.canonicalPath
             ZipFile(jarFileLocation).extractFile("Updater.class", updaterFolderPath, "Updater.class")
             ProcessBuilder("java", "-cp", updaterFolderPath, "Updater", newJarFile.canonicalPath, jarFileLocation.canonicalPath)
