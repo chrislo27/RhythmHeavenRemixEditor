@@ -525,9 +525,9 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             main.shapeRenderer.prepareStencilMask(batch) {
                 begin(ShapeRenderer.ShapeType.Filled)
                 remix.entities.forEach {
-                    if (it is ModelEntity<*> && it !is TextureEntity && it.glassEffect) {
+                    if (it is ModelEntity<*> && it !is TextureEntity && it.glassEffect && !(isPresentationMode && it.datamodel.hideInPresentationMode)) {
                         if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
-                            rect(it.bounds.x, it.bounds.y, it.bounds.width, it.bounds.height)
+                            rect(it.bounds.x + it.lerpDifference.x, it.bounds.y + it.lerpDifference.y, it.bounds.width + it.lerpDifference.width, it.bounds.height + it.lerpDifference.height)
                         }
                     }
                 }
@@ -537,6 +537,25 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             }
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
+//        run {
+//            main.shapeRenderer.projectionMatrix = camera.combined
+//            main.shapeRenderer.prepareStencilMask(batch) {
+//                begin(ShapeRenderer.ShapeType.Filled)
+//                remix.entities.forEach {
+//                    if (it is ModelEntity<*> && it !is TextureEntity) {
+//                        if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
+//                            rect(it.bounds.x + it.lerpDifference.x + 0.125f / 4f, it.bounds.y + it.lerpDifference.y - 0.125f, it.bounds.width + it.lerpDifference.width, it.bounds.height + it.lerpDifference.height)
+//                        }
+//                    }
+//                }
+//                end()
+//            }.useStencilMask {
+//                batch.setColor(0f, 0f, 0f, 0.45f)
+//                batch.fillRect(camera.position.x - camera.viewportWidth / 2f * camera.zoom, camera.position.y - camera.viewportHeight / 2f * camera.zoom, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
+//                batch.setColor(1f, 1f, 1f, 1f)
+//            }
+//            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
+//        }
         remix.entities.forEach {
             if (it !is TextureEntity) {
                 if (it is ModelEntity<*> && isPresentationMode && it.datamodel.hideInPresentationMode)
