@@ -217,6 +217,7 @@ class EditorVersionScreen(main: RHRE3Application)
                                            "timesSkipped" to timesSkipped
                                         ))
         }
+        checkButton.visible = !isBeginning.first
         label.text = ""
     }
     
