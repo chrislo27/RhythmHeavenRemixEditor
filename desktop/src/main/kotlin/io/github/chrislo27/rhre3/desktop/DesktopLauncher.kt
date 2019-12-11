@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.desktop
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.graphics.Color
 import com.beust.jcommander.JCommander
+import com.beust.jcommander.ParameterException
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.toolboks.desktop.ToolboksDesktopLauncher
@@ -12,6 +13,10 @@ import java.io.File
 
 object DesktopLauncher {
     
+    private fun printHelp(jCommander: JCommander) {
+        println("${RHRE3.TITLE} ${RHRE3.VERSION}\n${RHRE3.GITHUB}\n\n${StringBuilder().apply { jCommander.usage(this) }}")
+    }
+    
     @JvmStatic
     fun main(args: Array<String>) {
         // https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/273
@@ -19,12 +24,23 @@ object DesktopLauncher {
         
         RHRE3.launchArguments = args.toList()
         
+        try {
+            // Check for bad arguments but don't cause a full crash
+            JCommander.newBuilder().acceptUnknownOptions(false).addObject(Arguments()).build().parse(*args)
+        } catch (e: ParameterException) {
+            println("WARNING: Failed to parse arguments. Check below for details and help documentation. You may have strange parse results from ignoring unknown options.\n")
+            e.printStackTrace()
+            println("\n\n")
+            printHelp(JCommander(Arguments()))
+            println("\n\n")
+        }
+        
         val arguments = Arguments()
-        val jcommander = JCommander.newBuilder().addObject(arguments).build()
+        val jcommander = JCommander.newBuilder().acceptUnknownOptions(true).addObject(arguments).build()
         jcommander.parse(*args)
         
         if (arguments.printHelp) {
-            println("${RHRE3.TITLE} ${RHRE3.VERSION}\n${RHRE3.GITHUB}\n\n${StringBuilder().apply { jcommander.usage(this) }}")
+            printHelp(jcommander)
             return
         }
         
