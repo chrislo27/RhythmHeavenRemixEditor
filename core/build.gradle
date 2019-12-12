@@ -4,7 +4,7 @@ apply plugin: 'kotlin'
 sourceCompatibility = 1.8
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/main/kotlin" ]
+sourceSets.main.java.srcDirs = [ "src/main/kotlin", "src/main/java" ]
 sourceSets.main.resources.srcDir("assets/")
 
 
