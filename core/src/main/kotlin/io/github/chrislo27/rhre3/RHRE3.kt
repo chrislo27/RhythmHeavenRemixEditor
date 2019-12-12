@@ -12,7 +12,7 @@ object RHRE3 {
 
     const val TITLE = "Rhythm Heaven Remix Editor"
     const val TITLE_3 = "Rhythm Heaven Remix Editor 3"
-    val VERSION: Version = Version(3, 19, 0, "")
+    val VERSION: Version = Version(3, 19, 1, "DEVELOPMENT")
     val EXPERIMENTAL: Boolean = VERSION.suffix.matches("DEVELOPMENT|SNAPSHOT(?:.)*|RC\\d+".toRegex())
     val enableEarlyAccessMessage: Boolean = EXPERIMENTAL && VERSION.suffix != "DEVELOPMENT"
     const val WIDTH = 1280
