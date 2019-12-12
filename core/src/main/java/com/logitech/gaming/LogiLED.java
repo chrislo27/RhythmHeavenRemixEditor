@@ -2,6 +2,9 @@ package com.logitech.gaming;
 
 import java.io.*;
 
+/**
+ * Version 9.00
+ */
 public class LogiLED {
 	public static final int
 		ESC                     = 0x01,
