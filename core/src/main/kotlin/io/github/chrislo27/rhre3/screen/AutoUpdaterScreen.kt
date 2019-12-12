@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.screen
 
+import Updater
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -272,10 +273,11 @@ class AutoUpdaterScreen(main: RHRE3Application)
         try {
             RemixRecovery.removeSelfFromShutdownHooks()
             val updaterFolderPath = updaterFolder.canonicalPath
-            ZipFile(jarFileLocation).extractFile("Updater.class", updaterFolderPath, "Updater.class")
-            ProcessBuilder("java", "-cp", updaterFolderPath, "Updater", newJarFile.canonicalPath, jarFileLocation.canonicalPath)
+            val updaterClassName = Updater::class.java.simpleName
+            ZipFile(jarFileLocation).extractFile("$updaterClassName.class", updaterFolderPath, "$updaterClassName.class")
+            ProcessBuilder("java", "-cp", updaterFolderPath, updaterClassName, newJarFile.canonicalPath, jarFileLocation.canonicalPath)
                     .start()
-            Toolboks.LOGGER.info("Launched Updater class, exiting now.")
+            Toolboks.LOGGER.info("Launched Updater class ($updaterClassName), exiting now.")
             exitProcess(0)
         } catch (e: Exception) {
             e.printStackTrace()
