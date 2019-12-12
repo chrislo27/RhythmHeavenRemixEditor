@@ -50,7 +50,8 @@ object Credits {
                         "bccad-editor\n" +
                         "JCommander\n" +
                         "SoundStretch and SoundTouch\n" +
-                        "zip4j",
+                        "zip4j\n" +
+                        "Logitech LED Illumination SDK",
                 "donators" crediting "",
                 "you" crediting ""
                      )
