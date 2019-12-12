@@ -9,7 +9,7 @@ import java.nio.file.StandardCopyOption;
  * Atomically moves the file denoted by the first argument to the file denoted by the second.
  *
  */
-public class Updater {
+public class RHREUpdateCopier {
     public static void main(String[] args) throws InterruptedException {
         final Path file1 = new File(args[0]).toPath();
         final Path file2 = new File(args[1]).toPath();
