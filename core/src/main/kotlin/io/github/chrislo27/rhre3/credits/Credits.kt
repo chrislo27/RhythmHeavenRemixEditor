@@ -31,27 +31,26 @@ object Credits {
                         "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, GinoTitan, bin5s5, " +
                         "garbo, nave, RHModding and Custom Remix Tourney Discord servers",
                 "resources" crediting
-                        "Rhythm Heaven assets by Nintendo\n" +
-                        "[#FF8900]Kotlin[]\n" +
-                        "[DARK_GRAY]lib[][#E10000]GDX[]\n" +
-                        "LWJGL\n" +
-                        "Toolboks\n" +
-                        "Beads\n" +
-                        "Async HTTP Client\n" +
-                        "Jackson\n" +
-                        "JGit\n" +
-                        "Apache Commons IO\n" +
-                        "SLF4J\n" +
-                        "OSHI\n" +
-                        "jump3r\n" +
-                        "musique (forked)\n" +
-                        "Segment\n" +
-                        "java-discord-rpc\n" +
-                        "bccad-editor\n" +
-                        "JCommander\n" +
-                        "SoundStretch and SoundTouch\n" +
-                        "zip4j\n" +
-                        "Logitech LED Illumination SDK",
+                        """Rhythm Heaven assets by Nintendo
+[#FF8900]Kotlin[]
+[DARK_GRAY]lib[][#E10000]GDX[]
+LWJGL
+Toolboks
+Beads
+Async HTTP Client
+Jackson
+JGit
+Apache Commons IO
+SLF4J
+OSHI
+jump3r
+musique (forked)
+Segment
+java-discord-rpc
+bccad-editor
+JCommander
+SoundStretch and SoundTouch
+zip4j""",
                 "donators" crediting "",
                 "you" crediting ""
                      )
