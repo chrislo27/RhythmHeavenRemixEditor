@@ -70,7 +70,7 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
 
         themeEditor = ThemeEditorStage(editor, palette, this, this.camera, 362f, 392f).apply {
             this.location.set(screenX = 0f, screenY = 0f, screenWidth = 0f, screenHeight = 0f,
-                              pixelX = 20f, pixelY = 13f, pixelWidth = 362f, pixelHeight = 352f)
+                              pixelX = 20f, pixelY = 13f, pixelWidth = 362f, pixelHeight = 392f)
             this.visible = false
         }
         this.elements += themeEditor
