@@ -29,7 +29,7 @@ object Credits {
                         "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
                         "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, Draster, Malalaika, " +
                         "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, GinoTitan, bin5s5, " +
-                        "garbo, RHModding and Custom Remix Tourney Discord servers",
+                        "garbo, nave, RHModding and Custom Remix Tourney Discord servers",
                 "resources" crediting
                         "Rhythm Heaven assets by Nintendo\n" +
                         "[#FF8900]Kotlin[]\n" +
