@@ -214,7 +214,11 @@ open class Stage<S : ToolboksScreen<*, *>>(parent: UIElement<S>?, val camera: Or
         if (elements.any { it.parent !== this }) {
             error("Elements ${elements.filter { it.parent !== this }.map { "[$it, parent=${it.parent}]" }} do not have this as their parent")
         }
-        elements.forEach { it.onResize(this.location.realWidth, this.location.realHeight, pixelUnitX, pixelUnitY) }
+        val w = this.location.realWidth
+        val h = this.location.realHeight
+        val pxW = if (pixelsWidth > 0f) w / pixelsWidth else pixelUnitX
+        val pxH = if (pixelsHeight > 0f) h / pixelsHeight else pixelUnitY
+        elements.forEach { it.onResize(w, h, pxW, pxH) }
     }
 
     override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
