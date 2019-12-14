@@ -196,7 +196,10 @@ public class LogiLED {
 			int read = -1;
 
 			boolean is64Bit = System.getProperty("os.arch").equals("amd64") || System.getProperty("os.arch").equals("x86_64");
-			InputStream isJarDll = LogiLED.class.getResourceAsStream(is64Bit ? "LogitechLedJNI_64.dll" : "LogitechLedJNI.dll");
+			System.out.println(LogiLED.class.getClassLoader().getResourceAsStream("com/logitech/gaming/LogiLED.class"));
+			System.out.println(LogiLED.class.getClassLoader().getResourceAsStream("RHREUpdateCopier.class"));
+			System.out.println(is64Bit ? "LogitechLedJNI_64.dll" : "LogitechLedJNI.dll");
+			InputStream isJarDll = LogiLED.class.getClassLoader().getResourceAsStream("com/logitech/gaming/" + (is64Bit ? "LogitechLedJNI_64.dll" : "LogitechLedJNI.dll"));
 			File tempDll = File.createTempFile("LogitechLedJNI.dll", "");
 			FileOutputStream osJarDll = new FileOutputStream(tempDll);
 
