@@ -3,7 +3,6 @@ package io.github.chrislo27.rhre3
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
-import com.badlogic.gdx.controllers.Controllers
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
@@ -248,7 +247,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         disableTimeStretching = preferences.getBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, false)
         themeUsesMenu = preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         Playalong.loadFromPrefs(preferences)
-        Controllers.getControllers() // Initialize
         
         DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
         DiscordHelper.updatePresence(PresenceState.Loading)
