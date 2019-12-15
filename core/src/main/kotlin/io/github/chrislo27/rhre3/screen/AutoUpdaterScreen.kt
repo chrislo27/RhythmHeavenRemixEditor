@@ -34,13 +34,17 @@ import kotlin.system.exitProcess
 class AutoUpdaterScreen(main: RHRE3Application)
     : ToolboksScreen<RHRE3Application, AutoUpdaterScreen>(main) {
     
+    companion object {
+        const val UPDATER_FOLDER: String = ".rhreupdater/"
+    }
+    
     private enum class Progress {
         ERROR, DOWNLOADING, EXTRACTING, READY_TO_COMPLETE
     }
     
     private var spinSeconds: Float = 0f
     private val jarFileLocation: File = File(RHRE3::class.java.protectionDomain.codeSource.location.toURI()) // Will crash if the jar file is not a file
-    private val updaterFolder: File = jarFileLocation.resolveSibling(".rhreupdater/")
+    private val updaterFolder: File = jarFileLocation.resolveSibling(UPDATER_FOLDER)
     private val containingFolder: File = jarFileLocation.parentFile!!
     private var progress: Progress = Progress.DOWNLOADING
     private val worker: Thread
