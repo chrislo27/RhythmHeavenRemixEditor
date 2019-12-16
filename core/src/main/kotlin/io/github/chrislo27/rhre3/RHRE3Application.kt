@@ -248,8 +248,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         themeUsesMenu = preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         Playalong.loadFromPrefs(preferences)
         
-        DiscordHelper.init(enabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true))
-        DiscordHelper.updatePresence(PresenceState.Loading)
+        val discordRpcEnabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
+        GlobalScope.launch {
+            DiscordHelper.init(enabled = discordRpcEnabled)
+            DiscordHelper.updatePresence(PresenceState.Loading)
+        }
         preferences.flush()
         
         PatternStorage.load()
@@ -259,9 +262,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         
         // load themes
         LoadedThemes.reloadThemes(preferences, true)
-        
-        // MIDI input
-        MidiHandler
         
         // screens
         run {
