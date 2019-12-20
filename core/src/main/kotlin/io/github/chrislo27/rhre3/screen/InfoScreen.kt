@@ -775,11 +775,12 @@ class InfoScreen(main: RHRE3Application)
             settings.elements += object : FalseCheckbox<InfoScreen>(palette, settings, settings) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP, checked).flush()
+                    main.settings.disableMinimap = checked
+                    main.settings.persist()
                     didChangeSettings = true
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
+                this.checked = main.settings.disableMinimap
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -806,7 +807,7 @@ class InfoScreen(main: RHRE3Application)
                         textLabel.fontScaleMultiplier = fontScale * fontScale
                         checked = false
                     }
-                    enabled = bufferSupported && !preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
+                    enabled = bufferSupported && !main.settings.disableMinimap
 
                     super.render(screen, batch, shapeRenderer)
                 }
@@ -814,14 +815,17 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     if (bufferSupported) {
-                        preferences.putBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, checked).flush()
+                        main.settings.minimapPreview = checked
+                        main.settings.persist()
                         didChangeSettings = true
                     } else {
+                        main.settings.minimapPreview = false
+                        main.settings.persist()
                         preferences.putString(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, null).flush()
                     }
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)
+                this.checked = main.settings.minimapPreview
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -840,11 +844,12 @@ class InfoScreen(main: RHRE3Application)
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, checked).flush()
+                    main.settings.subtitlesBelow = checked
+                    main.settings.persist()
                     didChangeSettings = true
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false)
+                this.checked = main.settings.subtitlesBelow
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale * 0.9f
@@ -864,11 +869,12 @@ class InfoScreen(main: RHRE3Application)
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, checked).flush()
+                    main.settings.remixEndsAtLast = checked
+                    main.settings.persist()
                     didChangeSettings = true
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+                this.checked = main.settings.remixEndsAtLast
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -888,11 +894,12 @@ class InfoScreen(main: RHRE3Application)
             settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, checked).flush()
+                    main.settings.smoothDragging = checked
+                    main.settings.persist()
                     didChangeSettings = true
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
+                this.checked = main.settings.smoothDragging
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -1021,7 +1028,7 @@ class InfoScreen(main: RHRE3Application)
     
             // Disable time stretching
             settings.elements += FalseCheckbox(palette, settings, settings).apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, false)
+                this.checked = main.settings.disableTimeStretching
         
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale * 0.9f

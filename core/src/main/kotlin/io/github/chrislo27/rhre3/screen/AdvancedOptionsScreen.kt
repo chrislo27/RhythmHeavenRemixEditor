@@ -287,7 +287,8 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         explodingEntitiesButton = object : TrueCheckbox<AdvancedOptionsScreen>(palette, centre, centre) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                main.preferences.putBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, this.checked).flush()
+                main.settings.advExplodingEntities = this.checked
+                main.settings.persist()
             }
         }.apply {
             this.textLabel.also {
@@ -297,7 +298,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 it.fontScaleMultiplier = 0.8f
                 it.textAlign = Align.left
             }
-            this.checked = main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)
+            this.checked = main.settings.advExplodingEntities
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 7 + buttonHeight * 6,
                               screenWidth = buttonWidth,

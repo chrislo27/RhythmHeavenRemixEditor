@@ -13,7 +13,7 @@ object PreferenceKeys {
     val MIDI_NOTE = "midiNote"
 
     // settings
-    val SETTINGS_MINIMAP = "settings_minimap"
+    val SETTINGS_DISABLE_MINIMAP = "settings_minimap"
     val SETTINGS_MINIMAP_PREVIEW = "settings_minimapPreview"
     val SETTINGS_AUTOSAVE = "settings_autosave"
     val SETTINGS_CAMERA_BEHAVIOUR = "settings_cameraBehaviour"
@@ -27,7 +27,7 @@ object PreferenceKeys {
     val SETTINGS_DISABLE_TIME_STRETCHING = "settings_disableTimeStretching"
 
     val allSettingsKeys: List<String> =
-        listOf(SETTINGS_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CAMERA_BEHAVIOUR,
+        listOf(SETTINGS_DISABLE_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CAMERA_BEHAVIOUR,
                SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
                SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS, SETTINGS_GLASS_ENTITIES, SETTINGS_CLOSE_WARNING,
                SETTINGS_DISABLE_TIME_STRETCHING)

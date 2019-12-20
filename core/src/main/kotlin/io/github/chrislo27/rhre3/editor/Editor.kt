@@ -1916,7 +1916,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
     }
 
-    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.settings.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
+    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.settings.advancedOptions && main.settings.advExplodingEntities) {
         if (!doExplode) return
         val themeUsesMenu = main.settings.themeUsesMenu
         val useGlassEffect = glassEffect.fboSupported && main.settings.glassEntities

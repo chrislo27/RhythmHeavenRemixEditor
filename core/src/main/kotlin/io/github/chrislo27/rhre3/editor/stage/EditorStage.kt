@@ -641,7 +641,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 }
 
                 override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-                    text = (if (main.preferences.getBoolean(PreferenceKeys.SETTINGS_SUBTITLE_ORDER, false))
+                    text = (if (main.settings.subtitlesBelow)
                         editor.remix.currentSubtitles
                     else editor.remix.currentSubtitlesReversed).joinToString(separator = "\n", transform = SubtitleEntity::subtitle)
 

@@ -1,9 +1,15 @@
 package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Preferences
+import io.github.chrislo27.rhre3.PreferenceKeys.ADVOPT_EXPLODING_ENTITIES
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_ADVANCED_OPTIONS
+import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_MINIMAP
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_GLASS_ENTITIES
+import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_MINIMAP_PREVIEW
+import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST
+import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SMOOTH_DRAGGING
+import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SUBTITLE_ORDER
 import io.github.chrislo27.rhre3.PreferenceKeys.THEME_USES_MENU
 
 
@@ -15,12 +21,26 @@ class Settings(private val main: RHRE3Application) {
     var disableTimeStretching: Boolean = false
     var themeUsesMenu: Boolean = false
     var glassEntities: Boolean = false
+    var disableMinimap: Boolean = false
+    var minimapPreview: Boolean = true
+    var subtitlesBelow: Boolean = false
+    var remixEndsAtLast: Boolean = false
+    var smoothDragging: Boolean = true
+    
+    var advExplodingEntities: Boolean = false
     
     fun load() {
-        advancedOptions = preferences.getBoolean(SETTINGS_ADVANCED_OPTIONS, false)
-        disableTimeStretching = preferences.getBoolean(SETTINGS_DISABLE_TIME_STRETCHING, false)
-        themeUsesMenu = preferences.getBoolean(THEME_USES_MENU, false)
-        glassEntities = preferences.getBoolean(SETTINGS_GLASS_ENTITIES, false)
+        advancedOptions = preferences.getBoolean(SETTINGS_ADVANCED_OPTIONS, advancedOptions)
+        disableTimeStretching = preferences.getBoolean(SETTINGS_DISABLE_TIME_STRETCHING, disableTimeStretching)
+        themeUsesMenu = preferences.getBoolean(THEME_USES_MENU, themeUsesMenu)
+        glassEntities = preferences.getBoolean(SETTINGS_GLASS_ENTITIES, glassEntities)
+        disableMinimap = preferences.getBoolean(SETTINGS_DISABLE_MINIMAP, disableMinimap)
+        minimapPreview = preferences.getBoolean(SETTINGS_MINIMAP_PREVIEW, minimapPreview)
+        subtitlesBelow = preferences.getBoolean(SETTINGS_SUBTITLE_ORDER, subtitlesBelow)
+        remixEndsAtLast = preferences.getBoolean(SETTINGS_REMIX_ENDS_AT_LAST, remixEndsAtLast)
+        smoothDragging = preferences.getBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
+
+        advExplodingEntities = preferences.getBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)
     }
     
     fun persist() {
@@ -29,6 +49,13 @@ class Settings(private val main: RHRE3Application) {
                 .putBoolean(SETTINGS_DISABLE_TIME_STRETCHING, disableTimeStretching)
                 .putBoolean(THEME_USES_MENU, themeUsesMenu)
                 .putBoolean(SETTINGS_GLASS_ENTITIES, glassEntities)
+                .putBoolean(SETTINGS_DISABLE_MINIMAP, disableTimeStretching)
+                .putBoolean(SETTINGS_MINIMAP_PREVIEW, minimapPreview)
+                .putBoolean(SETTINGS_SUBTITLE_ORDER, subtitlesBelow)
+                .putBoolean(SETTINGS_REMIX_ENDS_AT_LAST, remixEndsAtLast)
+                .putBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
+                
+                .putBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)
                 .flush()
     }
 }

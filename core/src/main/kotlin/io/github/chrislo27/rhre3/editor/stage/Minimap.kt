@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Interpolation
-import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.editor.CameraPan
 import io.github.chrislo27.rhre3.editor.ClickOccupation
@@ -128,8 +127,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
         }
 
         // Preview
-        if (timeHovered + transitionTime >= minimumHoverTime && bufferSupported && !Gdx.input.isButtonPressed(Input.Buttons.LEFT)
-                && editor.main.preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP_PREVIEW, true)) {
+        if (timeHovered + transitionTime >= minimumHoverTime && bufferSupported && !Gdx.input.isButtonPressed(Input.Buttons.LEFT) && editor.main.settings.minimapPreview) {
             val percent = (stage.camera.getInputX() - location.realX) / location.realWidth
             val centreX = percent * maxX
             val oldCamX = editor.camera.position.x
@@ -173,7 +171,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
-        this.visible = !screen.main.preferences.getBoolean(PreferenceKeys.SETTINGS_MINIMAP, false)
+        this.visible = !screen.main.settings.disableMinimap
         if (isMouseOver()) {
             if (!Gdx.input.isButtonPressed(Input.Buttons.LEFT))
                 timeHovered += Gdx.graphics.deltaTime

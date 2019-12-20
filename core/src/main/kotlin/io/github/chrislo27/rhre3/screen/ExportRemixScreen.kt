@@ -536,7 +536,7 @@ class ExportRemixScreen(main: RHRE3Application)
     private fun updateLabels(throwable: Throwable? = null) {
         val label = mainLabel
         val hasEndRemix = remix.duration < Float.POSITIVE_INFINITY
-        val canOmitEndRemix = main.preferences.getBoolean(PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST, false)
+        val canOmitEndRemix = main.settings.remixEndsAtLast
         val hasTempoChanges = remix.tempos.secondsMap.isNotEmpty()
         readyButton.visible = false
         folderButton.visible = false
