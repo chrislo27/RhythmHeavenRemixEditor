@@ -735,16 +735,16 @@ class InfoScreen(main: RHRE3Application)
                 }
 
                 private fun updateText() {
-                    label.text = Localization["screen.info.cameraBehaviour", Localization[Editor.cameraBehaviour.localizationKey]]
+                    label.text = Localization["screen.info.cameraBehaviour", Localization[main.settings.cameraBehaviour.localizationKey]]
                 }
 
                 private fun cycle(dir: Int) {
                     val values = CameraBehaviour.VALUES
-                    val index = values.indexOf(Editor.cameraBehaviour) + dir
+                    val index = values.indexOf(main.settings.cameraBehaviour) + dir
                     val normalized = if (index < 0) values.size - 1 else if (index >= values.size) 0 else index
-                    Editor.cameraBehaviour = values[normalized]
+                    main.settings.cameraBehaviour = values[normalized]
                     if (dir != 0) {
-                        preferences.putString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR, Editor.cameraBehaviour.name).flush()
+                        main.settings.persist()
                         didChangeSettings = true
                     }
                     updateText()

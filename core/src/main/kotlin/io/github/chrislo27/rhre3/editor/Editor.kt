@@ -137,7 +137,6 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         val ONE_TO_TWO_DECIMAL_PLACES_FORMATTER = DecimalFormat("0.0#", DecimalFormatSymbols())
 
         val DEFAULT_CAMERA_BEHAVIOUR: CameraBehaviour = FOLLOW_PLAYBACK
-        var cameraBehaviour: CameraBehaviour = DEFAULT_CAMERA_BEHAVIOUR
     }
 
     data class TimedString(val str: String, var time: Float, var out: Boolean) {
@@ -839,7 +838,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
 
         if (remix.playState == PLAYING) {
-            val camBehav = cameraBehaviour
+            val camBehav = main.settings.cameraBehaviour
             if (stage.playalongStage.visible || camBehav == FOLLOW_PLAYBACK) {
                 // Use linear time to prevent nauseation
                 camera.position.x = remix.tempos.linearSecondsToBeats(remix.seconds - (if (stage.playalongStage.visible) remix.playalong.calibratedKeyOffset else 0f)) + camera.viewportWidth * 0.25f

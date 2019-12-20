@@ -11,6 +11,8 @@ import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SMOOTH_DRAGGING
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SUBTITLE_ORDER
 import io.github.chrislo27.rhre3.PreferenceKeys.THEME_USES_MENU
+import io.github.chrislo27.rhre3.editor.CameraBehaviour
+import io.github.chrislo27.rhre3.editor.Editor
 
 
 class Settings(private val main: RHRE3Application) {
@@ -26,6 +28,7 @@ class Settings(private val main: RHRE3Application) {
     var subtitlesBelow: Boolean = false
     var remixEndsAtLast: Boolean = false
     var smoothDragging: Boolean = true
+    var cameraBehaviour: CameraBehaviour = Editor.DEFAULT_CAMERA_BEHAVIOUR
     
     var advExplodingEntities: Boolean = false
     
@@ -39,6 +42,17 @@ class Settings(private val main: RHRE3Application) {
         subtitlesBelow = preferences.getBoolean(SETTINGS_SUBTITLE_ORDER, subtitlesBelow)
         remixEndsAtLast = preferences.getBoolean(SETTINGS_REMIX_ENDS_AT_LAST, remixEndsAtLast)
         smoothDragging = preferences.getBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
+        val oldChaseCamera = "settings_chaseCamera"
+        if (oldChaseCamera in preferences) {
+            // Retroactively apply settings
+            val oldSetting = preferences.getBoolean(oldChaseCamera, true)
+            cameraBehaviour = if (oldSetting) CameraBehaviour.FOLLOW_PLAYBACK else CameraBehaviour.PAN_OVER_INSTANT
+            // Delete
+            preferences.remove(oldChaseCamera)
+            preferences.flush()
+        } else {
+            cameraBehaviour = CameraBehaviour.MAP.getOrDefault(preferences.getString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR), Editor.DEFAULT_CAMERA_BEHAVIOUR)
+        }
 
         advExplodingEntities = preferences.getBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)
     }
