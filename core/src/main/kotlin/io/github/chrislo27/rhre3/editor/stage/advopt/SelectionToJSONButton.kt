@@ -60,7 +60,7 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
 
-        this.visible = editor.main.advancedOptions
+        this.visible = editor.main.settings.advancedOptions
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {

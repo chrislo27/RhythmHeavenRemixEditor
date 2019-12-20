@@ -65,7 +65,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
                 preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, checked).flush()
-                main.advancedOptions = checked
+                main.settings.advancedOptions = checked
                 didChangeSettings = true
             }
         }.apply {

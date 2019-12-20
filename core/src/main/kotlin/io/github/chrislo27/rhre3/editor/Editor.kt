@@ -416,8 +416,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         batch.begin()
         batch.setColor(1f, 1f, 1f, 1f)
 
-        val themeUsesMenu = !disableThemeUsesMenu && main.themeUsesMenu
-        val useGlassEffect = !noGlassEffect && glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        val themeUsesMenu = !disableThemeUsesMenu && main.settings.themeUsesMenu
+        val useGlassEffect = !noGlassEffect && glassEffect.fboSupported && main.settings.glassEntities
         if (themeUsesMenu && useGlassEffect) {
             glassEffect.renderBackground()
         }
@@ -1123,8 +1123,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
 
                 if (current.progress >= 1f) {
-                    val themeUsesMenu = main.themeUsesMenu
-                    val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+                    val themeUsesMenu = main.settings.themeUsesMenu
+                    val useGlassEffect = glassEffect.fboSupported && main.settings.glassEntities
                     explodeEntity(onEntity, true)
                     AssetRegistry.get<LazySound>("""pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}""").sound.play()
                     remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
@@ -1322,7 +1322,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             if (entity is ModelEntity<*> && entity.needsNameTooltip && entity.renderText.isNotEmpty()) {
                 output += entity.renderText
             }
-            if (main.advancedOptions && entity is SubtitleEntity && entity.subtitle.isNotBlank()) {
+            if (main.settings.advancedOptions && entity is SubtitleEntity && entity.subtitle.isNotBlank()) {
                 val charCount = entity.subtitle.count { it != ' ' && it != '-' && it != '(' && it != ')' && it != '\n' }
                 val duration = remix.tempos.linearBeatsToSeconds(entity.bounds.x + entity.bounds.width) - remix.tempos.linearBeatsToSeconds(entity.bounds.x)
                 output += "${(charCount / duration).roundToInt()} CPS"
@@ -1916,10 +1916,10 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         }
     }
 
-    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
+    fun explodeEntity(e: ModelEntity<*>, doExplode: Boolean = main.settings.advancedOptions && main.preferences.getBoolean(PreferenceKeys.ADVOPT_EXPLODING_ENTITIES, false)) {
         if (!doExplode) return
-        val themeUsesMenu = main.themeUsesMenu
-        val useGlassEffect = glassEffect.fboSupported && main.preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+        val themeUsesMenu = main.settings.themeUsesMenu
+        val useGlassEffect = glassEffect.fboSupported && main.settings.glassEntities
         val alpha = if (themeUsesMenu && useGlassEffect) 0.5f else 1f
         val color = e.getRenderColor(this, theme).cpy().apply {
             a *= alpha

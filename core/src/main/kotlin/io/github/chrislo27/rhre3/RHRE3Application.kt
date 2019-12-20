@@ -144,9 +144,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     var liveUsers: Int = -1
         private set
     
-    var advancedOptions: Boolean = false
-    var disableTimeStretching: Boolean = false
-    var themeUsesMenu: Boolean = false
+    val settings: Settings = Settings(this)
     private var lastWindowed: Pair<Int, Int> = RHRE3.DEFAULT_SIZE.copy()
     
     private val rainbowColor: Color = Color(1f, 1f, 1f, 1f)
@@ -227,9 +225,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (lastVersion != RHRE3.VERSION) {
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0)
         }
+        settings.load()
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
-        advancedOptions = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
         ModdingUtils.currentGame = ModdingGame.VALUES.find { it.id == preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingGame.DEFAULT_GAME.id) } ?: ModdingGame.DEFAULT_GAME
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
@@ -244,8 +242,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         } else {
             Editor.cameraBehaviour = CameraBehaviour.MAP.getOrDefault(preferences.getString(PreferenceKeys.SETTINGS_CAMERA_BEHAVIOUR), Editor.DEFAULT_CAMERA_BEHAVIOUR)
         }
-        disableTimeStretching = preferences.getBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, false)
-        themeUsesMenu = preferences.getBoolean(PreferenceKeys.THEME_USES_MENU, false)
         Playalong.loadFromPrefs(preferences)
         
         val discordRpcEnabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
@@ -468,6 +464,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         preferences.putString(PreferenceKeys.PLAYALONG_CONTROLS, JsonHandler.toJson(Playalong.playalongControls))
         preferences.putString(PreferenceKeys.PLAYALONG_CONTROLLER_MAPPINGS, JsonHandler.toJson(Playalong.playalongControllerMappings))
         preferences.flush()
+        settings.persist()
         try {
             SFXDatabase.dispose()
         } catch (e: Exception) {

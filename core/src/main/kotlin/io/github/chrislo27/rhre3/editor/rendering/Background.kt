@@ -15,7 +15,7 @@ fun Editor.renderBackground(batch: SpriteBatch, shapeRenderer: ShapeRenderer, ca
     batch.fillRect(0f, 0f, camera.viewportWidth, camera.viewportHeight)
     batch.setColor(1f, 1f, 1f, 1f)
 
-    if (!disableThemeUsesMenu && main.themeUsesMenu) {
+    if (!disableThemeUsesMenu && main.settings.themeUsesMenu) {
         GenericStage.backgroundImpl.render(camera, batch, shapeRenderer, if (updateDelta) Gdx.graphics.deltaTime else 0f)
     }
 

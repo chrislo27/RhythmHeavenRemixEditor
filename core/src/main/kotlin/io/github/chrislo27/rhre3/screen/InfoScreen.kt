@@ -970,14 +970,17 @@ class InfoScreen(main: RHRE3Application)
                 override fun onLeftClick(xPercent: Float, yPercent: Float) {
                     super.onLeftClick(xPercent, yPercent)
                     if (bufferSupported) {
-                        preferences.putBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, checked).flush()
+                        main.settings.glassEntities = checked
+                        main.settings.persist()
                         didChangeSettings = true
                     } else {
+                        main.settings.glassEntities = false
+                        main.settings.persist()
                         preferences.putString(PreferenceKeys.SETTINGS_GLASS_ENTITIES, null).flush()
                     }
                 }
             }.apply {
-                this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_GLASS_ENTITIES, true)
+                this.checked = main.settings.glassEntities
 
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
@@ -1032,11 +1035,11 @@ class InfoScreen(main: RHRE3Application)
                 this.tooltipText = if (SoundStretch.isSupported) "screen.info.disableTimeStretching.tooltip" else "screen.info.disableTimeStretching.notSupported.tooltip"
         
                 this.checkedStateChanged = {
-                    preferences.putBoolean(PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING, it)
-                    if (!main.disableTimeStretching && it) {
+                    if (!main.settings.disableTimeStretching && it) {
                         SoundCache.unloadAllDerivatives()
                     }
-                    main.disableTimeStretching = it
+                    main.settings.disableTimeStretching = it
+                    main.settings.persist()
                     didChangeSettings = true
                 }
         

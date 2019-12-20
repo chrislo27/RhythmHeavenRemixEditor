@@ -146,8 +146,8 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                             editor.theme = theme
                         }
                         val main = editor.main
-                        main.themeUsesMenu = false
-                        main.preferences.putBoolean(PreferenceKeys.THEME_USES_MENU, false).flush()
+                        main.settings.themeUsesMenu = false
+                        main.settings.persist()
 
                         state = if (isStock) State.EditName else State.ChooseElement
                         update()

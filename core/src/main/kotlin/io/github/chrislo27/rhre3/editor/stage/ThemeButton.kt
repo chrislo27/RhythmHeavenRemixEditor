@@ -1,6 +1,5 @@
 package io.github.chrislo27.rhre3.editor.stage
 
-import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.EditorScreen
 import io.github.chrislo27.rhre3.theme.LoadedThemes
@@ -36,7 +35,7 @@ class ThemeButton(val editor: Editor, val editorStage: EditorStage,
     override fun onRightClick(xPercent: Float, yPercent: Float) {
         super.onRightClick(xPercent, yPercent)
         val main = editor.main
-        main.themeUsesMenu = !main.themeUsesMenu
-        main.preferences.putBoolean(PreferenceKeys.THEME_USES_MENU, main.themeUsesMenu).flush()
+        main.settings.themeUsesMenu = !main.settings.themeUsesMenu
+        main.settings.persist()
     }
 }

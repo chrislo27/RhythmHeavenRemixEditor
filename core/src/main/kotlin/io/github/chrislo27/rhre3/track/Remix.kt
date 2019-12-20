@@ -635,7 +635,7 @@ open class Remix(val main: RHRE3Application)
         private set
     
     val timeStretchingAllowed: Boolean
-        get() = SoundStretch.isSupported && !main.disableTimeStretching
+        get() = SoundStretch.isSupported && !main.settings.disableTimeStretching
 
     val currentSubtitles: MutableList<SubtitleEntity> = mutableListOf()
     val currentSubtitlesReversed: Iterable<SubtitleEntity> = currentSubtitles.asReversed()
