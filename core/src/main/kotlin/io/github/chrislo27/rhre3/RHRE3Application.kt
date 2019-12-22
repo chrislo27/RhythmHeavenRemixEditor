@@ -110,7 +110,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     val timeSignatureFont: BitmapFont
         get() = timeSignatureFontFTF.font!!
     
-    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_merged.ttf") }
+    private val fontFileHandle: FileHandle by lazy { Gdx.files.internal("fonts/rodin_lat_cy_ja_ko_spec.ttf") }
     private val fontAfterLoadFunction: FreeTypeFont.() -> Unit = {
         this.font!!.apply {
             setFixedWidthGlyphs("1234567890")
