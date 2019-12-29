@@ -524,7 +524,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
             main.shapeRenderer.prepareStencilMask(batch) {
                 begin(ShapeRenderer.ShapeType.Filled)
                 remix.entities.forEach {
-                    if (it is ModelEntity<*> && it !is TextureEntity && it.glassEffect && !(isPresentationMode && it.datamodel.hideInPresentationMode)) {
+                    if (!it.renderOnTop && it is ModelEntity<*> && it.glassEffect && !(isPresentationMode && it.datamodel.hideInPresentationMode)) {
                         if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
                             rect(it.bounds.x + it.lerpDifference.x, it.bounds.y + it.lerpDifference.y, it.bounds.width + it.lerpDifference.width, it.bounds.height + it.lerpDifference.height)
                         }
@@ -556,7 +556,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 //            main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
 //        }
         remix.entities.forEach {
-            if (it !is TextureEntity) {
+            if (!it.renderOnTop) {
                 if (it is ModelEntity<*> && isPresentationMode && it.datamodel.hideInPresentationMode)
                     return@forEach
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat) && !(it is PlayalongEntity && stage.playalongStage.hideIndicators && remix.playState == PLAYING)) {
@@ -578,11 +578,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
 
         // Texture entities get rendered here
         remix.entities.forEach {
-            if (it is TextureEntity) {
+            if (it.renderOnTop) {
                 it.updateInterpolation(!smoothDragging)
                 if (it.inRenderRange(beatRangeStartFloat, beatRangeEndFloat)) {
                     it.render(this, batch)
-                    this.renderMining(batch, it)
+                    if (it is ModelEntity<*>)
+                        this.renderMining(batch, it)
                 }
             }
         }

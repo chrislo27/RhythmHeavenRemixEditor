@@ -20,6 +20,7 @@ class TextureEntity(remix: Remix, datamodel: TextureModel)
     override val renderText: String
         get() = if (textureHash != null) datamodel.name else "${datamodel.name}\n<no texture>"
     override val glassEffect: Boolean = false
+    override val renderOnTop: Boolean = true
 
     init {
         this.bounds.height = 1f

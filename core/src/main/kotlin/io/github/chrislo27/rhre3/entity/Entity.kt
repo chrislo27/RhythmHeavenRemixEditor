@@ -40,6 +40,7 @@ abstract class Entity(val remix: Remix) {
     var isSelected: Boolean = false
     val bounds: Rectangle = Rectangle()
     val lerpDifference: Rectangle = Rectangle()
+    open val renderOnTop: Boolean = false
     open val supportsCopying: Boolean = true
     open var playbackCompletion = PlaybackCompletion.WAITING
 
