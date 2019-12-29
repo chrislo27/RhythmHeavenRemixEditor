@@ -50,7 +50,8 @@ java-discord-rpc
 bccad-editor
 JCommander
 SoundStretch and SoundTouch
-zip4j""",
+zip4j
+Jam3/glsl-fast-gaussian-blur""",
                 "donators" crediting "",
                 "you" crediting ""
                      )

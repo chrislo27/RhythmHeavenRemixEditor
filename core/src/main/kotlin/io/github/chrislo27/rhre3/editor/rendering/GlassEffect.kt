@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.editor.rendering
 
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
@@ -47,26 +48,19 @@ uniform float radius;
 uniform vec2 dir;
 
 void main() {
-	vec4 sum = vec4(0.0);
-	vec2 tc = vTexCoord;
-	float blur = radius/resolution;
-
-    float hstep = dir.x;
-    float vstep = dir.y;
-
-	sum += texture2D(u_texture, vec2(tc.x - 4.0*blur*hstep, tc.y - 4.0*blur*vstep)) * 0.05;
-	sum += texture2D(u_texture, vec2(tc.x - 3.0*blur*hstep, tc.y - 3.0*blur*vstep)) * 0.09;
-	sum += texture2D(u_texture, vec2(tc.x - 2.0*blur*hstep, tc.y - 2.0*blur*vstep)) * 0.12;
-	sum += texture2D(u_texture, vec2(tc.x - 1.0*blur*hstep, tc.y - 1.0*blur*vstep)) * 0.15;
-
-	sum += texture2D(u_texture, vec2(tc.x, tc.y)) * 0.16;
-
-	sum += texture2D(u_texture, vec2(tc.x + 1.0*blur*hstep, tc.y + 1.0*blur*vstep)) * 0.15;
-	sum += texture2D(u_texture, vec2(tc.x + 2.0*blur*hstep, tc.y + 2.0*blur*vstep)) * 0.12;
-	sum += texture2D(u_texture, vec2(tc.x + 3.0*blur*hstep, tc.y + 3.0*blur*vstep)) * 0.09;
-	sum += texture2D(u_texture, vec2(tc.x + 4.0*blur*hstep, tc.y + 4.0*blur*vstep)) * 0.05;
-
-	gl_FragColor = vColor * vec4(sum.rgb, 1.0);
+    /* Slightly modified from https://github.com/Jam3/glsl-fast-gaussian-blur/blob/5dbb6e97aa43d4be9369bdd88e835f47023c5e2a/13.glsl */
+    vec4 color = vec4(0.0);
+    vec2 off1 = vec2(1.411764705882353) * dir;
+    vec2 off2 = vec2(3.2941176470588234) * dir;
+    vec2 off3 = vec2(5.176470588235294) * dir;
+    color += texture2D(u_texture, vTexCoord) * 0.1964825501511404;
+    color += texture2D(u_texture, vTexCoord + (off1 / resolution)) * 0.2969069646728344;
+    color += texture2D(u_texture, vTexCoord - (off1 / resolution)) * 0.2969069646728344;
+    color += texture2D(u_texture, vTexCoord + (off2 / resolution)) * 0.09447039785044732;
+    color += texture2D(u_texture, vTexCoord - (off2 / resolution)) * 0.09447039785044732;
+    color += texture2D(u_texture, vTexCoord + (off3 / resolution)) * 0.010381362401148057;
+    color += texture2D(u_texture, vTexCoord - (off3 / resolution)) * 0.010381362401148057;
+    gl_FragColor = vColor * vec4(color.rgb, 1.0);
 }
 """
 
@@ -84,11 +78,13 @@ void main() {
     }
     private val bufferA: FrameBuffer? = Try {
         FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
+            this.colorBufferTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             main.addDisposeCall(Runnable(this::dispose))
         }
     }
     private val bufferB: FrameBuffer? = Try {
         FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
+            this.colorBufferTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             main.addDisposeCall(Runnable(this::dispose))
         }
     }
@@ -125,7 +121,7 @@ void main() {
             batch.shader = shader
             batch.setColor(1f, 1f, 1f, 1f)
             shader.apply {
-                setUniformf("dir", 1f, 0f)
+                setUniformf("dir", 0f, 1f)
                 setUniformf("resolution", max(shaderCamera.viewportHeight, shaderCamera.viewportWidth))
                 setUniformf("radius", 3f)
             }
@@ -139,7 +135,7 @@ void main() {
 
             // Render buffer A to buffer B, with second blur pass
             bufferB.begin()
-            shader.setUniformf("dir", 0f, 1f)
+            shader.setUniformf("dir", 1f, 0f)
             fboRegion.texture = bufferA.colorBufferTexture
             batch.draw(fboRegion, 0f, 0f)
             batch.flush()
