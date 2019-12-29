@@ -123,6 +123,7 @@ void main() {
             bufferA.end()
 
             batch.shader = shader
+            batch.setColor(1f, 1f, 1f, 1f)
             shader.apply {
                 setUniformf("dir", 1f, 0f)
                 setUniformf("resolution", max(shaderCamera.viewportHeight, shaderCamera.viewportWidth))
