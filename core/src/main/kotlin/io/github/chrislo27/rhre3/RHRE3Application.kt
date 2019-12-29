@@ -162,8 +162,6 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (RHRE3.portableMode) {
             Toolboks.LOGGER.info("Running in portable mode")
         }
-        // 1.8.0_144
-        // 9.X.Y(extra)
         val javaVersion = System.getProperty("java.version").trim()
         Toolboks.LOGGER.info("Running on JRE $javaVersion")
         
