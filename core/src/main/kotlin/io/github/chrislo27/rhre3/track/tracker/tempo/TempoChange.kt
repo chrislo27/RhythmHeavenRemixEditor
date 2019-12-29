@@ -26,7 +26,7 @@ class TempoChange(container: TempoChanges, beat: Float, val bpm: Float, val swin
             return (secondsWidth / 60f) * (startBpm + endBpm) / 2f
         }
 
-        fun getFormattedText(bpm: Float): String = "♩=${Editor.ONE_TO_TWO_DECIMAL_PLACES_FORMATTER.format(bpm)}"
+        fun getFormattedText(bpm: Float): String = "♩=${Editor.TEMPO_DECIMAL_PLACES_FORMATTER.format(bpm)}"
     }
 
     override val allowsResize: Boolean = true

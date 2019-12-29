@@ -110,8 +110,7 @@ fun Editor.renderTopTrackers(batch: SpriteBatch, beatRange: IntRange, trackYOffs
         val position = getApparentPlaybackTrackerPos()
         renderAboveTracker(null, null, 0, position,
                            theme.trackers.playback, triangleHeight = 0f,
-                           bpmText = "♩=${Editor.ONE_DECIMAL_PLACE_FORMATTER.format(
-                                   remix.tempos.tempoAt(remix.beat))}")
+                           bpmText = "♩=${Editor.TEMPO_DECIMAL_PLACES_FORMATTER.format(remix.tempos.tempoAt(remix.beat))}")
     }
 
     borderedFont.color = oldFontColor
