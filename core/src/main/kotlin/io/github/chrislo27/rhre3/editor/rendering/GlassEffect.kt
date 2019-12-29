@@ -48,18 +48,12 @@ uniform float radius;
 uniform vec2 dir;
 
 void main() {
-    /* Slightly modified from https://github.com/Jam3/glsl-fast-gaussian-blur/blob/5dbb6e97aa43d4be9369bdd88e835f47023c5e2a/13.glsl */
+    /* Slightly modified from https://github.com/Jam3/glsl-fast-gaussian-blur/blob/5dbb6e97aa43d4be9369bdd88e835f47023c5e2a/5.glsl */
     vec4 color = vec4(0.0);
-    vec2 off1 = vec2(1.411764705882353) * dir;
-    vec2 off2 = vec2(3.2941176470588234) * dir;
-    vec2 off3 = vec2(5.176470588235294) * dir;
-    color += texture2D(u_texture, vTexCoord) * 0.1964825501511404;
-    color += texture2D(u_texture, vTexCoord + (off1 / resolution)) * 0.2969069646728344;
-    color += texture2D(u_texture, vTexCoord - (off1 / resolution)) * 0.2969069646728344;
-    color += texture2D(u_texture, vTexCoord + (off2 / resolution)) * 0.09447039785044732;
-    color += texture2D(u_texture, vTexCoord - (off2 / resolution)) * 0.09447039785044732;
-    color += texture2D(u_texture, vTexCoord + (off3 / resolution)) * 0.010381362401148057;
-    color += texture2D(u_texture, vTexCoord - (off3 / resolution)) * 0.010381362401148057;
+    vec2 off1 = vec2(1.3333333333333333) * direction;
+    color += texture2D(u_texture, vTexCoord) * 0.29411764705882354;
+    color += texture2D(u_texture, vTexCoord + (off1 / resolution)) * 0.35294117647058826;
+    color += texture2D(u_texture, vTexCoord - (off1 / resolution)) * 0.35294117647058826;
     gl_FragColor = vColor * vec4(color.rgb, 1.0);
 }
 """
@@ -134,6 +128,19 @@ void main() {
             bufferA.end()
 
             // Render buffer A to buffer B, with second blur pass
+            bufferB.begin()
+            shader.setUniformf("dir", 1f, 0f)
+            fboRegion.texture = bufferA.colorBufferTexture
+            batch.draw(fboRegion, 0f, 0f)
+            batch.flush()
+            bufferB.end()
+            
+            bufferA.begin()
+            fboRegion.texture = bufferB.colorBufferTexture
+            batch.draw(fboRegion, 0f, 0f)
+            batch.flush()
+            bufferA.end()
+
             bufferB.begin()
             shader.setUniformf("dir", 1f, 0f)
             fboRegion.texture = bufferA.colorBufferTexture
