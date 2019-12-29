@@ -532,7 +532,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 }
                 end()
             }.useStencilMask {
-                batch.draw(glassEffect.fboRegion, camera.position.x - camera.viewportWidth / 2f * camera.zoom, camera.position.y - camera.viewportHeight / 2f * camera.zoom, camera.viewportWidth * camera.zoom, camera.viewportHeight * camera.zoom)
+                val posX = camera.position.x
+                val posY = camera.position.y
+                val width = camera.viewportWidth
+                val height = camera.viewportHeight
+                val zoom = camera.zoom * 1.1f
+                batch.draw(glassEffect.fboRegion, posX - width / 2f * zoom, posY - height / 2f * zoom, width * zoom, height * zoom)
             }
             main.shapeRenderer.projectionMatrix = main.defaultCamera.combined
         }
