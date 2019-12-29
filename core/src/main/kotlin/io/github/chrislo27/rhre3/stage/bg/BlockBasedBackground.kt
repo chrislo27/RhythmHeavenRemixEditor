@@ -95,7 +95,7 @@ abstract class BlockBasedBackground(id: String)
         
         batch.setColor(0f, 0f, 0f, 1f)
         batch.fillRect(0f, 0f, camera.viewportWidth, camera.viewportHeight)
-        batch.setColor(0f, 0f, 0f, 1f)
+        batch.setColor(1f, 1f, 1f, 1f)
         
         if (flashEnabled) {
             flashColor1.a = (MathUtils.sin(MathUtils.PI2 * MathHelper.getSawtoothWave(2f))).coerceAtLeast(0f) * 0.9f
