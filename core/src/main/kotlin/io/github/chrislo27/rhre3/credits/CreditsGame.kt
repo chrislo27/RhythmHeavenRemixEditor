@@ -650,15 +650,11 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             AL10.alSourcef(sourceIDField.getInt(it), AL10.AL_PITCH, speedMultiplier)
         }
         skipFrame = true
-        sheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        bgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
     }
 
     override fun showTransition() {
         super.showTransition()
         DiscordHelper.updatePresence(if (speedMultiplier > 1f) PresenceState.ViewingCreditsTempoUp else PresenceState.ViewingCredits)
-        sheet.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
-        bgTex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
     }
 
     override fun hide() {
