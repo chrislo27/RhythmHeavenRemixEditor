@@ -1,5 +1,6 @@
 package io.github.chrislo27.toolboks.registry
 
+import com.badlogic.gdx.assets.AssetLoaderParameters
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Pixmap
@@ -68,12 +69,12 @@ object AssetRegistry : Disposable {
         return key to file
     }
 
-    inline fun <reified T> loadAsset(key: String, file: String) {
-        manager.load(bindAsset(key, file).second, T::class.java)
+    inline fun <reified T> loadAsset(key: String, file: String, params: AssetLoaderParameters<T>? = null) {
+        manager.load(bindAsset(key, file).second, T::class.java, params)
     }
 
-    internal inline fun <reified T> loadToolboksAsset(key: String, file: String) {
-        manager.load(bindToolboksAsset(key, file).second, T::class.java)
+    internal inline fun <reified T> loadToolboksAsset(key: String, file: String, params: AssetLoaderParameters<T>? = null) {
+        manager.load(bindToolboksAsset(key, file).second, T::class.java, params)
     }
 
     fun addAssetLoader(loader: IAssetLoader) {
