@@ -50,7 +50,7 @@ uniform vec2 dir;
 void main() {
     /* Slightly modified from https://github.com/Jam3/glsl-fast-gaussian-blur/blob/5dbb6e97aa43d4be9369bdd88e835f47023c5e2a/5.glsl */
     vec4 color = vec4(0.0);
-    vec2 off1 = vec2(1.3333333333333333) * direction;
+    vec2 off1 = vec2(1.3333333333333333) * dir;
     color += texture2D(u_texture, vTexCoord) * 0.29411764705882354;
     color += texture2D(u_texture, vTexCoord + (off1 / resolution)) * 0.35294117647058826;
     color += texture2D(u_texture, vTexCoord - (off1 / resolution)) * 0.35294117647058826;
