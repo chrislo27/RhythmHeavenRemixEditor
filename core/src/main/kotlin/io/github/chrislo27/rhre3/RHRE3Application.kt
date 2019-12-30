@@ -557,7 +557,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
         return FreeTypeFontGenerator.FreeTypeFontParameter().apply {
-            magFilter = Texture.TextureFilter.Nearest
+            magFilter = Texture.TextureFilter.Linear
             minFilter = Texture.TextureFilter.Linear
             genMipMaps = false
             incremental = true
