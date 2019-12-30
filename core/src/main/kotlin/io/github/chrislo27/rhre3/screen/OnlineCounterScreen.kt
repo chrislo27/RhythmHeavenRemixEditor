@@ -56,6 +56,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
         
         val palette = main.uiPalette
 
+        AnalyticsHandler.track("View Online History", mapOf())
         val weeklyGraph = false
         request = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live/history")
                 .addQueryParam("weekly", "$weeklyGraph")
@@ -106,6 +107,8 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                         this.textWrapping = false
                                         this.text = "${data.mean}"
                                         this.fontScaleMultiplier = 0.75f
+                                        this.tooltipText = Localization["screen.onlineCounter.mean", "${data.mean}"]
+                                        this.tooltipTextIsLocalizationKey = false
                                     }
                                     barsStage.elements += TextLabel(main.uiPalette, barsStage, barsStage).apply {
                                         this.location.set(screenX = x - width / 2, screenWidth = width, screenY = 0f, screenHeight = 0.075f)
@@ -113,6 +116,8 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                                         this.textWrapping = false
                                         this.text = "[#$minColor]${data.min}[]/[#$maxColor]${data.max}[]"
                                         this.fontScaleMultiplier = 0.5f
+                                        this.tooltipText = "${Localization["screen.onlineCounter.min", "${data.min}"]}\n${Localization["screen.onlineCounter.max", "${data.max}"]}"
+                                        this.tooltipTextIsLocalizationKey = false
                                     }
                                 }
                                 barsStage.updatePositions()
