@@ -498,7 +498,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
         // entities
         val smoothDragging = main.preferences.getBoolean(PreferenceKeys.SETTINGS_SMOOTH_DRAGGING, true)
         remix.entities.forEach {
-            if (it !is TextureEntity) {
+            if (!it.renderOnTop) {
                 it.updateInterpolation(!smoothDragging)
             }
         }
