@@ -102,6 +102,13 @@ class CrashScreen(main: RHRE3Application, val throwable: Throwable, val lastScre
         }
     }
 
+    override fun render(delta: Float) {
+        if (main.batch.isDrawing) {
+            main.batch.end()
+        }
+        super.render(delta)
+    }
+
     override fun renderUpdate() {
         super.renderUpdate()
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
