@@ -71,7 +71,7 @@ fun Editor.renderTimeSignatures(batch: SpriteBatch, beatRange: IntRange) {
     val bigFont = main.timeSignatureFont
     val heightOfTrack = remix.trackCount.toFloat() - toScaleY(Editor.TRACK_LINE_THICKNESS) * 2f
     val inputX = camera.getInputX()
-    val inputBeat = floor(inputX.toDouble() / snap).toFloat() * snap
+    val inputBeat = if (snap == 0f) inputX else floor(inputX.toDouble() / snap).toFloat() * snap
     bigFont.scaleFont(camera)
     bigFont.scaleMul((heightOfTrack * 0.5f - 0.075f * (heightOfTrack / Editor.DEFAULT_TRACK_COUNT)) / bigFont.capHeight)
 
@@ -151,7 +151,7 @@ fun Editor.renderBeatLines(batch: SpriteBatch, beatRange: IntRange, trackYOffset
 
         val flashAnimation = subbeatSection.flashAnimation > 0
         val actuallyInRange = (subbeatSection.enabled && i.toFloat() in subbeatSection.start..subbeatSection.end)
-        if (flashAnimation || actuallyInRange) {
+        if (snap > 0f && (flashAnimation || actuallyInRange)) {
             batch.setColor(theme.trackLine.r, theme.trackLine.g, theme.trackLine.b,
                            theme.trackLine.a * 0.3f *
                                    if (!actuallyInRange) subbeatSection.flashAnimation else 1f)

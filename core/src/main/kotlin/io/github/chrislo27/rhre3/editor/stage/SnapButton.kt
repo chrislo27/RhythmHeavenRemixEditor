@@ -26,7 +26,7 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     private val snapLevel: Int
         get() = snapLevels[index]
     private val snapFloat: Float
-        get() = 1f / snapLevel
+        get() = if (snapLevel == 0) 0f else 1f / snapLevel
     private var fractionString: String = "1/$snapLevel"
     private val label: TextLabel<EditorScreen> = object : TextLabel<EditorScreen>(palette, this, stage) {
         override fun getRealText(): String {
