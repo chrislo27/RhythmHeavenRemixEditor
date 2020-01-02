@@ -562,6 +562,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             genMipMaps = false
             incremental = true
             size = 24
+            color = Color(1f, 1f, 1f, 1f)
+            borderColor = Color(0f, 0f, 0f, 1f)
             characters = ""
             hinting = FreeTypeFontGenerator.Hinting.AutoFull
         }
