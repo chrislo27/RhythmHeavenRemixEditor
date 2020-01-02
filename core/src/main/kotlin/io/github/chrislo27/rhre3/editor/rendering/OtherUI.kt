@@ -169,7 +169,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
 
             val divisions = (1f / snap).coerceAtMost(64f).roundToInt()
             val reverseRange = mouseX < clickOccupation.startPoint.x
-            for (i in (0 until ((rightPoint - leftPoint) * divisions).toInt())) {
+            for (i in (0..((rightPoint - leftPoint) * divisions).toInt())) {
                 val x = if (!reverseRange) (leftPoint + i / divisions.toFloat()) else (rightPoint - i / divisions.toFloat())
                 // culling for rendering
                 if (x < beatRange.first)
