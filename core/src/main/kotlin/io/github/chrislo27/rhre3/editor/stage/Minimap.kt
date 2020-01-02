@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.Pixmap
+import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -40,7 +41,9 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
     init {
         try {
-            buffer = FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true)
+            buffer = FrameBuffer(Pixmap.Format.RGBA8888, RHRE3.WIDTH, RHRE3.HEIGHT, false, true).apply {
+                this.colorBufferTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+            }
 
             editor.main.addDisposeCall(Runnable(buffer::dispose))
         } catch (e: Exception) {
@@ -135,6 +138,10 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
 
             batch.end()
             buffer.begin()
+            batch.begin()
+            batch.setColor(1f, 0f, 0f, 1f)
+            batch.fillRect(0f, 0f, editor.main.defaultCamera.viewportWidth, editor.main.defaultCamera.viewportHeight)
+            batch.end()
 
             Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT or GL20.GL_DEPTH_BUFFER_BIT)
@@ -163,6 +170,7 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             batch.drawRect(x - outline, y,
                            w + outline * 2, h + outline, outline)
             batch.setColor(1f, 1f, 1f, alpha)
+            batch.fillRect(x, y, w, h)
             batch.draw(buffer.colorBufferTexture,
                        x, y, w, h, 0, buffer.height - bufSecH, buffer.width, bufSecH, false, true)
             batch.setColor(1f, 1f, 1f, 1f)
