@@ -64,19 +64,18 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         bottom.elements += object : TrueCheckbox<AdvancedOptionsScreen>(palette, bottom, bottom) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                preferences.putBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, checked).flush()
                 main.settings.advancedOptions = checked
                 didChangeSettings = true
+                main.settings.persist()
             }
         }.apply {
-            this.checked = preferences.getBoolean(PreferenceKeys.SETTINGS_ADVANCED_OPTIONS, false)
+            this.checked = main.settings.advancedOptions
 
             this.textLabel.apply {
-                //                this.fontScaleMultiplier = fontScale
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.left
-                this.text = "Advanced Options Enabled"
+                this.text = "Other Advanced Options Enabled"
             }
 
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
@@ -284,13 +283,11 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         }
         centre.elements += pitchStyleButton
         // Exploding entities
-        explodingEntitiesButton = object : TrueCheckbox<AdvancedOptionsScreen>(palette, centre, centre) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                main.settings.advExplodingEntities = this.checked
+        explodingEntitiesButton = TrueCheckbox(palette, centre, centre).apply {
+            this.leftClickAction = { _, _ ->
+                main.settings.advExplodingEntities = this@apply.checked
                 main.settings.persist()
             }
-        }.apply {
             this.textLabel.also {
                 it.isLocalizationKey = false
                 it.text = "Entities explode when deleted"
@@ -305,6 +302,24 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                               screenHeight = buttonHeight)
         }
         centre.elements += explodingEntitiesButton
+        centre.elements += TrueCheckbox(palette, centre, centre).apply {
+            this.leftClickAction = { _, _ ->
+                main.settings.advIgnorePitchRestrictions = this@apply.checked
+                main.settings.persist()
+            }
+            this.textLabel.also {
+                it.isLocalizationKey = false
+                it.text = "Ignore entity pitching restrictions"
+                it.textWrapping = false
+                it.fontScaleMultiplier = 0.8f
+                it.textAlign = Align.left
+            }
+            this.checked = main.settings.advIgnorePitchRestrictions
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
         centre.elements += Button(palette, centre, centre).apply {
             this.leftClickAction = { _, _ ->
                 ScreenRegistry["editor"]?.dispose()
@@ -320,7 +335,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 main.screen = SFXDBLoadingScreen(main) { ScreenRegistry["editor"] }
             }
             this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding * 6 + buttonHeight * 5,
+                              screenY = padding,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.addLabel(TextLabel(palette, this, this.stage).apply {

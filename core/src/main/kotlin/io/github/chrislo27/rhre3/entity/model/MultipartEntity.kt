@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.entity.model
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.math.Rectangle
+import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.entity.Entity
 import io.github.chrislo27.rhre3.oopsies.ReversibleAction
@@ -25,9 +26,14 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
             val change = value - field
             field = value
 
-            internal.filterIsInstance<IRepitchable>()
-                    .filter(IRepitchable::canBeRepitched)
-                    .forEach { it.semitone += change }
+            if (RHRE3Application.instance.settings.advIgnorePitchRestrictions) {
+                internal.filterIsInstance<IRepitchable>()
+                        .forEach { it.semitone += change }
+            } else {
+                internal.filterIsInstance<IRepitchable>()
+                        .filter(IRepitchable::canBeRepitched)
+                        .forEach { it.semitone += change }
+            }
         }
     override val canBeRepitched: Boolean by IRepitchable.anyInModel(datamodel)
 
@@ -194,21 +200,21 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     override fun onEnd() {
     }
-    
+
     final override fun preloadSounds() {
         internal.filterIsInstance<ISoundDependent>().forEach { it.preloadSounds() }
         onPreloadSounds()
     }
-    
+
     protected open fun onPreloadSounds() {
     }
-    
+
     final override fun unloadSounds() {
         internal.filterIsInstance<ISoundDependent>().forEach { it.unloadSounds() }
         onUnloadSounds()
     }
-    
+
     protected open fun onUnloadSounds() {
-    
+
     }
 }

@@ -35,9 +35,10 @@ object PreferenceKeys {
     val ADVOPT_REF_RH_GAME = "advOpt_referenceRHGame"
     val ADVOPT_PITCH_STYLE = "advOpt_pitchStyle"
     val ADVOPT_EXPLODING_ENTITIES = "advOpt_explodingEntities"
+    val ADVOPT_IGNORE_PITCH_RESTRICTIONS = "advOpt_ignorePitchRestrictions"
 
     val allAdvOptsKeys: List<String> =
-            listOf(ADVOPT_REF_RH_GAME, ADVOPT_PITCH_STYLE, ADVOPT_EXPLODING_ENTITIES)
+            listOf(ADVOPT_REF_RH_GAME, ADVOPT_PITCH_STYLE, ADVOPT_EXPLODING_ENTITIES, ADVOPT_IGNORE_PITCH_RESTRICTIONS)
 
     val FILE_CHOOSER_MUSIC = "fileChooser_musicSelect"
     val FILE_CHOOSER_SAVE = "fileChooser_save"

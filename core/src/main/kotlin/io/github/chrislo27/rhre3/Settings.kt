@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3
 
 import com.badlogic.gdx.Preferences
 import io.github.chrislo27.rhre3.PreferenceKeys.ADVOPT_EXPLODING_ENTITIES
+import io.github.chrislo27.rhre3.PreferenceKeys.ADVOPT_IGNORE_PITCH_RESTRICTIONS
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_ADVANCED_OPTIONS
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_MINIMAP
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING
@@ -31,6 +32,7 @@ class Settings(private val main: RHRE3Application) {
     var cameraBehaviour: CameraBehaviour = Editor.DEFAULT_CAMERA_BEHAVIOUR
     
     var advExplodingEntities: Boolean = false
+    var advIgnorePitchRestrictions: Boolean = false
     
     fun load() {
         advancedOptions = preferences.getBoolean(SETTINGS_ADVANCED_OPTIONS, advancedOptions)
@@ -55,6 +57,7 @@ class Settings(private val main: RHRE3Application) {
         }
 
         advExplodingEntities = preferences.getBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)
+        advIgnorePitchRestrictions = preferences.getBoolean(ADVOPT_IGNORE_PITCH_RESTRICTIONS, advIgnorePitchRestrictions)
     }
     
     fun persist() {
@@ -70,6 +73,7 @@ class Settings(private val main: RHRE3Application) {
                 .putBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
                 
                 .putBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)
+                .putBoolean(ADVOPT_IGNORE_PITCH_RESTRICTIONS, advIgnorePitchRestrictions)
                 .flush()
     }
 }

@@ -1959,11 +1959,11 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
     }
 
     fun changePitchOfSelection(change: Int, delta: Boolean, canExceedLimits: Boolean, selection: List<Entity>) {
-        val repitchables = selection.filter { it is IRepitchable && it.canBeRepitched }
+        val repitchables = selection.filter { it is IRepitchable && (main.settings.advIgnorePitchRestrictions || it.canBeRepitched) }
         val oldPitches = repitchables.map { (it as IRepitchable).semitone }
 
         val anyChanged = selection.fold(false) { acc, it ->
-            if (it is IRepitchable && it.canBeRepitched) {
+            if (it is IRepitchable && (main.settings.advIgnorePitchRestrictions || it.canBeRepitched)) {
                 val current = it.semitone
                 val new = if (delta) (current + change) else change
                 if (!canExceedLimits) {
