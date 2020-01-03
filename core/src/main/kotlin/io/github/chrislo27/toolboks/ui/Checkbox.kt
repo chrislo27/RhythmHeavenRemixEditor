@@ -35,10 +35,10 @@ abstract class Checkbox<S : ToolboksScreen<*, *>>(palette: UIPalette, parent: UI
     }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
-        super.onLeftClick(xPercent, yPercent)
         if (enabled) {
             checked = !checked
         }
+        super.onLeftClick(xPercent, yPercent)
     }
 
     open fun computeCheckWidth(): Float {
