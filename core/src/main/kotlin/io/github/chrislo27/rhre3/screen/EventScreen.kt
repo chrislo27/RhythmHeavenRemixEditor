@@ -52,28 +52,27 @@ class EventScreen(main: RHRE3Application)
 
         fun getPossibleEvent(main: RHRE3Application, nextScreen: ToolboksScreen<*, *>?): EventScreen? {
             val anniversaryButNow: LocalDate = RHRE3.RHRE_ANNIVERSARY.withYear(NOW.year)
-            val xmasButNow: LocalDate = LocalDate.of(NOW.year, 12, 20).withYear(NOW.year)
+            val xmasThisYear: LocalDate = LocalDate.of(NOW.year, 12, 24).withYear(NOW.year)
 
             // Event check
-            val today: LocalDate = when {
-                RHRE3.immediateEvent in 1..2 -> anniversaryButNow
-                RHRE3.immediateEvent == 3 -> xmasButNow
+            val today: LocalDate = when (RHRE3.immediateEvent) {
+                in 1..2 -> anniversaryButNow
+                3 -> xmasThisYear
                 else -> LocalDate.now()
             }
 
-            return when {
+            return when (today) {
                 // RHRE anniversary:
                 // Occurs from day of only
-                today == anniversaryButNow -> {
+                anniversaryButNow -> {
                     EventScreen(main).takeIf {
-                        it.loadEventJson(EventType.ANNIVERSARY,
-                                         Gdx.files.internal("event/anniversary.json"), nextScreen)
+                        it.loadEventJson(EventType.ANNIVERSARY, Gdx.files.internal("event/anniversary.json"), nextScreen)
                     }
                 }
                 // Xmas
-                // Dec 20-25
+                // Dec 24-25
                 // https://musescore.com/grossmusik/scores/4797212
-                today == xmasButNow || (today.isAfter(xmasButNow) && today.isBefore(xmasButNow.plusDays(6))) -> {
+                in xmasThisYear..xmasThisYear.plusDays(1L) -> {
                     EventScreen(main).takeIf {
                         it.loadEventJson(EventType.XMAS, Gdx.files.internal("event/xmas.json"), nextScreen)
                     }
