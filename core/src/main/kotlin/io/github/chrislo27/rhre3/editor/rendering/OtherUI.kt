@@ -145,20 +145,22 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
             val height = 1.5f
             val borderThickness = Editor.TRACK_LINE_THICKNESS * 1.5f
             val markThickness = Editor.TRACK_LINE_THICKNESS
+            val scaledBorderThickness = toScaleX(borderThickness)
+            val scaledMarkThickness = toScaleX(markThickness)
             val y = 0f
 
             batch.color = theme.background
             batch.fillRect(leftPoint, y, width, -height)
             batch.color = theme.trackLine
-            batch.drawRect(leftPoint - toScaleX(Editor.TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(Editor.TRACK_LINE_THICKNESS), height, toScaleX(borderThickness), toScaleY(borderThickness))
+            batch.drawRect(leftPoint - toScaleX(Editor.TRACK_LINE_THICKNESS) / 2, y - height, width + toScaleX(Editor.TRACK_LINE_THICKNESS), height, scaledBorderThickness, toScaleY(borderThickness))
 
-            if (width > 0) {
-                val leftTextPoint = max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
-                val rightTextPoint = min(rightPoint - toScaleX(borderThickness), camera.position.x + camera.viewportWidth / 2)
+            if (width > scaledBorderThickness * 3) {
+                val leftTextPoint = max(leftPoint + scaledBorderThickness, camera.position.x - camera.viewportWidth / 2)
+                val rightTextPoint = min(rightPoint - scaledBorderThickness, camera.position.x + camera.viewportWidth / 2)
                 val textWidth = rightTextPoint - leftTextPoint
                 font.color = theme.trackLine
                 font.scaleMul(0.75f)
-                // Mixed number notation, add decimal if no snapping
+                // Mixed number notation, add decimal if snapping disabled
                 font.drawCompressed(batch, RulerUtils.widthToMixedNumber(width, snap) + " ♩" + if (currentSnap == 0f) " (${Editor.TWO_DECIMAL_PLACES_FORMATTER.format(width)})" else "", leftTextPoint, y - height + toScaleY(borderThickness) + font.capHeight * 1.1f, textWidth, Align.center)
                 if (ModdingUtils.moddingToolsEnabled) {
                     // tickflow notation
@@ -184,7 +186,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
                     markElongation += 0.5f
                 if (divisions >= 16 && i % (divisions / 8) == 0)
                     markElongation += 0.35f
-                batch.fillRect(x - toScaleX(markThickness) / (if (reverseRange) -2 else 2), y, toScaleX(markThickness) * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
+                batch.fillRect(x - scaledMarkThickness / (if (reverseRange) -2 else 2), y, scaledMarkThickness * if (reverseRange) -1 else 1, -0.35f * (markElongation * 0.5f + 1))
             }
 
             batch.packedColor = oldColor
