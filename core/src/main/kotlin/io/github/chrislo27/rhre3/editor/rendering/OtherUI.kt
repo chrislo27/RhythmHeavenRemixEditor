@@ -154,7 +154,7 @@ fun Editor.renderOtherUI(batch: SpriteBatch, shapeRenderer: ShapeRenderer, beatR
 
             if (width > 0) {
                 val leftTextPoint = max(leftPoint + toScaleX(borderThickness), camera.position.x - camera.viewportWidth / 2)
-                val rightTextPoint = min(rightPoint - toScaleY(borderThickness), camera.position.x + camera.viewportWidth / 2)
+                val rightTextPoint = min(rightPoint - toScaleX(borderThickness), camera.position.x + camera.viewportWidth / 2)
                 val textWidth = rightTextPoint - leftTextPoint
                 font.color = theme.trackLine
                 font.scaleMul(0.75f)
