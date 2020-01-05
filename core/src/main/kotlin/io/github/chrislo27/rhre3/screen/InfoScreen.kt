@@ -409,7 +409,8 @@ class InfoScreen(main: RHRE3Application)
                 this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
                                   screenWidth = buttonWidth - buttonWidth * 0.09f * 2,
-                                  screenHeight = buttonHeight * 0.8f)
+                                  screenHeight = buttonHeight * 0.8f,
+                                  pixelX = 2f, pixelWidth = -4f)
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.text = "SFXDB VERSION"
@@ -424,7 +425,7 @@ class InfoScreen(main: RHRE3Application)
             }.apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
-                                  screenWidth = buttonWidth * 0.09f,
+                                  screenWidth = buttonWidth * 0.085f,
                                   screenHeight = buttonHeight * 0.8f)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     renderType = ImageLabel.ImageRendering.ASPECT_RATIO
