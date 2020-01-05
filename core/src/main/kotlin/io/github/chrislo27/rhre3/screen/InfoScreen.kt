@@ -477,13 +477,10 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Donate button
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-
+            info.elements += Button(palette, info, info).apply {
+                this.leftClickAction = { _, _ ->
                     Gdx.net.openURI(RHRE3.DONATION_URL)
                 }
-            }.apply {
                 addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_donate"))
@@ -494,24 +491,6 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = 0.1f,
                                   screenHeight = buttonHeight)
                 this.visible = false
-            }
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-
-                    Gdx.net.openURI(RHRE3.DOCS_URL)
-                }
-            }.apply {
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.textWrapping = false
-                    this.text = "screen.info.docs"
-                    this.fontScaleMultiplier = 0.8f
-                })
-
-                this.location.set(screenX = 0.5f - (0.1f / 2),
-                                  screenY = padding * 4 + buttonHeight * 3,
-                                  screenWidth = 0.1f,
-                                  screenHeight = buttonHeight * 2 + padding)
             }
 
             // info buttons
@@ -612,12 +591,10 @@ class InfoScreen(main: RHRE3Application)
 
 
             // Editor version screen
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
+            info.elements += Button(palette, info, info).apply {
+                this.leftClickAction = {_, _ ->
                     main.screen = ScreenRegistry.getNonNull("editorVersion")
                 }
-            }.apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
@@ -631,12 +608,10 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             // Database version changelog
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
+            info.elements += Button(palette, info, info).apply {
+                this.leftClickAction = {_, _ ->
                     Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
                 }
-            }.apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
@@ -646,6 +621,22 @@ class InfoScreen(main: RHRE3Application)
 
                 this.location.set(screenX = padding,
                                   screenY = padding * 6 + buttonHeight * 5,
+                                  screenWidth = buttonWidth,
+                                  screenHeight = buttonHeight)
+            }
+            info.elements += Button(palette, info, info).apply {
+                this.leftClickAction = {_, _ ->
+                    Gdx.net.openURI(RHRE3.DOCS_URL)
+                }
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.fontScaleMultiplier = fontScale
+                    this.isLocalizationKey = true
+                    this.textWrapping = false
+                    this.text = "screen.info.docs"
+                })
+
+                this.location.set(screenX = padding,
+                                  screenY = padding * 5 + buttonHeight * 4,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
