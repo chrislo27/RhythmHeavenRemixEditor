@@ -213,6 +213,11 @@ class InfoScreen(main: RHRE3Application)
 
         onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
             var last = Int.MIN_VALUE
+            init {
+                Localization.addListener {
+                    last = Int.MIN_VALUE
+                }
+            }
             override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 val current = main.liveUsers
                 if (last != current) {
