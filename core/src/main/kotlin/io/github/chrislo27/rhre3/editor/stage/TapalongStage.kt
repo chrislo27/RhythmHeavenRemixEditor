@@ -35,9 +35,6 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     val roundedTempo: Int
         get() = tempo.roundToInt()
 
-    private val backgroundPane = ColourPane(this, this).apply {
-        this.location.set(0f, 0f, 1f, 1f)
-    }
     private val tempoLabel: TextLabel<EditorScreen>
     private val inputsLabel: TextLabel<EditorScreen>
     private val rawTempoLabel: TextLabel<EditorScreen>
@@ -48,7 +45,6 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     private var internalTimekeeper: Float = 0f
 
     init {
-        this.elements += backgroundPane
         this.elements += ColourPane(this, this).apply {
             this.colour.set(Editor.TRANSLUCENT_BLACK)
             this.location.set(0f, 0f, 1f, 1f)
@@ -259,8 +255,6 @@ class TapalongStage(val editor: Editor, val palette: UIPalette, parent: EditorSt
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        backgroundPane.colour.set(screen.editor.theme.background)
-        backgroundPane.colour.a = 1f
         internalTimekeeper += Gdx.graphics.deltaTime
         super.render(screen, batch, shapeRenderer)
     }
