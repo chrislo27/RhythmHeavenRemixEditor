@@ -10,7 +10,7 @@ buildscript {
     }
 }
 apply plugin: 'kotlin'
-
+//buildScan { termsOfServiceUrl = "https://gradle.com/terms-of-service"; termsOfServiceAgree = "yes" }
 allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
