@@ -62,6 +62,7 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.*
 import kotlin.concurrent.thread
+import kotlin.system.measureNanoTime
 
 
 class RHRE3Application(logger: Logger, logToFile: File?)
@@ -189,6 +190,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 }
             }
             fonts.loadUnloaded(defaultCamera.viewportWidth, defaultCamera.viewportHeight)
+            Toolboks.LOGGER.info("Loaded fonts (initial)")
         }
         
         // Copy over SoundStretch executables
@@ -196,6 +198,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         val currentOS = SoundStretch.currentOS
         if (currentOS != SoundStretch.OS.UNSUPPORTED) {
             Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
+            Toolboks.LOGGER.info("Copied SoundStretch executables successfully")
         }
         
         // Generate hue bar
@@ -210,12 +213,20 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             hueBar = Texture(pixmap).apply {
                 this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
             }
+            Toolboks.LOGGER.info("Generated hue bar texture")
         }
         
         // preferences
         preferences = Gdx.app.getPreferences("RHRE3")
+        Toolboks.LOGGER.info("Loaded preferences")
         
-        AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
+        GlobalScope.launch {
+            Toolboks.LOGGER.info("Starting analytics")
+            val nano = measureNanoTime {
+                AnalyticsHandler.initAndIdentify(Gdx.app.getPreferences("RHRE3-analytics"))
+            }
+            Toolboks.LOGGER.info("Analytics started successfully in ${nano / 1000000.0} ms")
+        }
         GameMetadata.setPreferencesInstance(preferences)
         val lastVersion = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, null) ?: "")
         if (lastVersion != RHRE3.VERSION) {
@@ -228,15 +239,21 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
         Playalong.loadFromPrefs(preferences)
+        Toolboks.LOGGER.info("Loaded persistent data from preferences")
         
         val discordRpcEnabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
         GlobalScope.launch {
-            DiscordHelper.init(enabled = discordRpcEnabled)
-            DiscordHelper.updatePresence(PresenceState.Loading)
+            Toolboks.LOGGER.info("Starting Discord RPC")
+            val nano = measureNanoTime {
+                DiscordHelper.init(enabled = discordRpcEnabled)
+                DiscordHelper.updatePresence(PresenceState.Loading)
+            }
+            Toolboks.LOGGER.info("Discord RPC started successfully in ${nano / 1000000.0} ms")
         }
         preferences.flush()
         
         PatternStorage.load()
+        Toolboks.LOGGER.info("Loaded pattern storage")
         
         // registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())

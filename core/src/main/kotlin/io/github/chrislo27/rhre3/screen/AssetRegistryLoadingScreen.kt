@@ -20,6 +20,7 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
     }
     private var nextScreen: (() -> ToolboksScreen<*, *>?)? = null
     private var logoTex: Texture? = null
+    private var firstFrame = true
 
     override fun render(delta: Float) {
         
@@ -29,7 +30,10 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
             }
         }
         val logo: Texture? = logoTex
-        val progress = AssetRegistry.load(delta)
+        val progress = if (firstFrame) run {
+            firstFrame = false
+            0f
+        } else AssetRegistry.load(delta)
 
         val cam = camera
         val batch = main.batch
