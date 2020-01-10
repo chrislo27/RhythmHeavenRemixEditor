@@ -233,12 +233,16 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             preferences.putInteger(PreferenceKeys.TIMES_SKIPPED_UPDATE, 0)
         }
         settings.load()
+        Toolboks.LOGGER.info("Loaded settings instance")
         val backgroundPref = preferences.getString(PreferenceKeys.BACKGROUND, Background.defaultBackground.id)
         GenericStage.backgroundImpl = Background.backgroundMap[backgroundPref] ?: Background.defaultBackground
+        Toolboks.LOGGER.info("Set background pref")
         ModdingUtils.currentGame = ModdingGame.VALUES.find { it.id == preferences.getString(PreferenceKeys.ADVOPT_REF_RH_GAME, ModdingGame.DEFAULT_GAME.id) } ?: ModdingGame.DEFAULT_GAME
+        Toolboks.LOGGER.info("Set modding utils current game")
         LoadingIcon.usePaddlerAnimation = preferences.getBoolean(PreferenceKeys.PADDLER_LOADING_ICON, false)
+        Toolboks.LOGGER.info("Set loading icon pref")
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
-        Playalong.loadFromPrefs(preferences)
+        Toolboks.LOGGER.info("Loaded semitones pitch style from prefs")
         Toolboks.LOGGER.info("Loaded persistent data from preferences")
         
         val discordRpcEnabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)
@@ -252,14 +256,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         preferences.flush()
         
-        PatternStorage.load()
-        Toolboks.LOGGER.info("Loaded pattern storage")
-        
-        // registry
+        // Asset registry
         AssetRegistry.addAssetLoader(DefaultAssetLoader())
-        
-        // load themes
-        LoadedThemes.reloadThemes(preferences, true)
         
         // screens
         run {
@@ -285,6 +283,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 defaultCamera.viewportWidth = RHRE3.WIDTH.toFloat()
                 defaultCamera.viewportHeight = RHRE3.HEIGHT.toFloat()
                 defaultCamera.update()
+    
+                // Slower json parsing happens here
+                Playalong.loadFromPrefs(preferences)
+                Toolboks.LOGGER.info("Loaded playalong prefs")
+                LoadedThemes.reloadThemes(preferences, true)
+                PatternStorage.load()
+                Toolboks.LOGGER.info("Loaded pattern storage")
                 
                 addOtherScreens()
                 loadWindowSettings()
