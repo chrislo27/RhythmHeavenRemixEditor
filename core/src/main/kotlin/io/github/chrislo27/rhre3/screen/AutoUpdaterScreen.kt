@@ -27,6 +27,8 @@ import org.asynchttpclient.AsyncHandler
 import org.asynchttpclient.HttpResponseBodyPart
 import java.io.File
 import java.io.FileOutputStream
+import java.io.PrintWriter
+import java.io.StringWriter
 import kotlin.math.roundToLong
 import kotlin.system.exitProcess
 
@@ -74,6 +76,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
             this.tooltipText = "screen.autoUpdater.cancel"
         }
         stage.onBackButtonClick = {
+            AnalyticsHandler.track("Auto-Update Cancelled", mapOf())
             this.dispose()
             main.screen = ScreenRegistry["editorVersion"]
         }
@@ -180,8 +183,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
                                 }
                                 return super.onContentWriteProgress(amount, current, total)
                             }
-
-
+                            
                             override fun onBodyPartReceived(content: HttpResponseBodyPart): AsyncHandler.State {
                                 fileStream.channel.write(content.bodyByteBuffer)
                                 val amount = content.length()
@@ -236,7 +238,6 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 progress = Progress.READY_TO_COMPLETE
                 if (autocompleteCheckbox.checked) {
                     // Continue
-                    AnalyticsHandler.track("Complete Auto-Update", mapOf("automatic" to true))
                     Gdx.app.postRunnable {
                         completeJarCopy(newJarFile)
                     }
@@ -246,7 +247,6 @@ class AutoUpdaterScreen(main: RHRE3Application)
                         completeButton.visible = true
                         label.text = Localization["screen.autoUpdater.progress.readyToComplete"]
                         completeButton.leftClickAction = { _, _ ->
-                            AnalyticsHandler.track("Complete Auto-Update", mapOf("automatic" to false))
                             completeButton.visible = false
                             completeJarCopy(newJarFile)
                         }
@@ -254,9 +254,23 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 }
             } catch (ie: InterruptedException) {
                 ie.printStackTrace()
+                AnalyticsHandler.track("Auto-Update Error", mapOf("state" to "downloading",
+                                                                  "throwable" to ie::class.java.canonicalName,
+                                                                  "stackTrace" to StringWriter().apply {
+                                                                      val pw = PrintWriter(this)
+                                                                      ie.printStackTrace(pw)
+                                                                      pw.flush()
+                                                                  }.toString()))
                 cleanupAfterFail()
             } catch (e: Exception) {
                 e.printStackTrace()
+                AnalyticsHandler.track("Auto-Update Error", mapOf("state" to "downloading",
+                                                                  "throwable" to e::class.java.canonicalName,
+                                                                  "stackTrace" to StringWriter().apply {
+                                                                      val pw = PrintWriter(this)
+                                                                      e.printStackTrace(pw)
+                                                                      pw.flush()
+                                                                  }.toString()))
                 Gdx.app.postRunnable {
                     progress = Progress.ERROR
                     label.textWrapping = true
@@ -285,6 +299,13 @@ class AutoUpdaterScreen(main: RHRE3Application)
             exitProcess(0)
         } catch (e: Exception) {
             e.printStackTrace()
+            AnalyticsHandler.track("Auto-Update Error", mapOf("state" to "jar copying",
+                                                              "throwable" to e::class.java.canonicalName,
+                                                              "stackTrace" to StringWriter().apply {
+                                                                  val pw = PrintWriter(this)
+                                                                  e.printStackTrace(pw)
+                                                                  pw.flush()
+                                                              }.toString()))
             Gdx.app.postRunnable {
                 progress = Progress.ERROR
                 label.textWrapping = true
