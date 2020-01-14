@@ -124,8 +124,8 @@ open class Remix(val main: RHRE3Application)
                 run {
                     val trackers = tree.putObject("trackers")
 
-                    trackers.set("tempos", tempos.toTree(trackers.objectNode()))
-                    trackers.set("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
+                    trackers.set<ObjectNode>("tempos", tempos.toTree(trackers.objectNode()))
+                    trackers.set<ObjectNode>("musicVolumes", musicVolumes.toTree(trackers.objectNode()))
                 }
 
                 // time signatures
