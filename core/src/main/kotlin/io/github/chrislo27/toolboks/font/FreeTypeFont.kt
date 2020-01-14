@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.utils.Disposable
 import io.github.chrislo27.toolboks.util.gdxutils.copy
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 
 /**
@@ -33,9 +35,9 @@ class FreeTypeFont(val file: FileHandle, val defaultWindowSize: Pair<Int, Int>,
     fun load(width: Float, height: Float) {
         dispose()
 
-        val scale: Float = Math.min(width / defaultWindowSize.first, height / defaultWindowSize.second)
+        val scale: Float = min(width / defaultWindowSize.first, height / defaultWindowSize.second)
         val newParam = parameter.copy()
-        newParam.size = Math.round(fontSize * scale)
+        newParam.size = (fontSize * scale).roundToInt()
         newParam.borderWidth = borderSize * scale
 
         generator = FreeTypeFontGenerator(file)
