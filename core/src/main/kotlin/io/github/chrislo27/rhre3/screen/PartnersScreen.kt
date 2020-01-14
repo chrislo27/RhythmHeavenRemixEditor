@@ -154,6 +154,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                         } else {
                             ThumbnailFetcher.fetch(value.thumbnail) { tex, _ ->
                                 if (tex != null && field == value) {
+                                    tex.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
                                     thumbnail.image = TextureRegion(tex)
                                 }
                             }
