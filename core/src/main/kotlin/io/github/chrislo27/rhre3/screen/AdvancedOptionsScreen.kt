@@ -320,33 +320,32 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
         }
-        centre.elements += Button(palette, centre, centre).apply {
-            this.leftClickAction = { _, _ ->
-                ScreenRegistry["editor"]?.dispose()
-                ScreenRegistry.remove("editor")
-                val defaultCamera = main.defaultCamera
-                val oldDim = defaultCamera.viewportWidth to defaultCamera.viewportHeight
-                defaultCamera.setToOrtho(false, RHRE3.WIDTH.toFloat(), RHRE3.HEIGHT.toFloat())
-                defaultCamera.update()
-                ScreenRegistry += "editor" to EditorScreen(main)
-                defaultCamera.setToOrtho(false, oldDim.first, oldDim.second)
-                defaultCamera.update()
-                SFXDatabase.reset()
-                main.screen = SFXDBLoadingScreen(main) { ScreenRegistry["editor"] }
-            }
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = false
-                this.text = "Reload SFX Database"
-                this.textWrapping = false
-                this.fontScaleMultiplier = 0.8f
-            })
-            tooltipTextIsLocalizationKey = false
-            tooltipText = "[ORANGE]WARNING[]: This will clear the editor and discard all unsaved changes.\nReloads the entire SFX database. May fail (and crash) if there are errors.\nThis will also reload modding metadata from scratch."
-        }
+//        centre.elements += Button(palette, centre, centre).apply {
+//            this.leftClickAction = { _, _ ->
+//                val defaultCamera = main.defaultCamera
+//                val oldDim = defaultCamera.viewportWidth to defaultCamera.viewportHeight
+//                defaultCamera.setToOrtho(false, RHRE3.WIDTH.toFloat(), RHRE3.HEIGHT.toFloat())
+//                defaultCamera.update()
+//                ScreenRegistry["editor"]?.dispose()
+//                ScreenRegistry += "editor" to EditorScreen(main)
+//                defaultCamera.setToOrtho(false, oldDim.first, oldDim.second)
+//                defaultCamera.update()
+//                SFXDatabase.reset()
+//                main.screen = SFXDBLoadingScreen(main) { ScreenRegistry["editor"] }
+//            }
+//            this.location.set(screenX = 1f - (padding + buttonWidth),
+//                              screenY = padding,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//            this.addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.isLocalizationKey = false
+//                this.text = "Reload SFX Database"
+//                this.textWrapping = false
+//                this.fontScaleMultiplier = 0.8f
+//            })
+//            tooltipTextIsLocalizationKey = false
+//            tooltipText = "[ORANGE]WARNING[]: This will clear the editor and discard all unsaved changes.\nReloads the entire SFX database. May fail (and crash) if there are errors.\nThis will also reload modding metadata from scratch."
+//        }
 
         updateLabels()
     }
