@@ -45,7 +45,7 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     override var tooltipText: String?
         set(_) {}
         get() {
-            return Localization["editor.snap", fractionString]
+            return Localization["editor.snap", "$fractionString ♩"]
         }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
