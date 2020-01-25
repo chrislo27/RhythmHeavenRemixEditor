@@ -198,6 +198,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         val currentOS = SoundStretch.currentOS
         if (currentOS != SoundStretch.OS.UNSUPPORTED) {
             Gdx.files.internal("soundstretch/${currentOS.executableName}").copyTo(RHRE3.SOUNDSTRETCH_FOLDER)
+            RHRE3.SOUNDSTRETCH_FOLDER.child(currentOS.executableName).file().apply { 
+                setReadable(true)
+                setExecutable(true)
+            }
             Toolboks.LOGGER.info("Copied SoundStretch executables successfully")
         }
         
