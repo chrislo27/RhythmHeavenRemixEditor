@@ -640,6 +640,20 @@ object SFXDatabase : Disposable {
                                             PlayalongInput.TOUCH_TAP, PlayalongMethod.LONG_PRESS,
                                             pickerName = PickerName("Long Tap and Hold", "[LIGHT_GRAY](ex: Glee Club transitions)[]"))
 
+            // Not in-game, utility
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_hold_Dpad", listOf(),
+                                            "Hold ${PlayalongChars.FILLED_DPAD}", true,
+                                            PlayalongInput.BUTTON_DPAD, PlayalongMethod.PRESS_AND_HOLD,
+                                            pickerName = PickerName("Hold ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](not present in-game)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_longPress_Dpad", listOf(),
+                                            "Long Press ${PlayalongChars.FILLED_DPAD}", true,
+                                            PlayalongInput.BUTTON_DPAD, PlayalongMethod.LONG_PRESS,
+                                            pickerName = PickerName("Long Press ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](not present in-game)[]"))
+            playalongObjs += PlayalongModel(playalongGame, "${playalongGame.id}_releaseAndHold_Dpad", listOf(),
+                                            "Release and Hold ${PlayalongChars.FILLED_DPAD}", true,
+                                            PlayalongInput.BUTTON_DPAD, PlayalongMethod.RELEASE_AND_HOLD,
+                                            pickerName = PickerName("Release and Hold ${PlayalongChars.FILLED_DPAD}", "[LIGHT_GRAY](not present in-game)[]"))
+    
             addGameAndObjects(playalongGame)
             this.playalongGame = playalongGame
         }
