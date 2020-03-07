@@ -26,11 +26,11 @@ allprojects {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url "http://jcenter.bintray.com/" }
+        maven { url "https://jcenter.bintray.com/" }
         maven { url "https://kotlin.bintray.com/kotlinx/" }
         maven { url 'https://jitpack.io' }
         maven { url 'https://repo.eclipse.org/content/groups/releases/' }
-        maven { url "http://dl.bintray.com/spookygames/oss" }
+        maven { url "https://dl.bintray.com/spookygames/oss" }
     }
 }
 
