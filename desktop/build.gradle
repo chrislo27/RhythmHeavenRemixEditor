@@ -1,7 +1,5 @@
-
 apply plugin: "java"
 apply plugin: 'kotlin'
-apply plugin: "maven"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
@@ -32,9 +30,9 @@ repositories {
 }
 
 shadowJar {
-    baseName = "RHRE"
+    archiveBaseName = "RHRE"
     classifier = "distribution"
-    version = this.version
+    archiveVersion = this.version
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
