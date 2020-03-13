@@ -42,12 +42,6 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
         super.render(screen, batch, shapeRenderer)
     }
 
-    override fun frameUpdate(screen: EditorScreen) {
-        super.frameUpdate(screen)
-
-        this.visible = editor.main.settings.advancedOptions
-    }
-
     override var tooltipText: String?
         set(_) {}
         get() {
