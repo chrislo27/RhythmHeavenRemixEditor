@@ -287,7 +287,7 @@ class PlayalongStage(val editor: Editor,
         monsterMawButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override var tooltipText: String?
                 set(_) {}
-                get() = if (!enabled) "" else Localization["playalong.monsterGoal.tooltip"]
+                get() = if (!enabled) null else Localization["playalong.monsterGoal.tooltip"]
 
             fun cycle(dir: Int) {
                 val monsterPreset = monsterGoalPreset
@@ -322,7 +322,7 @@ class PlayalongStage(val editor: Editor,
         tempoDownButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override var tooltipText: String?
                 set(_) {}
-                get() = if (!enabled) "" else Localization["playalong.tempoDown.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+                get() = if (!enabled) null else Localization["playalong.tempoDown.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
@@ -358,7 +358,7 @@ class PlayalongStage(val editor: Editor,
         tempoUpButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override var tooltipText: String?
                 set(_) {}
-                get() = if (!enabled) "" else Localization["playalong.tempoUp.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
+                get() = if (!enabled) null else Localization["playalong.tempoUp.tooltip", TEMPO_CHANGE_INCREMENT.absoluteValue, TEMPO_CHANGE_INCREMENT.absoluteValue * 2]
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
@@ -380,7 +380,7 @@ class PlayalongStage(val editor: Editor,
         heartsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override var tooltipText: String?
                 set(_) {}
-                get() = if (!enabled) "" else Localization["playalong.lifeGoal.tooltip"]
+                get() = if (!enabled) null else Localization["playalong.lifeGoal.tooltip"]
 
             val heartsList = listOf(Hearts.EMPTY, Hearts(3), Hearts(2), Hearts(1))
             fun cycle(dir: Int) {
@@ -414,7 +414,7 @@ class PlayalongStage(val editor: Editor,
         hideIndicatorsButton = object : Button<EditorScreen>(palette, lowerStage, lowerStage) {
             override var tooltipText: String?
                 set(_) {}
-                get() = if (!enabled) "" else Localization[if (hideIndicators) "playalong.hideIndicators.tooltip.show" else "playalong.hideIndicators.tooltip.hide"]
+                get() = if (!enabled) null else Localization[if (hideIndicators) "playalong.hideIndicators.tooltip.show" else "playalong.hideIndicators.tooltip.hide"]
 
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
