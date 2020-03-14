@@ -140,7 +140,7 @@ class PlaybackSpeedControl(parent: Stage<EditorScreen>, val editorStage: EditorS
 
     override fun frameUpdate(screen: EditorScreen) {
         super.frameUpdate(screen)
-        if (editorStage.playalongStage.visible) {
+        if (editorStage.playalongStage.visible || editorStage.tapalongStage.visible) {
             if (this.visible) {
                 this.visible = false
                 editorStage.editor.remix.speedMultiplier = 1f
