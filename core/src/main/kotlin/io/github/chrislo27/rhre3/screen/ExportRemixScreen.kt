@@ -369,6 +369,7 @@ class ExportRemixScreen(main: RHRE3Application)
             remix.playbackStart = remix.tempos.secondsToBeats(startMs.toFloat() / 1000f)
             remix.playState = PlayState.PLAYING
             remix.playState = PlayState.STOPPED
+            remix.speedMultiplier = 1f
             
             // music trigger
             if (remix.music != null) {
