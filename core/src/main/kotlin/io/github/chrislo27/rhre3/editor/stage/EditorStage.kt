@@ -129,6 +129,8 @@ class EditorStage(parent: UIElement<EditorScreen>?,
         private set
     lateinit var playalongToggleButton: PlayalongToggleButton
         private set
+    lateinit var playbackSpeedCtrl: PlaybackSpeedControl
+        private set
     private val advOptButtons: MutableList<UIElement<EditorScreen>> = mutableListOf()
 
     val topOfMinimapBar: Float
@@ -1411,6 +1413,10 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size, screenX = size * 11 + padding * 11)
             }
             buttonBarStage.elements += playalongToggleButton
+            playbackSpeedCtrl = PlaybackSpeedControl(buttonBarStage, this@EditorStage, palette).apply {
+                this.location.set(screenWidth = size * 5 - padding * 3, screenX = size * 12 + padding * 12)
+            }
+            buttonBarStage.elements += playbackSpeedCtrl
 
             // right aligned
             // info button
