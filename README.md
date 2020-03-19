@@ -55,6 +55,8 @@ All other trademarks and assets are property of their respective owners.
 This is a community project and this is available for others to use
 however they like (abiding by the code's GPL-3.0 license), for free.
 
+For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collectively known as RHRE0), go to <https://github.com/chrislo27/RHRE0>.
+
 † Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
 RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/).<br>
