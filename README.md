@@ -53,7 +53,7 @@ This program is **NOT** endorsed nor sponsored in any way by Nintendo.<br>
 All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to maliciously infringe trademark rights.<br>
 All other trademarks and assets are property of their respective owners.
 This is a community project and this is available for others to use
-however they like (abiding by the code's GPL-3.0 license), for free.
+however they like while abiding by the code's GPL-3.0 license, without charge.
 
 For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collectively known as RHRE0), go to <https://github.com/chrislo27/RHRE0>.
 
