@@ -18,7 +18,7 @@ import rhmodding.bccadeditor.bccad.Animation
 import rhmodding.bccadeditor.bccad.BCCAD
 
 
-private val bccad: BCCAD by lazy { BCCAD(Gdx.files.internal("images/playalong/monsterGoal.bin").readBytes()) }
+private val bccad: BCCAD by lazy { BCCAD(Gdx.files.internal("images/playalong/monster_goal.bin").readBytes()) }
 private val sheet: Texture by lazy { AssetRegistry.get<Texture>("playalong_monster_goal").apply {
     this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
 } }
