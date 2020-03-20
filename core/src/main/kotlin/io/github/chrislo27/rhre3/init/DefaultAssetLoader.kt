@@ -167,7 +167,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("glee_club", "images/chorusmen_rot.png")
         
         // MIDI stuff
-        AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/singLoop.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/sing_loop.ogg")
         
         // Credits
         AssetRegistry.loadAsset<Texture>("credits_frog", "credits/frog_rot.png", linearTexture())
@@ -185,9 +185,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("playalong_monster_icon", "images/playalong/monsterIcon.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("playalong_hide_input_indicators", "images/playalong/hide_input_indicators.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("playalong_hide_input_indicators_disable", "images/playalong/hide_input_indicators_disable.png", linearTexture())
-        AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_fail", "playalong/monsterGoalFail.ogg")
-        AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfectFail.ogg")
-        AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monsterGoalAce.ogg")
+        AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_fail", "playalong/monster_goal_fail.ogg")
+        AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfect_fail.ogg")
+        AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monster_goal_ace.ogg")
         AssetRegistry.loadAsset<Music>("playalong_settings_input_calibration", "playalong/input_calibration.ogg")
     }
     
