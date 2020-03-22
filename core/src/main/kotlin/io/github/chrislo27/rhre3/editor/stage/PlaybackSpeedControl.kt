@@ -128,8 +128,9 @@ class PlaybackSpeedControl(parent: Stage<EditorScreen>, val editorStage: EditorS
                     index += -amount
                     index = index.coerceIn(0, setSpeeds.size - 1)
                     editor.remix.speedMultiplier = setSpeeds[index]
+                    return true
                 }
-                return true
+                return false
             }
         }.apply {
             this.location.set(screenHeight = 0.6f, screenY = 0f)
