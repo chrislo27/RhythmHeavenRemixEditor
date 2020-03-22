@@ -18,6 +18,7 @@ Example (if you wanted to see all available arguments): `java -jar RHRE.jar --he
 | `--no-online-counter` | `v3.12.0` | Disables the online user count feature. |
 | `--output-generated-datamodels` | `v3.12.0` | Writes out games that are generated internally in JSON format to console on start-up. |
 | `--output-custom-sfx` | `v3.12.0` | Writes out custom SFX that don't have data.json (i.e.: just sound files in a folder) in JSON format to console on start-up. |
+| `--show-tapalong-markers` | `v3.17.0` | Shows tapalong tap markers by default. |
 | `--midi-recording` | `v3.17.0` | Enables [MIDI recording](Midi-capabilities.md), a hidden feature. Using a MIDI device while the remix is playing will write notes to the remix. |
 | `--portable-mode` | `v3.17.0` | Puts the `.rhre3/` folder and preferences locally next to the RHRE.jar file. May be useful for portable flash drives. |
 | `--fps <number>` | `v3.18.8` | Sets the target frame rate. Defaults to 60. Always at least 30. |
@@ -32,4 +33,3 @@ Example (if you wanted to see all available arguments): `java -jar RHRE.jar --he
 | `--force-expansion-splash` | `v3.12.0` to `v3.16.0` | Forces the RHRExpansion splash screen to appear on startup. This has since been removed. |
 | `--verify-registry` | `v3.1.1` to `v3.18.7` | A deprecated alias for `--verify-sfxdb`. |
 | `--fps=<number>` | `v3.17.0` to `v3.18.7` | Same as `--fps` but required the equals sign before the value. |
-| `--show-tapalong-markers` | `v3.17.0` to `v3.19.2` | Shows tapalong tap markers, a hidden feature. Now always enabled by default. |
