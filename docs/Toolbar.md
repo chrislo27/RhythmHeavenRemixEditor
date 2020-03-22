@@ -73,6 +73,11 @@ impeding entity, and select it for you.
 Right clicking this button will open the Playalong Settings, where you can change the control
 scheme and calibrate for input lag.
 
+## Playback Speed
+![Playback speed](readme/toolbar/playbackspeed.png)
+
+Change the active playback speed at any point. Left click and hold on the slider to change the speed. Holding SHIFT while left clicking unlocks increments. Right clicking resets to 1x speed. You can also scroll to change the speed in predefined increments.
+
 ## Playback
 ![Playback buttons](readme/toolbar/playback.png)
 
