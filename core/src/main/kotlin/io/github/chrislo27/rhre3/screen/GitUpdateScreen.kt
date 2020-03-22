@@ -177,10 +177,11 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     GitHelper.reset()
                 } catch (e2: Exception) {
                     e2.printStackTrace()
+                    GitHelper.SOUNDS_DIR.deleteDirectory()
                 }
                 repoStatus = RepoStatus.ERROR
                 label.text = Localization["screen.database.error"]
-                restoreDatabaseVersion()
+                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, -1).flush()
             }
         }
     }
