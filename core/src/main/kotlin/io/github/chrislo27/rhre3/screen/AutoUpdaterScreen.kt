@@ -54,6 +54,7 @@ class AutoUpdaterScreen(main: RHRE3Application)
     override val stage: GenericStage<AutoUpdaterScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
     private val changelogButton: Button<AutoUpdaterScreen>
     private val completeButton: Button<AutoUpdaterScreen>
+    private val tryAgainButton: Button<AutoUpdaterScreen>
     private val autocompleteCheckbox: TrueCheckbox<AutoUpdaterScreen>
     private val label: TextLabel<AutoUpdaterScreen>
     
@@ -111,6 +112,16 @@ class AutoUpdaterScreen(main: RHRE3Application)
             this.visible = false
         }
         stage.bottomStage.elements += completeButton
+        tryAgainButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.autoUpdater.tryAgain"
+            })
+            this.location.set(screenX = 0.175f, screenWidth = 0.65f)
+            this.visible = false
+        }
+        stage.bottomStage.elements += tryAgainButton
         autocompleteCheckbox = TrueCheckbox(palette, stage.bottomStage, stage.bottomStage).apply {
             this.textLabel.apply {
                 this.isLocalizationKey = true
@@ -278,6 +289,13 @@ class AutoUpdaterScreen(main: RHRE3Application)
                     stage.backButton.visible = true
                     completeButton.visible = false
                     autocompleteCheckbox.visible = false
+                    tryAgainButton.visible = true
+                    tryAgainButton.leftClickAction = { _, _ ->
+                        tryAgainButton.visible = false
+                        Gdx.app.postRunnable { 
+                            main.screen = AutoUpdaterScreen(main)
+                        }
+                    }
                 }
                 cleanupAfterFail()
             }
