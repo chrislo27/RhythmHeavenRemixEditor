@@ -3,6 +3,8 @@
 >Note: This likely only concerns you if you are a developer looking to
 implement the News API for yourself.
 
+The base URL for news API requests is `https://api.rhre.dev:10443/rhre3`.
+
 ## Rate Limits
 | Header | Desc. | Example Value |
 |--------|-------|---------------|

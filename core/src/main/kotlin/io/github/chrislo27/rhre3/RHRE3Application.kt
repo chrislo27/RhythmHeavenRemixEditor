@@ -320,7 +320,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
             do {
                 try {
-                    val req = httpClient.prepareGet("https://zorldo.rhre.dev:10443/rhre3/live")
+                    val req = httpClient.prepareGet("https://api.rhre.dev:10443/rhre3/live")
                             .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                             .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                             .addHeader("X-D-ID", DiscordHelper.currentUser?.userId ?: "null")
