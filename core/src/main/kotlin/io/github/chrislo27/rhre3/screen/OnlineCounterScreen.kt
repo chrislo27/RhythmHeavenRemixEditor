@@ -58,7 +58,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
 
         AnalyticsHandler.track("View Online History", mapOf())
         val weeklyGraph = false
-        request = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/live/history")
+        request = RHRE3Application.httpClient.prepareGet("https://zorldo.rhre.dev:10443/rhre3/live/history")
                 .addQueryParam("weekly", "$weeklyGraph")
                 .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                 .execute().toCompletableFuture()

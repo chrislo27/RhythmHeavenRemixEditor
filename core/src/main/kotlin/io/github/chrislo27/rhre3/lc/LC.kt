@@ -39,7 +39,7 @@ object LC {
             var source = determineSource("l", main)
 
             try {
-                val req = RHRE3Application.httpClient.prepareGet("https://zorldo.auroranet.me:10443/rhre3/lc")
+                val req = RHRE3Application.httpClient.prepareGet("https://zorldo.rhre.dev:10443/rhre3/lc")
                         .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
                         .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
                         .execute().get()
