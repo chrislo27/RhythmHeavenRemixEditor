@@ -53,7 +53,7 @@ class PresentationModeStage(val editor: Editor, val palette: UIPalette, parent: 
             this.textWrapping = false
             this.isLocalizationKey = false
             this.textAlign = Align.center
-            this.text = RHRE3.GITHUB
+            this.text = RHRE3.GITHUB_SHORTLINK
             this.fontScaleMultiplier = fontScale
         }
         this.elements += TextLabel(infoTextPalette, this, this).apply {
