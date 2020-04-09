@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.GlyphLayout
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.math.Interpolation
@@ -182,7 +183,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
     private val creditsText = "[#BFD0EC]${RHRE3.TITLE_3}[]\n\n\n\n" + creditsList.drop(1).joinToString(separator = "") {
         "[#${Color(Color.YELLOW).fromHsv((creditsList.indexOf(it) - 1f) / creditsList.size * 360f, 0.75f, 1f)}]${it.text}[]\n${it.persons}\n\n"
     } + Localization["licenseInfo"]
-    private var creditsTextHeight: Float = -1f
+    private var creditsTextGL: GlyphLayout? = null
 
     private var seconds: Float = -0.509f
     private val beat: Float
@@ -490,16 +491,17 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             val font = main.defaultBorderedFont
             font.setColor(1f, 1f, 1f, 1f)
             font.scaleFont()
-
             font.scaleMul(0.75f)
 
             val targetWidth = camera.viewportWidth * 0.25f
             val x = camera.viewportWidth * 0.7f
-            val y = MathUtils.lerp(0f, (creditsTextHeight + (camera.viewportHeight - font.capHeight)), (beat - 14f) / (DURATION - 22f))
 
-            if (creditsTextHeight < 0) {
-                creditsTextHeight = font.draw(batch, creditsText, x, 0f, targetWidth, Align.left, true).height
+            if (creditsTextGL == null) {
+                creditsTextGL = GlyphLayout(font, creditsText, font.color, targetWidth, Align.left, true)
             }
+            val creditsTextGL = creditsTextGL!!
+            
+            val y = MathUtils.lerp(0f, (creditsTextGL.height + (camera.viewportHeight - font.capHeight)), (beat - 14f) / (DURATION - 22f))
 
             val logo = AssetRegistry.get<Texture>("logo_512")
             val logoAlpha = ((beat - 5f) / 0.5f).coerceIn(0f, 1f)
@@ -507,13 +509,9 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             batch.setColor(1f, 1f, 1f, logoAlpha)
             batch.draw(logo, x, logoY, targetWidth, targetWidth)
             font.setColor(1f, 1f, 1f, logoAlpha)
-//            font.scaleMul(0.75f)
-//            font.drawCompressed(batch, RHRE3.TITLE, x, logoY - font.capHeight, targetWidth, Align.center)
-            font.setColor(1f, 1f, 1f, 1f)
-//            font.scaleMul(1f / 0.75f)
             batch.setColor(1f, 1f, 1f, 1f)
 
-            font.draw(batch, creditsText, x, y - font.capHeight, targetWidth, Align.left, true)
+            font.draw(batch, creditsTextGL, x, y - font.capHeight)
 
             // controls
             if (frameUsedSax <= 0 && beat > DURATION - 7f)
@@ -528,7 +526,6 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             font.setColor(1f, 1f, 1f, 1f)
 
             font.scaleMul(1 / 0.75f)
-
             font.unscaleFont()
         }
 
