@@ -6,7 +6,6 @@ import io.github.chrislo27.rhre3.playalong.PlayalongMethod
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
-import io.github.chrislo27.rhre3.sfxdb.datamodel.toPickerName
 import io.github.chrislo27.rhre3.track.Remix
 
 
