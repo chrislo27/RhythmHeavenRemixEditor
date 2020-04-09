@@ -671,6 +671,11 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         this.data.setScale(1f)
     }
 
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        creditsTextGL = null // Invalidate since the backing texture likely changed
+    }
+
     override fun getDebugString(): String? {
         return "seconds: $seconds\nbeat: $beat\n\nacc: ${computeAccuracy()}"
     }
