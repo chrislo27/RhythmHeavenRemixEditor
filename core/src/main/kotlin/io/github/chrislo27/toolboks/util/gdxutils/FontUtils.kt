@@ -63,14 +63,15 @@ fun BitmapFont.drawCompressed(batch: SpriteBatch, text: String, x: Float, y: Flo
     val font = this
     val textWidth = this.getTextWidth(text)
     val oldScaleX = font.data.scaleX
+    var newScaleX = oldScaleX
     
     if (textWidth > width) {
-        font.data.scaleX = (width / textWidth) * oldScaleX
+        newScaleX = (width / textWidth) * oldScaleX
     }
     
+    font.data.setScale(newScaleX, font.data.scaleY)
     val layout = font.draw(batch, text, x, y, width, align, false)
-    
-    font.data.scaleX = oldScaleX
+    font.data.setScale(oldScaleX, font.data.scaleY)
     
     return layout
 }
@@ -82,22 +83,20 @@ fun BitmapFont.drawConstrained(batch: SpriteBatch, text: String, x: Float, y: Fl
     val textHeight = this.getTextHeight(text, width, true)
     val oldScaleX = font.data.scaleX
     val oldScaleY = font.data.scaleY
-    val oldLineHeight = font.data.down
+    var newScaleX = oldScaleX
+    var newScaleY = oldScaleY
     
     if (textWidth > width) {
-        font.data.scaleX = (width / textWidth) * oldScaleX
+        newScaleX = (width / textWidth) * oldScaleX
     }
     
     if (textHeight > height) {
-        font.data.scaleY = (height / textHeight) * oldScaleY
-        font.data.down = (height / textHeight) * oldLineHeight
+        newScaleY = (height / textHeight) * oldScaleY
     }
-    
+
+    font.data.setScale(newScaleX, newScaleY)
     val layout = font.draw(batch, text, x, y, width, align, true)
-    
-    font.data.scaleX = oldScaleX
-    font.data.scaleY = oldScaleY
-    font.data.down = oldLineHeight
+    font.data.setScale(oldScaleX, oldScaleY)
     
     return layout
 }

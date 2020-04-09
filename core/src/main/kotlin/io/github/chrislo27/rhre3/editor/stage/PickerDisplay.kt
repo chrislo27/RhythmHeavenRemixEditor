@@ -70,7 +70,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
                     val oldScaleY = font.scaleY
                     val scaleFactor = if (totalWidth > availableWidth) availableWidth / totalWidth else 1f
                     val oldCapHeight = font.capHeight
-                    font.data.scaleX = scaleFactor * oldScaleX
+                    font.data.setScale(scaleFactor * oldScaleX, oldScaleY)
                     drawTextWithAlpha(batch, font, label.main, drawX, drawY + oldCapHeight / 2, availableWidth, Align.left, false, newAlpha, shouldUseNewAlpha)
                     font.scaleMul(subScale)
                     drawTextWithAlpha(batch, font, " " + label.sub, drawX + mainWidth * scaleFactor, drawY - oldCapHeight / 2 + font.capHeight, availableWidth, Align.left, false, newAlpha, shouldUseNewAlpha)
@@ -86,7 +86,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
         val textWidth = font.getTextWidth(text)
         val oldScaleX = font.data.scaleX
         if (textWidth > availableWidth) {
-            font.data.scaleX = (availableWidth / textWidth) * oldScaleX
+            font.data.setScale((availableWidth / textWidth) * oldScaleX, font.data.scaleY)
         }
         font.cache.also { cache ->
             cache.clear()
@@ -96,7 +96,7 @@ class PickerDisplay(val editor: Editor, val number: Int, val palette: UIPalette,
             }
             cache.draw(batch)
         }
-        font.data.scaleX = oldScaleX
+        font.data.setScale(oldScaleX, font.data.scaleY)
     }
 
     data class Label(var main: String, var sub: String, var color: Color)
