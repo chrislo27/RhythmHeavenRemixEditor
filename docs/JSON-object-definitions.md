@@ -7,7 +7,7 @@ If you're looking for the specifics of modding metadata introduced in v3.17.0, [
 [![RSDE Logo](rsde128.png)](https://github.com/chrislo27/RSDE)
 <br>
 Please use the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE) to edit the SFX Database.
-It comes with error checking and is significantly more easy-to-use than editing a JSON file by hand.
+It comes with error checking and is significantly easier to use compared to editing a JSON file by hand.
 
 ## ID rules
 IDs must only consist of ASCII alphanumerics, hyphens `-`, forward slashes `/` (not game IDs), and underscores `_`.
