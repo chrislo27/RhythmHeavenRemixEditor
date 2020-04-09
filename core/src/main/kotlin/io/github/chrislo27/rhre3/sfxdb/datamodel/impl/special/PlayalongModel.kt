@@ -14,7 +14,7 @@ class PlayalongModel(game: Game, id: String, deprecatedIDs: List<String>, name: 
                      val stretchable: Boolean,
                      val playalongInput: PlayalongInput,
                      val playalongMethod: PlayalongMethod,
-                     override val pickerName: PickerName = name.toPickerName())
+                     override val pickerName: PickerName = PickerName(name, ""))
     : SpecialDatamodel(game, id, deprecatedIDs, "Playalong - $name", if (playalongMethod.instantaneous) 0.5f else 1f) {
 
     override val hideInPresentationMode: Boolean = true
