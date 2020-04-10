@@ -8,9 +8,9 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.ResponseModel
 import io.github.chrislo27.rhre3.track.Remix
 
-class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String = "",
                 override val cues: List<CuePointer>, override val responseIDs: List<String>)
-    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, ResponseModel, PreviewableModel {
+    : Datamodel(game, id, deprecatedIDs, name, subtext), ContainerModel, ResponseModel, PreviewableModel {
 
     override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 

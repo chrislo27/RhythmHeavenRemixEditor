@@ -8,7 +8,7 @@ import io.github.chrislo27.toolboks.Toolboks
 
 
 class Subtitle(game: Game, id: String, deprecatedIDs: List<String>, name: String, type: String?)
-    : SpecialDatamodel(game, id, deprecatedIDs, name, 1f) {
+    : SpecialDatamodel(game, id, deprecatedIDs, name, "", 1f) {
 
     override val hideInPresentationMode: Boolean = true
     

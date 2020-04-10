@@ -25,7 +25,7 @@ object ClipboardStoredPattern : StoredPattern {
     override val data: String
         get() = Gdx.app.clipboard.contents
     override val datamodel: Datamodel by lazy {
-        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), name) {
+        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), name, "") {
             override val pickerName: PickerName = PickerName(name, "Drag this to paste the clipboard")
 
             override fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*> {
@@ -47,7 +47,7 @@ data class FileStoredPattern(override val uuid: UUID, override val name: String,
 
     @delegate:Transient
     override val datamodel: Datamodel by lazy {
-        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), name) {
+        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), name, "") {
             override fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*> {
                 error("NO-OP")
             }

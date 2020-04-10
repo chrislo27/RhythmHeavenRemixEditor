@@ -231,6 +231,7 @@ metadata such as the duration and its editable abilities.
 | id | id | Cue type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | duration | number | Duration of this cue in beats |
 | stretchable | boolean? | If true, the cue can be dragged longer or shorter |
 | repitchable | boolean? | If true, the cue can have its pitch changed by the user |
@@ -313,6 +314,7 @@ pitch adjustment (`semitone`), and `duration` (defaults to original duration).
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | cues | array of CuePointerObjects | The cues for this pattern |
 | stretchable | boolean? | If true, the pattern can be dragged longer or shorter |
 
@@ -348,6 +350,7 @@ The `stretchable` field indicates if this entity is stretchable or not (ex: Boun
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | distance | number | Distance between each internal cue. Must be positive. |
 | stretchable | boolean | If true, the pattern can be dragged longer or shorter |
 | cues | array of CuePointerObjects | The cues for this pattern |
@@ -384,6 +387,7 @@ same-beat patterns. This is a type of pattern that can repeat itself.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | defaultDuration | number | Minimum duration when initially placed. Must be positive. See below for more info. |
 | cues | array of CuePointerObjects | The cues for this pattern |
 
@@ -424,6 +428,7 @@ objects in the `cues` array at random **when played**.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | cues | array of CuePointerObjects | The possible cues to use |
 | responseIDs | (array of IDs)? | If present, this can be response-copied. See `CueObject` for more info. |
 
@@ -466,6 +471,7 @@ All samples should be pitched in unison (have the same base pitch).
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | intervals | map<string, string> | A map of intervals to `CueObject` IDs. May be star-substituted. See section below for interval format. If a semitone value does not fit in any interval, an arbitrary value is chosen, so it's up to you to ensure that all values are included in an interval. |
 
 #### Interval format
@@ -492,6 +498,7 @@ This object type is for subtitles, and the song artist/song title pop-outs.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | subtitleType | string? | The type of subtitle. Only values: "subtitle", "songTitle", and "songArtist". Defaults to "subtitle". |
 
 ### `EndRemixEntityObject`
@@ -504,6 +511,7 @@ This object type is for the End Remix entity.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 
 ### `ShakeEntityObject`
 
@@ -515,6 +523,7 @@ This object type is for the Shake entity.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 
 ### `TextureEntityObject`
 
@@ -526,6 +535,7 @@ This object type is for the Texture entity.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 
 ### `TapeMeasureObject`
 
@@ -537,6 +547,7 @@ This object type is for the Tape Measure entity.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 
 ### `PlayalongEntityObject`
 
@@ -548,6 +559,7 @@ This object type is used for the Playalong Input entities.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 | stretchable | boolean | True if this entity is stretchable. |
 | method | string? | The playalong method for this entity. See below for valid method IDs. Defaults to `PRESS`. |
 | input | string? | The playalong input for this entity. See below for valid input IDs. Defaults to `A`. |
@@ -590,6 +602,7 @@ This object type is used for the DJ School Music Distortion entity.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |
 
 ### `PitchBenderObject`
 
@@ -601,3 +614,4 @@ This object type is used to affect cues that have pitch bending enabled.
 | id | id | Pattern type ID |
 | deprecatedIDs | array of IDs | Old, defunct IDs that this object used to have (backwards compatibility) |
 | name | string | Human-readable name |
+| subtext | string | Optional subtext that can be used as a brief description, shown in the pattern picker |

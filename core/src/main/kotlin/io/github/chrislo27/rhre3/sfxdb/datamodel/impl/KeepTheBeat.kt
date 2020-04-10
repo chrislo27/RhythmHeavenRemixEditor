@@ -8,9 +8,9 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.track.Remix
 
 
-class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String = "",
                   duration: Float, override val cues: List<CuePointer>)
-    : Datamodel(game, id, deprecatedIDs, name, duration), ContainerModel, PreviewableModel {
+    : Datamodel(game, id, deprecatedIDs, name, duration, subtext), ContainerModel, PreviewableModel {
 
     override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 

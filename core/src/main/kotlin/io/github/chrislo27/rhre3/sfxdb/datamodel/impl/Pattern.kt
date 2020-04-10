@@ -8,9 +8,9 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.Datamodel
 import io.github.chrislo27.rhre3.sfxdb.datamodel.PreviewableModel
 import io.github.chrislo27.rhre3.track.Remix
 
-class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String = "",
               override val cues: List<CuePointer>, val stretchable: Boolean)
-    : Datamodel(game, id, deprecatedIDs, name), ContainerModel, PreviewableModel {
+    : Datamodel(game, id, deprecatedIDs, name, subtext), ContainerModel, PreviewableModel {
 
     override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 

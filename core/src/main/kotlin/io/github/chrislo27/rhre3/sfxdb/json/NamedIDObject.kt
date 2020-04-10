@@ -29,6 +29,19 @@ sealed class NamedIDObject {
     lateinit var id: String
     lateinit var deprecatedIDs: List<String>
     lateinit var name: String
+    @JsonInclude(JsonInclude.Include.CUSTOM, valueFilter = SubtextFilter::class)
+    var subtext: String = ""
+
+    @Suppress("EqualsOrHashCode")
+    class SubtextFilter {
+        override fun equals(other: Any?): Boolean {
+            if (other is String?) {
+                return other.isNullOrEmpty()
+            }
+
+            return super.equals(other)
+        }
+    }
 
 }
 

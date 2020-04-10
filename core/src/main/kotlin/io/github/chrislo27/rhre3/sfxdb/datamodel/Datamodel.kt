@@ -11,20 +11,21 @@ import io.github.chrislo27.rhre3.track.Remix
 
 
 abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List<String>, val name: String,
-                         open val duration: Float)
+                         open val duration: Float, val subtext: String = "")
     : Disposable {
 
     abstract fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*>
 
     var hidden: Boolean = false
-    open val pickerName: PickerName = PickerName(name, "")
+    open val pickerName: PickerName = PickerName(name, subtext)
     val newlinedName: String by lazy { name.replace(" - ", "\n") }
     @Suppress("LeakingThis")
     val possibleBaseBpm: ClosedRange<Float>? by lazy(this::checkBaseBpm)
     val isSpecial: Boolean get() = game.isSpecial || this is SpecialDatamodel
     open val hideInPresentationMode: Boolean = false
 
-    constructor(game: Game, id: String, deprecatedIDs: List<String>, name: String) : this(game, id, deprecatedIDs, name, 1.0f)
+    constructor(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String)
+            : this(game, id, deprecatedIDs, name, 1.0f, subtext)
 
     fun checkBaseBpm(): ClosedRange<Float>? {
         if (this is Cue && this.usesBaseBpm)

@@ -13,7 +13,7 @@ import io.github.chrislo27.rhre3.track.Remix
 import java.io.File
 
 
-open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String = "",
                duration: Float, val stretchable: Boolean, val repitchable: Boolean,
                val soundHandle: FileHandle,
                val introSound: String?, val endingSound: String?,
@@ -22,7 +22,7 @@ open class Cue(game: Game, id: String, deprecatedIDs: List<String>, name: String
                val loops: Boolean, val earliness: Float,
                val loopStart: Float, val loopEnd: Float,
                val pitchBending: Boolean, val writtenPitch: Int)
-    : Datamodel(game, id, deprecatedIDs, name, duration), ResponseModel, PreviewableModel {
+    : Datamodel(game, id, deprecatedIDs, name, duration, subtext), ResponseModel, PreviewableModel {
 
     val usesBaseBpm: Boolean
         get() = baseBpm > 0f

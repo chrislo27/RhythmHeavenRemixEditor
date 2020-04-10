@@ -10,10 +10,10 @@ import io.github.chrislo27.rhre3.track.Remix
 import java.util.*
 
 
-class PitchDependent(game: Game, id: String, deprecatedIDs: List<String>, name: String,
+class PitchDependent(game: Game, id: String, deprecatedIDs: List<String>, name: String, subtext: String = "",
                      intervals: Map<PitchRange, String>,
                      override val responseIDs: List<String>)
-    : Datamodel(game, id, deprecatedIDs, name), ResponseModel, PreviewableModel, ContainerModel {
+    : Datamodel(game, id, deprecatedIDs, name, subtext), ResponseModel, PreviewableModel, ContainerModel {
     
     override val canBePreviewed: Boolean by lazy { intervals.isNotEmpty() /* Interval values must be IDs to Cues */ }
     val intervals: NavigableMap<PitchRange, CuePointer> = TreeMap(intervals.mapValues { (interval, id) ->
