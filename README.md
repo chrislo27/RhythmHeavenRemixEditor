@@ -27,7 +27,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * An Internet connection to download the sound effect database
 
 ## Features
-![Screenshot](.github/rhre3palettes.png)
+![Editor screenshot by durangodudes](.github/fp_normal_v3.19.4.png)
 
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
