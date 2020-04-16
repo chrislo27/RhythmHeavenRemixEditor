@@ -107,8 +107,8 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
             // camera box
             batch.setColor(1f, 1f, 1f, 1f)
             val camera = editor.camera
-            batch.drawRect(x + (camera.position.x - camera.viewportWidth / 2) * unitWidth, y,
-                           camera.viewportWidth * unitWidth, pxHeight, 2f)
+            batch.drawRect(x + (camera.position.x - camera.viewportWidth / 2 * camera.zoom) * unitWidth, y,
+                           camera.viewportWidth * unitWidth * camera.zoom, pxHeight, 2f)
 
             if (isMouseOver() && editor.clickOccupation == ClickOccupation.None
                     && remix.playState == PlayState.STOPPED
@@ -124,8 +124,6 @@ class Minimap(val editor: Editor, palette: UIPalette, parent: UIElement<EditorSc
                 } else if (cameraPan.endX != endX) {
                     editor.cameraPan = CameraPan(startX, endX, (duration * (1f - cameraPan.progress)).coerceAtLeast(duration * 0.5f), interpolationX)
                 }
-
-//                        editor.camera.position.x = endX // Instant snap to new position on minimap
             }
         }
 
