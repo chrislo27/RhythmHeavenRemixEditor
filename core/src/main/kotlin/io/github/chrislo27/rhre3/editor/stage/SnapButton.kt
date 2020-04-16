@@ -28,13 +28,6 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     private val snapFloat: Float
         get() = if (snapLevel == 0) 0f else 1f / snapLevel
     private var fractionString: String = "1/$snapLevel"
-    private val label: TextLabel<EditorScreen> = object : TextLabel<EditorScreen>(palette, this, stage) {
-        override fun getRealText(): String {
-            return fractionString
-        }
-    }.apply {
-        this@SnapButton.addLabel(this)
-    }
 
     private fun updateAndFlash() {
         editor.subbeatSection.setFlash(0.5f)
@@ -45,8 +38,28 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     override var tooltipText: String?
         set(_) {}
         get() {
-            return Localization["editor.snap", "$fractionString ♩"]
+            return Localization["editor.snap.tooltip", "$fractionString ♩"]
         }
+    
+    init {
+        addLabel(TextLabel(palette, this, stage).apply {
+            this.text = "editor.snap"
+            this.isLocalizationKey = true
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.5f
+            this.location.set(screenWidth = 0.4f)
+        })
+        addLabel(object : TextLabel<EditorScreen>(palette, this, stage) {
+            override fun getRealText(): String {
+                return fractionString
+            }
+        }.apply {
+            this.isLocalizationKey = false
+            this.fontScaleMultiplier = 0.85f
+            this.textWrapping = false
+            this.location.set(screenX = 0.4f, screenWidth = 0.6f)
+        })
+    }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
         super.render(screen, batch, shapeRenderer)
