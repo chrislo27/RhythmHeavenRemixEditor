@@ -201,13 +201,8 @@ open class BlackTheme : Theme() {
 
     init {
         name = "theme.black"
-        background = Color(0f, 0f, 0f, 1f)
-        trackLine = Color(0.95f, 0.95f, 0.95f, 1f)
-
-        entities = EntitiesGroup().apply {
-            cue = Color(0.65f, 0.65f, 0.65f, 1f)
-            pattern = Color(0.75f, 0.75f, 0.9f, 1f)
-        }
+        background = Color(5f / 255f, 5f / 255f, 5f / 255f, 1f)
+        trackLine = Color(235f / 255f, 235f / 255f, 235f / 255f, 1f)
     }
 
 }
