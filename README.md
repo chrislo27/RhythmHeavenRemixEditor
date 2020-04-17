@@ -27,7 +27,8 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * An Internet connection to download the sound effect database
 
 ## Features
-![Editor screenshot by durangodudes](.github/fp_normal_v3.19.4.png)
+![Editor screenshot by durangodudes](.github/fp_editor_v3.19.4.png)
+![Playalong screenshot by dexiedoo](.github/fp_playalong_v3.19.4.png)
 
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
 * Change tempo and music volumes easily mid-way through the remix
@@ -36,7 +37,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * Every Rhythm Heaven minigame is here!
 
 ## Installation
-Installation is straightforward.
+Installation is straightforward. Please ensure your computer meets the Requirements above.
 1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and download the `RHRE_X.zip` file, where `X` is the version number.
 2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
 3. Open the extracted folder, and double click the file labeled `run_windows.bat` or `run_macOS-linux.sh` depending on your operating system.
@@ -59,4 +60,4 @@ For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collective
 
 † Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
-RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/). Features screenshots provided by durangodudes.
+RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/). Features screenshots provided by durangodudes and dexiedoo.
