@@ -60,4 +60,4 @@ For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collective
 
 † Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
-RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/). Features screenshots provided by durangodudes and dexiedoo.
+RHRE3 logo designed by [GlitchyPSIX](https://www.youtube.com/user/supermarioglitchy33/). Features screenshots provided by [durangodudes](https://www.youtube.com/channel/UCnBvcACARyY8JYHrOr4NxzQ) and [dexiedoo](https://www.youtube.com/channel/UC_ckCtLt88aI8Qzz5VM3UwA).
