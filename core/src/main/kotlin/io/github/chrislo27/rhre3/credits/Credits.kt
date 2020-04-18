@@ -3,11 +3,12 @@ package io.github.chrislo27.rhre3.credits
 import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.toolboks.i18n.Localization
+import java.util.*
 
 
 object Credits {
 
-    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "GenericArrangements", "Draster", "NP", "Eggman199", "Huebird", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").joinToString(separator = ", ")
+    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "GenericArrangements", "Draster", "NP", "Eggman199", "Huebird", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").sortedBy { it.toLowerCase(Locale.ROOT) }.joinToString(separator = ", ")
 
     fun generateList(): List<Credit> {
         return listOf(
@@ -15,21 +16,16 @@ object Credits {
                 "programming" crediting "chrislo27\n${Localization["credits.title.programming.contributions", "Kamayana"]}",
                 "localization" crediting
                         """[LIGHT_GRAY]Français (French)[]
-                |Pengu123, minenice55, inkedsplat, chrislo27
+                |inkedsplat, minenice55, Pengu123
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab, Suwa-ko, chipdamage
+                |chipdamage, Cosmicfab, (◉.◉)☂, GlitchyPSIX, Killble, meuol, quantic, SJGarnet, Suwa-ko
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
-                "sfx" crediting (SFXDatabase.let { if (!it.isDataLoading()) it.data.sfxCredits.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
+                "sfx" crediting (SFXDatabase.let { if (!it.isDataLoading()) it.data.sfxCredits.sortedBy { it.toLowerCase(Locale.ROOT) }.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
                 "gfx" crediting "GlitchyPSIX, lilbitdun, Steppy, Tickflow",
-                "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, SJGarnet, " +
-                        "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
-                        "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
-                        "iRonnoc5, sp00pster, Alchemyking, oofie, PikaMasterJesi, flyance, Draster, Malalaika, " +
-                        "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, GinoTitan, bin5s5, " +
-                        "garbo, nave, RHModding and Custom Remix Tourney Discord servers",
+                "specialThanks" crediting """Alchemyking, AngryTapper, ArsenArsen, baguette, bin5s5, Chillius, ChorusSquid, Clone5184, danthonywalker, Dracobot, Draster, EBPB2K, flyance, Fringession, garbo, (◉.◉)☂, GinoTitan, GlitchyPSIX, GrueKun, inkedsplat, iRonnoc5, jos, Lvl100Feraligatr, Malalaika, Mezian, minenice55, Miracle22, Mixelz, nave, nerd, oofie, Pengu123, PikaMasterJesi, Rabbidking, RobSetback, SJGarnet, sp00pster, SuicuneWiFi, susmobile, TheRhythmKid, Zenon, RHModding and Custom Remix Tourney Discord servers""",
                 "resources" crediting
                         """Rhythm Heaven assets by Nintendo
 [#FF8900]Kotlin[]
