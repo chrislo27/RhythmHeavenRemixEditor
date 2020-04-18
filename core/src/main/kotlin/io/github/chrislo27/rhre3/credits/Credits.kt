@@ -8,7 +8,7 @@ import java.util.*
 
 object Credits {
 
-    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "GenericArrangements", "Draster", "NP", "Eggman199", "Huebird", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").sortedBy { it.toLowerCase(Locale.ROOT) }.joinToString(separator = ", ")
+    private val sfxCreditsFallback: String = listOf("Lvl100Feraligatr", "GenericArrangements", "Draster", "NP", "Eggman199", "Huebird", "oofie", "Miracle22", "MF5K", "The Golden Station", "GuardedLolz", "GlitchyPSIX", "sp00pster", "Maxanum").sortedBy { it.toLowerCase(Locale.ROOT) }.joinToString(separator = ", ")
 
     fun generateList(): List<Credit> {
         return listOf(
