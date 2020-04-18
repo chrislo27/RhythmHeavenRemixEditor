@@ -47,7 +47,7 @@ class SnapButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
             this.isLocalizationKey = true
             this.textWrapping = false
             this.fontScaleMultiplier = 0.5f
-            this.location.set(screenWidth = 0.4f)
+            this.location.set(screenWidth = 0.4f, pixelX = 2f, pixelWidth = -2f)
         })
         addLabel(object : TextLabel<EditorScreen>(palette, this, stage) {
             override fun getRealText(): String {
