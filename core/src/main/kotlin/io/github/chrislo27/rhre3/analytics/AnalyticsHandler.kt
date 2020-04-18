@@ -81,7 +81,8 @@ object AnalyticsHandler : Disposable {
                                   .traits(mapOf(
                                           "createdAt" to prefs.getString(PREFS_USER_CREATED, (System.currentTimeMillis() / 1000L).toString()),
                                           "analyticsDisabled" to RHRE3.noAnalytics,
-                                          "onlineCounterDisabled" to RHRE3.noOnlineCounter
+                                          "onlineCounterDisabled" to RHRE3.noOnlineCounter,
+                                          "language" to Localization.currentBundle.locale.toString()
                                                )
                                          )
                          )
