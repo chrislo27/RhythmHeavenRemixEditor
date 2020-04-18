@@ -13,21 +13,26 @@ class KarateManStripesBackground(id: String, val stripe1: Color = Color.valueOf(
                                  val stripe2: Color = Color.valueOf("E785F2FF"),
                                  var cycle: Float = 2f)
     : Background(id) {
+
+    private val bgCamera: OrthographicCamera = OrthographicCamera().apply {
+        setToOrtho(false, 1280f, 720f)
+        update()
+    }
     
     override fun render(camera: OrthographicCamera, batch: SpriteBatch, shapeRenderer: ShapeRenderer, delta: Float) {
-        val width = camera.viewportWidth
-        val height = camera.viewportHeight
+        val width = bgCamera.viewportWidth
+        val height = bgCamera.viewportHeight
         
         val cycle = MathHelper.getSawtoothWave(cycle)
         val stripeColor = if (cycle > 0.5f) stripe1 else stripe2
         val bgColor = if (cycle > 0.5f) stripe2 else stripe1
         
         batch.color = bgColor
-        batch.fillRect(0f, 0f, width, height)
+        batch.fillRect(0f, 0f, camera.viewportWidth, camera.viewportHeight)
         batch.setColor(1f, 1f, 1f, 1f)
         
         batch.end()
-        shapeRenderer.projectionMatrix = camera.combined
+        shapeRenderer.projectionMatrix = bgCamera.combined
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         
         val faroffPointX = width * -0.75f
