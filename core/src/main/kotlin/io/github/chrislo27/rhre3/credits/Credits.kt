@@ -18,16 +18,16 @@ object Credits {
                 |Pengu123, minenice55, inkedsplat, chrislo27
                 |
                 |[LIGHT_GRAY]Español (Spanish)[]
-                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab, Suwa-ko
+                |GlitchyPSIX, quantic, SJGarnet, (◉.◉)☂, Killble, meuol, Cosmicfab, Suwa-ko, chipdamage
                 |
                 |[LIGHT_GRAY]Deutsch (German)[]
                 |Zenon""".trimMargin(),
                 "sfx" crediting (SFXDatabase.let { if (!it.isDataLoading()) it.data.sfxCredits.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
                 "gfx" crediting "GlitchyPSIX, lilbitdun, Steppy, Tickflow",
-                "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, TheGarnet_, " +
+                "specialThanks" crediting "baguette, GlitchyPSIX, Miracle22, Pengu123, TheRhythmKid, SJGarnet, " +
                         "(◉.◉)☂, GrueKun, nerd, ChorusSquid, ArsenArsen, Clone5184, danthonywalker, jos, susmobile, " +
                         "Lvl100Feraligatr, SuicuneWiFi, Dracobot, AngryTapper, Zenon, inkedsplat, RobSetback, Mixelz, " +
-                        "iRonnoc5, sp00pster, Alchemyking, SportaDerp9000, PikaMasterJesi, flyance, Draster, Malalaika, " +
+                        "iRonnoc5, sp00pster, Alchemyking, oofie, PikaMasterJesi, flyance, Draster, Malalaika, " +
                         "Rabbidking, Fringession, minenice55, Chillius, Mezian, EBPB2K, GinoTitan, bin5s5, " +
                         "garbo, nave, RHModding and Custom Remix Tourney Discord servers",
                 "resources" crediting
