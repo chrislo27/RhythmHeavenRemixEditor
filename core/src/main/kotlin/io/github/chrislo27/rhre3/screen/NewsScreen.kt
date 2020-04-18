@@ -90,6 +90,16 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
     private val articleLinkButton = ArticleLinkButton(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
         this.location.set(screenX = 0.15f, screenWidth = 0.7f)
     }
+    private val articleLinkPreviewLabel: TextLabel<NewsScreen> = TextLabel(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
+        this.location.set(screenX = 0f, screenWidth = 1f, screenHeight = 0.25f, screenY = -0.25f - 0.1f)
+        this.isLocalizationKey = false
+        this.fontScaleMultiplier = 0.6f
+        this.textWrapping = false
+//        this.background = true
+        this.visible = false
+        this.textAlign = Align.left
+        this.textColor = Color.LIGHT_GRAY
+    }
     private val refreshButton: RefreshButton
     private val articleButtons: List<ArticleButton>
 
@@ -153,6 +163,7 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         stage.centreStage.elements += articleStage
 //        stage.bottomStage.elements += articlePaginationStage // Pagination disabled
         stage.bottomStage.elements += articleLinkButton
+        stage.bottomStage.elements += articleLinkPreviewLabel
 
         state = state // Change visibility
 
@@ -381,6 +392,14 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
         }
         var link: Pair<String?, Article?> = null to null
 
+//        override var tooltipText: String?
+//            get() = link.first?.takeIf { it.isNotEmpty() }
+//            set(_) {}
+//        
+//        init {
+//            this.tooltipTextIsLocalizationKey = false
+//        }
+
         override fun onLeftClick(xPercent: Float, yPercent: Float) {
             super.onLeftClick(xPercent, yPercent)
             val link = link
@@ -397,6 +416,16 @@ class NewsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, News
                 }
             }
         }
+
+        override fun frameUpdate(screen: NewsScreen) {
+            super.frameUpdate(screen)
+            articleLinkPreviewLabel.visible = false
+            if (isMouseOver() && this.visible) {
+                articleLinkPreviewLabel.text = link.first?.takeIf { it.isNotEmpty() } ?: ""
+                articleLinkPreviewLabel.visible = true
+            }
+        }
+        
     }
 
     inner class ArticleStage(palette: UIPalette, parent: UIElement<NewsScreen>?, camera: OrthographicCamera)
