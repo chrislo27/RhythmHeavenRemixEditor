@@ -104,10 +104,12 @@ fun Editor.renderBeatNumbers(batch: SpriteBatch, beatRange: IntRange, font: Bitm
         val x = i - width / 2f
         val text = if (i == 0) Editor.ZERO_BEAT_SYMBOL else "${abs(i)}"
         if (stage.jumpToField.hasFocus && i == stage.jumpToField.text.toIntOrNull() ?: Int.MAX_VALUE) {
-            val glow = MathHelper.getTriangleWave(1f)
             val sel = theme.selection.selectionBorder
-            font.setColor(MathUtils.lerp(sel.r, 1f, glow), MathUtils.lerp(sel.g, 1f, glow),
-                          MathUtils.lerp(sel.b, 1f, glow), sel.a)
+            val glow = MathHelper.getTriangleWave(1.5f) * 2 - 1f
+            val absGlow = glow.absoluteValue
+            val whiteblack = if (glow > 0) 1f else 0f
+            font.setColor(MathUtils.lerp(sel.r, whiteblack, absGlow), MathUtils.lerp(sel.g, whiteblack, absGlow),
+                          MathUtils.lerp(sel.b, whiteblack, absGlow), sel.a)
         } else {
             font.color = theme.trackLine
         }
