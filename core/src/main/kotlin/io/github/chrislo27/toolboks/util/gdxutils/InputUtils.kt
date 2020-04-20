@@ -5,7 +5,6 @@ import com.badlogic.gdx.utils.SharedLibraryLoader
 
 
 private val inputMap: MutableMap<Int, Boolean> = mutableMapOf()
-private val buttonPressedMap: MutableMap<Int, Boolean> = mutableMapOf()
 private val buttonReleasedMap: MutableMap<Int, Boolean> = mutableMapOf()
 
 fun Input.isKeyJustReleased(key: Int): Boolean {
