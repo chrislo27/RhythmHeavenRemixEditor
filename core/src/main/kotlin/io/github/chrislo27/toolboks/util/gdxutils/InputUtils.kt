@@ -20,18 +20,6 @@ fun Input.isKeyJustReleased(key: Int): Boolean {
     return !current && old == true
 }
 
-fun Input.isButtonJustPressed(button: Int): Boolean {
-    if (buttonPressedMap[button] == null)
-        buttonPressedMap[button] = false
-
-    val old = buttonPressedMap[button]
-    val current = isButtonPressed(button)
-
-    buttonPressedMap[button] = current
-
-    return current && old == false
-}
-
 fun Input.isButtonJustReleased(button: Int): Boolean {
     if (buttonReleasedMap[button] == null)
         buttonReleasedMap[button] = false
