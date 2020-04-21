@@ -23,6 +23,7 @@ import io.github.chrislo27.rhre3.news.ThumbnailFetcher
 import io.github.chrislo27.rhre3.patternstorage.PatternStorage
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.screen.info.InfoScreen
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem

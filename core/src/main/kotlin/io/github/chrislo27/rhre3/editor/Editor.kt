@@ -47,6 +47,7 @@ import io.github.chrislo27.rhre3.patternstorage.StoredPattern
 import io.github.chrislo27.rhre3.patternstorage.toEntityList
 import io.github.chrislo27.rhre3.playalong.Playalong
 import io.github.chrislo27.rhre3.screen.*
+import io.github.chrislo27.rhre3.screen.info.InfoScreen
 import io.github.chrislo27.rhre3.sfxdb.Game
 import io.github.chrislo27.rhre3.sfxdb.GameGroup
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
