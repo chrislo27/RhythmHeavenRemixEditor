@@ -1,11 +1,16 @@
 package io.github.chrislo27.rhre3.screen.info
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.UIElement
+import io.github.chrislo27.toolboks.registry.AssetRegistry
+import io.github.chrislo27.toolboks.ui.*
 
 
 class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val infoScreen: InfoScreen)
@@ -15,4 +20,141 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
     private val preferences: Preferences get() = infoScreen.preferences
     private val editor: Editor get() = infoScreen.editor
     
+    init {
+        val palette = infoScreen.stage.palette
+        val padding = 0.025f
+        val buttonWidth = 0.45f
+        val buttonHeight = 0.1f
+        val squareWidth = 38f / 456f
+        val fontScale = 0.75f
+        
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Challenge Train"
+            })
+            this.location.set(screenX = padding,
+                              screenY = padding * 7 + buttonHeight * 6,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Lockstep Maker"
+            })
+            this.location.set(screenX = padding,
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Goat Feeding"
+            })
+            this.location.set(screenX = padding,
+                              screenY = padding * 5 + buttonHeight * 4,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Mechanical Horse"
+            })
+            this.location.set(screenX = padding,
+                              screenY = padding * 4 + buttonHeight * 3,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Pedometer"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 7 + buttonHeight * 6,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "RHRE Merchandise"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Notes Shop"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 5 + buttonHeight * 4,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Mr. [GREEN]Up[]beat"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 4 + buttonHeight * 3,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+
+
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = false
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "Bouncy Road Mania"
+                this.location.set(screenX = squareWidth * 1.25f, screenWidth = 1f - squareWidth * 2.5f)
+            })
+            addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.location.set(screenX = 0f, screenWidth = squareWidth, pixelX = 1f, pixelWidth = -2f, pixelY = 1f, pixelHeight = -2f)
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_bouncy_road_mania"))
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 1,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+            this.leftClickAction = { _, _ ->
+                Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
+            }
+        }
+    }
 }
