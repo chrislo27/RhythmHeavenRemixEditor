@@ -59,7 +59,7 @@ class InfoScreen(main: RHRE3Application)
 
     enum class Page(val heading: String) {
         INFO("screen.info.info"), SETTINGS("screen.info.settings"), EXTRAS("screen.info.extras");
-        
+
         companion object {
             val VALUES = values().toList()
         }
@@ -230,11 +230,13 @@ class InfoScreen(main: RHRE3Application)
 
         onlineLabel = object : TextLabel<InfoScreen>(palette, stage.bottomStage, stage.bottomStage) {
             var last = Int.MIN_VALUE
+
             init {
                 Localization.addListener {
                     last = Int.MIN_VALUE
                 }
             }
+
             override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                 val current = main.liveUsers
                 if (last != current) {
@@ -572,7 +574,7 @@ class InfoScreen(main: RHRE3Application)
 
             // Editor version screen
             info.elements += Button(palette, info, info).apply {
-                this.leftClickAction = {_, _ ->
+                this.leftClickAction = { _, _ ->
                     main.screen = ScreenRegistry.getNonNull("editorVersion")
                 }
                 addLabel(TextLabel(palette, this, this.stage).apply {
@@ -589,7 +591,7 @@ class InfoScreen(main: RHRE3Application)
             }
             // Database version changelog
             info.elements += Button(palette, info, info).apply {
-                this.leftClickAction = {_, _ ->
+                this.leftClickAction = { _, _ ->
                     Gdx.net.openURI(RHRE3.DATABASE_RELEASES)
                 }
                 addLabel(TextLabel(palette, this, this.stage).apply {
@@ -605,7 +607,7 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             info.elements += Button(palette, info, info).apply {
-                this.leftClickAction = {_, _ ->
+                this.leftClickAction = { _, _ ->
                     Gdx.net.openURI(RHRE3.DOCS_URL)
                 }
                 addLabel(TextLabel(palette, this, this.stage).apply {
@@ -743,16 +745,8 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Disable minimap
-            settings.elements += object : FalseCheckbox<InfoScreen>(palette, settings, settings) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.settings.disableMinimap = checked
-                    main.settings.persist()
-                    didChangeSettings = true
-                }
-            }.apply {
+            settings.elements += FalseCheckbox(palette, settings, settings).apply {
                 this.checked = main.settings.disableMinimap
-
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
@@ -760,7 +754,11 @@ class InfoScreen(main: RHRE3Application)
                     this.textAlign = Align.left
                     this.text = "screen.info.disableMinimap"
                 }
-
+                this.leftClickAction = { _, _ ->
+                    main.settings.disableMinimap = checked
+                    main.settings.persist()
+                    didChangeSettings = true
+                }
                 this.location.set(screenX = padding,
                                   screenY = padding * 4 + buttonHeight * 3,
                                   screenWidth = buttonWidth,
@@ -862,16 +860,8 @@ class InfoScreen(main: RHRE3Application)
             }
 
             // Smooth dragging
-            settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.settings.smoothDragging = checked
-                    main.settings.persist()
-                    didChangeSettings = true
-                }
-            }.apply {
+            settings.elements += TrueCheckbox(palette, settings, settings).apply {
                 this.checked = main.settings.smoothDragging
-
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
@@ -879,7 +869,11 @@ class InfoScreen(main: RHRE3Application)
                     this.textAlign = Align.left
                     this.text = "screen.info.smoothDragging"
                 }
-
+                this.leftClickAction = { _, _ ->
+                    main.settings.smoothDragging = checked
+                    main.settings.persist()
+                    didChangeSettings = true
+                }
                 this.location.set(screenX = padding,
                                   screenY = padding * 7 + buttonHeight * 6,
                                   screenWidth = buttonWidth,
@@ -996,11 +990,11 @@ class InfoScreen(main: RHRE3Application)
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
             }
-    
+
             // Disable time stretching
             settings.elements += FalseCheckbox(palette, settings, settings).apply {
                 this.checked = main.settings.disableTimeStretching
-        
+
                 this.textLabel.apply {
                     this.fontScaleMultiplier = fontScale * 0.9f
                     this.isLocalizationKey = true
@@ -1008,10 +1002,10 @@ class InfoScreen(main: RHRE3Application)
                     this.textAlign = Align.left
                     this.text = "screen.info.disableTimeStretching"
                 }
-                
+
                 this.tooltipTextIsLocalizationKey = true
                 this.tooltipText = if (SoundStretch.isSupported) "screen.info.disableTimeStretching.tooltip" else "screen.info.disableTimeStretching.notSupported.tooltip"
-        
+
                 this.checkedStateChanged = {
                     if (!main.settings.disableTimeStretching && it) {
                         SoundCache.unloadAllDerivatives()
@@ -1020,16 +1014,16 @@ class InfoScreen(main: RHRE3Application)
                     main.settings.persist()
                     didChangeSettings = true
                 }
-        
+
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = padding * 4 + buttonHeight * 3,
                                   screenWidth = buttonWidth,
                                   screenHeight = buttonHeight)
                 this.enabled = SoundStretch.isSupported
             }
-            
+
         }
-        
+
         stage.updatePositions()
 
         currentPage = currentPage // force update
@@ -1096,10 +1090,10 @@ class InfoScreen(main: RHRE3Application)
 
     override fun dispose() {
     }
-    
+
     inner class PageChangeButton(palette: UIPalette, parent: UIElement<InfoScreen>, stage: Stage<InfoScreen>, right: Boolean)
         : Button<InfoScreen>(palette, parent, stage) {
-        
+
         var targetPage: Page = Page.INFO
         val label: TextLabel<InfoScreen> = TextLabel(palette, this, this.stage).apply {
             this.location.set(screenX = 0.15f, screenWidth = 0.85f)
@@ -1108,7 +1102,7 @@ class InfoScreen(main: RHRE3Application)
             this.fontScaleMultiplier = 0.75f
             this.text = "screen.info.settings"
         }
-        
+
         init {
             addLabel(label)
             if (right) {
@@ -1125,7 +1119,7 @@ class InfoScreen(main: RHRE3Application)
                     this.text = "\uE149"
                 })
             }
-            
+
             leftClickAction = { _, _ ->
                 currentPage = targetPage
             }
