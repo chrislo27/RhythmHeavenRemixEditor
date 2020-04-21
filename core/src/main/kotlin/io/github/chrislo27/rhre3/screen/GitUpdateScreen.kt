@@ -105,9 +105,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                 if ((!RHRE3.forceGitFetch && RHRE3.DATABASE_BRANCH != RHRE3.DEV_DATABASE_BRANCH) || RHRE3.forceGitCheck) {
                     label.text = Localization["screen.database.checkingGithub"]
                     try {
-                        val current = JsonHandler.fromJson<SfxDbInfoObject>(
-                                RHRE3Application.httpClient.prepareGet(
-                                        RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
+                        val current = JsonHandler.fromJson<SfxDbInfoObject>(RHRE3Application.httpClient.prepareGet(RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
                         val ver: Version = Version.fromString(current.requiresVersion)
 
                         Toolboks.LOGGER.info(
@@ -124,24 +122,19 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                             return@async main.githubVersion
                         }.await()
 
-                        if (ver > RHRE3.VERSION && githubVersion != null && githubVersion >= ver) {
+                        if (ver > RHRE3.VERSION) {
                             label.text = Localization["screen.database.incompatibleVersion${if (lastVersion >= 0) ".canContinue" else ""}", current.requiresVersion]
                             repoStatus = if (lastVersion < 0) RepoStatus.NO_INTERNET_CANNOT_CONTINUE else RepoStatus.NO_INTERNET_CAN_CONTINUE
-                            Toolboks.LOGGER.info(
-                                    "Incompatible versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
+                            Toolboks.LOGGER.info("Incompatible SFXDB versions: requires ${current.requiresVersion}, have ${RHRE3.VERSION}")
                             restoreDatabaseVersion()
                             return@launch
-                        } else {
-//                            if (current.version == lastVersion && !Toolboks.debugMode) {
-//                                repoStatus = RepoStatus.DONE
-//                                main.preferences.putInteger(PreferenceKeys.DATABASE_VERSION_BRANCH, lastVersion).flush()
-//                                GitHelper.reset()
-//                                return@launch
-//                            }
                         }
                     } catch (e: Exception) {
                         e.printStackTrace()
-                        // let fetch handle the big boy exceptions
+                        restoreDatabaseVersion()
+                        repoStatus = RepoStatus.ERROR
+                        label.text = Localization["screen.database.error"]
+                        return@launch
                     }
                 }
                 GitHelper.ensureRemoteExists()
