@@ -112,7 +112,7 @@ class InfoScreen(main: RHRE3Application)
 
     private val settingsStage: SettingsStage
     private val infoStage: InfoStage
-    private val extrasStage: Stage<InfoScreen>
+    private val extrasStage: ExtrasStage
     
     private val pageStages: List<Stage<InfoScreen>>
     private val leftPageButton: PageChangeButton
@@ -270,11 +270,8 @@ class InfoScreen(main: RHRE3Application)
         }
 
         infoStage = InfoStage(stage.centreStage, stage.camera, this)
-        stage.centreStage.elements += infoStage
         settingsStage = SettingsStage(stage.centreStage, stage.camera, this)
-        stage.centreStage.elements += settingsStage
-        extrasStage = Stage(stage.centreStage, stage.camera)
-        stage.centreStage.elements += extrasStage
+        extrasStage = ExtrasStage(stage.centreStage, stage.camera, this)
 
         val padding = 0.025f
         val buttonHeight = 0.1f
@@ -302,10 +299,9 @@ class InfoScreen(main: RHRE3Application)
             centre.elements += rightPageButton
         }
         
-        extrasStage.also { extras ->
+        pageStages = listOf(infoStage, settingsStage, extrasStage).onEach { 
+            stage.centreStage.elements += it
         }
-
-        pageStages = listOf(infoStage, settingsStage, extrasStage)
         stage.updatePositions()
         currentPage = currentPage // force update
         updateSeePartners()
