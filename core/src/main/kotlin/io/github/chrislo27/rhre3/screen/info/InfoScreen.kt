@@ -325,8 +325,21 @@ class InfoScreen(main: RHRE3Application)
         super.renderUpdate()
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) && stage.backButton.visible && stage.backButton.enabled) {
             stage.onBackButtonClick()
-        } else if (Gdx.input.isControlDown() && !Gdx.input.isShiftDown() && !Gdx.input.isAltDown() && Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-            main.screen = ScreenRegistry.getNonNull("advancedOptions")
+        } else if (!Gdx.input.isShiftDown() && !Gdx.input.isAltDown()) {
+            if (Gdx.input.isControlDown()) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+                    main.screen = ScreenRegistry.getNonNull("advancedOptions")
+                }
+            } else {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
+                    if (leftPageButton.visible)
+                        leftPageButton.onLeftClick(0f, 0f)
+                }
+                if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
+                    if (rightPageButton.visible)
+                        rightPageButton.onLeftClick(0f, 0f)
+                }
+            }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && Gdx.input.isKeyPressed(Toolboks.DEBUG_KEY)) {
             backgroundOnly = !backgroundOnly
         }
