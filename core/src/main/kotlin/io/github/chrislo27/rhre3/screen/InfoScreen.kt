@@ -39,10 +39,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.transition.TransitionScreen
-import io.github.chrislo27.toolboks.ui.Button
-import io.github.chrislo27.toolboks.ui.ImageLabel
-import io.github.chrislo27.toolboks.ui.Stage
-import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
 import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
@@ -60,8 +57,12 @@ class InfoScreen(main: RHRE3Application)
             private set
     }
 
-    enum class Page {
-        INFO, SETTINGS
+    enum class Page(val heading: String) {
+        INFO("screen.info.info"), SETTINGS("screen.info.settings"), EXTRAS("screen.info.extras");
+        
+        companion object {
+            val VALUES = values().toList()
+        }
     }
 
     private val preferences: Preferences
@@ -80,16 +81,32 @@ class InfoScreen(main: RHRE3Application)
                 Page.INFO -> {
                     infoStage.visible = true
                     settingsStage.visible = false
-                    leftPageButton.visible = true
-                    rightPageButton.visible = false
-                    headingLabel.text = "screen.info.info"
                 }
                 Page.SETTINGS -> {
                     infoStage.visible = false
                     settingsStage.visible = true
-                    leftPageButton.visible = false
-                    rightPageButton.visible = true
-                    headingLabel.text = "screen.info.settings"
+                }
+                Page.EXTRAS -> {
+                    infoStage.visible = false
+                    settingsStage.visible = false
+                }
+            }
+            headingLabel.text = value.heading
+            leftPageButton.visible = false
+            rightPageButton.visible = false
+            val index = Page.VALUES.indexOf(value)
+            if (index > 0) {
+                leftPageButton.run {
+                    visible = true
+                    targetPage = Page.VALUES[index - 1]
+                    label.text = targetPage.heading
+                }
+            }
+            if (index < Page.VALUES.size - 1) {
+                rightPageButton.run {
+                    visible = true
+                    targetPage = Page.VALUES[index + 1]
+                    label.text = targetPage.heading
                 }
             }
         }
@@ -99,8 +116,8 @@ class InfoScreen(main: RHRE3Application)
 
     private val settingsStage: Stage<InfoScreen>
     private val infoStage: Stage<InfoScreen>
-    private val leftPageButton: Button<InfoScreen>
-    private val rightPageButton: Button<InfoScreen>
+    private val leftPageButton: PageChangeButton
+    private val rightPageButton: PageChangeButton
     private val headingLabel: TextLabel<InfoScreen>
     private val clearRecentsButton: Button<InfoScreen>
     private val dbVersionLabel: TextLabel<InfoScreen>
@@ -266,7 +283,7 @@ class InfoScreen(main: RHRE3Application)
         stage.centreStage.also { centre ->
             val buttonWidth = 0.35f
             headingLabel = TextLabel(palette, centre, centre).apply {
-                val width = 1f - (buttonWidth * 2f)
+                val width = 1f - (buttonWidth * 1.85f)
                 this.location.set(screenX = 0.5f - width / 2f,
                                   screenY = 1f - (padding + buttonHeight * 0.8f),
                                   screenWidth = width,
@@ -276,47 +293,12 @@ class InfoScreen(main: RHRE3Application)
             }
             centre.elements += headingLabel
 
-            leftPageButton = object : Button<InfoScreen>(palette, centre, centre) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    currentPage = Page.SETTINGS
-                }
-            }.apply {
+            leftPageButton = PageChangeButton(palette, centre, centre, false).apply {
                 this.location.set(0f, 1f - (padding + buttonHeight * 0.8f), buttonWidth * 0.75f, buttonHeight)
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = 0f, screenWidth = 0.15f)
-                    this.isLocalizationKey = false
-                    this.text = "\uE149"
-                })
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = 0.15f, screenWidth = 0.85f)
-                    this.isLocalizationKey = true
-                    this.textAlign = Align.left
-                    this.fontScaleMultiplier = fontScale
-                    this.text = "screen.info.settings"
-                })
             }
             centre.elements += leftPageButton
-
-            rightPageButton = object : Button<InfoScreen>(palette, centre, centre) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    currentPage = Page.INFO
-                }
-            }.apply {
+            rightPageButton = PageChangeButton(palette, centre, centre, true).apply {
                 this.location.set(1f - (buttonWidth * 0.75f), 1f - (padding + buttonHeight * 0.8f), buttonWidth * 0.75f, buttonHeight)
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = 0.85f, screenWidth = 0.15f)
-                    this.isLocalizationKey = false
-                    this.text = "\uE14A"
-                })
-                addLabel(TextLabel(palette, this, this.stage).apply {
-                    this.location.set(screenX = 0f, screenWidth = 0.85f)
-                    this.isLocalizationKey = true
-                    this.textAlign = Align.right
-                    this.fontScaleMultiplier = fontScale
-                    this.text = "screen.info.info"
-                })
             }
             centre.elements += rightPageButton
         }
@@ -421,13 +403,7 @@ class InfoScreen(main: RHRE3Application)
                 this.text = "SFXDB VERSION"
             }
             info.elements += dbVersionLabel
-            info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-
-                    Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
-                }
-            }.apply {
+            info.elements += Button(palette, info, info).apply {
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
                                   screenWidth = buttonWidth * 0.085f,
@@ -436,18 +412,16 @@ class InfoScreen(main: RHRE3Application)
                     renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                 })
+                this.leftClickAction = { _, _ ->
+
+                    Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
+                }
                 this.tooltipTextIsLocalizationKey = true
                 this.tooltipText = "editor.customSfx.openFolder"
             }
 
             // Partners button
             info.elements += object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-
-                    main.screen = ScreenRegistry.getNonNull("partners")
-                }
-
                 override fun render(screen: InfoScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
                     if (labels.isNotEmpty()) {
                         val first = labels.first()
@@ -471,6 +445,9 @@ class InfoScreen(main: RHRE3Application)
                                   screenY = padding,
                                   screenWidth = 0.1f,
                                   screenHeight = buttonHeight * 2 + padding)
+                this.leftClickAction = { _, _ ->
+                    main.screen = ScreenRegistry.getNonNull("partners")
+                }
             }
             info.elements += TextLabel(palette, info, info).apply {
                 this.location.set(screenX = 0.5f - (0.1f / 2),
@@ -573,21 +550,18 @@ class InfoScreen(main: RHRE3Application)
                                   screenHeight = buttonHeight)
             }
             // Clear recent games
-            clearRecentsButton = object : Button<InfoScreen>(palette, info, info) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    editor.updateRecentsList(null)
-                    enabled = false
-                    GameMetadata.persist()
-                }
-            }.apply {
+            clearRecentsButton = Button(palette, info, info).apply {
                 addLabel(TextLabel(palette, this, this.stage).apply {
                     this.fontScaleMultiplier = fontScale
                     this.isLocalizationKey = true
                     this.textWrapping = false
                     this.text = "screen.info.clearRecents"
                 })
-
+                this.leftClickAction = { _, _ ->
+                    editor.updateRecentsList(null)
+                    enabled = false
+                    GameMetadata.persist()
+                }
                 this.location.set(screenX = 1f - (padding + buttonWidth),
                                   screenY = padding * 2 + buttonHeight,
                                   screenWidth = buttonWidth,
@@ -1121,5 +1095,40 @@ class InfoScreen(main: RHRE3Application)
     }
 
     override fun dispose() {
+    }
+    
+    inner class PageChangeButton(palette: UIPalette, parent: UIElement<InfoScreen>, stage: Stage<InfoScreen>, right: Boolean)
+        : Button<InfoScreen>(palette, parent, stage) {
+        
+        var targetPage: Page = Page.INFO
+        val label: TextLabel<InfoScreen> = TextLabel(palette, this, this.stage).apply {
+            this.location.set(screenX = 0.15f, screenWidth = 0.85f)
+            this.isLocalizationKey = true
+            this.textAlign = if (right) Align.right else Align.left
+            this.fontScaleMultiplier = 0.75f
+            this.text = "screen.info.settings"
+        }
+        
+        init {
+            addLabel(label)
+            if (right) {
+                label.location.screenX = 0f
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0.85f, screenWidth = 0.15f)
+                    this.isLocalizationKey = false
+                    this.text = "\uE14A"
+                })
+            } else {
+                addLabel(TextLabel(palette, this, this.stage).apply {
+                    this.location.set(screenX = 0f, screenWidth = 0.15f)
+                    this.isLocalizationKey = false
+                    this.text = "\uE149"
+                })
+            }
+            
+            leftClickAction = { _, _ ->
+                currentPage = targetPage
+            }
+        }
     }
 }
