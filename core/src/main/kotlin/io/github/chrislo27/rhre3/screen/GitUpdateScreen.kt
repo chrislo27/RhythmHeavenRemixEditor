@@ -108,19 +108,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                         val current = JsonHandler.fromJson<SfxDbInfoObject>(RHRE3Application.httpClient.prepareGet(RHRE3.DATABASE_CURRENT_VERSION).execute().get().responseBody)
                         val ver: Version = Version.fromString(current.requiresVersion)
 
-                        Toolboks.LOGGER.info(
-                                "Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
-
-                        val githubVersion: Version? = async {
-                            val nano = System.nanoTime()
-                            while (main.githubVersion == Version.RETRIEVING) {
-                                delay(100L)
-                                if (System.nanoTime() - nano >= 1000L * 1_000_000L) {
-                                    break
-                                }
-                            }
-                            return@async main.githubVersion
-                        }.await()
+                        Toolboks.LOGGER.info("Pulled GitHub version in ${(System.nanoTime() - nano) / 1_000_000f} ms, got ${current.version} vs real $lastVersion")
 
                         if (ver > RHRE3.VERSION) {
                             label.text = Localization["screen.database.incompatibleVersion${if (lastVersion >= 0) ".canContinue" else ""}", current.requiresVersion]
