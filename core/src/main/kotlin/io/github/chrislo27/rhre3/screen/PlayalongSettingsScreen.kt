@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.Screen
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.controllers.Controller
@@ -36,7 +37,8 @@ import kotlin.math.roundToInt
 import kotlin.math.sign
 
 
-class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, PlayalongSettingsScreen>(main) {
+class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
+    : ToolboksScreen<RHRE3Application, PlayalongSettingsScreen>(main) {
 
     companion object {
         private val FILLED_A_BUTTON = PlayalongChars.FILLED_A
@@ -171,7 +173,7 @@ class PlayalongSettingsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Appl
         val palette = main.uiPalette
         stage.backButton.visible = true
         stage.onBackButtonClick = {
-            main.screen = ScreenRegistry["editor"]
+            main.screen = lastScreen
         }
         stage.titleLabel.text = "screen.playalongSettings.title"
         stage.titleIcon.visible = false

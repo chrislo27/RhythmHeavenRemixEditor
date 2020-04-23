@@ -67,7 +67,7 @@ class PlayalongToggleButton(val editorStage: EditorStage, palette: UIPalette, pa
 
     override fun onRightClick(xPercent: Float, yPercent: Float) {
         super.onRightClick(xPercent, yPercent)
-        main.screen = PlayalongSettingsScreen(main)
+        main.screen = PlayalongSettingsScreen(main, main.screen)
     }
 
 }
