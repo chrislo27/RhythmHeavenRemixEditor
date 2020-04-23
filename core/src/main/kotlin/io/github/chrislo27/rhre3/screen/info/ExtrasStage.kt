@@ -34,12 +34,20 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.center
-                this.text = "Challenge Train"
+                this.text = "Bouncy Road Mania"
+                this.location.set(screenX = squareWidth * 1.25f, screenWidth = 1f - squareWidth * 2.5f)
+            })
+            addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.location.set(screenX = 0f, screenWidth = squareWidth, pixelX = 1f, pixelWidth = -2f, pixelY = 1f, pixelHeight = -2f)
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_bouncy_road_mania"))
             })
             this.location.set(screenX = padding,
                               screenY = padding * 7 + buttonHeight * 6,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
+            this.leftClickAction = { _, _ ->
+                Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
+            }
         }
         this.elements += Button(palette, this, this).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
@@ -87,7 +95,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                 this.isLocalizationKey = false
                 this.textWrapping = false
                 this.textAlign = Align.center
-                this.text = "Pedometer"
+                this.text = "Challenge Train"
             })
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 7 + buttonHeight * 6,
@@ -132,29 +140,6 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenY = padding * 4 + buttonHeight * 3,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
-        }
-
-
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Bouncy Road Mania"
-                this.location.set(screenX = squareWidth * 1.25f, screenWidth = 1f - squareWidth * 2.5f)
-            })
-            addLabel(ImageLabel(palette, this, this.stage).apply {
-                this.location.set(screenX = 0f, screenWidth = squareWidth, pixelX = 1f, pixelWidth = -2f, pixelY = 1f, pixelHeight = -2f)
-                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_bouncy_road_mania"))
-            })
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding * 1,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-            this.leftClickAction = { _, _ ->
-                Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
-            }
         }
     }
 }

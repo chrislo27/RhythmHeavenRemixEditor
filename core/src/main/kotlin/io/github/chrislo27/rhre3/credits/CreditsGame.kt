@@ -28,9 +28,10 @@ import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import org.lwjgl.openal.AL10
-import rhmodding.bccadeditor.bccad.Animation
-import rhmodding.bccadeditor.bccad.BCCAD
-import rhmodding.bccadeditor.bccad.Sprite
+import rhmodding.bread.model.bccad.Animation
+import rhmodding.bread.model.bccad.BCCAD
+import rhmodding.bread.model.bccad.Sprite
+import java.nio.ByteBuffer
 import java.util.*
 import kotlin.math.roundToInt
 
@@ -55,7 +56,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
              GitHelper.SOUNDS_DIR.child("etc/jumpinjazzsfx.ogg")
 //            Gdx.files.internal("etc/jumpinjazzsfx.ogg")
                                                          ) }
-    private val bccad: BCCAD = BCCAD(Base64.getDecoder().decode(Gdx.files.internal("credits/frog.bin").readString("UTF-8")))
+    private val bccad: BCCAD = BCCAD.read(ByteBuffer.wrap(Base64.getDecoder().decode(Gdx.files.internal("credits/frog.bin").readString("UTF-8"))))
     private val sheet: Texture by lazy { AssetRegistry.get<Texture>("credits_frog") }
     private val bgTex: Texture by lazy { AssetRegistry.get<Texture>("credits_bg") }
     private val frameBuffer: FrameBuffer = FrameBuffer(Pixmap.Format.RGBA8888, camera.viewportWidth.roundToInt(), camera.viewportHeight.roundToInt(), false)
@@ -371,9 +372,9 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             val frame = (currentFrame - dancersState.startFrame).coerceIn(0, dancersState.danceState.durationFrames - 1)
             val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + OFFSET + stageX, y + OFFSET + stageY)
             if (currentStep != null && dancersState.danceState != D_TURN_L && dancersState.danceState != D_TURN_R) {
-                val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
+                val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                 val part = sprite.parts.last()
-                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
+                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
             }
         }
 
@@ -397,9 +398,9 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
                 val frame = (currentFrame - vocalistState.startFrame).coerceIn(0, vocalistState.danceState.durationFrames - 1)
                 val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
                 if (currentStep != null && vocalistState.danceState != DV_TURN_L && vocalistState.danceState != DV_TURN_R) {
-                    val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
+                    val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                     val part = sprite.parts.last()
-                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
+                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
                 }
             }
             run {
@@ -409,9 +410,9 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
                 val frame = (currentFrame - leadState.startFrame).coerceIn(0, leadState.danceState.durationFrames - 1)
                 val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
                 if (currentStep != null && leadState.danceState != D_TURN_L && leadState.danceState != D_TURN_R) {
-                    val sprite = bccad.sprites[currentStep.spriteNum.toInt()]
+                    val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                     val part = sprite.parts.last()
-                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + OFFSET + part.w / 2f + (part.relX + OFFSET) + stageX, y + OFFSET - (part.relY + OFFSET) - (part.h / 2f) + stageY)
+                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
                 }
             }
 

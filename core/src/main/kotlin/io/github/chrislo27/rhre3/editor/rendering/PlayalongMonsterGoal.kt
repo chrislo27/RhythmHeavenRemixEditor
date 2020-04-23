@@ -14,11 +14,12 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.prepareStencilMask
 import io.github.chrislo27.toolboks.util.gdxutils.useStencilMask
-import rhmodding.bccadeditor.bccad.Animation
-import rhmodding.bccadeditor.bccad.BCCAD
+import rhmodding.bread.model.bccad.Animation
+import rhmodding.bread.model.bccad.BCCAD
+import java.nio.ByteBuffer
 
 
-private val bccad: BCCAD by lazy { BCCAD(Gdx.files.internal("images/playalong/monster_goal.bin").readBytes()) }
+private val bccad: BCCAD by lazy { BCCAD.read(ByteBuffer.wrap(Gdx.files.internal("images/playalong/monster_goal.bin").readBytes())) }
 private val sheet: Texture by lazy { AssetRegistry.get<Texture>("playalong_monster_goal").apply {
     this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
 } }
@@ -31,7 +32,7 @@ private val monsterMawCamera: OrthographicCamera = OrthographicCamera().also { c
 }
 
 private val monsterAnimation: Animation = bccad.animations.first { it.name == "mouth_close" }
-private val monsterAnimationDuration: Int = monsterAnimation.steps.sumBy { it.duration.toInt() }
+private val monsterAnimationDuration: Int = monsterAnimation.steps.sumBy { it.delay.toInt() }
 private var currentFrame: Int = 0
 
 fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
