@@ -57,8 +57,12 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 //            Gdx.files.internal("etc/jumpinjazzsfx.ogg")
                                                          ) }
     private val bccad: BCCAD = BCCAD.read(ByteBuffer.wrap(Base64.getDecoder().decode(Gdx.files.internal("credits/frog.bin").readString("UTF-8"))))
-    private val sheet: Texture by lazy { AssetRegistry.get<Texture>("credits_frog") }
-    private val bgTex: Texture by lazy { AssetRegistry.get<Texture>("credits_bg") }
+    private val sheet: Texture = Texture("credits/frog_rot.png").apply {
+        this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+    }
+    private val bgTex: Texture = Texture("credits/frog_bg.png").apply {
+        this.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
+    }
     private val frameBuffer: FrameBuffer = FrameBuffer(Pixmap.Format.RGBA8888, camera.viewportWidth.roundToInt(), camera.viewportHeight.roundToInt(), false)
 
     private val checkeredRegion: TextureRegion by lazy { TextureRegion(bgTex, 2, 1, 499, 365) }
@@ -658,7 +662,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
     override fun hide() {
         super.hide()
         music.stop()
-        frameBuffer.dispose()
+        dispose()
     }
 
     private fun BitmapFont.scaleFont() {
@@ -686,5 +690,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 
     override fun dispose() {
         frameBuffer.dispose()
+        sheet.dispose()
+        bgTex.dispose()
     }
 }
