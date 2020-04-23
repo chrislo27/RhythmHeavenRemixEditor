@@ -121,6 +121,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_transparent_checkerboard", "images/ui/transparent_checkerboard.png")
         AssetRegistry.loadAsset<Texture>("ui_colour_picker_arrow", "images/ui/colour_picker_arrow.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("ui_speed_change", "images/ui/icons/speed_change.png")
+        AssetRegistry.loadAsset<Texture>("ui_textbox", "images/ui/textbox.png")
         
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/game_name.png", linearTexture())
@@ -186,6 +187,13 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("playalong_sfx_perfect_fail", "playalong/perfect_fail.ogg")
         AssetRegistry.loadAsset<Sound>("playalong_sfx_monster_ace", "playalong/monster_goal_ace.ogg")
         AssetRegistry.loadAsset<Music>("playalong_settings_input_calibration", "playalong/input_calibration.ogg")
+        
+        // Extras games
+        AssetRegistry.loadAsset<Sound>("sfx_enter_game", "sound/game/enter_game.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_pause_enter", "sound/game/pause/pause_enter.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_pause_exit", "sound/game/pause/pause_exit.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_blip", "sound/game/pause/blip.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_select", "sound/game/pause/select.ogg")
     }
     
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
@@ -199,6 +207,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         assets["cursor_horizontal_resize"] =
                 Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/horizontal_resize.png")),
                                        16, 8)
+        assets["cursor_invisible"] =
+                Gdx.graphics.newCursor(Pixmap(Gdx.files.internal("images/cursor/invisible.png")), 1, 1)
     }
     
 }
