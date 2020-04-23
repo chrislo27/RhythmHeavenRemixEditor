@@ -1,8 +1,5 @@
 package rhmodding.bread.model.brcad
 
-import javafx.scene.canvas.GraphicsContext
-import javafx.scene.image.Image
-import javafx.scene.paint.Color
 import rhmodding.bread.model.ISpritePart
 import rhmodding.bread.util.Unknown
 

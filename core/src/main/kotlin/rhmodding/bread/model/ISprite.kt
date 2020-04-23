@@ -1,9 +1,7 @@
 package rhmodding.bread.model
 
-import com.badlogic.gdx.graphics.Color
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
-import javafx.scene.image.Image
 import javafx.scene.transform.Affine
 import javafx.scene.transform.Rotate
 import javafx.scene.transform.Scale
