@@ -214,6 +214,8 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
     private var skipFrame = true
 
     private var finalAccuracy: Float = 0f
+    
+    fun freshInList(list: List<Int>, beatOffset: Float = 0f): Boolean = (lastBeat - beatOffset).toInt() < (beat - beatOffset).toInt() && ((beat - beatOffset).toInt()) in list
 
     override fun render(delta: Float) {
         super.render(delta)
@@ -232,8 +234,6 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         batch.draw(gradientRegion, stageX + 70f, 0f, camera.viewportWidth, camera.viewportHeight)
         batch.draw(checkeredRegion, camera.viewportWidth / 2 - checkeredRegion.regionWidth / 2 + stageX + 70f, 0f)
         batch.draw(stageRegion, camera.viewportWidth / 2 - stageRegion.regionWidth / 2 + stageX, -10f + stageY)
-
-        fun freshInList(list: List<Int>, beatOffset: Float = 0f): Boolean = (lastBeat - beatOffset).toInt() < (beat - beatOffset).toInt() && ((beat - beatOffset).toInt()) in list
 
         // Determine animations
         // Bouncing to beat
