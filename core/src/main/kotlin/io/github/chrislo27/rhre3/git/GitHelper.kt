@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.git
 
 import com.badlogic.gdx.files.FileHandle
 import io.github.chrislo27.rhre3.RHRE3
+import io.github.chrislo27.rhre3.screen.GitUpdateScreen
 import io.github.chrislo27.toolboks.Toolboks
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.ResetCommand
@@ -73,6 +74,8 @@ object GitHelper {
     fun fetchOrClone(progressMonitor: ProgressMonitor = NullProgressMonitor.INSTANCE) {
         if (doesGitFolderExist()) {
             Toolboks.LOGGER.info("Fetching...")
+            if (progressMonitor is GitUpdateScreen.GitScreenProgressMonitor)
+                progressMonitor.currentSpecialState = GitUpdateScreen.GitScreenProgressMonitor.SpecialState.FETCHING
             ensureRemoteExists()
             temporarilyUseRepo(true) {
                 val git = Git(this)
@@ -88,9 +91,13 @@ object GitHelper {
                     Toolboks.LOGGER.info("Fetch result has messages: ${result.messages}")
                 }
             }
+            if (progressMonitor is GitUpdateScreen.GitScreenProgressMonitor)
+                progressMonitor.currentSpecialState = GitUpdateScreen.GitScreenProgressMonitor.SpecialState.RESETTING
             reset()
         } else {
             Toolboks.LOGGER.info("Cloning...")
+            if (progressMonitor is GitUpdateScreen.GitScreenProgressMonitor)
+                progressMonitor.currentSpecialState = GitUpdateScreen.GitScreenProgressMonitor.SpecialState.CLONING
             val file = SOUNDS_DIR.file()
             file.deleteRecursively()
             Git.cloneRepository()

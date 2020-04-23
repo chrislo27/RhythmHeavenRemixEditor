@@ -126,7 +126,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                     }
                 }
                 GitHelper.ensureRemoteExists()
-                GitHelper.fetchOrClone(ScreenProgressMonitor(!GitHelper.doesGitFolderExist()))
+                GitHelper.fetchOrClone(GitScreenProgressMonitor(this@GitUpdateScreen, !GitHelper.doesGitFolderExist()))
                 repoStatus = RepoStatus.DONE
                 run {
                     val str = GitHelper.SOUNDS_DIR.child("current.json").readString("UTF-8")
@@ -171,8 +171,19 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         UNKNOWN, DOING, DONE, ERROR, NO_INTERNET_CAN_CONTINUE, NO_INTERNET_CANNOT_CONTINUE, INCOMPAT_VERSION
     }
 
-    private inner class ScreenProgressMonitor(val clone: Boolean) : ProgressMonitor {
-
+    class GitScreenProgressMonitor(val screen: GitUpdateScreen, val clone: Boolean) : ProgressMonitor {
+        
+        enum class SpecialState(val localization: String?) {
+            NONE(null), CLONING("screen.database.state.cloning"), FETCHING("screen.database.state.fetching"), RESETTING("screen.database.state.resetting")
+        }
+        
+        var currentSpecialState: SpecialState = SpecialState.NONE
+            set(value) {
+                field = value
+                Gdx.app.postRunnable { 
+                    updateLabel()
+                }
+            }
         var currentTask: Int = 0
 
         var completedTaskWork: Int = 0
@@ -191,10 +202,9 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
         }
 
         private fun updateLabel() {
-            label.text = "${task ?: Localization["screen.database.pending"]}\n" +
+            screen.label.text = "${currentSpecialState.localization?.let { Localization[it] } ?: ""}\n\n${task ?: Localization["screen.database.pending"]}\n" +
                     "$completedTaskWork / $taskTotalWork\n" +
                     Localization["screen.database.tasksCompleted", currentTask]
-
         }
 
         override fun update(completed: Int) {
