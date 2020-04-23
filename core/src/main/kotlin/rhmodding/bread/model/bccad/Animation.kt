@@ -44,6 +44,5 @@ class Animation : IAnimation {
         step?.render(batch, sheet, sprites, offsetX, offsetY)
         return step
     }
-
-
+    
 }

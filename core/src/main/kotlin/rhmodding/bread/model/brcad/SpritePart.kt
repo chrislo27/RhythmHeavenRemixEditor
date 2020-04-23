@@ -1,7 +1,10 @@
 package rhmodding.bread.model.brcad
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import rhmodding.bread.model.ISpritePart
 import rhmodding.bread.util.Unknown
+import kotlin.math.absoluteValue
 
 
 class SpritePart : ISpritePart {
@@ -47,6 +50,10 @@ class SpritePart : ISpritePart {
             it.opacity = opacity
             it.unknownLast = unknownLast
         }
+    }
+    
+    fun render(batch: SpriteBatch, sheet: Texture, offsetX: Float, offsetY: Float) {
+        batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f, regionH.toInt() / 2f, regionW.toInt() * stretchX.absoluteValue, regionH.toInt() * stretchY.absoluteValue, stretchX, stretchY, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
     }
 
 //    override fun prepareForRendering(subimage: Image, multColor: Color, graphics: GraphicsContext): Image {

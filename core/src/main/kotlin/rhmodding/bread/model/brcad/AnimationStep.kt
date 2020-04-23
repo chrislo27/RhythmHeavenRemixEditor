@@ -1,6 +1,9 @@
 package rhmodding.bread.model.brcad
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import rhmodding.bread.model.IAnimationStep
+import rhmodding.bread.model.bccad.Sprite
 import rhmodding.bread.util.Unknown
 
 class AnimationStep : IAnimationStep {
@@ -38,5 +41,9 @@ class AnimationStep : IAnimationStep {
     
     override fun toString(): String {
         return "AnimationStep=[spriteIndex=$spriteIndex, delay=$delay, stretch=[$stretchX, $stretchY], rotation=$rotation, opacity=$opacity, unk1=0x${unknown1.toString(16)}, unk3=0x${unknown3.toString(16)}, unk4=0x${unknown4.toString(16)}, unk5=0x${unknown5.toString(16)}]"
+    }
+
+    fun render(batch: SpriteBatch, sheet: Texture, sprites: List<Sprite>, offsetX: Float, offsetY: Float) {
+        sprites[spriteIndex.toInt()].render(batch, sheet, offsetX, offsetY)
     }
 }
