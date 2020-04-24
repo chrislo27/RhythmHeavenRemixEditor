@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import rhmodding.bread.model.ISprite
 import rhmodding.bread.util.Unknown
+import kotlin.math.sign
 
 
 class Sprite : ISprite {
@@ -29,7 +30,7 @@ class Sprite : ISprite {
         parts.forEach { part ->
             val prevColour = batch.packedColor
             batch.packedColor = Color.WHITE_FLOAT_BITS
-            part.render(batch, sheet, offsetX + part.posX.toInt(), offsetY + (1024 - part.posY.toInt()))
+            part.render(batch, sheet, offsetX + (part.posX.toInt() - 512), offsetY + (1024 - part.posY.toInt() - 512))
             batch.packedColor = prevColour
         }
     }
