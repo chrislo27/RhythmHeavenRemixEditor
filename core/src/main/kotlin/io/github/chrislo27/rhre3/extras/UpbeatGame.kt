@@ -72,9 +72,11 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private val sfxMetronomeR: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/upbeat/metronomeR.ogg"))
     private val sfxStep: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/upbeat/step.ogg"))
     private val sfxFailVoice: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/upbeat/fail_voice.ogg"))
-    private val sfxFailBoink: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/upbeat/fail_boink.ogg"))
+    private val sfxFailBoink: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/fail_boink.ogg"))
     private val sfxCowbell: Sound = AssetRegistry["sfx_cowbell"]
     private val music: List<Music> = listOf(Gdx.audio.newMusic(Gdx.files.internal("extras/upbeat/music0.ogg")))
+    private val musicFail: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_nohi.ogg"))
+    private val musicFailHiScore: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_hi.ogg"))
     private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 107.5f, 118f, 129f, 140f, 150f)
     private val showSecretCodeFreq = 5 // On segment index 4, 9, etc
 
@@ -261,8 +263,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                 }
             }
             showFailScreen = true
-            // TODO play fail music
-
+            (if (score > highScore) musicFailHiScore else musicFail).play() 
             if (score > highScore || highScore <= 0) {
                 main.preferences.putInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, score).flush()
             }
@@ -320,6 +321,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         sfxEndDing.dispose()
         sfxStep.dispose()
         music.forEach { it.dispose() }
+        musicFail.dispose()
+        musicFailHiScore.dispose()
         main.preferences.putInteger(PreferenceKeys.EXTRAS_UPBEAT_TIMES_PLAYED, main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_TIMES_PLAYED, 0) + 1).flush()
     }
 
