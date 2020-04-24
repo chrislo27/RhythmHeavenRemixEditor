@@ -23,7 +23,7 @@ class Sprite : ISprite {
         parts.forEach { part ->
             val prevColour = batch.packedColor
             batch.color = part.multColor
-            part.render(batch, sheet, offsetX + part.posX.toInt(), offsetY + (1024 - part.posY.toInt()))
+            part.render(batch, sheet, offsetX + part.posX.toInt() - 512f, offsetY + (1024 - part.posY.toInt() - 512f))
             batch.packedColor = prevColour
         }
     }
