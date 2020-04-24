@@ -6,9 +6,11 @@ import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
+import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
@@ -76,6 +78,10 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 107.5f, 118f, 129f, 140f, 150f)
     private val showSecretCodeFreq = 5 // On segment index 4, 9, etc
 
+    private val uiCamera: OrthographicCamera = OrthographicCamera().apply {
+        setToOrtho(false, 1280f, 720f)
+    }
+    private val tmpUiMatrix: Matrix4 = Matrix4()
     private var manUpRight: Boolean = true
     private var stepFrame = 999f
     private var lampFlashFrame = 999f
@@ -139,22 +145,29 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                                                       manY - lampPartPoint.posY - lampPartPoint.regionH.toInt() / 2f + 512f)
             }
         }
+        
+        uiCamera.update()
+        tmpUiMatrix.set(batch.projectionMatrix)
+        batch.projectionMatrix = uiCamera.combined
 
+        val uiWidth = uiCamera.viewportWidth
+        val uiHeight = uiCamera.viewportHeight
+        
         if (showFailScreen) {
             batch.setColor(0f, 0f, 0f, 0.5f)
-            batch.fillRect(0f, 0f, camera.viewportWidth, camera.viewportHeight)
+            batch.fillRect(0f, 0f, uiCamera.viewportWidth, uiCamera.viewportHeight)
             batch.setColor(1f, 1f, 1f, 1f)
             val font = main.defaultBorderedFontLarge
             font.setColor(1f, 1f, 1f, 1f)
-            font.scaleFont(camera)
-            font.drawCompressed(batch, Localization["extras.playing.gameOver"], 0f, camera.viewportHeight * 0.65f, camera.viewportWidth, Align.center)
+            font.scaleFont(uiCamera)
+            font.drawCompressed(batch, Localization["extras.playing.gameOver"], 0f, uiCamera.viewportHeight * 0.65f, uiCamera.viewportWidth, Align.center)
             font.scaleMul(0.4f)
-            font.drawCompressed(batch, "[ESC]", 0f, camera.viewportHeight * 0.25f, camera.viewportWidth, Align.center)
+            font.drawCompressed(batch, "[ESC]", 0f, uiCamera.viewportHeight * 0.25f, uiCamera.viewportWidth, Align.center)
             font.scaleMul(1 / 0.4f)
             if (score > highScore) {
                 font.scaleMul(0.5f)
                 font.color = Colors.get("RAINBOW")
-                font.drawCompressed(batch, Localization["extras.playing.newHighScore"], 0f, camera.viewportHeight * 0.475f, camera.viewportWidth, Align.center)
+                font.drawCompressed(batch, Localization["extras.playing.newHighScore"], 0f, uiCamera.viewportHeight * 0.475f, uiCamera.viewportWidth, Align.center)
                 font.setColor(1f, 1f, 1f, 1f)
                 font.scaleMul(1 / 0.5f)
             }
@@ -164,23 +177,19 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
 
         var font = main.defaultBorderedFontLarge
         font.setColor(1f, 1f, 1f, 1f)
-        font.scaleFont(camera)
+        font.scaleFont(uiCamera)
         font.scaleMul(0.75f)
-        font.draw(batch, "$score", width * 0.5f, height * 0.9f, 0f, Align.center, false)
+        font.draw(batch, "$score", uiWidth * 0.5f, uiHeight * 0.9f, 0f, Align.center, false)
         val line = font.capHeight
         font.unscaleFont()
         font = main.defaultBorderedFont
         font.setColor(1f, 69f / 255f, 13f / 255f, 1f)
-        font.scaleFont(camera)
-        font.draw(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], width * 0.5f, height * 0.9f + line, 0f, Align.center, false)
+        font.scaleFont(uiCamera)
+        font.draw(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], uiWidth * 0.5f, uiHeight * 0.9f + line, 0f, Align.center, false)
         font.unscaleFont()
         font.setColor(1f, 1f, 1f, 1f)
-
-//        if (Gdx.input.isKeyJustPressed(Input.Keys.Y)) { // debug animations
-//            val l = brcad.animations.subList(4, 16)
-//            hitAnimation = l[l.indexOf(hitAnimation).coerceAtLeast(0).plus(1) % l.size]
-//            hitDownFrame = 0f // 13 14 15
-//        }
+        
+        batch.projectionMatrix = tmpUiMatrix
     }
 
     override fun update(delta: Float) {
@@ -240,15 +249,15 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
             val guts = score > highScore // Guts is used when beating the high score
             hitAnimation = if (guts) {
                 if (hitRightLeg) {
-                    if (needleSweepingRight) gutsRfromRAni else gutsRfromLAni
+                    if (needleSweepingRight) gutsRfromLAni else gutsRfromRAni
                 } else {
-                    if (needleSweepingRight) gutsLfromRAni else gutsLfromLAni
+                    if (needleSweepingRight) gutsLfromLAni else gutsLfromRAni
                 }
             } else {
                 if (hitRightLeg) {
-                    if (needleSweepingRight) downRfromRAni else downRfromLAni
+                    if (needleSweepingRight) downRfromLAni else downRfromRAni
                 } else {
-                    if (needleSweepingRight) downLfromRAni else downLfromLAni
+                    if (needleSweepingRight) downLfromLAni else downLfromRAni
                 }
             }
             showFailScreen = true
@@ -261,9 +270,9 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         // Set hit animation
         hitDownFrame = 0f
         hitAnimation = if (hitRightLeg) {
-            if (needleSweepingRight) hitRfromRAni else hitRfromLAni
+            if (needleSweepingRight) hitRfromLAni else hitRfromRAni
         } else {
-            if (needleSweepingRight) hitLfromRAni else hitLfromLAni
+            if (needleSweepingRight) hitLfromLAni else hitLfromRAni
         }
     }
 
