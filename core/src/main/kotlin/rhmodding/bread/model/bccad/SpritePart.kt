@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import rhmodding.bread.model.ISpritePart
 import rhmodding.bread.util.Unknown
 import kotlin.math.absoluteValue
+import kotlin.math.sign
 
 
 class SpritePart : ISpritePart {
@@ -68,7 +69,7 @@ class SpritePart : ISpritePart {
     }
 
     fun render(batch: SpriteBatch, sheet: Texture, offsetX: Float, offsetY: Float) {
-        batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f, regionH.toInt() / 2f, regionW.toInt() * stretchX.absoluteValue, regionH.toInt() * stretchY.absoluteValue, stretchX, stretchY, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
+        batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f * stretchX.sign, regionH.toInt() / 2f * stretchY.sign, regionW.toInt() * stretchX, regionH.toInt() * stretchY, 1f, 1f, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
     }
     
 //    override fun prepareForRendering(subimage: Image, multColor: Color, graphics: GraphicsContext): Image {
