@@ -12,6 +12,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.extras.RhythmGameScreen
+import io.github.chrislo27.rhre3.extras.TestAffineScreen
 import io.github.chrislo27.rhre3.extras.UpbeatGame
 import io.github.chrislo27.rhre3.util.FadeIn
 import io.github.chrislo27.rhre3.util.FadeOut
@@ -113,7 +114,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
-                val game = UpbeatGame()
+                val game = UpbeatGame(main)
                 main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
                 AssetRegistry.get<Sound>("sfx_enter_game").play()
             }
@@ -143,6 +144,9 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenY = padding * 5 + buttonHeight * 4,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
+            this.leftClickAction = { _, _ ->
+                main.screen = TestAffineScreen(main)
+            }
         }
         this.elements += Button(palette, this, this).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {

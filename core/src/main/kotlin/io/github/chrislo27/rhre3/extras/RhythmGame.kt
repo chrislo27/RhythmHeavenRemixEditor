@@ -22,9 +22,10 @@ import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
 import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
 import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import java.util.*
+import kotlin.properties.Delegates
 
 
-abstract class RhythmGame {
+abstract class RhythmGame(val main: RHRE3Application) {
     
     enum class InputButtons {
         A, B, UP, DOWN, LEFT, RIGHT;
@@ -53,7 +54,9 @@ abstract class RhythmGame {
         private set
     
     val pressedInputs: EnumSet<InputButtons> = EnumSet.noneOf(InputButtons::class.java)
-    var playState: PlayState = PlayState.PLAYING
+    var playState: PlayState by Delegates.observable(PlayState.PLAYING) { _, o, n ->
+        onPlayStateChange(o, n)
+    }
     var currentTextBox: TextBox? = null
     
     val camera: OrthographicCamera = OrthographicCamera().apply {
@@ -87,10 +90,10 @@ abstract class RhythmGame {
             val sectionY = texH / 3
             val screenW = camera.viewportWidth
             val screenH = camera.viewportHeight
-            val x = screenW * 0.1f
-            val y = screenH * 0.75f
-            val w = screenW * 0.8f
-            val h = screenH / 5f
+            val x = screenW * 0.1f + textBox.offsetX
+            val y = screenH * 0.75f + textBox.offsetY
+            val w = screenW * 0.8f + textBox.offsetW
+            val h = screenH / 5f + textBox.offsetH
             // Corners
             batch.draw(backing, x, y, sectionX * 1f, sectionY * 1f, 0f, 1f, 1 / 3f, 2 / 3f)
             batch.draw(backing, x, y + h - sectionY, sectionX * 1f, sectionY * 1f, 0f, 2 / 3f, 1 / 3f, 1f)
@@ -169,6 +172,17 @@ abstract class RhythmGame {
 //            playState = PlayState.STOPPED
 //        }
     }
+    
+    open fun onPlayStateChange(old: PlayState, current: PlayState) {
+        
+    }
+
+    /**
+     * True if consumed
+     */
+    open fun onPauseTriggered(): Boolean {
+        return false
+    }
 
     /**
      * True if consumed
@@ -182,7 +196,8 @@ abstract class RhythmGame {
     }
 
     open fun getDebugString(): String {
-        return """Pos.: ♩${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(beat)} / ${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(seconds)}
+        return """State: $playState
+Pos.: ♩${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(beat)} / ${Editor.THREE_DECIMAL_PLACES_FORMATTER.format(seconds)}
 Tempo: ♩=${tempos.tempoAtSeconds(seconds)}
 """
     }

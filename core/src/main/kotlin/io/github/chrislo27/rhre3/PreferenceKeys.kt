@@ -64,6 +64,8 @@ object PreferenceKeys {
     val PLAYALONG_SFX_PERFECT_FAIL = "playalongSfxPerfectFail"
     val PLAYALONG_SFX_MONSTER_FAIL = "playalongSfxMonsterFail"
     val PLAYALONG_SFX_MONSTER_ACE = "playalongSfxMonsterAce"
+    val EXTRAS_UPBEAT_HIGH_SCORE = "extras_upbeat_highScore"
+    val EXTRAS_UPBEAT_TIMES_PLAYED = "extras_upbeat_timesPlayed"
 
     val EVENT_PREFIX = "event_"
 

@@ -170,6 +170,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         
         // MIDI stuff
         AssetRegistry.loadAsset<Sound>("sfx_sing_loop", "sound/sing_loop.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_cowbell", "sound/cowbell.ogg")
         
         // Playalong
         AssetRegistry.loadAsset<Texture>("playalong_tappoint", "images/playalong/tappoint.png", linearTexture())

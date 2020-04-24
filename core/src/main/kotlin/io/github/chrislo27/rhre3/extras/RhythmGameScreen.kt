@@ -3,15 +3,23 @@ package io.github.chrislo27.rhre3.extras
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Sound
+import com.badlogic.gdx.controllers.Controller
+import com.badlogic.gdx.controllers.ControllerListener
+import com.badlogic.gdx.controllers.Controllers
+import com.badlogic.gdx.controllers.PovDirection
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Cursor
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Matrix4
+import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.playalong.ControllerInput
+import io.github.chrislo27.rhre3.playalong.ControllerMapping
 import io.github.chrislo27.rhre3.playalong.Playalong
+import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.screen.HidesVersionText
 import io.github.chrislo27.rhre3.screen.PlayalongSettingsScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -19,6 +27,7 @@ import io.github.chrislo27.rhre3.util.WipeFrom
 import io.github.chrislo27.rhre3.util.WipeTo
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
@@ -30,12 +39,13 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import org.eclipse.jgit.errors.NotSupportedException
+import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
 
 class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
-    : ToolboksScreen<RHRE3Application, RhythmGameScreen>(main), HidesVersionText {
+    : ToolboksScreen<RHRE3Application, RhythmGameScreen>(main), HidesVersionText, ControllerListener {
 
     data class PauseState(val lastPlayState: PlayState)
 
@@ -55,7 +65,8 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
     private var paused: PauseState? = null
 
     private var isCursorInvisible = false
-    
+    private var goingToSettings = false
+
     private val pauseCamera: OrthographicCamera = OrthographicCamera().apply {
         setToOrtho(false, 1280f, 720f)
     }
@@ -90,6 +101,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                 this.text = "extras.playing.pauseMenu.playalongSettings"
             })
             this.leftClickAction = { _, _ ->
+                goingToSettings = true
                 main.screen = PlayalongSettingsScreen(main, this@RhythmGameScreen)
             }
         }
@@ -109,7 +121,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
             }
         }
         pauseStage.elements += quitButton
-        controlsLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), pauseStage, pauseStage).apply { 
+        controlsLabel = TextLabel(palette.copy(ftfont = main.defaultBorderedFontFTF), pauseStage, pauseStage).apply {
             this.textWrapping = false
             this.isLocalizationKey = false
             this.text = ""
@@ -185,9 +197,11 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
     fun pauseUnpause() {
         val paused = this.paused
         if (paused == null) {
-            this.paused = PauseState(game.playState)
-            game.playState = PlayState.PAUSED
-            AssetRegistry.get<Sound>("sfx_pause_enter").play()
+            if (!game.onPauseTriggered()) {
+                this.paused = PauseState(game.playState)
+                game.playState = PlayState.PAUSED
+                AssetRegistry.get<Sound>("sfx_pause_enter").play()
+            }
         } else {
             this.paused = null
             game.playState = paused.lastPlayState
@@ -198,7 +212,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
     private fun playSelectSfx() {
         AssetRegistry.get<Sound>("sfx_select").play()
     }
-    
+
     private fun onQuit() {
         main.screen = TransitionScreen(main, main.screen, ScreenRegistry["info"], WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
     }
@@ -242,7 +256,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                     game.onInput(inp, !keyPressed)
                 }
             }
-            
+
             game.update(delta)
             if (game.playState == PlayState.STOPPED) {
                 onEnd()
@@ -265,11 +279,18 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
     override fun show() {
         super.show()
         controlsLabel.text = Playalong.playalongControls.toInputString()
+        Controllers.addListener(this)
     }
 
     override fun hide() {
         super.hide()
-        dispose()
+        Controllers.removeListener(this)
+        Gdx.graphics.setSystemCursor(Cursor.SystemCursor.Arrow)
+        if (!goingToSettings) {
+            dispose()
+        } else {
+            goingToSettings = false
+        }
     }
 
     override fun tickUpdate() {
@@ -282,4 +303,162 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
     override fun getDebugString(): String? {
         return "game: ${game::class.java.canonicalName}\n${game.getDebugString()}"
     }
+
+    private fun getMapping(controller: Controller): ControllerMapping? = Playalong.activeControllerMappings[controller]
+
+    override fun buttonDown(controller: Controller, buttonCode: Int): Boolean {
+        val mapping = getMapping(controller) ?: return false
+        val buttonA = mapping.buttonA
+        val buttonB = mapping.buttonB
+        val buttonLeft = mapping.buttonLeft
+        val buttonRight = mapping.buttonRight
+        val buttonUp = mapping.buttonUp
+        val buttonDown = mapping.buttonDown
+
+        val inputSet = game.pressedInputs
+        fun trigger(inp: RhythmGame.InputButtons) {
+            val inSet = inp in inputSet
+            if (!inSet) {
+                inputSet.add(inp)
+                game.onInput(inp, false)
+            }
+        }
+        var any = false
+        if (buttonA is ControllerInput.Button && buttonA.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.A)
+            any = true
+        }
+        if (buttonB is ControllerInput.Button && buttonB.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.B)
+            any = true
+        }
+        if (buttonLeft is ControllerInput.Button && buttonLeft.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.LEFT)
+            any = true
+        }
+        if (buttonRight is ControllerInput.Button && buttonRight.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.RIGHT)
+            any = true
+        }
+        if (buttonUp is ControllerInput.Button && buttonUp.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.UP)
+            any = true
+        }
+        if (buttonDown is ControllerInput.Button && buttonDown.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.DOWN)
+            any = true
+        }
+        return any && game.playState == PlayState.PLAYING
+    }
+
+    override fun buttonUp(controller: Controller, buttonCode: Int): Boolean {
+        val mapping = getMapping(controller) ?: return false
+        val buttonA = mapping.buttonA
+        val buttonB = mapping.buttonB
+        val buttonLeft = mapping.buttonLeft
+        val buttonRight = mapping.buttonRight
+        val buttonUp = mapping.buttonUp
+        val buttonDown = mapping.buttonDown
+        val inputSet = game.pressedInputs
+        fun trigger(inp: RhythmGame.InputButtons) {
+            val inSet = inp in inputSet
+            if (inSet) {
+                inputSet.remove(inp)
+                game.onInput(inp, true)
+            }
+        }
+        var any = false
+        if (buttonA is ControllerInput.Button && buttonA.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.A)
+            any = true
+        }
+        if (buttonB is ControllerInput.Button && buttonB.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.B)
+            any = true
+        }
+        if (buttonLeft is ControllerInput.Button && buttonLeft.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.LEFT)
+            any = true
+        }
+        if (buttonRight is ControllerInput.Button && buttonRight.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.RIGHT)
+            any = true
+        }
+        if (buttonUp is ControllerInput.Button && buttonUp.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.UP)
+            any = true
+        }
+        if (buttonDown is ControllerInput.Button && buttonDown.code == buttonCode) {
+            trigger(RhythmGame.InputButtons.DOWN)
+            any = true
+        }
+        return any && game.playState == PlayState.PLAYING
+    }
+
+    override fun povMoved(controller: Controller, povCode: Int, value: PovDirection): Boolean {
+        val mapping = getMapping(controller) ?: return false
+        val buttonA = mapping.buttonA
+        val buttonB = mapping.buttonB
+        val buttonLeft = mapping.buttonLeft
+        val buttonRight = mapping.buttonRight
+        val buttonUp = mapping.buttonUp
+        val buttonDown = mapping.buttonDown
+        var any = false
+        val release = value == PovDirection.center
+        val inputSet = game.pressedInputs
+        fun trigger(inp: RhythmGame.InputButtons) {
+            val inSet = inp in inputSet
+            if (inSet != release) {
+                if (inSet) {
+                    inputSet.remove(inp)
+                } else {
+                    inputSet.add(inp)
+                }
+                game.onInput(inp, release)
+            }
+        }
+        if (buttonA is ControllerInput.Pov && buttonA.povCode == povCode && (buttonA.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.A)
+            any = true
+        }
+        if (buttonB is ControllerInput.Pov && buttonB.povCode == povCode && (buttonB.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.B)
+            any = true
+        }
+        if (buttonLeft is ControllerInput.Pov && buttonLeft.povCode == povCode && (buttonLeft.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.LEFT)
+            any = true
+        }
+        if (buttonRight is ControllerInput.Pov && buttonRight.povCode == povCode && (buttonRight.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.RIGHT)
+            any = true
+        }
+        if (buttonUp is ControllerInput.Pov && buttonUp.povCode == povCode && (buttonUp.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.UP)
+            any = true
+        }
+        if (buttonDown is ControllerInput.Pov && buttonDown.povCode == povCode && (buttonDown.direction == value || release)) {
+            trigger(RhythmGame.InputButtons.DOWN)
+            any = true
+        }
+        return any && game.playState == PlayState.PLAYING
+    }
+
+    // Below not implemented
+    override fun axisMoved(controller: Controller, axisCode: Int, value: Float): Boolean = false
+
+    override fun accelerometerMoved(controller: Controller, accelerometerCode: Int, value: Vector3): Boolean = false
+
+    override fun xSliderMoved(controller: Controller, sliderCode: Int, value: Boolean): Boolean = false
+
+    override fun ySliderMoved(controller: Controller, sliderCode: Int, value: Boolean): Boolean = false
+
+    override fun connected(controller: Controller) {
+        Toolboks.LOGGER.info("[RhythmGameScreen] Controller ${controller.name} connected")
+    }
+
+    override fun disconnected(controller: Controller) {
+        Toolboks.LOGGER.info("[RhythmGameScreen] Controller ${controller.name} disconnected")
+    }
+
 }
