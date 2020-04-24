@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.utils.Align
@@ -106,6 +107,16 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private val highScore = main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
     private var segmentsCompleted = 0
     private val setsCompleted: Int get() = segmentsCompleted / segmentTempos.size
+    private var lastDistraction: Distractions = Distractions.NONE
+    private var darknessAlpha = 0f
+    private var fadeNeedle = false
+    
+    enum class Distractions {
+        NONE, NEEDLE_FADE, DARKNESS;
+        companion object {
+            val VALUES = values().toList()
+        }
+    }
 
     init {
         seconds = -1f
@@ -116,14 +127,13 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         batch.packedColor = Color.WHITE_FLOAT_BITS
         val width = camera.viewportWidth
         val height = camera.viewportHeight
-        batch.draw(bgRegion, 0f, 0f, width, height)
+        batch.draw(bgRegion, camera.position.x - width / 2f * camera.zoom, camera.position.y - height / 2f * camera.zoom, width * camera.zoom, height * camera.zoom)
 
         val manY = 0.53f * height
         shadowAni.steps[if (failed) 3 else if (manUpRight) 1 else 2].render(batch, sheet, brcad.sprites, width * 0.5f, manY)
 
         val needleScale = 1.25f
-        if (setsCompleted >= 1) {
-            // Needle fades out
+        if (fadeNeedle) {
             batch.setColor(1f, 1f, 1f, ((needleMovement.absoluteValue - 0.5f) * 2f).coerceIn(0f, 1f))
         }
         batch.draw(needleRegion, width / 2f - needlePivot.x, height * 0.235f, needlePivot.x, needlePivot.y, needleRegion.regionWidth.toFloat(), needleRegion.regionHeight.toFloat(), needleScale, needleScale, needleMovement * needleMaxAngle - 90f)
@@ -133,10 +143,19 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         if (hitAni != null) {
             val currentHit = hitAni.getCurrentStep(hitDownFrame.toInt())!!
             currentHit.render(batch, sheet, brcad.sprites, width * 0.5f, manY)
+
+            batch.setColor(0f, 0f, 0f, darknessAlpha)
+            batch.fillRect(camera.position.x - width / 2f * camera.zoom, camera.position.y - height / 2f * camera.zoom, width * camera.zoom, height * camera.zoom)
+            batch.setColor(1f, 1f, 1f, 1f)
         } else {
             val stepAni = if (manUpRight) stepUpRAni else stepUpLAni
             val currentUpStep = stepAni.getCurrentStep(stepFrame.toInt())!!
             currentUpStep.render(batch, sheet, brcad.sprites, width * 0.5f, manY)
+            
+            batch.setColor(0f, 0f, 0f, darknessAlpha)
+            batch.fillRect(camera.position.x - width / 2f * camera.zoom, camera.position.y - height / 2f * camera.zoom, width * camera.zoom, height * camera.zoom)
+            batch.setColor(1f, 1f, 1f, 1f)
+            
             val lampPartPoint = brcad.sprites[currentUpStep.spriteIndex.toInt()].parts[3]
             lampAni[lampIndex].getCurrentStep(lampFlashFrame.toInt())!!.render(batch, sheet, brcad.sprites,
                                                                                width * 0.5f + (lampPartPoint.posX - 512f + lampPartPoint.regionW.toInt() / 2),
@@ -243,6 +262,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         events.clear()
         lampIndex = 0
         codeIndex = -1
+        darknessAlpha = 0f
+        camera.zoom = 1f
         events += MetronomeEvent(inputBeat - 0.5f, !needleGoingRight)
         events += RGSimpleEvent(this, tempos.secondsToBeats(tempos.beatsToSeconds(inputBeat + 0.5f) + 0.75f)) {
             playState = PlayState.PAUSED
@@ -327,7 +348,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     }
 
     override fun getDebugString(): String {
-        return super.getDebugString() + "score: $score\nhighscore: $highScore\nsegmentIndex: $segmentsCompleted\nmaxAngle: $needleMaxAngle deg"
+        return super.getDebugString() + "score: $score\nhighscore: $highScore\nsegmentIndex: $segmentsCompleted\nmaxAngle: $needleMaxAngle deg\ndistraction: ${lastDistraction}"
     }
 
     inner class BipEvent(beat: Float) : RGEvent(this, beat) {
@@ -401,6 +422,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
             currentMusic = null
             seconds = 0f
             segmentsCompleted++
+            fadeNeedle = false
+            darknessAlpha = 0f
             events += GenerateSegmentEvent(0f, segmentsCompleted)
         }
     }
@@ -469,6 +492,26 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                     lampIndex = 0
                     codeIndex = -1
                 }
+            }
+            if (setsCompleted >= 1) {
+                val chosenDistraction = (Distractions.VALUES - lastDistraction).takeUnless { it.isEmpty() }?.random() ?: Distractions.VALUES.random()
+                when (chosenDistraction) {
+                    Distractions.NONE -> {}
+                    Distractions.NEEDLE_FADE -> {
+                        fadeNeedle = true
+                    }
+                    Distractions.DARKNESS -> {
+                        (0 until 4).forEach { i ->
+                            events += RGSimpleEvent(this@UpbeatGame, 4.5f + i) {
+                                darknessAlpha = (i + 1) * 0.25f
+                            }
+                            events += RGSimpleEvent(this@UpbeatGame, 38.5f - i) {
+                                darknessAlpha = i * 0.25f
+                            }
+                        } 
+                    }
+                }
+                lastDistraction = chosenDistraction
             }
             events.sortBy { it.beat }
         }
