@@ -43,7 +43,6 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
         private const val TEMPO = 175f
         private const val DURATION = 223f
         private const val LAST_SHAKE = 220
-        private const val OFFSET = -512f
     }
 
     private inner class DanceState(val durationFrames: Int, val dancers: Animation, val vocalist: Animation, val lead: Animation)
@@ -374,11 +373,11 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             val y = 115f
             val currentAnimation: Animation = dancersState.danceState.dancers
             val frame = (currentFrame - dancersState.startFrame).coerceIn(0, dancersState.danceState.durationFrames - 1)
-            val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + OFFSET + stageX, y + OFFSET + stageY)
+            val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + stageX, y + stageY)
             if (currentStep != null && dancersState.danceState != D_TURN_L && dancersState.danceState != D_TURN_R) {
                 val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                 val part = sprite.parts.last()
-                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
+                dancersFaceState.danceState.dancers.render(batch, sheet, bccad.sprites, (currentFrame - dancersFaceState.startFrame).coerceIn(0, dancersFaceState.danceState.durationFrames), x + part.regionW.toInt() / 2f + (part.posX - 512f) + stageX, y - (part.posY - 512f) - (part.regionH.toInt() / 2f) + stageY)
             }
         }
 
@@ -400,11 +399,11 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
                 val y = 48f
                 val currentAnimation = vocalistState.danceState.vocalist
                 val frame = (currentFrame - vocalistState.startFrame).coerceIn(0, vocalistState.danceState.durationFrames - 1)
-                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
+                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + stageX, y + stageY)
                 if (currentStep != null && vocalistState.danceState != DV_TURN_L && vocalistState.danceState != DV_TURN_R) {
                     val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                     val part = sprite.parts.last()
-                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
+                    vocalistFaceState.danceState.vocalist.render(batch, sheet, bccad.sprites, (currentFrame - vocalistFaceState.startFrame).coerceIn(0, vocalistFaceState.danceState.durationFrames), x + part.regionW.toInt() / 2f + (part.posX - 512f) + stageX, y - (part.posY - 512f) - (part.regionH.toInt() / 2f) + stageY)
                 }
             }
             run {
@@ -412,15 +411,15 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
                 val y = 48f
                 val currentAnimation = vocalistState.danceState.lead
                 val frame = (currentFrame - leadState.startFrame).coerceIn(0, leadState.danceState.durationFrames - 1)
-                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, OFFSET + x + stageX, OFFSET + y + stageY)
+                val currentStep = currentAnimation.render(batch, sheet, bccad.sprites, frame, x + stageX, y + stageY)
                 if (currentStep != null && leadState.danceState != D_TURN_L && leadState.danceState != D_TURN_R) {
                     val sprite = bccad.sprites[currentStep.spriteIndex.toInt()]
                     val part = sprite.parts.last()
-                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + OFFSET + part.regionW.toInt() / 2f + (part.posX + OFFSET) + stageX, y + OFFSET - (part.posY + OFFSET) - (part.regionH.toInt() / 2f) + stageY)
+                    leadFaceState.danceState.lead.render(batch, sheet, bccad.sprites, (currentFrame - leadFaceState.startFrame).coerceIn(0, leadFaceState.danceState.durationFrames), x + part.regionW.toInt() / 2f + (part.posX - 512f) + stageX, y - (part.posY - 512f) - (part.regionH.toInt() / 2f) + stageY)
                 }
             }
 
-            microphone.render(batch, sheet, bccad.sprites, 0, OFFSET + camera.viewportWidth / 2 - 38f + stageX, OFFSET + 38f + stageY)
+            microphone.render(batch, sheet, bccad.sprites, 0, camera.viewportWidth / 2 - 38f + stageX, 38f + stageY)
         }
 
         frontArea()
@@ -465,7 +464,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             newFont.setColor(0f, 0f, 0f, 1f)
             val x = camera.viewportWidth / 2 + stageX
             val y = 48f + stageY
-            textBox.render(batch, sheet, x + OFFSET, y + OFFSET)
+            textBox.render(batch, sheet, x, y)
 
             newFont.scaleMul(0.5f)
             newFont.drawCompressed(batch, if (kururin) "くるりん！" else "Thank you!", x - 100f, y + newFont.capHeight / 2, 200f, Align.center)

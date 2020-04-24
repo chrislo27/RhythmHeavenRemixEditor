@@ -75,8 +75,8 @@ fun Editor.renderPlayalongMonsterGoal(batch: SpriteBatch, shapeRenderer: ShapeRe
         batch.setColor(1f, 1f, 1f, 1f)
 
         monsterAnimation.render(batch, sheet, bccad.sprites, currentFrame.coerceIn(0, monsterAnimationDuration - 1),
-                                monsterMawCamera.position.x - monsterMawCamera.viewportHeight / 2 - 152,
-                                monsterMawCamera.position.y - monsterMawCamera.viewportHeight / 2 - 204)
+                                monsterMawCamera.position.x,
+                                monsterMawCamera.position.y - 48)
 
         if (remix.playState != PlayState.STOPPED && playalong.timingStartForMonster < remix.tempos.beatsToSeconds(remix.playbackStart)) {
             // Border is red if started after first input
