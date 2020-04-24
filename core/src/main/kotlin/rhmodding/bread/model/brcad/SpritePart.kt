@@ -53,7 +53,11 @@ class SpritePart : ISpritePart {
     }
     
     fun render(batch: SpriteBatch, sheet: Texture, offsetX: Float, offsetY: Float) {
+        val old = batch.packedColor
+        val current = batch.color
+        batch.setColor(current.r, current.g, current.b, opacity.toInt() / 255f)
         batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f, regionH.toInt() / 2f, regionW.toInt() * stretchX.absoluteValue, regionH.toInt() * stretchY.absoluteValue, stretchX, stretchY, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
+        batch.packedColor = old
     }
 
 //    override fun prepareForRendering(subimage: Image, multColor: Color, graphics: GraphicsContext): Image {

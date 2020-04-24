@@ -3,7 +3,6 @@ package rhmodding.bread.model.brcad
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import rhmodding.bread.model.IAnimation
-import rhmodding.bread.model.bccad.Sprite
 import rhmodding.bread.util.Unknown
 
 
