@@ -32,13 +32,12 @@ import rhmodding.bread.model.brcad.BRCAD
 import java.nio.ByteBuffer
 import kotlin.math.absoluteValue
 import kotlin.math.cos
-import kotlin.math.roundToInt
 
 
 class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 6.5f / 60
+        val MAX_OFFSET_SEC: Float = 6f / 60
     }
 
     private val sheet: Texture = Texture("extras/upbeat/upbeat_spritesheet.png").apply {
@@ -116,7 +115,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     enum class Distractions {
         NONE, NEEDLE_FADE, DARKNESS, NARROW_ANGLE;
         companion object {
-            val VALUES = values().toList()
+            val REAL_LIST = values().toList() - NONE
         }
     }
 
@@ -435,7 +434,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     inner class GenerateSegmentEvent(beat: Float, val segmentIndex: Int) : RGEvent(this, beat) {
         override fun onStart() {
             val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0
-            val tempo = if (setsCompleted >= 2) MathUtils.random(110f, 150f) else segmentTempos[segmentIndex % segmentTempos.size]
+            val tempo = if (setsCompleted >= 2) MathUtils.random(125, 165).toFloat() else (segmentTempos[segmentIndex % segmentTempos.size] * (if (setsCompleted == 1) 1.1f else 1f))
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
@@ -504,7 +503,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                 }
             }
             if (setsCompleted >= 1) {
-                val chosenDistraction = (Distractions.VALUES - lastDistraction).takeUnless { it.isEmpty() }?.random() ?: Distractions.VALUES.random()
+                val chosenDistraction = (Distractions.REAL_LIST - lastDistraction).takeUnless { it.isEmpty() }?.random() ?: Distractions.REAL_LIST.random()
                 when (chosenDistraction) {
                     Distractions.NONE -> {}
                     Distractions.NEEDLE_FADE -> {
