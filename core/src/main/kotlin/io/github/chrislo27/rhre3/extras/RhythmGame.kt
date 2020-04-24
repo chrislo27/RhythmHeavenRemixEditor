@@ -10,6 +10,8 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.playalong.PlayalongControls
 import io.github.chrislo27.rhre3.track.PlayState
+import io.github.chrislo27.rhre3.track.PlaybackCompletion
+import io.github.chrislo27.rhre3.track.Remix
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChanges
 import io.github.chrislo27.rhre3.util.scaleFont
 import io.github.chrislo27.rhre3.util.unscaleFont
@@ -58,6 +60,8 @@ abstract class RhythmGame {
         setToOrtho(false, 1280f, 720f)
     }
     private val tmpMatrix: Matrix4 = Matrix4()
+    
+    protected val events: MutableList<RGEvent> = mutableListOf()
 
     protected abstract fun _render(main: RHRE3Application, batch: SpriteBatch)
     
@@ -140,6 +144,25 @@ abstract class RhythmGame {
         // Timing
         seconds += delta
 
+        if (events.isNotEmpty()) {
+            events.toList().forEach { evt ->
+                if (evt.playbackCompletion != PlaybackCompletion.FINISHED) {
+                    if (evt.playbackCompletion == PlaybackCompletion.WAITING) {
+                        if (evt.isUpdateable(beat)) {
+                            evt.playbackCompletion = PlaybackCompletion.PLAYING
+                            evt.onStart()
+                        }
+                    }
+                    if (evt.playbackCompletion == PlaybackCompletion.PLAYING) {
+                        evt.whilePlaying()
+                        if (!evt.isUpdateable(beat)) {
+                            evt.playbackCompletion = PlaybackCompletion.FINISHED
+                            evt.onEnd()
+                        }
+                    }
+                }
+            }
+        }
 
         // FIXME non-endless not yet supported
 //        if (playState != PlayState.STOPPED && beat >= duration) {
