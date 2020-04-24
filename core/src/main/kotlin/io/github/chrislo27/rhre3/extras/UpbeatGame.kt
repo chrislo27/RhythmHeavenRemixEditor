@@ -32,6 +32,7 @@ import rhmodding.bread.model.brcad.BRCAD
 import java.nio.ByteBuffer
 import kotlin.math.absoluteValue
 import kotlin.math.cos
+import kotlin.math.roundToInt
 
 
 class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
@@ -78,7 +79,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private val music: List<Music> = listOf(Gdx.audio.newMusic(Gdx.files.internal("extras/upbeat/music0.ogg")))
     private val musicFail: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_nohi.ogg"))
     private val musicFailHiScore: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_hi.ogg"))
-    private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 107.5f, 118f, 129f, 140f, 150f)
+    private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 108f, 115f, 125f, 140f, 150f)
     private val showSecretCodeFreq = 5 // On segment index 4, 9, etc
 
     private val uiCamera: OrthographicCamera = OrthographicCamera().apply {
@@ -98,7 +99,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private var lampIndex = 0
     private var codeIndex = -1
     private var needleMovement: Float = -1f // 0f = centre, -1f = right, 1f = left
-    private var needleMaxAngle: Float = 60f
+    private val defaultNeedleAngle = 60f
+    private var needleMaxAngle: Float = defaultNeedleAngle
     private var needleGoingRight = false
     private var currentMusic: Music? = null
     private var failed = false
@@ -112,7 +114,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private var fadeNeedle = false
     
     enum class Distractions {
-        NONE, NEEDLE_FADE, DARKNESS;
+        NONE, NEEDLE_FADE, DARKNESS, NARROW_ANGLE;
         companion object {
             val VALUES = values().toList()
         }
@@ -341,6 +343,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         sfxBip.dispose()
         sfxEndDing.dispose()
         sfxStep.dispose()
+        sfxFailVoice.dispose()
+        sfxFailBoink.dispose()
         music.forEach { it.dispose() }
         musicFail.dispose()
         musicFailHiScore.dispose()
@@ -431,7 +435,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     inner class GenerateSegmentEvent(beat: Float, val segmentIndex: Int) : RGEvent(this, beat) {
         override fun onStart() {
             val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0
-            val tempo = segmentTempos[segmentIndex % segmentTempos.size]
+            val tempo = if (setsCompleted >= 2) MathUtils.random(110f, 150f) else segmentTempos[segmentIndex % segmentTempos.size]
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
@@ -459,8 +463,14 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                 events += InputEvent(b + 0.5f, b % 2 != 0)
             }
             events += EndSegmentEvent(40f)
+            fun createTextBox(text: String): TextBox {
+                return TextBox(text, false, offsetY = -400f, offsetW = -256f, offsetX = 128f, offsetH = 64f)
+            }
             if (segmentIndex - 1 in 0..8) {
-                events += TextBoxEvent(0f, 6f, TextBox(Localization["extras.upbeat.praise${segmentIndex - 1}"], false, offsetY = -400f, offsetW = -256f, offsetX = 128f, offsetH = 64f))
+                events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praise${segmentIndex - 1}"]))
+            }
+            if (segmentIndex == 2 * segmentTempos.size) {
+                events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praiseLast"]))
             }
             if (showCode) {
                 events += RGSimpleEvent(this@UpbeatGame, 9.5f) {
@@ -509,6 +519,16 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                                 darknessAlpha = i * 0.25f
                             }
                         } 
+                    }
+                    Distractions.NARROW_ANGLE -> {
+                        (0 until 4).forEach { i ->
+                            events += RGSimpleEvent(this@UpbeatGame, 4f + i) {
+                                needleMaxAngle = MathUtils.lerp(defaultNeedleAngle, 15f, (i + 1) * 0.25f)
+                            }
+                        }
+                        events += RGSimpleEvent(this@UpbeatGame, 39.5f) {
+                            needleMaxAngle = defaultNeedleAngle
+                        }
                     }
                 }
                 lastDistraction = chosenDistraction
