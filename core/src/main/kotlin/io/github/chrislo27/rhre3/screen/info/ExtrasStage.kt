@@ -145,7 +145,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
-                main.screen = TestAffineScreen(main)
+//                main.screen = TestAffineScreen(main)
             }
         }
         this.elements += Button(palette, this, this).apply {

@@ -27,6 +27,7 @@ import org.lwjgl.openal.AL10
 import rhmodding.bread.model.brcad.Animation
 import rhmodding.bread.model.brcad.BRCAD
 import java.nio.ByteBuffer
+import kotlin.math.absoluteValue
 import kotlin.math.cos
 
 
@@ -72,7 +73,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private val sfxFailBoink: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/upbeat/fail_boink.ogg"))
     private val sfxCowbell: Sound = AssetRegistry["sfx_cowbell"]
     private val music: List<Music> = listOf(Gdx.audio.newMusic(Gdx.files.internal("extras/upbeat/music0.ogg")))
-    private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 107.5f, 118f, 129f, 140f, 158f)
+    private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 107.5f, 118f, 129f, 140f, 150f)
     private val showSecretCodeFreq = 5 // On segment index 4, 9, etc
 
     private var manUpRight: Boolean = true
@@ -96,6 +97,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private var score = 0
     private val highScore = main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
     private var segmentsCompleted = 0
+    private val setsCompleted: Int get() = segmentsCompleted / segmentTempos.size
 
     init {
         seconds = -1f
@@ -112,8 +114,13 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         shadowAni.steps[if (failed) 3 else if (manUpRight) 1 else 2].render(batch, sheet, brcad.sprites, width * 0.5f, manY)
 
         val needleScale = 1.25f
+        if (setsCompleted >= 1) {
+            // Needle fades out
+            batch.setColor(1f, 1f, 1f, ((needleMovement.absoluteValue - 0.5f) * 2f).coerceIn(0f, 1f))
+        }
         batch.draw(needleRegion, width / 2f - needlePivot.x, height * 0.235f, needlePivot.x, needlePivot.y, needleRegion.regionWidth.toFloat(), needleRegion.regionHeight.toFloat(), needleScale, needleScale, needleMovement * needleMaxAngle - 90f)
-
+        batch.setColor(1f, 1f, 1f, 1f)
+        
         val hitAni = hitAnimation
         if (hitAni != null) {
             val currentHit = hitAni.getCurrentStep(hitDownFrame.toInt())!!
@@ -391,7 +398,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
             val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0
             val tempo = segmentTempos[segmentIndex % segmentTempos.size]
             tempos.clear()
-            tempos.add(TempoChange(tempos, 0f, tempo, Swing(62, Swing.EIGHTH_DIVISION), 0f))
+            tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
                 events += BipEvent(b + 0.5f)
             }
@@ -417,7 +424,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                 events += InputEvent(b + 0.5f, b % 2 != 0)
             }
             events += EndSegmentEvent(40f)
-            if (segmentIndex - 1 in 0..7) {
+            if (segmentIndex - 1 in 0..8) {
                 events += TextBoxEvent(0f, 6f, TextBox(Localization["extras.upbeat.praise${segmentIndex - 1}"], false, offsetY = -400f, offsetW = -256f, offsetX = 128f, offsetH = 64f))
             }
             if (showCode) {
