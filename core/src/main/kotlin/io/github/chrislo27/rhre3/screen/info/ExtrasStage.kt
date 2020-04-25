@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
+import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.editor.Editor
@@ -32,6 +33,8 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
     private val preferences: Preferences get() = infoScreen.preferences
     private val editor: Editor get() = infoScreen.editor
 
+    private val upbeatHardButton: Button<InfoScreen>
+    
     init {
         val palette = infoScreen.stage.palette
         val padding = 0.025f
@@ -61,45 +64,45 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                 Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
             }
         }
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Lockstep Maker"
-            })
-            this.location.set(screenX = padding,
-                              screenY = padding * 6 + buttonHeight * 5,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-        }
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Goat Feeding"
-            })
-            this.location.set(screenX = padding,
-                              screenY = padding * 5 + buttonHeight * 4,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-        }
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Mechanical Horse"
-            })
-            this.location.set(screenX = padding,
-                              screenY = padding * 4 + buttonHeight * 3,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-        }
+//        this.elements += Button(palette, this, this).apply {
+//            addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.fontScaleMultiplier = fontScale
+//                this.isLocalizationKey = false
+//                this.textWrapping = false
+//                this.textAlign = Align.center
+//                this.text = "Lockstep Maker"
+//            })
+//            this.location.set(screenX = padding,
+//                              screenY = padding * 6 + buttonHeight * 5,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//        }
+//        this.elements += Button(palette, this, this).apply {
+//            addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.fontScaleMultiplier = fontScale
+//                this.isLocalizationKey = false
+//                this.textWrapping = false
+//                this.textAlign = Align.center
+//                this.text = "Goat Feeding"
+//            })
+//            this.location.set(screenX = padding,
+//                              screenY = padding * 5 + buttonHeight * 4,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//        }
+//        this.elements += Button(palette, this, this).apply {
+//            addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.fontScaleMultiplier = fontScale
+//                this.isLocalizationKey = false
+//                this.textWrapping = false
+//                this.textAlign = Align.center
+//                this.text = "Mechanical Horse"
+//            })
+//            this.location.set(screenX = padding,
+//                              screenY = padding * 4 + buttonHeight * 3,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//        }
 
         this.elements += Button(palette, this, this).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
@@ -114,52 +117,72 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
-                val game = UpbeatGame(main)
+                val game = UpbeatGame(main, false)
                 main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
                 AssetRegistry.get<Sound>("sfx_enter_game").play()
             }
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "extras.upbeat.tooltip"
         }
-        this.elements += Button(palette, this, this).apply {
+        upbeatHardButton = Button(palette, this, this).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
+                this.isLocalizationKey = true
                 this.textWrapping = false
                 this.textAlign = Align.center
-                this.text = "RHRE Merchandise"
+                this.text = "extras.upbeat.hardMode"
             })
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 6 + buttonHeight * 5,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
-        }
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Notes Shop"
-            })
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding * 5 + buttonHeight * 4,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
-//                main.screen = TestAffineScreen(main)
+                val game = UpbeatGame(main, true)
+                main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
+                AssetRegistry.get<Sound>("sfx_enter_game").play()
             }
+            this.enabled = false
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "extras.upbeat.hardMode.tooltip.locked"
         }
-        this.elements += Button(palette, this, this).apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = false
-                this.textWrapping = false
-                this.textAlign = Align.center
-                this.text = "Challenge Train"
-            })
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding * 4 + buttonHeight * 3,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
+        this.elements += upbeatHardButton
+//        this.elements += Button(palette, this, this).apply {
+//            addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.fontScaleMultiplier = fontScale
+//                this.isLocalizationKey = false
+//                this.textWrapping = false
+//                this.textAlign = Align.center
+//                this.text = "Notes Shop"
+//            })
+//            this.location.set(screenX = 1f - (padding + buttonWidth),
+//                              screenY = padding * 5 + buttonHeight * 4,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//            this.leftClickAction = { _, _ ->
+////                main.screen = TestAffineScreen(main)
+//            }
+//        }
+//        this.elements += Button(palette, this, this).apply {
+//            addLabel(TextLabel(palette, this, this.stage).apply {
+//                this.fontScaleMultiplier = fontScale
+//                this.isLocalizationKey = false
+//                this.textWrapping = false
+//                this.textAlign = Align.center
+//                this.text = "Challenge Train"
+//            })
+//            this.location.set(screenX = 1f - (padding + buttonWidth),
+//                              screenY = padding * 4 + buttonHeight * 3,
+//                              screenWidth = buttonWidth,
+//                              screenHeight = buttonHeight)
+//        }
+    }
+    
+    fun show() {
+        if (main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0) >= 288) {
+            upbeatHardButton.run {
+                this.enabled = true
+                this.tooltipText = "extras.upbeat.hardMode.tooltip.unlocked"
+            }
         }
     }
 }

@@ -348,6 +348,7 @@ class InfoScreen(main: RHRE3Application)
     override fun show() {
         super.show()
         infoStage.show()
+        extrasStage.show()
         DiscordHelper.updatePresence(PresenceState.InSettings)
         updateSeePartners()
     }

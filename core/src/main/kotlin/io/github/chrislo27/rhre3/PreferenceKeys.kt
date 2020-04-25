@@ -66,6 +66,8 @@ object PreferenceKeys {
     val PLAYALONG_SFX_MONSTER_ACE = "playalongSfxMonsterAce"
     val EXTRAS_UPBEAT_HIGH_SCORE = "extras_upbeat_highScore"
     val EXTRAS_UPBEAT_TIMES_PLAYED = "extras_upbeat_timesPlayed"
+    val EXTRAS_UPBEAT_HARD_HIGH_SCORE = "extras_upbeatHard_highScore"
+    val EXTRAS_UPBEAT_HARD_TIMES_PLAYED = "extras_upbeatHard_timesPlayed"
 
     val EVENT_PREFIX = "event_"
 

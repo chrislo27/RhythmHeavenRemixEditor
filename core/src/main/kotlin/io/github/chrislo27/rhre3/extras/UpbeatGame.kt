@@ -34,10 +34,10 @@ import kotlin.math.absoluteValue
 import kotlin.math.cos
 
 
-class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
+class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(main) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 6f / 60
+        val MAX_OFFSET_SEC: Float = 5f / 60
     }
 
     private val sheet: Texture = Texture("extras/upbeat/upbeat_spritesheet.png").apply {
@@ -105,15 +105,17 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
     private var failed = false
     private var showFailScreen = false
     private var score = 0
-    private val highScore = main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
-    private var segmentsCompleted = 0
+    private val highScore = main.preferences.getInteger(if (hardMode) PreferenceKeys.EXTRAS_UPBEAT_HARD_HIGH_SCORE else PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
+    private val startingSegment = if (hardMode) segmentTempos.size else 0
+    private var segmentsCompleted = startingSegment
     private val setsCompleted: Int get() = segmentsCompleted / segmentTempos.size
     private var lastDistraction: Distractions = Distractions.NONE
     private var darknessAlpha = 0f
     private var fadeNeedle = false
-    
+
     enum class Distractions {
         NONE, NEEDLE_FADE, DARKNESS, NARROW_ANGLE;
+
         companion object {
             val REAL_LIST = values().toList() - NONE
         }
@@ -121,7 +123,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
 
     init {
         seconds = -1f
-        events += GenerateSegmentEvent(0f, 0)
+        events += GenerateSegmentEvent(0f, startingSegment)
     }
 
     override fun _render(main: RHRE3Application, batch: SpriteBatch) {
@@ -139,7 +141,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         }
         batch.draw(needleRegion, width / 2f - needlePivot.x, height * 0.235f, needlePivot.x, needlePivot.y, needleRegion.regionWidth.toFloat(), needleRegion.regionHeight.toFloat(), needleScale, needleScale, needleMovement * needleMaxAngle - 90f)
         batch.setColor(1f, 1f, 1f, 1f)
-        
+
         val hitAni = hitAnimation
         if (hitAni != null) {
             val currentHit = hitAni.getCurrentStep(hitDownFrame.toInt())!!
@@ -152,11 +154,11 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
             val stepAni = if (manUpRight) stepUpRAni else stepUpLAni
             val currentUpStep = stepAni.getCurrentStep(stepFrame.toInt())!!
             currentUpStep.render(batch, sheet, brcad.sprites, width * 0.5f, manY)
-            
+
             batch.setColor(0f, 0f, 0f, darknessAlpha)
             batch.fillRect(camera.position.x - width / 2f * camera.zoom, camera.position.y - height / 2f * camera.zoom, width * camera.zoom, height * camera.zoom)
             batch.setColor(1f, 1f, 1f, 1f)
-            
+
             val lampPartPoint = brcad.sprites[currentUpStep.spriteIndex.toInt()].parts[3]
             lampAni[lampIndex].getCurrentStep(lampFlashFrame.toInt())!!.render(batch, sheet, brcad.sprites,
                                                                                width * 0.5f + (lampPartPoint.posX - 512f + lampPartPoint.regionW.toInt() / 2),
@@ -167,14 +169,14 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                                                       manY - lampPartPoint.posY - lampPartPoint.regionH.toInt() / 2f + 512f)
             }
         }
-        
+
         uiCamera.update()
         tmpUiMatrix.set(batch.projectionMatrix)
         batch.projectionMatrix = uiCamera.combined
 
         val uiWidth = uiCamera.viewportWidth
         val uiHeight = uiCamera.viewportHeight
-        
+
         if (showFailScreen) {
             batch.setColor(0f, 0f, 0f, 0.5f)
             batch.fillRect(0f, 0f, uiCamera.viewportWidth, uiCamera.viewportHeight)
@@ -210,7 +212,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         font.draw(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], uiWidth * 0.5f, uiHeight * 0.9f + line, 0f, Align.center, false)
         font.unscaleFont()
         font.setColor(1f, 1f, 1f, 1f)
-        
+
         batch.projectionMatrix = tmpUiMatrix
     }
 
@@ -285,9 +287,9 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                 }
             }
             showFailScreen = true
-            (if (score > highScore) musicFailHiScore else musicFail).play() 
+            (if (score > highScore) musicFailHiScore else musicFail).play()
             if (score > highScore || highScore <= 0) {
-                main.preferences.putInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, score).flush()
+                main.preferences.putInteger(if (hardMode) PreferenceKeys.EXTRAS_UPBEAT_HARD_HIGH_SCORE else PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, score).flush()
             }
         }
         // Set hit animation
@@ -347,7 +349,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
         music.forEach { it.dispose() }
         musicFail.dispose()
         musicFailHiScore.dispose()
-        main.preferences.putInteger(PreferenceKeys.EXTRAS_UPBEAT_TIMES_PLAYED, main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_TIMES_PLAYED, 0) + 1).flush()
+        val timesPlayedKey = if (hardMode) PreferenceKeys.EXTRAS_UPBEAT_HARD_TIMES_PLAYED else PreferenceKeys.EXTRAS_UPBEAT_TIMES_PLAYED
+        main.preferences.putInteger(timesPlayedKey, main.preferences.getInteger(timesPlayedKey, 0) + 1).flush()
     }
 
     override fun getDebugString(): String {
@@ -433,8 +436,15 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
 
     inner class GenerateSegmentEvent(beat: Float, val segmentIndex: Int) : RGEvent(this, beat) {
         override fun onStart() {
-            val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0
-            val tempo = if (setsCompleted >= 2) MathUtils.random(125, 165).toFloat() else (segmentTempos[segmentIndex % segmentTempos.size] * (if (setsCompleted == 1) 1.1f else 1f))
+            val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0 && segmentIndex != startingSegment
+            val tempo = if (setsCompleted >= 2) (if (MathUtils.randomBoolean(0.333f)) {
+                (MathUtils.random(35, 60).toFloat())
+            } else {
+                (MathUtils.random(150, 200).toFloat())
+            }) else {
+                (segmentTempos[segmentIndex % segmentTempos.size] * (if (setsCompleted == 1) 1.1f else 1f))
+            }
+//            val tempo = 400f
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
@@ -505,7 +515,8 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
             if (setsCompleted >= 1) {
                 val chosenDistraction = (Distractions.REAL_LIST - lastDistraction).takeUnless { it.isEmpty() }?.random() ?: Distractions.REAL_LIST.random()
                 when (chosenDistraction) {
-                    Distractions.NONE -> {}
+                    Distractions.NONE -> {
+                    }
                     Distractions.NEEDLE_FADE -> {
                         fadeNeedle = true
                     }
@@ -517,7 +528,7 @@ class UpbeatGame(main: RHRE3Application) : RhythmGame(main) {
                             events += RGSimpleEvent(this@UpbeatGame, 38.5f - i) {
                                 darknessAlpha = i * 0.25f
                             }
-                        } 
+                        }
                     }
                     Distractions.NARROW_ANGLE -> {
                         (0 until 4).forEach { i ->
