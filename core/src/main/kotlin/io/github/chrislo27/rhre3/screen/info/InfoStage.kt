@@ -55,8 +55,8 @@ class InfoStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val 
         val buttonWidth = 0.4f
         // Loading icon for paddler
         loadingIcon = LoadingIcon(palette, info).apply {
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
+            this.location.set(screenX = 1f - (padding + buttonWidth) - buttonWidth * 0.09f + buttonWidth,
+                              screenY = 1f - (padding + buttonHeight * 0.8f) * 3,
                               screenWidth = buttonWidth * 0.09f,
                               screenHeight = buttonHeight * 0.8f)
             this.visible = true
@@ -100,9 +100,9 @@ class InfoStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val 
                 super.render(screen, batch, shapeRenderer)
             }
         }.apply {
-            this.location.set(screenX = 1f - (padding + buttonWidth) + buttonWidth * 0.09f,
+            this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = 1f - (padding + buttonHeight * 0.8f) * 2,
-                              screenWidth = buttonWidth - buttonWidth * 0.09f * 2,
+                              screenWidth = buttonWidth,
                               screenHeight = buttonHeight * 0.8f)
             this.isLocalizationKey = false
             this.textWrapping = false
@@ -373,7 +373,7 @@ class InfoStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val 
     fun show() {
         clearRecentsButton.enabled = GameMetadata.recents.isNotEmpty()
         dbVersionLabel.text = Localization["screen.info.databaseVersion", "v${SFXDatabase.data.version}"]
-        versionLabel.text = RHRE3.VERSION.toString()
+        versionLabel.text = Localization["screen.info.programVersion", RHRE3.VERSION.toString()]
     }
 
 }
