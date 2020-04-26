@@ -41,7 +41,7 @@ Apache Commons IO
 SLF4J
 OSHI
 jump3r
-musique (forked)
+musique
 Segment
 java-discord-rpc
 rhmodding/bread
