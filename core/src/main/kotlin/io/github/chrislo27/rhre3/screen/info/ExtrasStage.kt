@@ -118,8 +118,10 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
                 val game = UpbeatGame(main, false)
-                main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
-                AssetRegistry.get<Sound>("sfx_enter_game").play()
+                Gdx.app.postRunnable {
+                    main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
+                    AssetRegistry.get<Sound>("sfx_enter_game").play()
+                }
             }
             this.tooltipTextIsLocalizationKey = true
             this.tooltipText = "extras.upbeat.tooltip"
@@ -138,8 +140,10 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
                 val game = UpbeatGame(main, true)
-                main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
-                AssetRegistry.get<Sound>("sfx_enter_game").play()
+                Gdx.app.postRunnable {
+                    main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
+                    AssetRegistry.get<Sound>("sfx_enter_game").play()
+                }
             }
             this.enabled = false
             this.tooltipTextIsLocalizationKey = true
