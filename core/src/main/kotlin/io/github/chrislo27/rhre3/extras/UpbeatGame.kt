@@ -114,7 +114,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
     private var fadeNeedle = false
 
     enum class Distractions {
-        NONE, NEEDLE_FADE, DARKNESS, NARROW_ANGLE;
+        NONE, NEEDLE_FADE, DARKNESS, NARROW_ANGLE, WIDE_ANGLE;
 
         companion object {
             val REAL_LIST = values().toList() - NONE
@@ -534,6 +534,16 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                         (0 until 4).forEach { i ->
                             events += RGSimpleEvent(this@UpbeatGame, 4f + i) {
                                 needleMaxAngle = MathUtils.lerp(defaultNeedleAngle, 15f, (i + 1) * 0.25f)
+                            }
+                        }
+                        events += RGSimpleEvent(this@UpbeatGame, 39.5f) {
+                            needleMaxAngle = defaultNeedleAngle
+                        }
+                    }
+                    Distractions.WIDE_ANGLE -> {
+                        (0 until 4).forEach { i ->
+                            events += RGSimpleEvent(this@UpbeatGame, 4f + i) {
+                                needleMaxAngle = MathUtils.lerp(defaultNeedleAngle, 115f, (i + 1) * 0.25f)
                             }
                         }
                         events += RGSimpleEvent(this@UpbeatGame, 39.5f) {
