@@ -106,8 +106,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
     private var showFailScreen = false
     private var score = 0
     private val highScore = main.preferences.getInteger(if (hardMode) PreferenceKeys.EXTRAS_UPBEAT_HARD_HIGH_SCORE else PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
-    private val startingSegment = if (hardMode) segmentTempos.size else 0
-    private var segmentsCompleted = startingSegment
+    private var segmentsCompleted = 0
     private val setsCompleted: Int get() = segmentsCompleted / segmentTempos.size
     private var lastDistraction: Distractions = Distractions.NONE
     private var darknessAlpha = 0f
@@ -123,7 +122,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
 
     init {
         seconds = -1f
-        events += GenerateSegmentEvent(0f, startingSegment)
+        events += GenerateSegmentEvent(0f, 0)
     }
 
     override fun _render(main: RHRE3Application, batch: SpriteBatch) {
@@ -436,15 +435,20 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
 
     inner class GenerateSegmentEvent(beat: Float, val segmentIndex: Int) : RGEvent(this, beat) {
         override fun onStart() {
-            val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0 && segmentIndex != startingSegment
-            val tempo = if (setsCompleted >= 2) (if (MathUtils.randomBoolean(0.333f)) {
-                (MathUtils.random(35, 60).toFloat())
+            val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0 && segmentIndex > 0
+            val tempo = if (hardMode) {
+                if (setsCompleted >= 1) (if (MathUtils.randomBoolean(0.333f)) {
+                    (MathUtils.random(35, 55).toFloat())
+                } else {
+                    (MathUtils.random(160, 200).toFloat())
+                }) else {
+                    (segmentTempos[segmentIndex % segmentTempos.size] * 1.25f)
+                }
             } else {
-                (MathUtils.random(150, 200).toFloat())
-            }) else {
-                (segmentTempos[segmentIndex % segmentTempos.size] * (if (setsCompleted == 1) 1.1f else 1f))
+                if (segmentIndex < segmentTempos.size) {
+                    segmentTempos[segmentIndex]
+                } else listOf(160f, 170f, 180f)[(segmentIndex - segmentTempos.size) % 3]
             }
-//            val tempo = 400f
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
@@ -475,13 +479,16 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
             fun createTextBox(text: String): TextBox {
                 return TextBox(text, false, offsetY = -400f, offsetW = -256f, offsetX = 128f, offsetH = 64f)
             }
-            if (segmentIndex - 1 in 0..8) {
-                events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praise${segmentIndex - 1}"]))
+            if (!hardMode) {
+                if (segmentIndex in 1..26) {
+                    events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praise${segmentIndex}"]))
+                }
+            } else {
+                if (segmentIndex in 0..1) {
+                    events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praiseHardMode${segmentIndex}"]))
+                }
             }
-            if (segmentIndex == 2 * segmentTempos.size) {
-                events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praiseLast"]))
-            }
-            if (showCode) {
+            if (showCode && !hardMode) {
                 events += RGSimpleEvent(this@UpbeatGame, 9.5f) {
                     lampIndex = 1
                 }
@@ -512,7 +519,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                     codeIndex = -1
                 }
             }
-            if (setsCompleted >= 1) {
+            if (hardMode) { // Distraction generator // setsCompleted >= 1
                 val chosenDistraction = (Distractions.REAL_LIST - lastDistraction).takeUnless { it.isEmpty() }?.random() ?: Distractions.REAL_LIST.random()
                 when (chosenDistraction) {
                     Distractions.NONE -> {
