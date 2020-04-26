@@ -206,7 +206,11 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
         val line = font.capHeight
         font.unscaleFont()
         font = main.defaultBorderedFont
-        font.setColor(1f, 69f / 255f, 13f / 255f, 1f)
+        if (hardMode) {
+            font.setColor(1f, 0f, 0f, 1f)
+        } else {
+            font.setColor(1f, 69f / 255f, 13f / 255f, 1f)
+        }
         font.scaleFont(uiCamera)
         font.draw(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], uiWidth * 0.5f, uiHeight * 0.9f + line, 0f, Align.center, false)
         font.unscaleFont()
@@ -484,7 +488,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                     events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praise${segmentIndex}"]))
                 }
             } else {
-                if (segmentIndex in 0..1) {
+                if (segmentIndex in 0..6) {
                     events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praiseHardMode${segmentIndex}"]))
                 }
             }
