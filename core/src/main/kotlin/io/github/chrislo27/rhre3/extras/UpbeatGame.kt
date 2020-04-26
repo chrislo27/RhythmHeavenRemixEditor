@@ -490,7 +490,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                     events += TextBoxEvent(0f, if (segmentIndex > 0) 6f else 4f, createTextBox(Localization["extras.upbeat.praise${segmentIndex}"]))
                 }
             } else {
-                if (segmentIndex in 0..6) {
+                if (segmentIndex in 0..7) {
                     events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praiseHardMode${segmentIndex}"]))
                 }
             }
