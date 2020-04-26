@@ -63,6 +63,8 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
             this.leftClickAction = { _, _ ->
                 Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
             }
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "extras.bouncyRoadMania.tooltip"
         }
 //        this.elements += Button(palette, this, this).apply {
 //            addLabel(TextLabel(palette, this, this.stage).apply {
