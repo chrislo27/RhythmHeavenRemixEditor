@@ -30,7 +30,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
     : Stage<InfoScreen>(parent, camera) {
 
     private val main: RHRE3Application get() = infoScreen.main
-    private val preferences: Preferences get() = infoScreen.preferences
+    private val preferences: Preferences get() = main.preferences
     private val editor: Editor get() = infoScreen.editor
 
     private val upbeatHardButton: Button<InfoScreen>
@@ -178,7 +178,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
     }
     
     fun show() {
-        if (main.preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0) >= 288) {
+        if (preferences.getInteger(PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0) >= 288) {
             upbeatHardButton.run {
                 this.enabled = true
                 this.tooltipText = "extras.upbeat.hardMode.tooltip.unlocked"
