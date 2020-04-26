@@ -484,8 +484,10 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                 return TextBox(text, false, offsetY = -400f, offsetW = -256f, offsetX = 128f, offsetH = 64f)
             }
             if (!hardMode) {
-                if (segmentIndex in 1..26) {
-                    events += TextBoxEvent(0f, 6f, createTextBox(Localization["extras.upbeat.praise${segmentIndex}"]))
+                if (segmentIndex == 0) {
+                    events += TextBoxEvent(0f, 6f, TextBox(Localization["extras.upbeat.praise${segmentIndex}"], false, offsetY = -512f, offsetW = -256f, offsetX = 128f, offsetH = 64f))
+                } else if (segmentIndex in 1..26) {
+                    events += TextBoxEvent(0f, if (segmentIndex > 0) 6f else 4f, createTextBox(Localization["extras.upbeat.praise${segmentIndex}"]))
                 }
             } else {
                 if (segmentIndex in 0..6) {
