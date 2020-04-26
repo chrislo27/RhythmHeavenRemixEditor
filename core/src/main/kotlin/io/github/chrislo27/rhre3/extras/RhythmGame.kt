@@ -63,12 +63,14 @@ abstract class RhythmGame(val main: RHRE3Application) {
         setToOrtho(false, 1280f, 720f)
     }
     private val tmpMatrix: Matrix4 = Matrix4()
+    private var disposed = false
     
     protected val events: MutableList<RGEvent> = mutableListOf()
 
     protected abstract fun _render(main: RHRE3Application, batch: SpriteBatch)
     
     open fun render(main: RHRE3Application, batch: SpriteBatch) {
+        if (disposed) return
         camera.update()
         tmpMatrix.set(batch.projectionMatrix)
         batch.projectionMatrix = camera.combined
@@ -192,7 +194,7 @@ abstract class RhythmGame(val main: RHRE3Application) {
     }
     
     open fun dispose() {
-        
+        disposed = true
     }
 
     open fun getDebugString(): String {
