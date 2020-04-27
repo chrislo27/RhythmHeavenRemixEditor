@@ -78,7 +78,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
     private val music: List<Music> = listOf(Gdx.audio.newMusic(Gdx.files.internal("extras/upbeat/music0.ogg")))
     private val musicFail: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_nohi.ogg"))
     private val musicFailHiScore: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/fail_music_hi.ogg"))
-    private val segmentTempos: List<Float> = listOf(75f, 82f, 90f, 100f, 108f, 115f, 125f, 140f, 150f)
+    private val segmentTempos: List<Float> = listOf(75f, 82.5f, 90f, 100f, 108f, 115f, 125f, 140f, 150f, 160f, 170f, 180f, 190f, 200f, 210f, 220f, 230f, 240f)
     private val showSecretCodeFreq = 5 // On segment index 4, 9, etc
 
     private val uiCamera: OrthographicCamera = OrthographicCamera().apply {
@@ -107,7 +107,6 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
     private var score = 0
     private val highScore = main.preferences.getInteger(if (hardMode) PreferenceKeys.EXTRAS_UPBEAT_HARD_HIGH_SCORE else PreferenceKeys.EXTRAS_UPBEAT_HIGH_SCORE, 0).coerceAtLeast(0)
     private var segmentsCompleted = 0
-    private val setsCompleted: Int get() = segmentsCompleted / segmentTempos.size
     private var lastDistraction: Distractions = Distractions.NONE
     private var darknessAlpha = 0f
     private var fadeNeedle = false
@@ -122,7 +121,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
 
     init {
         seconds = -1f
-        events += GenerateSegmentEvent(0f, 0)
+        events += GenerateSegmentEvent(0f, segmentsCompleted)
     }
 
     override fun _render(main: RHRE3Application, batch: SpriteBatch) {
@@ -441,18 +440,14 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
         override fun onStart() {
             val showCode = (segmentIndex + 1) % showSecretCodeFreq == 0 && segmentIndex > 0
             val tempo = if (hardMode) {
-                if (setsCompleted >= 1) (if (MathUtils.randomBoolean(0.333f)) {
+                if (segmentIndex >= segmentTempos.size) (if (MathUtils.randomBoolean(0.25f)) {
                     (MathUtils.random(35, 55).toFloat())
                 } else {
-                    (MathUtils.random(160, 200).toFloat())
+                    (MathUtils.random(200, 300).toFloat())
                 }) else {
                     (segmentTempos[segmentIndex % segmentTempos.size] * 1.25f)
                 }
-            } else {
-                if (segmentIndex < segmentTempos.size) {
-                    segmentTempos[segmentIndex]
-                } else listOf(160f, 170f, 180f)[(segmentIndex - segmentTempos.size) % 3]
-            }
+            } else segmentTempos[segmentIndex.coerceAtMost(segmentTempos.size - 1)]
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, tempo, Swing.STRAIGHT, 0f))
             (0..7).forEach { b ->
