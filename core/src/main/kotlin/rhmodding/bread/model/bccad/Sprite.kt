@@ -2,6 +2,7 @@ package rhmodding.bread.model.bccad
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import rhmodding.bread.model.ISprite
 
 
@@ -24,6 +25,15 @@ class Sprite : ISprite {
             val prevColour = batch.packedColor
             batch.color = part.multColor
             part.render(batch, sheet, offsetX + part.posX.toInt() - 512f, offsetY + (1024 - part.posY.toInt() - 512f))
+            batch.packedColor = prevColour
+        }
+    }
+
+    fun renderWithShader(batch: SpriteBatch, shader: ShaderProgram, sheet: Texture, offsetX: Float, offsetY: Float) {
+        parts.forEach { part ->
+            val prevColour = batch.packedColor
+            batch.color = part.multColor
+            part.renderWithShader(batch, shader, sheet, offsetX + part.posX.toInt() - 512f, offsetY + (1024 - part.posY.toInt() - 512f))
             batch.packedColor = prevColour
         }
     }

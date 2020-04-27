@@ -3,6 +3,7 @@ package rhmodding.bread.model.bccad
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import rhmodding.bread.model.IAnimationStep
 import rhmodding.bread.util.Unknown
 
@@ -49,6 +50,10 @@ class AnimationStep : IAnimationStep {
     
     fun render(batch: SpriteBatch, sheet: Texture, sprites: List<Sprite>, offsetX: Float, offsetY: Float) {
         sprites[spriteIndex.toInt()].render(batch, sheet, offsetX + translateX.toInt(), offsetY + translateY.toInt())
+    }
+
+    fun renderWithShader(batch: SpriteBatch, shader: ShaderProgram, sheet: Texture, sprites: List<Sprite>, offsetX: Float, offsetY: Float) {
+        sprites[spriteIndex.toInt()].renderWithShader(batch, shader, sheet, offsetX + translateX.toInt(), offsetY + translateY.toInt())
     }
     
 }

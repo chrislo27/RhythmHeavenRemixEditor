@@ -2,6 +2,7 @@ package rhmodding.bread.model.bccad
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import rhmodding.bread.model.IAnimation
 
 
@@ -42,6 +43,12 @@ class Animation : IAnimation {
     fun render(batch: SpriteBatch, sheet: Texture, sprites: List<Sprite>, frameNum: Int, offsetX: Float, offsetY: Float): AnimationStep? {
         val step =  getCurrentStep(frameNum)
         step?.render(batch, sheet, sprites, offsetX, offsetY)
+        return step
+    }
+
+    fun renderWithShader(batch: SpriteBatch, shader: ShaderProgram, sheet: Texture, sprites: List<Sprite>, frameNum: Int, offsetX: Float, offsetY: Float): AnimationStep? {
+        val step =  getCurrentStep(frameNum)
+        step?.renderWithShader(batch, shader, sheet, sprites, offsetX, offsetY)
         return step
     }
     
