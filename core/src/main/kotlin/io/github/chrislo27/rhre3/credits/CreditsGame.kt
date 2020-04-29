@@ -459,16 +459,14 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
 
         // kururin
         if (kururin || beat > DURATION + 2f) {
-            val newFont = main.defaultFontLarge
+            val newFont = main.defaultFontMedium
             newFont.scaleFont()
             newFont.setColor(0f, 0f, 0f, 1f)
             val x = camera.viewportWidth / 2 + stageX
             val y = 48f + stageY
             textBox.render(batch, sheet, x, y)
 
-            newFont.scaleMul(0.5f)
             newFont.drawCompressed(batch, if (kururin) "くるりん！" else "Thank you!", x - 100f, y + newFont.capHeight / 2, 200f, Align.center)
-            newFont.scaleMul(1 / 0.5f)
 
             if (!kururin) {
                 val saxAcc = (finalAccuracy * 100f).roundToInt().coerceIn(0, 100)
@@ -480,10 +478,12 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
                     else -> "[#FFFFFF]"
                 } + saxAcc + "%[]"
 
-                newFont.scaleMul(0.25f)
-                newFont.drawCompressed(batch, Localization["credits.saxAccuracy", acc], x - 100f, y - newFont.capHeight * 2f, 200f, Align.center)
-                newFont.drawCompressed(batch, "[ESC]", x - 100f, y - newFont.capHeight * 3.75f, 200f, Align.center)
-                newFont.scaleMul(1f / 0.25f)
+                val smallFont = main.defaultFont
+                smallFont.setColor(0f, 0f, 0f, 1f)
+                smallFont.scaleFont()
+                smallFont.drawCompressed(batch, Localization["credits.saxAccuracy", acc], x - 100f, y - smallFont.capHeight * 2f, 200f, Align.center)
+                smallFont.drawCompressed(batch, "[ESC]", x - 100f, y - smallFont.capHeight * 3.75f, 200f, Align.center)
+                smallFont.unscaleFont()
             }
 
             newFont.setColor(1f, 1f, 1f, 1f)

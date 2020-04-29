@@ -91,6 +91,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     }
     
     val defaultFontLargeKey = "default_font_large"
+    val defaultFontMediumKey = "default_font_medium"
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
     val timeSignatureFontKey = "time_signature"
     
@@ -100,6 +101,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         get() = fonts[defaultBorderedFontKey]
     val defaultFontLargeFTF: FreeTypeFont
         get() = fonts[defaultFontLargeKey]
+    val defaultFontMediumFTF: FreeTypeFont
+        get() = fonts[defaultFontMediumKey]
     val defaultBorderedFontLargeFTF: FreeTypeFont
         get() = fonts[defaultBorderedFontLargeKey]
     val timeSignatureFontFTF: FreeTypeFont
@@ -107,6 +110,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     
     val defaultFontLarge: BitmapFont
         get() = defaultFontLargeFTF.font!!
+    val defaultFontMedium: BitmapFont
+        get() = defaultFontMediumFTF.font!!
     val defaultBorderedFontLarge: BitmapFont
         get() = defaultBorderedFontLargeFTF.font!!
     val timeSignatureFont: BitmapFont
@@ -180,6 +185,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         // font stuff
         run {
             fonts[defaultFontLargeKey] = createDefaultLargeFont()
+            fonts[defaultFontMediumKey] = createDefaultMediumFont()
             fonts[defaultBorderedFontLargeKey] = createDefaultLargeBorderedFont()
             fonts[timeSignatureFontKey] = FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter().apply {
                 size *= 6
@@ -614,6 +620,15 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 .apply {
                     size *= 4
                     borderWidth *= 4
+                })
+                .setAfterLoad(fontAfterLoadFunction)
+    }
+    
+    private fun createDefaultMediumFont(): FreeTypeFont {
+        return FreeTypeFont(fontFileHandle, emulatedSize, createDefaultTTFParameter()
+                .apply {
+                    size *= 2
+                    borderWidth *= 2
                 })
                 .setAfterLoad(fontAfterLoadFunction)
     }
