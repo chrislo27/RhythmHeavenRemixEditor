@@ -19,7 +19,6 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.playalong.ControllerInput
 import io.github.chrislo27.rhre3.playalong.ControllerMapping
 import io.github.chrislo27.rhre3.playalong.Playalong
-import io.github.chrislo27.rhre3.playalong.PlayalongInput
 import io.github.chrislo27.rhre3.screen.HidesVersionText
 import io.github.chrislo27.rhre3.screen.PlayalongSettingsScreen
 import io.github.chrislo27.rhre3.track.PlayState
@@ -39,7 +38,6 @@ import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
 import org.eclipse.jgit.errors.NotSupportedException
-import java.util.*
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
@@ -280,6 +278,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
         super.show()
         controlsLabel.text = Playalong.playalongControls.toInputString()
         Controllers.addListener(this)
+        Playalong.loadActiveMappings()
     }
 
     override fun hide() {
@@ -323,6 +322,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                 game.onInput(inp, false)
             }
         }
+
         var any = false
         if (buttonA is ControllerInput.Button && buttonA.code == buttonCode) {
             trigger(RhythmGame.InputButtons.A)
@@ -367,6 +367,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                 game.onInput(inp, true)
             }
         }
+
         var any = false
         if (buttonA is ControllerInput.Button && buttonA.code == buttonCode) {
             trigger(RhythmGame.InputButtons.A)
@@ -408,13 +409,14 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
         val inputSet = game.pressedInputs
         fun trigger(inp: RhythmGame.InputButtons) {
             val inSet = inp in inputSet
-            if (inSet != release) {
-                if (inSet) {
-                    inputSet.remove(inp)
-                } else {
-                    inputSet.add(inp)
+            if (release && inSet) {
+                if (inputSet.remove(inp)) {
+                    game.onInput(inp, true)
                 }
-                game.onInput(inp, release)
+            } else if (!release && !inSet) {
+                if (inputSet.add(inp)) {
+                    game.onInput(inp, false)
+                }
             }
         }
         if (buttonA is ControllerInput.Pov && buttonA.povCode == povCode && (buttonA.direction == value || release)) {
