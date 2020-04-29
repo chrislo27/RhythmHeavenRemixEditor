@@ -225,9 +225,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             val font = main.defaultBorderedFontLarge
             font.scaleFont(camera)
             font.scaleMul(0.4f)
-            font.setColor(1f, 69f / 255f, 13f / 255f, 1f)
-            font.drawCompressed(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], width * 0.025f, height * 0.95f, width * 0.35f, Align.left)
             font.setColor(1f, 1f, 1f, 1f)
+            font.drawCompressed(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], width * 0.025f, height * 0.95f, width * 0.35f, Align.left)
             font.drawCompressed(batch, Localization["extras.playing.score", "$score"], width * 0.625f, height * 0.95f, width * 0.35f, Align.right)
             font.unscaleFont()
         }
@@ -359,51 +358,48 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                 hostState.lockFaceFrame = true
             }
             val tempo = 100f
+            val desiredLength = 4f
             tempos.add(TempoChange(tempos, 1f, tempo, Swing.STRAIGHT, 0f))
             // Generate inputs
             events += HostButtonEvent(1f, false)
             events += HostButtonEvent(2f, true)
             events += HostButtonEvent(3f, false)
             
-            tempos.add(TempoChange(tempos, 5f, 60f / 0.5f, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 6f) {
+            tempos.add(TempoChange(tempos, 1f + desiredLength, 60f / 0.5f, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 2f + desiredLength) {
                 hostState.lockToReady()
                 hostState.lockFaceFrame = false
             }
-            events += RGSimpleEvent(this@QuizGame, 7f) {
+            events += RGSimpleEvent(this@QuizGame, 3f + desiredLength) {
                 showTimer = true
                 timerProgress = 0f
                 playerState.unlockReady()
                 playerState.setFace(if (segmentsCompleted >= 20) playerFaceEvo3Ani else if (segmentsCompleted >= 15) playerFaceEvo2Ani else if (segmentsCompleted >= 10) playerFaceEvo1Ani else playerFaceNeutralAni)
                 playerState.lockFaceFrame = true
             }
-            tempos.add(TempoChange(tempos, 8f, tempo, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 8f) {
+            tempos.add(TempoChange(tempos, 4f + desiredLength, tempo, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 4f + desiredLength) {
                 allowPlayerInput = true
             }
-            events += TimerEvent(8f, 4f)
-            events += RGSimpleEvent(this@QuizGame, 12f) {
-                showTimer = true
-                timerProgress = 0f
-            }
-            tempos.add(TempoChange(tempos, 12f, 60f, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 12.25f) {
+            events += TimerEvent(4f + desiredLength, desiredLength)
+            tempos.add(TempoChange(tempos, 4f + desiredLength * 2, 60f, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 4.25f + desiredLength * 2) {
                 playerState.lockToReady()
                 playerState.lockFaceFrame = false
                 allowPlayerInput = false
                 showTimer = false
                 sfxTripleBell.play()
             }
-            events += TextEvent(12.5f, Localization["extras.quiz.dialogue.time0"])
-            events += TextEvent(12.75f, Localization["extras.quiz.dialogue.time1"])
-            events += RGSimpleEvent(this@QuizGame, 13.5f) {
+            events += TextEvent(4.5f + desiredLength * 2, Localization["extras.quiz.dialogue.time0"])
+            events += TextEvent(4.75f + desiredLength * 2, Localization["extras.quiz.dialogue.time1"])
+            events += RGSimpleEvent(this@QuizGame, 5.5f + desiredLength * 2) {
                 showSpotlight = true
             }
-            events += RGSimpleEvent(this@QuizGame, 14.5f) {
+            events += RGSimpleEvent(this@QuizGame, 6.5f + desiredLength * 2) {
                 hostCounter = 3 // FIXME use input count
                 sfxReveal.play()
             }
-            events += RGSimpleEvent(this@QuizGame, 15.5f) {
+            events += RGSimpleEvent(this@QuizGame, 7.5f + desiredLength * 2) {
                 showSpotlight = false
                 // Determine correctness here
                 val correct = playerCounter == hostCounter
@@ -413,22 +409,22 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                     hostText = Localization["extras.quiz.dialogue.correct0"]
                     playerState.setFace(playerFaceGleeAni)
                     hostState.setFace(hostFaceGleeAni)
-                    events += TextEvent(15.75f, Localization["extras.quiz.dialogue.correct1"])
-                    events += RGSimpleEvent(this@QuizGame, 15.75f) {
+                    events += TextEvent(7.75f + desiredLength * 2, Localization["extras.quiz.dialogue.correct1"])
+                    events += RGSimpleEvent(this@QuizGame, 7.75f + desiredLength * 2) {
                         playerState.setFace(playerFaceNeutralAni)
                         hostState.setFace(hostFaceNeutralAni)
                     }
-                    events += EndSegmentEvent(16f)
+                    events += EndSegmentEvent(8f + desiredLength * 2)
                 } else {
                     sfxIncorrect.play()
                     hostText = Localization["extras.quiz.dialogue.incorrect0"]
                     playerState.setFace(playerFaceSadAni)
                     hostState.setFace(hostFaceSadAni)
-                    events += TextEvent(15.75f, Localization["extras.quiz.dialogue.incorrect1"])
-                    events += RGSimpleEvent(this@QuizGame, 15.75f) {
+                    events += TextEvent(7.75f + desiredLength * 2, Localization["extras.quiz.dialogue.incorrect1"])
+                    events += RGSimpleEvent(this@QuizGame, 7.75f + desiredLength * 2) {
                         hostState.setFace(hostFaceNeutralAni)
                     }
-                    events += RGSimpleEvent(this@QuizGame, 16.5f) {
+                    events += RGSimpleEvent(this@QuizGame, 8.5f + desiredLength * 2) {
                         playState = PlayState.PAUSED
                         main.screen = TransitionScreen(main, main.screen, ScreenRegistry["info"], WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
                     }
