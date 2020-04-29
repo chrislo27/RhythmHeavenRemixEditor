@@ -12,9 +12,7 @@ import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.extras.RhythmGameScreen
-import io.github.chrislo27.rhre3.extras.TestAffineScreen
-import io.github.chrislo27.rhre3.extras.UpbeatGame
+import io.github.chrislo27.rhre3.extras.*
 import io.github.chrislo27.rhre3.util.FadeIn
 import io.github.chrislo27.rhre3.util.FadeOut
 import io.github.chrislo27.rhre3.util.WipeFrom
@@ -31,7 +29,6 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
 
     private val main: RHRE3Application get() = infoScreen.main
     private val preferences: Preferences get() = main.preferences
-    private val editor: Editor get() = infoScreen.editor
 
     private val upbeatHardButton: Button<InfoScreen>
     
@@ -66,19 +63,28 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
             this.tooltipTextIsLocalizationKey = true
             this.tooltipText = "extras.bouncyRoadMania.tooltip"
         }
-//        this.elements += Button(palette, this, this).apply {
-//            addLabel(TextLabel(palette, this, this.stage).apply {
-//                this.fontScaleMultiplier = fontScale
-//                this.isLocalizationKey = false
-//                this.textWrapping = false
-//                this.textAlign = Align.center
-//                this.text = "Lockstep Maker"
-//            })
-//            this.location.set(screenX = padding,
-//                              screenY = padding * 6 + buttonHeight * 5,
-//                              screenWidth = buttonWidth,
-//                              screenHeight = buttonHeight)
-//        }
+        this.elements += Button(palette, this, this).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.fontScaleMultiplier = fontScale
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.textAlign = Align.center
+                this.text = "extras.quiz"
+            })
+            this.location.set(screenX = padding,
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+            this.leftClickAction = { _, _ ->
+                val game = QuizGame(main)
+                Gdx.app.postRunnable {
+                    main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
+                    AssetRegistry.get<Sound>("sfx_enter_game").play()
+                }
+            }
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = "extras.quiz.tooltip"
+        }
 //        this.elements += Button(palette, this, this).apply {
 //            addLabel(TextLabel(palette, this, this.stage).apply {
 //                this.fontScaleMultiplier = fontScale

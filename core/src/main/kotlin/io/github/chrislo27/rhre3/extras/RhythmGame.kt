@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.extras
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -80,9 +81,8 @@ abstract class RhythmGame(val main: RHRE3Application) {
         
         val textBox = currentTextBox
         if (textBox != null) {
-            val font = main.defaultFontLarge
+            val font = main.defaultFontMedium
             font.scaleFont(camera)
-            font.scaleMul(0.5f)
             font.setColor(0f, 0f, 0f, 1f)
             // Render text box
             val backing = AssetRegistry.get<Texture>("ui_textbox")
@@ -123,7 +123,6 @@ abstract class RhythmGame(val main: RHRE3Application) {
                     font.draw(batch, if (bordered) "\uE0A0" else "\uE0E0", x + w - sectionX * 0.75f, y + font.capHeight + sectionY * 0.35f, 0f, Align.center, false)
                 }
             }
-            font.scaleMul(1f / 0.5f)
             font.unscaleFont()
         }
 
@@ -139,7 +138,10 @@ abstract class RhythmGame(val main: RHRE3Application) {
         val textBox = currentTextBox
         if (textBox != null && textBox.requiresInput) {
             if (textBox.secsBeforeCanInput > 0f) {
-                textBox.secsBeforeCanInput -= Gdx.graphics.deltaTime // Don't use delta
+                if (playState != PlayState.PAUSED) {
+                    playState = PlayState.PAUSED
+                }
+                textBox.secsBeforeCanInput -= Gdx.graphics.deltaTime // Don't use delta arg
             }
         }
         
@@ -168,11 +170,6 @@ abstract class RhythmGame(val main: RHRE3Application) {
                 }
             }
         }
-
-        // FIXME non-endless not yet supported
-//        if (playState != PlayState.STOPPED && beat >= duration) {
-//            playState = PlayState.STOPPED
-//        }
     }
     
     open fun onPlayStateChange(old: PlayState, current: PlayState) {
@@ -190,6 +187,17 @@ abstract class RhythmGame(val main: RHRE3Application) {
      * True if consumed
      */
     open fun onInput(button: InputButtons, release: Boolean): Boolean {
+        val textbox = currentTextBox
+        if (textbox != null && textbox.requiresInput && button == InputButtons.A && textbox.secsBeforeCanInput <= 0f) {
+            if (!release) {
+                AssetRegistry.get<Sound>("sfx_text_advance_1").play()
+            } else {
+                AssetRegistry.get<Sound>("sfx_text_advance_2").play()
+                currentTextBox = null
+                playState = PlayState.PLAYING
+            }
+            return true
+        }
         return false
     }
     

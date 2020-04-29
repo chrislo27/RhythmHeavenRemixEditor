@@ -68,6 +68,8 @@ object PreferenceKeys {
     val EXTRAS_UPBEAT_TIMES_PLAYED = "extras_upbeat_timesPlayed"
     val EXTRAS_UPBEAT_HARD_HIGH_SCORE = "extras_upbeatHard_highScore"
     val EXTRAS_UPBEAT_HARD_TIMES_PLAYED = "extras_upbeatHard_timesPlayed"
+    val EXTRAS_QUIZ_HIGH_SCORE = "extras_quiz_highScore"
+    val EXTRAS_QUIZ_TIMES_PLAYED = "extras_quiz_timesPlayed"
 
     val EVENT_PREFIX = "event_"
 
