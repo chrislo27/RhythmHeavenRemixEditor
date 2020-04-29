@@ -24,6 +24,8 @@ class Animation : IAnimation {
     }
 
     fun getCurrentStep(frameNum: Int): AnimationStep? {
+        if (steps.isEmpty()) return null
+        if (steps.size == 1) return steps.first()
         val totalFrames = steps.sumBy { it.delay.toInt() }
         val frame = frameNum % totalFrames
 
