@@ -70,12 +70,12 @@ class SpritePart : ISpritePart {
     }
 
     fun render(batch: SpriteBatch, sheet: Texture, offsetX: Float, offsetY: Float) {
-        batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f * stretchX, regionH.toInt() / 2f * stretchY, regionW.toInt() * stretchX, regionH.toInt() * stretchY, 1f, 1f, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
+        batch.draw(sheet, offsetX, offsetY - regionH.toInt() * stretchY, regionW.toInt() / 2f * stretchX, regionH.toInt() / 2f * stretchY, regionW.toInt() * stretchX, regionH.toInt() * stretchY, 1f, 1f, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
     }
     
     fun renderWithShader(batch: SpriteBatch, shader: ShaderProgram, sheet: Texture, offsetX: Float, offsetY: Float) {
         shader.setUniformf("screenColor", screenColor)
-        batch.draw(sheet, offsetX, offsetY - regionH.toInt(), regionW.toInt() / 2f * stretchX, regionH.toInt() / 2f * stretchY, regionW.toInt() * stretchX, regionH.toInt() * stretchY, 1f, 1f, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
+        batch.draw(sheet, offsetX, offsetY - regionH.toInt() * stretchY, regionW.toInt() / 2f * stretchX, regionH.toInt() / 2f * stretchY, regionW.toInt() * stretchX, regionH.toInt() * stretchY, 1f, 1f, -rotation, regionX.toInt(), regionY.toInt(), regionW.toInt(), regionH.toInt(), flipX, flipY)
         batch.flush()
         shader.setUniformf("screenColor", Color.BLACK)
     }
