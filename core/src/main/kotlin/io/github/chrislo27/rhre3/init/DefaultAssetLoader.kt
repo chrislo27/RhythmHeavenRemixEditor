@@ -195,6 +195,8 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("sfx_pause_exit", "sound/game/pause/pause_exit.ogg")
         AssetRegistry.loadAsset<Sound>("sfx_blip", "sound/game/pause/blip.ogg")
         AssetRegistry.loadAsset<Sound>("sfx_select", "sound/game/pause/select.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_text_advance_1", "sound/game/text_advance_1.ogg")
+        AssetRegistry.loadAsset<Sound>("sfx_text_advance_2", "sound/game/text_advance_2.ogg")
     }
     
     override fun addUnmanagedAssets(assets: MutableMap<String, Any>) {
