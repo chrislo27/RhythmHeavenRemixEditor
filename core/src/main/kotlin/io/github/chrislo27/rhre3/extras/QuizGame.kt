@@ -321,7 +321,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         fun inp(beat: Float, a: Boolean) = events.add(HostButtonEvent(beat, a))
         when (val patternType = patternsType.coerceIn(0, 0)) {
             0 -> {
-                duration = 5f
+                duration = 6f
                 tempo = 100f + 5 * segmentIndex
                 when (if (segmentIndex in 0..11) segmentIndex else MathUtils.random(0, 11)) {
                     0 -> {
