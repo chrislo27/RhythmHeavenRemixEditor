@@ -330,19 +330,20 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         fun inp(beat: Float, a: Boolean) = events.add(HostButtonEvent(beat, a))
         when (val patternType = patternsType.coerceIn(0, 0)) {
             0 -> {
-                duration = 6f
                 tempo = 100f + 5 * segmentIndex
                 when (if (segmentIndex in 0..11) segmentIndex else MathUtils.random(0, 11)) {
                     0 -> {
                         inp(0f, true)
                         inp(1f, true)
                         inp(2f, true)
+                        duration = 5f
                     }
                     1 -> {
                         inp(0f, true)
                         inp(1f, true)
                         inp(1.5f, false)
                         inp(2f, true)
+                        duration = 5f
                     }
                     2 -> {
                         inp(0f, true)
@@ -350,7 +351,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(1.25f, false)
                         inp(1.50f, true)
                         inp(1.75f, false)
-                        inp(2f, false)
+                        inp(2f, true)
+                        duration = 6f
                     }
                     3 -> {
                         inp(0f, true)
@@ -361,6 +363,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2f, true)
                         inp(2.5f, true)
                         inp(3f, false)
+                        duration = 6f
                     }
                     4 -> {
                         inp(0f, true)
@@ -372,6 +375,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2.50f, true)
                         inp(2.75f, false)
                         inp(3f, true)
+                        duration = 6f
                     }
                     5 -> {
                         inp(0f, true)
@@ -380,6 +384,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(1.75f, false)
                         inp(2f, true)
                         inp(2.5f, true)
+                        duration = 6f
                     }
                     6 -> {
                         inp(0f, true)
@@ -389,6 +394,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2f, true)
                         inp(2.5f, true)
                         inp(2.75f, false)
+                        duration = 6f
                     }
                     7 -> {
                         inp(0f, true)
@@ -397,6 +403,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(1.75f, false)
                         inp(2f, true)
                         inp(2.5f, true)
+                        duration = 6f
                     }
                     8 -> {
                         inp(0f, true)
@@ -407,6 +414,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2.25f, false)
                         inp(2.5f, true)
                         inp(2.75f, false)
+                        duration = 6f
                     }
                     9 -> {
                         inp(0f, true)
@@ -417,6 +425,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2f, true)
                         inp(2.5f, true)
                         inp(2.75f, false)
+                        duration = 6f
                     }
                     10 -> {
                         inp(0f, true)
@@ -426,6 +435,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(1.5f, true)
                         inp(2f, true)
                         inp(2.5f, false)
+                        duration = 6f
                     }
                     11 -> {
                         inp(0f, true)
@@ -437,6 +447,10 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                         inp(2f, true)
                         inp(2.5f, true)
                         inp(2.75f, false)
+                        duration = 6f
+                    }
+                    else -> {
+                        duration = 6f
                     }
                 }
             }
@@ -546,7 +560,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                     hostText = Localization["extras.quiz.dialogue.correct0"]
                     playerState.setFace(playerFaceGleeAni, false)
                     hostState.setFace(hostFaceGleeAni, false)
-                    events += TextEvent(7.75f + patternLength * 2, Localization["extras.quiz.dialogue.correct1"])
+                    events += TextEvent(7.75f + patternLength * 2, Localization["extras.quiz.dialogue.correct1_${MathUtils.random(0, 2)}"])
                     events += RGSimpleEvent(this@QuizGame, 7.75f + patternLength * 2) {
                         playerState.setFace(playerFaceNeutralAni, true)
                         hostState.setFace(hostFaceNeutralAni, true)
