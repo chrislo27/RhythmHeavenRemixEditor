@@ -59,7 +59,7 @@ class FakeCrashScreen(main: RHRE3Application, val throwable: Throwable, val last
         stage.elements += label().apply {
             this.location.set(screenY = 0.5f, screenHeight = 0.3f)
             this.fontScaleMultiplier = 0.9f
-            this.text = "You got a little too excited there, huh?\n\nThe Quiz Show television program has crashed, but we're able to display this crash info screen.\nIf you can, take a screenshot of this screen as it contains useful info for the developer.\nConsider not doing, er, \"that\" next time."
+            this.text = "You got a little too excited there, huh?\n\nThe Quiz Show television program has crashed, but we're able to display this crash info screen.\nIf you can, take a screenshot of this screen as it contains useful info for the developer.\n[#8CCFFF]Consider not doing, er, \"that\" next time.[]"
         }
 
         stage.elements += label().apply {
