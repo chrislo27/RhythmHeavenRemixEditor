@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
@@ -25,7 +26,6 @@ import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
 import rhmodding.bread.model.bccad.Animation
 import rhmodding.bread.model.bccad.BCCAD
 import java.nio.ByteBuffer
-import java.time.Duration
 
 
 class QuizGame(main: RHRE3Application) : RhythmGame(main) {
@@ -83,7 +83,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private val hitRFrames = playerHandRAni.steps.sumBy { it.delay.toInt() }
     private val readyFrames = playerReadyLAni.steps.sumBy { it.delay.toInt() }
     private val buttonFrames = playerKeyAni.steps.sumBy { it.delay.toInt() }
-    
+
     private val sfxReveal: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/answer_reveal.ogg"))
     private val sfxCorrect: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/correct.ogg"))
     private val sfxIncorrect: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/incorrect.ogg"))
@@ -111,20 +111,21 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private var showSpotlight = false
     private var playerCounter = 0
     private var hostCounter = -1
-    
+
+    private val patternsType: Int = MathUtils.random(0, 0)
     private var segmentsCompleted = 0
     private var score = 0
     private val highScore = main.preferences.getInteger(PreferenceKeys.EXTRAS_QUIZ_HIGH_SCORE, 0).coerceAtLeast(0)
     private var exploded = false // TODO implement this
-    
+
     init {
         camera.setToOrtho(false, 240 / 9f * 16f, 240f)
         camera.zoom = 1f
         camera.update()
-        
+
         hostState.lockToReady()
         playerState.lockToReady()
-        
+
         tempos.add(TempoChange(tempos, 0f, 60f, Swing.STRAIGHT, 0f))
         events += TextEvent(0f, Localization["extras.quiz.dialogue.intro0"])
         events += TextEvent(0.25f, Localization["extras.quiz.dialogue.intro1"])
@@ -191,7 +192,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             playerNumberAni.steps[digitTen].render(batch, partsSheet, partsBccad.sprites, centreX + panelROffsetX + playerNumOffX - 4f * 6, centreY + panelROffsetY + playerNumOffY + 4f)
             playerNumberAni.steps[digitOne].render(batch, partsSheet, partsBccad.sprites, centreX + panelROffsetX + playerNumOffX, centreY + panelROffsetY + playerNumOffY)
         }
-        
+
         // Render buttons on panels
         hostButtonAni.render(batch, partsSheet, partsBccad.sprites, hostState.dpadFrame, centreX + panelLOffsetX, centreY + panelLOffsetY + 3f)
         hostKeyAni.render(batch, partsSheet, partsBccad.sprites, hostState.aBtnFrame, centreX + panelLOffsetX, centreY + panelLOffsetY)
@@ -214,12 +215,12 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             val h = timerHandRegion.regionHeight
             batch.draw(timerHandRegion, centreX - w / 2f, centreY - h / 2f, w / 2f, h / 2f, w * 1f, h * 1f, 1f, 1f, -360f * timerProgress)
         }
-        
+
         // Render sign (needs shader)
         batch.shader = screenColorShader
         signAni.renderWithShader(batch, screenColorShader, bgSheet, bgBccad.sprites, globalFrame.toInt(), centreX, centreY)
         batch.shader = null
-        
+
         // Score
         run {
             val font = main.defaultBorderedFontLarge
@@ -230,7 +231,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             font.drawCompressed(batch, Localization["extras.playing.score", "$score"], width * 0.625f, height * 0.95f, width * 0.35f, Align.right)
             font.unscaleFont()
         }
-        
+
         if (showSpotlight) {
             spotlightAni.render(batch, bgSheet, bgBccad.sprites, 0, centreX, centreY)
         }
@@ -309,10 +310,139 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             main.preferences.putInteger(PreferenceKeys.EXTRAS_QUIZ_HIGH_SCORE, score).flush()
         }
     }
-    
-    inner class HostButtonEvent(beat: Float, val right: Boolean) : RGEvent(this, beat) {
+
+    /**
+     * @return A triple of events list, pattern duration, and tempo in that order
+     */
+    fun generateInputs(segmentIndex: Int): Triple<List<RGEvent>, Float, Float> {
+        val events = mutableListOf<RGEvent>()
+        val duration: Float
+        val tempo: Float
+        fun inp(beat: Float, a: Boolean) = events.add(HostButtonEvent(beat, a))
+        when (val patternType = patternsType.coerceIn(0, 0)) {
+            0 -> {
+                duration = 5f
+                tempo = 100f + 5 * segmentIndex
+                when (if (segmentIndex in 0..11) segmentIndex else MathUtils.random(0, 11)) {
+                    0 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(2f, true)
+                    }
+                    1 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.5f, false)
+                        inp(2f, true)
+                    }
+                    2 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.50f, true)
+                        inp(1.75f, false)
+                        inp(2f, false)
+                    }
+                    3 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.50f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                        inp(3f, false)
+                    }
+                    4 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.50f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.50f, true)
+                        inp(2.75f, false)
+                        inp(3f, true)
+                    }
+                    5 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.5f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                    }
+                    6 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.5f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                        inp(2.75f, false)
+                    }
+                    7 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.5f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                    }
+                    8 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.5f, true)
+                        inp(2f, true)
+                        inp(2.25f, false)
+                        inp(2.5f, true)
+                        inp(2.75f, false)
+                    }
+                    9 -> {
+                        inp(0f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.5f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                        inp(2.75f, false)
+                    }
+                    10 -> {
+                        inp(0f, true)
+                        inp(0.5f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.5f, true)
+                        inp(2f, true)
+                        inp(2.5f, false)
+                    }
+                    11 -> {
+                        inp(0f, true)
+                        inp(0.5f, true)
+                        inp(1f, true)
+                        inp(1.25f, false)
+                        inp(1.5f, true)
+                        inp(1.75f, false)
+                        inp(2f, true)
+                        inp(2.5f, true)
+                        inp(2.75f, false)
+                    }
+                }
+            }
+            else -> error("Pattern type $patternType not supported")
+        }
+        return Triple(events, duration, tempo)
+    }
+
+    override fun getDebugString(): String {
+        return super.getDebugString() + "score: $score\nhighscore: $highScore\nsegmentIndex: $segmentsCompleted"
+    }
+
+    inner class HostButtonEvent(beat: Float, val aButton: Boolean) : RGEvent(this, beat) {
         override fun onStart() {
-            if (right) {
+            if (!aButton) {
                 hostState.hitRight()
                 sfxHostA.play()
             } else {
@@ -321,13 +451,13 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             }
         }
     }
-    
-    inner class TextEvent(beat: Float, val text: String?): RGEvent(this, beat) {
+
+    inner class TextEvent(beat: Float, val text: String?) : RGEvent(this, beat) {
         override fun onStart() {
             hostText = text
         }
     }
-    
+
     inner class TimerEvent(beat: Float, duration: Float) : RGEvent(this, beat) {
         init {
             this.length = duration
@@ -347,59 +477,57 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             sfxTimerStop.play()
         }
     }
-    
+
     inner class GenerateSegmentEvent(beat: Float, val segmentIndex: Int) : RGEvent(this, beat) {
         override fun onStart() {
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, 60f / 1.5f, Swing.STRAIGHT, 0f))
             events += RGSimpleEvent(this@QuizGame, 0f) {
                 hostState.unlockReady()
-                hostState.setFace(if (segmentsCompleted >= 20) hostFaceEvo4Ani else if (segmentsCompleted >= 15) hostFaceEvo3Ani else if (segmentIndex >= 10) hostFaceEvo2Ani else if (segmentsCompleted >= 5) hostFaceEvo1Ani else hostFaceNeutralAni)
-                hostState.lockFaceFrame = true
+                hostState.setFace(if (segmentsCompleted >= 20) hostFaceEvo4Ani else if (segmentsCompleted >= 15) hostFaceEvo3Ani else if (segmentIndex >= 10) hostFaceEvo2Ani else if (segmentsCompleted >= 5) hostFaceEvo1Ani else hostFaceNeutralAni, true)
+                hostState.faceFrame = hostState.faceFrameLimit - 1
             }
-            val tempo = 100f
-            val desiredLength = 4f
-            tempos.add(TempoChange(tempos, 1f, tempo, Swing.STRAIGHT, 0f))
             // Generate inputs
-            events += HostButtonEvent(1f, false)
-            events += HostButtonEvent(2f, true)
-            events += HostButtonEvent(3f, false)
-            
-            tempos.add(TempoChange(tempos, 1f + desiredLength, 60f / 0.5f, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 2f + desiredLength) {
+            val (inputs: List<RGEvent>, patternLength: Float, tempo: Float) = generateInputs(segmentIndex)
+            tempos.add(TempoChange(tempos, 1f, tempo, Swing.STRAIGHT, 0f))
+            inputs.onEach { it.beat += 1f }
+            events.addAll(inputs)
+            val numHostInputs = inputs.size
+            tempos.add(TempoChange(tempos, 1f + patternLength, 60f / 0.5f, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 2f + patternLength) {
                 hostState.lockToReady()
                 hostState.lockFaceFrame = false
             }
-            events += RGSimpleEvent(this@QuizGame, 3f + desiredLength) {
+            events += RGSimpleEvent(this@QuizGame, 3f + patternLength) {
                 showTimer = true
                 timerProgress = 0f
                 playerState.unlockReady()
-                playerState.setFace(if (segmentsCompleted >= 20) playerFaceEvo3Ani else if (segmentsCompleted >= 15) playerFaceEvo2Ani else if (segmentsCompleted >= 10) playerFaceEvo1Ani else playerFaceNeutralAni)
-                playerState.lockFaceFrame = true
+                playerState.setFace(if (segmentsCompleted >= 20) playerFaceEvo3Ani else if (segmentsCompleted >= 15) playerFaceEvo2Ani else if (segmentsCompleted >= 10) playerFaceEvo1Ani else playerFaceNeutralAni, true)
+                playerState.faceFrame = playerState.faceFrameLimit - 1
             }
-            tempos.add(TempoChange(tempos, 4f + desiredLength, tempo, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 4f + desiredLength) {
+            tempos.add(TempoChange(tempos, 4f + patternLength, tempo, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 4f + patternLength) {
                 allowPlayerInput = true
             }
-            events += TimerEvent(4f + desiredLength, desiredLength)
-            tempos.add(TempoChange(tempos, 4f + desiredLength * 2, 60f, Swing.STRAIGHT, 0f))
-            events += RGSimpleEvent(this@QuizGame, 4.25f + desiredLength * 2) {
+            events += TimerEvent(4f + patternLength, patternLength)
+            tempos.add(TempoChange(tempos, 4f + patternLength * 2, 60f, Swing.STRAIGHT, 0f))
+            events += RGSimpleEvent(this@QuizGame, 4.25f + patternLength * 2) {
                 playerState.lockToReady()
                 playerState.lockFaceFrame = false
                 allowPlayerInput = false
                 showTimer = false
                 sfxTripleBell.play()
             }
-            events += TextEvent(4.5f + desiredLength * 2, Localization["extras.quiz.dialogue.time0"])
-            events += TextEvent(4.75f + desiredLength * 2, Localization["extras.quiz.dialogue.time1"])
-            events += RGSimpleEvent(this@QuizGame, 5.5f + desiredLength * 2) {
+            events += TextEvent(4.5f + patternLength * 2, Localization["extras.quiz.dialogue.time0"])
+            events += TextEvent(4.75f + patternLength * 2, Localization["extras.quiz.dialogue.time1"])
+            events += RGSimpleEvent(this@QuizGame, 5.5f + patternLength * 2) {
                 showSpotlight = true
             }
-            events += RGSimpleEvent(this@QuizGame, 6.5f + desiredLength * 2) {
-                hostCounter = 3 // FIXME use input count
+            events += RGSimpleEvent(this@QuizGame, 6.5f + patternLength * 2) {
+                hostCounter = numHostInputs
                 sfxReveal.play()
             }
-            events += RGSimpleEvent(this@QuizGame, 7.5f + desiredLength * 2) {
+            events += RGSimpleEvent(this@QuizGame, 7.5f + patternLength * 2) {
                 showSpotlight = false
                 // Determine correctness here
                 val correct = playerCounter == hostCounter
@@ -407,24 +535,24 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                     score++
                     sfxCorrect.play()
                     hostText = Localization["extras.quiz.dialogue.correct0"]
-                    playerState.setFace(playerFaceGleeAni)
-                    hostState.setFace(hostFaceGleeAni)
-                    events += TextEvent(7.75f + desiredLength * 2, Localization["extras.quiz.dialogue.correct1"])
-                    events += RGSimpleEvent(this@QuizGame, 7.75f + desiredLength * 2) {
-                        playerState.setFace(playerFaceNeutralAni)
-                        hostState.setFace(hostFaceNeutralAni)
+                    playerState.setFace(playerFaceGleeAni, false)
+                    hostState.setFace(hostFaceGleeAni, false)
+                    events += TextEvent(7.75f + patternLength * 2, Localization["extras.quiz.dialogue.correct1"])
+                    events += RGSimpleEvent(this@QuizGame, 7.75f + patternLength * 2) {
+                        playerState.setFace(playerFaceNeutralAni, true)
+                        hostState.setFace(hostFaceNeutralAni, true)
                     }
-                    events += EndSegmentEvent(8f + desiredLength * 2)
+                    events += EndSegmentEvent(8f + patternLength * 2)
                 } else {
                     sfxIncorrect.play()
                     hostText = Localization["extras.quiz.dialogue.incorrect0"]
-                    playerState.setFace(playerFaceSadAni)
-                    hostState.setFace(hostFaceSadAni)
-                    events += TextEvent(7.75f + desiredLength * 2, Localization["extras.quiz.dialogue.incorrect1"])
-                    events += RGSimpleEvent(this@QuizGame, 7.75f + desiredLength * 2) {
-                        hostState.setFace(hostFaceNeutralAni)
+                    playerState.setFace(playerFaceSadAni, false)
+                    hostState.setFace(hostFaceSadAni, false)
+                    events += TextEvent(7.75f + patternLength * 2, Localization["extras.quiz.dialogue.incorrect1"])
+                    events += RGSimpleEvent(this@QuizGame, 7.75f + patternLength * 2) {
+                        hostState.setFace(hostFaceNeutralAni, true)
                     }
-                    events += RGSimpleEvent(this@QuizGame, 8.5f + desiredLength * 2) {
+                    events += RGSimpleEvent(this@QuizGame, 8.5f + patternLength * 2) {
                         playState = PlayState.PAUSED
                         main.screen = TransitionScreen(main, main.screen, ScreenRegistry["info"], WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
                     }
@@ -454,7 +582,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         var currentFace: Animation = if (player) playerFaceNeutralAni else hostFaceNeutralAni
             private set
         var lockFaceFrame = false
-        private var faceFrameLimit = 0
+        var faceFrameLimit = 0
+            private set
         private var readyFrame: Int = 0
         private var leftHitFrame: Int = 0
         private var rightHitFrame: Int = 0
@@ -486,16 +615,18 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                 if (padButtonFrame < 0) padButtonFrame = 0
                 aButtonFrame -= frames
                 if (aButtonFrame < 0) aButtonFrame = 0
-                faceFrame += frames
+                if (!lockFaceFrame) {
+                    faceFrame += frames
+                }
                 if (faceFrame >= faceFrameLimit) faceFrame = faceFrameLimit - 1
-                if (lockFaceFrame) faceFrame = 0
             }
         }
-        
-        fun setFace(animation: Animation) {
+
+        fun setFace(animation: Animation, lock: Boolean) {
             currentFace = animation
             faceFrame = 0
             faceFrameLimit = animation.steps.sumBy { it.delay.toInt() }
+            lockFaceFrame = lock
         }
 
         fun hitLeft() {
@@ -503,6 +634,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             useReady = false
             leftHitFrame = 0
             padButtonFrame = buttonFrames
+            lockFaceFrame = false
+            faceFrame = 0
         }
 
         fun hitRight() {
@@ -510,6 +643,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             useReady = false
             rightHitFrame = 0
             aButtonFrame = buttonFrames
+            lockFaceFrame = false
+            faceFrame = 0
         }
 
         fun lockToReady() {
