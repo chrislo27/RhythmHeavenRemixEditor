@@ -290,7 +290,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                 true
             } else if (button == InputButtons.LEFT || button == InputButtons.RIGHT || button == InputButtons.UP || button == InputButtons.DOWN) {
                 playerState.hitRight()
-                playerCounter += 10
+                playerCounter++
                 checkCounterExceeded()
                 sfxPlayerD.play()
                 true
