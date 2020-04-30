@@ -445,7 +445,7 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
                 } else {
                     (MathUtils.random(200, 300).toFloat())
                 }) else {
-                    (segmentTempos[segmentIndex % segmentTempos.size] * 1.25f)
+                    (segmentTempos[segmentIndex % segmentTempos.size] * 1.125f + 15f)
                 }
             } else segmentTempos[segmentIndex.coerceAtMost(segmentTempos.size - 1)]
             tempos.clear()
