@@ -116,7 +116,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private var segmentsCompleted = 0
     private var score = 0
     private val highScore = main.preferences.getInteger(PreferenceKeys.EXTRAS_QUIZ_HIGH_SCORE, 0).coerceAtLeast(0)
-    private var exploded = false // TODO implement this
+    private var exploded = false
 
     init {
         camera.setToOrtho(false, 240 / 9f * 16f, 240f)
@@ -260,6 +260,13 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         playerState.update(delta)
         hostState.update(delta)
     }
+    
+    private fun checkCounterExceeded() {
+        if (playerCounter >= 100 && !exploded) {
+            exploded = true
+            main.screen = FakeCrashScreen(main, IllegalStateException("Quiz Show cannot handle this many inputs. Nice try."), main.screen)
+        }
+    }
 
     override fun onInput(button: InputButtons, release: Boolean): Boolean = super.onInput(button, release) || run {
         val hostText = this.hostText
@@ -278,11 +285,13 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             if (button == InputButtons.A) {
                 playerState.hitLeft()
                 playerCounter++
+                checkCounterExceeded()
                 sfxPlayerA.play()
                 true
             } else if (button == InputButtons.LEFT || button == InputButtons.RIGHT || button == InputButtons.UP || button == InputButtons.DOWN) {
                 playerState.hitRight()
-                playerCounter++
+                playerCounter += 10
+                checkCounterExceeded()
                 sfxPlayerD.play()
                 true
             } else false
