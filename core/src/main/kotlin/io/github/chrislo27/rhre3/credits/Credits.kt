@@ -25,7 +25,7 @@ object Credits {
                 |Zenon""".trimMargin(),
                 "sfx" crediting (SFXDatabase.let { if (!it.isDataLoading()) it.data.sfxCredits.sortedBy { it.toLowerCase(Locale.ROOT) }.joinToString(separator = ", ") else null } ?: sfxCreditsFallback),
                 "gfx" crediting "GlitchyPSIX, lilbitdun, Steppy, Tickflow",
-                "extras" crediting "Malalaika, The Drummer",
+                "extras" crediting "GenericArragements, Malalaika, The Drummer",
                 "specialThanks" crediting """Alchemyking, AngryTapper, ArsenArsen, baguette, bin5s5, Chillius, ChorusSquid, Clone5184, danthonywalker, Dracobot, Draster, Dream Top, EBPB2K, flyance, Fringession, garbo, GenericArrangements, (◉.◉)☂, GinoTitan, GlitchyPSIX, GrueKun, inkedsplat, iRonnoc5, jos, Lvl100Feraligatr, Malalaika, Mezian, minenice55, Miracle22, Mixelz, nave, nerd, oofie, Pengu123, PikaMasterJesi, Rabbidking, RobSetback, SJGarnet, sp00pster, Ssure2, SuicuneWiFi, susmobile, TheRhythmKid, Zenon, RHModding and Custom Remix Tourney Discord servers""",
                 "resources" crediting
                         """Rhythm Heaven assets by Nintendo
