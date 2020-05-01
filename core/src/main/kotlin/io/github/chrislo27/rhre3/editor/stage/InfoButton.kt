@@ -20,7 +20,7 @@ class InfoButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     override var tooltipText: String?
         set(_) {}
         get() {
-            return Localization["editor.info"]
+            return Localization["editor.info.tooltip"]
         }
 
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
