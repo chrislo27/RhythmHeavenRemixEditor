@@ -45,7 +45,7 @@ object RHRE3 {
     val DATABASE_CURRENT_VERSION: String = "https://raw.githubusercontent.com/chrislo27/RHRE-database/$DATABASE_BRANCH/current.json"
     const val DATABASE_RELEASES = "https://github.com/chrislo27/RHRE-database/releases"
     const val RELEASE_API_URL = "https://api.github.com/repos/chrislo27/RhythmHeavenRemixEditor/releases/latest"
-    const val OUT_OF_MEMORY_DOC_LINK: String = "https://rhre.readthedocs.io/en/latest/Out-of-memory-on-music/"
+    const val OUT_OF_MEMORY_DOC_LINK: String = "https://docs.rhre.dev/Out-of-memory-on-music/"
     const val DOCS_URL: String = "https://rhre.readthedocs.io/en/latest/"
 
     val RHRE_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.MAY, 29)
