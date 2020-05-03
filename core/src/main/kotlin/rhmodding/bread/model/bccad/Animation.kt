@@ -11,9 +11,9 @@ class Animation : IAnimation {
     override val steps: MutableList<AnimationStep> = mutableListOf()
     var interpolationInt: Int = 0
     var interpolated: Boolean
-        get() = (interpolationInt and 0x1) > 0
+        get() = (interpolationInt and 0b1) > 0
         set(value) {
-            interpolationInt = if (value) (interpolationInt or (1 shl 0x1)) else (interpolationInt and (1 shl 0x1).inv())
+            interpolationInt = if (value) (interpolationInt or 0b1) else (interpolationInt and 0b1.inv())
         }
     var name: String = ""
     
