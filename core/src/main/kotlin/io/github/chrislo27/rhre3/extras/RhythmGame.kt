@@ -182,6 +182,9 @@ abstract class RhythmGame(val main: RHRE3Application) {
     open fun onPauseTriggered(): Boolean {
         return false
     }
+    
+    open fun onPauseMenuStateChange(paused: Boolean) {
+    }
 
     /**
      * True if consumed

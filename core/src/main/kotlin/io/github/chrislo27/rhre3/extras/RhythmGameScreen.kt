@@ -198,11 +198,13 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
             if (!game.onPauseTriggered()) {
                 this.paused = PauseState(game.playState)
                 game.playState = PlayState.PAUSED
+                game.onPauseMenuStateChange(true)
                 AssetRegistry.get<Sound>("sfx_pause_enter").play()
             }
         } else {
             this.paused = null
             game.playState = paused.lastPlayState
+            game.onPauseMenuStateChange(false)
             AssetRegistry.get<Sound>("sfx_pause_exit").play()
         }
     }
