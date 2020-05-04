@@ -255,6 +255,7 @@ class InfoStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val 
                 try {
                     val credits = CreditsGame(main, if (Gdx.input.isShiftDown()) 1.25f else 1f)
                     main.screen = TransitionScreen(main, infoScreen, credits, FadeOut(0.5f, Color.BLACK), FadeIn(0.75f, Color.BLACK))
+                    AssetRegistry.get<Sound>("sfx_enter_game").play()
                 } catch (e: Exception) {
                     e.printStackTrace()
                     main.screen = CreditsScreen(main)

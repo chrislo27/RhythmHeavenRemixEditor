@@ -1,6 +1,7 @@
 package io.github.chrislo27.rhre3.extras
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
@@ -19,13 +20,11 @@ import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.transition.TransitionScreen
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
-import io.github.chrislo27.toolboks.util.gdxutils.getTextHeight
-import io.github.chrislo27.toolboks.util.gdxutils.getTextWidth
-import io.github.chrislo27.toolboks.util.gdxutils.scaleMul
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import rhmodding.bread.model.bccad.Animation
 import rhmodding.bread.model.bccad.BCCAD
 import java.nio.ByteBuffer
+import java.time.Duration
 
 
 class QuizGame(main: RHRE3Application) : RhythmGame(main) {
@@ -94,6 +93,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private val sfxPlayerD: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/contestantDPad.ogg"))
     private val sfxHostA: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/hostA.ogg"))
     private val sfxHostD: Sound = Gdx.audio.newSound(Gdx.files.internal("extras/quiz/hostDPad.ogg"))
+    private val music: Music = Gdx.audio.newMusic(Gdx.files.internal("extras/quiz/music_shortloop.ogg"))
 
     private val screenColorShader: ShaderProgram = ScreenColorShader.createShader()
 
@@ -125,12 +125,21 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
 
         hostState.lockToReady()
         playerState.lockToReady()
+        
+        music.isLooping = true
 
         tempos.add(TempoChange(tempos, 0f, 60f, Swing.STRAIGHT, 0f))
+        events += RGSimpleEvent(this, 0f) {
+            music.play()
+            music.volume = 0f
+            music.fadeTo(1f, 0.5f)
+        }
         events += TextEvent(0f, Localization["extras.quiz.dialogue.intro0"])
         events += TextEvent(0.25f, Localization["extras.quiz.dialogue.intro1"])
         events += TextEvent(0.5f, Localization["extras.quiz.dialogue.intro2"])
-        events += RGSimpleEvent(this, 0.75f) {
+        events += MusicFadeEvent(0.6f, 0.5f, 0f)
+        events += RGSimpleEvent(this, 1.5f) {
+            seconds = 0f
             tempos.clear()
             tempos.add(TempoChange(tempos, 0f, 120f, Swing.STRAIGHT, 0f))
             events.clear()
@@ -231,6 +240,23 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             font.drawCompressed(batch, Localization["extras.playing.score", "$score"], width * 0.625f, height * 0.95f, width * 0.35f, Align.right)
             font.unscaleFont()
         }
+        
+//        if (music.isPlaying && music.volume > 0f) {
+//            val credit = """"Happy Happy Game Show"
+//Kevin MacLeod (incompetech.com)
+//Licensed under Creative Commons: By Attribution 3.0
+//https://creativecommons.org/licenses/by/3.0/"""
+//            val font = main.defaultFont
+//            font.scaleFont(camera)
+//            font.scaleMul(0.75f)
+//            batch.setColor(0f, 0f, 0f, 0.75f * music.volume)
+//            batch.fillRect(width, 0f, -width * 0.4f, font.lineHeight * 4f + 2f)
+//            batch.setColor(1f, 1f, 1f, 1f)
+//            font.setColor(1f, 1f, 1f, music.volume)
+//            font.drawCompressed(batch, credit, width * 0.6f - 2f, 2f + font.lineHeight * 3 + font.capHeight, width * 0.4f, Align.right)
+//            font.setColor(1f, 1f, 1f, 1f)
+//            font.unscaleFont()
+//        }
 
         if (showSpotlight) {
             spotlightAni.render(batch, bgSheet, bgBccad.sprites, 0, centreX, centreY)
@@ -313,6 +339,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         sfxPlayerD.dispose()
         sfxHostA.dispose()
         sfxHostD.dispose()
+        music.stop()
+        music.dispose()
         val timesPlayedKey = PreferenceKeys.EXTRAS_QUIZ_TIMES_PLAYED
         main.preferences.putInteger(timesPlayedKey, main.preferences.getInteger(timesPlayedKey, 0) + 1).flush()
         if (!exploded && score > highScore) {
@@ -459,6 +487,15 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         return Triple(events, duration, tempo)
     }
 
+    override fun onPauseMenuStateChange(paused: Boolean) {
+        if (paused) {
+            music.pause()
+        } else {
+            if (music.volume > 0f)
+                music.play()
+        }
+    }
+
     override fun getDebugString(): String {
         return super.getDebugString() + "score: $score\nhighscore: $highScore\nsegmentIndex: $segmentsCompleted"
     }
@@ -571,10 +608,16 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
                     hostText = Localization["extras.quiz.dialogue.incorrect0"]
                     playerState.setFace(playerFaceSadAni, false)
                     hostState.setFace(hostFaceSadAni, false)
+                    events += RGSimpleEvent(this@QuizGame, 7.7f + patternLength * 2) {
+                        music.play()
+                        music.volume = 0f
+                        music.fadeTo(1f, 0.5f)
+                    }
                     events += TextEvent(7.75f + patternLength * 2, Localization["extras.quiz.dialogue.incorrect1"])
                     events += RGSimpleEvent(this@QuizGame, 7.75f + patternLength * 2) {
                         hostState.setFace(hostFaceNeutralAni, true)
                     }
+                    events += MusicFadeEvent(8f + patternLength * 2, 0.5f, 0f)
                     events += RGSimpleEvent(this@QuizGame, 8.5f + patternLength * 2) {
                         playState = PlayState.PAUSED
                         main.screen = TransitionScreen(main, main.screen, ScreenRegistry["info"], WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
@@ -592,6 +635,28 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             hostCounter = -1
             playerCounter = 0
             events += GenerateSegmentEvent(0f, segmentsCompleted)
+        }
+    }
+    
+    inner class MusicFadeEvent(beat: Float, duration: Float, var targetVol: Float) : RGEvent(this, beat) {
+        private var startVol: Float = 1f
+        
+        init {
+            this.length = duration
+        }
+
+        override fun onStart() {
+            music.play()
+            startVol = music.volume
+        }
+
+        override fun whilePlaying() {
+            music.volume = MathUtils.lerp(startVol, targetVol, ((this@QuizGame.beat - this.beat) / this.length).coerceIn(0f, 1f))
+        }
+
+        override fun onEnd() {
+            music.volume = targetVol
+            if (targetVol <= 0f) music.stop()
         }
     }
 
