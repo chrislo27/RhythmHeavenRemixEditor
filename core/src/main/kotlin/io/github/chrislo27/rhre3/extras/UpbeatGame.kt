@@ -37,7 +37,7 @@ import kotlin.math.cos
 class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(main) {
 
     companion object {
-        val MAX_OFFSET_SEC: Float = 5f / 60
+        val MAX_OFFSET_SEC: Float = 4f / 60
     }
 
     private val sheet: Texture = Texture("extras/upbeat/upbeat_spritesheet.png").apply {
