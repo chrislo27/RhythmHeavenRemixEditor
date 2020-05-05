@@ -18,7 +18,6 @@ object PreferenceKeys {
     val SETTINGS_AUTOSAVE = "settings_autosave"
     val SETTINGS_CAMERA_BEHAVIOUR = "settings_cameraBehaviour"
     val SETTINGS_SUBTITLE_ORDER = "settings_subtitleOrder"
-    val SETTINGS_REMIX_ENDS_AT_LAST = "settings_remixEndsAtLast"
     val SETTINGS_SMOOTH_DRAGGING = "settings_smoothDragging"
     val SETTINGS_DISCORD_RPC_ENABLED = "settings_discordRPCEnabled"
     val SETTINGS_GLASS_ENTITIES = "settings_glassEntities"
@@ -28,7 +27,7 @@ object PreferenceKeys {
 
     val allSettingsKeys: List<String> =
         listOf(SETTINGS_DISABLE_MINIMAP, SETTINGS_MINIMAP_PREVIEW, SETTINGS_AUTOSAVE, SETTINGS_CAMERA_BEHAVIOUR,
-               SETTINGS_SUBTITLE_ORDER, SETTINGS_REMIX_ENDS_AT_LAST, SETTINGS_SMOOTH_DRAGGING,
+               SETTINGS_SUBTITLE_ORDER, SETTINGS_SMOOTH_DRAGGING,
                SETTINGS_DISCORD_RPC_ENABLED, SETTINGS_ADVANCED_OPTIONS, SETTINGS_GLASS_ENTITIES, SETTINGS_CLOSE_WARNING,
                SETTINGS_DISABLE_TIME_STRETCHING)
 

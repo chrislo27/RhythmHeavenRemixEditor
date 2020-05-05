@@ -8,7 +8,6 @@ import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_MINIMAP
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_DISABLE_TIME_STRETCHING
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_GLASS_ENTITIES
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_MINIMAP_PREVIEW
-import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_REMIX_ENDS_AT_LAST
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SMOOTH_DRAGGING
 import io.github.chrislo27.rhre3.PreferenceKeys.SETTINGS_SUBTITLE_ORDER
 import io.github.chrislo27.rhre3.PreferenceKeys.THEME_USES_MENU
@@ -27,7 +26,6 @@ class Settings(private val main: RHRE3Application) {
     var disableMinimap: Boolean = false
     var minimapPreview: Boolean = true
     var subtitlesBelow: Boolean = false
-    var remixEndsAtLast: Boolean = false
     var smoothDragging: Boolean = true
     var cameraBehaviour: CameraBehaviour = Editor.DEFAULT_CAMERA_BEHAVIOUR
     
@@ -42,7 +40,6 @@ class Settings(private val main: RHRE3Application) {
         disableMinimap = preferences.getBoolean(SETTINGS_DISABLE_MINIMAP, disableMinimap)
         minimapPreview = preferences.getBoolean(SETTINGS_MINIMAP_PREVIEW, minimapPreview)
         subtitlesBelow = preferences.getBoolean(SETTINGS_SUBTITLE_ORDER, subtitlesBelow)
-        remixEndsAtLast = preferences.getBoolean(SETTINGS_REMIX_ENDS_AT_LAST, remixEndsAtLast)
         smoothDragging = preferences.getBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
         val oldChaseCamera = "settings_chaseCamera"
         if (oldChaseCamera in preferences) {
@@ -69,7 +66,6 @@ class Settings(private val main: RHRE3Application) {
                 .putBoolean(SETTINGS_DISABLE_MINIMAP, disableTimeStretching)
                 .putBoolean(SETTINGS_MINIMAP_PREVIEW, minimapPreview)
                 .putBoolean(SETTINGS_SUBTITLE_ORDER, subtitlesBelow)
-                .putBoolean(SETTINGS_REMIX_ENDS_AT_LAST, remixEndsAtLast)
                 .putBoolean(SETTINGS_SMOOTH_DRAGGING, smoothDragging)
                 
                 .putBoolean(ADVOPT_EXPLODING_ENTITIES, advExplodingEntities)

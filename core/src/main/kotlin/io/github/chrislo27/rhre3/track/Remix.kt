@@ -971,8 +971,7 @@ open class Remix(val main: RHRE3Application)
             }
         }
 
-        if (playState != PlayState.STOPPED
-                && (beat >= duration || (main.settings.remixEndsAtLast && beat >= lastPoint))) {
+        if (playState != PlayState.STOPPED && beat >= duration) {
             playState = PlayState.STOPPED
         }
     }

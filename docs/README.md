@@ -29,7 +29,7 @@ If you are familiar with music theory, this also is used in sheet music
 to end the music piece.
 You can only have **one** of these in the track at any given time.<br/>
 
-Entities are objects on the track that have a width. There are five types of entities.
+Entities are objects on the track that have a width. There are five main types of entities.
 
 **Cues** play a single sound effect. They may also loop.
 

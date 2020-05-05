@@ -248,31 +248,6 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                               screenHeight = buttonHeight)
         }
 
-        // Remix stops at last cue
-        settings.elements += object : TrueCheckbox<InfoScreen>(palette, settings, settings) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                main.settings.remixEndsAtLast = checked
-                main.settings.persist()
-                didChangeSettings = true
-            }
-        }.apply {
-            this.checked = main.settings.remixEndsAtLast
-
-            this.textLabel.apply {
-                this.fontScaleMultiplier = fontScale
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.textAlign = Align.left
-                this.text = "screen.info.stopAtLastCue"
-            }
-
-            this.location.set(screenX = padding,
-                              screenY = padding * 6 + buttonHeight * 5,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-        }
-
         // Smooth dragging
         settings.elements += TrueCheckbox(palette, settings, settings).apply {
             this.checked = main.settings.smoothDragging
@@ -292,6 +267,37 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                               screenY = padding * 7 + buttonHeight * 6,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
+        }
+
+        // Disable time stretching
+        settings.elements += FalseCheckbox(palette, settings, settings).apply {
+            this.checked = main.settings.disableTimeStretching
+
+            this.textLabel.apply {
+                this.fontScaleMultiplier = fontScale * 0.9f
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.textAlign = Align.left
+                this.text = "screen.info.disableTimeStretching"
+            }
+
+            this.tooltipTextIsLocalizationKey = true
+            this.tooltipText = if (SoundStretch.isSupported) "screen.info.disableTimeStretching.tooltip" else "screen.info.disableTimeStretching.notSupported.tooltip"
+
+            this.checkedStateChanged = {
+                if (!main.settings.disableTimeStretching && it) {
+                    SoundCache.unloadAllDerivatives()
+                }
+                main.settings.disableTimeStretching = it
+                main.settings.persist()
+                didChangeSettings = true
+            }
+
+            this.location.set(screenX = padding,
+                              screenY = padding * 6 + buttonHeight * 5,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+            this.enabled = SoundStretch.isSupported
         }
 
         // Discord rich presence
@@ -403,37 +409,6 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                               screenY = padding * 5 + buttonHeight * 4,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
-        }
-
-        // Disable time stretching
-        settings.elements += FalseCheckbox(palette, settings, settings).apply {
-            this.checked = main.settings.disableTimeStretching
-
-            this.textLabel.apply {
-                this.fontScaleMultiplier = fontScale * 0.9f
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.textAlign = Align.left
-                this.text = "screen.info.disableTimeStretching"
-            }
-
-            this.tooltipTextIsLocalizationKey = true
-            this.tooltipText = if (SoundStretch.isSupported) "screen.info.disableTimeStretching.tooltip" else "screen.info.disableTimeStretching.notSupported.tooltip"
-
-            this.checkedStateChanged = {
-                if (!main.settings.disableTimeStretching && it) {
-                    SoundCache.unloadAllDerivatives()
-                }
-                main.settings.disableTimeStretching = it
-                main.settings.persist()
-                didChangeSettings = true
-            }
-
-            this.location.set(screenX = 1f - (padding + buttonWidth),
-                              screenY = padding * 4 + buttonHeight * 3,
-                              screenWidth = buttonWidth,
-                              screenHeight = buttonHeight)
-            this.enabled = SoundStretch.isSupported
         }
     }
 
