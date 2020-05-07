@@ -103,6 +103,8 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                 this.textWrapping = false
                 this.fontScaleMultiplier = fontScale
             })
+            this.tooltipText = "screen.info.autosaveTimer.tooltip"
+            this.tooltipTextIsLocalizationKey = true
 
             this.location.set(screenX = padding,
                               screenY = padding,
