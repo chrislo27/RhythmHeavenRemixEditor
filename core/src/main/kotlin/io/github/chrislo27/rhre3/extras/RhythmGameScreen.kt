@@ -85,6 +85,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                 this.isLocalizationKey = true
                 this.textWrapping = false
                 this.text = "extras.playing.pauseMenu.resume"
+                this.location.set(pixelX = 4f, pixelWidth = -8f)
             })
             this.leftClickAction = { _, _ ->
                 pauseUnpause()
@@ -96,7 +97,8 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
-                this.text = "extras.playing.pauseMenu.playalongSettings"
+                this.text = "screen.playalongSettings.title"
+                this.location.set(pixelX = 4f, pixelWidth = -8f)
             })
             this.leftClickAction = { _, _ ->
                 goingToSettings = true
@@ -110,6 +112,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
                 this.isLocalizationKey = true
                 this.textWrapping = false
                 this.text = "extras.playing.pauseMenu.quit"
+                this.location.set(pixelX = 4f, pixelWidth = -8f)
             })
             this.leftClickAction = { _, _ ->
                 game.playState = PlayState.STOPPED
