@@ -9,6 +9,7 @@ import io.github.chrislo27.rhre3.sfxdb.datamodel.PickerName
 import io.github.chrislo27.rhre3.sfxdb.datamodel.impl.CuePointer
 import io.github.chrislo27.rhre3.screen.PatternStoreScreen
 import io.github.chrislo27.rhre3.track.Remix
+import io.github.chrislo27.toolboks.i18n.Localization
 import java.util.*
 
 
@@ -21,12 +22,19 @@ interface StoredPattern {
 
 object ClipboardStoredPattern : StoredPattern {
     override val uuid: UUID = UUID.randomUUID()
-    override val name: String = "[LIGHT_GRAY](Clipboard)[]"
+    override val name: String get() = Localization["editor.storedPattern.clipboard"]
     override val data: String
         get() = Gdx.app.clipboard.contents
     override val datamodel: Datamodel by lazy {
-        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), name, "") {
-            override val pickerName: PickerName = PickerName(name, "Drag this to paste the clipboard")
+        object : Datamodel(SFXDatabase.data.specialGame, uuid.toString(), listOf(), "ClipboardPattern", "") {
+            private var internalName: PickerName = PickerName(this@ClipboardStoredPattern.name, Localization["editor.storedPattern.clipboard.sub"])
+            override val pickerName: PickerName get() = internalName
+            
+            init {
+                Localization.addListener { 
+                    internalName = PickerName(this@ClipboardStoredPattern.name, Localization["editor.storedPattern.clipboard.sub"])
+                }
+            }
 
             override fun createEntity(remix: Remix, cuePointer: CuePointer?): ModelEntity<*> {
                 error("NO-OP")
