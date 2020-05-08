@@ -11,6 +11,7 @@ object PreferenceKeys {
     val LANGUAGE = "language"
     val WINDOW_STATE = "windowState"
     val MIDI_NOTE = "midiNote"
+    val SHOW_STARTUP_SCREEN = "showStartupScreen"
 
     // settings
     val SETTINGS_DISABLE_MINIMAP = "settings_minimap"

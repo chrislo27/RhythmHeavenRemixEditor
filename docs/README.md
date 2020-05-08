@@ -81,6 +81,8 @@ however, read up on the controls first below!
 | **`CTRL+C`** | Copy selected entities to clipboard |
 | **`CTRL+X`** | Cut selected entities to clipboard |
 | **`CTRL+V`** | Begin pasting entities from clipboard |
+| **`F11`** | Toggle fullscreen mode |
+| **`SHIFT+F11`** | Revert to 1280x720 windowed mode |
 | __Camera pan controls__ |
 | Holding **`CTRL`** or **`SHIFT`** will accelerate the camera pan speed |
 | **`A`** or **`LEFT`** | Pan camera left |
