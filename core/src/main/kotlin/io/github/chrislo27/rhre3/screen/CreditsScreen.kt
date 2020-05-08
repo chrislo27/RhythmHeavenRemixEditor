@@ -83,13 +83,7 @@ class CreditsScreen(main: RHRE3Application)
         }
         stage.centreStage.elements += element
 
-        stage.bottomStage.elements += object : Button<CreditsScreen>(main.uiPalette, stage.bottomStage,
-                                                                     stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                Gdx.net.openURI(RHRE3.GITHUB)
-            }
-        }.apply {
+        stage.bottomStage.elements += Button(main.uiPalette, stage.bottomStage, stage.bottomStage).apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.textWrapping = false
@@ -99,7 +93,9 @@ class CreditsScreen(main: RHRE3Application)
                 update()
                 this.fontScaleMultiplier = 0.9f
             })
-
+            this.leftClickAction = { _, _ ->
+                Gdx.net.openURI(RHRE3.GITHUB)
+            }
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
 

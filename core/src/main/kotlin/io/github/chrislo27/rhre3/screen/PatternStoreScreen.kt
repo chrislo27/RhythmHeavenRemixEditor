@@ -35,7 +35,7 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
 
     companion object {
         private const val ALLOW_SAME_NAMES = true
-        private val JSON_SERIALIZER: ObjectMapper by lazy { JsonHandler.createObjectMapper(failOnUnknown = false, prettyPrinted = false)}
+        private val JSON_SERIALIZER: ObjectMapper by lazy { JsonHandler.createObjectMapper(failOnUnknown = false, prettyPrinted = false) }
 
         fun entitiesToJson(remix: Remix, entities: List<Entity>, prettyPrinted: Boolean = true): String {
             val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
@@ -140,25 +140,26 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
         stage.centreStage.elements += alreadyExists
 
         if (pattern != null) {
-            stage.bottomStage.elements += object : Button<PatternStoreScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
-                                                                                           clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-                    main.screen = PatternDeleteScreen(main, editor, pattern, this@PatternStoreScreen)
-                }
-            }.apply {
+            stage.bottomStage.elements += Button(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                              clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage).apply {
                 val backBtnLoc = this@PatternStoreScreen.stage.backButton.location
                 this.location.set(1f - backBtnLoc.screenX - backBtnLoc.screenWidth, backBtnLoc.screenY, backBtnLoc.screenWidth, backBtnLoc.screenHeight)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_x"))
                 })
+                this.leftClickAction = { _, _ ->
+                    main.screen = PatternDeleteScreen(main, editor, pattern, this@PatternStoreScreen)
+                }
             }
         }
 
-        button = object : Button<PatternStoreScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-
+        button = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.text = "screen.patternStore.button"
+            })
+            this.leftClickAction = { _, _ ->
                 if (pattern == null) {
                     val entities = entities!!
                     PatternStorage.addPattern(FileStoredPattern(UUID.randomUUID(), textField.text.trim(), entitiesToJson(entities.first().remix, entities)))
@@ -171,12 +172,6 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
                 editor.stage.updateSelected()
                 main.screen = ScreenRegistry["editor"]
             }
-        }.apply {
-            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
-            this.addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.text = "screen.patternStore.button"
-            })
             this.enabled = false
         }
 

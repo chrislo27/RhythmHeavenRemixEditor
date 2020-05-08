@@ -61,14 +61,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 
         val bottom = stage.bottomStage
         // Advanced Options setting
-        bottom.elements += object : TrueCheckbox<AdvancedOptionsScreen>(palette, bottom, bottom) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                main.settings.advancedOptions = checked
-                didChangeSettings = true
-                main.settings.persist()
-            }
-        }.apply {
+        bottom.elements += TrueCheckbox(palette, bottom, bottom).apply {
             this.checked = main.settings.advancedOptions
 
             this.textLabel.apply {
@@ -77,7 +70,11 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 this.textAlign = Align.left
                 this.text = "Other Advanced Options Enabled"
             }
-
+            this.leftClickAction = { _, _ ->
+                main.settings.advancedOptions = checked
+                didChangeSettings = true
+                main.settings.persist()
+            }
             this.location.set(screenX = 0.15f, screenWidth = 0.7f)
         }
 
@@ -225,13 +222,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
         }
         centre.elements += reloadMetadataButton
         // Open containing folder for modding metadata
-        centre.elements += object : Button<AdvancedOptionsScreen>(palette, centre, centre) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-
-                Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_MODDING_METADATA_FOLDER.file().absolutePath}")
-            }
-        }.apply {
+        centre.elements += Button(palette, centre, centre).apply {
             val width = buttonWidth * 0.09f
             this.location.set(screenX = padding * 0.5f - width,
                               screenY = padding * 8 + buttonHeight * 7,
@@ -241,6 +232,9 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                 image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
             })
+            this.leftClickAction = { _, _ ->
+                Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_MODDING_METADATA_FOLDER.file().absolutePath}")
+            }
         }
 
         // Semitone major/minor

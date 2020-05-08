@@ -46,21 +46,17 @@ class PatternDeleteScreen(main: RHRE3Application, val editor: Editor, val patter
             this.location.set(screenY = 0.25f, screenHeight = 0.25f)
         }
 
-        button = object : Button<PatternDeleteScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
-                                                                   clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-
-                PatternStorage.deletePattern(pattern).persist()
-                editor.stage.updateSelected()
-                main.screen = ScreenRegistry["editor"]
-            }
-        }.apply {
+        button = Button(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f), clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.25f, screenWidth = 0.5f)
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.text = "screen.patternStore.delete.button"
             })
+            this.leftClickAction = { _, _ ->
+                PatternStorage.deletePattern(pattern).persist()
+                editor.stage.updateSelected()
+                main.screen = ScreenRegistry["editor"]
+            }
         }
 
         stage.bottomStage.elements += button

@@ -56,23 +56,18 @@ class RecoverRemixScreen(main: RHRE3Application)
             this.location.set(0.1f, 0.6f, 0.2f, 0.4f)
         }
 
-        stage.bottomStage.elements += object : Button<RecoverRemixScreen>(palette.copy(highlightedBackColor = Color(0f, 1f, 0f, 0.5f),
-                                                                                       clickedBackColor = Color(0.5f, 1f, 0.5f, 0.5f)),
-                                                                          stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-
-                val screen = ScreenRegistry.getNonNullAsType<OpenRemixScreen>("openRemix")
-                screen.loadFile(RemixRecovery.recoveryFile.file(), overrideAutosave = true)
-                main.screen = ScreenRegistry["editor"] // This forces the last checksum to be of a blank remix
-                main.screen = screen
-            }
-        }.apply {
+        stage.bottomStage.elements += Button(palette.copy(highlightedBackColor = Color(0f, 1f, 0f, 0.5f), clickedBackColor = Color(0.5f, 1f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage).apply {
             this.location.set(screenX = 0.2f, screenWidth = 0.6f)
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.text = "screen.recovery.button"
                 this.isLocalizationKey = true
             })
+            this.leftClickAction = { _, _ ->
+                val screen = ScreenRegistry.getNonNullAsType<OpenRemixScreen>("openRemix")
+                screen.loadFile(RemixRecovery.recoveryFile.file(), overrideAutosave = true)
+                main.screen = ScreenRegistry["editor"] // This forces the last checksum to be of a blank remix
+                main.screen = screen
+            }
         }
     }
 

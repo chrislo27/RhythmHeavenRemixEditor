@@ -99,8 +99,7 @@ class MusicSelectScreen(main: RHRE3Application)
             })
         }
         stage.bottomStage.elements += moveMusicStartButton
-        stage.centreStage.elements += object : TextLabel<MusicSelectScreen>(palette, stage.centreStage,
-                                                                            stage.centreStage) {
+        stage.centreStage.elements += object : TextLabel<MusicSelectScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun frameUpdate(screen: MusicSelectScreen) {
                 super.frameUpdate(screen)
                 this.visible = isChooserOpen
@@ -112,11 +111,7 @@ class MusicSelectScreen(main: RHRE3Application)
             this.text = "closeChooser"
             this.visible = false
         }
-        mainLabel = object : TextLabel<MusicSelectScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun frameUpdate(screen: MusicSelectScreen) {
-                super.frameUpdate(screen)
-            }
-        }.apply {
+        mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.textAlign = Align.center
             this.isLocalizationKey = false
             this.text = ""

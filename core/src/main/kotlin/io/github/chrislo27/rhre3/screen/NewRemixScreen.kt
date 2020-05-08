@@ -45,60 +45,55 @@ class NewRemixScreen(main: RHRE3Application)
 
         val palette = main.uiPalette
 
-        stage.bottomStage.elements +=
-                object : Button<NewRemixScreen>(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
-                                                             clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)),
-                                                stage.bottomStage, stage.bottomStage) {
-                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                        super.onLeftClick(xPercent, yPercent)
-                        editor.remix.entities.forEach {
-                            if (it is ISoundDependent) {
-                                it.unloadSounds()
-                            }
-                        }
-                        SoundCache.unloadAll()
-                        val oldRemix = editor.remix
-                        val newRemix = editor.createRemix()
-                        editor.remix = newRemix
-                        oldRemix.entities.filter { it.bounds.x <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.bounds.maxX >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
-                                .filterIsInstance<ModelEntity<*>>()
-                                .forEach { editor.explodeEntity(it, doExplode = true) }
-                        val tmpRect = Rectangle(0f, 0f, 0f, 0.75f)
-                        oldRemix.trackersReverseView.forEach { container ->
-                            tmpRect.y = -0.75f * (container.renderLayer + 1)
-                            container.map.values
-                                    .filter { it.beat <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.endBeat >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
-                                    .forEach { tracker ->
-                                        if (tracker.isZeroWidth) {
-                                            tmpRect.width = 0.15f
-                                            tmpRect.x = tracker.beat - tmpRect.width / 2
-                                        } else {
-                                            tmpRect.width = tracker.width
-                                            tmpRect.x = tracker.beat
-                                        }
-                                        editor.explodeRegion(tmpRect, tracker.getColour(editor.theme))
-                                    }
-                        }
-                        val timeSigColor = editor.theme.trackLine.cpy().apply { a *= 0.25f }
-                        oldRemix.timeSignatures.map.values.forEach { ts ->
-                            editor.explodeRegion(tmpRect.set(ts.beat + 0.125f, 0f, 0.25f, oldRemix.trackCount.toFloat()), timeSigColor)
-                        }
-                        this@NewRemixScreen.stage.onBackButtonClick()
-                        RemixRecovery.cacheRemixChecksum(newRemix)
-                        Gdx.app.postRunnable {
-                            System.gc()
-                        }
+        stage.bottomStage.elements += Button(palette.copy(highlightedBackColor = Color(1f, 0f, 0f, 0.5f),
+                                                          clickedBackColor = Color(1f, 0.5f, 0.5f, 0.5f)), stage.bottomStage, stage.bottomStage).apply {
+            this.location.set(screenX = 0.25f, screenWidth = 0.5f)
+            this.addLabel(TextLabel(palette, this, this.stage).apply {
+                this.textAlign = Align.center
+                this.text = "screen.new.button"
+                this.isLocalizationKey = true
+            })
+            this.leftClickAction = { _, _ ->
+                editor.remix.entities.forEach {
+                    if (it is ISoundDependent) {
+                        it.unloadSounds()
                     }
-                }.apply {
-                    this.location.set(screenX = 0.25f, screenWidth = 0.5f)
-                    this.addLabel(TextLabel(palette, this, this.stage).apply {
-                        this.textAlign = Align.center
-                        this.text = "screen.new.button"
-                        this.isLocalizationKey = true
-                    })
                 }
-        mainLabel = object : TextLabel<NewRemixScreen>(palette, stage.centreStage, stage.centreStage) {
-        }.apply {
+                SoundCache.unloadAll()
+                val oldRemix = editor.remix
+                val newRemix = editor.createRemix()
+                editor.remix = newRemix
+                oldRemix.entities.filter { it.bounds.x <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.bounds.maxX >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
+                        .filterIsInstance<ModelEntity<*>>()
+                        .forEach { editor.explodeEntity(it, doExplode = true) }
+                val tmpRect = Rectangle(0f, 0f, 0f, 0.75f)
+                oldRemix.trackersReverseView.forEach { container ->
+                    tmpRect.y = -0.75f * (container.renderLayer + 1)
+                    container.map.values
+                            .filter { it.beat <= editor.camera.position.x + editor.camera.viewportWidth * 1.5f && it.endBeat >= editor.camera.position.x - editor.camera.viewportWidth * 1.5f }
+                            .forEach { tracker ->
+                                if (tracker.isZeroWidth) {
+                                    tmpRect.width = 0.15f
+                                    tmpRect.x = tracker.beat - tmpRect.width / 2
+                                } else {
+                                    tmpRect.width = tracker.width
+                                    tmpRect.x = tracker.beat
+                                }
+                                editor.explodeRegion(tmpRect, tracker.getColour(editor.theme))
+                            }
+                }
+                val timeSigColor = editor.theme.trackLine.cpy().apply { a *= 0.25f }
+                oldRemix.timeSignatures.map.values.forEach { ts ->
+                    editor.explodeRegion(tmpRect.set(ts.beat + 0.125f, 0f, 0.25f, oldRemix.trackCount.toFloat()), timeSigColor)
+                }
+                this@NewRemixScreen.stage.onBackButtonClick()
+                RemixRecovery.cacheRemixChecksum(newRemix)
+                Gdx.app.postRunnable {
+                    System.gc()
+                }
+            }
+        }
+        mainLabel = TextLabel(palette, stage.centreStage, stage.centreStage).apply {
             this.location.set(screenX = 0.5f, screenWidth = 0.5f - 0.125f)
             this.textAlign = Align.left
             this.isLocalizationKey = true

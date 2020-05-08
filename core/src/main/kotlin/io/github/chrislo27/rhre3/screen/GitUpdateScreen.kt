@@ -59,8 +59,7 @@ class GitUpdateScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application,
                                                                        stage.bottomStage) {
             override fun onLeftClick(xPercent: Float, yPercent: Float) {
                 super.onLeftClick(xPercent, yPercent)
-                Gdx.net.openURI(
-                        if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE) RHRE3.GITHUB_RELEASES else RHRE3.DATABASE_RELEASES)
+                Gdx.net.openURI(if (repoStatus == RepoStatus.NO_INTERNET_CANNOT_CONTINUE) RHRE3.GITHUB_RELEASES else RHRE3.DATABASE_RELEASES)
             }
 
             private var setToReleases = false

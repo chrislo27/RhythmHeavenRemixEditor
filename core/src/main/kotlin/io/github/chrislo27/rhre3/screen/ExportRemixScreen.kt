@@ -142,41 +142,35 @@ class ExportRemixScreen(main: RHRE3Application)
         }
         stage.centreStage.elements += selectionStage
         
-        readyButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                openPicker()
-                updateLabels()
-                
-                this.visible = false
-                selectionStage.visible = false
-            }
-        }.apply {
+        readyButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.textWrapping = false
                 this.text = "screen.export.fileChooserTitle"
             })
-            
+            this.leftClickAction = { _, _ ->
+                openPicker()
+                updateLabels()
+
+                this.visible = false
+                selectionStage.visible = false
+            }
             this.visible = false
             
             this.location.set(screenX = 0.225f, screenWidth = 0.55f)
         }
         stage.bottomStage.elements += readyButton
         
-        folderButton = object : Button<ExportRemixScreen>(palette, stage.bottomStage, stage.bottomStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        folderButton = Button(palette, stage.bottomStage, stage.bottomStage).apply {
+            this.addLabel(ImageLabel(palette, this, this.stage).apply {
+                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
+            })
+            this.leftClickAction = { _, _ ->
                 val ff = folderFile
                 if (ff != null) {
                     Gdx.net.openURI("file:///${(ff.takeUnless { it.isFile } ?: ff.parentFile).absolutePath}")
                 }
             }
-        }.apply {
-            this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
-            })
-            
             this.visible = false
             
             this.location.set(this@ExportRemixScreen.stage.backButton.location)

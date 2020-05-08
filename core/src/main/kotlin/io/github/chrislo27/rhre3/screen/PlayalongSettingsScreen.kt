@@ -285,32 +285,28 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
             this.location.set(screenX = 0.5f - location.screenWidth / 2)
         }
         stage.centreStage.elements += playStopButton
-        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                keyCalibration.reset()
-            }
-        }.apply {
+        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.text = "screen.playalongSettings.calibration.reset.key"
                 this.textWrapping = false
                 this.fontScaleMultiplier = 0.85f
             })
+            this.leftClickAction = { _, _ ->
+                keyCalibration.reset()
+            }
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
             this.location.set(screenWidth = 0.4f)
             this.location.set(screenX = playStopButton.location.screenX - location.screenWidth - 0.025f)
         }
-        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                mouseCalibration.reset()
-            }
-        }.apply {
+        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
             this.addLabel(TextLabel(palette, this, this.stage).apply {
                 this.text = "screen.playalongSettings.calibration.reset.mouse"
                 this.textWrapping = false
                 this.fontScaleMultiplier = 0.85f
             })
+            this.leftClickAction = { _, _ ->
+                mouseCalibration.reset()
+            }
             this.location.set(screenHeight = 0.1f, screenY = 0.65f)
             this.location.set(screenWidth = 0.4f)
             this.location.set(screenX = playStopButton.location.screenX + playStopButton.location.screenWidth + 0.025f)
@@ -336,17 +332,15 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
             this.text = "screen.playalongSettings.sfxTitle"
             this.location.set(screenX = 0f, screenY = 0.5f, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
-        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        stage.centreStage.elements += TrueCheckbox(palette, stage.centreStage, stage.centreStage).apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true)
+
+            this.leftClickAction = { _, _ ->
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, checked).flush()
                 if (checked) {
                     AssetRegistry.get<Sound>("playalong_sfx_perfect_fail").play(0.5f)
                 }
             }
-        }.apply {
-            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_PERFECT_FAIL, true)
-
             this.textLabel.apply {
                 this.isLocalizationKey = true
                 this.fontScaleMultiplier = 0.9f
@@ -357,17 +351,15 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
             }
             this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f), screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
-        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        stage.centreStage.elements += TrueCheckbox(palette, stage.centreStage, stage.centreStage).apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)
+
+            this.leftClickAction = { _, _ ->
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, checked).flush()
                 if (checked) {
                     AssetRegistry.get<Sound>("playalong_sfx_monster_fail").play(0.5f)
                 }
             }
-        }.apply {
-            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_FAIL, true)
-
             this.textLabel.apply {
                 this.isLocalizationKey = true
                 this.fontScaleMultiplier = 0.9f
@@ -378,17 +370,15 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
             }
             this.location.set(screenX = 0f, screenY = 0.5f - (0.1f + 0.025f) * 2, screenWidth = 0.5f - settingsPadding, screenHeight = 0.1f)
         }
-        stage.centreStage.elements += object : TrueCheckbox<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        stage.centreStage.elements += TrueCheckbox(palette, stage.centreStage, stage.centreStage).apply {
+            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)
+
+            this.leftClickAction = { _, _ ->
                 preferences.putBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, checked).flush()
                 if (checked) {
                     AssetRegistry.get<Sound>("playalong_sfx_monster_ace").play(1f)
                 }
             }
-        }.apply {
-            this.checked = preferences.getBoolean(PreferenceKeys.PLAYALONG_SFX_MONSTER_ACE, true)
-
             this.textLabel.apply {
                 this.isLocalizationKey = true
                 this.fontScaleMultiplier = 0.9f
@@ -416,18 +406,16 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
         // rescan
         val squareWidth = (0.5f - settingsPadding) * 0.075f
         val squareHeight = 0.1f
-        stage.centreStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
-                if (mappingListener == null) {
-                    updateControllers()
-                }
-            }
-        }.apply {
+        stage.centreStage.elements += Button(palette, stage.centreStage, stage.centreStage).apply {
             addLabel(ImageLabel(palette, this, this.stage).apply {
                 this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_updatesfx"))
                 this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
             })
+            this.leftClickAction = { _, _ ->
+                if (mappingListener == null) {
+                    updateControllers()
+                }
+            }
             this.visible = false
             this.location.set(screenX = 0.5f + settingsPadding, screenY = 0.5f - (0.1f + 0.025f), screenWidth = squareWidth, screenHeight = squareHeight)
         }
@@ -513,9 +501,13 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
         }
         stage.centreStage.elements += buttonAMapButton
         allMapButtons = listOf(buttonAMapButton, buttonBMapButton, buttonUpMapButton, buttonDownMapButton, buttonLeftMapButton, buttonRightMapButton)
-        cancelMappingButton = object : Button<PlayalongSettingsScreen>(palette, stage.centreStage, stage.centreStage) {
-            override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                super.onLeftClick(xPercent, yPercent)
+        cancelMappingButton = Button(palette, stage.centreStage, stage.centreStage).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.textWrapping = false
+                this.text = "screen.playalongSettings.cancelMapping"
+            })
+            this.leftClickAction = { _, _ ->
                 if (mappingListener != null) {
                     val mb = currentMapButton
                     cancelMapping()
@@ -524,12 +516,6 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
                     }
                 }
             }
-        }.apply {
-            addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
-                this.textWrapping = false
-                this.text = "screen.playalongSettings.cancelMapping"
-            })
             this.visible = false
             this.location.set(screenX = 0.85f, screenWidth = 0.15f, screenY = 0.125f, screenHeight = squareHeight)
         }
@@ -548,7 +534,6 @@ class PlayalongSettingsScreen(main: RHRE3Application, val lastScreen: Screen?)
         val isCustom = currentControls !in PlayalongControls.standardControls.values
         val controlsList = (if (isCustom) listOf(PlayalongControls.strCustom to currentControls) else listOf()) + PlayalongControls.standardControls.entries.map { it.toPair() }
         stage.bottomStage.elements += object : Button<PlayalongSettingsScreen>(palette, stage.bottomStage, stage.bottomStage) {
-
             var index: Int = controlsList.indexOfFirst { currentControls == it.second }.coerceAtLeast(0)
 
             fun cycle(dir: Int) {

@@ -50,8 +50,7 @@ class TexEntChooserScreen(main: RHRE3Application, val entity: TextureEntity)
         }
 
         val palette = main.uiPalette
-        stage.centreStage.elements += object : TextLabel<TexEntChooserScreen>(palette, stage.centreStage,
-                                                                              stage.centreStage) {
+        stage.centreStage.elements += object : TextLabel<TexEntChooserScreen>(palette, stage.centreStage, stage.centreStage) {
             override fun frameUpdate(screen: TexEntChooserScreen) {
                 super.frameUpdate(screen)
                 this.visible = isChooserOpen
