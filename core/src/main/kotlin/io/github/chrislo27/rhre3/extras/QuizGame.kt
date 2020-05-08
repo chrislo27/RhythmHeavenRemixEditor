@@ -42,7 +42,6 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private val panelLAni: Animation = bgBccad.animations[1]
     private val panelRAni: Animation = bgBccad.animations[2]
     private val signAni: Animation = bgBccad.animations[3]
-    private val signBrokenAni: Animation = bgBccad.animations[4]
     private val spotlightAni: Animation = bgBccad.animations[5]
     private val balloonAni: Animation = bgBccad.animations[6]
     private val playerHandRAni: Animation = partsBccad.animations[0]
@@ -236,8 +235,8 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
             font.scaleFont(camera)
             font.scaleMul(0.4f)
             font.setColor(1f, 1f, 1f, 1f)
-            font.drawCompressed(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], width * 0.025f, height * 0.95f, width * 0.35f, Align.left)
-            font.drawCompressed(batch, Localization["extras.playing.score", "$score"], width * 0.625f, height * 0.95f, width * 0.35f, Align.right)
+            font.drawCompressed(batch, Localization["extras.playing.highScore", "${highScore.coerceAtLeast(score)}"], width * 0.025f, height * 0.965f, width * 0.35f, Align.left)
+            font.drawCompressed(batch, Localization["extras.playing.score", "$score"], width * 0.625f, height * 0.965f, width * 0.35f, Align.right)
             font.unscaleFont()
         }
         
