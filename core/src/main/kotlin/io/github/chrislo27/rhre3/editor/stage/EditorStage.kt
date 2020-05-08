@@ -1314,8 +1314,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
 
             buttonBarStage.elements +=
                     ColourPane(buttonBarStage, buttonBarStage).apply {
-                        this.colour.set(Editor.TRANSLUCENT_BLACK)
-                        this.colour.a = 0.5f
+                        this.colour.set(Color(0.4f, 0.4f, 0.4f, 0.9f))
                         this.location.set(
                                 screenX = -(Editor.BUTTON_PADDING / stageWidth),
                                 screenY = -(Editor.BUTTON_PADDING / stageHeight),
