@@ -161,7 +161,6 @@ class InfoStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val 
                 image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
             })
             this.leftClickAction = { _, _ ->
-
                 Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
             }
             this.tooltipTextIsLocalizationKey = true

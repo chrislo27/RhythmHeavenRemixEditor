@@ -56,6 +56,8 @@ class InfoScreen(main: RHRE3Application)
         val autosaveTimers = listOf(0, 1, 2, 3, 4, 5, 10, 15)
         var shouldSeePartners: Boolean = true
             private set
+        var glowButtonInEditor: Boolean = true
+            private set
     }
 
     enum class Page(val heading: String) {

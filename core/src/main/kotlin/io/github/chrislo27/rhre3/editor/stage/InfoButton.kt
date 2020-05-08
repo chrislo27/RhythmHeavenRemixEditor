@@ -29,16 +29,16 @@ class InfoButton(val editor: Editor, palette: UIPalette, parent: UIElement<Edito
     }
 
     override fun render(screen: EditorScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
-        if (labels.isNotEmpty()) {
-            val first = labels.first()
-            if (first is ImageLabel) {
-                if (InfoScreen.shouldSeePartners) {
-                    first.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
-                } else {
-                    first.tint.set(1f, 1f, 1f, 1f)
-                }
-            }
-        }
+//        if (labels.isNotEmpty()) {
+//            val first = labels.first()
+//            if (first is ImageLabel) {
+//                if (InfoScreen.shouldSeePartners) {
+//                    first.tint.fromHsv(MathHelper.getSawtoothWave(1.5f) * 360f, 0.3f, 0.75f)
+//                } else {
+//                    first.tint.set(1f, 1f, 1f, 1f)
+//                }
+//            }
+//        }
         super.render(screen, batch, shapeRenderer)
     }
 }

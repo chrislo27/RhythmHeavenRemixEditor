@@ -27,15 +27,15 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_NP", "NP", "", "https://i.imgur.com/0RzgqHr.jpg", 0L, "https://www.youtube.com/channel/UCKr25WU0dEPvWqWotAGljpg", null, false),
                 Article("partner_PikaMasterJesi", "PikaMasterJesi", "", "https://yt3.ggpht.com/a-/AN66SAzhzcIikkC8EBbMCnezXYw43T_RgLobzl2Cjw=s288-mo-c-c0xffffffff-rj-k-no", 0L, "https://www.youtube.com/channel/UCu8Ltmlr5jH77Y8A5YclqgA", null, false),
                 Article("partner_AngryTapper", "AngryTapper", "", "https://i.imgur.com/b0LyjcW.jpg", 0L, "https://www.youtube.com/channel/UC4ZPmmnRHUwmA0_q1GavPEA", null, false),
-                Article("partner_meuol", "The Meuol", "", "https://i.imgur.com/usMnMO0.jpg", 0L, "https://www.youtube.com/channel/UCNAUWWq3RKyGDHzBuKgEcPg", null, false),
-                Article("partner_Killble", "Killble", "", "https://i.imgur.com/AZ5hCOs.png", 0L, "https://www.youtube.com/user/sdllv", null, false),
-                Article("partner_spoopster", "spoopster", "", "https://i.imgur.com/fttfacd.png", 0L, "https://www.youtube.com/channel/UCXIUIzLliw5c6BRIR2CRJkQ", null, false),
-                Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.png", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false),
-                Article("partner_SportaDerp9000", "SportaDerp9000", "", "https://i.imgur.com/tsSWlRa.png", 0L, "https://www.youtube.com/channel/UCUbBQ2x33-KhEbP3FTesY8A", null, false),
+                Article("partner_meuol", "The Meuol", "", "https://i.imgur.com/hnFCWvX.jpg", 0L, "https://www.youtube.com/channel/UCNAUWWq3RKyGDHzBuKgEcPg", null, false),
+                Article("partner_Killble", "Killble", "", "https://i.imgur.com/AZ5hCOs.jpg", 0L, "https://www.youtube.com/user/sdllv", null, false),
+                Article("partner_RedCrowNose", "SilverLinkYT", "", "https://i.imgur.com/sOyFqSw.jpg", 0L, "https://www.youtube.com/channel/UCqwMGag_C4x1XMGp_XJBM5w", null, false),
+                Article("partner_oofie", "oofie", "", "https://i.imgur.com/tsSWlRa.jpg", 0L, "https://www.youtube.com/channel/UCUbBQ2x33-KhEbP3FTesY8A", null, false),
                 Article("partner_Suwa-ko", "Suwa-ko", "", "https://i.imgur.com/ArJ3Gqe.jpg", 0L, "https://www.youtube.com/channel/UCj-veAzBbeVqac7ISPsGvLw", null, false),
-                Article("partner_Draster", "Draster", "", "https://i.imgur.com/SwZ60Wb.png", 0L, "https://www.youtube.com/channel/UCtlLcwZ_UXdyfvPGI5Meu0w", null, false)
+                Article("partner_Draster", "Draster", "", "https://i.imgur.com/SwZ60Wb.jpg", 0L, "https://www.youtube.com/channel/UCtlLcwZ_UXdyfvPGI5Meu0w", null, false),
+                Article("partner_Drummer", "The Drummer", "", "https://i.imgur.com/E4wB1cp.jpg", 0L, "https://www.youtube.com/channel/UC1I8JOghDzI328ALcaPr4CQ", null, false)
                                                     )
-        const val PARTNERS_VERSION: Int = 2
+        const val PARTNERS_VERSION: Int = 3
     }
 
     override val stage: GenericStage<PartnersScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
