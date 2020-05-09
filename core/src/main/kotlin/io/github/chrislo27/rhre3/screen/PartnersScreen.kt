@@ -123,7 +123,7 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
     inner class ArticleButton(palette: UIPalette, parent: UIElement<PartnersScreen>,
                               stage: Stage<PartnersScreen>) : Button<PartnersScreen>(palette, parent, stage) {
         val title = TextLabel(palette, this, stage).apply {
-            this.location.set(screenHeight = 0.25f)
+            this.location.set(screenHeight = 0.25f, pixelX = 2f, pixelWidth = -4f)
             this.isLocalizationKey = false
             this.fontScaleMultiplier = 0.75f
             this.textWrapping = false
