@@ -44,6 +44,7 @@ Represents a news article.
 |-------|------|-------------|
 | id | string | The article's unique ID. |
 | title | string | The article's title. |
+| longTitle | string | The article's long title. Optional, defaults to `title`. |
 | body | string | The article's body. |
 | thumbnail | string | The article's thumbnail URL. May be blank, but never null. If starting with `tex:`, uses a texture ID. |
 | publishedAt | long | The Epoch milliseconds of publication. |
@@ -57,6 +58,7 @@ Represents a news article.
 {
   "id": "welcomeToRHRE",
   "title": "Welcome to RHRE!",
+  "longTitle": "Welcome to the Rhythm Heaven Remix Editor!",
   "body": "This is an example body.\nIt has multiple lines in it.",
   "thumbnail": "https://i.imgur.com/X4Vs7D0.png",
   "publishedAt": 1522627193000,
