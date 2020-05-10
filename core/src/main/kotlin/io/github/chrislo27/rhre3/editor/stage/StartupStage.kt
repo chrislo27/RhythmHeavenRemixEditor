@@ -60,9 +60,9 @@ class StartupStage(val screen: EditorScreen) : Stage<EditorScreen>(screen.stage,
                 Gdx.net.openURI(RHRE3.DOCS_URL)
             }
             addLabel(TextLabel(palette, this, this.stage).apply {
-                this.isLocalizationKey = true
+                this.isLocalizationKey = false
                 this.textWrapping = false
-                this.text = "screen.info.docs"
+                this.text = "Open online documentation\n[#8CB8FF]https://docs.rhre.dev[]"
             })
             this.location.set(0.275f, 0f, 0.45f, 1f)
         }
