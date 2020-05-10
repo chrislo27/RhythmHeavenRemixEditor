@@ -40,16 +40,18 @@ class StartupStage(val screen: EditorScreen) : Stage<EditorScreen>(screen.stage,
 
         val palette = screen.main.uiPalette
         genericStage.centreStage.elements += TextLabel(palette, genericStage.centreStage, genericStage.centreStage).apply {
-            this.text = """Welcome to the Rhythm Heaven Remix Editor! (RHRE for short.)
-                |
-                |I hope you can enjoy this tool made by many members of the Rhythm Heaven community.
+            this.text = """Welcome to the Rhythm Heaven Remix Editor! (RHRE for short.) I hope you can enjoy this tool made by many members of the Rhythm Heaven community.
                 |
                 |Please refer to the [CYAN]Online Documentation[], accessible in your web browser left-clicking the button below. You should start with the [CYAN]README[] and [CYAN]Starting a remix[] sections.
                 |
                 |I encourage you to also make use of the various functionalities available,
 |like News, Info and Settings, and Themes.
+|
+|Please also note that by using this program,
+|you are agreeing to abide by the Code of Conduct found at
+|[#8CB8FF]https://codeofconduct.rhre.dev[].
                 |
-                |Enjoy, and have fun!
+                |Enjoy, and have fun remixing!
             """.trimMargin()
             this.isLocalizationKey = false
             this.textWrapping = true
@@ -78,7 +80,6 @@ class StartupStage(val screen: EditorScreen) : Stage<EditorScreen>(screen.stage,
             this.checkedStateChanged = {
                 screen.main.preferences.putBoolean(PreferenceKeys.SHOW_STARTUP_SCREEN, it).flush()
             }
-            this.computeCheckWidth()
         }
     }
 
