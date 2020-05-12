@@ -1,4 +1,4 @@
-# Readme
+# README
 
 This readme is accurate as of version `v3.20.0`.
 
@@ -10,24 +10,20 @@ You will learn best through experimentation; don't give up!
 
 ## Launching the program
 After decompressing/unzipping the zip archive, run the
-`run_windows.bat` file by double clicking if you're on Windows, or
-run the `run_macOS-linux.sh` file if you're on macOS or a UNIX operating
-system.
-
-Alternatively, open Command Prompt/Terminal inside
-the folder *containing the jar file* and run
-`java -jar RHRE.jar`.
+`run_windows.bat` file by double clicking the batch file if you're on Windows, or
+double-click the `run_macOS.sh` file if you're on macOS, or
+double-click the `run_linux.sh` if you're on a Linux operating system.
 
 ## How does a remix work?
 Remixes will go on forever
 until you place an **End Remix** entity.
-You can find this at `Misc. > Special Entities > End Remix`.
+You can find this at `Misc. > Special Entities > End Remix`. Click and drag it onto the track.
 
 ![End remix entity](readme/endRemix.png)
 
-If you are familiar with music theory, this also is used in sheet music
+If you are familiar with music theory, this symbol also is used in sheet music
 to end the music piece.
-You can only have **one** of these in the track at any given time.<br/>
+You can only have **one** of these in the track at any given time.
 
 Entities are objects on the track that have a width. There are five main types of entities.
 

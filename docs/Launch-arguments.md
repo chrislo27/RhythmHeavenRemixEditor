@@ -1,11 +1,11 @@
 # Launch arguments
 
 Below is a list of possible launch arguments for RHRE.<br>
-They are put after `java -jar RHRE.jar`.
+They are put after `java -jar bin/RHRE.jar`. (`java -XstartOnFirstThread -jar bin/RHRE.jar` for macOS)
 
-Example (if you wanted to enable SFXDB verification): `java -jar RHRE.jar --verify-sfxdb`
+Example if you wanted to enable SFXDB verification: `java -jar bin/RHRE.jar --verify-sfxdb`
 
-Example (if you wanted to see all available arguments): `java -jar RHRE.jar --help`
+Example if you wanted to see all available arguments: `java -jar bin/RHRE.jar --help`
 
 | Name | Since | Description |
 |------|:-------------:|-------------|

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-java -jar -Xmx1024m RHRE.jar --portable-mode
+java -jar -Xmx1024m bin/RHRE.jar
 
 read -n1 "Press any key to continue..."
