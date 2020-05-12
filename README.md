@@ -23,7 +23,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [Java 8](https://java.com/en/download/) at minimum
 * A graphics driver that supports OpenGL 2.0 or higher
-* Windows 7 or newer, macOS 10.14 (Mojave) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
+* Windows 8.1 or newer, ~~macOS 10.14 (Mojave) or newer~~ (May not currently work on macOS due to [issue #317](https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/317)), Linux (recommended Ubuntu 18.04 LTS or newer)
 * An Internet connection to download the sound effect database
 
 ## Features
