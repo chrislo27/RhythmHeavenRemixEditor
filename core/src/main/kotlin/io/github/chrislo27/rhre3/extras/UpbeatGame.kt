@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.extras
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.audio.Sound
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
 import com.badlogic.gdx.graphics.OrthographicCamera

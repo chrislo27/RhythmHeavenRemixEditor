@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Colors
@@ -57,7 +58,7 @@ import kotlinx.coroutines.launch
 import org.asynchttpclient.AsyncHttpClient
 import org.asynchttpclient.DefaultAsyncHttpClientConfig
 import org.asynchttpclient.Dsl.asyncHttpClient
-import org.lwjgl.opengl.Display
+import org.lwjgl.glfw.GLFW
 import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
@@ -175,6 +176,9 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         Toolboks.LOGGER.info("Running on JRE $javaVersion")
         
         instance = this
+        
+        val windowHandle = (Gdx.graphics as Lwjgl3Graphics).window.windowHandle
+        GLFW.glfwSetWindowAspectRatio(windowHandle, 16, 9)
         
         // localization stuff
         run {
@@ -526,8 +530,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         if (isFullscreen) {
             preferences.putString(PreferenceKeys.WINDOW_STATE, "fs")
         } else {
-            preferences.putString(PreferenceKeys.WINDOW_STATE,
-                                  "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
+//            preferences.putString(PreferenceKeys.WINDOW_STATE,
+//                                  "${(Gdx.graphics.width / Display.getPixelScaleFactor()).toInt()}x${(Gdx.graphics.height / Display.getPixelScaleFactor()).toInt()}")
+            // FIXME add pixel scale factor
+            preferences.putString(PreferenceKeys.WINDOW_STATE, "${Gdx.graphics.width}x${Gdx.graphics.height}")
         }
         
         Toolboks.LOGGER.info("Persisting window settings as ${preferences.getString(PreferenceKeys.WINDOW_STATE)}")

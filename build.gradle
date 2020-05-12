@@ -42,8 +42,8 @@ project(":desktop") {
         
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-controllers-desktop:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
         implementation "commons-io:commons-io:2.6"
         implementation "com.github.oshi:oshi-core:3.13.5"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -61,6 +61,10 @@ project(":desktop") {
         implementation "com.segment.analytics.java:analytics:+"
         implementation "club.minnced:java-discord-rpc:2.0.2"
         implementation "net.lingala.zip4j:zip4j:2.3.0"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-windows"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-macos"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-linux"
 
         implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         implementation "com.badlogicgames.gdx:gdx-controllers-platform:$gdxVersion:natives-desktop"
@@ -75,9 +79,9 @@ project(":core") {
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
         implementation "commons-io:commons-io:2.6"
         implementation "com.github.oshi:oshi-core:3.13.5"
         implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -95,6 +99,10 @@ project(":core") {
         implementation "com.segment.analytics.java:analytics:+"
         implementation "club.minnced:java-discord-rpc:2.0.2"
         implementation "net.lingala.zip4j:zip4j:2.3.0"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-windows"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-macos"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.0:natives-linux"
 
         implementation fileTree(dir: 'libs', include: ['*.jar'])
     }

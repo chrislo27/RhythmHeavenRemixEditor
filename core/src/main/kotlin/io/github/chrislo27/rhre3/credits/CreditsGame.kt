@@ -3,7 +3,7 @@ package io.github.chrislo27.rhre3.credits
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.audio.Music
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic
 import com.badlogic.gdx.graphics.*
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.GlyphLayout

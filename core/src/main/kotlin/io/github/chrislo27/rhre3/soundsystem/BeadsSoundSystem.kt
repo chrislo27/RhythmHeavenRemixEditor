@@ -1,7 +1,7 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.backends.lwjgl.audio.OpenALMusic
+import com.badlogic.gdx.backends.lwjgl3.audio.OpenALMusic
 import com.badlogic.gdx.files.FileHandle
 import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.toolboks.Toolboks
