@@ -1,6 +1,6 @@
 # Readme
 
-This readme is accurate as of version `v3.19.5`.
+This readme is accurate as of version `v3.19.6`.
 
 Please read through the sections of this readme. There are MANY
 other features and other intricacies that are not mentioned,
