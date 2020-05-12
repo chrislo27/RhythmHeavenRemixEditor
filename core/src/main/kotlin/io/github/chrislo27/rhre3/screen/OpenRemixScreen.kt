@@ -293,8 +293,8 @@ class OpenRemixScreen(main: RHRE3Application)
             GlobalScope.launch {
                 isChooserOpen = true
                 val initialDirectory: File? = attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_LOAD) ?: getDefaultDirectory()
-                val fileFilters = listOf(FileChooserExtensionFilter(Localization["screen.open.fileFilterSupported"], "*.${RHRE3.REMIX_FILE_EXTENSION}", "*.brhre2", "*.mid"))
-                FileChooser.openFileChooser(Localization["screen.open.fileChooserTitle"], initialDirectory, null, fileFilters, fileFilters.first()) { file ->
+                val fileFilter = TinyFDWrapper.FileExtFilter(Localization["screen.open.fileFilterSupported"] + "(.${RHRE3.REMIX_FILE_EXTENSION}, .brhre2, .mid)", "*.${RHRE3.REMIX_FILE_EXTENSION}", "*.brhre2", "*.mid")
+                TinyFDWrapper.openFile(Localization["screen.open.fileChooserTitle"], initialDirectory, fileFilter) { file ->
                     isChooserOpen = false
                     if (file != null) {
                         val newInitialDirectory = if (!file.isDirectory) file.parentFile else file

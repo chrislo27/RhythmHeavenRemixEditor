@@ -480,8 +480,8 @@ class ExportRemixScreen(main: RHRE3Application)
                 Gdx.app.postRunnable {
                     mainLabel.text = ""
                 }
-                val filters = listOf(FileChooserExtensionFilter(Localization["screen.export.fileFilter", "MP3, OGG, FLAC, WAV"], "*.mp3", "*.ogg", "*.flac", "*.wav"))
-                FileChooser.saveFileChooser(Localization["screen.export.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT) ?: getDefaultDirectory(), null, filters, filters.first()) { file ->
+                val filter = TinyFDWrapper.FileExtFilter(Localization["screen.export.fileFilter", "MP3, OGG, FLAC, WAV"], "*.mp3", "*.ogg", "*.flac", "*.wav")
+                TinyFDWrapper.saveFile(Localization["screen.export.fileChooserTitle"], attemptRememberDirectory(main, PreferenceKeys.FILE_CHOOSER_EXPORT) ?: getDefaultDirectory(), filter) { file ->
                     isChooserOpen = false
                     Gdx.app.postRunnable {
                         mainLabel.text = ""

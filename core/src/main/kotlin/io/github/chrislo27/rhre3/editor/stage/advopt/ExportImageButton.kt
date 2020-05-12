@@ -51,8 +51,8 @@ class ExportImageButton(val editor: Editor, palette: UIPalette, parent: UIElemen
     override fun onLeftClick(xPercent: Float, yPercent: Float) {
         super.onLeftClick(xPercent, yPercent)
         val wasShiftHeld = Gdx.input.isShiftDown()
-        val filters = listOf(FileChooserExtensionFilter("Supported image output files", "*.png"))
-        FileChooser.saveFileChooser("Choose image to export to", attemptRememberDirectory(editor.main, PreferenceKeys.FILE_CHOOSER_EXPORT_IMAGE) ?: getDefaultDirectory(), null, filters) { file ->
+        val filter = TinyFDWrapper.FileExtFilter("Supported image output files (.png)", "*.png")
+        TinyFDWrapper.saveFile("Choose image to export to", attemptRememberDirectory(editor.main, PreferenceKeys.FILE_CHOOSER_EXPORT_IMAGE) ?: getDefaultDirectory(), filter) { file ->
             val remix = editor.remix
             val duration = remix.duration
             if (file != null && duration > 0f) {
