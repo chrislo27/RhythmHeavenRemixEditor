@@ -67,6 +67,8 @@ abstract class RhythmGame(val main: RHRE3Application) {
     private var disposed = false
     
     protected val events: MutableList<RGEvent> = mutableListOf()
+    
+    abstract val gameName: String
 
     protected abstract fun _render(main: RHRE3Application, batch: SpriteBatch)
     

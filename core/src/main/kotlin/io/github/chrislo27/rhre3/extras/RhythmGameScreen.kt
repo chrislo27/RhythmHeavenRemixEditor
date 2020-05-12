@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.discord.DiscordHelper
+import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.playalong.ControllerInput
 import io.github.chrislo27.rhre3.playalong.ControllerMapping
 import io.github.chrislo27.rhre3.playalong.Playalong
@@ -284,6 +286,7 @@ class RhythmGameScreen(main: RHRE3Application, val game: RhythmGame)
         controlsLabel.text = Playalong.playalongControls.toInputString()
         Controllers.addListener(this)
         Playalong.loadActiveMappings()
+        DiscordHelper.updatePresence(PresenceState.PlayingEndlessGame(game.gameName))
     }
 
     override fun hide() {

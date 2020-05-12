@@ -29,6 +29,9 @@ import java.time.Duration
 
 class QuizGame(main: RHRE3Application) : RhythmGame(main) {
 
+    override val gameName: String
+        get() = Localization["extras.quiz"]
+    
     private val bgSheet: Texture = Texture("extras/quiz/quiz_bg.png").apply {
         setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
     }

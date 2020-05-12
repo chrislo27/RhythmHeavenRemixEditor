@@ -40,6 +40,9 @@ class UpbeatGame(main: RHRE3Application, val hardMode: Boolean) : RhythmGame(mai
         val MAX_OFFSET_SEC: Float = 4f / 60
     }
 
+    override val gameName: String
+        get() = Localization[if (hardMode) "extras.upbeat.hardMode" else "extras.upbeat"]
+
     private val sheet: Texture = Texture("extras/upbeat/upbeat_spritesheet.png").apply {
         setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
     }

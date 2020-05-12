@@ -42,6 +42,9 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
 
     object PlayingAlong
         : PresenceState("Using Playalong Mode", "playalong", largeIcon = "playalong_logo")
+    
+    class PlayingEndlessGame(gameName: String)
+        : PresenceState("Playing $gameName", "goat")
 
     sealed class Elapsable(state: String, val duration: Float, smallIcon: String = "", smallIconText: String = state)
         : PresenceState(state, smallIcon, smallIconText) {
