@@ -53,7 +53,7 @@ object DesktopLauncher {
                 .editConfig {
                     this.setAutoIconify(true)
                     this.setWindowedMode(app.emulatedSize.first, app.emulatedSize.second)
-                    this.setWindowSizeLimits(640, 360, -1, -1)
+                    this.setWindowSizeLimits(RHRE3.MINIMUM_SIZE.first, RHRE3.MINIMUM_SIZE.second, -1, -1)
                     this.setTitle(app.getTitle())
                     this.setIdleFPS(arguments.fps.coerceAtLeast(30))
                     this.setResizable(true)
