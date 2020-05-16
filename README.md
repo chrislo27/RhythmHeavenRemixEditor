@@ -23,7 +23,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [Java 8](https://java.com/en/download/) at minimum
 * A graphics driver that supports OpenGL 2.0 or higher
-* Windows 8.1 or newer, ~~macOS 10.14 (Mojave) or newer~~ (May not currently work on macOS due to [issue #317](https://github.com/chrislo27/RhythmHeavenRemixEditor/issues/317)), Linux (recommended Ubuntu 18.04 LTS or newer)
+* Windows 8.1 or newer, macOS 10.14 (Mojave) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
 * An Internet connection to download the sound effect database
 
 ## Features
@@ -40,13 +40,13 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 Installation is straightforward. Please ensure your computer meets the Requirements above.
 1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and download the `RHRE_X.zip` file, where `X` is the version number.
 2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
-3. Open the extracted folder, and double click the file labeled `run_windows.bat` or `run_macOS-linux.sh` depending on your operating system.
+3. Open the extracted folder, and double-click the file labeled `run_windows.bat` or `run_macOS-linux.sh` depending on your operating system.
 4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
 5. Read the [README](http://rhre.readthedocs.io/en/latest/README/) and get remixing!
 
 ## Updating the program
-In **v3.19.0 and newer**: To update the program, click the "Download and install update" button when the program greets you with the prompt. You can also check for updates manually in the Info and Settings screen, or update manually using the instructions below.<br>
-In **v3.18.8 and earlier**: To update the program, [download the latest version](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and run RHRE from the new version.<br>
+From **v3.20.0 and newer**: To update the program, click the "Download and install update" button when the program greets you with the prompt. You can also check for updates manually in the Info and Settings screen, or update manually using the instructions below.<br>
+From **v3.19.5 and earlier**: To update the program, [download the latest version](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and run RHRE from the new version.<br>
 
 ## Other information
 Rhythm Heaven is not my property—it is the intellectual property of Nintendo.<br>
