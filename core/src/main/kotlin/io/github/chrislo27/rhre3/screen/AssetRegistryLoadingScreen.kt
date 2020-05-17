@@ -21,9 +21,9 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
     private var nextScreen: (() -> ToolboksScreen<*, *>?)? = null
     private var logoTex: Texture? = null
     private var firstFrame = true
+    private var invokedNextScreen = false
 
     override fun render(delta: Float) {
-        
         if (logoTex == null) {
             logoTex = Texture(Gdx.files.internal("images/logo_with_name.png")).apply {
                 setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear)
@@ -77,7 +77,8 @@ class AssetRegistryLoadingScreen(main: RHRE3Application)
         
         super.render(delta)
 
-        if (progress >= 1f) {
+        if (progress >= 1f && !invokedNextScreen) {
+            invokedNextScreen = true
             main.screen = nextScreen?.invoke()
         }
     }
