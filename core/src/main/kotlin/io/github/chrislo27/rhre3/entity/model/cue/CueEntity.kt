@@ -210,7 +210,7 @@ class CueEntity(remix: Remix, datamodel: Cue)
     }
     
     private fun createDerivative(): Derivative {
-        return Derivative((cue.getBaseBpmRate(this.bounds.x) - 1f) * 100, semitone.toFloat(), 0f)
+        return Derivative(((cue.getBaseBpmRate(this.bounds.x) - 1f) * 100).coerceIn(SoundStretch.TEMPO_CHANGE_RANGE), semitone.toFloat().coerceIn(SoundStretch.PITCH_CHANGE_RANGE), 0f)
     }
     
     fun play(position: Float = 0f, introSoundPos: Float = 0f) {
