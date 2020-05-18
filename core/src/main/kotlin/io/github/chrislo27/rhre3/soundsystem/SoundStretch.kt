@@ -1,18 +1,20 @@
 package io.github.chrislo27.rhre3.soundsystem
 
+import org.apache.commons.lang.SystemUtils
 import java.io.File
 import java.util.*
 
 
 /**
- * A simple wrapper around the [SoundStretch](https://www.surina.net/soundtouch/soundstretch.html) Windows and macOS executables.
+ * A simple wrapper around the [SoundStretch](https://www.surina.net/soundtouch/soundstretch.html) executables.
  */
 object SoundStretch {
 
     enum class OS(val supported: Boolean, val executableName: String) {
         UNSUPPORTED(false, ""),
-        WINDOWS(true, "SoundStretch_windows.exe");
+        WINDOWS(true, "SoundStretch_windows.exe"),
 //        MACOS(true, "SoundStretch_macOS");
+        LINUX(true, "SoundStretch_linux");
         
         companion object {
             val ALL_VALUES: List<OS> = values().toList()
@@ -30,6 +32,7 @@ object SoundStretch {
         when {
             "win" in osName -> OS.WINDOWS
 //            "mac" in osName -> OS.MACOS
+            osName.startsWith("linux") -> OS.LINUX
             else -> OS.UNSUPPORTED
         }
     } catch (e: Exception) {
@@ -39,7 +42,7 @@ object SoundStretch {
     val isSupported: Boolean get() = currentOS.supported
 
     private fun makeProcessBuilder(directoryPath: File, args: List<String>): ProcessBuilder = when (val os = currentOS) {
-        OS.WINDOWS/*, OS.MACOS*/ -> {
+        OS.WINDOWS, OS.LINUX/*, OS.MACOS*/ -> {
             ProcessBuilder(listOf(directoryPath.resolve(os.executableName).absolutePath) + args)
         }
         else -> throw NotImplementedError("Not implemented for the current operating system, supported OSs: ${OS.SUPPORTED}")
