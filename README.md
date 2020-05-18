@@ -23,8 +23,8 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [A 64-bit version Java](https://java.com/en/download/), Java 8 at minimum
 * A graphics driver that supports OpenGL 2.0 or higher
-* Windows 8.1 or newer, macOS 10.14 (Mojave) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
-* An Internet connection to download the sound effect database
+* Windows 7 or newer, macOS 10.14 (Mojave) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
+* An Internet connection to download the SFX Database
 
 ## Features
 ![Editor screenshot by durangodudes](.github/fp_editor_v3.19.4.png)
