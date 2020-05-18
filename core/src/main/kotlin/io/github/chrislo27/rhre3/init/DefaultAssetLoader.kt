@@ -28,9 +28,9 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         
         AssetRegistry.loadAsset<Texture>("sfxdb_missing_icon", "images/gameicon/missing.png", linearTexture())
         (Language.VALUES - Language.UNKNOWN).forEach { lang ->
-            //            AssetRegistry.loadAsset<Texture>("sfxdb_langicon_${lang.code}", "images/gameicon/lang/${lang.code}.png")
             AssetRegistry.loadAsset<Pixmap>("sfxdb_langicon_${lang.code}_pixmap", "images/gameicon/lang/${lang.code}.png")
         }
+        AssetRegistry.loadAsset<Pixmap>("sfxdb_langicon_${Language.UNKNOWN.code}_pixmap", "images/gameicon/lang/UNKNOWN.png")
         
         Series.VALUES.forEach {
             AssetRegistry.loadAsset<Texture>(it.textureId, it.texturePath)
