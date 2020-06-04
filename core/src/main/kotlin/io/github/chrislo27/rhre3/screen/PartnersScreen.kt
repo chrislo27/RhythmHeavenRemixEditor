@@ -34,9 +34,9 @@ class PartnersScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, 
                 Article("partner_Suwa-ko", "Suwa-ko", "", "https://i.imgur.com/ArJ3Gqe.jpg", 0L, "https://www.youtube.com/channel/UCj-veAzBbeVqac7ISPsGvLw", null, false),
                 Article("partner_Draster", "Draster", "", "https://i.imgur.com/SwZ60Wb.jpg", 0L, "https://www.youtube.com/channel/UCtlLcwZ_UXdyfvPGI5Meu0w", null, false),
                 Article("partner_Ssure2", "Ssure2", "", "https://i.imgur.com/TwTta9N.jpg", 0L, "https://www.youtube.com/user/Ssure2/", null, false),
-                Article("partner_Drummer", "The Drummer", "", "https://i.imgur.com/E4wB1cp.jpg", 0L, "https://www.youtube.com/channel/UC1I8JOghDzI328ALcaPr4CQ", null, false)
+                Article("partner_Drummer", "Chloe", "", "https://i.imgur.com/otIrhar.jpg", 0L, "https://www.youtube.com/channel/UC1I8JOghDzI328ALcaPr4CQ", null, false)
                                                     )
-        const val PARTNERS_VERSION: Int = 4
+        const val PARTNERS_VERSION: Int = 5
     }
 
     override val stage: GenericStage<PartnersScreen> = GenericStage(main.uiPalette, null, main.defaultCamera)
