@@ -168,6 +168,8 @@ class AutoUpdaterScreen(main: RHRE3Application)
                 }
                 val fileStream = FileOutputStream(zipFileLoc)
                 val download = RHRE3Application.httpClient.prepareGet(zipUrl)
+                        .setReadTimeout(120_000)
+                        .setRequestTimeout(2_000_000_000)
                         .execute(object : AsyncCompletionHandlerBase() {
                             private val speedUpdateRate = 500L
                             private var timeBetweenProgress: Long = System.currentTimeMillis()
