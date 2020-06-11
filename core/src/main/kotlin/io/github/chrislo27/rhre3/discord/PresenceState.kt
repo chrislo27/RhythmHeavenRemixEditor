@@ -22,9 +22,6 @@ sealed class PresenceState(open val state: String = "", open val smallIcon: Stri
     object Exporting
         : PresenceState("Exporting a remix", "export")
 
-    object Uploading
-        : PresenceState("Uploading a remix", "export")
-
     object InSettings
         : PresenceState("In Info and Settings", "info")
 
