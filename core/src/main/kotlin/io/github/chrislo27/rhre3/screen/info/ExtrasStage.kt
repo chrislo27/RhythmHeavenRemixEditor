@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.credits.CreditsGame
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.extras.*
@@ -58,6 +59,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
+                AnalyticsHandler.track("View Bouncy Road Mania", mapOf())
                 Gdx.net.openURI("""https://github.com/chrislo27/BouncyRoadMania""")
             }
             this.tooltipTextIsLocalizationKey = true
@@ -76,6 +78,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
+                AnalyticsHandler.track("Play Extras Game", mapOf("game" to "quiz"))
                 val game = QuizGame(main)
                 Gdx.app.postRunnable {
                     main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
@@ -125,6 +128,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
+                AnalyticsHandler.track("Play Extras Game", mapOf("game" to "upbeat_normal"))
                 val game = UpbeatGame(main, false)
                 Gdx.app.postRunnable {
                     main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
@@ -147,6 +151,7 @@ class ExtrasStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, va
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
             this.leftClickAction = { _, _ ->
+                AnalyticsHandler.track("Play Extras Game", mapOf("game" to "upbeat_hard"))
                 val game = UpbeatGame(main, true)
                 Gdx.app.postRunnable {
                     main.screen = TransitionScreen(main, infoScreen, RhythmGameScreen(main, game), WipeTo(Color.BLACK, 0.35f), WipeFrom(Color.BLACK, 0.35f))
