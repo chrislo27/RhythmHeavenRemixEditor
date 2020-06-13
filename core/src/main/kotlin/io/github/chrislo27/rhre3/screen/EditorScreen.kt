@@ -2,6 +2,7 @@ package io.github.chrislo27.rhre3.screen
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
+import com.sun.jna.Platform
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
@@ -9,6 +10,7 @@ import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.editor.stage.EditorStage
+import io.github.chrislo27.rhre3.editor.stage.Java32BitWarningStage
 import io.github.chrislo27.rhre3.editor.stage.StartupStage
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.toolboks.ToolboksScreen
@@ -38,10 +40,14 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
         if (firstShowing) {
             firstShowing = false
             RemixRecovery.cacheRemixChecksum(editor.remix)
+            
             if (main.preferences.getBoolean(PreferenceKeys.SHOW_STARTUP_SCREEN, true)) {
                 stage.elements += StartupStage(this)
-                stage.updatePositions()
             }
+            if (!Platform.is64Bit()) {
+                stage.elements += Java32BitWarningStage(this)
+            }
+            stage.updatePositions()
         }
 
         DiscordHelper.updatePresence(PresenceState.InEditor)
