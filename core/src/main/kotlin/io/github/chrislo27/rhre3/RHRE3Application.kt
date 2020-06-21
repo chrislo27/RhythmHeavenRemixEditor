@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
@@ -83,6 +84,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                                                                   .setFollowRedirect(true)
                                                                   .setCompressionEnforced(true))
         
+        private val TMP_MATRIX = Matrix4()
         private const val RAINBOW_STR = "RAINBOW"
         
         init {
@@ -434,6 +436,11 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     
     override fun postRender() {
         val screen = screen
+        
+        TMP_MATRIX.set(batch.projectionMatrix)
+        batch.projectionMatrix = defaultCamera.combined
+        batch.begin()
+        
         if (screen !is HidesVersionText || !screen.hidesVersionText) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
@@ -444,18 +451,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 font.setColor(1f, 1f, 1f, 1f)
             }
             
-            val oldProj = batch.projectionMatrix
-            batch.projectionMatrix = defaultCamera.combined
-            batch.begin()
             val layout = font.draw(batch, RHRE3.VERSION.toString(),
                                    0f,
                                    (font.capHeight) + (2f / RHRE3.HEIGHT) * defaultCamera.viewportHeight,
                                    defaultCamera.viewportWidth, Align.right, false)
             versionTextWidth = layout.width
-            batch.end()
-            batch.projectionMatrix = oldProj
-            font.setColor(1f, 1f, 1f, 1f)
             
+            font.setColor(1f, 1f, 1f, 1f)
             font.data.setScale(1f)
         }
         
@@ -466,16 +468,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             val alpha = if (defaultCamera.getInputY() / defaultCamera.viewportHeight in (height - font.capHeight / defaultCamera.viewportHeight)..(height)) 0.6f else 1f
             font.scaleMul(0.85f)
             font.setColor(1f, 1f, 1f, alpha)
-            
-            val oldProj = batch.projectionMatrix
-            batch.projectionMatrix = defaultCamera.combined
-            batch.begin()
             font.drawCompressed(batch, "Early-access version. Do not redistribute; do not publish video recordings. (Licensed to ${AnalyticsHandler.getUUID().takeUnless { it.isEmpty() }?.run { substring(24) }})",
                                 0f,
                                 height * defaultCamera.viewportHeight,
                                 defaultCamera.viewportWidth, Align.center)
-            batch.end()
-            batch.projectionMatrix = oldProj
             font.setColor(1f, 1f, 1f, 1f)
             
             font.data.setScale(1f)
@@ -483,23 +479,16 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         
         if (timeSinceResize < 1.5f) {
             val font = defaultBorderedFont
-
             font.setColor(1f, 1f, 1f, 1f)
-
-            val oldProj = batch.projectionMatrix
-            batch.projectionMatrix = defaultCamera.combined
-            batch.begin()
-            val layout = font.draw(batch, "${Gdx.graphics.width}x${Gdx.graphics.height}",
+            font.draw(batch, "${Gdx.graphics.width}x${Gdx.graphics.height}",
                                    0f,
                                    defaultCamera.viewportHeight * 0.5f + font.capHeight,
                                    defaultCamera.viewportWidth, Align.center, false)
-            versionTextWidth = layout.width
-            batch.end()
-            batch.projectionMatrix = oldProj
-            font.setColor(1f, 1f, 1f, 1f)
         }
         timeSinceResize += Gdx.graphics.deltaTime
-        
+
+        batch.end()
+        batch.projectionMatrix = TMP_MATRIX
         super.postRender()
     }
     
