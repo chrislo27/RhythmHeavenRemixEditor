@@ -430,6 +430,8 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         super.preRender()
     }
     
+    private var timeSinceResize: Float = 2f
+    
     override fun postRender() {
         val screen = screen
         if (screen !is HidesVersionText || !screen.hidesVersionText) {
@@ -478,6 +480,25 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             
             font.data.setScale(1f)
         }
+        
+        if (timeSinceResize < 1.5f) {
+            val font = defaultBorderedFont
+
+            font.setColor(1f, 1f, 1f, 1f)
+
+            val oldProj = batch.projectionMatrix
+            batch.projectionMatrix = defaultCamera.combined
+            batch.begin()
+            val layout = font.draw(batch, "${Gdx.graphics.width}x${Gdx.graphics.height}",
+                                   0f,
+                                   defaultCamera.viewportHeight * 0.5f + font.capHeight,
+                                   defaultCamera.viewportWidth, Align.center, false)
+            versionTextWidth = layout.width
+            batch.end()
+            batch.projectionMatrix = oldProj
+            font.setColor(1f, 1f, 1f, 1f)
+        }
+        timeSinceResize += Gdx.graphics.deltaTime
         
         super.postRender()
     }
@@ -596,7 +617,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         }
         return res
     }
-    
+
+    override fun resize(width: Int, height: Int) {
+        super.resize(width, height)
+        timeSinceResize = 0f
+    }
+
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {
         return FreeTypeFontGenerator.FreeTypeFontParameter().apply {
             magFilter = Texture.TextureFilter.Linear
