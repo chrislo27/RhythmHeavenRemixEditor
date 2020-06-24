@@ -6,6 +6,7 @@ import com.sun.jna.Platform
 import io.github.chrislo27.rhre3.PreferenceKeys
 import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.RemixRecovery
+import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.discord.PresenceState
 import io.github.chrislo27.rhre3.editor.Editor
@@ -46,6 +47,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
             }
             if (!Platform.is64Bit()) {
                 stage.elements += Java32BitWarningStage(this)
+                AnalyticsHandler.track("32-bit Warning Screen", mapOf())
             }
             stage.updatePositions()
         }
