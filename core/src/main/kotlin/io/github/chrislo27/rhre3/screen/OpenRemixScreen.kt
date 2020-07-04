@@ -302,7 +302,9 @@ class OpenRemixScreen(main: RHRE3Application)
                         loadFile(file)
                     } else {
                         loadButton.alsoDo = {}
-                        stage.onBackButtonClick()
+                        Gdx.app.postRunnable {
+                            stage.onBackButtonClick()
+                        }
                     }
                 }
             }
