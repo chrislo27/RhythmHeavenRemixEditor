@@ -312,6 +312,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                 
                 addOtherScreens()
                 loadWindowSettings()
+                dontShowResizeInfo = false
                 val nextScreen = ScreenRegistry[if (RHRE3.skipGitScreen) "sfxdbLoad" else "databaseUpdate"]
 //                if (preferences.getString(PreferenceKeys.LAST_VERSION, null) == null) {
 //                    Gdx.net.openURI("https://rhre.readthedocs.io/en/latest/")
@@ -433,6 +434,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     }
     
     private var timeSinceResize: Float = 2f
+    private var dontShowResizeInfo = true
     
     override fun postRender() {
         val screen = screen
@@ -477,7 +479,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             font.data.setScale(1f)
         }
         
-        if (timeSinceResize < 1.5f) {
+        if (timeSinceResize < 1.5f && !dontShowResizeInfo) {
             val font = defaultBorderedFont
             font.setColor(1f, 1f, 1f, 1f)
             font.draw(batch, "${Gdx.graphics.width}x${Gdx.graphics.height}",
@@ -609,7 +611,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
 
     override fun resize(width: Int, height: Int) {
         super.resize(width, height)
-        timeSinceResize = 0f
+        if (!dontShowResizeInfo) timeSinceResize = 0f
     }
 
     private fun createDefaultTTFParameter(): FreeTypeFontGenerator.FreeTypeFontParameter {

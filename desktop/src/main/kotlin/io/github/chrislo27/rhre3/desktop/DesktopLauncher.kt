@@ -88,7 +88,6 @@ object DesktopLauncher {
                     RHRE3.triggerUpdateScreen = arguments.triggerUpdateScreen
                     LazySound.loadLazilyWithAssetManager = !arguments.lazySoundsForceLoad
                     
-                    this.setWindowIcon()
                     val sizes: List<Int> = listOf(256, 128, 64, 32, 24, 16)
                     this.setWindowIcon(Files.FileType.Internal, *sizes.map { "images/icon/$it.png" }.toTypedArray())
                 }
