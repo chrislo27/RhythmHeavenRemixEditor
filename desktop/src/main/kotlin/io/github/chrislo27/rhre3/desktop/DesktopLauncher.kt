@@ -59,7 +59,7 @@ object DesktopLauncher {
                     this.setResizable(true)
                     this.useVsync(arguments.fps <= 60)
                     this.setInitialBackgroundColor(Color(0f, 0f, 0f, 1f))
-                    this.setAudioConfig(100, 16384, 32)
+                    this.setAudioConfig(100, 4096, 16)
                     this.setHdpiMode(HdpiMode.Logical)
                     if (portable) {
                         this.setPreferencesConfig(".rhre3/.prefs/", Files.FileType.Local)

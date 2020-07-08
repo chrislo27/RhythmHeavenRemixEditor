@@ -21,6 +21,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.transition.TransitionScreen
 import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.*
+import org.lwjgl.openal.AL10
 import rhmodding.bread.model.bccad.Animation
 import rhmodding.bread.model.bccad.BCCAD
 import java.nio.ByteBuffer
@@ -292,7 +293,9 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
     private fun checkCounterExceeded() {
         if (playerCounter >= 100 && !exploded) {
             exploded = true
-            main.screen = FakeCrashScreen(main, IllegalStateException("Quiz Show cannot handle this many inputs. Nice try."), main.screen)
+            Gdx.app.postRunnable {
+                main.screen = FakeCrashScreen(main, IllegalStateException("Quiz Show cannot handle this many inputs. Nice try."), main.screen)
+            }
         }
     }
 
@@ -341,13 +344,13 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         sfxPlayerD.dispose()
         sfxHostA.dispose()
         sfxHostD.dispose()
-        music.stop()
         music.dispose()
         val timesPlayedKey = PreferenceKeys.EXTRAS_QUIZ_TIMES_PLAYED
         main.preferences.putInteger(timesPlayedKey, main.preferences.getInteger(timesPlayedKey, 0) + 1).flush()
         if (!exploded && score > highScore) {
             main.preferences.putInteger(PreferenceKeys.EXTRAS_QUIZ_HIGH_SCORE, score).flush()
         }
+        println("Disposed quiz game")
     }
 
     /**
