@@ -388,7 +388,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             }
         }
         
-        LC.all(this)
+        LC(this).all()
     }
     
     fun fetchGithubVersion() {

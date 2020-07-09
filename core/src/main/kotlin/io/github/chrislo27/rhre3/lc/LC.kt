@@ -10,18 +10,18 @@ import java.util.prefs.Preferences
 import kotlin.concurrent.thread
 
 
-object LC {
+class LC(val main: RHRE3Application) {
 
     private val userRoot: Preferences = Preferences.userRoot().node("io/rhre")
 
-    private fun determineSource(key: String, main: RHRE3Application): String {
+    private fun determineSource(key: String): String {
         val source1 = main.preferences.getString(key, "") ?: ""
         val source2 = userRoot.get(key, "") ?: ""
 
         return if (source1 == source2) source1 else (if (source1.isEmpty() && source2.isNotEmpty()) source2 else if (source1.isNotEmpty() && source2.isEmpty()) source1 else "")
     }
 
-    private fun persist(key: String, value: String, main: RHRE3Application) {
+    private fun persist(key: String, value: String) {
         try {
             main.preferences.putString(key, value).flush()
             userRoot.put(key, value)
@@ -30,43 +30,46 @@ object LC {
         }
     }
 
-    fun all(main: RHRE3Application) {
-        lc(main)
-    }
-
-    fun lc(main: RHRE3Application) {
-        GlobalScope.launch {
-            var source = determineSource("l", main)
-
-            try {
-                val req = RHRE3Application.httpClient.prepareGet("https://api.rhre.dev:10443/rhre3/lc")
-                        .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
-                        .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
-                        .execute().get()
-
-                if (req.statusCode == 200) {
-                    source = req.responseBody
-                } else if (req.statusCode == 204) {
-                    source = ""
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            if (RHRE3.lc != null) {
-                source = RHRE3.lc?.replace("\\n", "\n") ?: ""
-            } else {
-                fun persist() = persist("l", source, main)
-                Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
-            }
-
-            if (source.isNotEmpty()) {
-                val reason = source
-                Gdx.app.postRunnable {
-                    main.screen = LCScreen(main, reason)
-                }
+    fun all() {
+        thread(start = true, isDaemon = true) {
+            while (!lc()) {
+                Thread.sleep(5 * 60_000L)
             }
         }
+    }
+
+    fun lc(): Boolean {
+        var source = determineSource("l")
+
+        try {
+            val req = RHRE3Application.httpClient.prepareGet("https://api.rhre.dev:10443/rhre3/lc")
+                    .addHeader("User-Agent", "RHRE ${RHRE3.VERSION}")
+                    .addHeader("X-Analytics-ID", AnalyticsHandler.getUUID())
+                    .execute().get()
+
+            if (req.statusCode == 200) {
+                source = req.responseBody
+            } else if (req.statusCode == 204) {
+                source = ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        if (RHRE3.lc != null) {
+            source = RHRE3.lc?.replace("\\n", "\n") ?: ""
+        } else {
+            fun persist() = persist("l", source)
+            Runtime.getRuntime().addShutdownHook(thread(start = false, block = ::persist))
+        }
+
+        return if (source.isNotEmpty()) {
+            val reason = source
+            Gdx.app.postRunnable {
+                main.screen = LCScreen(main, reason)
+            }
+            true
+        } else false
     }
 
 }
