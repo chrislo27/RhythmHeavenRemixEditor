@@ -23,6 +23,7 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.tick.TickController
 import io.github.chrislo27.toolboks.tick.TickHandler
 import io.github.chrislo27.toolboks.util.MemoryUtils
+import io.github.chrislo27.toolboks.util.Sync
 import io.github.chrislo27.toolboks.util.gdxutils.drawCompressed
 import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
 import io.github.chrislo27.toolboks.version.Version
@@ -50,6 +51,8 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
 
     }
 
+    open var targetFramerate: Int = 60
+    
     val versionString: String = version.toString()
     val defaultFontKey: String = "${Toolboks.TOOLBOKS_ASSET_PREFIX}default_font"
     val defaultBorderedFontKey: String = "${Toolboks.TOOLBOKS_ASSET_PREFIX}default_bordered_font"
@@ -150,7 +153,7 @@ abstract class ToolboksGame(val logger: Logger, val logToFile: File?,
      * The default render function. This calls [preRender], then `super.[render]`, then [postRender].
      * The debug overlay is also rendered at this time.
      */
-    override fun render() {
+    final override fun render() {
         try {
             preRender()
             super.render()
@@ -194,6 +197,7 @@ ${(screen as? ToolboksScreen<*, *>)?.getDebugString() ?: ""}"""
             t.printStackTrace()
             exceptionHandler(t)
         }
+        Sync.sync(targetFramerate)
     }
 
     protected open fun exceptionHandler(t: Throwable) {

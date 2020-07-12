@@ -52,6 +52,7 @@ object RHRE3 {
     private val RHRE3_ANNIVERSARY: LocalDate = LocalDate.of(2017, Month.AUGUST, 30)
     private val RHRE2_ANNIVERSARY: LocalDate = LocalDate.of(2016, Month.DECEMBER, 6)
 
+    var targetFramerate: Int = 60
     var portableMode: Boolean = false
     var skipGitScreen: Boolean = false
     var forceGitFetch: Boolean = false

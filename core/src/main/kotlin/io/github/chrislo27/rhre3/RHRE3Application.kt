@@ -92,7 +92,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             Colors.put("PICOSONG", Color.valueOf("26AB57"))
         }
     }
-    
+
+    override var targetFramerate: Int
+        get() = RHRE3.targetFramerate
+        set(value) {
+            RHRE3.targetFramerate = value
+        }
     val defaultFontLargeKey = "default_font_large"
     val defaultFontMediumKey = "default_font_medium"
     val defaultBorderedFontLargeKey = "default_bordered_font_large"
