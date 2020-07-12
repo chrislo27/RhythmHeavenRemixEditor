@@ -122,6 +122,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("ui_colour_picker_arrow", "images/ui/colour_picker_arrow.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("ui_speed_change", "images/ui/icons/speed_change.png")
         AssetRegistry.loadAsset<Texture>("ui_textbox", "images/ui/textbox.png")
+        AssetRegistry.loadAsset<Texture>("ui_circle", "images/ui/circle.png")
         
         AssetRegistry.loadAsset<Texture>("ui_search_clear", "images/ui/searchbar/clear.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("ui_search_filter_gameName", "images/ui/searchbar/game_name.png", linearTexture())

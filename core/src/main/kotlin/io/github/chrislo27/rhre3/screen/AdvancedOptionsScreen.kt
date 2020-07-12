@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
@@ -27,6 +28,11 @@ import io.github.chrislo27.toolboks.registry.ScreenRegistry
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
+import io.github.chrislo27.toolboks.ui.UIElement
+import io.github.chrislo27.toolboks.util.MathHelper
+import io.github.chrislo27.toolboks.util.gdxutils.fillRect
+import io.github.chrislo27.toolboks.util.gdxutils.getInputX
+import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 import java.util.*
 import kotlin.math.sign
 import kotlin.system.measureNanoTime
@@ -340,6 +346,57 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
 //            tooltipTextIsLocalizationKey = false
 //            tooltipText = "[ORANGE]WARNING[]: This will clear the editor and discard all unsaved changes.\nReloads the entire SFX database. May fail (and crash) if there are errors.\nThis will also reload modding metadata from scratch."
 //        }
+
+        centre.elements += object : UIElement<AdvancedOptionsScreen>(centre, centre) {
+            private val percentX: Float
+                get() = (stage.camera.getInputX() - location.realX) / location.realWidth
+            private var beginDraw = false
+            private var completed = false
+
+            private fun drawLine(batch: SpriteBatch, progress: Float) {
+                val circle = AssetRegistry.get<Texture>("ui_circle")
+                val radius = this.location.realHeight * 3f
+                val smallRad = this.location.realHeight
+                batch.draw(circle, this.location.realX, this.location.realY + this.location.realHeight / 2f - radius / 2f, radius, radius)
+                batch.draw(circle, this.location.realX + (this.location.realWidth * progress) - smallRad / 2f, this.location.realY, smallRad, smallRad)
+                batch.fillRect(this.location.realX + radius / 2f, this.location.realY, (this.location.realWidth * progress - radius / 2f), this.location.realHeight)
+            }
+
+            override fun render(screen: AdvancedOptionsScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
+                batch.setColor(1f, 1f, 1f, 1f)
+                drawLine(batch, 1f)
+                batch.color = Color.ORANGE
+                if (beginDraw) {
+                    drawLine(batch, (percentX).coerceIn(0.005f, 1f))
+                } else if (completed) {
+                    drawLine(batch, 1f)
+                }
+                batch.setColor(1f, 1f, 1f, 1f)
+            }
+
+            override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+                if (visible) {
+                    if (isMouseOver() && !beginDraw) {
+                        if (percentX in 0f..0.019f) {
+                            beginDraw = true
+                            completed = false
+                        }
+                    } else {
+                        beginDraw = false
+                        if ((stage.camera.getInputX() - location.realX) >= location.realWidth - 1f) {
+                            completed = true
+                        }
+                    }
+                    return true
+                }
+                return false
+            }
+        }.apply {
+            this.location.set(screenX = -0.02f,
+                              screenY = -buttonHeight * 0.275f,
+                              screenWidth = 1.02f,
+                              screenHeight = buttonHeight * 0.2f)
+        }
 
         updateLabels()
     }
