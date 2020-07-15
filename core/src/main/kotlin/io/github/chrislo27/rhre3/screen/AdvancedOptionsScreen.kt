@@ -380,14 +380,17 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                         if (percentX in 0f..0.019f) {
                             beginDraw = true
                             completed = false
+                            return true
                         }
                     } else {
+                        val wasDrawing = beginDraw
                         beginDraw = false
                         if ((stage.camera.getInputX() - location.realX) >= location.realWidth - 1f) {
                             completed = true
                         }
+                        return wasDrawing
                     }
-                    return true
+                    return false
                 }
                 return false
             }
