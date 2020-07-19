@@ -27,7 +27,6 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * An Internet connection to download the SFX Database
 
 ## Features
-![Editor screenshot by durangodudes](.github/fp_editor_v3.19.4.png)
 ![Playalong screenshot by dexiedoo](.github/fp_playalong_v3.19.4.png)
 
 * Drag-and-drop common Rhythm Heaven minigame patterns into your remix
@@ -63,4 +62,4 @@ For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collective
 
 † Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
-Features screenshots provided by [durangodudes](https://www.youtube.com/channel/UCnBvcACARyY8JYHrOr4NxzQ) and [dexiedoo](https://www.youtube.com/channel/UC_ckCtLt88aI8Qzz5VM3UwA).
+Features screenshots provided by: [dexiedoo](https://www.youtube.com/channel/UC_ckCtLt88aI8Qzz5VM3UwA).
