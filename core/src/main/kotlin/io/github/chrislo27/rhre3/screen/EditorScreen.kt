@@ -21,6 +21,7 @@ class EditorScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, Ed
 
     companion object {
         var enteredEditor: Boolean = false
+            private set
     }
 
     val editor: Editor = Editor(main, main.defaultCamera, true)

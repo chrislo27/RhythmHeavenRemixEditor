@@ -489,7 +489,7 @@ class LinePuzzleEndScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applicat
         Gdx.app.postRunnable {
             RemixRecovery.saveRemixInRecovery()
             Gdx.app.postRunnable {
-                EditorScreen.enteredEditor = false
+                RHRE3Application.disableCloseWarning = true
                 Gdx.app.exit()
             }
         }

@@ -76,6 +76,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         lateinit var instance: RHRE3Application
             private set
         
+        var disableCloseWarning: Boolean = false
         val httpClient: AsyncHttpClient = asyncHttpClient(DefaultAsyncHttpClientConfig.Builder()
                                                                   .setThreadFactory {
                                                                       Thread(it).apply {
@@ -532,7 +533,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
             false
         } else {
             // Close warning only if the editor screen has been entered at least once and if the preferences say so
-            if (EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen && this.screen !is CrashScreen && this.screen !is AutoUpdaterScreen) {
+            if (!disableCloseWarning && EditorScreen.enteredEditor && preferences.getBoolean(PreferenceKeys.SETTINGS_CLOSE_WARNING, true) && this.screen !is CloseWarningScreen && this.screen !is CrashScreen && this.screen !is AutoUpdaterScreen) {
                 Gdx.app.postRunnable {
                     setScreen(CloseWarningScreen(this, this.screen))
                 }
