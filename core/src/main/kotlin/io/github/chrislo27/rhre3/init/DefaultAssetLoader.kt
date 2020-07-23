@@ -147,6 +147,7 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Sound>("weird_sfx_honk", "sound/honk.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_c", "sound/c.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
+        AssetRegistry.loadAsset<Sound>("etc_sfx_record", "etc/record_click.ogg")
         
         // pickaxe
         (1..6).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }

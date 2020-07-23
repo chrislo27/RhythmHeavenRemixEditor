@@ -49,6 +49,7 @@ import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.logging.Logger
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.transition.TransitionScreen
 import io.github.chrislo27.toolboks.ui.UIPalette
 import io.github.chrislo27.toolboks.util.CloseListener
 import io.github.chrislo27.toolboks.util.MathHelper
@@ -448,7 +449,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         batch.projectionMatrix = defaultCamera.combined
         batch.begin()
         
-        if (screen !is HidesVersionText || !screen.hidesVersionText) {
+        if ((screen !is HidesVersionText || !screen.hidesVersionText) && screen !is TransitionScreen<*>) {
             val font = defaultBorderedFont
             font.data.setScale(0.5f)
             

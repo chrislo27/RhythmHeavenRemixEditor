@@ -3,6 +3,7 @@ package io.github.chrislo27.rhre3.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.Preferences
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -11,28 +12,29 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.utils.Align
 import io.github.chrislo27.rhre3.PreferenceKeys
-import io.github.chrislo27.rhre3.RHRE3
 import io.github.chrislo27.rhre3.RHRE3Application
+import io.github.chrislo27.rhre3.RemixRecovery
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import io.github.chrislo27.rhre3.modding.ModdingGame
 import io.github.chrislo27.rhre3.modding.ModdingUtils
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
 import io.github.chrislo27.rhre3.stage.GenericStage
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.rhre3.util.FadeIn
+import io.github.chrislo27.rhre3.util.FadeOut
 import io.github.chrislo27.rhre3.util.Semitones
 import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.ToolboksScreen
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
+import io.github.chrislo27.toolboks.transition.TransitionScreen
 import io.github.chrislo27.toolboks.ui.Button
 import io.github.chrislo27.toolboks.ui.ImageLabel
 import io.github.chrislo27.toolboks.ui.TextLabel
 import io.github.chrislo27.toolboks.ui.UIElement
-import io.github.chrislo27.toolboks.util.MathHelper
 import io.github.chrislo27.toolboks.util.gdxutils.fillRect
 import io.github.chrislo27.toolboks.util.gdxutils.getInputX
-import io.github.chrislo27.toolboks.util.gdxutils.getInputY
 import java.util.*
 import kotlin.math.sign
 import kotlin.system.measureNanoTime
@@ -352,14 +354,15 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 get() = (stage.camera.getInputX() - location.realX) / location.realWidth
             private var beginDraw = false
             private var completed = false
+            private var timeSinceBeginDraw = 0f
 
             private fun drawLine(batch: SpriteBatch, progress: Float) {
                 val circle = AssetRegistry.get<Texture>("ui_circle")
-                val radius = this.location.realHeight * 3f
-                val smallRad = this.location.realHeight
-                batch.draw(circle, this.location.realX, this.location.realY + this.location.realHeight / 2f - radius / 2f, radius, radius)
-                batch.draw(circle, this.location.realX + (this.location.realWidth * progress) - smallRad / 2f, this.location.realY, smallRad, smallRad)
-                batch.fillRect(this.location.realX + radius / 2f, this.location.realY, (this.location.realWidth * progress - radius / 2f), this.location.realHeight)
+                val diameter = this.location.realHeight * 3f
+                val smallDia = this.location.realHeight
+                batch.draw(circle, this.location.realX, this.location.realY + this.location.realHeight / 2f - diameter / 2f, diameter, diameter)
+                batch.draw(circle, this.location.realX + (this.location.realWidth * progress) - smallDia / 2f, this.location.realY, smallDia, smallDia)
+                batch.fillRect(this.location.realX + diameter / 2f, this.location.realY, (this.location.realWidth * progress - diameter / 2f), this.location.realHeight)
             }
 
             override fun render(screen: AdvancedOptionsScreen, batch: SpriteBatch, shapeRenderer: ShapeRenderer) {
@@ -368,6 +371,16 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                 batch.color = Color.ORANGE
                 if (beginDraw) {
                     drawLine(batch, (percentX).coerceIn(0.005f, 1f))
+                    timeSinceBeginDraw += Gdx.graphics.deltaTime
+                    if (timeSinceBeginDraw in 0f..0.75f) {
+                        val circle = AssetRegistry.get<Texture>("ui_circle")
+                        val a = (timeSinceBeginDraw / 0.75f).coerceIn(0f, 1f)
+                        val fullDiameter = this.location.realHeight * 3f
+                        val diameter = fullDiameter * (1f - a) * 3f
+                        batch.setColor(1f, 1f, 1f, (1f - a) * 0.6f)
+                        batch.draw(circle, this.location.realX + fullDiameter / 2f - diameter / 2f, this.location.realY + this.location.realHeight / 2f - diameter / 2f, diameter, diameter)
+                        batch.setColor(1f, 1f, 1f, 1f)
+                    }
                 } else if (completed) {
                     drawLine(batch, 1f)
                 }
@@ -379,6 +392,7 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                     if (isMouseOver() && !beginDraw) {
                         if (percentX in 0f..0.019f) {
                             beginDraw = true
+                            timeSinceBeginDraw = 0f
                             completed = false
                             return true
                         }
@@ -387,6 +401,10 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
                         beginDraw = false
                         if ((stage.camera.getInputX() - location.realX) >= location.realWidth - 1f) {
                             completed = true
+                            Gdx.app.postRunnable {
+                                main.screen = TransitionScreen(main, this@AdvancedOptionsScreen, LinePuzzleEndScreen(main), FadeOut(2f, Color.BLACK), FadeIn(1f, Color.BLACK))
+                                AssetRegistry.get<Sound>("etc_sfx_record").play()
+                            }
                         }
                         return wasDrawing
                     }
@@ -462,4 +480,24 @@ class AdvancedOptionsScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Applic
             it.fontScaleMultiplier = 0.8f
         }
     }
+}
+
+class LinePuzzleEndScreen(main: RHRE3Application) : ToolboksScreen<RHRE3Application, LinePuzzleEndScreen>(main), HidesVersionText {
+
+    override fun show() {
+        super.show()
+        Gdx.app.postRunnable {
+            RemixRecovery.saveRemixInRecovery()
+            Gdx.app.postRunnable {
+                Gdx.app.exit()
+            }
+        }
+    }
+
+    override fun tickUpdate() {
+    }
+
+    override fun dispose() {
+    }
+
 }
