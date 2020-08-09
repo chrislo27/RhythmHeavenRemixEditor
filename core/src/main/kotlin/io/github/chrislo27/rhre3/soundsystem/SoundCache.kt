@@ -23,15 +23,13 @@ object SoundCache {
     
     /**
      * Loads the audio file and increments the internal reference counter.
-     * @param doNotTrack If true, this call is not counted towards the number of references.
      */
-    fun load(id: SampleID, doNotTrack: Boolean = false): AudioPointer {
+    fun load(id: SampleID): AudioPointer {
         val ptrData = cache[id]
         if (ptrData == null) {
-            val initialRefCount = if (doNotTrack) 0 else 1
             // Create and load the audio pointer
             if (id.derivative.isUnmodified()) {
-                val newData = AudioPtrData(AudioPointer.BaseAudioPointer(id, BeadsSoundSystem.newAudio(FileHandle(id.file))), initialRefCount)
+                val newData = AudioPtrData(AudioPointer.BaseAudioPointer(id, BeadsSoundSystem.newAudio(FileHandle(id.file))), 1)
                 cache[id] = newData
                 return newData.pointer
             } else {
@@ -49,14 +47,12 @@ object SoundCache {
                 val moddedAudio: BeadsAudio = BeadsSoundSystem.newAudio(FileHandle(tmpFile))
                 tmpFile.delete()
                 
-                val newData = AudioPtrData(AudioPointer.DerivAudioPointer(id, moddedAudio), initialRefCount)
+                val newData = AudioPtrData(AudioPointer.DerivAudioPointer(id, moddedAudio), 1)
                 cache[id] = newData
                 return newData.pointer
             }
         } else {
-            if (!doNotTrack) {
-                ptrData.numReferences++
-            }
+            ptrData.numReferences++
             return ptrData.pointer
         }
     }
