@@ -39,7 +39,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Installation
 Installation is straightforward. Please ensure your computer meets the Requirements above.
 1. Go [to the most recent release](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and download the `RHRE_X.zip` file, where `X` is the current version number.
-2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
+2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract.
 3. Open the extracted folder. Depending on your operating system, run the following file:
   * On Windows: double-click the `run_windows.bat` file
   * On Linux: run the `run_linux.sh` file via Terminal (`./run_linux.sh`)
