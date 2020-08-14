@@ -23,7 +23,8 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 ## Requirements
 * [A **64-bit** version of Java](https://java.com/en/download/manual.jsp), Java 8 or newer
 * A graphics driver that supports OpenGL ES 2.0 or higher
-* Windows 7 or newer, macOS 10.14 (Mojave) or newer, Linux (recommended Ubuntu 18.04 LTS or newer)
+* Windows 7 or newer, or Linux (recommended Ubuntu 20.04 LTS or newer)
+  * macOS not officially supported.
 * An Internet connection to download the SFX Database
 
 ## Features
@@ -41,7 +42,6 @@ Installation is straightforward. Please ensure your computer meets the Requireme
 2. Once downloaded, extract this zip file to a location like the Desktop. On Windows, open the zip file and click Extract. On macOS, use [The Unarchiver](https://theunarchiver.com/) to extract the zip file.
 3. Open the extracted folder. Depending on your operating system, run the following file:
   * On Windows: double-click the `run_windows.bat` file
-  * On macOS: double-click the `run_macOS.command` file
   * On Linux: run the `run_linux.sh` file via Terminal (`./run_linux.sh`)
 4. Let the program download the necessary SFX if this is a first boot. You'll see something along the lines of "Receiving objects" while it loads. This may take several minutes.
 5. Read the [README](http://rhre.readthedocs.io/en/latest/README/) and get remixing!
