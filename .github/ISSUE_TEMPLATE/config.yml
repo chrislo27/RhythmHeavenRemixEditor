@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Official RHRE Documentation
+    url: https://rhre.readthedocs.io/en/latest/
+    about: Read the official documentation and help guides here
