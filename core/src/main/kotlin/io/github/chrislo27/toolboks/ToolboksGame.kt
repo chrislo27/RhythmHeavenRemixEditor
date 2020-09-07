@@ -180,7 +180,7 @@ Debug mode: ${Toolboks.DEBUG_KEY_NAME}
 Version: $versionString
 Memory: ${numberFormatInstance.format(Gdx.app.nativeHeap / 1024)} / ${numberFormatInstance.format(
                                 MemoryUtils.maxMemory)} KB (${numberFormatInstance.format(memoryDelta / 1024)} KB/s)
-CPU: ${if (!OSHI.isInitialized) "OSHI not yet inited by SysOutPiper" else OSHI.sysInfo.hardware.processor.name}
+CPU: ${if (!OSHI.isInitialized) "OSHI not yet inited by SysOutPiper" else OSHI.sysInfo.hardware.processor.processorIdentifier.name}
 
 Screen: ${screen?.javaClass?.canonicalName}
 ${getDebugString()}

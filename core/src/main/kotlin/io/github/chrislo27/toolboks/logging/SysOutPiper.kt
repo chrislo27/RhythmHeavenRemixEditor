@@ -91,10 +91,10 @@ object SysOutPiper {
                                    "AUTO-GENERATED\n" +
                                    "==============\n")
             builder.append("Processor Specifications:\n")
-            builder.append("    Name: ${processor.name}\n")
+            builder.append("    Name: ${processor.processorIdentifier.name}\n")
             builder.append("    CPU(s): ${processor.physicalProcessorCount} physical, ${processor.logicalProcessorCount} logical\n")
-            builder.append("    Is 64-bit?: ${processor.isCpu64bit}\n")
-            builder.append("    Identifier: ${processor.identifier}\n")
+            builder.append("    Is 64-bit?: ${processor.processorIdentifier.isCpu64bit}\n")
+            builder.append("    Identifier: ${processor.processorIdentifier}\n")
             builder.append("\n")
             ps.println(builder.toString())
         }
