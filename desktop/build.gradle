@@ -3,7 +3,6 @@ apply plugin: 'kotlin'
 apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/main/kotlin/" ]
 
 project.ext.mainClassName = "io.github.chrislo27.rhre3.DesktopLauncher"

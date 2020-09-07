@@ -34,6 +34,11 @@ allprojects {
     }
 }
 
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.freeCompilerArgs += "-Xuse-experimental=kotlin.ExperimentalUnsignedTypes"
+}
+
 project(":desktop") {
     apply plugin: "java"
 
