@@ -54,7 +54,7 @@ This button allows you to toggle what action scrolling (or pressing up and down)
 does on a selection. By default, it changes the pitch. An alternative mode
 is changing the volume.
 
-[See this section for more details](Readme#scroll-mode)
+[See this section for more details.](Readme#scroll-mode)
 
 ## Change Track Size
 ![Change track size](readme/toolbar/changetrack.png)
@@ -131,4 +131,4 @@ The middle button goes to the News screen. Here you can stay updated with
 the latest RHRE and custom remixing news.
 
 The right button goes to the Info and Settings screen. From there you can change
-some settings, and view update info and the credits.
+some settings, view current program info and the credits, and maybe even try out some extra games!
