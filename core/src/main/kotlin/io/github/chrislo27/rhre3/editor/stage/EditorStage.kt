@@ -1423,7 +1423,7 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                 this.location.set(screenWidth = size,
                                   screenX = 1f - size)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
-                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_info_button"))
+                    this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_small_gear"))
                 })
             }
             newsButton = NewsButton(editor, palette, buttonBarStage, buttonBarStage).apply {
