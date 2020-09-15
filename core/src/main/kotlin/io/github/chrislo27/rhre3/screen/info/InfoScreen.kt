@@ -352,12 +352,15 @@ class InfoScreen(main: RHRE3Application)
         super.show()
         infoStage.show()
         extrasStage.show()
+        settingsStage.show()
         DiscordHelper.updatePresence(PresenceState.InSettings)
         updateSeePartners()
     }
 
     override fun hide() {
         super.hide()
+        
+        settingsStage.hide()
 
         // Analytics
         if (settingsStage.didChangeSettings) {
@@ -369,7 +372,6 @@ class InfoScreen(main: RHRE3Application)
                                            } + mapOf("background" to map[PreferenceKeys.BACKGROUND], "defaultMixer" to BeadsSoundSystem.getDefaultMixer().mixerInfo.name)
                                         ))
         }
-
         settingsStage.didChangeSettings = false
     }
 

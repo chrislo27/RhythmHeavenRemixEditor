@@ -14,9 +14,7 @@ import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
-import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
-import io.github.chrislo27.rhre3.soundsystem.SoundCache
-import io.github.chrislo27.rhre3.soundsystem.SoundStretch
+import io.github.chrislo27.rhre3.soundsystem.*
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
 import io.github.chrislo27.toolboks.Toolboks
@@ -36,6 +34,9 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
     var didChangeSettings: Boolean = Version.fromStringOrNull(preferences.getString(PreferenceKeys.LAST_VERSION, ""))?.let {
         !it.isUnknown && (it < VersionHistory.ANALYTICS || it < VersionHistory.RE_ADD_STRETCHABLE_TEMPO)
     } ?: false
+    
+    private var testSoundAudio: BeadsAudio? = null
+    private var currentTestSound: BeadsSound? = null
 
     init {
         val palette = infoScreen.stage.palette
@@ -510,13 +511,25 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             mixerSettingsLabel.tooltipText = "${mixerInfo.name}\n${mixerInfo.description}"
         }
         fun playTestSoundToMixer() {
-            // TODO
+            if (testSoundAudio == null) {
+                testSoundAudio = BeadsSoundSystem.newAudio(Gdx.files.internal("sound/mixer_test_sfx.ogg"))
+            }
+            val audio = testSoundAudio
+            if (audio != null && currentTestSound == null) {
+                currentTestSound = BeadsSound(audio)
+            }
+            currentTestSound?.play(false, 1f, 1f, 1f, 0.0)
         }
         fun changeToMixer(mixer: Mixer) {
             val oldMixer = BeadsSoundSystem.currentMixer
             if (mixer !== oldMixer) {
                 Toolboks.LOGGER.info("Changing mixer to ${mixer.mixerInfo}")
-                // TODO stop any test sounds
+                val c = currentTestSound
+                if (c != null) {
+                    c.dispose()
+                    currentTestSound = null
+                }
+                
                 BeadsSoundSystem.regenerateAudioContexts(mixer) // !!
 
                 preferences.putString(PreferenceKeys.SETTINGS_AUDIO_MIXER, mixer.mixerInfo.name)
@@ -548,6 +561,20 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             changeToMixer(BeadsSoundSystem.getDefaultMixer())
         }
         updateAudioMixerUI()
+    }
+    
+    fun show() {
+        BeadsSoundSystem.isRealtime = true
+        BeadsSoundSystem.stop()
+        BeadsSoundSystem.resume()
+    }
+    
+    fun hide() {
+        currentTestSound?.dispose()
+        currentTestSound = null
+        testSoundAudio = null
+        BeadsSoundSystem.stop()
+        BeadsSoundSystem.resume()
     }
 
 }
