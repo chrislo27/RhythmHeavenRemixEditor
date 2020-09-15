@@ -1,13 +1,15 @@
 package io.github.chrislo27.rhre3.soundsystem
 
+import net.beadsproject.beads.core.IOAudioFormat
 import net.beadsproject.beads.core.io.JavaSoundAudioIO
+import javax.sound.sampled.AudioFormat
 import kotlin.concurrent.thread
 
 /**
  * The default JavaSoundAudioIO thread is non-daemon. This class uses reflection to make it a daemon thread.
  */
 class DaemonJavaSoundAudioIO : JavaSoundAudioIO() {
-
+    
     override fun start(): Boolean {
         fun runRealTime() {
             JavaSoundAudioIO::class.java.getDeclaredMethod("runRealTime").apply {

@@ -1,6 +1,11 @@
 package io.github.chrislo27.rhre3.soundsystem
 
 import net.beadsproject.beads.core.AudioContext
+import net.beadsproject.beads.core.IOAudioFormat
+import net.beadsproject.beads.core.io.JavaSoundAudioIO
+import javax.sound.sampled.AudioFormat
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.Mixer
 
 
 /**
@@ -33,4 +38,15 @@ fun AudioContext.getValues(buffer: FloatArray, channel: Int) {
     for (i in buffer.indices) {
         buffer[i] = out.getValue(channel, i)
     }
+}
+
+fun IOAudioFormat.toJavaAudioFormat(): AudioFormat = AudioFormat(sampleRate, bitDepth, outputs, signed, bigEndian)
+
+fun JavaSoundAudioIO.selectMixer(mixer: Mixer) {
+    val clazz = JavaSoundAudioIO::class.java
+    clazz.getDeclaredField("mixer").also { mxr ->
+        mxr.isAccessible = true
+        mxr.set(this@selectMixer, mixer)
+    }
+    println("JavaSoundAudioIO: Chosen mixer is ${mixer.mixerInfo.name}.")
 }

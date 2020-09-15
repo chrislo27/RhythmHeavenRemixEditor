@@ -412,6 +412,81 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
         }
+        
+        // Sound mixer settings
+        settings.elements += TextLabel(palette, settings, settings).apply {
+            this.isLocalizationKey = true
+            this.text = "screen.info.mixerSettings"
+            this.tooltipText = "screen.info.mixerSettings.tooltip"
+            this.tooltipTextIsLocalizationKey = true
+            this.fontScaleMultiplier = 0.9f
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 3 + buttonHeight * 2,
+                              screenWidth = buttonWidth,
+                              screenHeight = buttonHeight)
+        }
+        settings.elements += TextLabel(palette, this, this.stage).apply {
+            this.isLocalizationKey = false
+            this.text = "MIXER INFO NAME"
+            this.tooltipTextIsLocalizationKey= false
+            this.tooltipText = "MIXER INFO TOOLTIP"
+            this.fontScaleMultiplier = 0.85f
+            this.location.set(screenX = 1f - (padding + buttonWidth * (1f - 0.1f)),
+                              screenY = padding * 2 + buttonHeight * 1,
+                              screenWidth = buttonWidth * (1f - 0.2f),
+                              screenHeight = buttonHeight)
+            this.background = true
+        }
+        settings.elements += Button(palette, settings, settings).apply { 
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "\uE149"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 2 + buttonHeight * 1,
+                              screenWidth = buttonWidth * 0.075f,
+                              screenHeight = buttonHeight)
+            this.tooltipText = "screen.info.mixerSettings.prev"
+            this.tooltipTextIsLocalizationKey = true
+        }
+        settings.elements += Button(palette, settings, settings).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = false
+                this.text = "\uE14A"
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth * 0.075f),
+                              screenY = padding * 2 + buttonHeight * 1,
+                              screenWidth = buttonWidth * 0.075f,
+                              screenHeight = buttonHeight)
+            this.tooltipText = "screen.info.mixerSettings.next"
+            this.tooltipTextIsLocalizationKey = true
+        }
+        settings.elements += Button(palette, settings, settings).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.text = "screen.info.mixerSettings.resetToDefault"
+                this.fontScaleMultiplier = 0.75f
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth),
+                              screenY = padding * 1,
+                              screenWidth = buttonWidth * 0.65f,
+                              screenHeight = buttonHeight)
+            this.tooltipText = "screen.info.mixerSettings.resetToDefault.tooltip"
+            this.tooltipTextIsLocalizationKey = true
+        }
+        settings.elements += Button(palette, settings, settings).apply {
+            addLabel(TextLabel(palette, this, this.stage).apply {
+                this.isLocalizationKey = true
+                this.text = "screen.info.mixerSettings.test"
+                this.fontScaleMultiplier = 0.75f
+            })
+            this.location.set(screenX = 1f - (padding + buttonWidth * 0.325f),
+                              screenY = padding * 1,
+                              screenWidth = buttonWidth * 0.325f,
+                              screenHeight = buttonHeight)
+            this.tooltipText = "screen.info.mixerSettings.test.tooltip"
+            this.tooltipTextIsLocalizationKey = true
+        }
     }
 
 }

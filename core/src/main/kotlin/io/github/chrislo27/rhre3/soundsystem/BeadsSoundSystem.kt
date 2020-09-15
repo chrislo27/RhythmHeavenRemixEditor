@@ -7,18 +7,32 @@ import com.badlogic.gdx.utils.StreamUtils
 import io.github.chrislo27.toolboks.Toolboks
 import net.beadsproject.beads.core.AudioContext
 import net.beadsproject.beads.core.AudioUtils
+import net.beadsproject.beads.core.IOAudioFormat
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import javax.sound.sampled.AudioFormat
-import javax.sound.sampled.AudioSystem
-import javax.sound.sampled.DataLine
-import javax.sound.sampled.SourceDataLine
+import javax.sound.sampled.*
 
 object BeadsSoundSystem {
+    
+    val ioAudioFormat: IOAudioFormat = IOAudioFormat(44_100f, 16, 2, 2, true, true)
+    val audioFormat: AudioFormat = ioAudioFormat.toJavaAudioFormat()
+    val datalineInfo: DataLine.Info = DataLine.Info(SourceDataLine::class.java, audioFormat)
+    val supportedMixers: List<Mixer.Info> = AudioSystem.getMixerInfo().filter {
+        val mixer = AudioSystem.getMixer(it)
+        try {
+            // Attempt to get the line. If it is not supported it will throw an exception.
+            mixer.getLine(datalineInfo)
+            Toolboks.LOGGER.debug("Mixer $it is compatible for outputting.")
+            true
+        } catch (e: Exception) {
+            Toolboks.LOGGER.debug("Mixer $it is NOT compatible for outputting!")
+            false
+        }
+    }
 
-    private val realtimeAudioContext: AudioContext = createAudioContext()
-    private val nonrealtimeAudioContext: AudioContext = createAudioContext()
+    private var realtimeAudioContext: AudioContext = createAudioContext()
+    private var nonrealtimeAudioContext: AudioContext = createAudioContext()
 
     val audioContext: AudioContext
         get() = if (isRealtime) realtimeAudioContext else nonrealtimeAudioContext
@@ -39,37 +53,29 @@ object BeadsSoundSystem {
             return field
         }
 
-    private fun createAudioContext(): AudioContext =
+    /**
+     * DANGEROUS OPERATION. Forcibly resets [realtimeAudioContext] and [nonrealtimeAudioContext] and
+     * reinitializes them.
+     */
+    fun regenerateAudioContexts() {
+        realtimeAudioContext = createAudioContext()
+        nonrealtimeAudioContext = createAudioContext()
+    }
+    
+    fun createAudioContext(): AudioContext =
             AudioContext(DaemonJavaSoundAudioIO().apply {
-                val index = AudioSystem.getMixerInfo().toList().indexOfFirst {
+                val mixerInfo = supportedMixers
+                val index = mixerInfo.indexOfFirst {
                     !it.name.startsWith("Port ") || it.name.contains("Primary Sound Driver")
                 }
                 if (index != -1) {
+                    // Select the Primary Sound Driver if found.
                     selectMixer(index)
                 } else {
-                    val ioAudioFormat = context.audioFormat
-                    val audioFormat = AudioFormat(ioAudioFormat.sampleRate, ioAudioFormat.bitDepth,
-                            ioAudioFormat.outputs,
-                            ioAudioFormat.signed, ioAudioFormat.bigEndian)
-                    val info = DataLine.Info(SourceDataLine::class.java,
-                            audioFormat)
-
-                    val otherIndex = AudioSystem.getMixerInfo().toList().indexOfFirst {
-                        val mixer = AudioSystem.getMixer(it)
-                        try {
-                            mixer.getLine(info)
-                            true
-                        } catch (e: Exception) {
-                            false
-                        }
-                    }
-
-                    if (otherIndex != -1) {
-                        selectMixer(otherIndex)
-                    } else {
-                    }
+                    // Find the first audio mixer that has the supported line.
+                    selectMixer(AudioSystem.getMixer(mixerInfo.first()))
                 }
-            })
+            }, AudioContext.DEFAULT_BUFFER_SIZE, ioAudioFormat)
 
     init {
         audioContext.start()
