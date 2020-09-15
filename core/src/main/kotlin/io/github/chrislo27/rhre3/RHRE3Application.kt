@@ -65,6 +65,8 @@ import java.io.File
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.util.*
+import javax.sound.sampled.AudioSystem
+import javax.sound.sampled.Mixer
 import kotlin.concurrent.thread
 import kotlin.system.measureNanoTime
 
@@ -269,6 +271,10 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         Toolboks.LOGGER.info("Set loading icon pref")
         Semitones.pitchStyle = Semitones.PitchStyle.VALUES.find { it.name == preferences.getString(PreferenceKeys.ADVOPT_PITCH_STYLE, "") } ?: Semitones.pitchStyle
         Toolboks.LOGGER.info("Loaded semitones pitch style from prefs")
+        val mixerName = preferences.getString(PreferenceKeys.SETTINGS_AUDIO_MIXER, "")
+        val mixer: Mixer? = BeadsSoundSystem.supportedMixers.firstOrNull { it.mixerInfo.name == mixerName }
+        BeadsSoundSystem.regenerateAudioContexts(mixer ?: BeadsSoundSystem.getDefaultMixer())
+        Toolboks.LOGGER.info("Loaded audio mixer from prefs: name=$mixerName, mixer found?=${mixer != null}")
         Toolboks.LOGGER.info("Loaded persistent data from preferences")
         
         val discordRpcEnabled = preferences.getBoolean(PreferenceKeys.SETTINGS_DISCORD_RPC_ENABLED, true)

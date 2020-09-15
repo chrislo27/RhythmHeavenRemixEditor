@@ -24,6 +24,7 @@ import io.github.chrislo27.rhre3.editor.Editor
 import io.github.chrislo27.rhre3.screen.*
 import io.github.chrislo27.rhre3.sfxdb.GameMetadata
 import io.github.chrislo27.rhre3.sfxdb.SFXDatabase
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
@@ -365,7 +366,7 @@ class InfoScreen(main: RHRE3Application)
                                    mapOf(
                                            "settings" to PreferenceKeys.allSettingsKeys.associate {
                                                it.replace("settings_", "") to (map[it] ?: "null")
-                                           } + ("background" to map[PreferenceKeys.BACKGROUND])
+                                           } + mapOf("background" to map[PreferenceKeys.BACKGROUND], "defaultMixer" to BeadsSoundSystem.getDefaultMixer().mixerInfo.name)
                                         ))
         }
 

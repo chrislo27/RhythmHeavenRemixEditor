@@ -1,5 +1,6 @@
 package io.github.chrislo27.rhre3.screen.info
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Preferences
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
@@ -13,14 +14,17 @@ import io.github.chrislo27.rhre3.VersionHistory
 import io.github.chrislo27.rhre3.discord.DiscordHelper
 import io.github.chrislo27.rhre3.editor.CameraBehaviour
 import io.github.chrislo27.rhre3.editor.Editor
+import io.github.chrislo27.rhre3.soundsystem.BeadsSoundSystem
 import io.github.chrislo27.rhre3.soundsystem.SoundCache
 import io.github.chrislo27.rhre3.soundsystem.SoundStretch
 import io.github.chrislo27.rhre3.stage.FalseCheckbox
 import io.github.chrislo27.rhre3.stage.TrueCheckbox
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.version.Version
+import javax.sound.sampled.Mixer
 
 
 class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, val infoScreen: InfoScreen)
@@ -419,15 +423,17 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             this.text = "screen.info.mixerSettings"
             this.tooltipText = "screen.info.mixerSettings.tooltip"
             this.tooltipTextIsLocalizationKey = true
+            this.textWrapping = false
             this.fontScaleMultiplier = 0.9f
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 3 + buttonHeight * 2,
                               screenWidth = buttonWidth,
                               screenHeight = buttonHeight)
         }
-        settings.elements += TextLabel(palette, this, this.stage).apply {
+        val mixerSettingsLabel = TextLabel(palette, this, this.stage).apply {
             this.isLocalizationKey = false
             this.text = "MIXER INFO NAME"
+            this.textWrapping = false
             this.tooltipTextIsLocalizationKey= false
             this.tooltipText = "MIXER INFO TOOLTIP"
             this.fontScaleMultiplier = 0.85f
@@ -437,10 +443,12 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
                               screenHeight = buttonHeight)
             this.background = true
         }
-        settings.elements += Button(palette, settings, settings).apply { 
+        settings.elements += mixerSettingsLabel
+        val prevMixerButton = Button(palette, settings, settings).apply { 
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.text = "\uE149"
+                this.textWrapping = false
             })
             this.location.set(screenX = 1f - (padding + buttonWidth),
                               screenY = padding * 2 + buttonHeight * 1,
@@ -449,10 +457,12 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             this.tooltipText = "screen.info.mixerSettings.prev"
             this.tooltipTextIsLocalizationKey = true
         }
-        settings.elements += Button(palette, settings, settings).apply {
+        settings.elements += prevMixerButton
+        val nextMixerButton = Button(palette, settings, settings).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = false
                 this.text = "\uE14A"
+                this.textWrapping = false
             })
             this.location.set(screenX = 1f - (padding + buttonWidth * 0.075f),
                               screenY = padding * 2 + buttonHeight * 1,
@@ -461,10 +471,12 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             this.tooltipText = "screen.info.mixerSettings.next"
             this.tooltipTextIsLocalizationKey = true
         }
-        settings.elements += Button(palette, settings, settings).apply {
+        settings.elements += nextMixerButton
+        val resetMixerButton = Button(palette, settings, settings).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.text = "screen.info.mixerSettings.resetToDefault"
+                this.textWrapping = false
                 this.fontScaleMultiplier = 0.75f
             })
             this.location.set(screenX = 1f - (padding + buttonWidth),
@@ -474,10 +486,12 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             this.tooltipText = "screen.info.mixerSettings.resetToDefault.tooltip"
             this.tooltipTextIsLocalizationKey = true
         }
-        settings.elements += Button(palette, settings, settings).apply {
+        settings.elements += resetMixerButton
+        val testMixerButton = Button(palette, settings, settings).apply {
             addLabel(TextLabel(palette, this, this.stage).apply {
                 this.isLocalizationKey = true
                 this.text = "screen.info.mixerSettings.test"
+                this.textWrapping = false
                 this.fontScaleMultiplier = 0.75f
             })
             this.location.set(screenX = 1f - (padding + buttonWidth * 0.325f),
@@ -487,6 +501,53 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             this.tooltipText = "screen.info.mixerSettings.test.tooltip"
             this.tooltipTextIsLocalizationKey = true
         }
+        settings.elements += testMixerButton
+        
+        fun updateAudioMixerUI() {
+            val currentMixer = BeadsSoundSystem.currentMixer
+            val mixerInfo = currentMixer.mixerInfo
+            mixerSettingsLabel.text = mixerInfo.name
+            mixerSettingsLabel.tooltipText = "${mixerInfo.name}\n${mixerInfo.description}"
+        }
+        fun playTestSoundToMixer() {
+            // TODO
+        }
+        fun changeToMixer(mixer: Mixer) {
+            val oldMixer = BeadsSoundSystem.currentMixer
+            if (mixer !== oldMixer) {
+                Toolboks.LOGGER.info("Changing mixer to ${mixer.mixerInfo}")
+                // TODO stop any test sounds
+                BeadsSoundSystem.regenerateAudioContexts(mixer) // !!
+
+                preferences.putString(PreferenceKeys.SETTINGS_AUDIO_MIXER, mixer.mixerInfo.name)
+                didChangeSettings = true
+                
+                Gdx.app.postRunnable {
+                    updateAudioMixerUI()
+                }
+            }
+        }
+        prevMixerButton.leftClickAction = { _, _ ->
+            val mixers = BeadsSoundSystem.supportedMixers
+            var i = mixers.indexOf(BeadsSoundSystem.currentMixer)
+            i--
+            if (i < 0) i = mixers.size - 1
+            changeToMixer(mixers[i])
+        }
+        nextMixerButton.leftClickAction = { _, _ ->
+            val mixers = BeadsSoundSystem.supportedMixers
+            var i = mixers.indexOf(BeadsSoundSystem.currentMixer)
+            i++
+            if (i >= mixers.size) i = 0
+            changeToMixer(mixers[i])
+        }
+        testMixerButton.leftClickAction = { _, _ ->
+            playTestSoundToMixer()
+        }
+        resetMixerButton.leftClickAction = { _, _ ->
+            changeToMixer(BeadsSoundSystem.getDefaultMixer())
+        }
+        updateAudioMixerUI()
     }
 
 }
