@@ -422,13 +422,22 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
         settings.elements += TextLabel(palette, settings, settings).apply {
             this.isLocalizationKey = true
             this.text = "screen.info.mixerSettings"
+            this.textWrapping = false
+            this.fontScaleMultiplier = 0.9f
+            this.location.set(screenX = 1f - (padding + buttonWidth * 0.917f),
+                              screenY = padding * 3 + buttonHeight * 2,
+                              screenWidth = buttonWidth * 0.834f,
+                              screenHeight = buttonHeight)
+        }
+        settings.elements += TextLabel(palette, settings, settings).apply {
+            this.isLocalizationKey = false
+            this.text = "\uE152"
             this.tooltipText = "screen.info.mixerSettings.tooltip"
             this.tooltipTextIsLocalizationKey = true
             this.textWrapping = false
-            this.fontScaleMultiplier = 0.9f
-            this.location.set(screenX = 1f - (padding + buttonWidth),
+            this.location.set(screenX = 1f - (padding + buttonWidth * 0.083f),
                               screenY = padding * 3 + buttonHeight * 2,
-                              screenWidth = buttonWidth,
+                              screenWidth = buttonWidth * 0.083f,
                               screenHeight = buttonHeight)
         }
         val mixerSettingsLabel = TextLabel(palette, this, this.stage).apply {
