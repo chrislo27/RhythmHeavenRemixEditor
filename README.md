@@ -23,7 +23,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * [A **64-bit** version of Java](https://java.com/en/download/manual.jsp), Java 8 or newer
 * A graphics driver that supports OpenGL ES 2.0 or higher
 * Windows 7 or newer, or Linux (recommended Ubuntu 20.04 LTS or newer)
-  * macOS not officially supported
+  * macOS is not officially supported
 * An Internet connection to download the SFX Database
 
 ## Features
@@ -50,15 +50,15 @@ From **v3.20.0 and newer**: To update the program, click the "Download and insta
 From **v3.19.5 and earlier**: To update the program, [download the latest version](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest) and run RHRE from the new version.<br>
 
 ## Other information
-Rhythm Heaven is not my property—it is the intellectual property of Nintendo.<br>
-This program is **NOT** endorsed nor sponsored in any way by Nintendo.<br>
-All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to maliciously infringe trademark rights.<br>
+Rhythm Heaven is not my property—it is the intellectual property of Nintendo.
+This program is **NOT** endorsed nor sponsored in any way by Nintendo.
+All used properties of Nintendo (such as names, audio, graphics, etc.) in this software are not intended to maliciously infringe trademark rights.
 All other trademarks and assets are property of their respective owners.
 This is a community project and this is available for others to use
-however they like while abiding by the code's GPL-3.0 license, without charge.
+according to the [GPL-3.0 license](LICENSE.txt), without charge.
 
 For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collectively known as RHRE0), go to <https://github.com/chrislo27/RHRE0>.
 
-† Donations are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
+† [Donations](https://donate.rhre.dev) are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
 Features screenshots provided by: [dexiedoo](https://www.youtube.com/channel/UC_ckCtLt88aI8Qzz5VM3UwA).
