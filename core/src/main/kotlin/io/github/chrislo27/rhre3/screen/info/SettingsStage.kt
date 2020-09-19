@@ -380,6 +380,8 @@ class SettingsStage(parent: UIElement<InfoScreen>?, camera: OrthographicCamera, 
             }
         }.apply {
             this.checked = main.settings.glassEntities
+            this.tooltipText = "screen.info.glassEntities.tooltip"
+            this.tooltipTextIsLocalizationKey = true
 
             this.textLabel.apply {
                 this.fontScaleMultiplier = fontScale
