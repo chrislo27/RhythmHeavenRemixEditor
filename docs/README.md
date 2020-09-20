@@ -11,8 +11,7 @@ You will learn best through experimentation; don't give up!
 ## Launching the program
 After decompressing/unzipping the zip archive, run the
 `run_windows.bat` file by double clicking the batch file if you're on Windows, or
-double-click the `run_macOS.sh` file if you're on macOS, or
-double-click the `run_linux.sh` if you're on a Linux operating system.
+or double-click the `run_linux.sh` if you're on a Linux operating system.
 
 ## How does a remix work?
 Remixes will go on forever

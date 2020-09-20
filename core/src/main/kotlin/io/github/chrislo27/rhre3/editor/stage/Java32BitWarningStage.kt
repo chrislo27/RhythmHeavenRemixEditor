@@ -49,7 +49,6 @@ class Java32BitWarningStage(val screen: EditorScreen) : Stage<EditorScreen>(scre
                 |Be sure to uninstall your existing Java installation first.
                 |
                 |Windows: Windows Offline (64-bit)
-                |macOS: Mac OS X
                 |Linux: Linux x64 (or through your system package manager)
             """.trimMargin()
             this.isLocalizationKey = false

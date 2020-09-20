@@ -12,15 +12,15 @@ it tries to allocate up to a quarter of your system memory.
 
 In order to force the Java Virtual Machine to be allowed to use more memory,
 you have to edit either the **bat**ch file for Windows (`run_windows.bat`), or **sh**ell files
-for Linux/macOS (`run_macOS.sh` or `run_linux.sh`). Open the file with Notepad++ or your favourite text editor,
-and replace the line that starts with `java -jar` (`java -XstartOnFirstThread -jar` on macOS) with the following:
+for Linux (`run_linux.sh`). Open the file with Notepad++ or your favourite text editor,
+and replace the line that starts with `java -jar` with the following:
 
 Windows/Linux:
 ```
 java -jar -Xmx1500m bin/RHRE.jar
 ```
 
-macOS:
+macOS (unsupported as of 2020-08-14):
 ```
 java -XstartOnFirstThread -jar -Xmx1500m bin/RHRE.jar
 ```
