@@ -23,7 +23,7 @@ Also see the [RHRE SFX Database Editor](https://github.com/chrislo27/RSDE)—a G
 * [A **64-bit** version of Java](https://java.com/en/download/manual.jsp), Java 8 or newer
 * A graphics driver that supports OpenGL ES 2.0 or higher
 * Windows 7 or newer, or Linux (recommended Ubuntu 20.04 LTS or newer)
-  * macOS is not officially supported
+  * macOS is not officially supported as of 2020-08-14
 * An Internet connection to download the SFX Database
 
 ## Features
