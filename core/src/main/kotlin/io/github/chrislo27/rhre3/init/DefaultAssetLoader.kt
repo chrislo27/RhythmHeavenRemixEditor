@@ -139,21 +139,11 @@ class DefaultAssetLoader : AssetRegistry.IAssetLoader {
         AssetRegistry.loadAsset<Texture>("menu_bg_square", "images/menu/bg_square.png")
         AssetRegistry.loadAsset<Texture>("menu_snowflake", "images/menu/snowflake.png", linearTexture())
         
-        AssetRegistry.loadAsset<Texture>("weird_wakame", "images/etc/wakame.png", linearTexture())
         AssetRegistry.loadAsset<Texture>("weird_wakaaa", "images/etc/wakaaa.png", linearTexture())
-        AssetRegistry.loadAsset<Texture>("weird_wakamad", "images/etc/wakamad.png", linearTexture())
-        AssetRegistry.loadAsset<Texture>("weird_wakasuave", "images/etc/wakasuave.png", linearTexture())
-        AssetRegistry.loadAsset<Texture>("weird_wakamette", "images/etc/wakamette.png", linearTexture())
-        AssetRegistry.loadAsset<Texture>("weird_yeehaw", "images/etc/yeehaw.png", linearTexture())
         AssetRegistry.loadAsset<Sound>("weird_sfx_honk", "sound/honk.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_c", "sound/c.ogg")
         AssetRegistry.loadAsset<Sound>("weird_sfx_bts_pew", "sound/pew.ogg")
         AssetRegistry.loadAsset<Sound>("etc_sfx_record", "etc/record_click.ogg")
-        
-        // pickaxe
-        (1..6).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_dig$it", "sound/dig/stone$it.ogg") }
-        (1..4).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_stone$it", "sound/destroy/stone$it.ogg") }
-        (1..3).forEach { AssetRegistry.loadAsset<LazySound>("pickaxe_destroy_glass$it", "sound/destroy/glass$it.ogg") }
         
         // Menu backgrounds
         AssetRegistry.loadAsset<Texture>("bg_tile", "images/menu/bg_tile.png", linearTexture())

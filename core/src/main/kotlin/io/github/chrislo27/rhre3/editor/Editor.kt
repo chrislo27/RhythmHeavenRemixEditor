@@ -1123,16 +1123,12 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                 current.progress += Gdx.graphics.deltaTime / current.miningTime
                 if (current.timeSinceDigSound >= 1f / 5f) {
                     current.timeSinceDigSound = 0f
-                    AssetRegistry.get<LazySound>("""pickaxe_dig${MathUtils.random(1, 6)}""").sound.play(0.75f, 0.5f, 0f)
                 } else {
                     current.timeSinceDigSound += Gdx.graphics.deltaTime
                 }
 
                 if (current.progress >= 1f) {
-                    val themeUsesMenu = main.settings.themeUsesMenu
-                    val useGlassEffect = glassEffect.fboSupported && main.settings.glassEntities
                     explodeEntity(onEntity, true)
-                    AssetRegistry.get<LazySound>("""pickaxe_destroy_${if (themeUsesMenu && useGlassEffect) "glass${MathUtils.random(1, 3)}" else "stone${MathUtils.random(1, 4)}"}""").sound.play()
                     remix.mutate(EntityRemoveAction(this, listOf(onEntity), listOf(Rectangle(onEntity.bounds))))
                     this.selection = this.selection - listOf(onEntity)
                 }
