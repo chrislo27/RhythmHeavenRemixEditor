@@ -7,9 +7,9 @@ import java.io.File
 import java.net.URI
 
 
-fun Net.openFileExplorer(absPath: String): Boolean {
+fun Net.openFileExplorer(uri: URI): Boolean {
     return try {
-        Desktop.getDesktop().browse(URI("file:///${absPath.replace("\\", "/")}"))
+        Desktop.getDesktop().browse(uri)
         true
     } catch (t: Throwable) {
         t.printStackTrace()
@@ -17,6 +17,6 @@ fun Net.openFileExplorer(absPath: String): Boolean {
     }
 }
 
-fun Net.openFileExplorer(file: File): Boolean = openFileExplorer(file.absolutePath)
+fun Net.openFileExplorer(file: File): Boolean = openFileExplorer(file.toURI())
 
 fun Net.openFileExplorer(fileHandle: FileHandle): Boolean = openFileExplorer(fileHandle.file())
