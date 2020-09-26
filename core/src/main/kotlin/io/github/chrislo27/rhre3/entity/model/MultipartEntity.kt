@@ -74,7 +74,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
 
     init {
         this.bounds.height = (1f +
-                (datamodel.cues.maxBy(CuePointer::track)?.track ?: error("No cues in datamodel")))
+                (datamodel.cues.maxByOrNull(CuePointer::track)?.track ?: error("No cues in datamodel")))
                 .coerceAtLeast(1f)
     }
 
@@ -92,7 +92,7 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     protected fun computeInternalWidth(): Float {
-        return internal.maxBy { it.bounds.x + it.bounds.width }?.run {
+        return internal.maxByOrNull { it.bounds.x + it.bounds.width }?.run {
             this.bounds.x + this.bounds.width - this@MultipartEntity.bounds.x
         } ?: bounds.width
     }
@@ -102,11 +102,11 @@ abstract class MultipartEntity<out M>(remix: Remix, datamodel: M)
     }
 
     override fun getLowerUpdateableBound(): Float {
-        return min(bounds.x, internal.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: bounds.x)
+        return min(bounds.x, internal.minByOrNull { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: bounds.x)
     }
 
     override fun getUpperUpdateableBound(): Float {
-        return max(bounds.x + internalWidth, internal.maxBy { it.getUpperUpdateableBound() }?.getUpperUpdateableBound() ?: (bounds.x + internalWidth))
+        return max(bounds.x + internalWidth, internal.maxByOrNull { it.getUpperUpdateableBound() }?.getUpperUpdateableBound() ?: (bounds.x + internalWidth))
     }
 
     protected open fun translateInternal(oldBounds: Rectangle, changeWidths: Boolean = false,

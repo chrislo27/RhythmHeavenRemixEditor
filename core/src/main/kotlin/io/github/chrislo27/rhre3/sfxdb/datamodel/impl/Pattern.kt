@@ -21,7 +21,7 @@ class Pattern(game: Game, id: String, deprecatedIDs: List<String>, name: String,
     }
 
     override val duration: Float by lazy {
-        cues.map { it.beat + it.duration }.max()!!
+        cues.map { it.beat + it.duration }.maxOrNull()!!
     }
 
     override fun createEntity(remix: Remix,

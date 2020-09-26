@@ -15,7 +15,7 @@ class RandomCue(game: Game, id: String, deprecatedIDs: List<String>, name: Strin
     override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 
     override val duration: Float by lazy {
-        cues.maxBy(CuePointer::duration)?.duration ?: error("No cues found")
+        cues.maxByOrNull(CuePointer::duration)?.duration ?: error("No cues found")
     }
 
     override fun createEntity(remix: Remix,

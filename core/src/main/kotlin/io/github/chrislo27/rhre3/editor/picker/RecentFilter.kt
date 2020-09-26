@@ -54,7 +54,7 @@ class RecentFilter : Filter() {
         gameGroups as MutableList
 
         gameGroups.sortWith(compareBy {
-            it.games.minBy { if (it.recency == -1) Int.MAX_VALUE else it.recency }?.recency ?: error(
+            it.games.minByOrNull { game -> if (game.recency == -1) Int.MAX_VALUE else game.recency }?.recency ?: error(
                     "No games in group $it")
         })
 

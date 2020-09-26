@@ -15,7 +15,7 @@ class KeepTheBeat(game: Game, id: String, deprecatedIDs: List<String>, name: Str
     override val canBePreviewed: Boolean by lazy { PreviewableModel.determineFromCuePointers(cues) }
 
     val totalSequenceDuration: Float by lazy {
-        val max = cues.maxBy(CuePointer::beat) ?: error("No cues in keep the beat")
+        val max = cues.maxByOrNull(CuePointer::beat) ?: error("No cues in keep the beat")
         max.beat + max.duration
     }
 

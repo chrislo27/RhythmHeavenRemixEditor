@@ -40,9 +40,9 @@ class PatternStoreScreen(main: RHRE3Application, val editor: Editor, val pattern
         fun entitiesToJson(remix: Remix, entities: List<Entity>, prettyPrinted: Boolean = true): String {
             val array = JsonHandler.OBJECT_MAPPER.createArrayNode()
 
-            val oldBounds: Map<Entity, Rectangle> = entities.associate { it to Rectangle(it.bounds) }
-            val baseX: Float = entities.minBy { it.bounds.x }?.bounds?.x ?: 0f
-            val baseY: Int = entities.minBy { it.bounds.y }?.bounds?.y?.toInt() ?: 0
+            val oldBounds: Map<Entity, Rectangle> = entities.associateWith { Rectangle(it.bounds) }
+            val baseX: Float = entities.minByOrNull { it.bounds.x }?.bounds?.x ?: 0f
+            val baseY: Int = entities.minByOrNull { it.bounds.y }?.bounds?.y?.toInt() ?: 0
 
             entities.forEach {
                 it.updateBounds {

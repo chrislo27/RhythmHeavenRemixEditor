@@ -355,7 +355,7 @@ class ExportRemixScreen(main: RHRE3Application)
         
         try {
             // prep triggers
-            val startMs = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
+            val startMs = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minByOrNull { it.getLowerUpdateableBound() }?.getLowerUpdateableBound() ?: 0.0f).toDouble()).toFloat() * 1000.0
             val endMs = endSeconds * 1000.0
             val durationMs = endMs - startMs
             
@@ -581,7 +581,7 @@ class ExportRemixScreen(main: RHRE3Application)
         val leftLabel: TextLabel<ExportRemixScreen>
         val rightLabel: TextLabel<ExportRemixScreen>
         
-        val remixStartSeconds: Float = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minBy { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat()
+        val remixStartSeconds: Float = min(remix.musicStartSec.toDouble(), remix.tempos.beatsToSeconds(remix.entities.minByOrNull { it.bounds.x }?.bounds?.x ?: 0.0f).toDouble()).toFloat()
         val remixEndSeconds: Float = remix.tempos.beatsToSeconds(if (remix.duration == Float.POSITIVE_INFINITY) remix.lastPoint else remix.duration)
         private val remixAbsDuration = remixEndSeconds - remixStartSeconds
         

@@ -335,7 +335,7 @@ open class Remix(val main: RHRE3Application)
             // add end entity either 2 beats after furthest point, or on the next measure border
             remix.addEntity(SFXDatabase.data.endRemix.createEntity(remix, null).apply {
                 updateBounds {
-                    val furthest = (remix.entities.maxBy { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
+                    val furthest = (remix.entities.maxByOrNull { it.bounds.maxX }?.run { bounds.maxX }?.roundToInt()
                             ?: 0).toFloat()
                     val timeSig = remix.timeSignatures.getTimeSignature(furthest)
                     bounds.x = if (timeSig == null) {
@@ -862,7 +862,7 @@ open class Remix(val main: RHRE3Application)
         return if (entities.isNotEmpty() && entities.any { it is EndRemixEntity }) {
             entities.first { it is EndRemixEntity }.bounds.x
         } else {
-            val last = entities.maxBy { it.bounds.x + it.bounds.width }!!
+            val last = entities.maxByOrNull { it.bounds.x + it.bounds.width }!!
             last.bounds.x + last.bounds.width
         }
     }

@@ -953,7 +953,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
                         // Select following
-                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: remix.playbackStart
+                        val selectionMinX: Float = this.selection.minByOrNull { it.bounds.x }?.bounds?.x ?: remix.playbackStart
                         val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX }
                         if (!this.selection.containsAll(newSelection) || (newSelection.size != this.selection.size)) {
                             remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
@@ -961,7 +961,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
                         // Select preceding
-                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: remix.playbackStart
+                        val selectionMaxX: Float = this.selection.maxByOrNull { it.bounds.maxX }?.bounds?.maxX ?: remix.playbackStart
                         val newSelection = remix.entities.toList().filter { it.bounds.maxX <= selectionMaxX }
                         if (!this.selection.containsAll(newSelection) || (newSelection.size != this.selection.size)) {
                             remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
@@ -969,8 +969,8 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                         }
                     } else if (Gdx.input.isKeyJustPressed(Input.Keys.T)) {
                         // Select between
-                        val selectionMinX: Float = this.selection.minBy { it.bounds.x }?.bounds?.x ?: 0f
-                        val selectionMaxX: Float = this.selection.maxBy { it.bounds.maxX }?.bounds?.maxX ?: 0f
+                        val selectionMinX: Float = this.selection.minByOrNull { it.bounds.x }?.bounds?.x ?: 0f
+                        val selectionMaxX: Float = this.selection.maxByOrNull { it.bounds.maxX }?.bounds?.maxX ?: 0f
                         val newSelection = remix.entities.toList().filter { it.bounds.x >= selectionMinX && it.bounds.maxX <= selectionMaxX }
                         if (!this.selection.containsAll(newSelection) || (newSelection.size != this.selection.size)) {
                             remix.mutate(EntitySelectionAction(this, this.selection, newSelection))
@@ -1095,6 +1095,7 @@ class Editor(val main: RHRE3Application, stageCamera: OrthographicCamera, attach
                     is TrackerResize -> {
                         // handled below
                     }
+                    is ClickOccupation.RulerMeasuring -> {}
                 }
             } else if (tool.isTrackerRelated) {
                 if (clickOccupation is TrackerResize) {

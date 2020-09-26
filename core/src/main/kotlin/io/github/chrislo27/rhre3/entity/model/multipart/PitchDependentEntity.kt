@@ -31,7 +31,7 @@ class PitchDependentEntity(remix: Remix, datamodel: PitchDependent)
     override val isStretchable: Boolean = datamodel.cues.mapNotNull { SFXDatabase.data.objectMap[it.id] }.any { it is Cue && it.stretchable }
     
     init {
-        bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
+        bounds.width = datamodel.cues.map(CuePointer::duration).maxOrNull() ?: error(
                 "PitchDependent datamodel ${datamodel.id} has no internal cues")
     }
 

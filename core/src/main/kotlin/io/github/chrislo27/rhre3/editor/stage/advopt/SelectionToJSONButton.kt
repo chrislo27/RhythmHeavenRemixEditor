@@ -66,8 +66,8 @@ class SelectionToJSONButton(val editor: Editor, palette: UIPalette, parent: UIEl
             label.text = strings[2]
         } else {
             try {
-                val bottommost = selection.minBy { it.bounds.y }!!
-                val leftmost = selection.minBy { it.bounds.x }!!
+                val bottommost = selection.minByOrNull { it.bounds.y }!!
+                val leftmost = selection.minByOrNull { it.bounds.x }!!
                 val firstGame = selection.first().datamodel.game
                 val allSameParentId = selection.all { it.datamodel.game == firstGame }
                 val json = JsonHandler.toJson(SmallPatternObject().also {

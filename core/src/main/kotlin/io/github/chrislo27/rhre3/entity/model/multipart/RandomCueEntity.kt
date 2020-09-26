@@ -27,7 +27,7 @@ class RandomCueEntity(remix: Remix, datamodel: RandomCue)
     private val createdEntities: List<Entity> = possibleObjects.map { it.datamodel.createEntity(remix, it.ptr.copy(beat = 0f)) }
 
     init {
-        bounds.width = datamodel.cues.map(CuePointer::duration).max() ?: error(
+        bounds.width = datamodel.cues.map(CuePointer::duration).maxOrNull() ?: error(
                 "RandomCue datamodel ${datamodel.id} has no internal cues")
     }
 

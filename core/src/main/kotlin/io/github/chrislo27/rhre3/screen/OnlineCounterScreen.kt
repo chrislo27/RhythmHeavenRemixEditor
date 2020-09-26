@@ -69,7 +69,7 @@ class OnlineCounterScreen(main: RHRE3Application, title: String) : ToolboksScree
                             try {
                                 val history = JsonHandler.fromJson<DailyOnlineHistoryObj>(response.responseBody)
                                 val list = history.hours.map { (it.key.toIntOrNull() ?: -1) to it.value }.sortedByDescending(Pair<Int, HourlyHistoryObject>::first)
-                                val max = list.maxBy { it.second.max }?.second?.max ?: 1
+                                val max = list.maxByOrNull { it.second.max }?.second?.max ?: 1
                                 val minColor = Color.valueOf("#FF8C8C")
                                 val maxColor = Color.valueOf("#95FF8C")
                                 list.forEachIndexed { i, (hoursAgo, data) ->

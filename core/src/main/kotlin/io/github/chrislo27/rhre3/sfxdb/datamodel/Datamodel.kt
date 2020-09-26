@@ -36,10 +36,10 @@ abstract class Datamodel(val game: Game, val id: String, val deprecatedIDs: List
                     .mapNotNull(Datamodel::checkBaseBpm)
             if (ranges.isEmpty())
                 return null
-            val lower = ranges.minBy(ClosedRange<Float>::start)?.start ?: 0f
+            val lower = ranges.minByOrNull(ClosedRange<Float>::start)?.start ?: 0f
             if (lower <= 0f)
                 return null
-            val upper = ranges.maxBy(ClosedRange<Float>::endInclusive)?.endInclusive ?: 0f
+            val upper = ranges.maxByOrNull(ClosedRange<Float>::endInclusive)?.endInclusive ?: 0f
             if (upper <= 0f)
                 return null
 
