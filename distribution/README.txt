@@ -1,5 +1,11 @@
-ONLINE DOCUMENTATION:
-Please go to https://rhre.readthedocs.io/en/latest/README/ .
+Thanks for downloading the Rhythm Heaven Remix Editor!
+You can find the source code at: https://github.com/chrislo27/RhythmHeavenRemixEditor
+
+Leave a Star on GitHub if you like this software -- it really helps!
+
+
+INSTALLATION & ONLINE DOCUMENTATION:
+Please visit https://rhre.readthedocs.io/en/latest/README/ in your web browser.
 It is always up-to-date with online documentation, including instructions on running and using the program.
 
 
