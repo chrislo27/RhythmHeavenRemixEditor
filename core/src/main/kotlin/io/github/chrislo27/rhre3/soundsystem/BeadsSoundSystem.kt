@@ -22,10 +22,10 @@ object BeadsSoundSystem {
         try {
             // Attempt to get the line. If it is not supported it will throw an exception.
             mixer.getLine(datalineInfo)
-            Toolboks.LOGGER.debug("Mixer $mixer is compatible for outputting.")
+            Toolboks.LOGGER.debug("Mixer ${mixer.mixerInfo} is compatible for outputting.")
             true
         } catch (e: Exception) {
-            Toolboks.LOGGER.debug("Mixer $mixer is NOT compatible for outputting!")
+            Toolboks.LOGGER.debug("Mixer ${mixer.mixerInfo} is NOT compatible for outputting!")
             false
         }
     }
