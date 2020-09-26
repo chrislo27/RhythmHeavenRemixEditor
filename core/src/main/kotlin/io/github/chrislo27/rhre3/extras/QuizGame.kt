@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.RHRE3Application
 import io.github.chrislo27.rhre3.track.PlayState
 import io.github.chrislo27.rhre3.track.tracker.tempo.TempoChange
 import io.github.chrislo27.rhre3.util.*
+import io.github.chrislo27.toolboks.Toolboks
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.registry.ScreenRegistry
@@ -350,7 +351,7 @@ class QuizGame(main: RHRE3Application) : RhythmGame(main) {
         if (!exploded && score > highScore) {
             main.preferences.putInteger(PreferenceKeys.EXTRAS_QUIZ_HIGH_SCORE, score).flush()
         }
-        println("Disposed quiz game")
+        Toolboks.LOGGER.debug("Disposed quiz game")
     }
 
     /**
