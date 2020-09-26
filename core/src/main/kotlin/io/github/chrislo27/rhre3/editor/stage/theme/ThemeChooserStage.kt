@@ -15,6 +15,7 @@ import io.github.chrislo27.rhre3.theme.Theme
 import io.github.chrislo27.rhre3.theme.Themes
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.openFileExplorer
 
 
 class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: EditorStage, camera: OrthographicCamera, pixelsWidth: Float, pixelsHeight: Float)
@@ -114,18 +115,15 @@ class ThemeChooserStage(val editor: Editor, val palette: UIPalette, parent: Edit
                 })
             }
 
-            this.elements += object : Button<EditorScreen>(palette, this, this.stage) {
-                override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                    super.onLeftClick(xPercent, yPercent)
-
-                    Gdx.net.openURI("file:///${LoadedThemes.THEMES_FOLDER.file().canonicalPath}")
-                }
-            }.apply {
+            this.elements += Button(palette, this, this.stage).apply {
                 this.location.set(0f, 0f, 0f, 1f, 346f - 34f, 0f, 34f, 0f)
                 this.addLabel(ImageLabel(palette, this, this.stage).apply {
                     this.renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                     this.image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                 })
+                this.leftClickAction = { _, _ ->
+                    Gdx.net.openFileExplorer(LoadedThemes.THEMES_FOLDER)
+                }
                 this.tooltipTextIsLocalizationKey = true
                 this.tooltipText = "editor.themeEditor.openContainingFolder"
             }

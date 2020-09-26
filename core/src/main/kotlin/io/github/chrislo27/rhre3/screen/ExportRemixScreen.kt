@@ -168,7 +168,7 @@ class ExportRemixScreen(main: RHRE3Application)
             this.leftClickAction = { _, _ ->
                 val ff = folderFile
                 if (ff != null) {
-                    Gdx.net.openURI("file:///${(ff.takeUnless { it.isFile } ?: ff.parentFile).absolutePath}")
+                    Gdx.net.openFileExplorer((ff.takeUnless { it.isFile } ?: ff.parentFile))
                 }
             }
             this.visible = false

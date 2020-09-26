@@ -46,10 +46,7 @@ import io.github.chrislo27.toolboks.i18n.ToolboksBundle
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
 import io.github.chrislo27.toolboks.util.MathHelper
-import io.github.chrislo27.toolboks.util.gdxutils.getInputX
-import io.github.chrislo27.toolboks.util.gdxutils.isAltDown
-import io.github.chrislo27.toolboks.util.gdxutils.isControlDown
-import io.github.chrislo27.toolboks.util.gdxutils.isShiftDown
+import io.github.chrislo27.toolboks.util.gdxutils.*
 import java.util.*
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -810,19 +807,16 @@ class EditorStage(parent: UIElement<EditorScreen>?,
                     this.fontScaleMultiplier = 0.9f
                 }
                 pickerStage.elements += gameStageText
-                customSoundsFolderButton = object : Button<EditorScreen>(palette, pickerStage, pickerStage) {
-                    override fun onLeftClick(xPercent: Float, yPercent: Float) {
-                        super.onLeftClick(xPercent, yPercent)
-
-                        Gdx.net.openURI("file:///${SFXDatabase.CUSTOM_SFX_FOLDER.file().absolutePath}")
-                    }
-                }.apply {
+                customSoundsFolderButton = Button(palette, pickerStage, pickerStage).apply {
                     setLocation(Editor.ICON_COUNT_X, 0)
                     this.location.set(screenY = 0.5f - this.location.screenHeight / 2f)
                     this.addLabel(ImageLabel(palette, this, this.stage).apply {
                         renderType = ImageLabel.ImageRendering.ASPECT_RATIO
                         image = TextureRegion(AssetRegistry.get<Texture>("ui_icon_folder"))
                     })
+                    this.leftClickAction = { _, _ ->
+                        Gdx.net.openFileExplorer(SFXDatabase.CUSTOM_SFX_FOLDER.file())
+                    }
                     this.tooltipTextIsLocalizationKey = true
                     this.tooltipText = "editor.customSfx.openFolder"
                     this.visible = false

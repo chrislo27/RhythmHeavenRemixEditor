@@ -21,6 +21,7 @@ import io.github.chrislo27.rhre3.util.*
 import io.github.chrislo27.toolboks.i18n.Localization
 import io.github.chrislo27.toolboks.registry.AssetRegistry
 import io.github.chrislo27.toolboks.ui.*
+import io.github.chrislo27.toolboks.util.gdxutils.openFileExplorer
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
@@ -256,7 +257,7 @@ class ThemeEditorStage(val editor: Editor, val palette: UIPalette, parent: Theme
                 leftClickAction = { _, _ ->
                     val f = themeFile
                     if (f != null) {
-                        Gdx.net.openURI("file:///${f.parent().file().canonicalPath}")
+                        Gdx.net.openFileExplorer(f.parent())
                     }
                 }
             }
