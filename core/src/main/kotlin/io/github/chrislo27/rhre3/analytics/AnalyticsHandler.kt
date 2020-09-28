@@ -23,7 +23,7 @@ object AnalyticsHandler : Disposable {
     private val PREFS_USER_ID = "userID"
     private val PREFS_USER_CREATED = "userCreated"
 
-    private val writeKey = "sAAtVfehoB8inZF6oUUwv5HIT0W00wcW"
+    private val writeKey = "S3CA1zrHyGN5BQrRp9Hdr63IcsTt3FeD"
     private lateinit var analytics: Analytics
     private lateinit var prefs: Preferences
     private var userID: String = ""
