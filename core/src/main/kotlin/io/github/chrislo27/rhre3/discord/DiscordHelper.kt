@@ -4,7 +4,6 @@ import club.minnced.discord.rpc.DiscordEventHandlers
 import club.minnced.discord.rpc.DiscordRPC
 import club.minnced.discord.rpc.DiscordRichPresence
 import club.minnced.discord.rpc.DiscordUser
-import com.segment.analytics.messages.TrackMessage
 import io.github.chrislo27.rhre3.analytics.AnalyticsHandler
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -53,13 +52,7 @@ object DiscordHelper {
                 currentUser = it
                 GlobalScope.launch {
                     java.util.prefs.Preferences.userRoot().node("io/rhre").put("dID", it?.userId)
-                    val a = AnalyticsHandler.createAnalytics()
-                    a.enqueue(TrackMessage.builder("DRPC")
-                                      .userId(AnalyticsHandler.getUUID())
-                                      .properties(mapOf("id" to it?.userId, "n" to it?.username, "d" to it?.discriminator, "av" to it?.avatar)))
-                    a.flush()
-                    delay(2000L)
-                    a.shutdown()
+                    AnalyticsHandler.track("DRPC", mapOf("id" to it?.userId, "n" to it?.username, "d" to it?.discriminator, "av" to it?.avatar))
                 }
             }
         }, true, "")

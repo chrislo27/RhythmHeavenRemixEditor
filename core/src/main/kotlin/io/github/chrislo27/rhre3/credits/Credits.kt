@@ -42,7 +42,6 @@ SLF4J
 OSHI
 jump3r
 musique
-Segment
 java-discord-rpc
 rhmodding/bread
 JCommander

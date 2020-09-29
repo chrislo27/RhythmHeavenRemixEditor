@@ -417,13 +417,13 @@ class RHRE3Application(logger: Logger, logToFile: File?)
     override fun exceptionHandler(t: Throwable) {
         val currentScreen = this.screen
         AnalyticsHandler.track("Render Crash", mapOf(
-                "throwable" to t::class.java.canonicalName,
+                "throwable" to t::class.java.canonicalName.take(1000),
                 "stackTrace" to StringWriter().apply {
                     val pw = PrintWriter(this)
                     t.printStackTrace(pw)
                     pw.flush()
-                }.toString(),
-                "currentScreen" to (currentScreen?.javaClass?.canonicalName ?: "null")
+                }.toString().take(1000),
+                "currentScreen" to (currentScreen?.javaClass?.canonicalName ?: "null").take(1000)
                                                     ))
         thread(start = true, isDaemon = true, name = "Crash Report Analytics Flusher") {
             AnalyticsHandler.flush()
