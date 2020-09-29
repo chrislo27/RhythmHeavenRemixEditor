@@ -69,6 +69,7 @@ project(":desktop") {
         implementation "net.lingala.zip4j:zip4j:2.6.2"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows-x86"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-macos"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-linux"
 
@@ -105,6 +106,7 @@ project(":core") {
         implementation "net.lingala.zip4j:zip4j:2.6.2"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows"
+        implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-windows-x86"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-macos"
         implementation "org.lwjgl:lwjgl-tinyfd:3.2.3:natives-linux"
         
