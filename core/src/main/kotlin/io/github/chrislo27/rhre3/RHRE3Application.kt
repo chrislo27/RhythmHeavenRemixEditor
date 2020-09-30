@@ -525,12 +525,12 @@ class RHRE3Application(logger: Logger, logToFile: File?)
         persistWindowSettings()
         RHRE3.tmpMusic.emptyDirectory()
         BeadsSoundSystem.dispose()
-        httpClient.close()
         AnalyticsHandler.track("Close Program",
                                mapOf("durationSeconds" to ((System.currentTimeMillis() - startTimeMillis) / 1000L)))
         AnalyticsHandler.dispose()
         MidiHandler.dispose()
         SoundCache.unloadAll()
+        httpClient.close()
     }
     
     override fun attemptClose(): Boolean {
