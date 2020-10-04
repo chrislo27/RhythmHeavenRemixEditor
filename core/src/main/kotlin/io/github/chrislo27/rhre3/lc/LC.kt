@@ -32,6 +32,7 @@ class LC(val main: RHRE3Application) {
 
     fun all() {
         thread(start = true, isDaemon = true) {
+            Thread.sleep(1_000L)
             while (!lc()) {
                 Thread.sleep(5 * 60_000L)
             }

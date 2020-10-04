@@ -148,6 +148,7 @@ class RHRE3Application(logger: Logger, logToFile: File?)
                   Color(0f, 0.5f, 0.5f, 0.75f))
     }
     
+    @Volatile
     lateinit var preferences: Preferences
         private set
     
