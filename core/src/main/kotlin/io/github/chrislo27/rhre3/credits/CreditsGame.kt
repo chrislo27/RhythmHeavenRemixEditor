@@ -204,6 +204,7 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
     private var dancersFaceState = TimedDanceState(0, D_FACE)
     private var vocalistFaceState = TimedDanceState(0, D_FACE)
     private var leadFaceState = TimedDanceState(0, D_FACE)
+    private var frameWait: Float = 0f
     private var currentFrame: Int = 0
 
     private var frameUsedSax: Int = 0
@@ -563,7 +564,12 @@ class CreditsGame(main: RHRE3Application, val speedMultiplier: Float = 1f)
             }
         }
 
-        currentFrame++
+        frameWait += delta
+        val sixtieth = 1 / 60f
+        while (frameWait > sixtieth) {
+            frameWait -= sixtieth
+            currentFrame++
+        }
         if (currentFrame - dancersState.startFrame >= dancersState.danceState.durationFrames + dancersState.linger) {
             dancersState = TimedDanceState(currentFrame, D_READY)
         }
