@@ -61,4 +61,3 @@ For the repository holding RHRE version v0.1.0-alpha to v0.4.4-alpha (collective
 
 † [Donations](https://donate.rhre.dev) are only made to the project maintainer, [@chrislo27](https://github.com/chrislo27).
 
-Features screenshots provided by: [dexiedoo](https://www.youtube.com/channel/UC_ckCtLt88aI8Qzz5VM3UwA).
