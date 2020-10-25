@@ -7,7 +7,7 @@ A custom remix editor for the [Rhythm Heaven](https://en.wikipedia.org/wiki/Rhyt
 
 ### [Download the latest release here!](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases/latest)
 
-> As of 2020-08-16, this project is no longer in active development. Bugfixes may still be released occasionally.
+> As of 2020-10-25, this project is no longer in development, and is not accepting new issues.
 
 [![Downloads](https://img.shields.io/github/downloads/chrislo27/RhythmHeavenRemixEditor/total.svg)](https://github.com/chrislo27/RhythmHeavenRemixEditor/releases)<br>
 Read the [README here](http://rhre.readthedocs.io/en/latest/README/).<br>
